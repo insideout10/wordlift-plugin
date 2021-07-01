@@ -15,6 +15,7 @@
 use Wordlift\Admin\Admin_User_Option;
 use Wordlift\Admin\Key_Validation_Notice;
 use Wordlift\Admin\Top_Entities;
+use Wordlift\Analysis\Entity_Provider\Entity_Provider_Registry;
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 use Wordlift\Autocomplete\All_Autocomplete_Service;
 use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
@@ -1547,12 +1548,16 @@ class Wordlift {
 		 * Create a singleton for the Analysis_Response_Ops_Factory.
 		 */
 		$entity_helper = new Entity_Helper( $this->entity_uri_service, $this->entity_service );
+		/**
+		 * @since 3.32.0
+		 * Initialize a local entity provider which acts as an abstraction layer
+		 * between the different types of objects in wordpress.
+		 */
+		$entity_provider_registry = new Entity_Provider_Registry();
 		new Analysis_Response_Ops_Factory(
 			$this->entity_uri_service,
-			$this->entity_service,
-			$this->entity_type_service,
-			$this->storage_factory->post_images(),
-			$entity_helper
+			$entity_helper,
+			$entity_provider_registry
 		);
 
 		/** WL Autocomplete. */

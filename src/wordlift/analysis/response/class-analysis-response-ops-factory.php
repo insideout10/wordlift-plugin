@@ -9,6 +9,7 @@
 
 namespace Wordlift\Analysis\Response;
 
+use Wordlift\Analysis\Entity_Provider\Entity_Provider_Registry;
 use Wordlift\Entity\Entity_Helper;
 
 class Analysis_Response_Ops_Factory {
@@ -34,26 +35,24 @@ class Analysis_Response_Ops_Factory {
 	private $entity_helper;
 
 	private static $instance;
+	/**
+	 * @var Entity_Provider_Registry
+	 */
+	private $entity_provider_registry;
 
 	/**
 	 * Analysis_Response_Ops constructor.
 	 *
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service}.
-	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service}.
-	 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service}.
-	 * @param \Wordlift_Post_Image_Storage $post_image_storage A {@link Wordlift_Post_Image_Storage} instance.
 	 * @param Entity_Helper $entity_helper The {@link Entity_Helper}.
 	 *
 	 * @since 3.25.1
 	 */
-	public function __construct( $entity_uri_service, $entity_service, $entity_type_service, $post_image_storage, $entity_helper ) {
+	public function __construct( $entity_uri_service, $entity_helper, $entity_provider_registry ) {
 
 		$this->entity_uri_service  = $entity_uri_service;
-		$this->entity_service      = $entity_service;
-		$this->entity_type_service = $entity_type_service;
-		$this->post_image_storage  = $post_image_storage;
 		$this->entity_helper       = $entity_helper;
-
+		$this->entity_provider_registry = $entity_provider_registry;
 		self::$instance = $this;
 
 	}
@@ -67,10 +66,8 @@ class Analysis_Response_Ops_Factory {
 
 		return new Analysis_Response_Ops(
 			$this->entity_uri_service,
-			$this->entity_service,
-			$this->entity_type_service,
-			$this->post_image_storage,
 			$this->entity_helper,
+			$this->entity_provider_registry,
 			$json );
 	}
 
