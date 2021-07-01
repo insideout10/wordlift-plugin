@@ -21,13 +21,25 @@ class Wordlift_Install_3_32_0 extends Wordlift_Install {
 		//		const HOMEPAGE = 2;
 		//		const USER = 3;
 		// we add 0 as default since we want to add compat between old and new values.
-		$query_template = <<<EOF
+		$query_template = $this->get_query_template();
+
+		// Add object_type column
+		$object_type_column_query = sprintf( $query_template, $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME, 'object_type' );
+		$wpdb->query( $object_type_column_query );
+
+		// Add subject_type column.
+		$subject_type_column_query = sprintf( $query_template, $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME, 'object_type' );
+		$wpdb->query( $subject_type_column_query );
+
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function get_query_template() {
+		return <<<EOF
 ALTER TABLE %s
 ADD %s TINYINT DEFAULT 0; 
 EOF;
-		$query = sprintf( $query_template, $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME, 'object_type' );
-
-		$wpdb->query( $query );
-
 	}
 }

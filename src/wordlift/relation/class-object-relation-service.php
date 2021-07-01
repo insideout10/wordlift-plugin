@@ -29,18 +29,7 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 	 * @var Term_Relation_Service
 	 */
 	private $term_relation_service;
-	/**
-	 * @var \Wordlift_Entity_Uri_Service
-	 */
-	private $entity_uri_service;
-	/**
-	 * @var Uri_Service
-	 */
-	private $term_uri_service;
-	/**
-	 * @var \Wordlift_Entity_Service
-	 */
-	private $entity_service;
+
 	/**
 	 * @var \Wordlift_Log_Service
 	 */
@@ -48,11 +37,8 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 
 	public function __construct() {
 		parent::__construct();
-		$this->post_relation_service = \Wordlift_Relation_Service::get_instance();
+		$this->post_relation_service = Post_Relation_Service::get_instance();
 		$this->term_relation_service = Term_Relation_Service::get_instance();
-		$this->entity_uri_service    = \Wordlift_Entity_Uri_Service::get_instance();
-		$this->term_uri_service      = Uri_Service::get_instance();
-		$this->entity_service        = \Wordlift_Entity_Service::get_instance();
 		$this->log                   = \Wordlift_Log_Service::get_logger( get_class() );
 	}
 
@@ -69,10 +55,7 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 	 * @return array<Reference>
 	 */
 	public function get_references( $subject_id ) {
-		$post_ids        = $this->post_relation_service->get_objects( $subject_id, 'ids' );
-		$post_references = array_map( function ( $post_id ) {
-			return new Post_Reference( $post_id );
-		}, $post_ids );
+		$post_references = $this->post_relation_service->get_references( $subject_id );
 		$term_references = $this->term_relation_service->get_references( $subject_id );
 
 		return array_merge( $post_references, $term_references );
@@ -87,6 +70,9 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 		 * with the post entity URI, check if it matches entity then
 		 * check if it matches term
 		 */
+		$post_relations = $this->post_relation_service->get_relations_from_content( $post_content );
+		$term_relations = $this->term_relation_service->get_relations_from_content( $post_content );
+
 		$relations = array_map( function ( $uri ) {
 
 			$entity = $this->entity_uri_service->get_entity( $uri );
