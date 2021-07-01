@@ -28,7 +28,7 @@ class Wordlift_Install_3_32_0 extends Wordlift_Install {
 		$wpdb->query( $object_type_column_query );
 
 		// Add subject_type column.
-		$subject_type_column_query = sprintf( $query_template, $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME, 'object_type' );
+		$subject_type_column_query = sprintf( $query_template, $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME, 'subject_type' );
 		$wpdb->query( $subject_type_column_query );
 
 	}
