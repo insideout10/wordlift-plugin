@@ -53,12 +53,13 @@ class Post_Relation_Service extends Singleton implements Relation_Service_Interf
 
 	public function get_relations_from_content( $content, $subject_type ) {
 		$entity_uris =  Object_Relation_Service::get_entity_uris( $content );
-		return array_map( function ( $entity_uri ) use ( $subject_type ) {
-			$entity =  $this->entity_uri_service->get_entity( $entity_uri );
+		$that = $this;
+		return array_map( function ( $entity_uri ) use ( $subject_type, $that ) {
+			$entity =  $that->entity_uri_service->get_entity( $entity_uri );
 			if (  ! $entity ) {
 				return false;
 			}
-			return new Post_Relation( $entity->ID, $this->entity_service->get_classification_scope_for( $entity->ID ), $subject_type );
+			return new Post_Relation( $entity->ID, $that->entity_service->get_classification_scope_for( $entity->ID ), $subject_type );
 		}, $entity_uris );
 	}
 }

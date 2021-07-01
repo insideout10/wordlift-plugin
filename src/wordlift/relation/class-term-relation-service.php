@@ -29,11 +29,16 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 	 * @var Type_Service
 	 */
 	private $term_entity_type_service;
+	/**
+	 * @var \Wordlift_Schema_Service
+	 */
+	private $schema_service;
 
 	public function __construct() {
 		parent::__construct();
-		$this->term_uri_service = Uri_Service::get_instance();
+		$this->term_uri_service         = Uri_Service::get_instance();
 		$this->term_entity_type_service = Type_Service::get_instance();
+		$this->schema_service           = \Wordlift_Schema_Service::get_instance();
 	}
 
 	/**
@@ -46,13 +51,14 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 
 	public function get_references( $subject_id, $subject_type ) {
 		global $wpdb;
-		$table_name      = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
-		$query           = $wpdb->prepare( "SELECT object_id FROM $table_name WHERE subject_id = %d AND object_type = %d AND subject_type = %d",
+		$table_name = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
+		$query      = $wpdb->prepare( "SELECT object_id FROM $table_name WHERE subject_id = %d AND object_type = %d AND subject_type = %d",
 			$subject_id,
 			Object_Type_Enum::TERM,
 			$subject_type
 		);
-		$term_ids        = $wpdb->get_col( $query );
+		$term_ids   = $wpdb->get_col( $query );
+
 		return array_map( function ( $term_id ) {
 			return new Term_Reference( $term_id );
 		}, $term_ids );
@@ -60,13 +66,15 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 
 
 	public function get_relations_from_content( $content, $subject_type ) {
-		$entity_uris =  Object_Relation_Service::get_entity_uris( $content );
-		$that = $this;
+		$entity_uris = Object_Relation_Service::get_entity_uris( $content );
+		$that        = $this;
+
 		return array_map( function ( $entity_uri ) use ( $subject_type, $that ) {
-			$term =  $that->term_uri_service->get_term( $entity_uri );
+			$term = $that->term_uri_service->get_term( $entity_uri );
 			if ( ! $term ) {
 				return false;
 			}
+
 			return new Term_Relation( $term->term_id, $that->get_relation_type( $term->term_id ), $subject_type );
 		}, $entity_uris );
 	}
@@ -74,9 +82,17 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 	/**
 	 * @param $term_id int Term id.
 	 */
-	private function get_relation_type( $term_id ) {
-		return WL_WHAT_RELATION;
-		$entity_types = $this->term_entity_type_service->get_entity_types( $term_id );
+	public function get_relation_type( $term_id ) {
+		$entity_types         = $this->term_entity_type_service->get_entity_types( $term_id );
+		$classification_boxes = unserialize( WL_CORE_POST_CLASSIFICATION_BOXES );
+		$schema = null;
+		foreach ( $entity_types as $entity_type ) {
+			$schema = $this->schema_service->get_schema( $entity_type->slug );
+			if (  ! $schema ) {
+				break;
+			}
+		}
+
 
 	}
 }

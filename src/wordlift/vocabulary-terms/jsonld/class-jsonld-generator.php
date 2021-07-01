@@ -8,7 +8,6 @@ namespace Wordlift\Vocabulary_Terms\Jsonld;
 
 use Wordlift\Object_Type_Enum;
 use Wordlift\Term\Type_Service;
-use Wordlift_Entity_Type_Taxonomy_Service;
 
 class Jsonld_Generator {
 

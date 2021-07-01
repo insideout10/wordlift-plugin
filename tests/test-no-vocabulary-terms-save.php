@@ -32,5 +32,9 @@ class No_Vocabulary_Terms_Save extends \Wordlift_Vocabulary_Terms_Unit_Test_Case
 		$this->assertSame('Thing', $entity_types[0]->name );
 	}
 
+	public function test_should_return_relation_type_correctly_for_terms() {
+
+	}
+
 
 }
