@@ -41,7 +41,7 @@ class Reference_Processor  extends  Singleton {
 			if ( strpos( $reference, 'post_' ) !== false ) {
 				return new Post_Reference( (int) str_replace('post_', '', $reference ) );
 			} else if ( strpos( $reference, 'term_' ) !== false  ) {
-				return new Term_Reference( (int) str_replace('post_', '', $reference ) );
+				return new Term_Reference( (int) str_replace('term_', '', $reference ) );
 			}
 			// Backward compatibility with other hooks pushing
 			// references in to the cache.
