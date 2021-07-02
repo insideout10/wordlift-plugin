@@ -19,6 +19,7 @@ class Install_3_32_0_Test extends Wordlift_Unit_Test_Case {
 		wl_core_add_relation_instance( $post, WL_WHAT_RELATION, $linked_entity );
 		wl_core_add_relation_instance( $post, WL_WHAT_RELATION, $linked_entity + 1, Object_Type_Enum::TERM );
 		$references = Object_Relation_Service::get_instance()->get_references( $post, Object_Type_Enum::POST );
+		var_dump($references);
 		$this->assertCount( 2, $references );
 		$this->assertTrue( $references[0] instanceof Post_Reference );
 		$this->assertTrue( $references[1] instanceof Term_Reference );
