@@ -55,7 +55,7 @@ class Wordlift_Content_Filter_Service {
 	 */
 	private $is_link_by_default;
 
-	private $entity_post_ids_linked_from_post_content = array();
+	private $linked_object_ids = array();
 
 	/**
 	 * The {@link Wordlift_Entity_Uri_Service} instance.
@@ -145,7 +145,7 @@ class Wordlift_Content_Filter_Service {
 
 		// Reset the array of of entity post ids linked from the post content.
 		// This is used to avoid linking more the once the same post.
-		$this->entity_post_ids_linked_from_post_content = array();
+		$this->linked_object_ids = array();
 
 		// Preload URIs.
 		$matches = array();
@@ -198,10 +198,11 @@ class Wordlift_Content_Filter_Service {
 
 		$object_id  = $this->object_link_provider->get_object_id_by_type( $uri, $object_type );
 
+		$object_id_unique_identifier = $object_type . "_" . $object_id;
 
 		$no_link = - 1 < strpos( $css_class, 'wl-no-link' )
 		           // Do not link if already linked.
-		           || $this->is_already_linked( $object_id );
+		           || $this->is_already_linked( $object_id_unique_identifier );
 		$link    = - 1 < strpos( $css_class, 'wl-link' );
 
 		// Don't link if links are disabled and the entity is not link or the
@@ -213,9 +214,11 @@ class Wordlift_Content_Filter_Service {
 			return $label;
 		}
 
-		// Add the entity post id to the array of already linked entities, so that
-		// only the first entity occurrence is linked.
-		$this->entity_post_ids_linked_from_post_content[] = $object_id;
+		/**
+		 * @since 3.32.0
+		 * Object_ids are prefixed with object_type to prevent conflicts.
+		 */
+		$this->linked_object_ids[] = $object_id_unique_identifier;
 
 		// Get the link.
 		$href = Wordlift_Post_Adapter::get_production_permalink( $object_id );
@@ -327,7 +330,7 @@ class Wordlift_Content_Filter_Service {
 	 * @return bool
 	 */
 	private function is_already_linked( $post_id ) {
-		return in_array( $post_id, $this->entity_post_ids_linked_from_post_content );
+		return in_array( $post_id, $this->linked_object_ids );
 	}
 
 }
