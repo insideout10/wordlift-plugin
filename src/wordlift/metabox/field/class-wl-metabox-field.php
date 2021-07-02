@@ -208,6 +208,7 @@ class Wl_Metabox_Field implements Field {
 	 */
 	function get_data() {
 	    $instance = Store_Factory::get_instance( $this->type );
+	    // @todo: check if $instance is not null.
 	    $this->data =  $instance::get_data( $this->id, $this->meta_name );
 	}
 

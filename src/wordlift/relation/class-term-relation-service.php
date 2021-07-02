@@ -53,6 +53,7 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 			Object_Type_Enum::TERM,
 			$subject_type
 		);
+
 		$term_ids   = $wpdb->get_col( $query );
 
 		return array_map( function ( $term_id ) {
