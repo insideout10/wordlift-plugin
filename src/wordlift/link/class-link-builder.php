@@ -7,6 +7,8 @@
 
 namespace Wordlift\Link;
 
+use Wordlift_Schema_Service;
+
 class Link_Builder {
 
 	private $id;
@@ -14,10 +16,15 @@ class Link_Builder {
 	private $label;
 	private $href;
 	private $entity_url;
+	/**
+	 * @var Object_Link_Provider
+	 */
+	private $object_link_provider;
 
 	public function __construct( $entity_url, $id ) {
 		$this->entity_url = $entity_url;
 		$this->id = $id;
+		$this->object_link_provider = Object_Link_Provider::get_instance();
 	}
 
 	public static function create( $entity_url, $id ) {
@@ -35,6 +42,30 @@ class Link_Builder {
 
 		return $this;
 	}
+
+	/**
+	 * @param $post_id
+	 *
+	 * @return string
+	 */
+	private function get_attributes_for_link( $post_id ) {
+		/**
+		 * Allow 3rd parties to add additional attributes to the anchor link.
+		 *
+		 * @since 3.26.0
+		 */
+		$default_attributes = array(
+			'id' => implode( ';', $this->object_link_provider->get_same_as_uris( $this->id, $this->type ) )
+		);
+		$attributes         = apply_filters( 'wl_anchor_data_attributes', $default_attributes, $post_id );
+		$attributes_html    = '';
+		foreach ( $attributes as $key => $value ) {
+			$attributes_html .= ' data-' . esc_html( $key ) . '="' . esc_attr( $value ) . '" ';
+		}
+
+		return $attributes_html;
+	}
+
 
 	/**
 	 * @return string

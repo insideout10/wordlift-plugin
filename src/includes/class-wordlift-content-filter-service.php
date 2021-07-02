@@ -298,31 +298,6 @@ class Wordlift_Content_Filter_Service {
 		return array_values( array_unique( $matches[3] ) );
 	}
 
-	/**
-	 * @param $post_id
-	 *
-	 * @return string
-	 */
-	private function get_attributes_for_link( $post_id ) {
-		/**
-		 * Allow 3rd parties to add additional attributes to the anchor link.
-		 *
-		 * @since 3.26.0
-		 */
-		$default_attributes = array(
-			'id' => implode( ';', array_merge(
-				(array) $this->entity_service->get_uri( $post_id ),
-				get_post_meta( $post_id, Wordlift_Schema_Service::FIELD_SAME_AS )
-			) )
-		);
-		$attributes         = apply_filters( 'wl_anchor_data_attributes', $default_attributes, $post_id );
-		$attributes_html    = '';
-		foreach ( $attributes as $key => $value ) {
-			$attributes_html .= ' data-' . esc_html( $key ) . '="' . esc_attr( $value ) . '" ';
-		}
-
-		return $attributes_html;
-	}
 
 	/**
 	 * @param $post_id
