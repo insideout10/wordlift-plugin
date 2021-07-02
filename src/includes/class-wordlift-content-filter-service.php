@@ -202,7 +202,7 @@ class Wordlift_Content_Filter_Service {
 		$post_id = $post->ID;
 		$no_link = - 1 < strpos( $css_class, 'wl-no-link' )
 		           // Do not link if already linked.
-		           || in_array( $post_id , $this->entity_post_ids_linked_from_post_content );
+		           || $this->is_already_linked( $post_id );
 		$link    = - 1 < strpos( $css_class, 'wl-link' );
 
 		// Don't link if links are disabled and the entity is not link or the
@@ -342,6 +342,15 @@ class Wordlift_Content_Filter_Service {
 		}
 
 		return $attributes_html;
+	}
+
+	/**
+	 * @param $post_id
+	 *
+	 * @return bool
+	 */
+	private function is_already_linked( $post_id ) {
+		return in_array( $post_id, $this->entity_post_ids_linked_from_post_content );
 	}
 
 }
