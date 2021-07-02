@@ -7,7 +7,6 @@
 
 namespace Wordlift\Link;
 
-use Wordlift_Schema_Service;
 
 class Link_Builder {
 
@@ -22,9 +21,10 @@ class Link_Builder {
 	private $object_link_provider;
 
 	public function __construct( $entity_url, $id ) {
-		$this->entity_url = $entity_url;
-		$this->id = $id;
+		$this->entity_url           = $entity_url;
+		$this->id                   = $id;
 		$this->object_link_provider = Object_Link_Provider::get_instance();
+		$this->type                 = $this->object_link_provider->get_object_type( $entity_url );
 	}
 
 	public static function create( $entity_url, $id ) {
@@ -43,12 +43,7 @@ class Link_Builder {
 		return $this;
 	}
 
-	/**
-	 * @param $post_id
-	 *
-	 * @return string
-	 */
-	private function get_attributes_for_link( $post_id ) {
+	private function get_attributes_for_link() {
 		/**
 		 * Allow 3rd parties to add additional attributes to the anchor link.
 		 *
@@ -57,8 +52,13 @@ class Link_Builder {
 		$default_attributes = array(
 			'id' => implode( ';', $this->object_link_provider->get_same_as_uris( $this->id, $this->type ) )
 		);
-		$attributes         = apply_filters( 'wl_anchor_data_attributes', $default_attributes, $post_id );
-		$attributes_html    = '';
+		/**
+		 * @since 3.32.0
+		 * Additional parameter {@link $this->type} is added to the filter denoting the type of
+		 * the entity url by the enum values {@link Object_Type_Enum}
+		 */
+		$attributes      = apply_filters( 'wl_anchor_data_attributes', $default_attributes, $this->id, $this->type );
+		$attributes_html = '';
 		foreach ( $attributes as $key => $value ) {
 			$attributes_html .= ' data-' . esc_html( $key ) . '="' . esc_attr( $value ) . '" ';
 		}
@@ -71,18 +71,15 @@ class Link_Builder {
 	 *
 	 * If an alternative title isn't available an empty string is returned.
 	 *
-	 * @param int $post_id The {@link WP_Post}'s id.
-	 * @param string $label The main link label.
-	 *
 	 * @return string A `title` attribute with an alternative label or an empty
 	 *                string if none available.
-	 * @since 3.15.0
+	 * @since 3.32.0
 	 *
 	 */
-	private function get_title_attribute( $post_id, $label ) {
+	private function get_title_attribute() {
 
 		// Get an alternative title.
-		$title = $this->object_link_provider->get_link_title( $post_id, $label );
+		$title = $this->object_link_provider->get_link_title( $this->id, $this->label, $this->type );
 		if ( ! empty( $title ) ) {
 			return 'title="' . esc_attr( $title ) . '"';
 		}
@@ -95,11 +92,11 @@ class Link_Builder {
 	 */
 	public function generate_link() {
 		// Get an alternative title attribute.
-		$title_attribute = $this->get_title_attribute( $this->id, $this->label );
-		$attributes_html = $this->get_attributes_for_link( $post_id );
+		$title_attribute = $this->get_title_attribute();
+		$attributes_html = $this->get_attributes_for_link();
 
 		// Return the link.
-		return "<a class='wl-entity-page-link' $title_attribute href='{$this->href}' $attributes_html>$label</a>";
+		return "<a class='wl-entity-page-link' $title_attribute href='{$this->href}' $attributes_html>{$this->label}</a>";
 	}
 
 

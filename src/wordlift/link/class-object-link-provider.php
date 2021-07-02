@@ -32,16 +32,21 @@ class Object_Link_Provider extends Singleton {
 	}
 
 	/**
-	 * @param $id
-	 * @param $label_to_be_ignored
+	 * @param $id int
+	 * @param $label_to_be_ignored string
+	 * @param $object_type int
+	 *
+	 * @return string
 	 */
-	public function get_link_title( $id, $label_to_be_ignored, $type ) {
+	public function get_link_title( $id, $label_to_be_ignored, $object_type ) {
+		$provider = $this->get_provider( $object_type );
+		if ( ! $provider ) {
+			return '';
+		}
 
+		return $provider->get_link_title( $id, $label_to_be_ignored );
 	}
 
-	public function get_link( $type ) {
-
-	}
 
 	/**
 	 * Return the object type by the entity uri.
@@ -49,6 +54,17 @@ class Object_Link_Provider extends Singleton {
 	 */
 	public function get_object_type( $uri ) {
 
+		$link_providers = $this->link_providers;
+		foreach ( $link_providers as $type => $provider ) {
+			/**
+			 * @var $provider Link
+			 */
+			$id = $provider->get_id( $uri );
+			if ( $id ) {
+				return $type;
+			}
+		}
+		return Object_Type_Enum::UNKNOWN;
 	}
 
 	/**
@@ -58,7 +74,7 @@ class Object_Link_Provider extends Singleton {
 	 * @return int
 	 */
 	public function get_object_id_by_type( $uri, $object_type ) {
-
+		return $this->link_providers[ $object_type ]->get_id( $uri );
 	}
 
 	public function get_same_as_uris( $id, $object_type ) {

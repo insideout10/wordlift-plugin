@@ -9,9 +9,13 @@ namespace Wordlift\Link;
 
 interface Link {
 
-	  public function get_link_title( $id, $label_to_be_ignored );
+	public function get_link_title( $id, $label_to_be_ignored );
 
-	  public function get_same_as_uris( $id );
+	public function get_same_as_uris( $id );
+
+	public function get_id( $uri );
+
+	public function get_synonyms( $id );
 
 
 }

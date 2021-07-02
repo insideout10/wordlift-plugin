@@ -11,22 +11,46 @@ use Wordlift\Common\Singleton;
 use Wordlift_Entity_Service;
 use Wordlift_Schema_Service;
 
-class Post_Link extends Singleton implements Link  {
+class Post_Link extends Default_Link  {
 
 	/**
 	 * @var \Wordlift_Entity_Service
 	 */
 	private $entity_service;
+	/**
+	 * @var \Wordlift_Entity_Uri_Service
+	 */
+	private $entity_uri_service;
 
 
 	public function __construct(  ) {
 		parent::__construct();
 		$this->entity_service = Wordlift_Entity_Service::get_instance();
+		$this->entity_uri_service = \Wordlift_Entity_Uri_Service::get_instance();
 	}
 
 
-	function get_link_title( $id, $label_to_be_ignored ) {
 
+
+
+	public function get_same_as_uris( $id ) {
+
+		return array_merge(
+			(array) $this->entity_service->get_uri( $id ),
+			get_post_meta( $id, Wordlift_Schema_Service::FIELD_SAME_AS )
+		);
+
+	}
+
+	public function get_id( $uri ) {
+		$entity =  $this->entity_uri_service->get_entity( $uri );
+		if ( ! $entity ) {
+			return false;
+		}
+		return $entity->ID;
+	}
+
+	public function get_synonyms( $id ) {
 		// Get possible alternative entity_labels we can select from.
 		$entity_labels = $this->entity_service->get_alternative_labels( $id );
 
@@ -38,26 +62,6 @@ class Post_Link extends Singleton implements Link  {
 
 		// Add some randomness to the entity_label selection.
 		shuffle( $entity_labels );
-
-		// Select the first entity_label which is not to be ignored.
-		$title = '';
-		foreach ( $entity_labels as $entity_label ) {
-			if ( 0 !== strcasecmp( $entity_label, $label_to_be_ignored ) ) {
-				$title = $entity_label;
-				break;
-			}
-		}
-
-		return $title;
-	}
-
-
-	public function get_same_as_uris( $id ) {
-
-		return array_merge(
-			(array) $this->entity_service->get_uri( $id ),
-			get_post_meta( $id, Wordlift_Schema_Service::FIELD_SAME_AS )
-		);
-
+		return $entity_labels;
 	}
 }
