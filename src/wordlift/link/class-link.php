@@ -7,19 +7,11 @@
 
 namespace Wordlift\Link;
 
-abstract class Link {
+interface Link {
 
-	public function __construct() {
-		add_filter( 'wl_object_link_providers', array( $this, 'register'));
-	}
+	  public function get_link_title( $id, $label_to_be_ignored );
 
-	public function register( $providers ) {
-		$providers[] = $this;
-		return $providers;
-	}
+	  public function get_same_as_uris( $id );
 
-	abstract  public function get_link_title( $id, $label );
-
-	abstract  public function get_same_as_uris( $id );
 
 }

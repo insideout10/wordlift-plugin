@@ -9,6 +9,7 @@
  * @package Wordlift
  */
 
+use Wordlift\Link\Link_Builder;
 use Wordlift\Link\Object_Link_Provider;
 
 /**
@@ -82,6 +83,10 @@ class Wordlift_Content_Filter_Service {
 	 * @var \Wordlift_Content_Filter_Service $instance The {@link Wordlift_Content_Filter_Service} singleton instance.
 	 */
 	private static $instance;
+	/**
+	 * @var Object_Link_Provider
+	 */
+	private $object_link_provider;
 
 	/**
 	 * Create a {@link Wordlift_Content_Filter_Service} instance.
@@ -100,8 +105,8 @@ class Wordlift_Content_Filter_Service {
 		$this->entity_service        = $entity_service;
 		$this->configuration_service = $configuration_service;
 		$this->entity_uri_service    = $entity_uri_service;
-		$this->object_link_provider = Object_Link_Provider::get_instance();
-		self::$instance = $this;
+		$this->object_link_provider  = Object_Link_Provider::get_instance();
+		self::$instance              = $this;
 
 	}
 
@@ -182,29 +187,21 @@ class Wordlift_Content_Filter_Service {
 		$uri       = $matches[3];
 		$label     = $matches[4];
 
-		// Get the entity post by URI.
-		$post = $this->entity_service->get_entity_post_by_uri( $uri );
+		$object_type = $this->object_link_provider->get_object_type( $uri );
 
-		// @todo: revise the `test-content-filter-service.php` before switching
-		// to the `entity_uri_service`. This is required, because the test injects
-		// itself as `entity_service` to mock the requests to get a post by
-		// entity uri.
-		//
-		// $post = $this->entity_uri_service->get_entity( $uri );
-
-		if ( null === $post ) {
-
-			// If the entity post is not found return the label w/o the markup
-			// around it.
-			//
-			// See https://github.com/insideout10/wordlift-plugin/issues/461.
+		if  ( ! $object_type ) {
+			// Since we cant find the object type for the entity uri
+			// it doesnt seem to exist on the local dataset, so return
+			// the label without linking.
 			return $label;
 		}
 
-		$post_id = $post->ID;
+		$object_id  = $this->object_link_provider->get_object_id_by_type( $uri, $object_type );
+
+
 		$no_link = - 1 < strpos( $css_class, 'wl-no-link' )
 		           // Do not link if already linked.
-		           || $this->is_already_linked( $post_id );
+		           || $this->is_already_linked( $object_id );
 		$link    = - 1 < strpos( $css_class, 'wl-link' );
 
 		// Don't link if links are disabled and the entity is not link or the
@@ -218,22 +215,20 @@ class Wordlift_Content_Filter_Service {
 
 		// Add the entity post id to the array of already linked entities, so that
 		// only the first entity occurrence is linked.
-		$this->entity_post_ids_linked_from_post_content[] = $post_id;
+		$this->entity_post_ids_linked_from_post_content[] = $object_id;
 
 		// Get the link.
-		$href = Wordlift_Post_Adapter::get_production_permalink( $post_id );
+		$href = Wordlift_Post_Adapter::get_production_permalink( $object_id );
 
 		// Bail out if the `$href` has been reset.
 		if ( empty( $href ) ) {
 			return $label;
 		}
 
-		// Get an alternative title attribute.
-		$title_attribute = $this->get_title_attribute( $post_id, $label );
-		$attributes_html = $this->get_attributes_for_link( $post_id );
-
-		// Return the link.
-		return "<a class='wl-entity-page-link' $title_attribute href='$href' $attributes_html>$label</a>";
+		return Link_Builder::create( $uri, $object_id )
+		                   ->label( $label )
+		                   ->href( $href )
+		                   ->generate_link();
 	}
 
 	/**
@@ -252,7 +247,7 @@ class Wordlift_Content_Filter_Service {
 	private function get_title_attribute( $post_id, $label ) {
 
 		// Get an alternative title.
-		$title = $this->get_link_title( $post_id, $label );
+		$title = $this->object_link_provider->get_link_title( $post_id, $label );
 		if ( ! empty( $title ) ) {
 			return 'title="' . esc_attr( $title ) . '"';
 		}
@@ -268,33 +263,13 @@ class Wordlift_Content_Filter_Service {
 	 *
 	 * @return string    The title to be used in the link. An empty string when
 	 *                    there is no alternative that is not the $ignore_label.
+	 * @deprecated 3.32.0 Use object link provider to get the link title for getting link
+	 * title for different types.
 	 * @since 3.15.0
 	 *
 	 */
 	function get_link_title( $post_id, $ignore_label ) {
-
-		// Get possible alternative labels we can select from.
-		$labels = $this->entity_service->get_alternative_labels( $post_id );
-
-		/*
-		 * Since the original text might use an alternative label than the
-		 * Entity title, add the title itself which is not returned by the api.
-		 */
-		$labels[] = get_the_title( $post_id );
-
-		// Add some randomness to the label selection.
-		shuffle( $labels );
-
-		// Select the first label which is not to be ignored.
-		$title = '';
-		foreach ( $labels as $label ) {
-			if ( 0 !== strcasecmp( $label, $ignore_label ) ) {
-				$title = $label;
-				break;
-			}
-		}
-
-		return $title;
+		return $this->object_link_provider->get_link_title( $post_id, $ignore_label );
 	}
 
 	/**
