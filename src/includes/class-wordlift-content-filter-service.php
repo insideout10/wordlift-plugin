@@ -199,9 +199,10 @@ class Wordlift_Content_Filter_Service {
 			return $label;
 		}
 
+		$post_id = $post->ID;
 		$no_link = - 1 < strpos( $css_class, 'wl-no-link' )
 		           // Do not link if already linked.
-		           || in_array( $post->ID, $this->entity_post_ids_linked_from_post_content );
+		           || in_array( $post_id , $this->entity_post_ids_linked_from_post_content );
 		$link    = - 1 < strpos( $css_class, 'wl-link' );
 
 		// Don't link if links are disabled and the entity is not link or the
@@ -215,10 +216,10 @@ class Wordlift_Content_Filter_Service {
 
 		// Add the entity post id to the array of already linked entities, so that
 		// only the first entity occurrence is linked.
-		$this->entity_post_ids_linked_from_post_content[] = $post->ID;
+		$this->entity_post_ids_linked_from_post_content[] = $post_id;
 
 		// Get the link.
-		$href = Wordlift_Post_Adapter::get_production_permalink( $post->ID );
+		$href = Wordlift_Post_Adapter::get_production_permalink( $post_id );
 
 		// Bail out if the `$href` has been reset.
 		if ( empty( $href ) ) {
@@ -226,24 +227,8 @@ class Wordlift_Content_Filter_Service {
 		}
 
 		// Get an alternative title attribute.
-		$title_attribute = $this->get_title_attribute( $post->ID, $label );
-
-		/**
-		 * Allow 3rd parties to add additional attributes to the anchor link.
-		 *
-		 * @since 3.26.0
-		 */
-		$default_attributes = array(
-			'id' => implode( ';', array_merge(
-				(array) $this->entity_service->get_uri( $post->ID ),
-				get_post_meta( $post->ID, Wordlift_Schema_Service::FIELD_SAME_AS )
-			) )
-		);
-		$attributes         = apply_filters( 'wl_anchor_data_attributes', $default_attributes, $post->ID );
-		$attributes_html    = '';
-		foreach ( $attributes as $key => $value ) {
-			$attributes_html .= ' data-' . esc_html( $key ) . '="' . esc_attr( $value ) . '" ';
-		}
+		$title_attribute = $this->get_title_attribute( $post_id, $label );
+		$attributes_html = $this->get_attributes_for_link( $post_id );
 
 		// Return the link.
 		return "<a class='wl-entity-page-link' $title_attribute href='$href' $attributes_html>$label</a>";
@@ -331,6 +316,32 @@ class Wordlift_Content_Filter_Service {
 		//
 		// See https://github.com/insideout10/wordlift-plugin/issues/646.
 		return array_values( array_unique( $matches[3] ) );
+	}
+
+	/**
+	 * @param $post_id
+	 *
+	 * @return string
+	 */
+	private function get_attributes_for_link( $post_id ) {
+		/**
+		 * Allow 3rd parties to add additional attributes to the anchor link.
+		 *
+		 * @since 3.26.0
+		 */
+		$default_attributes = array(
+			'id' => implode( ';', array_merge(
+				(array) $this->entity_service->get_uri( $post_id ),
+				get_post_meta( $post_id, Wordlift_Schema_Service::FIELD_SAME_AS )
+			) )
+		);
+		$attributes         = apply_filters( 'wl_anchor_data_attributes', $default_attributes, $post_id );
+		$attributes_html    = '';
+		foreach ( $attributes as $key => $value ) {
+			$attributes_html .= ' data-' . esc_html( $key ) . '="' . esc_attr( $value ) . '" ';
+		}
+
+		return $attributes_html;
 	}
 
 }
