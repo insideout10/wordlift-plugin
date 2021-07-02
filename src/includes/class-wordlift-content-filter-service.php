@@ -9,6 +9,8 @@
  * @package Wordlift
  */
 
+use Wordlift\Link\Object_Link_Provider;
+
 /**
  * Define the Wordlift_Content_Filter_Service class which intercepts the
  * 'the_content' WP filter and mangles the content accordingly.
@@ -98,7 +100,7 @@ class Wordlift_Content_Filter_Service {
 		$this->entity_service        = $entity_service;
 		$this->configuration_service = $configuration_service;
 		$this->entity_uri_service    = $entity_uri_service;
-
+		$this->object_link_provider = Object_Link_Provider::get_instance();
 		self::$instance = $this;
 
 	}

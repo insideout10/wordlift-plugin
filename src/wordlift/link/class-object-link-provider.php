@@ -6,17 +6,22 @@
  */
 namespace Wordlift\Link;
 
-class Link_Registry {
+use Wordlift\Common\Singleton;
+
+class Object_Link_Provider extends Singleton {
 
 	private  $link_providers = array();
 
 	public function __construct() {
+		parent::__construct();
 		add_action('plugins_loaded', array( $this, 'init_registry'));
 	}
 
 	public function init_registry() {
 		$this->link_providers = apply_filters( 'wl_object_link_providers', array() );
 	}
+
+
 	public function get_link() {
 
 	}
