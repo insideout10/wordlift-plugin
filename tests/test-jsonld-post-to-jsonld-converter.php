@@ -1332,6 +1332,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$references = array();
 		$this->post_to_jsonld_converter->convert( $post_id, $references );
 
+		$references = array_map( function ( $reference ) { return $reference->get_id(); }, $references );
 		// Check that the references contain both the event and the place.
 		$this->assertContains( $event_post_id, $references, 'References must contain the event post id.' );
 		$this->assertContains( $place_post_id, $references, 'References must contain the place post id.' );

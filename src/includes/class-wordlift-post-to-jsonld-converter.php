@@ -313,7 +313,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		}
 
 		// Add the author to the references.
-		$author_uri   = $this->object_relation_service->get_uri( $entity_id );
+		$author_uri   = $this->entity_service->get_uri( $entity_id );
 		$references[] = $entity_id;
 
 		// Return the JSON-LD for the referenced entity.

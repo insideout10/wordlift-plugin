@@ -192,14 +192,19 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			if ( ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Action' )
 			     && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Event' )
 			     && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Organization' ) ) {
+
 				return $carry;
 			}
+			$post_location_ids        = get_post_meta( $reference->get_id(), Wordlift_Schema_Service::FIELD_LOCATION );
+			$post_location_references = array_map( function ( $post_id ) {
+				return new Post_Reference( $post_id );
+			}, $post_location_ids );
 
-			return array_merge( $carry, get_post_meta( $reference->get_id(), Wordlift_Schema_Service::FIELD_LOCATION ) );
+			return array_merge( $carry,  $post_location_references);
 		}, array() );
 
 		// Merge the references with the referenced locations if any.
-		$references =  array_merge( $references_without_locations, $locations );
+		$references = array_merge( $references_without_locations, $locations );
 
 		return $jsonld;
 	}
