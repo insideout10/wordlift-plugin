@@ -7,22 +7,21 @@
 
 namespace Wordlift\Link;
 
+use Wordlift\Common\Singleton;
+use Wordlift_Entity_Service;
 use Wordlift_Schema_Service;
 
-class Post_Link implements Link {
+class Post_Link extends Singleton implements Link  {
 
 	/**
 	 * @var \Wordlift_Entity_Service
 	 */
 	private $entity_service;
 
-	/**
-	 * Post_Link constructor.
-	 *
-	 * @param $entity_service \Wordlift_Entity_Service
-	 */
-	public function __construct( $entity_service ) {
-		$this->entity_service = $entity_service;
+
+	public function __construct(  ) {
+		parent::__construct();
+		$this->entity_service = Wordlift_Entity_Service::get_instance();
 	}
 
 

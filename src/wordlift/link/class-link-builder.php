@@ -66,17 +66,40 @@ class Link_Builder {
 		return $attributes_html;
 	}
 
+	/**
+	 * Get a `title` attribute with an alternative label for the link.
+	 *
+	 * If an alternative title isn't available an empty string is returned.
+	 *
+	 * @param int $post_id The {@link WP_Post}'s id.
+	 * @param string $label The main link label.
+	 *
+	 * @return string A `title` attribute with an alternative label or an empty
+	 *                string if none available.
+	 * @since 3.15.0
+	 *
+	 */
+	private function get_title_attribute( $post_id, $label ) {
+
+		// Get an alternative title.
+		$title = $this->object_link_provider->get_link_title( $post_id, $label );
+		if ( ! empty( $title ) ) {
+			return 'title="' . esc_attr( $title ) . '"';
+		}
+
+		return '';
+	}
 
 	/**
 	 * @return string
 	 */
 	public function generate_link() {
 		// Get an alternative title attribute.
-		$title_attribute = $this->get_title_attribute( $post_id, $label );
+		$title_attribute = $this->get_title_attribute( $this->id, $this->label );
 		$attributes_html = $this->get_attributes_for_link( $post_id );
 
 		// Return the link.
-		return "<a class='wl-entity-page-link' $title_attribute href='$href' $attributes_html>$label</a>";
+		return "<a class='wl-entity-page-link' $title_attribute href='{$this->href}' $attributes_html>$label</a>";
 	}
 
 

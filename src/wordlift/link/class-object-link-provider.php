@@ -11,14 +11,24 @@ use Wordlift\Common\Singleton;
 use Wordlift\Object_Type_Enum;
 
 class Object_Link_Provider extends Singleton {
-
-
+	/**
+	 * @var array<Link>
+	 */
+	private $link_providers;
 
 	/**
 	 * @return Object_Link_Provider
 	 */
 	public static function get_instance() {
 		return parent::get_instance();
+	}
+
+	public function __construct() {
+		parent::__construct();
+		$this->link_providers = array(
+			Object_Type_Enum::POST => Post_Link::get_instance(),
+			Object_Type_Enum::TERM => Term_Link::get_instance()
+		);
 	}
 
 	/**
@@ -29,7 +39,7 @@ class Object_Link_Provider extends Singleton {
 
 	}
 
-	public function get_link( $type) {
+	public function get_link( $type ) {
 
 	}
 
@@ -39,14 +49,12 @@ class Object_Link_Provider extends Singleton {
 	 */
 	public function get_object_type( $uri ) {
 
-
-
-
 	}
 
 	/**
 	 * @param $uri
 	 * @param $object_type
+	 *
 	 * @return int
 	 */
 	public function get_object_id_by_type( $uri, $object_type ) {
@@ -54,6 +62,26 @@ class Object_Link_Provider extends Singleton {
 	}
 
 	public function get_same_as_uris( $id, $object_type ) {
+		$provider = $this->get_provider( $object_type );
+		if ( ! $provider ) {
+			return array();
+		}
+
+		return $provider->get_same_as_uris( $id );
+	}
+
+	/**
+	 * @param $object_type
+	 *
+	 * @return mixed|Link
+	 */
+	private function get_provider( $object_type ) {
+
+		if ( ! array_key_exists( $object_type, $this->link_providers ) ) {
+			return false;
+		}
+
+		return $this->link_providers[ $object_type ];
 	}
 
 

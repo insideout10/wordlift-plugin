@@ -8,10 +8,11 @@
 
 namespace Wordlift\Link;
 
+use Wordlift\Common\Singleton;
 use Wordlift\Term\Uri_Service;
 use Wordlift_Schema_Service;
 
-class Term_Link implements Link {
+class Term_Link extends Singleton implements Link {
 
 	/**
 	 * @var Uri_Service
@@ -19,6 +20,7 @@ class Term_Link implements Link {
 	private $term_uri_service;
 
 	public function __construct() {
+		parent::__construct();
 		$this->term_uri_service = Uri_Service::get_instance();
 	}
 
