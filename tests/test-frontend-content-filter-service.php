@@ -369,6 +369,13 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
+
+	public function test_when_term_entity_is_linked_on_post_content_should_get_linked_on_frontend() {
+
+		$this->configuration_service->set_link_by_default( true );
+
+	}
+
 	/**
 	 * Override the {@link Wordlift_Entity_Service} method.
 	 *

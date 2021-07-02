@@ -4,6 +4,7 @@ namespace Wordlift\Metabox;
 
 use Wordlift\Metabox\Field\Post_Field_Decorator;
 use Wordlift\Metabox\Field\Term_Field_Decorator;
+use Wordlift\Object_Type_Enum;
 use Wordlift_Entity_Service;
 use Wordlift_Entity_Type_Taxonomy_Service;
 use Wordlift_Log_Service;
@@ -17,11 +18,6 @@ use Wordlift_Schema_Service;
  * @subpackage Wordlift/admin/WL_Metabox
  */
 class Wl_Abstract_Metabox {
-
-	const POST = 1;
-
-	const TERM = 2;
-
 	/**
 	 * The metabox custom fields for the current {@link WP_Post}.
 	 *
@@ -57,7 +53,7 @@ class Wl_Abstract_Metabox {
 	public function add_main_metabox() {
 
 		// Build the fields we need to print.
-		$this->instantiate_fields( get_the_ID(), self::POST );
+		$this->instantiate_fields( get_the_ID(), Object_Type_Enum::POST );
 
 		// Bailout if there are no actual fields, we do not need a metabox in that case.
 		if ( empty( $this->fields ) ) {
@@ -126,9 +122,9 @@ class Wl_Abstract_Metabox {
 		if ( isset( $this->fields ) ) {
 			return;
 		}
-		if ( $type === self::POST ) {
+		if ( $type === Object_Type_Enum::POST ) {
 			$entity_type = wl_entity_taxonomy_get_custom_fields( $id );
-		} else if ( $type === self::TERM ) {
+		} else if ( $type === Object_Type_Enum::TERM ) {
 			$term_entity_types = get_term_meta( $id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 			$term_entity_types = array_map( function ( $term ) {
 				return get_term_by(

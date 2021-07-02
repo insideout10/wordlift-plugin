@@ -48,7 +48,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 
 		// Create Metabox and its Fields
 		$metabox = new Wl_Metabox();
-		$metabox->instantiate_fields( $place_id, Wl_Abstract_Metabox::POST );
+		$metabox->instantiate_fields( $place_id, Object_Type_Enum::POST );
 
 		$fields                = wl_entity_taxonomy_get_custom_fields( $place_id );
 		$sameAs_field          = array( 'sameas' => array( Wordlift_Schema_Service::FIELD_SAME_AS => $fields[ Wordlift_Schema_Service::FIELD_SAME_AS ] ) );
@@ -118,7 +118,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 
 		// Create Metabox and its Fields
 		$metabox = new Wl_Metabox();
-		$metabox->instantiate_fields( $place_id, Wl_Abstract_Metabox::POST );
+		$metabox->instantiate_fields( $place_id, Object_Type_Enum::POST );
 
 		// Create fake context
 		global $post;
@@ -143,7 +143,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 		);
 
 		// Metabox save (we call it manually here, but it's hooked to wl_linked_data_save_post - see *testWl_Metabox_constructor*)
-		$metabox->save_form_data( $place_id, Wl_Abstract_Metabox::POST );
+		$metabox->save_form_data( $place_id, Object_Type_Enum::POST );
 
 		// Verify data was correctly passed to the fields and saved into DB
 		$place_meta = get_post_meta( $place_id );

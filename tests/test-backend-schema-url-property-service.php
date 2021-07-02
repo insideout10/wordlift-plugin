@@ -9,6 +9,7 @@
 
 use Wordlift\Metabox\Wl_Abstract_Metabox;
 use Wordlift\Metabox\Wl_Metabox;
+use Wordlift\Object_Type_Enum;
 
 /**
  * Test the {@link Wordlift_Schema_Url_Property_Service} class.
@@ -42,7 +43,7 @@ class Wordlift_Backend_Schema_Url_Property_Service_Test extends Wordlift_Unit_Te
 		// Create a new metabox and add this property.
 		$metabox = new Wl_Metabox();
 		$metabox->add_field( array( Wordlift_Schema_Url_Property_Service::META_KEY => $this->schema_url_property_service->get_compat_definition() ),
-			false, Wl_Abstract_Metabox::POST, null );
+			false, Object_Type_Enum::POST, null );
 
 		// Check that we have one metabox field with the class and label set by this property.
 		$this->assertCount( 1, $metabox->fields );

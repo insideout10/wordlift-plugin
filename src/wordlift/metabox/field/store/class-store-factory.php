@@ -8,6 +8,7 @@
 namespace Wordlift\Metabox\Field\Store;
 
 use Wordlift\Metabox\Wl_Abstract_Metabox;
+use Wordlift\Object_Type_Enum;
 
 class Store_Factory {
 
@@ -19,10 +20,10 @@ class Store_Factory {
 	 */
 	public static function get_instance(  $type ) {
 
-		if ( Wl_Abstract_Metabox::POST === $type ) {
+		if ( Object_Type_Enum::POST === $type ) {
 			return new Post_Store();
 		}
-		else if ( Wl_Abstract_Metabox::TERM === $type) {
+		else if ( Object_Type_Enum::TERM === $type) {
 			return new Term_Store();
 		}
 		return null;
