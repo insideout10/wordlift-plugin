@@ -91,6 +91,11 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
+	public function create_post_with_entity_url( $url ) {
+		$post_id = $this->factory()->post->create();
+		update_post_meta( $post_id, WL_ENTITY_URL_META_NAME, $url );
+	}
+
 	/**
 	 * Test a content with one entity.
 	 *
@@ -106,12 +111,13 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 
 		// The content.
 		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation disambiguated wl-person" itemid="http://data.example.org/entity">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
-
+		$this->create_post_with_entity_url( "http://data.example.org/entity" );
 		// The expected content with a link.
 		$expected = '<a class=\'wl-entity-page-link\'  href=\'http://example.org/link\'  data-id="http://example.org/matt-mullenweg" >Matt Mullenweg</a> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
 
 		// Check that the expected content matches the function output.
 		$this->assertNotNull( $this->content_filter_service );
+
 		$this->assertEquals( $expected, $this->content_filter_service->the_content( $content ) );
 
 		// test with synonym
@@ -369,12 +375,6 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
-
-	public function test_when_term_entity_is_linked_on_post_content_should_get_linked_on_frontend() {
-
-		$this->configuration_service->set_link_by_default( true );
-
-	}
 
 	/**
 	 * Override the {@link Wordlift_Entity_Service} method.

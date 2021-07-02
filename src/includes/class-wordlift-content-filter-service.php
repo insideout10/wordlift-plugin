@@ -11,6 +11,7 @@
 
 use Wordlift\Link\Link_Builder;
 use Wordlift\Link\Object_Link_Provider;
+use Wordlift\Object_Type_Enum;
 
 /**
  * Define the Wordlift_Content_Filter_Service class which intercepts the
@@ -189,7 +190,13 @@ class Wordlift_Content_Filter_Service {
 
 		$object_type = $this->object_link_provider->get_object_type( $uri );
 
-		if  ( ! $object_type ) {
+		/**
+		 * Enabled support for terms.
+		 * @since 3.31.2
+		 */
+		$supported_object_types = array( Object_Type_Enum::POST, Object_Type_Enum::TERM );
+
+		if  ( ! in_array( $object_type, $supported_object_types ) ) {
 			// Since we cant find the object type for the entity uri
 			// it doesnt seem to exist on the local dataset, so return
 			// the label without linking.
