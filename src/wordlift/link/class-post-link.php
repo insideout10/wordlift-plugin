@@ -7,7 +7,7 @@
 
 namespace Wordlift\Link;
 
-use Wordlift\Common\Singleton;
+
 use Wordlift_Entity_Service;
 use Wordlift_Schema_Service;
 
@@ -28,9 +28,6 @@ class Post_Link extends Default_Link  {
 		$this->entity_service = Wordlift_Entity_Service::get_instance();
 		$this->entity_uri_service = \Wordlift_Entity_Uri_Service::get_instance();
 	}
-
-
-
 
 
 	public function get_same_as_uris( $id ) {
