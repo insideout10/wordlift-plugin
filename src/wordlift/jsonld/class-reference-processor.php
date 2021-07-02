@@ -30,7 +30,7 @@ class Reference_Processor  extends  Singleton {
 			}
 			// Backward compatibility with other hooks pushing
 			// references in to the cache.
-			return 'post_' . $reference->get_id();
+			return $reference;
 		}, $references );
 	}
 
