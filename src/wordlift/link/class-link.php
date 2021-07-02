@@ -17,5 +17,7 @@ interface Link {
 
 	public function get_synonyms( $id );
 
+	public function get_permalink( $id );
+
 
 }

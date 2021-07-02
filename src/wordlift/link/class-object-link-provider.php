@@ -101,4 +101,13 @@ class Object_Link_Provider extends Singleton {
 	}
 
 
+	public function get_permalink( $id, $object_type ) {
+		$provider = $this->get_provider( $object_type );
+		if (  ! $provider ) {
+			return false;
+		}
+		return $provider->get_permalink( $id );
+	}
+
+
 }

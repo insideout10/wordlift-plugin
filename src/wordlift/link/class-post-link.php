@@ -11,7 +11,7 @@ namespace Wordlift\Link;
 use Wordlift_Entity_Service;
 use Wordlift_Schema_Service;
 
-class Post_Link extends Default_Link  {
+class Post_Link extends Default_Link {
 
 	/**
 	 * @var \Wordlift_Entity_Service
@@ -23,9 +23,9 @@ class Post_Link extends Default_Link  {
 	private $entity_uri_service;
 
 
-	public function __construct(  ) {
+	public function __construct() {
 		parent::__construct();
-		$this->entity_service = Wordlift_Entity_Service::get_instance();
+		$this->entity_service     = Wordlift_Entity_Service::get_instance();
 		$this->entity_uri_service = \Wordlift_Entity_Uri_Service::get_instance();
 	}
 
@@ -40,10 +40,11 @@ class Post_Link extends Default_Link  {
 	}
 
 	public function get_id( $uri ) {
-		$entity =  $this->entity_uri_service->get_entity( $uri );
+		$entity = $this->entity_uri_service->get_entity( $uri );
 		if ( ! $entity ) {
 			return false;
 		}
+
 		return $entity->ID;
 	}
 
@@ -59,6 +60,11 @@ class Post_Link extends Default_Link  {
 
 		// Add some randomness to the entity_label selection.
 		shuffle( $entity_labels );
+
 		return $entity_labels;
+	}
+
+	public function get_permalink( $id ) {
+		return get_permalink( $id );
 	}
 }

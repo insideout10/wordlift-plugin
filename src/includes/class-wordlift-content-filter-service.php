@@ -221,7 +221,7 @@ class Wordlift_Content_Filter_Service {
 		$this->linked_object_ids[] = $object_id_unique_identifier;
 
 		// Get the link.
-		$href = Wordlift_Post_Adapter::get_production_permalink( $object_id );
+		$href = Wordlift_Post_Adapter::get_production_permalink( $object_id, $object_type );
 
 		// Bail out if the `$href` has been reset.
 		if ( empty( $href ) ) {
