@@ -144,6 +144,8 @@ class Wordlift_Post_Adapter {
 			) );
 		}
 
+		$type = self::TYPE_ENTITY_LINK;
+		$term = null;
 		// If found use the term link, otherwise the permalink.
 		if ( 1 === count( $terms ) ) {
 			$term      = current( $terms );
