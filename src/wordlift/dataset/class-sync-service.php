@@ -98,10 +98,15 @@ class Sync_Service {
 		return $this->sync_many( array( $object ) );
 	}
 
-	public function delete_one( $type, $object_id ) {
-		$object = $this->sync_object_adapter_factory->create( $type, $object_id );
-		$uri    = $object->get_meta( 'entity_url', true );
-
+	/**
+	 * @param $type string Post or User.
+	 * @param $object_id  int Post or User id
+	 * @param $uri string Entity uri , This needs to be supplied before deletion, if we
+	 * get it from meta it might not be available.
+	 *
+	 * @return bool
+	 */
+	public function delete_one( $type, $object_id, $uri ) {
 		// Entity URL isn't set, bail out.
 		if ( empty( $uri ) ) {
 			return false;

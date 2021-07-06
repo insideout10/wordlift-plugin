@@ -93,7 +93,7 @@ class Sync_User_Hooks extends Abstract_Sync_Hooks {
 
 	public function do_delete( $user_id ) {
 		try {
-			$this->sync_service->delete_one( Object_Type_Enum::USER, $user_id );
+			$this->sync_service->delete_one( Object_Type_Enum::USER, $user_id, get_user_meta( $user_id, 'entity_url', true ) );
 		} catch ( \Exception $e ) {
 			$this->log->error( "An error occurred while trying to delete user $user_id: " . $e->getMessage(), $e );
 		}
