@@ -33,7 +33,7 @@ class Post_Link extends Default_Link {
 	public function get_same_as_uris( $id ) {
 
 		return array_merge(
-			(array) $this->entity_service->get_uri( $id ),
+			array( $this->entity_service->get_uri( $id ) ),
 			get_post_meta( $id, Wordlift_Schema_Service::FIELD_SAME_AS )
 		);
 

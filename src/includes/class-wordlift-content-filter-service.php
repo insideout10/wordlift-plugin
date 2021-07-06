@@ -133,7 +133,6 @@ class Wordlift_Content_Filter_Service {
 	 *
 	 */
 	public function the_content( $content ) {
-
 		$this->log->trace( "Filtering content [ " . ( is_singular() ? 'yes' : 'no' ) . " ]..." );
 
 		// Links should be added only on the front end and not for RSS.
@@ -189,7 +188,6 @@ class Wordlift_Content_Filter_Service {
 		$label     = $matches[4];
 
 		$object_type = $this->object_link_provider->get_object_type( $uri );
-
 		/**
 		 * Enabled support for terms.
 		 * @since 3.31.2
@@ -206,6 +204,7 @@ class Wordlift_Content_Filter_Service {
 		$object_id  = $this->object_link_provider->get_object_id_by_type( $uri, $object_type );
 
 		$object_id_unique_identifier = $object_type . "_" . $object_id;
+
 
 		$no_link = - 1 < strpos( $css_class, 'wl-no-link' )
 		           // Do not link if already linked.
@@ -255,9 +254,12 @@ class Wordlift_Content_Filter_Service {
 	 * title for different types.
 	 * @since 3.15.0
 	 *
+	 * As of 3.32.0 this method is not used anywhere in the core, this should be removed
+	 * from tests and companion plugins.
+	 *
 	 */
-	function get_link_title( $post_id, $ignore_label ) {
-		return $this->object_link_provider->get_link_title( $post_id, $ignore_label );
+	function get_link_title( $post_id, $ignore_label, $object_type = Object_Type_Enum::POST ) {
+		return $this->object_link_provider->get_link_title( $post_id, $ignore_label, $object_type );
 	}
 
 	/**
