@@ -244,13 +244,15 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 		wl_set_entity_main_type( $creative_work_id, 'http://schema.org/CreativeWork' );
 		wl_schema_set_value( $creative_work_id, 'author', $person_id );     // Set authorship
 
+
+
 		// Create fake context
 		global $post;
 		$post = get_post( $creative_work_id );
 
 		// Build a single Field
 		$author_custom_field = $this->getSampleCustomField( Wordlift_Schema_Service::DATA_TYPE_URI );
-		$field               = new Wl_Metabox_Field_uri( $author_custom_field, $person_id, Object_Type_Enum::POST  );
+		$field               = new Wl_Metabox_Field_uri( $author_custom_field, $creative_work_id, Object_Type_Enum::POST  );
 
 		// Verify data is loaded correctly from DB
 		$field->get_data();

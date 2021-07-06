@@ -129,7 +129,6 @@ class Wl_Metabox_Field_uri extends Wl_Metabox_Field {
 	 * @inheritdoc
 	 */
 	public function html_input( $default_entity_identifier ) {
-
 		if ( empty( $default_entity_identifier ) ) {
 			$entity = null;
 		} elseif ( is_numeric( $default_entity_identifier ) ) {
