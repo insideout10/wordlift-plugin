@@ -14,16 +14,18 @@ abstract class Default_Link extends Singleton implements Link {
 	function get_link_title( $id, $label_to_be_ignored ) {
 
 		$entity_labels = $this->get_synonyms( $id );
-		// Select the first entity_label which is not to be ignored.
-		$title = '';
+
+
+
 		foreach ( $entity_labels as $entity_label ) {
+			// Return first synonym if it doesnt match the label.
 			if ( 0 !== strcasecmp( $entity_label, $label_to_be_ignored ) ) {
-				$title = $entity_label;
-				break;
+				return $entity_label;
 			}
 		}
 
-		return $title;
+		// If the label matches the synonym then dont add title attr.
+		return '';
 	}
 
 }

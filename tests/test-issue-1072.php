@@ -75,11 +75,13 @@ class Wordlift_Issue_1072_Test extends Wordlift_Unit_Test_Case {
 
 		$term_jsonld_a = $this->term_jsonld_adapter->get( $term_id, Jsonld_Context_Enum::PAGE );
 		$term_jsonld_b = $this->jsonld_service->get( Object_Type_Enum::TERM, $term_id );
-		$this->assertEqualSets( $term_jsonld_a, $term_jsonld_b );
 
-		$this->assertArrayHasKey( 'itemListElement', $term_jsonld_b[0],
+		// Since 3.31.2 we dont push the itemlist element to KG, the below assertion would fail.
+	//	$this->assertEqualSets( $term_jsonld_a, $term_jsonld_b );
+
+		$this->assertArrayHasKey( 'itemListElement', $term_jsonld_a[0],
 			'Key `itemListElement` must exist in array.' );
-		$this->assertCount( 100, $term_jsonld_b[0]['itemListElement'],
+		$this->assertCount( 100, $term_jsonld_a[0]['itemListElement'],
 			'Key `itemListElement` must have 100 elements.' );
 
 	}

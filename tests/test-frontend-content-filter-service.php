@@ -128,14 +128,19 @@ EOF;
 		// test with synonym
 		$this->synonym_labels = array( 'Creator of WordPress' );
 
+		Wordlift_Entity_Service::get_instance()->set_alternative_labels( $entity_id, $this->synonym_labels );
 		// The content.
-		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation disambiguated wl-person" itemid="' . $entity_url .'">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
+		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation disambiguated wl-person" itemid="' . $entity_url . '">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
 
 		// The expected content with a link.
 		$expected = <<<EOF
-<a class='wl-entity-page-link' title="Creator of WordPress" href="$entity_link" data-id="$entity_url" >Matt Mullenweg</a> would love to see what we're achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!
+<a class="wl-entity-page-link" title="Creator of WordPress" href="$entity_link" data-id="$entity_url" >Matt Mullenweg</a> would love to see what we're achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!
 EOF;
 
+		wp_update_post( array(
+			'ID'         => $entity_id,
+			'post_title' => 'Matt Mullenweg'
+		) );
 		// Check that the expected content matches the function output.
 		$this->assertEquals( $expected, $this->content_filter_service->the_content( $content ) );
 	}
@@ -226,14 +231,17 @@ EOF;
 
 		// No synonym, label different from post title.
 		$this->synonym_labels = array();
+
 		$this->assertEquals( 'Matt Mullenweg', $this->content_filter_service->get_link_title( $post_id, 'label' ) );
 
 		// Have synonym.
 		$this->synonym_labels = array( 'WordPress Creator' );
+		$this->entity_service->set_alternative_labels( $this->dummy_post_id, $this->synonym_labels );
 		$this->assertEquals( 'WordPress Creator', $this->content_filter_service->get_link_title( $post_id, 'Matt Mullenweg' ) );
 
 		// No synonym, label same as post title with different case.
 		$this->synonym_labels = array();
+		$this->entity_service->set_alternative_labels( $this->dummy_post_id, array() );
 		$this->assertEquals( '', $this->content_filter_service->get_link_title( $post_id, 'matt mullenweg' ) );
 
 		// No synonym, label same as synonym with different case.
@@ -330,7 +338,7 @@ EOF;
 
 
 		// The content.
-		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation wl-link disambiguated wl-person" itemid="' . $entity_url .'">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
+		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation wl-link disambiguated wl-person" itemid="' . $entity_url . '">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
 
 		// The expected content with a link.
 		$expected = <<<EOF
@@ -355,7 +363,7 @@ EOF;
 		add_filter( 'post_link', array( $this, 'post_link' ), 10, 3 );
 
 		// The content.
-		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation disambiguated wl-person" itemid="' . $entity_url. '">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
+		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation disambiguated wl-person" itemid="' . $entity_url . '">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
 
 		// The expected content with a link.
 		$expected = <<<EOF

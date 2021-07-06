@@ -187,6 +187,7 @@ class Wordlift_Content_Filter_Service {
 		$uri       = $matches[3];
 		$label     = $matches[4];
 
+
 		$object_type = $this->object_link_provider->get_object_type( $uri );
 		/**
 		 * Enabled support for terms.
