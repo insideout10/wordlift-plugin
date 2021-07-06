@@ -141,28 +141,33 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 			'post_title'  => 'Analysis Response Ops 1',
 			'post_status' => 'publish',
 		) );
-		update_post_meta( $post_id, 'entity_url', 'http://example.org/content_analysis_test_1' );
+
+		$entity_url = $this->configuration_service->get_dataset_uri() . "/content_analysis_test_1";
+		update_post_meta( $post_id, 'entity_url', $entity_url );
 		wp_add_object_terms( $post_id, 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		// Get the mock request.
 		$request_body = file_get_contents( dirname( __FILE__ ) . '/assets/content-analysis-request-1.json' );
 		$request_json = json_decode( $request_body, true );
 
+		// Register all entity providers.
+		do_action('plugins_loaded');
+
 		$response_json = Analysis_Response_Ops_Factory
 			::get_instance()
 			->create( json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' ) )
 			->make_entities_local()
-			->add_occurrences( $request_json['content'] )
+			->add_occurrences( str_replace('{ENTITY_URL}', $entity_url, $request_json['content'] ) )
 			->get_json();
 
 		$this->assertTrue( isset( $response_json->entities ), 'The entities property must exist.' );
 		$this->assertTrue( isset( $response_json->annotations ), 'The annotations property must exist.' );
 		$this->assertTrue( isset( $response_json->topics ), 'The topics property must exist.' );
 
-		$this->assertTrue( isset( $response_json->entities->{"http://example.org/content_analysis_test_1"} ),
+		$this->assertTrue( isset( $response_json->entities->{$entity_url} ),
 			'Our mock entity must be there.' );
 
-		$entity = $response_json->entities->{"http://example.org/content_analysis_test_1"};
+		$entity = $response_json->entities->{$entity_url};
 
 		$this->assertTrue( isset( $entity->occurrences ), 'Our mock entity must have occurrences.' );
 		$this->assertTrue( is_array( $entity->occurrences ), 'Our entity`s occurrences must be an array.' );
