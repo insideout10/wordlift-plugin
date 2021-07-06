@@ -92,6 +92,7 @@ class Link_Builder {
 	 * @return string
 	 */
 	public function generate_link() {
+		var_dump($this->entity_url);
 		// Get an alternative title attribute.
 		$title_attribute = $this->get_title_attribute();
 		$attributes_html = $this->get_attributes_for_link();
