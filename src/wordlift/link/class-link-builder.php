@@ -52,6 +52,7 @@ class Link_Builder {
 		$default_attributes = array(
 			'id' => implode( ';', $this->object_link_provider->get_same_as_uris( $this->id, $this->type ) )
 		);
+
 		/**
 		 * @since 3.32.0
 		 * Additional parameter {@link $this->type} is added to the filter denoting the type of

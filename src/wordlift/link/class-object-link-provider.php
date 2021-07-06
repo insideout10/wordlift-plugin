@@ -78,6 +78,7 @@ class Object_Link_Provider extends Singleton {
 	}
 
 	public function get_same_as_uris( $id, $object_type ) {
+
 		$provider = $this->get_provider( $object_type );
 		if ( ! $provider ) {
 			return array();
