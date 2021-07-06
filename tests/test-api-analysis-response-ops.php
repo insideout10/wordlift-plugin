@@ -147,7 +147,7 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 		wp_add_object_terms( $post_id, 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		// Get the mock request.
-		$request_body = file_get_contents( dirname( __FILE__ ) . '/assets/content-analysis-request-1.json' );
+		$request_body = file_get_contents( dirname( __FILE__ ) . '/assets/content-analysis-request-2.json' );
 		$request_json = json_decode( $request_body, true );
 
 
