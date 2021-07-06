@@ -13,7 +13,7 @@ class Wordlift_Install_3_32_0 extends Wordlift_Install {
 
 	public static function is_column_exists( $column_name ) {
 		global $wpdb;
-		$table_name = WL_DB_RELATION_INSTANCES_TABLE_NAME;
+		$table_name = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
 
 		return $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name ='$table_name' AND column_name = '$column_name'" );
 
