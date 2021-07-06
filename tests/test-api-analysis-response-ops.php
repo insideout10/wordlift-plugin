@@ -150,7 +150,8 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 		$request_body = file_get_contents( dirname( __FILE__ ) . '/assets/content-analysis-request-1.json' );
 		$request_json = json_decode( $request_body, true );
 
-		// Register all entity providers.
+
+		// Trigger plugins loaded action to register the providers.
 		do_action('plugins_loaded');
 
 		$response_json = Analysis_Response_Ops_Factory
