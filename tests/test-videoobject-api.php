@@ -143,7 +143,6 @@ EOF;
 		$this->assertSame( array( '3GhQqFVMJ_o' ), $video_ids, 'Youtube URL with query param should work properly' );
 
 
-
 		$video_ids = Youtube_Client::get_video_ids( array(
 			'https://youtu.be/3GhQqFVMJ_o'
 		) );
@@ -151,13 +150,11 @@ EOF;
 		$this->assertSame( array( '3GhQqFVMJ_o' ), $video_ids, 'You.tube URL should work properly' );
 
 
-
 		$video_ids = Youtube_Client::get_video_ids( array(
 			'https://www.youtube.com/embed/3GhQqFVMJ_o'
 		) );
 
 		$this->assertSame( array( '3GhQqFVMJ_o' ), $video_ids, 'Embed URL should work properly' );
-
 
 
 		$video_ids = Youtube_Client::get_video_ids( array(
