@@ -2,6 +2,7 @@
 
 use Wordlift\Videoobject\Data\Video\Video;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
+use Wordlift\Videoobject\Provider\Client\Youtube_Client;
 use Wordlift\Videoobject\Provider\Vimeo;
 use Wordlift\Videoobject\Provider\Youtube;
 
@@ -129,6 +130,41 @@ EOF;
 		$videos       = Video_Storage_Factory::get_storage()->get_all_videos( $post_id );
 		// we should have 2 video on the storage.
 		$this->assertCount( 2, $videos );
+
+	}
+
+
+	public function test_should_extract_video_ids_from_different_youtube_urls() {
+
+		$video_ids = Youtube_Client::get_video_ids( array(
+			'https://www.youtube.com/watch?v=3GhQqFVMJ_o&feature=youtu.be'
+		) );
+
+		$this->assertSame( array( '3GhQqFVMJ_o' ), $video_ids, 'Youtube URL with query param should work properly' );
+
+
+
+		$video_ids = Youtube_Client::get_video_ids( array(
+			'https://youtu.be/3GhQqFVMJ_o'
+		) );
+
+		$this->assertSame( array( '3GhQqFVMJ_o' ), $video_ids, 'You.tube URL should work properly' );
+
+
+
+		$video_ids = Youtube_Client::get_video_ids( array(
+			'https://www.youtube.com/embed/3GhQqFVMJ_o'
+		) );
+
+		$this->assertSame( array( '3GhQqFVMJ_o' ), $video_ids, 'Embed URL should work properly' );
+
+
+
+		$video_ids = Youtube_Client::get_video_ids( array(
+			'https://www.youtube.com/watch?v=3GhQqFVMJ_o&list=PLJR61fXkAx11Oi6EpqJ9Es4rVOIZhwlSG'
+		) );
+
+		$this->assertSame( array( '3GhQqFVMJ_o' ), $video_ids, 'Video with playlist url should work properly' );
 
 	}
 
