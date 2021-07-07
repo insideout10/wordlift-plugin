@@ -36,9 +36,9 @@ EOF;
 	 */
 	public static function multiple_youtube_video_post_content() {
 		return <<<EOF
-<!-- wp:embed {"url":"https://www.youtube.com/watch?v=fJAPDAK4GiI","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
+<!-- wp:embed {"url":"https://www.youtube.com/embed/fJAPDAK4GiI","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
 <figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
-https://www.youtube.com/watch?v=fJAPDAK4GiI
+https://www.youtube.com/embed/fJAPDAK4GiI
 </div></figure>
 <!-- /wp:embed -->
 <!-- wp:embed {"url":"https://www.youtube.com/watch?v=y-n93I5q-0g","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
@@ -136,28 +136,30 @@ EOF;
 
 	public function test_should_extract_video_ids_from_different_youtube_urls() {
 
-		$video_ids = Youtube_Client::get_video_ids( array(
+		$client = Youtube_Client::get_instance();
+
+		$video_ids = $client->get_video_ids( array(
 			'https://www.youtube.com/watch?v=3GhQqFVMJ_o&feature=youtu.be'
 		) );
 
 		$this->assertSame( array( '3GhQqFVMJ_o' ), $video_ids, 'Youtube URL with query param should work properly' );
 
 
-		$video_ids = Youtube_Client::get_video_ids( array(
+		$video_ids = $client->get_video_ids( array(
 			'https://youtu.be/3GhQqFVMJ_o'
 		) );
 
 		$this->assertSame( array( '3GhQqFVMJ_o' ), $video_ids, 'You.tube URL should work properly' );
 
 
-		$video_ids = Youtube_Client::get_video_ids( array(
+		$video_ids = $client->get_video_ids( array(
 			'https://www.youtube.com/embed/3GhQqFVMJ_o'
 		) );
 
 		$this->assertSame( array( '3GhQqFVMJ_o' ), $video_ids, 'Embed URL should work properly' );
 
 
-		$video_ids = Youtube_Client::get_video_ids( array(
+		$video_ids = $client->get_video_ids( array(
 			'https://www.youtube.com/watch?v=3GhQqFVMJ_o&list=PLJR61fXkAx11Oi6EpqJ9Es4rVOIZhwlSG'
 		) );
 

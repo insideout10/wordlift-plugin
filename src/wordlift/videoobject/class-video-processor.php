@@ -7,9 +7,24 @@ use Wordlift\Videoobject\Data\Video\Video;
 use Wordlift\Videoobject\Data\Video_Storage\Storage;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 use Wordlift\Videoobject\Parser\Parser_Factory;
+use Wordlift\Videoobject\Provider\Client\Client;
+use Wordlift\Videoobject\Provider\Client\Client_Factory;
+use Wordlift\Videoobject\Provider\Client\Youtube_Client;
 use Wordlift\Videoobject\Provider\Provider_Factory;
 
 class Video_Processor {
+
+	/**
+	 * @var array<Client>
+	 */
+	private $api_clients;
+
+	public function __construct() {
+		$this->api_clients = array(
+			Client_Factory::get_client( Client_Factory::YOUTUBE ),
+			Client_Factory::get_client( Client_Factory::VIMEO )
+		);
+	}
 
 	private function get_data_for_videos( $embedded_videos ) {
 
@@ -26,6 +41,21 @@ class Video_Processor {
 		return array_merge( $youtube_videos, $vimeo_videos );
 
 	}
+
+
+	private function get_video_ids( $video_urls ) {
+		$clients   = $this->api_clients;
+		$video_ids = array();
+		foreach ( $clients as $client ) {
+			$ids = $client->get_video_ids( $video_urls );
+			if ( $ids ) {
+				$video_ids = array_merge( $video_ids, $ids );
+			}
+		}
+
+		return array_unique( $video_ids );
+	}
+
 
 	/**
 	 * @param $storage Storage
@@ -44,7 +74,7 @@ class Video_Processor {
 	 * @param $post_id
 	 * @param array $embedded_videos
 	 *
-	 * @return array
+	 * @return array An array of videos which exist on storage, not on post content.
 	 */
 	private function get_videos_to_be_deleted( Storage $storage, $post_id, array $embedded_videos ) {
 		$videos_in_store     = $storage->get_all_videos( $post_id );
@@ -55,11 +85,25 @@ class Video_Processor {
 			return $embedded_video->get_url();
 		}, $embedded_videos );
 
-		return array_filter( $videos_in_store, function ( $video ) use ( $embedded_video_urls ) {
+		/**
+		 * Previously we are checking if the captured url is content_url to delete it from the storage
+		 * but this might not work well if we want to support multiple URL formats, we extract the video
+		 * ids for embedded URLs.
+		 */
+		$embedded_video_ids = $this->get_video_ids( $embedded_video_urls );
+
+		$that = $this;
+
+		return array_filter( $videos_in_store, function ( $video ) use ( $embedded_video_ids, $embedded_video_urls, $that ) {
 			/**
-			 * @var $video Video
+			 * If the video id doesnt exist on the content then we need to return it
+			 * in order to delete that video.
 			 */
-			return ! in_array( $video->id, $embedded_video_urls );
+			return count( array_intersect(
+					$that->get_video_ids( array( $video->id ) ),
+					$embedded_video_ids
+				) ) === 0;
+
 		} );
 	}
 
@@ -76,13 +120,15 @@ class Video_Processor {
 		/**
 		 * Filters the embedded videos on post contet, custom plugins can add their video urls
 		 * by constructing \Default_Embedded_Video or implement Embedded_Video class
-		 * @since 3.31.4
-		 * Filter name : wl_videoobject_embedded_videos
+		 *
 		 * @param $embedded_videos array<Embedded_Video>
 		 * @param $post_id int The post id for the videoobject is processed.
+		 *
 		 * @return array<Embedded_Video>
+		 * @since 3.31.4
+		 * Filter name : wl_videoobject_embedded_videos
 		 */
-		$embedded_videos = apply_filters('wl_videoobject_embedded_videos', $embedded_videos, $post_id );
+		$embedded_videos = apply_filters( 'wl_videoobject_embedded_videos', $embedded_videos, $post_id );
 
 		$storage = Video_Storage_Factory::get_storage();
 
@@ -118,12 +164,23 @@ class Video_Processor {
 	 */
 	private function get_videos_without_existing_data( $storage, $post_id, $embedded_videos ) {
 		$videos_in_store    = $storage->get_all_videos( $post_id );
-		$video_ids_in_store = array_map( function ( $video ) {
+		$video_urls_in_store = array_map( function ( $video ) {
 			return $video->id;
 		}, $videos_in_store );
 
-		return array_filter( $embedded_videos, function ( $embedded_video ) use ( $video_ids_in_store ) {
-			return ! in_array( $embedded_video->get_url(), $video_ids_in_store );
+		$video_ids_in_store = $this->get_video_ids( $video_urls_in_store );
+
+		$that = $this;
+
+		return array_filter( $embedded_videos, function ( $embedded_video ) use ( $video_ids_in_store, $that ) {
+			/**
+			 * If the video id exist on content, not on storage then
+			 * we need to fetch the data.
+			 */
+			return count( array_intersect(
+					$that->get_video_ids( array(  $embedded_video->get_url() ) ),
+					$video_ids_in_store
+				) ) === 0;
 		} );
 	}
 

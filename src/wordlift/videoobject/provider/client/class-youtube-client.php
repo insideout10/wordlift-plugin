@@ -51,11 +51,11 @@ class Youtube_Client extends Singleton implements Client {
 		} );
 
 		// extract the video ids.
-		return join( ",", self::get_video_ids( $video_urls ) );
+		return join( ",", $this->get_video_ids( $video_urls ) );
 	}
 
 
-	public static function get_video_ids( $video_urls ) {
+	public function get_video_ids( $video_urls ) {
 
 		$regex = self::YOUTUBE_REGEX;
 
