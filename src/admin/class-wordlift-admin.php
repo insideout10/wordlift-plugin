@@ -134,10 +134,6 @@ class Wordlift_Admin {
 
 			new Wordlift_Dashboard_Latest_News();
 
-			// Search Rankings.
-			$search_rankings_service = new Wordlift_Admin_Search_Rankings_Service( Wordlift_Api_Service::get_instance() );
-			new Wordlift_Admin_Search_Rankings_Ajax_Adapter( $search_rankings_service );
-
 			/*
 			 * Add support for `All Entity Types`.
 			 *
