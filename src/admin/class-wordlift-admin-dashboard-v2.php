@@ -85,9 +85,6 @@ class Wordlift_Admin_Dashboard_V2 {
 	 */
 	public function dashboard_setup_callback() {
 
-		// Get the average position.
-		$average_position_string = $this->get_average_position();
-
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wordlift-admin-dashboard-v2.php';
 
 	}
