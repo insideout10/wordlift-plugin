@@ -62,7 +62,6 @@ module.exports = {
     tinymce: [require.resolve('./polyfills'), paths.appAdminTinyMceScreen],
     author: [require.resolve('./polyfills'), paths.appAdminAuthorSelectComponent],
     settings: [require.resolve('./polyfills'), paths.appAdminSettingsScreen],
-    "search-rankings": [require.resolve('./polyfills'), paths.appAdminSearchRankingsScreen],
     setup: [require.resolve('./polyfills'), paths.appAdminSetupScreen],    
   },
   output: {
