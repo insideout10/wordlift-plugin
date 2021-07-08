@@ -217,40 +217,8 @@ Wordlift_Admin_Dashboard_V2::get_todays_tip_block();
 
 <?php
 $configuration_service = Wordlift_Configuration_Service::get_instance();
-
 $country_code = $configuration_service->get_country_code();
-?>
-<div class="wl-dashboard__block wl-dashboard__block--search-rankings">
-    <header>
-        <span class="dashicons dashicons-editor-help"></span>
-        <h3><?php echo __( 'Search rankings', 'wordlift' ); ?></h3>
-        <div class="pull-right">
-			<?php echo esc_html( __( Wordlift_Countries::get_country_name( $country_code ) ) ); ?>
-            <img width="16" height="16" src="<?php echo Wordlift_Countries::get_flag_url( $country_code ); ?>">
-            <img width="16" height="16"
-                 src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/woorank-16x16.png'; ?>">
-        </div>
-    </header>
-	<?php
-	if ( in_array( $configuration_service->get_package_type(), array( 'editorial', 'business' ) ) ) { ?>
-        <div class="wl-dashboard__block__body">
-            <div><?php echo esc_html( _x( 'Keywords', 'Dashboard', 'wordlift' ) ); ?>:
-                <a href="<?php echo admin_url( 'admin.php?page=wl_search_rankings' ); ?>"><?php echo wp_count_terms( Wordlift_Search_Keyword_Taxonomy::TAXONOMY_NAME ); ?></a>
-            </div>
-            <div><?php echo esc_html( _x( 'Average position', 'Dashboard', 'wordlift' ) ); ?>:
-                <a href="<?php echo admin_url( 'admin.php?page=wl_search_rankings' ); ?>"><?php echo $average_position_string; ?></a>
-            </div>
-        </div>
-	<?php } else { ?>
-        <div class="wl-dashboard__block__body wl-dashboard__block__body--locked">
-			<?php echo esc_html( _x( 'Search Rankings are only available to Business and Editorial users', 'Dashboard', 'wordlift' ) ); ?>
-            <a href="https://wordlift.io/upgrade" target="_blank"
-               class="button button-primary"><?php echo esc_html( __( 'Upgrade', 'wordlift' ) ); ?></a>
-        </div>
-	<?php } ?>
-</div>
 
-<?php
 $top_entities = $this->get_top_entities();
 if ( ! empty( $top_entities ) ) {
 	?>

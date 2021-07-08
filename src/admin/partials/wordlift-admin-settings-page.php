@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Get a list of tabs filtered in by the classes that want to add them.
 $admin_tabs = apply_filters( 'wl_admin_page_tabs', array() );
 // Generate a list of valid tabs that we could have to validate the input against.
-$valid_tabs = array( 'search-keywords' );
+$valid_tabs = array();
 foreach ( $admin_tabs as $admin_tab ) {
 	$valid_tabs[] = $admin_tab['slug'];
 }
@@ -34,8 +34,6 @@ $current_tab = ( in_array( $input_tab, $valid_tabs, true ) )
     <h2 class="nav-tab-wrapper">
         <a class="nav-tab<?php echo 'general' === $current_tab ? ' nav-tab-active' : ''; ?>"
            href="<?php echo admin_url( 'admin.php?page=wl_configuration_admin_menu' ); ?>"><?php echo esc_html( __( 'General', 'wordlift' ) ); ?></a>
-        <a class="nav-tab<?php echo 'search-keywords' === $current_tab ? ' nav-tab-active' : ''; ?>"
-           href="<?php echo admin_url( 'admin.php?page=wl_configuration_admin_menu&tab=search-keywords' ); ?>"><?php echo esc_html( __( 'Search Keywords', 'wordlift' ) ); ?></a>
 		<?php
 		foreach ( $admin_tabs as $admin_tab ) {
 			?>

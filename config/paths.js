@@ -60,9 +60,6 @@ module.exports = {
   appAdminSettingsScreen: resolveApp(
     "src-js/screens/Admin/screens/Settings/index.js"
   ),
-  appAdminSearchRankingsScreen: resolveApp(
-    "src-js/screens/Admin/screens/SearchRankings/index.js"
-  ),
   appAdminAuthorSelectComponent: resolveApp(
     "src-js/screens/Admin/components/AuthorSelect/index.js"
   ),
