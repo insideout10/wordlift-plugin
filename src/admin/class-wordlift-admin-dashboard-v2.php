@@ -11,15 +11,6 @@ class Wordlift_Admin_Dashboard_V2 {
 	const AVERAGE_POSITION = 'wl_search_rankings_average_position';
 
 	/**
-	 * The {@link Wordlift_Admin_Search_Rankings_Service} instance.
-	 *
-	 * @since 3.20.0
-	 * @access private
-	 * @var \Wordlift_Admin_Search_Rankings_Service $search_rankings_service The {@link Wordlift_Admin_Search_Rankings_Service} instance.
-	 */
-	private $search_rankings_service;
-
-	/**
 	 * The {@link Wordlift_Dashboard_Service} instance.
 	 *
 	 * @var \Wordlift_Dashboard_Service $dashboard_service The {@link Wordlift_Dashboard_Service} instance.
@@ -36,13 +27,12 @@ class Wordlift_Admin_Dashboard_V2 {
 	/**
 	 * Wordlift_Admin_Dashboard_V2 constructor.
 	 *
-	 * @param \Wordlift_Admin_Search_Rankings_Service $search_rankings_service The {@link Wordlift_Admin_Search_Rankings_Service} instance.
 	 * @param                                         $dashboard_service
 	 *
 	 * @since 3.20.0
 	 *
 	 */
-	public function __construct( $search_rankings_service, $dashboard_service, $entity_service ) {
+	public function __construct( $dashboard_service, $entity_service ) {
 
 		add_action( 'wp_dashboard_setup', array( $this, 'dashboard_setup' ) );
 
@@ -50,8 +40,6 @@ class Wordlift_Admin_Dashboard_V2 {
 		defined( 'WL_TODAYS_TIP_JSON_URL' ) || define( 'WL_TODAYS_TIP_JSON_URL', 'https://wordlift.io/blog' );
 		defined( 'WL_TODAYS_TIP_JSON_URL_IT' ) || define( 'WL_TODAYS_TIP_JSON_URL_IT', '/it/wp-json/wp/v2/posts?context=embed&per_page=1&categories=27' );
 		defined( 'WL_TODAYS_TIP_JSON_URL_EN' ) || define( 'WL_TODAYS_TIP_JSON_URL_EN', '/en/wp-json/wp/v2/posts?context=embed&per_page=1&categories=38' );
-
-		$this->search_rankings_service = $search_rankings_service;
 		$this->dashboard_service       = $dashboard_service;
 		$this->entity_service          = $entity_service;
 
