@@ -6,7 +6,7 @@ use Wordlift_Post_To_Jsonld_Converter;
 
 class Jsonld_Article_Wrapper {
 
-	private static $article_types = array(
+	public static $article_types = array(
 		'Article',
 		'AdvertiserContentArticle',
 		'NewsArticle',
