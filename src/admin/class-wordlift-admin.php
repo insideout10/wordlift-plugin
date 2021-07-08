@@ -368,12 +368,6 @@ class Wordlift_Admin {
 			 *
 			 */
 			'default_editor_id'          => apply_filters( 'wl_default_editor_id', 'content' ),
-			/**
-			 * Add the link to the Search Keywords admin page.
-			 *
-			 * @since 3.20.0
-			 */
-			'search_keywords_admin_page' => admin_url( 'admin.php?page=wl_configuration_admin_menu&tab=search-keywords' ),
 
 			'analysis'                     => array( '_wpnonce' => wp_create_nonce( 'wl_analyze' ) ),
 			/**
