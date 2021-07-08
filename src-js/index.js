@@ -37,4 +37,4 @@ import SearchRankings from "./screens/Admin/screens/SearchRankings/App";
 // ReactDOM.render(<App />, document.getElementById("button"));
 
 // Treemap.
-ReactDOM.render(<SearchRankings />, document.getElementById("treemap"));
+// ReactDOM.render(<SearchRankings />, document.getElementById("treemap"));
