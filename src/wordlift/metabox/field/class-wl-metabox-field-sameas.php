@@ -1,4 +1,8 @@
 <?php
+namespace Wordlift\Metabox\Field;
+use Wordlift_Configuration_Service;
+use Wordlift_Sanitizer;
+
 /**
  * Metaboxes: sameAs Field Metabox.
  *
@@ -8,19 +12,19 @@
  */
 
 /**
- * Define the {@link WL_Metabox_Field_sameas} class.
+ * Define the {@link Wl_Metabox_Field_sameas} class.
  *
  * @since      3.0.0
  * @package    Wordlift
  * @subpackage Wordlift/admin/WL_Metabox
  */
-class WL_Metabox_Field_sameas extends WL_Metabox_Field {
+class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 
 	/**
 	 * @inheritdoc
 	 */
-	public function __construct( $args ) {
-		parent::__construct( $args['sameas'] );
+	public function __construct( $args, $id, $type ) {
+		parent::__construct( $args['sameas'], $id, $type );
 	}
 
 	/**

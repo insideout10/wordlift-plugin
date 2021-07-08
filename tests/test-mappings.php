@@ -7,6 +7,7 @@
  * @subpackage Wordlift/tests
  */
 
+use Wordlift\Jsonld\Jsonld_Context_Enum;
 use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Validator;
 use Wordlift\Mappings\Validators\Rule_Groups_Validator;
@@ -280,7 +281,7 @@ class Wordlift_Mappings_Test extends WP_UnitTestCase {
 		 * should not have foo property.
 		 */
 
-		$data = $this->term_jsonld_service->get( $term_id );
+		$data = $this->term_jsonld_service->get( $term_id, Jsonld_Context_Enum::PAGE );
 
 		$this->assertFalse( array_key_exists( 'foo', $data ) );
 	}

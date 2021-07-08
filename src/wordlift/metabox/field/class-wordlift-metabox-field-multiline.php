@@ -1,4 +1,5 @@
 <?php
+namespace Wordlift\Metabox\Field;
 /**
  * Metaxboxes: Multiline text Field.
  *
@@ -10,13 +11,13 @@
  */
 
 /**
- * The Wordlift_Metabox_Field_Multiline class extends {@link WL_Metabox_Field} and provides
+ * The Wordlift_Metabox_Field_Multiline class extends {@link Wl_Metabox_Field} and provides
  * support for time duration fields.
  *
  * @since   3.14.0
  * @package Wordlift
  */
-class Wordlift_Metabox_Field_Multiline extends WL_Metabox_Field {
+class Wordlift_Metabox_Field_Multiline extends Wl_Metabox_Field {
 
 	/**
 	 * @inheritdoc

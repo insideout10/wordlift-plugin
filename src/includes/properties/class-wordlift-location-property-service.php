@@ -18,7 +18,7 @@ class Wordlift_Location_Property_Service extends Wordlift_Entity_Property_Servic
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get( $post_id, $meta_key ) {
+	public function get( $id, $meta_key, $type ) {
 
 		return array_map( function ( $item ) {
 
@@ -30,7 +30,7 @@ class Wordlift_Location_Property_Service extends Wordlift_Entity_Property_Servic
 			}
 
 			return array( '@type' => 'Place', 'name' => $item );
-		}, parent::get( $post_id, $meta_key ) );
+		}, parent::get( $id, $meta_key, $type ) );
 	}
 
 }

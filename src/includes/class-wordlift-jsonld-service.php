@@ -7,6 +7,8 @@
  */
 
 use Wordlift\Jsonld\Jsonld_Context_Enum;
+use Wordlift\Jsonld\Post_Reference;
+use Wordlift\Jsonld\Term_Reference;
 
 /**
  * This class exports an entity using JSON-LD.
@@ -23,6 +25,15 @@ class Wordlift_Jsonld_Service {
 	 * @var Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
 	 */
 	private $entity_service;
+
+	/**
+	 * A {@link Wordlift_Term_JsonLd_Adapter} instance.
+	 *
+	 * @since  3.32.0
+	 * @access private
+	 * @var Wordlift_Term_JsonLd_Adapter $entity_service A {@link Wordlift_Term_JsonLd_Adapter} instance.
+	 */
+	private $term_jsonld_adapter;
 
 	/**
 	 * A {@link Wordlift_Post_Converter} instance.
@@ -58,17 +69,17 @@ class Wordlift_Jsonld_Service {
 	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_Post_Converter $converter A {@link Wordlift_Uri_To_Jsonld_Converter} instance.
 	 * @param \Wordlift_Website_Jsonld_Converter $website_converter A {@link Wordlift_Website_Jsonld_Converter} instance.
+	 * @param \Wordlift_Term_JsonLd_Adapter $term_jsonld_adapter
 	 *
 	 * @since 3.8.0
-	 *
 	 */
-	public function __construct( $entity_service, $converter, $website_converter ) {
+	public function __construct( $entity_service, $converter, $website_converter, $term_jsonld_adapter ) {
 
-		$this->entity_service    = $entity_service;
-		$this->converter         = $converter;
-		$this->website_converter = $website_converter;
-
-		self::$instance = $this;
+		$this->entity_service      = $entity_service;
+		$this->converter           = $converter;
+		$this->website_converter   = $website_converter;
+		$this->term_jsonld_adapter = $term_jsonld_adapter;
+		self::$instance            = $this;
 
 	}
 
@@ -176,29 +187,44 @@ class Wordlift_Jsonld_Service {
 		// Set a reference to the entity_to_jsonld_converter to use in the closures.
 		$entity_to_jsonld_converter = $this->converter;
 
+		$jsonld = array( $entity_to_jsonld_converter->convert( $post_id, $references, $references_infos ) );
+
+
+		$that = $this;
+		$expanded_references_jsonld = array_map( function ( $item ) use ( $context, $entity_to_jsonld_converter, &$references_infos, $that ) {
+			// "2nd level properties" may not output here, e.g. a post
+			// mentioning an event, located in a place: the place is referenced
+			// via the `@id` but no other properties are loaded.
+			$ignored = array();
+			if ( $item instanceof Term_Reference ) {
+			    $term_jsonld =  $that->term_jsonld_adapter->get( $item->get_id(), $context );
+			    // For term references, we publish a jsonld array on the page, use only the first item.
+			    return count( $term_jsonld ) > 0 ? $term_jsonld[0] : false;
+			}
+			else if ( $item instanceof  Post_Reference) {
+			    $item = $item->get_id();
+            }
+
+			return $entity_to_jsonld_converter->convert( $item, $ignored, $references_infos );
+		}, array_unique( $references ) );
+
+
 		// Convert each URI to a JSON-LD array, while gathering referenced entities.
 		// in the references array.
-		$jsonld = array_merge(
-			array( $entity_to_jsonld_converter->convert( $post_id, $references, $references_infos ) ),
+		$jsonld = array_merge( $jsonld,
 			// Convert each URI in the references array to JSON-LD. We don't output
 			// entities already output above (hence the array_diff).
-			array_filter( array_map( function ( $item ) use ( $entity_to_jsonld_converter, &$references_infos ) {
-
-				// "2nd level properties" may not output here, e.g. a post
-				// mentioning an event, located in a place: the place is referenced
-				// via the `@id` but no other properties are loaded.
-				$ignored = array();
-
-				return $entity_to_jsonld_converter->convert( $item, $ignored, $references_infos );
-			}, array_unique( $references ) ) ) );
+			array_filter( $expanded_references_jsonld ) );
 
 		$required_references = array_filter( $references_infos, function ( $item ) use ( $references ) {
+
 			return isset( $item['reference'] ) &&
 			       // Check that the reference is required
 			       $item['reference']->get_required() &&
 			       // Check that the reference isn't being output already.
 			       ! in_array( $item['reference']->get_id(), $references );
 		} );
+
 
 		$jsonld = array_merge( $jsonld, array_filter( array_map( function ( $item ) use ( $references, $entity_to_jsonld_converter ) {
 

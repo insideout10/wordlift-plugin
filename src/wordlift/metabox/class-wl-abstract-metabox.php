@@ -1,32 +1,23 @@
 <?php
+
+namespace Wordlift\Metabox;
+
+use Wordlift\Metabox\Field\Post_Field_Decorator;
+use Wordlift\Metabox\Field\Term_Field_Decorator;
+use Wordlift\Object_Type_Enum;
+use Wordlift_Entity_Service;
+use Wordlift_Entity_Type_Taxonomy_Service;
+use Wordlift_Log_Service;
+use Wordlift_Schema_Service;
+
 /**
- * Metaboxes.
+ * This class provides abstract metbox which can be extended for term pages.
  *
- * @since      3.1.0
+ * @since      3.31.7
  * @package    Wordlift
  * @subpackage Wordlift/admin/WL_Metabox
  */
-
-require_once( 'class-wl-metabox-field.php' );
-require_once( 'class-wl-metabox-field-uri.php' );
-require_once( 'class-wl-metabox-field-sameas.php' );
-require_once( 'WL_Metabox_Field_date.php' );
-require_once( 'WL_Metabox_Field_coordinates.php' );
-require_once( 'WL_Metabox_Field_address.php' );
-require_once( 'class-wordlift-metabox-field-duration.php' );
-require_once( 'class-wordlift-metabox-field-multiline.php' );
-require_once( 'class-wordlift-metabox-field-integer.php' );
-require_once( 'class-wordlift-metabox-field-select.php' );
-
-/**
- * Define the {@link WL_Metabox} class.
- *
- * @since      3.1.0
- * @package    Wordlift
- * @subpackage Wordlift/admin/WL_Metabox
- */
-class WL_Metabox {
-
+class Wl_Abstract_Metabox {
 	/**
 	 * The metabox custom fields for the current {@link WP_Post}.
 	 *
@@ -53,26 +44,6 @@ class WL_Metabox {
 	public function __construct() {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
-
-		/**
-		 * Filter: wl_feature__enable__metabox.
-		 *
-		 * @param bool whether the metabox should be shown, defaults to true.
-		 *
-		 * @return bool
-		 * @since 3.28.1
-		 */
-		if ( apply_filters( 'wl_feature__enable__metabox', true ) ) {
-
-			// Add hooks to print metaboxes and save submitted data.
-			add_action( 'add_meta_boxes', array( $this, 'add_main_metabox' ) );
-			add_action( 'wl_linked_data_save_post', array( $this, 'save_form_data', ) );
-
-			// Enqueue js and css.
-			$this->enqueue_scripts_and_styles();
-
-		}
-
 	}
 
 	/**
@@ -82,7 +53,7 @@ class WL_Metabox {
 	public function add_main_metabox() {
 
 		// Build the fields we need to print.
-		$this->instantiate_fields( get_the_ID() );
+		$this->instantiate_fields( get_the_ID(), Object_Type_Enum::POST );
 
 		// Bailout if there are no actual fields, we do not need a metabox in that case.
 		if ( empty( $this->fields ) ) {
@@ -112,14 +83,12 @@ class WL_Metabox {
 	}
 
 	/**
-	 * Called from WP to print the metabox content in page.
-	 *
-	 * @param WP_Post $post The post.
+	 * Render the metabox html.
 	 *
 	 * @since 3.1.0
 	 *
 	 */
-	public function html( $post ) {
+	public function html() {
 
 		// Loop over the fields.
 		foreach ( $this->fields as $field ) {
@@ -139,22 +108,33 @@ class WL_Metabox {
 	 * Note: the first function that calls this method will instantiate the fields.
 	 * Why it isn't called from the constructor? Because we need to hook this process as late as possible.
 	 *
-	 * @param int $post_id The post id.
+	 * @param int $id | $term_id The post id or term id.
+	 *
+	 * @param $type int Post or Term
 	 *
 	 * @since 3.1.0
-	 *
 	 */
-	public function instantiate_fields( $post_id ) {
+	public function instantiate_fields( $id, $type ) {
 
-		$this->log->trace( "Instantiating fields for entity post $post_id..." );
+		$this->log->trace( "Instantiating fields for entity post $id..." );
 
 		// This function must be called only once. Not called from the constructor because WP hooks have a rococo ordering.
 		if ( isset( $this->fields ) ) {
 			return;
 		}
-
-		$entity_type = wl_entity_taxonomy_get_custom_fields( $post_id );
-
+		if ( $type === Object_Type_Enum::POST ) {
+			$entity_type = wl_entity_taxonomy_get_custom_fields( $id );
+		} else if ( $type === Object_Type_Enum::TERM ) {
+			$term_entity_types = get_term_meta( $id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+			$term_entity_types = array_map( function ( $term ) {
+				return get_term_by(
+					'slug',
+					$term,
+					Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME
+				);
+			}, $term_entity_types );
+			$entity_type       = wl_get_custom_fields_by_entity_type( $term_entity_types );
+		}
 		if ( isset( $entity_type ) ) {
 
 			/*
@@ -182,7 +162,7 @@ class WL_Metabox {
 				$info[ $key ] = $property;
 
 				// Build the requested field as WL_Metabox_Field_ object.
-				$this->add_field( $info );
+				$this->add_field( $info, false, $type, $id );
 
 			}
 
@@ -194,7 +174,7 @@ class WL_Metabox {
 				$info[ $key ] = $property;
 
 				// Build the requested field group as WL_Metabox_Field_ object.
-				$this->add_field( $info, true );
+				$this->add_field( $info, true, $type, $id );
 
 			}
 		}
@@ -244,15 +224,17 @@ class WL_Metabox {
 	 *
 	 * @param array $args The field's information.
 	 * @param bool $grouped Flag to distinguish between simple and grouped fields.
+	 * @param int $type Post or Term, based on the correct decorator would be selected.
+	 * @param int $id Identifier for the type.
 	 */
-	public function add_field( $args, $grouped = false ) {
+	public function add_field( $args, $grouped, $type, $id ) {
 
 		if ( $grouped ) {
 
 			// Special fields (sameas, coordinates, etc.).
 			//
 			// Build Field with a custom class (e.g. WL_Metabox_Field_date).
-			$field_class = 'WL_Metabox_Field_' . key( $args );
+			$field_class = 'Wl_Metabox_Field_' . key( $args );
 
 		} else {
 
@@ -272,40 +254,50 @@ class WL_Metabox {
 				// TODO: all fields should explicitly declare the required WL_Metabox.
 				// When they will remove this.
 				//
-				// Use default WL_Metabox_Field (manages strings).
-				$field_class = 'WL_Metabox_Field';
+				// Use default Wl_Metabox_Field (manages strings).
+				$field_class = 'Wl_Metabox_Field';
 
 			} else {
 
 				// TODO: all fields should explicitly declare the required WL_Metabox.
 				// When they will remove this.
 				//
-				// Build Field with a custom class (e.g. WL_Metabox_Field_date).
-				$field_class = 'WL_Metabox_Field_' . $this_meta['type'];
+				// Build Field with a custom class (e.g. Wl_Metabox_Field_date).
+				$field_class = 'Wl_Metabox_Field_' . $this_meta['type'];
 
 			}
 
 		}
+		/**
+		 * @since 3.31.6
+		 * Add namespace to initialize class.
+		 */
+		$field_class = 'Wordlift\Metabox\Field\\' . $field_class;
 		// End if().
 
-		// Call apropriate constructor (e.g. WL_Metabox_Field_... ).
-		$this->fields[] = new $field_class( $args );
+
+		// Get decorator and use it as wrapper for save_data and get_data methods.
+		$instance = new $field_class( $args, $id, $type );
+
+		// Call apropriate constructor (e.g. Wl_Metabox_Field... ).
+		$this->fields[] = $instance;
 	}
 
 	/**
 	 * Save the form data for the specified entity {@link WP_Post}'s id.
 	 *
-	 * @param int $entity_id The entity's {@link WP_Post}'s id.
+	 * @param int $id The entity's {@link WP_Post}'s id.
+	 *
+	 * @param $type int Post or term
 	 *
 	 * @since 3.5.4
-	 *
 	 */
-	public function save_form_data( $entity_id ) {
+	public function save_form_data( $id, $type ) {
 
-		$this->log->trace( "Saving form data for entity post $entity_id..." );
+		$this->log->trace( "Saving form data for entity post $id..." );
 
 		// Build Field objects.
-		$this->instantiate_fields( $entity_id );
+		$this->instantiate_fields( $id, $type );
 
 		// Check if WL metabox form was posted.
 		if ( ! isset( $_POST['wl_metaboxes'] ) ) {
@@ -314,15 +306,15 @@ class WL_Metabox {
 			return;
 		}
 
+		$posted_data = $_POST['wl_metaboxes'];
+
 		foreach ( $this->fields as $field ) {
 
 			// Verify nonce.
 			$valid_nonce = $field->verify_nonce();
+
 			if ( $valid_nonce ) {
-
-				$posted_data = $_POST['wl_metaboxes'];
-				$field_name  = $field->meta_name;
-
+				$field_name = $field->meta_name;
 				// Each Filed only deals with its values.
 				if ( isset( $posted_data[ $field_name ] ) ) {
 
@@ -330,7 +322,6 @@ class WL_Metabox {
 					if ( ! is_array( $values ) ) {
 						$values = array( $values );
 					}
-
 					// Save data permanently
 					$field->save_data( $values );
 				}
@@ -341,15 +332,15 @@ class WL_Metabox {
 		 * Filter: 'wl_save_form_pre_push_entity' - Allow to hook right
 		 * before the triples are pushed to the linked dataset.
 		 *
-		 * @param int $entity_id The entity id.
+		 * @param int $id The entity id.
 		 * @param int $id The post data.
 		 *
 		 * @since  3.18.2
 		 *
 		 */
-		do_action( 'wl_save_form_pre_push_entity', $entity_id, $_POST );
+		do_action( 'wl_save_form_pre_push_entity', $id, $_POST );
 
-		do_action( 'wl_legacy_linked_data__push', $entity_id );
+		do_action( 'wl_legacy_linked_data__push', $id );
 
 	}
 
@@ -364,15 +355,15 @@ class WL_Metabox {
 		$min = ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ? '.min' : '';
 
 		// Load the jquery-ui-timepicker-addon library.
-		wp_enqueue_style( 'wl-flatpickr', dirname( plugin_dir_url( __FILE__ ) ) . "/js/flatpickr/flatpickr$min.css", array(), '3.0.6' );
-		wp_enqueue_script( 'wl-flatpickr', dirname( plugin_dir_url( __FILE__ ) ) . "/js/flatpickr/flatpickr$min.js", array( 'jquery' ), '3.0.6', true );
+		wp_enqueue_style( 'wl-flatpickr', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . "/admin/js/flatpickr/flatpickr$min.css", array(), '3.0.6' );
+		wp_enqueue_script( 'wl-flatpickr', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . "/admin/js/flatpickr/flatpickr$min.js", array( 'jquery' ), '3.0.6', true );
 
 		// Leaflet.
 		wp_enqueue_style( 'wl-leaflet', 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.css', array(), '1.6.0' );
 		wp_enqueue_script( 'wl-leaflet', 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.js', array(), '1.6.0' );
 
 		// Add AJAX autocomplete to facilitate metabox editing.
-		wp_enqueue_script( 'wl-entity-metabox-utility', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wl_entity_metabox_utilities.js' );
+		wp_enqueue_script( 'wl-entity-metabox-utility', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/admin/js/wl_entity_metabox_utilities.js' );
 		wp_localize_script( 'wl-entity-metabox-utility', 'wlEntityMetaboxParams', array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
 				'action'   => 'entity_by_title',
@@ -380,5 +371,4 @@ class WL_Metabox {
 		);
 
 	}
-
 }

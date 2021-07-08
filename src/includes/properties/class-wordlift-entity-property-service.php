@@ -26,7 +26,7 @@ class Wordlift_Entity_Property_Service extends Wordlift_Simple_Property_Service 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get( $post_id, $meta_key ) {
+	public function get( $id, $meta_key, $type ) {
 
 		$entity_service = $this->entity_service;
 
@@ -38,7 +38,7 @@ class Wordlift_Entity_Property_Service extends Wordlift_Simple_Property_Service 
 			return is_numeric( $item ) && null !== get_post( $item )
 				? new Wordlift_Property_Entity_Reference( $entity_service->get_uri( $item ), (int) $item )
 				: $item;
-		}, get_post_meta( $post_id, $meta_key ) );
+		}, parent::get( $id, $meta_key, $type ) );
 	}
 
 }

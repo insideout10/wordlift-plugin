@@ -458,6 +458,10 @@ class Wordlift_Entity_Service {
 			return ( false === $uri ? null : $uri );
 		}
 
+		if ( Object_Type_Enum::TERM === $type ) {
+			return wl_get_term_entity_uri( $object_id );
+		}
+
 		return null;
 	}
 

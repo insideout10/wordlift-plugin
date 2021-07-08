@@ -10,9 +10,10 @@
 namespace Wordlift\Analysis\Response;
 
 use stdClass;
+use Wordlift\Analysis\Entity_Provider\Entity_Provider_Registry;
 use Wordlift\Entity\Entity_Helper;
 
-class Analysis_Response_Ops {
+class Analysis_Response_Ops  {
 
 	/**
 	 * The analysis response json.
@@ -32,43 +33,32 @@ class Analysis_Response_Ops {
 	 */
 	private $entity_uri_service;
 
-	private $entity_service;
-
-	/**
-	 * @var \Wordlift_Entity_Type_Service
-	 */
-	private $entity_type_service;
-	/**
-	 * @var \Wordlift_Post_Image_Storage
-	 */
-	private $post_image_storage;
 
 	/**
 	 * @var Entity_Helper
 	 */
 	private $entity_helper;
+	/**
+	 * @var Entity_Provider_Registry
+	 */
+	private $entity_provider_registry;
 
 	/**
 	 * Analysis_Response_Ops constructor.
 	 *
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service}.
-	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service}.
-	 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service}.
-	 * @param \Wordlift_Post_Image_Storage $post_image_storage A {@link Wordlift_Post_Image_Storage} instance.
 	 * @param Entity_Helper $entity_helper The {@link Entity_Helper}.
+	 * @param Entity_Provider_Registry $entity_provider_registry Entity Provider registry.
 	 * @param mixed $json The analysis response json.
 	 *
 	 * @since 3.21.5
 	 */
-	public function __construct( $entity_uri_service, $entity_service, $entity_type_service, $post_image_storage, $entity_helper, $json ) {
+	public function __construct( $entity_uri_service, $entity_helper, $entity_provider_registry, $json ) {
 
 		$this->json                = $json;
 		$this->entity_uri_service  = $entity_uri_service;
-		$this->entity_service      = $entity_service;
-		$this->entity_type_service = $entity_type_service;
-		$this->post_image_storage  = $post_image_storage;
 		$this->entity_helper       = $entity_helper;
-
+		$this->entity_provider_registry = $entity_provider_registry;
 	}
 
 	/**
@@ -190,7 +180,7 @@ class Analysis_Response_Ops {
 
 			// If the entity isn't there, add it.
 			if ( ! is_bool( $this->json ) && ! isset( $this->json->entities->{$item_id} ) ) {
-				$entity = $this->get_local_entity( $item_id );
+				$entity = $this->entity_provider_registry->get_local_entity( $item_id );
 
 				// Entity not found in the local vocabulary, continue to the next one.
 				if ( false === $entity ) {
@@ -281,40 +271,6 @@ class Analysis_Response_Ops {
 
 	}
 
-	private function get_local_entity( $uri ) {
-
-		$entity = $this->entity_uri_service->get_entity( $uri );
-
-		if ( null === $entity ) {
-			return false;
-		}
-
-		$type   = $this->entity_type_service->get( $entity->ID );
-		$images = $this->post_image_storage->get( $entity->ID );
-
-		return (object) array(
-			'id'          => $uri,
-			'label'       => $entity->post_title,
-			/*
-			 * As of 2020.06.29 we're comment out the `post_content` because Gutenberg posts will return here
-			 * the whole Gutenberg source including potentially our own wordlift/classification block, which means
-			 * that data may grow quickly to more than a 100 KBytes and could break web servers.
-			 *
-			 * We don't really need the description for local entities (because the description is indeed taken from
-			 * the local WordPress database) and we're not using it anywhere in the UI.
-			 *
-			 * So take extra care in enabling this line: eventually consider using the post_excerpt.
-			 *
-			 * PS: We didn't test using the WordLift Post Excerpt Helper.
-			 */
-			// 'description' => $entity->post_content,
-			'description' => '',
-			'sameAs'      => wl_schema_get_value( $entity->ID, 'sameAs' ),
-			'mainType'    => str_replace( 'wl-', '', $type['css_class'] ),
-			'types'       => wl_get_entity_rdf_types( $entity->ID ),
-			'images'      => $images,
-		);
-	}
 
 	/**
 	 * Return the JSON response.

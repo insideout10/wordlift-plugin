@@ -87,6 +87,50 @@ function wl_build_entity_uri( $post_id ) {
 
 }
 
+
+/**
+ * Build the entity URI given the term id.
+ *
+ * @param int $term_id The term ID
+ *
+ * @return string The URI of the term entity
+ *
+ */
+function wl_build_term_uri( $term_id ) {
+
+	// Get the term.
+	$term = get_term( $term_id );
+
+	if ( null === $term ) {
+		Wordlift_Log_Service::get_instance()->debug( "wl_build_entity_uri : error [ term ID :: $term_id ][ term :: null ]" );
+		return null;
+	}
+
+	// For installations not connected to the Cloud - i.e. add_filter( 'wl_features__enable__dataset', '__return_false')
+	// - we build the dataset URI base on the permalink.
+	if ( ! apply_filters( 'wl_features__enable__dataset', true ) ) {
+		return sprintf( '%s#%s', get_permalink( $term_id ),  $term->taxonomy );
+	}
+
+	// Create an ID given the title.
+	$term_slug = Wordlift_Uri_Service::get_instance()->sanitize_path( $term->name );
+
+	// If the entity slug is empty, i.e. there's no title, use the term ID as path.
+	if ( empty( $term_slug ) ) {
+		return sprintf( '%s/%s/%s',
+			Wordlift_Configuration_Service::get_instance()->get_dataset_uri(),
+			$term->taxonomy,
+			"id/$term->ID"
+		);
+	}
+
+	return Wordlift_Uri_Service::get_instance()->build_term_uri(
+		$term_slug,
+		$term->taxonomy );
+
+}
+
+
 /**
  * Get the entity URI of the provided post.
  *
@@ -118,6 +162,31 @@ function wl_set_entity_uri( $post_id, $uri ) {
 
 	return update_post_meta( $post_id, WL_ENTITY_URL_META_NAME, $uri );
 }
+
+
+/**
+ * Save the entity URI for the provided term ID.
+ *
+ * @param int $term_id The term ID.
+ * @param string $uri The term URI.
+ *
+ * @return bool True if successful, otherwise false.
+ */
+function wl_set_term_entity_uri( $term_id, $uri ) {
+
+	return update_term_meta( $term_id, WL_ENTITY_URL_META_NAME, $uri );
+}
+
+/**
+ * Get entity uri for the term id.
+ * @param int $term_id The term ID.
+ * @return string entity uri.
+ */
+function wl_get_term_entity_uri( $term_id ) {
+
+	return get_term_meta( $term_id, WL_ENTITY_URL_META_NAME, true );
+}
+
 
 
 /**
@@ -236,6 +305,15 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 	$types = Wordlift_Entity_Type_Service::get_instance()->get_ids( $entity_id );
 
 	/** @var WP_Term[] $terms */
+	return wl_get_custom_fields_by_entity_type( $types );
+}
+
+/**
+ * @param $types
+ *
+ * @return array
+ */
+function wl_get_custom_fields_by_entity_type( $types ) {
 	$terms = array_filter( array_map( function ( $item ) {
 		return get_term( $item );
 	}, $types ), function ( $item ) {

@@ -1,4 +1,5 @@
 <?php
+namespace Wordlift\Metabox\Field;
 /**
  * Metaxboxes: Integer Field.
  *
@@ -10,13 +11,13 @@
  */
 
 /**
- * The Wordlift_Metabox_Field_Select class extends {@link WL_Metabox_Field} and provides
+ * The Wordlift_Metabox_Field_Select class extends {@link Wl_Metabox_Field} and provides
  * support for select fields.
  *
  * @since   3.18.0
  * @package Wordlift
  */
-class Wordlift_Metabox_Field_Select extends WL_Metabox_Field {
+class Wordlift_Metabox_Field_Select extends Wl_Metabox_Field {
 
 	/**
 	 * @inheritdoc

@@ -73,6 +73,7 @@ require_once( 'class-wordlift-unit-test-case.php' );
  */
 require_once( 'class-wordlift-vocabulary-unit-test-case.php' );
 require_once( 'class-wordlift-videoobject-unit-test-case.php' );
+require_once( 'class-wordlift-vocabulary-terms-unit-test-case.php' );
 require_once( 'class-wordlift-ajax-unit-test-case.php' );
 require_once( 'class-wordlift-test.php' );
 

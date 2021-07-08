@@ -1,6 +1,7 @@
 <?php
 
 use Wordlift\Cache\Ttl_Cache;
+use Wordlift\Jsonld\Jsonld_Context_Enum;
 use Wordlift\Vocabulary\Api\Api_Config;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Data\Entity_List\Default_Entity_List;
@@ -166,7 +167,7 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 	}
 
 	public function test_when_entity_is_removed_clear_all_jsonld_cache() {
-		$user_id   = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+		$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );
 		$jsonld_cache = new Ttl_Cache( 'jsonld', 86400 );
 		$jsonld_cache->put( "foo", "bar" );
@@ -179,7 +180,7 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 	}
 
 	public function test_when_entity_undo_clear_all_jsonld_cache() {
-		$user_id   = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+		$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );
 		$jsonld_cache = new Ttl_Cache( 'jsonld', 86400 );
 		$jsonld_cache->put( "foo", "bar" );
@@ -262,15 +263,15 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 
 	public function test_when_entities_are_accepted_should_show_in_term_page() {
 		$entity_data = $this->getMockEntityData();
-		$term_id  = $this->accept_two_entities($entity_data);
+		$term_id     = $this->accept_two_entities( $entity_data );
 		// lets call the jsonld filter.
 		$term_jsonld_adapter = Wordlift_Term_JsonLd_Adapter::get_instance();
-		$term_jsonld = $term_jsonld_adapter->get($term_id);
+		$term_jsonld         = $term_jsonld_adapter->get( $term_id, Jsonld_Context_Enum::PAGE );
 		// we should have 1 item in the jsonld, we are using only the first item.
-		$this->assertCount(1, $term_jsonld );
-		$this->assertSame(get_term_link($term_id) . "/#id", $term_jsonld[0]['@id']);
-		$this->assertSame(get_term_link($term_id) , $term_jsonld[0]['url']);
-		$this->assertSame(get_term_link($term_id) , $term_jsonld[0]['mainEntityOfPage']);
+		$this->assertCount( 1, $term_jsonld );
+		$this->assertSame( get_term_link( $term_id ) . "/#id", $term_jsonld[0]['@id'] );
+		$this->assertSame( get_term_link( $term_id ), $term_jsonld[0]['url'] );
+		$this->assertSame( get_term_link( $term_id ), $term_jsonld[0]['mainEntityOfPage'] );
 	}
 
 }

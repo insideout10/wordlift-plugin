@@ -6,6 +6,8 @@
  * @package Wordlift
  */
 
+use Wordlift\Object_Type_Enum;
+
 /**
  * Define the {@link Wordlift_Entity_Post_To_Jsonld_Converter} class.
  *
@@ -103,7 +105,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 		//
 		// This allows us to gather the basic properties as defined by the `Thing` entity type.
 		// Get the configured type custom fields.
-		$custom_fields = $this->entity_type_service->get_custom_fields( $post_id );
+		$custom_fields = $this->entity_type_service->get_custom_fields_for_post( $post_id );
 
 		if ( isset( $custom_fields ) ) {
 			$this->process_type_custom_fields( $jsonld, $custom_fields, $post, $references, $references_infos );
@@ -181,7 +183,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 
 			// Get the value, the property service will get the right extractor
 			// for that property.
-			$value = $this->property_getter->get( $post->ID, $key );
+			$value = $this->property_getter->get( $post->ID, $key, Object_Type_Enum::POST );
 
 			if ( empty( $value ) ) {
 				continue;

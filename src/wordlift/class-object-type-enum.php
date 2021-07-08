@@ -9,4 +9,8 @@ class Object_Type_Enum {
 	const HOMEPAGE = 2;
 	const USER = 3;
 
+	// Enum constant to represent currently unknown
+	// value.
+	const UNKNOWN = 4;
+
 }

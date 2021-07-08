@@ -31,9 +31,10 @@ class Wordlift_Property_Getter {
 	 * Create a property service with the provided {@link Wordlift_Simple_Property_Service}
 	 * as default.
 	 *
+	 * @param $default
+	 *
 	 * @since 3.8.0
 	 *
-	 * @param $default
 	 */
 	public function __construct( $default ) {
 
@@ -44,10 +45,11 @@ class Wordlift_Property_Getter {
 	/**
 	 * Register a {@link Wordlift_Simple_Property_Service} for the specified meta keys.
 	 *
-	 * @since 3.8.0
-	 *
 	 * @param \Wordlift_Simple_Property_Service $property_service A {@link Wordlift_Simple_Property_Service} instance.
 	 * @param array $meta_keys An array of meta keys that the provided {@link Wordlift_Simple_Property_Service} will handle.
+	 *
+	 * @since 3.8.0
+	 *
 	 */
 	public function register( $property_service, $meta_keys ) {
 
@@ -61,20 +63,21 @@ class Wordlift_Property_Getter {
 	/**
 	 * Get the value for the specified entity post id and WP's meta key.
 	 *
-	 * @since 3.8.0
-	 *
 	 * @param int $post_id The post id.
 	 * @param string $meta_key The meta key.
 	 *
+	 * @param int $type Term or Post, by default Post is used.
+	 *
 	 * @return mixed|null The property value or null.
+	 * @since 3.8.0
 	 */
-	public function get( $post_id, $meta_key ) {
+	public function get( $post_id, $meta_key, $type ) {
 
 		return isset( $this->services[ $meta_key ] )
 			// Use a specific property service.
-			? $this->services[ $meta_key ]->get( $post_id, $meta_key )
+			? $this->services[ $meta_key ]->get( $post_id, $meta_key, $type )
 			// Use the default property service.
-			: $this->default->get( $post_id, $meta_key );
+			: $this->default->get( $post_id, $meta_key, $type );
 	}
 
 }

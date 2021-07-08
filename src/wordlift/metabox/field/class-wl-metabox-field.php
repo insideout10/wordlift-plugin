@@ -1,4 +1,12 @@
 <?php
+
+namespace Wordlift\Metabox\Field;
+
+use Wordlift\Metabox\Field\Store\Store_Factory;
+use Wordlift\Metabox\Wl_Abstract_Metabox;
+use Wordlift_Log_Service;
+use Wordlift_Schema_Service;
+
 /**
  * Metaboxes: Field Metabox.
  *
@@ -17,7 +25,7 @@
  * @package    Wordlift
  * @subpackage Wordlift/admin/WL_Metabox
  */
-class WL_Metabox_Field {
+class Wl_Metabox_Field implements Field {
 
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
@@ -26,7 +34,7 @@ class WL_Metabox_Field {
 	 * @access protected
 	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
 	 */
-	protected $log;
+	public $log;
 
 	/**
 	 * The meta name for this field's value.
@@ -85,23 +93,28 @@ class WL_Metabox_Field {
 	public $data;
 
 	/**
-	 * The current {@link WP_Post} id.
-	 *
-	 * @since 3.15.3
-	 *
-	 * @var int The current {@link WP_Post} id.
+	 * @var int The type of the itemm either POST or TERM
 	 */
-	private $post_id;
+	protected $type;
 
 	/**
-	 * Create a {@link WL_Metabox_Field} instance.
+	 * @var int The id of the item.
+	 */
+	protected $id;
+
+
+	/**
+	 * Create a {@link Wl_Metabox_Field} instance.
 	 *
 	 * @param array $args An array of parameters.
+	 * @param $id int The id of the item
+	 * @param $type int The type of the item, POST or TERM.
 	 */
-	public function __construct( $args ) {
+	public function __construct( $args, $id, $type ) {
 
-		$this->log = Wordlift_Log_Service::get_logger( 'WL_Metabox_Field' );
-
+		$this->log  = Wordlift_Log_Service::get_logger( 'Wl_Metabox_Field' );
+		$this->id   = $id;
+		$this->type = $type;
 		if ( empty( $args ) ) {
 			return;
 		}
@@ -154,7 +167,7 @@ class WL_Metabox_Field {
 		// Save early the post id to avoid other plugins messing up with it.
 		//
 		// See https://github.com/insideout10/wordlift-plugin/issues/665.
-		$this->post_id = get_the_ID();
+
 
 	}
 
@@ -193,12 +206,10 @@ class WL_Metabox_Field {
 	 *
 	 * Overwrite this method in a child class to obtain custom behaviour.
 	 */
-	public function get_data() {
-
-		// Get the post id and load the data.
-		$post_id    = $this->post_id;
-		$this->data = get_post_meta( $post_id, $this->meta_name );
-
+	function get_data() {
+	    $instance = Store_Factory::get_instance( $this->type );
+	    // @todo: check if $instance is not null.
+	    $this->data =  $instance::get_data( $this->id, $this->meta_name );
 	}
 
 	/**
@@ -210,6 +221,8 @@ class WL_Metabox_Field {
 	 *
 	 * @param array $values Array of values to be sanitized and then stored into
 	 *                      $this->data.
+	 *
+	 * @return array | string Return sanitized data.
 	 */
 	public function sanitize_data( $values ) {
 
@@ -227,6 +240,8 @@ class WL_Metabox_Field {
 		}
 
 		$this->data = $sanitized_data;
+
+		return $sanitized_data;
 	}
 
 	/**
@@ -263,32 +278,10 @@ class WL_Metabox_Field {
 	 *
 	 * @param array $values Array of values to be sanitized and then stored into $this->data.
 	 */
-	public function save_data( $values ) {
-
-		// Will sanitize data and store them in $field->data.
-		$this->sanitize_data( $values );
-
-		// Bail out, if the post id isn't set in the request or isn't numeric.
-		//
-		// See https://github.com/insideout10/wordlift-plugin/issues/665.
-		if ( ! isset( $_POST['post_ID'] ) || ! is_numeric( $_POST['post_ID'] ) ) {
-			return;
-		}
-
-		$entity_id = intval( $_POST['post_ID'] );
-
-		// Take away old values.
-		delete_post_meta( $entity_id, $this->meta_name );
-
-		// insert new values, respecting cardinality.
-		$single = ( 1 === $this->cardinality );
-		foreach ( $this->data as $value ) {
-			$this->log->trace( "Saving $value to $this->meta_name for entity $entity_id..." );
-			// To avoid duplicate values
-			delete_post_meta( $entity_id, $this->meta_name, $value );
-			$meta_id = add_post_meta( $entity_id, $this->meta_name, $value, $single );
-			$this->log->debug( "$value to $this->meta_name for entity $entity_id saved with id $meta_id." );
-		}
+	function save_data( $values ) {
+		$santizied_data = $this->sanitize_data( $values );
+		$instance = Store_Factory::get_instance( $this->type );
+		$instance::save_data( $this->id, $this->meta_name, $this->cardinality, $santizied_data );
 	}
 
 	/**
@@ -353,8 +346,8 @@ class WL_Metabox_Field {
 	/**
 	 * Print the heading with the label for the metabox.
 	 *
-	 * @since 3.15.0
 	 * @return string The heading html fragment.
+	 * @since 3.15.0
 	 */
 	protected function get_heading_html() {
 
@@ -364,11 +357,11 @@ class WL_Metabox_Field {
 	/**
 	 * Print the stored values.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param int $count An output value: the number of printed values.
 	 *
 	 * @return string The html fragment.
+	 * @since 3.15.0
+	 *
 	 */
 	protected function get_stored_values_html( &$count ) {
 
@@ -406,11 +399,11 @@ class WL_Metabox_Field {
 	 * This function is protected, allowing extending class to further customize
 	 * the add button html code.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param int $count The current number of values.
 	 *
 	 * @return string The add button html code.
+	 * @since 3.15.0
+	 *
 	 */
 	protected function get_add_button_html( $count ) {
 
@@ -429,17 +422,17 @@ class WL_Metabox_Field {
 	 * This function is protected, allowing extending class to further customize
 	 * the add button html code.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param int $count The current number of values.
 	 *
 	 * @return string The add button html code.
+	 * @since 3.15.0
+	 *
 	 */
 	protected function get_add_custom_button_html( $count, $label, $class = '' ) {
 
 		// If cardinality allows it, print button to add new values.
 		if ( $count < $this->cardinality ) {
-			return '<button class="button wl-add-input wl-button wl-add-input--sameas '.$class.'" type="button">' . esc_html__( $label ) . '</button>';
+			return '<button class="button wl-add-input wl-button wl-add-input--sameas ' . $class . '" type="button">' . esc_html__( $label ) . '</button>';
 		}
 
 		// Return an empty string.
@@ -482,5 +475,4 @@ class WL_Metabox_Field {
 
 		return '</div>';
 	}
-
 }

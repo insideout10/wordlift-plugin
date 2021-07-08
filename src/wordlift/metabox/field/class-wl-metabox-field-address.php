@@ -1,12 +1,12 @@
 <?php
-
-/**
+namespace Wordlift\Metabox\Field;
+use Wordlift\Metabox\Wl_Metabox;/**
  * Field to manage the address. The pattern followed is to simply build an array of subfields using the base WL_Metabox_field class,
  * and act as a proxy between WL_Metabox and them.
  * 
  * @since 3.2.0
  */
-class WL_Metabox_Field_address extends WL_Metabox_Field {
+class Wl_Metabox_Field_Address extends Wl_Metabox_Field {
 
 	/**
 	 * Sub-fields contained in the Field.
@@ -24,7 +24,7 @@ class WL_Metabox_Field_address extends WL_Metabox_Field {
 	 * The structure of $args is:
 	 * array( 'address' => array( ... array of subfields ... ) )
 	 */
-	public function __construct( $args ) {
+	public function __construct( $args, $id, $type ) {
 		
 		$this->label = key( $args );
 		
@@ -32,7 +32,7 @@ class WL_Metabox_Field_address extends WL_Metabox_Field {
 		$this->subfields = array();
 		// Loop over subfields. Using 'reset' to take the data contained in the first element of $args
 		foreach ( reset( $args ) as $key => $subfield ) {
-			$this->subfields[] = new WL_Metabox_Field( array( $key => $subfield ) );
+			$this->subfields[] = new Wl_Metabox_Field( array( $key => $subfield ), $id, $type );
 		}
 		
 		// $_POST array key in which we will pass the values

@@ -7,6 +7,9 @@
  * @subpackage Wordlift/tests
  */
 
+use Wordlift\Metabox\Field\Wordlift_Metabox_Field_Select;
+use Wordlift\Object_Type_Enum;
+
 /**
  * Test the {@link Wordlift_Metabox_Field_Select} class.
  *
@@ -36,7 +39,7 @@ class Wordlift_Metabox_Field_Select_Test extends Wordlift_Unit_Test_Case {
 		);
 
 		// Initialize the field.
-		$field = new Wordlift_Metabox_Field_Select( $args );
+		$field = new Wordlift_Metabox_Field_Select( $args, null, Object_Type_Enum::POST );
 
 		// Get the HTML output.
 		$output = $field->html_input( 'select' );

@@ -1,4 +1,5 @@
 <?php
+namespace Wordlift\Metabox\Field;
 /**
  * Metaxboxes: Date Field.
  *
@@ -10,13 +11,13 @@
  */
 
 /**
- * The WL_Metabox_Field_date class extends {@link WL_Metabox_Field} and provides
+ * The WL_Metabox_Field_date class extends {@link Wl_Metabox_Field} and provides
  * support for date fields.
  *
  * @since   3.2.0
  * @package Wordlift
  */
-class WL_Metabox_Field_date extends WL_Metabox_Field {
+class Wl_Metabox_Field_Date extends Wl_Metabox_Field {
 
 	/**
 	 * Attribute to distinguish between date formats, inferred from the schema property export type
@@ -48,8 +49,8 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function __construct( $args ) {
-		parent::__construct( $args );
+	public function __construct( $args, $id, $type ) {
+		parent::__construct( $args, $id, $type );
 
 		$this->no_calendar = false;
 

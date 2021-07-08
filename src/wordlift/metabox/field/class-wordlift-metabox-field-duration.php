@@ -1,4 +1,5 @@
 <?php
+namespace Wordlift\Metabox\Field;
 /**
  * Metaxboxes: Duration Field.
  *
@@ -10,19 +11,19 @@
  */
 
 /**
- * The Wordlift_Metabox_Field_Duration class extends {@link WL_Metabox_Field} and provides
+ * The Wordlift_Metabox_Field_Duration class extends {@link Wl_Metabox_Field} and provides
  * support for time duration fields.
  *
  * @since   3.14.0
  * @package Wordlift
  */
-class Wordlift_Metabox_Field_Duration extends WL_Metabox_Field_date {
+class Wordlift_Metabox_Field_Duration extends Wl_Metabox_Field_date {
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function __construct( $args ) {
-		parent::__construct( $args );
+	public function __construct( $args, $id, $type ) {
+		parent::__construct( $args, $id, $type );
 
 		$this->date_format = 'H:i';
 		$this->timepicker  = true;

@@ -135,6 +135,7 @@ class Wordlift_Term_JsonLd_Adapter {
 	public function wp_head() {
 		$query_object = get_queried_object();
 
+
 		// Check if it is a term page.
 		if ( ! $query_object instanceof WP_Term ) {
 			return;
@@ -147,11 +148,10 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		$term_id = $query_object->term_id;
 
-		$jsonld = $this->get( $term_id );
-
+		$jsonld = $this->get( $term_id, Jsonld_Context_Enum::PAGE );
 
 		// Bail out if the JSON-LD is empty.
-		if ( empty( $jsonld )  ) {
+		if ( empty( $jsonld ) ) {
 			return;
 		}
 
@@ -161,8 +161,7 @@ class Wordlift_Term_JsonLd_Adapter {
 
 	}
 
-	public function get( $id ) {
-
+	public function get( $id, $context ) {
 		/**
 		 * Support for carousel rich snippet, get jsonld data present
 		 * for all the posts shown in the term page, and add the jsonld data
@@ -172,18 +171,23 @@ class Wordlift_Term_JsonLd_Adapter {
 		 *
 		 * @since 3.26.0
 		 */
-		$carousel_data = $this->get_carousel_jsonld( $id );
 		$jsonld_array  = array();
-		if ( $carousel_data ) {
-			$jsonld_array[] = $carousel_data;
+
+		if ( Jsonld_Context_Enum::PAGE === $context ) {
+			$carousel_data = $this->get_carousel_jsonld( $id );
+			if ( $carousel_data ) {
+				$jsonld_array[] = $carousel_data;
+			}
 		}
-		$context               = empty( $carousel_data ) ? Jsonld_Context_Enum::PAGE : Jsonld_Context_Enum::CAROUSEL;
+
 		$entities_jsonld_array = $this->get_entity_jsonld( $id, $context );
 
 		$result = array(
 			'jsonld'     => array_merge( $jsonld_array, $entities_jsonld_array ),
 			'references' => array()
 		);
+
+
 		/**
 		 * @since 3.26.3
 		 * Filter: wl_term_jsonld_array
@@ -191,11 +195,18 @@ class Wordlift_Term_JsonLd_Adapter {
 		 * @var $jsonld_array array An array containing jsonld for term and entities.
 		 */
 		$arr = apply_filters( 'wl_term_jsonld_array', $result, $id );
-		return $arr['jsonld'];
+		/**
+		 * @since 3.32.0
+		 * Expand the references returned by this filter.
+		 */
+		$references = $this->expand_references( $arr['references'] );
+
+		$jsonld_array = array_merge( $arr['jsonld'], $references );
+
+		return $jsonld_array;
 	}
 
 	private function get_term_url( $id ) {
-
 		if ( is_null( $id ) ) {
 			return $_SERVER['REQUEST_URI'];
 		}
@@ -236,6 +247,29 @@ class Wordlift_Term_JsonLd_Adapter {
 		$jsonld[0]['url'] = get_term_link( $term_id );
 
 		return $jsonld;
+	}
+
+
+	/**
+	 * @param $references
+	 *
+	 * @return array
+	 */
+	private function expand_references( $references ) {
+		// @TODO: we are assuming all the references are posts
+		// in this method, since now terms are getting converted to
+		// entities, this might not be true in all cases.
+		if ( ! is_array( $references ) ) {
+			return array();
+		}
+		$references_jsonld = array();
+		// Expand the references.
+		foreach ( $references as $reference ) {
+			$references_jsonld[] = $this->jsonld_service->get_jsonld( false, $reference );
+		}
+
+		return $references_jsonld;
+
 	}
 
 }

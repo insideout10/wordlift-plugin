@@ -9,7 +9,7 @@ class Wordlift_Required_Property_Service extends Wordlift_Entity_Property_Servic
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get( $post_id, $meta_key ) {
+	public function get( $id, $meta_key, $type ) {
 
 		return array_map( function ( $item ) {
 
@@ -19,7 +19,7 @@ class Wordlift_Required_Property_Service extends Wordlift_Entity_Property_Servic
 			}
 
 			return $item;
-		}, parent::get( $post_id, $meta_key ) );
+		}, parent::get( $id, $meta_key, $type ) );
 	}
 
 }
