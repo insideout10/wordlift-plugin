@@ -149,6 +149,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement [#1415](https://github.com/insideout10/wordlift-plugin/issues/1415): Faceted search title pill HTML strip tags
 * Enhancement [#1406](https://github.com/insideout10/wordlift-plugin/issues/1406): No Vocabulary, make terms 1st class entities
 
+* Fix [#1423](https://github.com/insideout10/wordlift-plugin/issues/1423): Search Keywords settings screen yielding an error.
+
 = 3.31.7 (2021-06-30) =
 
 * Fix [#1410](https://github.com/insideout10/wordlift-plugin/issues/1410): Prevent videoobject duplication in article
