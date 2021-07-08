@@ -162,14 +162,14 @@ function wl_shortcode_faceted_search_origin( $request ) {
 			 *
 			 * @since 3.19.3 We're using the medium size image.
 			 */
-			$thumbnail           = get_the_post_thumbnail_url( $post_obj, 'medium' );
-			$post_obj->thumbnail = ( $thumbnail ) ?
+			$thumbnail            = get_the_post_thumbnail_url( $post_obj, 'medium' );
+			$post_obj->thumbnail  = ( $thumbnail ) ?
 				$thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
-			$post_obj->permalink = get_permalink( $post_obj->ID );
-			$post_obj->srcset    = Srcset_Util::get_srcset( $post_obj->ID, Srcset_Util::FACETED_SEARCH_WIDGET );
-
-			$result         = $post_obj;
-			$post_results[] = $result;
+			$post_obj->permalink  = get_permalink( $post_obj->ID );
+			$post_obj->srcset     = Srcset_Util::get_srcset( $post_obj->ID, Srcset_Util::FACETED_SEARCH_WIDGET );
+			$post_obj->post_title = strip_tags( html_entity_decode( $post_obj->post_title, ENT_QUOTES, 'UTF-8' ) );
+			$result               = $post_obj;
+			$post_results[]       = $result;
 		}
 	}
 
@@ -264,7 +264,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 
 function wl_shortcode_faceted_search_get_the_title( $post_id ) {
 
-	$title = get_the_title( $post_id );
+	$title = strip_tags( get_the_title( $post_id ) );
 
 	if ( get_post_type( $post_id ) !== Wordlift_Entity_Service::TYPE_NAME ) {
 		$alternative_labels = Wordlift_Entity_Service::get_instance()->get_alternative_labels( $post_id );
