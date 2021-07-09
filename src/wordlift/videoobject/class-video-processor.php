@@ -22,21 +22,24 @@ class Video_Processor {
 	public function __construct() {
 		$this->api_clients = array(
 			Client_Factory::get_client( Client_Factory::YOUTUBE ),
-			Client_Factory::get_client( Client_Factory::VIMEO )
+			Client_Factory::get_client( Client_Factory::VIMEO ),
+			Client_Factory::get_client( Client_Factory::JWPLAYER )
 		);
 	}
 
 	private function get_data_for_videos( $embedded_videos ) {
 
-		$youtube_videos = $this->get_youtube_videos( $embedded_videos );
-
+		$youtube_videos   = $this->get_youtube_videos( $embedded_videos );
 		$youtube_provider = Provider_Factory::get_provider( Provider_Factory::YOUTUBE );
 		$youtube_videos   = $youtube_provider->get_videos_data( $youtube_videos );
 
-		$vimeo_videos = $this->get_vimeo_videos( $embedded_videos );
-
+		$vimeo_videos   = $this->get_vimeo_videos( $embedded_videos );
 		$vimeo_provider = Provider_Factory::get_provider( Provider_Factory::VIMEO );
 		$vimeo_videos   = $vimeo_provider->get_videos_data( $vimeo_videos );
+
+		$jwplayer_videos   = $this->get_jw_player_videos( $embedded_videos );
+		$jwplayer_provider = Provider_Factory::get_provider( Provider_Factory::JWPLAYER );
+		$jwplayer_videos   = $jwplayer_provider->get_videos_data( $jwplayer_videos );
 
 		return array_merge( $youtube_videos, $vimeo_videos );
 
@@ -163,7 +166,7 @@ class Video_Processor {
 	 * @return array<Embedded_Video> Return array of embedded videos which are not in store.
 	 */
 	private function get_videos_without_existing_data( $storage, $post_id, $embedded_videos ) {
-		$videos_in_store    = $storage->get_all_videos( $post_id );
+		$videos_in_store     = $storage->get_all_videos( $post_id );
 		$video_urls_in_store = array_map( function ( $video ) {
 			return $video->id;
 		}, $videos_in_store );
@@ -178,7 +181,7 @@ class Video_Processor {
 			 * we need to fetch the data.
 			 */
 			return count( array_intersect(
-					$that->get_video_ids( array(  $embedded_video->get_url() ) ),
+					$that->get_video_ids( array( $embedded_video->get_url() ) ),
 					$video_ids_in_store
 				) ) === 0;
 		} );
@@ -219,6 +222,21 @@ class Video_Processor {
 
 			return strpos( $video_url, "vimeo.com" ) !== false;
 		} );
+	}
+
+	private function get_jw_player_videos( $embedded_videos ) {
+
+		return array_filter( $embedded_videos, function ( $embedded_video ) {
+			/**
+			 * it should have https://cdn.jwplayer.com/v2/media/ in the url
+			 *
+			 * @param $embedded_video Embedded_Video
+			 */
+			$video_url = $embedded_video->get_url();
+
+			return strpos( $video_url, 'https://cdn.jwplayer.com/v2/media/', 0 );
+		} );
+
 	}
 
 }
