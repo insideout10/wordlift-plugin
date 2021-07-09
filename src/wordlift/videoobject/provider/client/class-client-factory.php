@@ -20,6 +20,9 @@ class Client_Factory {
 		} else if ( self::VIMEO === $config ) {
 			return Vimeo_Client::get_instance();
 		}
+		else if ( self::JWPLAYER === $config ) {
+			return Jw_Player_Client::get_instance();
+		}
 
 	}
 }
