@@ -148,8 +148,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement [#1418](https://github.com/insideout10/wordlift-plugin/issues/1418): Support for different Youtube URL formats on VideoObject
 * Enhancement [#1415](https://github.com/insideout10/wordlift-plugin/issues/1415): Faceted search title pill HTML strip tags
 * Enhancement [#1406](https://github.com/insideout10/wordlift-plugin/issues/1406): No Vocabulary, make terms 1st class entities
+* Enhancement [#1378](https://github.com/insideout10/wordlift-plugin/issues/1378): Support for [Embed] shortcode videoobject
 
 * Fix [#1423](https://github.com/insideout10/wordlift-plugin/issues/1423): Search Keywords settings screen yielding an error.
+* Fix [#1377](https://github.com/insideout10/wordlift-plugin/issues/1377): Restore mapping link doesnt work
 
 = 3.31.7 (2021-06-30) =
 
