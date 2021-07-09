@@ -8,6 +8,7 @@ use Wordlift\Videoobject\Api\Rest_Controller;
 use Wordlift\Videoobject\Background_Process\Videoobject_Background_Process;
 use Wordlift\Videoobject\Background_Process\Videos_Data_Source;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
+use Wordlift\Videoobject\Filters\Embed_Shortcode_Capture;
 use Wordlift\Videoobject\Filters\Post_Filter;
 use Wordlift\Videoobject\Jsonld\Jsonld;
 use Wordlift\Videoobject\Pages\Import_Videos_Page;
@@ -50,6 +51,13 @@ class Loader extends Default_Loader {
 		$post_edit_screen->init();
 
 		new Import_Videos_Page();
+
+		/**
+		 * @since 3.32.0
+		 * Allow videoobject to capture embed shortcode.
+		 */
+		$embed_shortcode_capture = new Embed_Shortcode_Capture();
+		$embed_shortcode_capture->init();
 
 	}
 
