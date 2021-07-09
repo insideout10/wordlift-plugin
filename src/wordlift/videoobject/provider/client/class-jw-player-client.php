@@ -17,10 +17,17 @@ class Jw_Player_Client extends Singleton implements Client {
 
 		foreach ( $video_urls as $video_url ) {
 			$data = wp_remote_get( $video_url );
-			if ( ! is_wp_error( $data ) ) {
-				$videos_data[] = wp_remote_retrieve_body($data);
+			if ( is_wp_error( $data ) ) {
+				continue;
 			}
+			$json_body  = wp_remote_retrieve_body( $data );
+			$video_data = json_decode( $json_body, true );
+			if ( ! $video_data ) {
+				continue;
+			}
+			$videos_data[] = $video_data;
 		}
+
 		return $videos_data;
 
 	}

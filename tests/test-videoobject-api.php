@@ -108,7 +108,11 @@ EOF;
 
 	public function test_on_save_post_should_import_data_for_jw_player() {
 		$post_id = $this->factory()->post->create();
-		update_post_meta(  $post_id, '_jwppp-video-url-1', 'nT18k1bf' );
+		add_post_meta(  $post_id, '_jwppp-video-url-1', 'nT18k1bf' );
+		wp_update_post(array(
+			'post_content' => 'foo',
+			'ID' => $post_id
+		));
 		$this->validate_video_object_for_post_id( $post_id );
 	}
 

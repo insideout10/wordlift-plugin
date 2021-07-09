@@ -37,7 +37,7 @@ class Video_Processor {
 		$vimeo_provider = Provider_Factory::get_provider( Provider_Factory::VIMEO );
 		$vimeo_videos   = $vimeo_provider->get_videos_data( $vimeo_videos );
 
-		$jwplayer_videos   = $this->get_jw_player_videos( $post_id );
+		$jwplayer_videos   = $this->get_jw_player_videos( $embedded_videos );
 		$jwplayer_provider = Provider_Factory::get_provider( Provider_Factory::JWPLAYER );
 		$jwplayer_videos   = $jwplayer_provider->get_videos_data( $jwplayer_videos );
 
@@ -119,7 +119,6 @@ class Video_Processor {
 		$parser = Parser_Factory::get_parser_from_content( $post->post_content );
 
 		$embedded_videos = $parser->get_videos( $post_id );
-
 		/**
 		 * Filters the embedded videos on post contet, custom plugins can add their video urls
 		 * by constructing \Default_Embedded_Video or implement Embedded_Video class
@@ -224,21 +223,17 @@ class Video_Processor {
 		} );
 	}
 
-	private function get_jw_player_videos( $post_id ) {
-		// we cant reliably determine count for external plugin without
-		// this method.
-		global $wpdb;
-		$post_meta_table_name = $wpdb->postmeta;
-		$query                = $wpdb->prepare( "SELECT meta_value FROM $post_meta_table_name WHERE meta_key LIKE '_jwppp-video-url-%' AND post_id=%d", $post_id );
-		$video_ids            = $wpdb->get_col( $wpdb->query( $query ) );
+	private function get_jw_player_videos( $embedded_videos ) {
+		return array_filter( $embedded_videos, function ( $embedded_video ) {
+			/**
+			 * it should have vimeo.com in the url
+			 *
+			 * @param $embedded_video Embedded_Video
+			 */
+			$video_url = $embedded_video->get_url();
 
-		if ( ! $video_ids ) {
-			return array();
-		}
-
-		return array_map( function ( $video_id ) {
-			return 'https://cdn.jwplayer.com/v2/media/' . $video_id;
-		}, $video_ids );
+			return strpos( $video_url, 'https://cdn.jwplayer.com/v2/media/', 0 ) !== false;
+		} );
 	}
 
 
