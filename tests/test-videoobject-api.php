@@ -94,7 +94,7 @@ https://vimeo.com/162427937
 </div></figure>
 <!-- /wp:embed -->
 EOF;
-		$this->validate_video_object( $post_content );
+		$this->validate_video_object_for_post_content( $post_content );
 
 	}
 
@@ -102,7 +102,14 @@ EOF;
 		$post_content = <<<EOF
 [embed]https://vimeo.com/162427937[/embed]
 EOF;
-		$this->validate_video_object( $post_content );
+		$this->validate_video_object_for_post_content( $post_content );
+	}
+
+
+	public function test_on_save_post_should_import_data_for_jw_player() {
+		$post_id = $this->factory()->post->create();
+		update_post_meta(  $post_id, '_jwppp-video-url-1', 'nT18k1bf' );
+		$this->validate_video_object_for_post_id( $post_id );
 	}
 
 	public function test_on_save_post_with_multiple_youtube_videos_should_store_it() {
@@ -161,9 +168,16 @@ EOF;
 	/**
 	 * @param $post_content
 	 */
-	private function validate_video_object( $post_content ) {
+	private function validate_video_object_for_post_content( $post_content ) {
 		$post_id = $this->create_post_with_content( $post_content );
-		$videos  = Video_Storage_Factory::get_storage()->get_all_videos( $post_id );
+		$this->validate_video_object_for_post_id( $post_id );
+	}
+
+	/**
+	 * @param $post_id
+	 */
+	private function validate_video_object_for_post_id( $post_id ) {
+		$videos = Video_Storage_Factory::get_storage()->get_all_videos( $post_id );
 		// we should have 1 video on the storage.
 		$this->assertCount( 1, $videos );
 		/**
