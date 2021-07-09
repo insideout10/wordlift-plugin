@@ -27,7 +27,7 @@ class Video_Processor {
 		);
 	}
 
-	private function get_data_for_videos( $embedded_videos ) {
+	private function get_data_for_videos( $embedded_videos, $post_id ) {
 
 		$youtube_videos   = $this->get_youtube_videos( $embedded_videos );
 		$youtube_provider = Provider_Factory::get_provider( Provider_Factory::YOUTUBE );
@@ -37,11 +37,11 @@ class Video_Processor {
 		$vimeo_provider = Provider_Factory::get_provider( Provider_Factory::VIMEO );
 		$vimeo_videos   = $vimeo_provider->get_videos_data( $vimeo_videos );
 
-		$jwplayer_videos   = $this->get_jw_player_videos( $embedded_videos );
+		$jwplayer_videos   = $this->get_jw_player_videos( $post_id );
 		$jwplayer_provider = Provider_Factory::get_provider( Provider_Factory::JWPLAYER );
 		$jwplayer_videos   = $jwplayer_provider->get_videos_data( $jwplayer_videos );
 
-		return array_merge( $youtube_videos, $vimeo_videos );
+		return array_merge( $youtube_videos, $vimeo_videos, $jwplayer_videos );
 
 	}
 
@@ -147,7 +147,7 @@ class Video_Processor {
 			return;
 		}
 
-		$videos = $this->get_data_for_videos( $embedded_videos );
+		$videos = $this->get_data_for_videos( $embedded_videos, $post_id );
 
 		if ( ! $videos ) {
 			return;
@@ -224,19 +224,22 @@ class Video_Processor {
 		} );
 	}
 
-	private function get_jw_player_videos( $embedded_videos ) {
+	private function get_jw_player_videos( $post_id ) {
+		// we cant reliably determine count for external plugin without
+		// this method.
+		global $wpdb;
+		$post_meta_table_name = $wpdb->postmeta;
+		$query                = $wpdb->prepare( "SELECT meta_value FROM $post_meta_table_name WHERE meta_key LIKE '_jwppp-video-url-%' AND post_id=%d", $post_id );
+		$video_ids            = $wpdb->get_col( $wpdb->query( $query ) );
 
-		return array_filter( $embedded_videos, function ( $embedded_video ) {
-			/**
-			 * it should have https://cdn.jwplayer.com/v2/media/ in the url
-			 *
-			 * @param $embedded_video Embedded_Video
-			 */
-			$video_url = $embedded_video->get_url();
+		if ( ! $video_ids ) {
+			return array();
+		}
 
-			return strpos( $video_url, 'https://cdn.jwplayer.com/v2/media/', 0 );
-		} );
-
+		return array_map( function ( $video_id ) {
+			return 'https://cdn.jwplayer.com/v2/media/' . $video_id;
+		}, $video_ids );
 	}
+
 
 }

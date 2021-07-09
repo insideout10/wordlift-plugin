@@ -16,6 +16,18 @@ class Jw_Player extends Api_Provider {
 	 * @return array<Video>
 	 */
 	public function get_videos_data( $videos ) {
+
+		$video_urls = array_map( function ( $video ) {
+			return $video->get_url();
+		}, $videos );
+
+		$api_data = $this->api_client->get_data( $video_urls );
+
+		var_dump($api_data);
+
+
+		return array();
+
 	}
 
 }
