@@ -34,19 +34,13 @@ class VideoModal extends React.Component {
             }))
         }
 
-        // Use content url if embed url is not available on ui.
-        const embedUrl = video.embed_url !== '' ? video.embed_url : video.content_url;
-
         return (
             <React.Fragment>
                 <ModalHeader {...this.props} />
 
                 <WlContainer className={"wl-video-modal__modal_body"}>
                     <WlColumn className={"wl-col--width-70 wl-col--align-center wl-col--full-height"} isSticky={true}>
-                            <embed src={embedUrl} style={{
-                                "width": "100%",
-                                "height": "100%",
-                            }}/>
+                        {this.getEmbedElement(video)}
                     </WlColumn>
                     <WlColumn className={"wl-col--width-30"}>
                         <ModalField title={__("NAME", "wordlift")}
@@ -90,6 +84,22 @@ class VideoModal extends React.Component {
             </React.Fragment>)
     }
 
+
+    getEmbedElement(video) {
+
+        if ( video.embed_url ) {
+            return <embed src={video.embed_url} style={{
+                "width": "100%",
+                "height": "100%",
+            }}/>;
+        }
+
+        return <video src={video.content_url} style={{
+            "width": "100%",
+            "height": "100%",
+        }}/>
+
+    }
 
     render() {
         return (
