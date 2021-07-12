@@ -21,11 +21,13 @@ class Jw_Player_Client extends Singleton implements Client {
 				continue;
 			}
 			$json_body  = wp_remote_retrieve_body( $data );
+
 			$video_data = json_decode( $json_body, true );
 			if ( ! $video_data ) {
 				continue;
 			}
-			$videos_data[] = $video_data;
+			$video_data['id'] = $video_url;
+			$videos_data[]    = $video_data;
 		}
 
 		return $videos_data;

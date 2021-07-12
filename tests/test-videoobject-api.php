@@ -108,11 +108,11 @@ EOF;
 
 	public function test_on_save_post_should_import_data_for_jw_player() {
 		$post_id = $this->factory()->post->create();
-		add_post_meta(  $post_id, '_jwppp-video-url-1', 'nT18k1bf' );
-		wp_update_post(array(
+		add_post_meta( $post_id, '_jwppp-video-url-1', 'nT18k1bf' );
+		wp_update_post( array(
 			'post_content' => 'foo',
-			'ID' => $post_id
-		));
+			'ID'           => $post_id
+		) );
 		$this->validate_video_object_for_post_id( $post_id );
 	}
 
@@ -189,14 +189,14 @@ EOF;
 		 */
 		$video = $videos[0];
 		// check all of the properties are not null.
-		$this->assertNotNull( $video->id );
-		$this->assertNotNull( $video->name );
-		$this->assertNotNull( $video->description );
-		$this->assertNotNull( $video->thumbnail_urls );
-		$this->assertNotNull( $video->upload_date );
-		$this->assertNotNull( $video->duration );
-		$this->assertNotNull( $video->content_url );
-		$this->assertNotNull( $video->embed_url );
+		$this->assertNotNull( $video->id, 'Video id should not be null' );
+		$this->assertNotNull( $video->name, 'Video name should not be null' );
+		$this->assertNotNull( $video->description, 'Video description should not be null' );
+		$this->assertNotNull( $video->thumbnail_urls, 'Thumbnail urls should not be null' );
+		$this->assertNotNull( $video->upload_date, 'Upload date should be provided' );
+		$this->assertNotNull( $video->duration, 'Duration should be set' );
+		$this->assertNotNull( $video->content_url, 'Content url should be set' );
+		$this->assertNotNull( $video->embed_url, 'Embed url should be set' );
 	}
 
 }
