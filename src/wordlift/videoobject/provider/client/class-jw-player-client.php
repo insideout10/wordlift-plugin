@@ -37,7 +37,7 @@ class Jw_Player_Client extends Singleton implements Client {
 	public function get_video_ids( $video_urls ) {
 
 		return array_filter( $video_urls, function ( $item ) {
-			return strpos( $item, 'https://cdn.jwplayer.com/v2/media/', 0 );
+			return strpos( $item, 'https://cdn.jwplayer.com/v2/media/', 0 ) !== false;
 		} );
 
 	}
