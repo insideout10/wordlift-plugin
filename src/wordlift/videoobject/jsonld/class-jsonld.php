@@ -143,11 +143,14 @@ class Jsonld {
 				'name'         => $video->name,
 				'description'  => $description,
 				'contentUrl'   => $video->content_url,
-				'embedUrl'     => $video->embed_url,
 				'uploadDate'   => $video->upload_date,
 				'thumbnailUrl' => $video->thumbnail_urls,
 				'duration'     => $video->duration,
 			);
+
+			if ( $video->embed_url ) {
+				$single_jsonld['embedUrl'] = $video->embed_url;
+			}
 
 			if ( $video->views ) {
 				$single_jsonld['interactionStatistic'] = array(
