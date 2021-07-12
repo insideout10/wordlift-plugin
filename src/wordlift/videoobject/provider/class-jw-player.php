@@ -29,7 +29,7 @@ class Jw_Player extends Api_Provider {
 
 			if ( ! array_key_exists( 'playlist', $video_data )
 
-			     || is_array( $video_data['playlist'] )
+			     || ! is_array( $video_data['playlist'] )
 
 			     || count( $video_data['playlist'] ) === 0 ) {
 
@@ -61,6 +61,8 @@ class Jw_Player extends Api_Provider {
 			// high resolution.
 			$video->content_url = array_pop( $video_content_urls );
 
+			// We dont have embed url for JW Player.
+			$video->embed_url = '';
 
 			return $video;
 
