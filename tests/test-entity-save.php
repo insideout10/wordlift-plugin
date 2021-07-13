@@ -89,7 +89,7 @@ class Entity_Save_Test extends Wordlift_Unit_Test_Case {
 		Wordlift_Entity_Type_Service::get_instance()
 		                            ->set( $entity, 'http://schema.org/Article' );
 
-		// update the post
+		// update the post, we emulate this because we
 		wp_update_post( array(
 			'ID'           => $entity,
 			'post_content' => 'Entity converted to article'
