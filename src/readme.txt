@@ -144,12 +144,14 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.32.0 (2021-07-__) =
 
+* Enhancement [#1425](https://github.com/insideout10/wordlift-plugin/issues/1425): Videoobject support for JW Player
 * Enhancement [#1420](https://github.com/insideout10/wordlift-plugin/issues/1420): Should not add VideoObject if it is a descendant of article
 * Enhancement [#1418](https://github.com/insideout10/wordlift-plugin/issues/1418): Support for different Youtube URL formats on VideoObject
 * Enhancement [#1415](https://github.com/insideout10/wordlift-plugin/issues/1415): Faceted search title pill HTML strip tags
 * Enhancement [#1406](https://github.com/insideout10/wordlift-plugin/issues/1406): No Vocabulary, make terms 1st class entities
 * Enhancement [#1378](https://github.com/insideout10/wordlift-plugin/issues/1378): Support for [Embed] shortcode videoobject
 
+* Fix [#1429](https://github.com/insideout10/wordlift-plugin/issues/1429): When the entity type is switching to only "Article" then we should erase all the synonyms
 * Fix [#1423](https://github.com/insideout10/wordlift-plugin/issues/1423): Search Keywords settings screen yielding an error.
 * Fix [#1377](https://github.com/insideout10/wordlift-plugin/issues/1377): Restore mapping link doesnt work
 
