@@ -5,9 +5,16 @@
 }
 
 #wl-entity-type__checklist {
+  border: 1px solid rgb(140, 143, 148);
+  border-radius: 4px;
+  background: white;
+  width: 95%;
   height: 150px;
   overflow-y: scroll;
-  &>li {
-    list-style-type:none;
+  ul{
+    margin: 8px;
+    li {
+      list-style-type:none;
+    }
   }
 }

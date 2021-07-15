@@ -41,7 +41,7 @@ EOF;
 
 		}
 
-		return $terms_html;
+		return '<ul>' . $terms_html . '</ul>';
 	}
 
 
