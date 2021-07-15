@@ -42,6 +42,7 @@ class Term_Link extends Default_Link {
 		if ( ! $term ) {
 			return false;
 		}
+
 		return $term->term_id;
 	}
 
@@ -51,5 +52,9 @@ class Term_Link extends Default_Link {
 
 	public function get_permalink( $id ) {
 		return get_term_link( $id );
+	}
+
+	public function get_edit_page_link( $id ) {
+		return get_edit_term_link( $id );
 	}
 }

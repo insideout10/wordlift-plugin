@@ -1,4 +1,7 @@
 <?php
+
+use Wordlift\Link\Object_Link_Provider;
+
 /**
  * Provides functions and AJAX endpoints to support redirects needed by the client-side layer.
  *
@@ -93,8 +96,10 @@ class Wordlift_Redirect_Service {
 			) );
 		}
 
-		// Check if the entity exists.
-		if ( ! ( $entity = $this->entity_uri_service->get_entity( $entity_uri ) ) ) {
+		// Check if the entity_id exists.
+		$object_link_provider = Object_Link_Provider::get_instance();
+
+		if ( ! ( $entity_id = $object_link_provider->get_id_by_uri( $entity_uri ) ) ) {
 			wp_die( __( 'Entity not found.', 'wordlift' ), __( 'Entity not found.', 'wordlift' ), array(
 				'response'  => 404,
 				'back_link' => true,
@@ -103,13 +108,16 @@ class Wordlift_Redirect_Service {
 
 		switch ( $target ) {
 			case 'edit':
-				$redirect_url = get_edit_post_link( $entity, 'none' );
+				$redirect_url = $object_link_provider->get_edit_page_link( $entity_id, $entity_uri );
 				break;
 			case 'lod':
 				$redirect_url = self::LOD_ENDPOINT . '/lodview/?IRI=' . urlencode( $entity_uri );
 				break;
 			case 'permalink':
-				$redirect_url = get_permalink( $entity );
+				$redirect_url = $object_link_provider->get_permalink(
+					$entity_id,
+					$object_link_provider->get_object_type( $entity_uri )
+				);
 				break;
 			default:
 				wp_die( 'Unsupported redirect target.' );

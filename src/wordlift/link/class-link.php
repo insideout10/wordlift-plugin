@@ -19,5 +19,12 @@ interface Link {
 
 	public function get_permalink( $id );
 
-
+	/**
+	 * Return the edit page link.
+	 *
+	 * @param $id
+	 *
+	 * @return string
+	 */
+	public function get_edit_page_link( $id );
 }
