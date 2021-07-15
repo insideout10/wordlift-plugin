@@ -9,12 +9,17 @@
   border-radius: 4px;
   background: white;
   width: 95%;
-  height: 150px;
-  overflow-y: scroll;
+  height: 160px;
   ul{
-    margin: 8px;
+    margin: 4px 8px;
+    overflow-y: scroll;
+    height: 120px;
     li {
       list-style-type:none;
     }
   }
+}
+
+#wl_entity_type_search{
+  width: 100%;
 }
