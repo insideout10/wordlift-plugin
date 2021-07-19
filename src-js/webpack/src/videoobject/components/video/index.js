@@ -11,7 +11,7 @@ import {WlColumn} from "../../../mappings/blocks/wl-column";
 import {WlContainer} from "../../../mappings/blocks/wl-container";
 import WlActionButton from "../../../faq/components/wl-action-button";
 import {openModal} from "../../actions";
-import {vimeoIcon, youtubeIcon} from "./icons";
+import {jwPlayerIcon, vimeoIcon, youtubeIcon} from "./icons";
 
 
 class Video extends React.Component {
@@ -30,6 +30,8 @@ class Video extends React.Component {
             return youtubeIcon({height: 24, width: 24})
         } else if (video.content_url.includes("vimeo.com")) {
             return vimeoIcon({height: 24, width: 24})
+        } else if (video.content_url.includes("jwplayer.com")) {
+            return jwPlayerIcon({height: 24, width: 24})
         }
 
     }

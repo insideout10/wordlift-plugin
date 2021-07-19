@@ -94,24 +94,26 @@ https://vimeo.com/162427937
 </div></figure>
 <!-- /wp:embed -->
 EOF;
-		$post_id      = $this->create_post_with_content( $post_content );
-		$videos       = Video_Storage_Factory::get_storage()->get_all_videos( $post_id );
-		// we should have 1 video on the storage.
-		$this->assertCount( 1, $videos );
-		/**
-		 * @var $video Video
-		 */
-		$video = $videos[0];
-		// check all of the properties are not null.
-		$this->assertNotNull( $video->id );
-		$this->assertNotNull( $video->name );
-		$this->assertNotNull( $video->description );
-		$this->assertNotNull( $video->thumbnail_urls );
-		$this->assertNotNull( $video->upload_date );
-		$this->assertNotNull( $video->duration );
-		$this->assertNotNull( $video->content_url );
-		$this->assertNotNull( $video->embed_url );
+		$this->validate_video_object_for_post_content( $post_content );
 
+	}
+
+	public function test_on_save_post_with_embed_shortcode_should_store_it() {
+		$post_content = <<<EOF
+[embed]https://vimeo.com/162427937[/embed]
+EOF;
+		$this->validate_video_object_for_post_content( $post_content );
+	}
+
+
+	public function test_on_save_post_should_import_data_for_jw_player() {
+		$post_id = $this->factory()->post->create();
+		add_post_meta( $post_id, '_jwppp-video-url-1', 'nT18k1bf' );
+		wp_update_post( array(
+			'post_content' => 'foo',
+			'ID'           => $post_id
+		) );
+		$this->validate_video_object_for_post_id( $post_id );
 	}
 
 	public function test_on_save_post_with_multiple_youtube_videos_should_store_it() {
@@ -165,6 +167,36 @@ EOF;
 
 		$this->assertSame( array( '3GhQqFVMJ_o' ), $video_ids, 'Video with playlist url should work properly' );
 
+	}
+
+	/**
+	 * @param $post_content
+	 */
+	private function validate_video_object_for_post_content( $post_content ) {
+		$post_id = $this->create_post_with_content( $post_content );
+		$this->validate_video_object_for_post_id( $post_id );
+	}
+
+	/**
+	 * @param $post_id
+	 */
+	private function validate_video_object_for_post_id( $post_id ) {
+		$videos = Video_Storage_Factory::get_storage()->get_all_videos( $post_id );
+		// we should have 1 video on the storage.
+		$this->assertCount( 1, $videos );
+		/**
+		 * @var $video Video
+		 */
+		$video = $videos[0];
+		// check all of the properties are not null.
+		$this->assertNotNull( $video->id, 'Video id should not be null' );
+		$this->assertNotNull( $video->name, 'Video name should not be null' );
+		$this->assertNotNull( $video->description, 'Video description should not be null' );
+		$this->assertNotNull( $video->thumbnail_urls, 'Thumbnail urls should not be null' );
+		$this->assertNotNull( $video->upload_date, 'Upload date should be provided' );
+		$this->assertNotNull( $video->duration, 'Duration should be set' );
+		$this->assertNotNull( $video->content_url, 'Content url should be set' );
+		$this->assertNotNull( $video->embed_url, 'Embed url should be set' );
 	}
 
 }

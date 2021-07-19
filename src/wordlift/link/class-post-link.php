@@ -67,4 +67,8 @@ class Post_Link extends Default_Link {
 	public function get_permalink( $id ) {
 		return get_permalink( $id );
 	}
+
+	public function get_edit_page_link( $id ) {
+		return get_edit_post_link( $id, 'none' );
+	}
 }

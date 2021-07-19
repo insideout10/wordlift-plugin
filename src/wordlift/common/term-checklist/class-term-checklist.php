@@ -41,7 +41,7 @@ EOF;
 
 		}
 
-		return $terms_html;
+		return '<input type="text" id="wl_entity_type_search" placeholder="Search Entity Types.." /><ul id="wl-entity-type__ul">' . $terms_html . '</ul>';
 	}
 
 

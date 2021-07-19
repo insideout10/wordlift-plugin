@@ -64,7 +64,23 @@ class Object_Link_Provider extends Singleton {
 				return $type;
 			}
 		}
+
 		return Object_Type_Enum::UNKNOWN;
+	}
+
+	public function get_id_by_uri( $uri ) {
+		$link_providers = $this->link_providers;
+		foreach ( $link_providers as $provider ) {
+			/**
+			 * @var $provider Link
+			 */
+			$id = $provider->get_id( $uri );
+			if ( $id ) {
+				return $id;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -104,10 +120,34 @@ class Object_Link_Provider extends Singleton {
 
 	public function get_permalink( $id, $object_type ) {
 		$provider = $this->get_provider( $object_type );
-		if (  ! $provider ) {
+		if ( ! $provider ) {
 			return false;
 		}
+
 		return $provider->get_permalink( $id );
+	}
+
+	/**
+	 * Return the edit term page link.
+	 *
+	 * @param $object_id
+	 * @param $uri
+	 *
+	 * @return string | false
+	 * @since 3.32.0
+	 */
+	public function get_edit_page_link( $object_id, $uri ) {
+
+		$object_type = $this->get_object_type( $uri );
+
+		$provider = $this->get_provider( $object_type );
+
+		if ( ! $provider ) {
+			return false;
+		}
+
+		return $provider->get_edit_page_link( $object_id );
+
 	}
 
 
