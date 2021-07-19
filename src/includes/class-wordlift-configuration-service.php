@@ -433,6 +433,14 @@ class Wordlift_Configuration_Service {
 	public function set_package_type( $value ) {
 
 		$this->set( 'wl_advanced_settings', self::PACKAGE_TYPE, $value );
+
+
+		/**
+		 * @since ?.??.??
+		 * Action fires after the package type has been changed
+		 */
+		do_action( 'wl_package_type_changed' , $value );
+
 	}
 
 	/**
