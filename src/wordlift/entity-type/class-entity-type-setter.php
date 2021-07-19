@@ -25,56 +25,91 @@ class Entity_Type_Setter {
 	);
 
 
-	public static function get_starter_features() {
+	public static function get_starter_entity_types() {
 		return array(
-			'person' => array(
+			array(
 				'label'       => 'Person',
 				'description' => 'A person (or a music artist).',
 			),
-			'thing'  => array(
+			array(
 				'label'       => 'Thing',
 				'description' => 'A generic thing (something that doesn\'t fit in the previous definitions.',
 			),
 
-			'place' => array(
+			array(
 				'label'       => 'Place',
 				'description' => 'A place.',
 			),
 
-			'creative-work' => array(
+			array(
 				'label'       => 'CreativeWork',
 				'description' => 'A creative work (or a Music Album).',
 			),
-
-			'organization' => array(
+			array(
 				'label'       => 'Organization',
 				'description' => 'An organization, including a government or a newspaper.',
 			),
 
-			'article' => array(
+			array(
 				'label'       => 'Article',
 				'description' => 'An article, such as a news article or piece of investigative report. Newspapers and magazines have articles of many different types and this is intended to cover them all.'
 			),
 
-			'web-site' => array(
+			array(
 				'label'       => 'WebSite',
 				'description' => 'A WebSite is a set of related web pages and other items typically served from a single web domain and accessible via URLs.'
 			),
 
-			'news-article' => array(
+			array(
 				'label'       => 'NewsArticle',
 				'description' => 'A NewsArticle is an article whose content reports news, or provides background context and supporting materials for understanding the news.'
 			),
 
-			'about-page' => array(
+			array(
 				'label'       => 'AboutPage',
 				'description' => 'An About page.'
 			),
 
-			'contact-page' => array(
+			array(
 				'label'       => 'ContactPage',
 				'description' => 'A Contact Page.'
 			)
+
+		);
+	}
+
+
+	public static function get_professional_entity_types() {
+		return array(
+
+			array(
+				'label'       => 'FAQPage',
+				'description' => 'A FAQPage is a WebPage presenting one or more "Frequently asked questions".'
+			),
+			array(
+				'label'       => 'LocalBusiness',
+				'description' => 'A particular physical business or branch of an organization. Examples of LocalBusiness include a restaurant, a particular branch of a restaurant chain, a branch of a bank, a medical practice, a club, a bowling alley, etc.'
+			),
+			array(
+				'label'       => 'Recipe',
+				'description' => 'A recipe'
+			),
+			array(
+				'label'       => 'PodcastEpisode',
+				'description' => 'A single episode of a podcast series.'
+			),
+			array(
+				'label'       => 'Course',
+				'description' => 'A description of an educational course which may be offered as distinct instances at which take place at different times or take place at different locations, or be offered through different media or modes of study. '
+			),
+			array(
+				'label'       => 'Event',
+				'description' => 'An event happening at a certain time and location, such as a concert, lecture, or festival.'
+			),
+			array(
+				'label'       => 'Review',
+				'description' => 'A review of an item - for example, of a restaurant, movie, or store.'
+			),
 
 		);
 	}
@@ -84,7 +119,12 @@ class Entity_Type_Setter {
 
 		switch ( $package_type ) {
 			case self::STARTER_PLAN:
-				return self::get_starter_features();
+				return self::get_starter_entity_types();
+			case self::PROFESSIONAL_PLAN:
+				return array_merge(
+					self::get_starter_entity_types(),
+					self::get_professional_entity_types()
+				);
 			default:
 				return array();
 
@@ -116,12 +156,11 @@ class Entity_Type_Setter {
 		$this->remove_all_entity_types();
 
 		// Repopulate the ones returned by package type.
-		foreach ( $entity_types_data as $term_slug => $term_data ) {
+		foreach ( $entity_types_data as $term_data ) {
 			wp_insert_term(
 				$term_data['label'],
 				Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				array(
-					'slug' => $term_slug,
 					'description' => $term_data['description']
 				)
 			);
@@ -138,7 +177,7 @@ class Entity_Type_Setter {
 
 		$entity_types = Terms_Compat::get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
 			'hide_empty' => false,
-			'fields' => 'ids'
+			'fields'     => 'ids'
 		) );
 		foreach ( $entity_types as $entity_type_id ) {
 			wp_delete_term( $entity_type_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
