@@ -104,4 +104,37 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 	}
 
 
+	public function test_when_package_type_is_not_recognized_dont_alter_entity_types() {
+
+
+		$before_entity_types = Terms_Compat::get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
+			'hide_empty' => false,
+		) );
+
+		$before_entity_type_labels = array_map( function ( $term ) {
+			return $term->name;
+		}, $before_entity_types );
+
+		sort( $before_entity_type_labels );
+
+		// we set an unknown value to package type, for now we only recognize wl_starter, wl_professional, wl_business
+		// if we dont have any of these value then we shouldnt alter the entity types.
+		$this->configuration_service->set_package_type( 'professional' );
+
+		$after_entity_types = Terms_Compat::get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
+			'hide_empty' => false,
+		) );
+
+		$after_entity_type_labels = array_map( function ( $term ) {
+			return $term->name;
+		}, $after_entity_types );
+
+		sort( $after_entity_type_labels );
+
+
+		$this->assertSame( $before_entity_type_labels, $after_entity_type_labels, 'Entity types should not be affected by unknown package type' );
+
+	}
+
+
 }
