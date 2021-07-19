@@ -120,7 +120,10 @@ class Entity_Type_Setter {
 		switch ( $package_type ) {
 			case self::STARTER_PLAN:
 				return self::get_starter_entity_types();
+			case self::BUSINESS_PLAN:
 			case self::PROFESSIONAL_PLAN:
+				// We return same entity types for professional and business plans.
+				// Business plan should have sync schema ui feature enabled, to sync all the entity types.
 				return array_merge(
 					self::get_starter_entity_types(),
 					self::get_professional_entity_types()
