@@ -22,10 +22,10 @@ class Wordlift_Duration_Property_Service extends Wordlift_Simple_Property_Servic
 	/**
 	 * {@inheritdoc}
 	 */
-	function get( $post_id, $meta_key ) {
+	function get( $id, $meta_key, $type ) {
 
 		// Get the values and filter out the empty ones (or the ones with 00:00).
-		$values = array_filter( parent::get( $post_id, $meta_key ), function ( $item ) {
+		$values = array_filter( parent::get( $id, $meta_key, $type ), function ( $item ) {
 			return ! empty( $item ) && '00:00' !== $item;
 		} );
 

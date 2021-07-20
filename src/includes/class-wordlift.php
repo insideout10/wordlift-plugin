@@ -15,6 +15,9 @@
 use Wordlift\Admin\Admin_User_Option;
 use Wordlift\Admin\Key_Validation_Notice;
 use Wordlift\Admin\Top_Entities;
+use Wordlift\Analysis\Entity_Provider\Entity_Provider_Registry;
+use Wordlift\Analysis\Entity_Provider\Post_Entity_Provider;
+use Wordlift\Analysis\Entity_Provider\Term_Entity_Provider;
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 use Wordlift\Autocomplete\All_Autocomplete_Service;
 use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
@@ -26,6 +29,7 @@ use Wordlift\Duplicate_Markup_Remover\Videoobject_Duplicate_Remover;
 use Wordlift\Entity\Entity_Helper;
 use Wordlift\Entity\Entity_No_Index_Flag;
 use Wordlift\Entity\Entity_Rest_Service;
+use Wordlift\Entity_Type\Entity_Type_Change_Handler;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Post_Type_Hook;
@@ -60,6 +64,7 @@ use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
 use Wordlift\Templates\Templates_Ajax_Endpoint;
 use Wordlift\Videoobject\Loader;
 use Wordlift\Vocabulary\Vocabulary_Loader;
+use Wordlift\Vocabulary_Terms\Vocabulary_Terms_Loader;
 use Wordlift\Widgets\Async_Template_Decorator;
 
 /**
@@ -768,7 +773,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.31.7';
+		$this->version     = '3.32.0';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1107,7 +1112,6 @@ class Wordlift {
 		/** Admin Pages */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-user-profile-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-status-page.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-type-admin-service.php';
 
 		/**
@@ -1299,8 +1303,6 @@ class Wordlift {
 
 		$jsonld_cache                            = new Ttl_Cache( 'jsonld', 86400 );
 		$this->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter( $this->postid_to_jsonld_converter, $this->configuration_service, $jsonld_cache );
-		$this->jsonld_service                    = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter );
-
 		/*
 		 * Load the `Wordlift_Term_JsonLd_Adapter`.
 		 *
@@ -1310,6 +1312,9 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-term-jsonld-adapter.php';
 		$term_jsonld_adapter = new Wordlift_Term_JsonLd_Adapter( $this->entity_uri_service, $this->jsonld_service );
+		$this->jsonld_service                    = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter, $term_jsonld_adapter );
+
+
 		$jsonld_service      = new Jsonld_Service(
 			$this->jsonld_service,
 			$term_jsonld_adapter,
@@ -1487,17 +1492,6 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch/intf-wordlift-batch-operation.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch/class-wordlift-batch-operation-ajax-adapter.php';
-
-		/*
-		 * Add the Search Keywords taxonomy to manage the Search Keywords on WLS.
-		 *
-		 * @link https://github.com/insideout10/wordlift-plugin/issues/761
-		 *
-		 * @since 3.20.0
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/search-keywords/class-wordlift-search-keyword-taxonomy.php';
-		new Wordlift_Search_Keyword_Taxonomy( $api_service );
-
 		/*
 		 * Load the Mappings JSON-LD post processing.
 		 *
@@ -1546,12 +1540,31 @@ class Wordlift {
 		 * Create a singleton for the Analysis_Response_Ops_Factory.
 		 */
 		$entity_helper = new Entity_Helper( $this->entity_uri_service, $this->entity_service );
+		/**
+		 * @since 3.32.0
+		 * Initialize a local entity provider which acts as an abstraction layer
+		 * between the different types of objects in wordpress.
+		 */
+		$entity_provider_registry = new Entity_Provider_Registry();
+
+		/**
+		 * @since 3.32.0
+		 * The post entity provider has the legacy code which provides the entity
+		 * if the object is post {@link \Wordlift\Object_Type_Enum::POST}
+		 */
+		new Post_Entity_Provider($this->entity_uri_service,
+			$this->entity_type_service, $this->storage_factory->post_images() );
+		/**
+		 * @since 3.32.0
+		 * The term entity provider provides the entity
+		 * if the object is term {@link \Wordlift\Object_Type_Enum::POST}
+		 */
+		new Term_Entity_Provider();
+
 		new Analysis_Response_Ops_Factory(
 			$this->entity_uri_service,
-			$this->entity_service,
-			$this->entity_type_service,
-			$this->storage_factory->post_images(),
-			$entity_helper
+			$entity_helper,
+			$entity_provider_registry
 		);
 
 		/** WL Autocomplete. */
@@ -1638,6 +1651,17 @@ class Wordlift {
 		new Videoobject_Duplicate_Remover();
 		$synonym_loader = new \Wordlift\Synonym\Loader();
 		$synonym_loader->init_feature();
+		/**
+		 * @since 3.32.0
+		 * Create loader for vocabulary terms.
+		 */
+		$vocabulary_terms_loader = new Vocabulary_Terms_Loader( $this->entity_type_service, $property_getter );
+		$vocabulary_terms_loader->init_feature();
+
+		new Entity_Type_Change_Handler(
+			$this->entity_service,
+			$this->entity_type_service
+		);
 	}
 
 	/**

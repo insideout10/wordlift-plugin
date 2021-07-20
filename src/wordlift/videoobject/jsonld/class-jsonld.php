@@ -7,6 +7,7 @@
 namespace Wordlift\Videoobject\Jsonld;
 
 
+use Wordlift\Jsonld\Jsonld_Article_Wrapper;
 use Wordlift\Videoobject\Data\Video\Video;
 use Wordlift\Videoobject\Data\Video_Storage\Storage;
 
@@ -40,8 +41,12 @@ class Jsonld {
 		}
 
 		$type = $current_item['@type'];
-		if ( ( is_string( $type ) && $type === 'Article' ) ||
-		     ( is_array( $type ) && in_array( 'Article', $type ) ) ) {
+		if ( is_string( $type ) ) {
+			$type = array( $type );
+		}
+		// If its a article or descendant of article, then dont add the
+		// videoobject in this hook, they will be already added to video property.
+		if ( array_intersect( Jsonld_Article_Wrapper::$article_types, $type ) ) {
 			return $jsonld;
 		}
 
@@ -138,11 +143,14 @@ class Jsonld {
 				'name'         => $video->name,
 				'description'  => $description,
 				'contentUrl'   => $video->content_url,
-				'embedUrl'     => $video->embed_url,
 				'uploadDate'   => $video->upload_date,
 				'thumbnailUrl' => $video->thumbnail_urls,
 				'duration'     => $video->duration,
 			);
+
+			if ( $video->embed_url ) {
+				$single_jsonld['embedUrl'] = $video->embed_url;
+			}
 
 			if ( $video->views ) {
 				$single_jsonld['interactionStatistic'] = array(

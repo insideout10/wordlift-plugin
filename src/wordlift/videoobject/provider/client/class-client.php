@@ -6,7 +6,6 @@ namespace Wordlift\Videoobject\Provider\Client;
  * This acts as interface for api clients
  */
 interface Client {
-
 	/**
 	 *
 	 * @param $video_urls array<string> Array of urls.
@@ -31,4 +30,13 @@ interface Client {
 	 * @return string
 	 */
 	public function get_api_url();
+
+
+	/**
+	 * Get video ids from URLs.
+	 * @param $video_urls array<string>
+	 * @return array<string>
+	 */
+	public function get_video_ids(  $video_urls  );
+
 }

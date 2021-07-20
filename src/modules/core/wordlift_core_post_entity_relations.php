@@ -7,6 +7,8 @@
  * @subpackage Wordlift/modules/core
  */
 
+use Wordlift\Object_Type_Enum;
+
 /**
  * Checks if a relation is supported
  *
@@ -53,11 +55,12 @@ function wl_core_get_relation_instances_table_name() {
  * @param int $subject_id The post ID | The entity post ID.
  * @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
  * @param int $object_id The entity post ID.
- *
+ * @param int $subject_type Subject type ( post or comment or user or term ), defaults to {@link Object_Type_Enum::POST}
+ * @param int $object_type Object type ( post or comment or user or term ), defaults to {@link Object_Type_Enum::POST}
  * @return integer|boolean Return then relation instance ID or false.
  * @uses   $wpdb->replace() to perform the query
  */
-function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
+function wl_core_add_relation_instance( $subject_id, $predicate, $object_id, $subject_type = Object_Type_Enum::POST, $object_type = Object_Type_Enum::POST ) {
 
 	// Checks on subject and object
 	if ( ! is_numeric( $subject_id ) || ! is_numeric( $object_id ) ) {
@@ -86,8 +89,10 @@ function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
 			'subject_id' => $subject_id,
 			'predicate'  => $predicate,
 			'object_id'  => $object_id,
+			'subject_type' => $subject_type,
+			'object_type' => $object_type,
 		),
-		array( '%d', '%s', '%d' )
+		array( '%d', '%s', '%d', '%d', '%d' )
 	);
 
 	/**

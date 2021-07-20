@@ -7,6 +7,9 @@
  * @subpackage Wordlift/tests
  */
 
+use Wordlift\Metabox\Wl_Metabox;
+use Wordlift\Object_Type_Enum;
+
 /**
  * Define the {@link WL_Metabox_Recipe_Test} class.
  *
@@ -33,10 +36,10 @@ class WL_Metabox_Recipe_Test extends Wordlift_Unit_Test_Case {
 
 		// Create a Metabox instance and load the fields.
 		$metabox = new WL_Metabox();
-		$metabox->instantiate_fields( $entity_post_id );
+		$metabox->instantiate_fields( $entity_post_id, Object_Type_Enum::POST );
 
 		// Check that the fields are all `WL_Metabox_Field`s.
-		$this->assertContainsOnlyInstancesOf( 'WL_Metabox_Field', $metabox->fields );
+		$this->assertContainsOnlyInstancesOf( 'Wordlift\Metabox\Field\WL_Metabox_Field', $metabox->fields );
 
 		// Check that the recipe fields are there.
 		$this->assertNotNull( $this->get_by_meta_name( $metabox->fields, 'wl_schema_recipe_cuisine' ) );
@@ -54,14 +57,14 @@ class WL_Metabox_Recipe_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Get a field given its meta name.
 	 *
-	 * @since 3.14.0
-	 *
-	 * @param array  $fields An array of {@link WL_Metabox_Field}s.
+	 * @param array  $fields An array of {@link Wl_Metabox_Field}s.
 	 * @param string $name   The meta name.
 	 *
-	 * @return WL_Metabox_Field|null The {@link WL_Metabox_Field} or null if not found.
+	 * @return WL_Metabox_Field|null The {@link Wl_Metabox_Field} or null if not found.
 	 *
 	 * @group metabox
+	 *@since 3.14.0
+	 *
 	 */
 	private function get_by_meta_name( $fields, $name ) {
 

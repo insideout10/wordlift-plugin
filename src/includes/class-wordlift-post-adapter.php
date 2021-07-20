@@ -7,6 +7,9 @@
  * @subpackage Wordlift/admin
  */
 
+use Wordlift\Link\Object_Link_Provider;
+use Wordlift\Object_Type_Enum;
+
 /**
  * Define the {@link Wordlift_Post_Adatpter}.
  *
@@ -91,8 +94,10 @@ class Wordlift_Post_Adapter {
 	 * @since 3.20.0
 	 *
 	 */
-	public static function get_production_permalink( $post_id ) {
+	public static function get_production_permalink( $post_id, $object_type = Object_Type_Enum::POST ) {
 
+		$object_link_service = Object_Link_Provider::get_instance();
+		$permalink           = $object_link_service->get_permalink( $post_id, $object_type );
 		/**
 		 * WordPress 4.4 doesn't support meta queries for terms, therefore we only support post permalinks here.
 		 *
@@ -101,8 +106,6 @@ class Wordlift_Post_Adapter {
 		 */
 		global $wp_version;
 		if ( version_compare( $wp_version, '4.5', '<' ) ) {
-			$permalink = get_permalink( $post_id );
-
 			return apply_filters( 'wl_production_permalink', $permalink, $post_id, self::TYPE_ENTITY_LINK, null );
 		}
 
@@ -121,10 +124,10 @@ class Wordlift_Post_Adapter {
 		 *
 		 */
 
-		// Get all the URIs for the entity, i.e. itemid and sameAs.
-		$uris = array_merge(
-			(array) Wordlift_Entity_Service::get_instance()->get_uri( $post_id ),
-			get_post_meta( $post_id, Wordlift_Schema_Service::FIELD_SAME_AS )
+
+		$uris = $object_link_service->get_same_as_uris(
+			$post_id,
+			$object_type
 		);
 
 		// Only try to link a term if `WL_ENABLE_TERM_LINKING` is enabled.
@@ -141,15 +144,13 @@ class Wordlift_Post_Adapter {
 			) );
 		}
 
+		$type = self::TYPE_ENTITY_LINK;
+		$term = null;
 		// If found use the term link, otherwise the permalink.
 		if ( 1 === count( $terms ) ) {
 			$term      = current( $terms );
 			$permalink = get_term_link( $term );
 			$type      = self::TYPE_TERM_LINK;
-		} else {
-			$term      = null;
-			$permalink = get_permalink( $post_id );
-			$type      = self::TYPE_ENTITY_LINK;
 		}
 
 		/**
@@ -229,7 +230,7 @@ class Wordlift_Post_Adapter {
 		if ( function_exists( 'wpml_get_language_information' ) ) {
 			// WPML handling
 			$post_language = wpml_get_language_information( $this->post_id );
-			$language = $post_language['locale'];
+			$language      = $post_language['locale'];
 		} else if ( function_exists( 'pll_get_post_language' ) ) {
 			// Polylang handling
 			$language = pll_get_post_language( $this->post_id, 'locale' );
@@ -237,7 +238,7 @@ class Wordlift_Post_Adapter {
 			$language = get_locale();
 		}
 
-		return str_replace('_','-',$language );
+		return str_replace( '_', '-', $language );
 	}
 
 	/**

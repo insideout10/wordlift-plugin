@@ -8,6 +8,10 @@
  * @package Wordlift
  */
 
+use Wordlift\Jsonld\Post_Reference;
+use Wordlift\Jsonld\Reference;
+use Wordlift\Relation\Object_Relation_Service;
+
 /**
  * Define the {@link Wordlift_Post_To_Jsonld_Converter} class.
  *
@@ -42,6 +46,10 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * @var false
 	 */
 	private $disable_convert_filters;
+	/**
+	 * @var Object_Relation_Service
+	 */
+	private $object_relation_service;
 
 	/**
 	 * Wordlift_Post_To_Jsonld_Converter constructor.
@@ -60,7 +68,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 		$this->configuration_service   = $configuration_service;
 		$this->disable_convert_filters = $disable_convert_filters;
-
+		$this->object_relation_service = Object_Relation_Service::get_instance();
 		// Set a reference to the logger.
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Post_To_Jsonld_Converter' );
 
@@ -82,7 +90,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * found while processing the post is set in the $references array.
 	 *
 	 * @param int $post_id The post id.
-	 * @param array $references An array of entity references.
+	 * @param array<Reference> $references An array of entity references.
 	 * @param array $references_infos
 	 *
 	 * @return array A JSON-LD array.
@@ -181,13 +189,20 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 			// If the entity is in the title, then it should be an `about`.
 			foreach ( $references as $reference ) {
-
-				// Get the entity labels.
-				$labels = $this->entity_service->get_labels( $reference );
+				/**
+				 * @var $reference Reference
+				 */
+				if (  $reference instanceof  Post_Reference ) {
+					// Get the entity labels.
+					$labels = $this->entity_service->get_labels( $reference->get_id() );
+				}
+				else {
+					$labels = array();
+				}
 
 				// Get the entity URI.
 				$item = array(
-					'@id' => $this->entity_service->get_uri( $reference ),
+					'@id' => $this->entity_service->get_uri( $reference->get_id(), $reference->get_type() ),
 				);
 
 				$escaped_labels = array_map( function ( $value ) {
@@ -203,6 +218,8 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 				} else {
 					$mentions[] = $item;
 				}
+
+
 			}
 
 			// If we have abouts, assign them to the JSON-LD.

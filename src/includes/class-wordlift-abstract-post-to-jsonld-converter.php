@@ -9,6 +9,13 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Jsonld\Post_Reference;
+use Wordlift\Jsonld\Reference;
+use Wordlift\Jsonld\Term_Reference;
+use Wordlift\Object_Type_Enum;
+use Wordlift\Relation\Object_Relation_Service;
+use Wordlift\Relation\Term_Relation_Service;
+
 /**
  * Define the {@link Wordlift_Abstract_Post_To_Jsonld_Converter} class.
  *
@@ -116,7 +123,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		//		// Get the entity @type. We consider `post` BlogPostings.
 		//		$type = $this->entity_type_service->get( $post_id );
 		$types = $this->entity_type_service->get_names( $post_id );
-		$type = self::make_one( $types );
+		$type  = self::make_one( $types );
 
 		// Prepare the response.
 		$jsonld = array(
@@ -165,7 +172,8 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		// Get the entities referenced by this post and set it to the `references`
 		// array so that the caller can do further processing, such as printing out
 		// more of those references.
-		$references_without_locations = $this->entity_service->get_related_entities( $post->ID );
+		$references_without_locations = Object_Relation_Service::get_instance()
+		                                                       ->get_references( $post_id, Object_Type_Enum::POST );
 
 		/*
 		 * Add the locations to the references.
@@ -176,19 +184,27 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		 */
 		// A reference to use in closure.
 		$entity_type_service = $this->entity_type_service;
-		$locations           = array_reduce( $references_without_locations, function ( $carry, $post_id ) use ( $entity_type_service ) {
+		$locations           = array_reduce( $references_without_locations, function ( $carry, $reference ) use ( $entity_type_service ) {
+			/**
+			 * @var $reference Reference
+			 */
 			// @see https://schema.org/location for the schema.org types using the `location` property.
-			if ( ! $entity_type_service->has_entity_type( $post_id, 'http://schema.org/Action' )
-			     && ! $entity_type_service->has_entity_type( $post_id, 'http://schema.org/Event' )
-			     && ! $entity_type_service->has_entity_type( $post_id, 'http://schema.org/Organization' ) ) {
+			if ( ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Action' )
+			     && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Event' )
+			     && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Organization' ) ) {
+
 				return $carry;
 			}
+			$post_location_ids        = get_post_meta( $reference->get_id(), Wordlift_Schema_Service::FIELD_LOCATION );
+			$post_location_references = array_map( function ( $post_id ) {
+				return new Post_Reference( $post_id );
+			}, $post_location_ids );
 
-			return array_merge( $carry, get_post_meta( $post_id, Wordlift_Schema_Service::FIELD_LOCATION ) );
+			return array_merge( $carry,  $post_location_references);
 		}, array() );
 
 		// Merge the references with the referenced locations if any.
-		$references = array_unique( array_merge( $references_without_locations, $locations ) );
+		$references = array_merge( $references_without_locations, $locations );
 
 		return $jsonld;
 	}

@@ -7,6 +7,9 @@
  * @subpackage Wordlift/tests
  */
 
+use Wordlift\Metabox\Field\Wordlift_Metabox_Field_Duration;
+use Wordlift\Object_Type_Enum;
+
 /**
  * Test the {@link Wordlift_Metabox_Field_Duration} class.
  *
@@ -26,7 +29,8 @@ class Wordlift_Metabox_Field_Duration_Test extends Wordlift_Unit_Test_Case {
 	 */
 	function test_sanitize_data_filter() {
 
-		$field = new Wordlift_Metabox_Field_Duration( array() );
+		// Pass null since it is not needed for the test.
+		$field = new Wordlift_Metabox_Field_Duration( array(), null, Object_Type_Enum::POST  );
 
 		// Simple minutes value should pass.
 		$this->assertEquals( '10', $field->sanitize_data_filter( '10' ) );

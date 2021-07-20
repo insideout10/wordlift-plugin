@@ -75,7 +75,7 @@ class Jsonld_Service {
 			case Object_Type_Enum::POST:
 				return $this->legacy_jsonld_service->get_jsonld( false, $id, $context );
 			case Object_Type_Enum::TERM:
-				return $this->term_jsonld_service->get( $id );
+				return $this->term_jsonld_service->get( $id, $context );
 			case Object_Type_Enum::USER:
 				return $this->jsonld_user_service->get( $id );
 			default:

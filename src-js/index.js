@@ -4,7 +4,6 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 
 // import AddEntity from "./screens/Admin/screens/Edit/components/AddEntity";
-import SearchRankings from "./screens/Admin/screens/SearchRankings/App";
 
 // class App extends Component {
 //   constructor(props) {
@@ -37,4 +36,4 @@ import SearchRankings from "./screens/Admin/screens/SearchRankings/App";
 // ReactDOM.render(<App />, document.getElementById("button"));
 
 // Treemap.
-ReactDOM.render(<SearchRankings />, document.getElementById("treemap"));
+// ReactDOM.render(<SearchRankings />, document.getElementById("treemap"));

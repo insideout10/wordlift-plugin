@@ -134,10 +134,6 @@ class Wordlift_Admin {
 
 			new Wordlift_Dashboard_Latest_News();
 
-			// Search Rankings.
-			$search_rankings_service = new Wordlift_Admin_Search_Rankings_Service( Wordlift_Api_Service::get_instance() );
-			new Wordlift_Admin_Search_Rankings_Ajax_Adapter( $search_rankings_service );
-
 			/*
 			 * Add support for `All Entity Types`.
 			 *
@@ -187,7 +183,6 @@ class Wordlift_Admin {
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/879
 			 */
 			new Wordlift_Admin_Dashboard_V2(
-				$search_rankings_service,
 				Wordlift::get_instance()->get_dashboard_service(),
 				Wordlift_Entity_Service::get_instance()
 			);
@@ -290,8 +285,6 @@ class Wordlift_Admin {
 	private static function require_files() {
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-latest-news.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-ajax-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-v2.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-not-enriched-filter.php';
 
@@ -368,12 +361,6 @@ class Wordlift_Admin {
 			 *
 			 */
 			'default_editor_id'          => apply_filters( 'wl_default_editor_id', 'content' ),
-			/**
-			 * Add the link to the Search Keywords admin page.
-			 *
-			 * @since 3.20.0
-			 */
-			'search_keywords_admin_page' => admin_url( 'admin.php?page=wl_configuration_admin_menu&tab=search-keywords' ),
 
 			'analysis'                     => array( '_wpnonce' => wp_create_nonce( 'wl_analyze' ) ),
 			/**

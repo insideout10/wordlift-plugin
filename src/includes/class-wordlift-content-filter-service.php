@@ -9,6 +9,10 @@
  * @package Wordlift
  */
 
+use Wordlift\Link\Link_Builder;
+use Wordlift\Link\Object_Link_Provider;
+use Wordlift\Object_Type_Enum;
+
 /**
  * Define the Wordlift_Content_Filter_Service class which intercepts the
  * 'the_content' WP filter and mangles the content accordingly.
@@ -52,7 +56,7 @@ class Wordlift_Content_Filter_Service {
 	 */
 	private $is_link_by_default;
 
-	private $entity_post_ids_linked_from_post_content = array();
+	private $linked_object_ids = array();
 
 	/**
 	 * The {@link Wordlift_Entity_Uri_Service} instance.
@@ -80,6 +84,10 @@ class Wordlift_Content_Filter_Service {
 	 * @var \Wordlift_Content_Filter_Service $instance The {@link Wordlift_Content_Filter_Service} singleton instance.
 	 */
 	private static $instance;
+	/**
+	 * @var Object_Link_Provider
+	 */
+	private $object_link_provider;
 
 	/**
 	 * Create a {@link Wordlift_Content_Filter_Service} instance.
@@ -98,8 +106,8 @@ class Wordlift_Content_Filter_Service {
 		$this->entity_service        = $entity_service;
 		$this->configuration_service = $configuration_service;
 		$this->entity_uri_service    = $entity_uri_service;
-
-		self::$instance = $this;
+		$this->object_link_provider  = Object_Link_Provider::get_instance();
+		self::$instance              = $this;
 
 	}
 
@@ -125,7 +133,6 @@ class Wordlift_Content_Filter_Service {
 	 *
 	 */
 	public function the_content( $content ) {
-
 		$this->log->trace( "Filtering content [ " . ( is_singular() ? 'yes' : 'no' ) . " ]..." );
 
 		// Links should be added only on the front end and not for RSS.
@@ -138,7 +145,7 @@ class Wordlift_Content_Filter_Service {
 
 		// Reset the array of of entity post ids linked from the post content.
 		// This is used to avoid linking more the once the same post.
-		$this->entity_post_ids_linked_from_post_content = array();
+		$this->linked_object_ids = array();
 
 		// Preload URIs.
 		$matches = array();
@@ -180,28 +187,29 @@ class Wordlift_Content_Filter_Service {
 		$uri       = $matches[3];
 		$label     = $matches[4];
 
-		// Get the entity post by URI.
-		$post = $this->entity_service->get_entity_post_by_uri( $uri );
 
-		// @todo: revise the `test-content-filter-service.php` before switching
-		// to the `entity_uri_service`. This is required, because the test injects
-		// itself as `entity_service` to mock the requests to get a post by
-		// entity uri.
-		//
-		// $post = $this->entity_uri_service->get_entity( $uri );
+		$object_type = $this->object_link_provider->get_object_type( $uri );
+		/**
+		 * Enabled support for terms.
+		 * @since 3.31.2
+		 */
+		$supported_object_types = array( Object_Type_Enum::POST, Object_Type_Enum::TERM );
 
-		if ( null === $post ) {
-
-			// If the entity post is not found return the label w/o the markup
-			// around it.
-			//
-			// See https://github.com/insideout10/wordlift-plugin/issues/461.
+		if  ( ! in_array( $object_type, $supported_object_types ) ) {
+			// Since we cant find the object type for the entity uri
+			// it doesnt seem to exist on the local dataset, so return
+			// the label without linking.
 			return $label;
 		}
 
+		$object_id  = $this->object_link_provider->get_object_id_by_type( $uri, $object_type );
+
+		$object_id_unique_identifier = $object_type . "_" . $object_id;
+
+
 		$no_link = - 1 < strpos( $css_class, 'wl-no-link' )
 		           // Do not link if already linked.
-		           || in_array( $post->ID, $this->entity_post_ids_linked_from_post_content );
+		           || $this->is_already_linked( $object_id_unique_identifier );
 		$link    = - 1 < strpos( $css_class, 'wl-link' );
 
 		// Don't link if links are disabled and the entity is not link or the
@@ -213,65 +221,27 @@ class Wordlift_Content_Filter_Service {
 			return $label;
 		}
 
-		// Add the entity post id to the array of already linked entities, so that
-		// only the first entity occurrence is linked.
-		$this->entity_post_ids_linked_from_post_content[] = $post->ID;
+		/**
+		 * @since 3.32.0
+		 * Object_ids are prefixed with object_type to prevent conflicts.
+		 */
+		$this->linked_object_ids[] = $object_id_unique_identifier;
 
 		// Get the link.
-		$href = Wordlift_Post_Adapter::get_production_permalink( $post->ID );
+		$href = Wordlift_Post_Adapter::get_production_permalink( $object_id, $object_type );
 
 		// Bail out if the `$href` has been reset.
 		if ( empty( $href ) ) {
 			return $label;
 		}
 
-		// Get an alternative title attribute.
-		$title_attribute = $this->get_title_attribute( $post->ID, $label );
-
-		/**
-		 * Allow 3rd parties to add additional attributes to the anchor link.
-		 *
-		 * @since 3.26.0
-		 */
-		$default_attributes = array(
-			'id' => implode( ';', array_merge(
-				(array) $this->entity_service->get_uri( $post->ID ),
-				get_post_meta( $post->ID, Wordlift_Schema_Service::FIELD_SAME_AS )
-			) )
-		);
-		$attributes         = apply_filters( 'wl_anchor_data_attributes', $default_attributes, $post->ID );
-		$attributes_html    = '';
-		foreach ( $attributes as $key => $value ) {
-			$attributes_html .= ' data-' . esc_html( $key ) . '="' . esc_attr( $value ) . '" ';
-		}
-
-		// Return the link.
-		return "<a class='wl-entity-page-link' $title_attribute href='$href' $attributes_html>$label</a>";
+		return Link_Builder::create( $uri, $object_id )
+		                   ->label( $label )
+		                   ->href( $href )
+		                   ->generate_link();
 	}
 
-	/**
-	 * Get a `title` attribute with an alternative label for the link.
-	 *
-	 * If an alternative title isn't available an empty string is returned.
-	 *
-	 * @param int $post_id The {@link WP_Post}'s id.
-	 * @param string $label The main link label.
-	 *
-	 * @return string A `title` attribute with an alternative label or an empty
-	 *                string if none available.
-	 * @since 3.15.0
-	 *
-	 */
-	private function get_title_attribute( $post_id, $label ) {
 
-		// Get an alternative title.
-		$title = $this->get_link_title( $post_id, $label );
-		if ( ! empty( $title ) ) {
-			return 'title="' . esc_attr( $title ) . '"';
-		}
-
-		return '';
-	}
 
 	/**
 	 * Get a string to be used as a title attribute in links to a post
@@ -281,33 +251,16 @@ class Wordlift_Content_Filter_Service {
 	 *
 	 * @return string    The title to be used in the link. An empty string when
 	 *                    there is no alternative that is not the $ignore_label.
+	 * @deprecated 3.32.0 Use object link provider to get the link title for getting link
+	 * title for different types.
 	 * @since 3.15.0
 	 *
+	 * As of 3.32.0 this method is not used anywhere in the core, this should be removed
+	 * from tests and companion plugins.
+	 *
 	 */
-	function get_link_title( $post_id, $ignore_label ) {
-
-		// Get possible alternative labels we can select from.
-		$labels = $this->entity_service->get_alternative_labels( $post_id );
-
-		/*
-		 * Since the original text might use an alternative label than the
-		 * Entity title, add the title itself which is not returned by the api.
-		 */
-		$labels[] = get_the_title( $post_id );
-
-		// Add some randomness to the label selection.
-		shuffle( $labels );
-
-		// Select the first label which is not to be ignored.
-		$title = '';
-		foreach ( $labels as $label ) {
-			if ( 0 !== strcasecmp( $label, $ignore_label ) ) {
-				$title = $label;
-				break;
-			}
-		}
-
-		return $title;
+	function get_link_title( $post_id, $ignore_label, $object_type = Object_Type_Enum::POST ) {
+		return $this->object_link_provider->get_link_title( $post_id, $ignore_label, $object_type );
 	}
 
 	/**
@@ -331,6 +284,16 @@ class Wordlift_Content_Filter_Service {
 		//
 		// See https://github.com/insideout10/wordlift-plugin/issues/646.
 		return array_values( array_unique( $matches[3] ) );
+	}
+
+
+	/**
+	 * @param $post_id
+	 *
+	 * @return bool
+	 */
+	private function is_already_linked( $post_id ) {
+		return in_array( $post_id, $this->linked_object_ids );
 	}
 
 }

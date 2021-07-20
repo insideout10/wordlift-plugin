@@ -8,6 +8,7 @@ use Wordlift\Dataset\Sync_Object_Adapter_Factory;
 use Wordlift\Dataset\Sync_Page;
 use Wordlift\Dataset\Sync_Post_Hooks;
 use Wordlift\Dataset\Sync_Service;
+use Wordlift\Dataset\Sync_Term_Hooks;
 use Wordlift\Dataset\Sync_User_Hooks;
 use Wordlift\Jsonld\Jsonld_Service;
 
@@ -22,6 +23,10 @@ if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
 	new Sync_Post_Hooks( $sync_service, $sync_object_adapter_factory );
 	new Sync_User_Hooks( $sync_service );
 
+
+	if ( apply_filters( 'wl_feature__enable__no-vocabulary-terms', false ) ) {
+		new Sync_Term_Hooks( $sync_service, $sync_object_adapter_factory );
+	}
 	/**
 	 * @since 3.28.0
 	 * @see https://github.com/insideout10/wordlift-plugin/issues/1186

@@ -12,6 +12,9 @@
  */
 
 use Wordlift\Cache\Ttl_Cache;
+use Wordlift\Jsonld\Post_Reference;
+use Wordlift\Jsonld\Reference_Processor;
+use Wordlift\Jsonld\Term_Reference;
 
 /**
  * Define the {@link Wordlift_Cached_Post_Converter} class.
@@ -65,6 +68,10 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * @var Ttl_Cache
 	 */
 	private $cache;
+	/**
+	 * @var Reference_Processor
+	 */
+	private $reference_processor;
 
 	/**
 	 * Wordlift_Cached_Post_Converter constructor.
@@ -80,7 +87,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		$this->cache                 = $cache;
 		$this->converter             = $converter;
 		$this->configuration_service = $configuration_service;
-
+		$this->reference_processor = Reference_Processor::get_instance();
 		$this->init_hooks();
 
 	}
@@ -162,6 +169,11 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		// Convert the the post.
 		$jsonld = $this->converter->convert( $post_id, $references, $references_infos );
 
+		/**
+		 * @since 3.32.0
+		 * We cant apply json_encode on the objects {@link \Wordlift\Jsonld\Reference}, so we decode
+		 * it here before saving it on cache.
+		 */
 		// Cache the results.
 		$this->set_cache( $post_id, $references, $jsonld );
 
@@ -198,7 +210,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		}
 
 		// Remap the cache.
-		$references = $contents['references'];
+		$references = $this->reference_processor->deserialize_references( $contents['references'] );
 
 		return $contents['jsonld'];
 	}
@@ -220,7 +232,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		$this->log->trace( "Caching result for post $post_id..." );
 
 		$this->cache->put( $post_id, array(
-			'references' => $references,
+			'references' => $this->reference_processor->serialize_references(  $references ),
 			'jsonld'     => $jsonld,
 		) );
 

@@ -1,5 +1,8 @@
 <?php
 
+use Wordlift\Metabox\Field\Wl_Metabox_Field_sameas;
+use Wordlift\Object_Type_Enum;
+
 /**
  * @since 3.27.7
  * @author Naveen Muthusamy <naveen@wordlift.io>
@@ -7,15 +10,16 @@
  */
 class Sameas_Metabox_Validation_Test extends Wordlift_Unit_Test_Case {
 
+
 	/**
-	 * @var WL_Metabox_Field_sameas
+	 * @var array[][]
 	 */
-	private $instance;
+	private $config;
 
 
 	public function setUp() {
 		parent::setUp();
-		$config         = array(
+		$this->config = array(
 			'sameas' =>
 				array(
 					'entity_same_as' =>
@@ -31,12 +35,13 @@ class Sameas_Metabox_Validation_Test extends Wordlift_Unit_Test_Case {
 						),
 				),
 		);
-		$this->instance = new WL_Metabox_Field_sameas( $config );
+
 
 	}
 
 	public function test_given_text_should_not_save() {
 		$post_id          = $this->factory()->post->create();
+		$instance         = new Wl_Metabox_Field_sameas( $this->config, $post_id, Object_Type_Enum::POST );
 		$_POST['post_ID'] = $post_id;
 		$test_data        = array(
 			0 => 'aaaa',
@@ -45,7 +50,7 @@ class Sameas_Metabox_Validation_Test extends Wordlift_Unit_Test_Case {
 			3 => 'https://google.com',
 			4 => 'https://test.com'
 		);
-		$this->instance->save_data( $test_data );
+		$instance->save_data( $test_data );
 		// now it should save only two rows
 		$rows = get_post_meta( $post_id, 'entity_same_as' );
 		$this->assertCount( 2, $rows );
@@ -54,6 +59,7 @@ class Sameas_Metabox_Validation_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_given_local_dataset_url_should_not_save() {
 		$post_id          = $this->factory()->post->create();
+		$instance         = new Wl_Metabox_Field_sameas( $this->config, $post_id, Object_Type_Enum::POST );
 		$_POST['post_ID'] = $post_id;
 		$dataset_uri      = $this->configuration_service->get_dataset_uri();
 		$test_data        = array(
@@ -62,7 +68,7 @@ class Sameas_Metabox_Validation_Test extends Wordlift_Unit_Test_Case {
 			3 => 'https://google.com',
 			4 => 'https://test.com'
 		);
-		$this->instance->save_data( $test_data );
+		$instance->save_data( $test_data );
 		// now it should save only two rows
 		$rows = get_post_meta( $post_id, 'entity_same_as' );
 		$this->assertCount( 2, $rows );

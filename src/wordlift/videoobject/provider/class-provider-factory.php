@@ -14,12 +14,17 @@ class Provider_Factory {
 
 	const VIMEO = 'vimeo';
 
+	const JWPLAYER = 'jwplayer';
+
 
 	public static function get_provider( $provider_name ) {
-		if ( $provider_name === self::YOUTUBE ) {
+		if ( self::YOUTUBE === $provider_name ) {
 			return new Youtube( Client_Factory::get_client( Client_Factory::YOUTUBE ) );
-		} else if ( $provider_name === self::VIMEO ) {
+		} else if (  self::VIMEO === $provider_name ) {
 			return new Vimeo( Client_Factory::get_client( Client_Factory::VIMEO ) );
+		}
+		else if ( self::JWPLAYER === $provider_name ) {
+			return new Jw_Player( Client_Factory::get_client( Client_Factory::JWPLAYER ) );
 		}
 
 	}

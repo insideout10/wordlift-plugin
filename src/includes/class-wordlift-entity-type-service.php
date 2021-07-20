@@ -423,7 +423,7 @@ class Wordlift_Entity_Type_Service {
 	 * @since 3.25.2
 	 *
 	 */
-	public function get_custom_fields( $post_id ) {
+	public function get_custom_fields_for_post( $post_id ) {
 
 		// Return custom fields for this specific entity's type.
 		$types = $this->get_ids( $post_id );
@@ -441,18 +441,24 @@ class Wordlift_Entity_Type_Service {
 
 		$term_slugs[] = 'thing';
 
-		$schema_service = Wordlift_Schema_Service::get_instance();
+		return $this->get_custom_fields_by_term_slugs( $term_slugs );
+	}
 
-		return array_reduce( $term_slugs, function ( $carry, $item ) use ( $schema_service ) {
+	/**
+	 * Get the custom fields for a specific term.
+	 *
+	 * @param int $term_id The term ID.
+	 *
+	 * @return array An array of custom fields (see `custom_fields` in Wordlift_Schema_Service).
+	 * @since 3.32.0
+	 *
+	 */
+	public function get_custom_fields_for_term( $term_id ) {
+		$selected_entity_types   = get_term_meta( $term_id, 'wl_entity_type' );
+		$selected_entity_types[] = 'thing';
+		$selected_entity_types   = array_unique( $selected_entity_types );
 
-			$schema = $schema_service->get_schema( $item );
-
-			if ( ! isset( $schema['custom_fields'] ) ) {
-				return $carry;
-			}
-
-			return $carry + $schema['custom_fields'];
-		}, array() );
+		return $this->get_custom_fields_by_term_slugs( $selected_entity_types );
 	}
 
 
@@ -471,6 +477,26 @@ class Wordlift_Entity_Type_Service {
 	public static function is_valid_entity_post_type( $post_type ) {
 
 		return in_array( $post_type, Wordlift_Entity_Service::valid_entity_post_types(), true );
+	}
+
+	/**
+	 * @param $term_slugs
+	 *
+	 * @return array
+	 */
+	private function get_custom_fields_by_term_slugs( $term_slugs ) {
+		$schema_service = Wordlift_Schema_Service::get_instance();
+
+		return array_reduce( $term_slugs, function ( $carry, $item ) use ( $schema_service ) {
+
+			$schema = $schema_service->get_schema( $item );
+
+			if ( ! isset( $schema['custom_fields'] ) ) {
+				return $carry;
+			}
+
+			return $carry + $schema['custom_fields'];
+		}, array() );
 	}
 
 }

@@ -69,7 +69,7 @@ class Videoobject_Jsonld_Test extends \Wordlift_Videoobject_Unit_Test_Case {
 	public function test_when_jsonld_is_created_for_article_should_not_add_video_object() {
 		$post_id = $this->create_post_with_content( Videoobject_Api_Test::multiple_youtube_video_post_content() );
 		$jsonld  = apply_filters( 'wl_after_get_jsonld', array(
-			array('@type' => 'Article')
+			array( '@type' => 'Article' )
 		), $post_id, array() );
 		$this->assertCount( 1, $jsonld, 'Video object should not be added for article' );
 	}
@@ -77,13 +77,13 @@ class Videoobject_Jsonld_Test extends \Wordlift_Videoobject_Unit_Test_Case {
 	public function test_when_jsonld_is_created_for_entity_should_add_video_object() {
 		$post_id = $this->create_post_with_content( Videoobject_Api_Test::multiple_youtube_video_post_content() );
 		$jsonld  = apply_filters( 'wl_after_get_jsonld', array(
-			array('@type' => 'Thing', '@id' => 'https://test-entity-id.com/test-entity/')
+			array( '@type' => 'Thing', '@id' => 'https://test-entity-id.com/test-entity/' )
 		), $post_id, array() );
 		$this->assertCount( 3, $jsonld, 'Video object should  be added for Entity' );
-		$this->assertArrayHasKey('mentions', $jsonld[2] );
-		$this->assertArrayHasKey('@id', $jsonld[2]['mentions']);
-		$this->assertSame($jsonld[2]['mentions']['@id'], 'https://test-entity-id.com/test-entity/');
-		$this->assertArrayHasKey('@context', $jsonld[2]);
+		$this->assertArrayHasKey( 'mentions', $jsonld[2] );
+		$this->assertArrayHasKey( '@id', $jsonld[2]['mentions'] );
+		$this->assertSame( $jsonld[2]['mentions']['@id'], 'https://test-entity-id.com/test-entity/' );
+		$this->assertArrayHasKey( '@context', $jsonld[2] );
 	}
 
 	public function test_when_jsonld_is_created_for_entity_type_array_should_add_video_object() {
@@ -93,5 +93,15 @@ class Videoobject_Jsonld_Test extends \Wordlift_Videoobject_Unit_Test_Case {
 		), $post_id, array() );
 		$this->assertCount( 3, $jsonld, 'Video object should  be added for Entity' );
 	}
+
+
+	public function test_when_jsonld_is_created_for_article_descendant_then_videos_should_be_added_to_videos_property() {
+		$post_id = $this->create_post_with_content( Videoobject_Api_Test::multiple_youtube_video_post_content() );
+		$jsonld  = apply_filters( 'wl_after_get_jsonld', array(
+			array( '@type' => array( 'NewsArticle' ) )
+		), $post_id, array() );
+		$this->assertCount( 1, $jsonld, 'Video object should not be added as individual item for article descendants' );
+	}
+
 
 }

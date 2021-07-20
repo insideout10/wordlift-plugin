@@ -40,7 +40,6 @@ class Features_Registry {
 	}
 
 	public function initialize_all_features() {
-
 		foreach ( $this->features as $feature ) {
 			/**
 			 * @var $feature Feature

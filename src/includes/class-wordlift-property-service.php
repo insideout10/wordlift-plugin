@@ -51,7 +51,7 @@ abstract class Wordlift_Property_Service {
 	 *
 	 * @param mixed $value The value to sanitize.
 	 *
-	 * @return mixed|NULL The sanitized value or NULL avoid saving this value (see {@link WL_Metabox_Field}).
+	 * @return mixed|NULL The sanitized value or NULL avoid saving this value (see {@link Wl_Metabox_Field}).
 	 */
 	public abstract function sanitize( $value );
 

@@ -11,6 +11,8 @@ use Wordlift\Common\Singleton;
  */
 class Youtube_Client extends Singleton implements Client {
 
+	const YOUTUBE_REGEX = '/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/m';
+
 	static $requests_sent = 0;
 
 	public static function get_api_key_option_name() {
@@ -49,33 +51,24 @@ class Youtube_Client extends Singleton implements Client {
 		} );
 
 		// extract the video ids.
-		return join( ",", self::get_video_ids( $video_urls ) );
+		return join( ",", $this->get_video_ids( $video_urls ) );
 	}
 
 
-	private static function get_video_ids( $video_urls ) {
+	public function get_video_ids( $video_urls ) {
 
-		$video_ids = array_map( function ( $url ) {
+		$regex = self::YOUTUBE_REGEX;
 
-			$parsed_url_data = parse_url( $url );
+		$video_ids = array_map( function ( $url ) use ( $regex ) {
+			$matches = array();
+			preg_match( $regex, $url, $matches );
 
-			if ( ( ! is_array( $parsed_url_data ) || ! array_key_exists( 'query', $parsed_url_data ) )
-			     && strpos( $url, "youtu.be" ) === false ) {
-				return false;
-			}
-			// For youtu.be urls, the video id is present in path.
-			if ( strpos( $url, "youtu.be" ) !== false ) {
-				$parsed_url_data['query'] = "v=" . substr( $parsed_url_data['path'], 1 );
+			// Return video id or return false.
+			if ( isset( $matches[1] ) && is_string( $matches[1] ) ) {
+				return $matches[1];
 			}
 
-			$query_data_result = array();
-			parse_str( $parsed_url_data['query'], $query_data_result );
-
-			if ( ! array_key_exists( 'v', $query_data_result ) ) {
-				return false;
-			}
-
-			return $query_data_result['v'];
+			return false;
 
 		}, $video_urls );
 

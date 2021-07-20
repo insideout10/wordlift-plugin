@@ -7,6 +7,9 @@
  * @subpackage Wordlift/modules/linked_data
  */
 
+use Wordlift\Object_Type_Enum;
+use Wordlift\Relation\Object_Relation_Service;
+
 /**
  * Receive events from post saves, and split them according to the post type.
  *
@@ -194,20 +197,27 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			'post_content' => addslashes( $updated_post_content ),
 		) );
 	}
-
-	// Extract related/referenced entities from text.
-	$disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );
-
 	// Reset previously saved instances.
 	wl_core_delete_relation_instances( $post_id );
 
+
+	$relations = Object_Relation_Service::get_instance()
+	                                    ->get_relations_from_content( $updated_post_content, Object_Type_Enum::POST );
+
 	// Save relation instances
-	foreach ( array_unique( $disambiguated_entities ) as $referenced_entity_id ) {
+	foreach ( $relations as $relation ) {
 
 		wl_core_add_relation_instance(
+			// subject id.
 			$post_id,
-			$entity_service->get_classification_scope_for( $referenced_entity_id ),
-			$referenced_entity_id
+			// what, where, when, who
+			$relation->get_relation_type(),
+			// object id.
+			$relation->get_object_id(),
+			// Subject type.
+			$relation->get_subject_type(),
+			// Object type.
+			$relation->get_object_type()
 		);
 
 	}
@@ -501,9 +511,10 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 
 //    wl_write_log("wl_update_related_entities [ content :: $content ][ data :: " . var_export($data, true). " ][ matches :: " . var_export($matches, true) . " ]");
 
+	$uris  = $matches[1];
 	// Collect the entities.
 	$entities = array();
-	foreach ( $matches[1] as $uri ) {
+	foreach ( $uris as $uri ) {
 		$uri_d = html_entity_decode( $uri );
 
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri_d );
