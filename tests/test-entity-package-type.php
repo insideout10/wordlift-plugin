@@ -1,5 +1,6 @@
 <?php
 
+use Wordlift\Features\Response_Adapter;
 use Wordlift\Vocabulary\Terms_Compat;
 
 /**
@@ -31,7 +32,7 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_when_package_type_changed_to_starter_should_have_only_starter_entity_types() {
 
-		do_action( 'wl_after_configuration_save' );
+		$this->set_feature_and_trigger_config_save( 'entity-types-starter' );
 
 		$starter_feature_labels = array(
 			'Person',
@@ -63,7 +64,7 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_when_package_type_changed_to_professional_should_have_only_professional_entity_types() {
 
-		do_action( 'wl_after_configuration_save' );
+		$this->set_feature_and_trigger_config_save( 'entity-types-professional' );
 
 
 		$entity_types = Terms_Compat::get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
@@ -84,7 +85,7 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_when_package_type_changed_to_business_should_have_only_business_entity_types() {
 
-		do_action( 'wl_after_configuration_save' );
+		$this->set_feature_and_trigger_config_save( 'entity-types-business' );
 
 
 		$entity_types = Terms_Compat::get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
@@ -119,7 +120,7 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 
 		// we set an unknown value to package type, for now we only recognize wl_starter, wl_professional, wl_business
 		// if we dont have any of these value then we shouldnt alter the entity types.
-		do_action( 'wl_after_configuration_save' );
+		$this->set_feature_and_trigger_config_save( 'entity-types-blogger' );
 
 		$after_entity_types = Terms_Compat::get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
 			'hide_empty' => false,
@@ -134,6 +135,14 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 
 		$this->assertSame( $before_entity_type_labels, $after_entity_type_labels, 'Entity types should not be affected by unknown package type' );
 
+	}
+
+	private function set_feature_and_trigger_config_save( $feature_slug ) {
+
+		// clear out the features
+		update_option( Response_Adapter::WL_FEATURES, array( $feature_slug ), true );
+
+		do_action( 'wl_after_configuration_save' );
 	}
 
 

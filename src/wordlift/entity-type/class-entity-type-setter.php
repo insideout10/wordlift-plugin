@@ -6,19 +6,20 @@
 
 namespace Wordlift\Entity_Type;
 
+use Wordlift\Features\Features_Registry;
 use Wordlift\Vocabulary\Terms_Compat;
 use Wordlift_Entity_Type_Taxonomy_Service;
 
 class Entity_Type_Setter {
 
 
-	const STARTER_PLAN = 'wl_starter';
+	const STARTER_PLAN = 'entity-types-starter';
 
-	const PROFESSIONAL_PLAN = 'wl_professional';
+	const PROFESSIONAL_PLAN = 'entity-types-professional';
 
-	const BUSINESS_PLAN = 'wl_business';
+	const BUSINESS_PLAN = 'entity-types-business';
 
-	private static $subscription_types = array(
+	private static $entity_type_feature_flags = array(
 		self::STARTER_PLAN,
 		self::PROFESSIONAL_PLAN,
 		self::BUSINESS_PLAN
@@ -115,7 +116,7 @@ class Entity_Type_Setter {
 	}
 
 
-	private function get_entity_types_by_package_type( $package_type ) {
+	private function get_entity_types_by_feature_flag( $package_type ) {
 
 		switch ( $package_type ) {
 			case self::STARTER_PLAN:
@@ -137,18 +138,24 @@ class Entity_Type_Setter {
 
 
 	public function __construct() {
-		add_action( 'wl_package_type_changed', array( $this, 'wl_package_type_changed' ) );
+		add_action( 'wl_after_configuration_save', array( $this, 'wl_after_configuration_save' ) );
 	}
 
 
-	public function wl_package_type_changed( $package_type ) {
+	public function wl_after_configuration_save() {
 
-		// Dont make any changes if we cant identify the subscription type.
-		if ( ! $package_type || ! in_array( $package_type, self::$subscription_types ) ) {
+		$entity_type_feature_flags = array_intersect( self::$entity_type_feature_flags, Features_Registry::get_all_enabled_features() );
+
+		// if we dont have any entity type flags enabled, return early.
+
+		if ( ! $entity_type_feature_flags ) {
 			return;
 		}
 
-		$entity_types_data = $this->get_entity_types_by_package_type( $package_type );
+		// Only one flag should be active at a time.
+		$entity_type_feature_flag = array_shift( $entity_type_feature_flags );
+
+		$entity_types_data = $this->get_entity_types_by_feature_flag( $entity_type_feature_flag );
 
 		// If we dont have entity types returned, then dont reset the entity types, return early.
 		if ( ! $entity_types_data ) {

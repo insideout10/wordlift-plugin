@@ -51,6 +51,10 @@ class Features_Registry {
 		}
 	}
 
+	public static function get_all_enabled_features() {
+		return get_option( Response_Adapter::WL_FEATURES, array() );
+	}
+
 
 	public function clear_all() {
 		$this->features = array();
