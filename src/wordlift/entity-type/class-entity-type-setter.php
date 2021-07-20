@@ -21,7 +21,7 @@ class Entity_Type_Setter {
 
 	public function __construct() {
 		add_action( 'wl_after_configuration_save', array( $this, 'wl_after_configuration_save' ) );
-		add_action('update_option_wl_general_settings', array( $this, 'wl_after_configuration_save'));
+		add_action( 'wl_before_settings_save', array( $this, 'wl_after_configuration_save' ) );
 	}
 
 
@@ -56,9 +56,9 @@ class Entity_Type_Setter {
 
 		// Repopulate the ones returned by package type.
 		foreach ( $entity_types_data as $entity_type_data ) {
-			$schema_label     = $entity_type_data['label'];
+			$schema_label = $entity_type_data['label'];
 
-			$term_data =  wp_insert_term(
+			$term_data = wp_insert_term(
 				$schema_label,
 				Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				array(
@@ -89,7 +89,6 @@ class Entity_Type_Setter {
 			wp_delete_term( $entity_type_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		}
 	}
-
 
 
 	public static function get_starter_entity_types() {
@@ -201,8 +200,6 @@ class Entity_Type_Setter {
 		}
 
 	}
-
-
 
 
 }
