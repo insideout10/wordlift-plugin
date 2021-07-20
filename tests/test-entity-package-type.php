@@ -152,7 +152,7 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 
 	private function set_feature_and_trigger_config_save( $feature_slug ) {
 		// This action hook is fired to indicate the feature was changed.
-		do_action("wl_feature__change__${feature_slug}", $feature_slug, null, true );
+		do_action("wl_feature__change__${feature_slug}", true, null, $feature_slug );
 	}
 
 	/**

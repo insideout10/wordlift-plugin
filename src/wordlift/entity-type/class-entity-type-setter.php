@@ -24,14 +24,7 @@ class Entity_Type_Setter {
 	}
 
 
-	private static $entity_type_feature_flags = array(
-		self::STARTER_PLAN,
-		self::PROFESSIONAL_PLAN,
-		self::BUSINESS_PLAN
-	);
-
-
-	public function wl_entity_types_feature_changed( $feature_slug, $old_value, $new_value ) {
+	public function wl_entity_types_feature_changed( $new_value, $old_value, $feature_slug ) {
 
 		// If the entity types is not set by server, then return early.
 		if (  ! $new_value ) {

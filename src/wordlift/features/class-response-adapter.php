@@ -65,7 +65,7 @@ class Response_Adapter {
 				 * Hook : `wl_feature__change__{feature_slug}`
 				 * Action hook to be fired when there is a change in feature state.
 				 */
-				do_action( "wl_feature__change__${feature_slug}", $feature_slug, $old_value, $new_value );
+				do_action( "wl_feature__change__${feature_slug}", $new_value, $old_value, $feature_slug );
 			}
 
 		}
