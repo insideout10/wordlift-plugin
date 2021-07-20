@@ -93,15 +93,16 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	/**
 	 * Create a {@link Wordlift_Admin_Settings_Page} instance.
 	 *
+	 * @param \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
+	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Admin_Input_Element $input_element A {@link Wordlift_Admin_Input_Element} element renderer.
+	 * @param \Wordlift_Admin_Language_Select_Element $language_select_element A {@link Wordlift_Admin_Language_Select_Element} element renderer.
+	 * @param \Wordlift_Admin_Country_Select_Element $country_select_element A {@link Wordlift_Admin_Country_Select_Element} element renderer.
+	 * @param \Wordlift_Admin_Publisher_Element $publisher_element A {@link Wordlift_Admin_Publisher_Element} element renderer.
+	 * @param \Wordlift_Admin_Radio_Input_Element $radio_input_element A {@link Wordlift_Admin_Radio_Input_Element} element renderer.
+	 *
 	 * @since 3.11.0
 	 *
-	 * @param \Wordlift_Configuration_Service         $configuration_service A {@link Wordlift_Configuration_Service} instance.
-	 * @param \Wordlift_Entity_Service                $entity_service A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Admin_Input_Element           $input_element A {@link Wordlift_Admin_Input_Element} element renderer.
-	 * @param \Wordlift_Admin_Language_Select_Element $language_select_element A {@link Wordlift_Admin_Language_Select_Element} element renderer.
-	 * @param \Wordlift_Admin_Country_Select_Element  $country_select_element A {@link Wordlift_Admin_Country_Select_Element} element renderer.
-	 * @param \Wordlift_Admin_Publisher_Element       $publisher_element A {@link Wordlift_Admin_Publisher_Element} element renderer.
-	 * @param \Wordlift_Admin_Radio_Input_Element     $radio_input_element A {@link Wordlift_Admin_Radio_Input_Element} element renderer.
 	 */
 	function __construct( $configuration_service, $entity_service, $input_element, $language_select_element, $country_select_element, $publisher_element, $radio_input_element ) {
 
@@ -116,13 +117,14 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		$this->publisher_element       = $publisher_element;
 
 		self::$instance = $this;
+
 	}
 
 	/**
 	 * Get the singleton instance of the Notice service.
 	 *
-	 * @since 3.14.0
 	 * @return \Wordlift_Admin_Settings_Page The singleton instance of the settings page service.
+	 * @since 3.14.0
 	 */
 	public static function get_instance() {
 
@@ -200,7 +202,6 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 * @since 3.11.0
 	 */
 	function admin_init() {
-
 		// Register WordLift's general settings, providing our own sanitize callback
 		// which will also check whether the user filled the WL Publisher form.
 		register_setting(
@@ -222,7 +223,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::KEY . ']',
 			'value'       => $this->configuration_service->get_key(),
 			'description' => __( 'Insert the <a href="https://www.wordlift.io/blogger">WordLift Key</a> you received via email.', 'wordlift' )
-			. ' [' . get_option( 'home' ) . ']',
+			                 . ' [' . get_option( 'home' ) . ']',
 		);
 
 		// Before we were used to validate the key beforehand, but this means
@@ -357,11 +358,11 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 * Filter the {@link Wordlift_Admin_Input_Element} in order to add the
 	 * `readonly` flag to the `wl-entity-base-path` input.
 	 *
-	 * @since 3.17.0
-	 *
 	 * @param array $args An array of {@link Wordlift_Admin_Input_Element} parameters.
 	 *
 	 * @return array The updated array.
+	 * @since 3.17.0
+	 *
 	 */
 	public function entity_path_input_element_params( $args ) {
 
@@ -383,11 +384,11 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 * If a new entity is being created for the publisher, create it and set The
 	 * publisher setting.
 	 *
-	 * @since 3.11.0
-	 *
 	 * @param array $input The configuration settings array.
 	 *
 	 * @return array The sanitized input array.
+	 * @since 3.11.0
+	 *
 	 */
 	function sanitize_callback( $input ) {
 

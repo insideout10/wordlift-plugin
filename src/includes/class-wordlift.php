@@ -30,6 +30,7 @@ use Wordlift\Entity\Entity_Helper;
 use Wordlift\Entity\Entity_No_Index_Flag;
 use Wordlift\Entity\Entity_Rest_Service;
 use Wordlift\Entity_Type\Entity_Type_Change_Handler;
+use Wordlift\Entity_Type\Entity_Type_Setter;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Post_Type_Hook;
@@ -1662,6 +1663,8 @@ class Wordlift {
 			$this->entity_service,
 			$this->entity_type_service
 		);
+
+		new Entity_Type_Setter();
 	}
 
 	/**

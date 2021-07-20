@@ -3,14 +3,14 @@ namespace Wordlift\Vocabulary;
 
 class Terms_Compat {
 
-	public static function get_terms( $taxonomy, $args_with_taxonomy_key ) {
+	public static function get_terms( $taxonomy, $args ) {
 		global $wp_version;
 
 		if ( version_compare( $wp_version, '4.5', '<' ) ) {
-			return get_terms( $taxonomy, $args_with_taxonomy_key );
+			return get_terms( $taxonomy, $args );
 		} else {
-			$args_with_taxonomy_key['taxonomy'] = $taxonomy;
-			return get_terms( $args_with_taxonomy_key );
+			$args['taxonomy'] = $taxonomy;
+			return get_terms( $args );
 		}
 	}
 

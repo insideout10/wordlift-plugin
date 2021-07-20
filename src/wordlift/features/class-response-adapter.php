@@ -43,10 +43,37 @@ class Response_Adapter {
 
 		$this->log->debug( "WL1 [ encoded :: $wl1_as_base64_string ] " . var_export( $wl1, true ) );
 
-		// Update the feature flags. There's no need to check here if values differ (thus avoiding a call to db), since
-		// WordPress does that in `update_option`.
-		if ( isset( $wl1['features'] ) ) {
-			if ( update_option( self::WL_FEATURES, (array) $wl1['features'], true ) ) {
+
+		$updated_features = $wl1['features'];
+
+		$existing_features = get_option( self::WL_FEATURES, array() );
+
+		// Loop through updated features.
+		foreach ( $updated_features as $feature_slug => $new_value ) {
+
+			// We cant pass false because that indicates if the feature is active or not, null is used to represent the features which are
+			// not set before.
+			$old_value = array_key_exists( $feature_slug, $existing_features ) ? $existing_features[ $feature_slug ] : null;
+
+			if ( $old_value !== $new_value ) {
+				/**
+				 * @param $feature_slug string The feature slug.
+				 * @param $old_value null | boolean Null represents the feature flag was not set before.
+				 * @param $new_value boolean True or false.
+				 *
+				 * @since 3.32.1
+				 * Hook : `wl_feature__change__{feature_slug}`
+				 * Action hook to be fired when there is a change in feature state.
+				 */
+				do_action( "wl_feature__change__${feature_slug}", $new_value, $old_value, $feature_slug );
+			}
+
+		}
+
+
+		if ( isset( $updated_features ) ) {
+
+			if ( update_option( self::WL_FEATURES, (array) $updated_features, true ) ) {
 				$this->register_filters();
 			}
 		}
