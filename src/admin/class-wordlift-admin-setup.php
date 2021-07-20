@@ -307,13 +307,6 @@ class Wordlift_Admin_Setup {
 
 		flush_rewrite_rules(); // Needed because of possible change to the entity base path.
 
-		/**
-		 * @since ?.??.??
-		 * Fires after the configuration has been saved.
-		 * This happens when you set the key from the wizard.
-		 */
-		do_action( 'wl_after_configuration_save' );
-
 	}
 
 }

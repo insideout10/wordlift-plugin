@@ -19,7 +19,9 @@ class Entity_Type_Setter {
 	const BUSINESS_PLAN = 'entity-types-business';
 
 	public function __construct() {
-		add_action( 'wl_after_configuration_save', array( $this, 'wl_after_configuration_save' ) );
+		add_action( "wl_feature__change__entity-types-starter", array( $this, 'wl_entity_types_feature_changed' ), 10, 3 );
+		add_action( "wl_feature__change__entity-types-professional", array( $this, 'wl_entity_types_feature_changed' ), 10, 3 );
+		add_action( "wl_feature__change__entity-types-business", array( $this, 'wl_entity_types_feature_changed' ), 10, 3 );
 	}
 
 
@@ -30,19 +32,15 @@ class Entity_Type_Setter {
 	);
 
 
-	public function wl_after_configuration_save() {
+	public function wl_entity_types_feature_changed( $feature_slug, $old_value, $new_value ) {
 
-		$entity_type_feature_flags = array_intersect( self::$entity_type_feature_flags, Features_Registry::get_all_enabled_features() );
-
-		// if we dont have any entity type flags enabled, return early.
-		if ( ! $entity_type_feature_flags ) {
+		// If the entity types is not set by server, then return early.
+		if (  ! $new_value ) {
 			return;
 		}
 
-		// Only one flag should be active at a time.
-		$entity_type_feature_flag = array_shift( $entity_type_feature_flags );
 
-		$entity_types_data = self::get_entity_types_by_feature_flag( $entity_type_feature_flag );
+		$entity_types_data = self::get_entity_types_by_feature_flag( $feature_slug );
 
 		// If we dont have entity types returned, then dont reset the entity types, return early.
 		if ( ! $entity_types_data ) {
