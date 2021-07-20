@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.32.0 (2021-07-__) =
+= 3.32.0 (2021-07-20) =
 
 * Enhancement [#1425](https://github.com/insideout10/wordlift-plugin/issues/1425): Videoobject support for JW Player
 * Enhancement [#1420](https://github.com/insideout10/wordlift-plugin/issues/1420): Should not add VideoObject if it is a descendant of article
