@@ -55,10 +55,12 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 			return $term->name;
 		}, $entity_types );
 
-		sort( $entity_type_labels );
-		sort( $starter_feature_labels );
+		$this->assertSame(
+			count( array_intersect( $entity_type_labels, $starter_feature_labels ) ),
+			count( $starter_feature_labels ),
+			'Starter feature entity types should be present.'
+		);
 
-		$this->assertSame( $starter_feature_labels, $entity_type_labels, ' Entity types should be changed based on package type.' );
 
 		$this->verify_term_meta( $entity_types );
 	}
@@ -77,10 +79,12 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 			return $term->name;
 		}, $entity_types );
 
-		sort( $entity_type_labels );
-		sort( $this->professional_feature_labels );
 
-		$this->assertSame( $this->professional_feature_labels, $entity_type_labels, 'Pro plan features should be present.' );
+		$this->assertSame(
+			count( array_intersect( $entity_type_labels, $this->professional_feature_labels ) ),
+			count( $this->professional_feature_labels ),
+			'Pro feature entity types should be present.'
+		);
 
 		$this->verify_term_meta( $entity_types );
 
@@ -100,11 +104,14 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 			return $term->name;
 		}, $entity_types );
 
-		sort( $entity_type_labels );
 		$business_feature_labels = $this->professional_feature_labels;
-		sort( $business_feature_labels );
 
-		$this->assertSame( $business_feature_labels, $entity_type_labels, 'Business plan features should be present.' );
+
+		$this->assertSame(
+			count( array_intersect( $entity_type_labels, $business_feature_labels ) ),
+			count( $business_feature_labels ),
+			'Business feature entity types should be present.'
+		);
 
 		$this->verify_term_meta( $entity_types );
 

@@ -55,6 +55,14 @@ class Entity_Type_Setter {
 
 			$schema_label = $entity_type_data['label'];
 
+			$term_exists = get_term_by( 'name', $schema_label, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) instanceof \WP_Term;
+
+			if (  $term_exists ) {
+				// Dont create term if it already exists.
+				continue;
+			}
+
+
 			$term_data = wp_insert_term(
 				$schema_label,
 				Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
