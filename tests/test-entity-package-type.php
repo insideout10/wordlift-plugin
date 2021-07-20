@@ -31,7 +31,7 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_when_package_type_changed_to_starter_should_have_only_starter_entity_types() {
 
-		$this->configuration_service->set_package_type( 'wl_starter' );
+		do_action( 'wl_after_configuration_save' );
 
 		$starter_feature_labels = array(
 			'Person',
@@ -63,7 +63,7 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_when_package_type_changed_to_professional_should_have_only_professional_entity_types() {
 
-		$this->configuration_service->set_package_type( 'wl_professional' );
+		do_action( 'wl_after_configuration_save' );
 
 
 		$entity_types = Terms_Compat::get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
@@ -84,7 +84,7 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_when_package_type_changed_to_business_should_have_only_business_entity_types() {
 
-		$this->configuration_service->set_package_type( 'wl_business' );
+		do_action( 'wl_after_configuration_save' );
 
 
 		$entity_types = Terms_Compat::get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
@@ -119,7 +119,7 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 
 		// we set an unknown value to package type, for now we only recognize wl_starter, wl_professional, wl_business
 		// if we dont have any of these value then we shouldnt alter the entity types.
-		$this->configuration_service->set_package_type( 'professional' );
+		do_action( 'wl_after_configuration_save' );
 
 		$after_entity_types = Terms_Compat::get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
 			'hide_empty' => false,
