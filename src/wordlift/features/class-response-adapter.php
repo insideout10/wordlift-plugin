@@ -53,18 +53,19 @@ class Response_Adapter {
 
 			// We cant pass false because that indicates if the feature is active or not, null is used to represent the features which are
 			// not set before.
-			$old_value = array_key_exists( $feature_slug, $existing_features ) ? $existing_features[$feature_slug] : null;
+			$old_value = array_key_exists( $feature_slug, $existing_features ) ? $existing_features[ $feature_slug ] : null;
 
 			if ( $old_value !== $new_value ) {
 				/**
-				 * @since 3.32.1
-				 * Hook : `wl_feature__change__{feature_slug}`
-				 * Action hook to be fired when there is a change in feature state.
 				 * @param $feature_slug string The feature slug.
 				 * @param $old_value null | boolean Null represents the feature flag was not set before.
 				 * @param $new_value boolean True or false.
+				 *
+				 * @since 3.32.1
+				 * Hook : `wl_feature__change__{feature_slug}`
+				 * Action hook to be fired when there is a change in feature state.
 				 */
-				do_action( "wl_feature__change__${feature_slug}", $feature_slug,  $old_value, $new_value );
+				do_action( "wl_feature__change__${feature_slug}", $feature_slug, $old_value, $new_value );
 			}
 
 		}
