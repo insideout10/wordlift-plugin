@@ -202,15 +202,6 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 * @since 3.11.0
 	 */
 	function admin_init() {
-
-		if ( isset( $_POST['wl_general_settings'] ) ) {
-			/**
-			 * @since ?.??.??
-			 * This action is fired before the settings are saved
-			 */
-			do_action( 'wl_before_settings_save' );
-		}
-
 		// Register WordLift's general settings, providing our own sanitize callback
 		// which will also check whether the user filled the WL Publisher form.
 		register_setting(
