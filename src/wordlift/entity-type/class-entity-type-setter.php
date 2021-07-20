@@ -166,14 +166,21 @@ class Entity_Type_Setter {
 		$this->remove_all_entity_types();
 
 		// Repopulate the ones returned by package type.
-		foreach ( $entity_types_data as $term_data ) {
-			wp_insert_term(
-				$term_data['label'],
+		foreach ( $entity_types_data as $entity_type_data ) {
+			$schema_label     = $entity_type_data['label'];
+
+			$term_data =  wp_insert_term(
+				$schema_label,
 				Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				array(
-					'description' => $term_data['description']
+					'description' => $entity_type_data['description']
 				)
 			);
+
+			$term_id = $term_data['term_id'];
+
+			update_term_meta( $term_id, '_wl_uri', 'http://schema.org/' . $schema_label );
+			update_term_meta( $term_id, '_wl_name', $schema_label );
 		}
 
 	}

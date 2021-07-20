@@ -59,6 +59,8 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 		sort( $starter_feature_labels );
 
 		$this->assertSame( $starter_feature_labels, $entity_type_labels, ' Entity types should be changed based on package type.' );
+
+		$this->verify_term_meta( $entity_types );
 	}
 
 
@@ -79,6 +81,8 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 		sort( $this->professional_feature_labels );
 
 		$this->assertSame( $this->professional_feature_labels, $entity_type_labels, 'Pro plan features should be present.' );
+
+		$this->verify_term_meta( $entity_types );
 
 	}
 
@@ -101,6 +105,8 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 		sort( $business_feature_labels );
 
 		$this->assertSame( $business_feature_labels, $entity_type_labels, 'Business plan features should be present.' );
+
+		$this->verify_term_meta( $entity_types );
 
 	}
 
@@ -143,6 +149,18 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 		update_option( Response_Adapter::WL_FEATURES, array( $feature_slug ), true );
 
 		do_action( 'wl_after_configuration_save' );
+	}
+
+	/**
+	 * @param $terms
+	 */
+	private function verify_term_meta( $terms ) {
+		foreach ( $terms as $term ) {
+			$name = $term->name;
+			$this->assertSame( "http://schema.org/$name", get_term_meta( $term->term_id, '_wl_uri', true ), 'We should have term _wl_uri for the item' );
+			$this->assertSame( $name, get_term_meta( $term->term_id, '_wl_name', true ), 'We should have term _wl_name for the item' );
+
+		}
 	}
 
 
