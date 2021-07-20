@@ -7,7 +7,6 @@
 namespace Wordlift\Entity_Type;
 
 use Wordlift\Features\Features_Registry;
-use Wordlift\Vocabulary\Terms_Compat;
 use Wordlift_Entity_Type_Taxonomy_Service;
 
 class Entity_Type_Setter {
@@ -21,7 +20,6 @@ class Entity_Type_Setter {
 
 	public function __construct() {
 		add_action( 'wl_after_configuration_save', array( $this, 'wl_after_configuration_save' ) );
-		add_action( 'wl_before_settings_save', array( $this, 'wl_after_configuration_save' ) );
 	}
 
 
@@ -57,7 +55,7 @@ class Entity_Type_Setter {
 
 			$term_exists = get_term_by( 'name', $schema_label, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) instanceof \WP_Term;
 
-			if (  $term_exists ) {
+			if ( $term_exists ) {
 				// Dont create term if it already exists.
 				continue;
 			}
@@ -67,7 +65,8 @@ class Entity_Type_Setter {
 				$schema_label,
 				Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				array(
-					'description' => $entity_type_data['description']
+					'description' => $entity_type_data['description'],
+					'slug'        => $entity_type_data['slug']
 				)
 			);
 
@@ -85,49 +84,59 @@ class Entity_Type_Setter {
 			array(
 				'label'       => 'Person',
 				'description' => 'A person (or a music artist).',
+				'slug'        => 'person'
 			),
 			array(
 				'label'       => 'Thing',
 				'description' => 'A generic thing (something that doesn\'t fit in the previous definitions.',
+				'slug'        => 'thing'
 			),
 
 			array(
 				'label'       => 'Place',
 				'description' => 'A place.',
+				'slug'        => 'place'
 			),
 
 			array(
 				'label'       => 'CreativeWork',
 				'description' => 'A creative work (or a Music Album).',
+				'slug'        => 'creative-work'
 			),
 			array(
 				'label'       => 'Organization',
 				'description' => 'An organization, including a government or a newspaper.',
+				'slug'        => 'organization'
 			),
 
 			array(
 				'label'       => 'Article',
-				'description' => 'An article, such as a news article or piece of investigative report. Newspapers and magazines have articles of many different types and this is intended to cover them all.'
+				'description' => 'An article, such as a news article or piece of investigative report. Newspapers and magazines have articles of many different types and this is intended to cover them all.',
+				'slug'        => 'article'
 			),
 
 			array(
 				'label'       => 'WebSite',
-				'description' => 'A WebSite is a set of related web pages and other items typically served from a single web domain and accessible via URLs.'
+				'description' => 'A WebSite is a set of related web pages and other items typically served from a single web domain and accessible via URLs.',
+				'slug'        => 'web-site'
 			),
 
 			array(
 				'label'       => 'NewsArticle',
-				'description' => 'A NewsArticle is an article whose content reports news, or provides background context and supporting materials for understanding the news.'
+				'description' => 'A NewsArticle is an article whose content reports news, or provides background context and supporting materials for understanding the news.',
+				'slug'        => 'news-article'
 			),
 
 			array(
 				'label'       => 'AboutPage',
-				'description' => 'An About page.'
+				'description' => 'An About page.',
+				'slug'        => 'about-page'
 			),
 
 			array(
 				'label'       => 'ContactPage',
-				'description' => 'A Contact Page.'
+				'description' => 'A Contact Page.',
+				'slug'        => 'contact-page'
 			)
 
 		);
@@ -139,31 +148,39 @@ class Entity_Type_Setter {
 
 			array(
 				'label'       => 'FAQPage',
-				'description' => 'A FAQPage is a WebPage presenting one or more "Frequently asked questions".'
+				'description' => 'A FAQPage is a WebPage presenting one or more "Frequently asked questions".',
+				'slug'        => 'faq-page'
 			),
 			array(
 				'label'       => 'LocalBusiness',
-				'description' => 'A particular physical business or branch of an organization. Examples of LocalBusiness include a restaurant, a particular branch of a restaurant chain, a branch of a bank, a medical practice, a club, a bowling alley, etc.'
+				'description' => 'A particular physical business or branch of an organization. Examples of LocalBusiness include a restaurant, a particular branch of a restaurant chain, a branch of a bank, a medical practice, a club, a bowling alley, etc.',
+				'slug'        => 'local-business'
+
 			),
 			array(
 				'label'       => 'Recipe',
-				'description' => 'A recipe'
+				'description' => 'A recipe',
+				'slug'        => 'recipe'
 			),
 			array(
 				'label'       => 'PodcastEpisode',
-				'description' => 'A single episode of a podcast series.'
+				'description' => 'A single episode of a podcast series.',
+				'slug'        => 'podcast-episode'
 			),
 			array(
 				'label'       => 'Course',
-				'description' => 'A description of an educational course which may be offered as distinct instances at which take place at different times or take place at different locations, or be offered through different media or modes of study. '
+				'description' => 'A description of an educational course which may be offered as distinct instances at which take place at different times or take place at different locations, or be offered through different media or modes of study.',
+				'slug'        => 'course'
 			),
 			array(
 				'label'       => 'Event',
-				'description' => 'An event happening at a certain time and location, such as a concert, lecture, or festival.'
+				'description' => 'An event happening at a certain time and location, such as a concert, lecture, or festival.',
+				'slug'        => 'event'
 			),
 			array(
 				'label'       => 'Review',
-				'description' => 'A review of an item - for example, of a restaurant, movie, or store.'
+				'description' => 'A review of an item - for example, of a restaurant, movie, or store.',
+				'slug'        => 'review'
 			),
 
 		);
