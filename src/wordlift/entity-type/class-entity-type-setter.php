@@ -50,12 +50,9 @@ class Entity_Type_Setter {
 		if ( ! $entity_types_data ) {
 			return;
 		}
-
-		// Remove all entity types from db.
-		$this->remove_all_entity_types();
-
 		// Repopulate the ones returned by package type.
 		foreach ( $entity_types_data as $entity_type_data ) {
+
 			$schema_label = $entity_type_data['label'];
 
 			$term_data = wp_insert_term(
@@ -72,22 +69,6 @@ class Entity_Type_Setter {
 			update_term_meta( $term_id, '_wl_name', $schema_label );
 		}
 
-	}
-
-
-	/**
-	 * Remove all the entity types from db
-	 * @return void
-	 */
-	private function remove_all_entity_types() {
-
-		$entity_types = Terms_Compat::get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
-			'hide_empty' => false,
-			'fields'     => 'ids'
-		) );
-		foreach ( $entity_types as $entity_type_id ) {
-			wp_delete_term( $entity_type_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
-		}
 	}
 
 
