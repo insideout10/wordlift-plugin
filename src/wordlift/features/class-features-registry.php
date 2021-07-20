@@ -52,7 +52,14 @@ class Features_Registry {
 	}
 
 	public static function get_all_enabled_features() {
-		return get_option( Response_Adapter::WL_FEATURES, array() );
+		$features =  get_option( Response_Adapter::WL_FEATURES, array() );
+		$enabled_feature_slugs = array();
+		foreach ( $features as $key => $value ) {
+			if ( $value ) {
+				$enabled_feature_slugs[] = $key;
+			}
+		}
+		return $enabled_feature_slugs;
 	}
 
 

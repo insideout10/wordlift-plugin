@@ -310,7 +310,7 @@ class Wordlift_Admin_Setup {
 		/**
 		 * @since ?.??.??
 		 * Fires after the configuration has been saved.
-		 * This happens when you resave the key or set the key from the wizard.
+		 * This happens when you set the key from the wizard.
 		 */
 		do_action( 'wl_after_configuration_save' );
 

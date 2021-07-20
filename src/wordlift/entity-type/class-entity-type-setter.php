@@ -19,11 +19,77 @@ class Entity_Type_Setter {
 
 	const BUSINESS_PLAN = 'entity-types-business';
 
+	public function __construct() {
+		add_action( 'wl_after_configuration_save', array( $this, 'wl_after_configuration_save' ) );
+		add_action('update_option_wl_general_settings', array( $this, 'wl_after_configuration_save'));
+	}
+
+
 	private static $entity_type_feature_flags = array(
 		self::STARTER_PLAN,
 		self::PROFESSIONAL_PLAN,
 		self::BUSINESS_PLAN
 	);
+
+
+	public function wl_after_configuration_save() {
+
+		$entity_type_feature_flags = array_intersect( self::$entity_type_feature_flags, Features_Registry::get_all_enabled_features() );
+
+		// if we dont have any entity type flags enabled, return early.
+		if ( ! $entity_type_feature_flags ) {
+			return;
+		}
+
+		// Only one flag should be active at a time.
+		$entity_type_feature_flag = array_shift( $entity_type_feature_flags );
+
+		$entity_types_data = self::get_entity_types_by_feature_flag( $entity_type_feature_flag );
+
+		// If we dont have entity types returned, then dont reset the entity types, return early.
+		if ( ! $entity_types_data ) {
+			return;
+		}
+
+		// Remove all entity types from db.
+		$this->remove_all_entity_types();
+
+		// Repopulate the ones returned by package type.
+		foreach ( $entity_types_data as $entity_type_data ) {
+			$schema_label     = $entity_type_data['label'];
+
+			$term_data =  wp_insert_term(
+				$schema_label,
+				Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+				array(
+					'description' => $entity_type_data['description']
+				)
+			);
+
+			$term_id = $term_data['term_id'];
+
+			update_term_meta( $term_id, '_wl_uri', 'http://schema.org/' . $schema_label );
+			update_term_meta( $term_id, '_wl_name', $schema_label );
+		}
+
+	}
+
+
+	/**
+	 * Remove all the entity types from db
+	 * @return void
+	 */
+	private function remove_all_entity_types() {
+
+		$entity_types = Terms_Compat::get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
+			'hide_empty' => false,
+			'fields'     => 'ids'
+		) );
+		foreach ( $entity_types as $entity_type_id ) {
+			wp_delete_term( $entity_type_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		}
+	}
+
 
 
 	public static function get_starter_entity_types() {
@@ -116,7 +182,7 @@ class Entity_Type_Setter {
 	}
 
 
-	private function get_entity_types_by_feature_flag( $package_type ) {
+	private static function get_entity_types_by_feature_flag( $package_type ) {
 
 		switch ( $package_type ) {
 			case self::STARTER_PLAN:
@@ -137,69 +203,6 @@ class Entity_Type_Setter {
 	}
 
 
-	public function __construct() {
-		add_action( 'wl_after_configuration_save', array( $this, 'wl_after_configuration_save' ) );
-	}
-
-
-	public function wl_after_configuration_save() {
-
-		$entity_type_feature_flags = array_intersect( self::$entity_type_feature_flags, Features_Registry::get_all_enabled_features() );
-
-		// if we dont have any entity type flags enabled, return early.
-
-		if ( ! $entity_type_feature_flags ) {
-			return;
-		}
-
-		// Only one flag should be active at a time.
-		$entity_type_feature_flag = array_shift( $entity_type_feature_flags );
-
-		$entity_types_data = $this->get_entity_types_by_feature_flag( $entity_type_feature_flag );
-
-		// If we dont have entity types returned, then dont reset the entity types, return early.
-		if ( ! $entity_types_data ) {
-			return;
-		}
-
-		// Remove all entity types from db.
-		$this->remove_all_entity_types();
-
-		// Repopulate the ones returned by package type.
-		foreach ( $entity_types_data as $entity_type_data ) {
-			$schema_label     = $entity_type_data['label'];
-
-			$term_data =  wp_insert_term(
-				$schema_label,
-				Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
-				array(
-					'description' => $entity_type_data['description']
-				)
-			);
-
-			$term_id = $term_data['term_id'];
-
-			update_term_meta( $term_id, '_wl_uri', 'http://schema.org/' . $schema_label );
-			update_term_meta( $term_id, '_wl_name', $schema_label );
-		}
-
-	}
-
-
-	/**
-	 * Remove all the entity types from db
-	 * @return void
-	 */
-	private function remove_all_entity_types() {
-
-		$entity_types = Terms_Compat::get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
-			'hide_empty' => false,
-			'fields'     => 'ids'
-		) );
-		foreach ( $entity_types as $entity_type_id ) {
-			wp_delete_term( $entity_type_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
-		}
-	}
 
 
 }

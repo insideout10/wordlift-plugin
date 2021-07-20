@@ -146,7 +146,7 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 	private function set_feature_and_trigger_config_save( $feature_slug ) {
 
 		// clear out the features
-		update_option( Response_Adapter::WL_FEATURES, array( $feature_slug ), true );
+		update_option( Response_Adapter::WL_FEATURES, array( $feature_slug => true ), true );
 
 		do_action( 'wl_after_configuration_save' );
 	}
