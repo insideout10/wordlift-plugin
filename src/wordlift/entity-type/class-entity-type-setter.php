@@ -1,12 +1,11 @@
 <?php
 /**
- * @since ?.??.??
+ * @since 3.32.1
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
 namespace Wordlift\Entity_Type;
 
-use Wordlift\Features\Features_Registry;
 use Wordlift_Entity_Type_Taxonomy_Service;
 
 class Entity_Type_Setter {
