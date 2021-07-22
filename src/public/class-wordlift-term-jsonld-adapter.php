@@ -27,15 +27,6 @@ class Wordlift_Term_JsonLd_Adapter {
 	 */
 	private $entity_uri_service;
 
-	/**
-	 * The {@link Wordlift_Jsonld_Service} instance.
-	 *
-	 * @since 3.20.0
-	 * @access private
-	 * @var \Wordlift_Jsonld_Service $jsonld_service The {@link Wordlift_Jsonld_Service} instance.
-	 */
-	private $jsonld_service;
-
 	private static $instance;
 
 	/**
