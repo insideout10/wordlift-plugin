@@ -47,12 +47,11 @@ class Wordlift_Term_JsonLd_Adapter {
 	 * @since 3.20.0
 	 *
 	 */
-	public function __construct( $entity_uri_service, $jsonld_service ) {
+	public function __construct( $entity_uri_service ) {
 
 		add_action( 'wp_head', array( $this, 'wp_head' ) );
 
 		$this->entity_uri_service = $entity_uri_service;
-		$this->jsonld_service     = $jsonld_service;
 
 		self::$instance = $this;
 	}
@@ -228,6 +227,7 @@ class Wordlift_Term_JsonLd_Adapter {
 	 * @return array
 	 */
 	private function get_entity_jsonld( $term_id, $context ) {
+		$jsonld_service = Wordlift_Jsonld_Service::get_instance();
 		// The `_wl_entity_id` are URIs.
 		$entity_ids         = get_term_meta( $term_id, '_wl_entity_id' );
 		$entity_uri_service = $this->entity_uri_service;
@@ -242,7 +242,7 @@ class Wordlift_Term_JsonLd_Adapter {
 		}
 
 		$post   = $this->entity_uri_service->get_entity( array_shift( $local_entity_ids ) );
-		$jsonld = $this->jsonld_service->get_jsonld( false, $post->ID, $context );
+		$jsonld = $jsonld_service->get_jsonld( false, $post->ID, $context );
 		// Reset the `url` to the term page.
 		$jsonld[0]['url'] = get_term_link( $term_id );
 
@@ -256,6 +256,7 @@ class Wordlift_Term_JsonLd_Adapter {
 	 * @return array
 	 */
 	private function expand_references( $references ) {
+		$jsonld_service = Wordlift_Jsonld_Service::get_instance();
 		// @TODO: we are assuming all the references are posts
 		// in this method, since now terms are getting converted to
 		// entities, this might not be true in all cases.
@@ -265,7 +266,7 @@ class Wordlift_Term_JsonLd_Adapter {
 		$references_jsonld = array();
 		// Expand the references.
 		foreach ( $references as $reference ) {
-			$references_jsonld[] = $this->jsonld_service->get_jsonld( false, $reference );
+			$references_jsonld[] = $jsonld_service->get_jsonld( false, $reference );
 		}
 
 		return $references_jsonld;
