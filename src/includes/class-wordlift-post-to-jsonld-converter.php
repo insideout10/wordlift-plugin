@@ -187,23 +187,31 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			// Prepare the `about` and `mentions` array.
 			$about = $mentions = array();
 
+			$item   = false;
+			$labels = array();
+
+
 			// If the entity is in the title, then it should be an `about`.
 			foreach ( $references as $reference ) {
 				/**
 				 * @var $reference Reference
 				 */
-				if (  $reference instanceof  Post_Reference ) {
+				if ( $reference instanceof Post_Reference ) {
 					// Get the entity labels.
 					$labels = $this->entity_service->get_labels( $reference->get_id() );
-				}
-				else {
+					// Get the entity URI.
+					$item = array(
+						'@id' => $this->entity_service->get_uri( $reference->get_id(), $reference->get_type() ),
+					);
+				} else if ( is_numeric( $reference ) ) {
+					// compatibility with legacy references using post id.
 					$labels = array();
+					// Get the entity URI.
+					$item = array(
+						'@id' => $this->entity_service->get_uri( $reference ),
+					);
 				}
 
-				// Get the entity URI.
-				$item = array(
-					'@id' => $this->entity_service->get_uri( $reference->get_id(), $reference->get_type() ),
-				);
 
 				$escaped_labels = array_map( function ( $value ) {
 					return preg_quote( $value, '/' );
@@ -212,11 +220,14 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 				// Check if the labels match any part of the title.
 				$matches = 1 === preg_match( '/' . implode( '|', $escaped_labels ) . '/', $post->post_title );
 
-				// If the title matches, assign the entity to the about, otherwise to the mentions.
-				if ( $matches ) {
-					$about[] = $item;
-				} else {
-					$mentions[] = $item;
+				// Check if we have a valid reference.
+				if ( $item ) {
+					// If the title matches, assign the entity to the about, otherwise to the mentions.
+					if ( $matches ) {
+						$about[] = $item;
+					} else {
+						$mentions[] = $item;
+					}
 				}
 
 
