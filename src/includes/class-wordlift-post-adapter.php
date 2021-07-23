@@ -229,8 +229,12 @@ class Wordlift_Post_Adapter {
 
 		if ( function_exists( 'wpml_get_language_information' ) ) {
 			// WPML handling
-			$post_language = wpml_get_language_information( $this->post_id );
-			$language      = $post_language['locale'];
+			// WPML: Updated function signature.
+			// function wpml_get_language_information( $empty_value = null, $post_id = null )
+			$post_language = wpml_get_language_information( null, $this->post_id );
+			if ( ! $post_language instanceof WP_Error ) {
+				$language = $post_language['locale'];
+			}
 		} else if ( function_exists( 'pll_get_post_language' ) ) {
 			// Polylang handling
 			$language = pll_get_post_language( $this->post_id, 'locale' );
