@@ -187,6 +187,10 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			// Prepare the `about` and `mentions` array.
 			$about = $mentions = array();
 
+			$item   = false;
+			$labels = array();
+
+
 			// If the entity is in the title, then it should be an `about`.
 			foreach ( $references as $reference ) {
 				/**
@@ -216,11 +220,14 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 				// Check if the labels match any part of the title.
 				$matches = 1 === preg_match( '/' . implode( '|', $escaped_labels ) . '/', $post->post_title );
 
-				// If the title matches, assign the entity to the about, otherwise to the mentions.
-				if ( $matches ) {
-					$about[] = $item;
-				} else {
-					$mentions[] = $item;
+				// Check if we have a valid reference.
+				if ( $item ) {
+					// If the title matches, assign the entity to the about, otherwise to the mentions.
+					if ( $matches ) {
+						$about[] = $item;
+					} else {
+						$mentions[] = $item;
+					}
 				}
 
 
