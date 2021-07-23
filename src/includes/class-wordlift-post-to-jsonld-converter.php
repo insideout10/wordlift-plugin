@@ -192,18 +192,22 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 				/**
 				 * @var $reference Reference
 				 */
-				if (  $reference instanceof  Post_Reference ) {
+				if ( $reference instanceof Post_Reference ) {
 					// Get the entity labels.
 					$labels = $this->entity_service->get_labels( $reference->get_id() );
-				}
-				else {
+					// Get the entity URI.
+					$item = array(
+						'@id' => $this->entity_service->get_uri( $reference->get_id(), $reference->get_type() ),
+					);
+				} else if ( is_numeric( $reference ) ) {
+					// compatibility with legacy references using post id.
 					$labels = array();
+					// Get the entity URI.
+					$item = array(
+						'@id' => $this->entity_service->get_uri( $reference ),
+					);
 				}
 
-				// Get the entity URI.
-				$item = array(
-					'@id' => $this->entity_service->get_uri( $reference->get_id(), $reference->get_type() ),
-				);
 
 				$escaped_labels = array_map( function ( $value ) {
 					return preg_quote( $value, '/' );
