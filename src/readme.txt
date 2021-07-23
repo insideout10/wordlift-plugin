@@ -142,6 +142,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.32.2 (2021-07-23) =
+
+* Fix: Videoobject fix embedded videos with jw player
+* Fix: `wpml_get_language_information` compatibility
+
 = 3.32.1 (2021-07-23) =
 
 * Fix: Term jsonld service
