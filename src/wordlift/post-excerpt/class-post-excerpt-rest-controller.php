@@ -50,7 +50,7 @@ class Post_Excerpt_Rest_Controller {
 	public static function get_post_excerpt( $request ) {
 		$data            = $request->get_params();
 		$post_id         = $data['post_id'];
-		$post_body       = $data['post_body'];
+		$post_body       = strip_shortcodes( $data['post_body'] );
 		$current_hash    = md5( $post_body );
 		$server_response = self::get_post_excerpt_conditionally( $post_id, $post_body, $current_hash );
 		if ( empty( $server_response ) || ! array_key_exists( 'post_excerpt', $server_response ) ) {
