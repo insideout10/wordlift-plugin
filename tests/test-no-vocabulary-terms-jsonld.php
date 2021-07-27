@@ -22,6 +22,15 @@ class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 		$this->assertNotEmpty( $entity_uri, 'Entity uri should be set upon term save' );
 	}
 
+	public function test_when_the_dataset_uri_not_present_dont_add_it_to_jsonld() {
+		$term_id    = wp_insert_term( 'vocabulary_term_test_1', 'no_vocabulary_terms' );
+		$term_id    = $term_id['term_id'];
+		delete_term_meta( $term_id, 'entity_url');
+		// Try to get the jsonld for this term.
+		$jsonld = Wordlift_Term_JsonLd_Adapter::get_instance()->get( $term_id, Jsonld_Context_Enum::UNKNOWN );
+		$this->assertCount( 0, $jsonld );
+	}
+
 
 	public function test_should_generate_id_for_term_correctly() {
 
