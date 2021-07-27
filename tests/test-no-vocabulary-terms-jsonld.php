@@ -47,7 +47,28 @@ class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 		$birth_place_data = array( '@id' => wl_get_entity_uri( $birth_place_entity_id ) );
 		$this->assertSame( $birth_place_data, $term_entity_jsonld['birthPlace'][0], 'Reference data should be expanded correctly.' );
 		$this->assertSame( $jsonld[1]['@id'], wl_get_entity_uri( $birth_place_entity_id ), 'Entity URI should be present' );
+	}
 
+	public function test_when_term_has_post_entity_reference_and_linked_to_different_entity_should_generate_correct_jsonld() {
+		$tag     = wp_create_tag( "test_jsonld_tag" );
+		$term_id = $tag['term_id'];
+		// Set the Entity type to Person.
+		$term_type_service = Type_Service::get_instance();
+		$term_type_service->set_entity_types( $term_id, array( 'person' ) );
+		// Set the birthPlace property to refer to another entity.
+		$birth_place_entity_id = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		update_term_meta( $term_id, 'wl_birth_place', $birth_place_entity_id );
+		// Link another entity to birthplace entity.
+		$another_entity = $this->factory()->post->create( array('post_type' => 'entity' ) );
+		wl_core_add_relation_instance( $birth_place_entity_id, WL_WHAT_RELATION, $another_entity );
+		// Now generate the jsonld.
+		$jsonld = Wordlift_Term_JsonLd_Adapter::get_instance()->get(
+			$term_id,
+			Jsonld_Context_Enum::PAGE
+		);
+		$this->assertCount( 2, $jsonld, 'We should have term, as well as the post entity reference' );
+
+		$this->assertSame( $jsonld[1]['@id'], wl_get_entity_uri($another_entity) );
 	}
 
 

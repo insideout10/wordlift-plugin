@@ -9,6 +9,7 @@
  */
 
 use Wordlift\Jsonld\Jsonld_Context_Enum;
+use Wordlift\Term\Type_Service;
 
 /**
  * Class Wordlift_Term_Jsonld_Adapter_Test
