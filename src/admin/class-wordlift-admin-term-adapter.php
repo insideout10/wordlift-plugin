@@ -110,16 +110,11 @@ class Wordlift_Admin_Term_Adapter {
 	 */
 	public function add_action( $taxonomy ) {
 		/**
-		 * Filter: wl_feature__enable__taxonomy_term_entity_mapping.
-		 *
-		 * @param bool whether to show the taxonomy term to entity mapping field.
-		 *
-		 * @return bool
-		 * @since 3.27.6
-		 */
-		if ( apply_filters( 'wl_feature__enable__taxonomy_term_entity_mapping', true ) ) {
-			add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_form_fields' ), 10, 2 );
-		}
+		 * Filter wl_feature__enable__taxonomy_term_entity_mapping renamed to wl_feature__enable__term-entity.
+         **/
+
+		add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_form_fields' ), 10, 2 );
+
 	}
 
 	/**
