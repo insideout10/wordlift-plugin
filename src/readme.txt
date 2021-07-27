@@ -4,7 +4,7 @@ Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave, akshay_raje
 Tags: SEO, SERP, FAQ Markup, Schema Markup, structured data, schema.org, schema org, semantic seo, JSON-LD, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map, classicpress
 Requires at least: 4.4
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 5.3
 Stable tag: {version}
 License: GPLv2 or later
@@ -142,7 +142,17 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.32.0 (2021-07-__) =
+= 3.32.2 (2021-07-23) =
+
+* Fix: Videoobject fix embedded videos with jw player
+* Fix: `wpml_get_language_information` compatibility
+* Fix: Support for legacy references in post to jsonld converter
+
+= 3.32.1 (2021-07-23) =
+
+* Fix: Term jsonld service
+
+= 3.32.0 (2021-07-20) =
 
 * Enhancement [#1425](https://github.com/insideout10/wordlift-plugin/issues/1425): Videoobject support for JW Player
 * Enhancement [#1420](https://github.com/insideout10/wordlift-plugin/issues/1420): Should not add VideoObject if it is a descendant of article

@@ -29,7 +29,7 @@ EOF;
 		$query                = $wpdb->prepare( $query_template, $post_id );
 		$video_ids            = $wpdb->get_col( $query );
 		if ( ! $video_ids ) {
-			return array();
+			return $embedded_videos;
 		}
 
 		$jw_player_videos = array_map( function ( $video_id ) {

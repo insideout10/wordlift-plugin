@@ -774,7 +774,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.32.0';
+		$this->version     = '3.32.2';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1312,9 +1312,9 @@ class Wordlift {
 		 * @since 3.20.0
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-term-jsonld-adapter.php';
-		$term_jsonld_adapter  = new Wordlift_Term_JsonLd_Adapter( $this->entity_uri_service, $this->jsonld_service );
-		$this->jsonld_service = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter, $term_jsonld_adapter );
 
+		$term_jsonld_adapter  = new Wordlift_Term_JsonLd_Adapter( $this->entity_uri_service );
+		$this->jsonld_service = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter, $term_jsonld_adapter );
 
 		$jsonld_service = new Jsonld_Service(
 			$this->jsonld_service,
