@@ -16,10 +16,7 @@ class Videoobject_Jsonld_Test extends \Wordlift_Videoobject_Unit_Test_Case {
 	public function setUp() {
 		parent::setUp();
 		if ( ! getenv( 'YOUTUBE_DATA_API_KEY' ) || ! getenv( 'VIMEO_API_KEY' ) ) {
-			$this->assertFalse( true, "Test skipped due to no key, got youtube key as " . md5(getenv( 'YOUTUBE_DATA_API_KEY' )) . " and vimeo key as "
-			. md5(getenv( 'VIMEO_API_KEY' )));
 			$this->markTestSkipped( 'Test skipped because it requires youtube data api key to perform assertions' );
-
 		}
 		update_option( Youtube::YT_API_FIELD_NAME, getenv( 'YOUTUBE_DATA_API_KEY' ) );
 		update_option( Vimeo::API_FIELD_NAME, getenv( 'VIMEO_API_KEY' ) );

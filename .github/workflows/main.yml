@@ -135,8 +135,11 @@ jobs:
       ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
       ACF_PRO_ENABLED: ${{ matrix.acf-pro-enabled }}
       WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
+      YOUTUBE_DATA_API_KEY: ${{  secrets.YOUTUBE_DATA_API_KEY }}
+      VIMEO_API_KEY: ${{  secrets.VIMEO_API_KEY }}
       WORDLIFT_KEY: ${{ secrets.WORDLIFT_KEY }}
       WL_DATASET_NG: ${{ matrix.dataset-ng }}
+
     services:
       db:
         # WP set up uses SET storage_engine=InnoDB; which is removed after MySQL 5.6
