@@ -175,74 +175,16 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			}
 			$jsonld['commentCount'] = $comment_count;
 			$jsonld['inLanguage']   = $locale;
-			$post_adapter->add_mentions( $post_id, $references );
+			$post_adapter->add_references( $post_id, $references );
 		}
 
 		// Set the publisher.
 		$this->set_publisher( $jsonld );
 
+		$references = $this->convert_references( $references );
+
 		// Process the references if any.
-		if ( 0 < count( $references ) ) {
-
-			// Prepare the `about` and `mentions` array.
-			$about = $mentions = array();
-
-			$item   = false;
-			$labels = array();
-
-
-			// If the entity is in the title, then it should be an `about`.
-			foreach ( $references as $reference ) {
-				/**
-				 * @var $reference Reference
-				 */
-				if ( $reference instanceof Post_Reference ) {
-					// Get the entity labels.
-					$labels = $this->entity_service->get_labels( $reference->get_id() );
-					// Get the entity URI.
-					$item = array(
-						'@id' => $this->entity_service->get_uri( $reference->get_id(), $reference->get_type() ),
-					);
-				} else if ( is_numeric( $reference ) ) {
-					// compatibility with legacy references using post id.
-					$labels = array();
-					// Get the entity URI.
-					$item = array(
-						'@id' => $this->entity_service->get_uri( $reference ),
-					);
-				}
-
-
-				$escaped_labels = array_map( function ( $value ) {
-					return preg_quote( $value, '/' );
-				}, $labels );
-
-				// Check if the labels match any part of the title.
-				$matches = 1 === preg_match( '/' . implode( '|', $escaped_labels ) . '/', $post->post_title );
-
-				// Check if we have a valid reference.
-				if ( $item ) {
-					// If the title matches, assign the entity to the about, otherwise to the mentions.
-					if ( $matches ) {
-						$about[] = $item;
-					} else {
-						$mentions[] = $item;
-					}
-				}
-
-
-			}
-
-			// If we have abouts, assign them to the JSON-LD.
-			if ( 0 < count( $about ) ) {
-				$jsonld['about'] = $about;
-			}
-
-			// If we have mentions, assign them to the JSON-LD.
-			if ( 0 < count( $mentions ) ) {
-				$jsonld['mentions'] = $mentions;
-			}
-		}
+		$this->set_mentions_and_about( $references, $post, $jsonld );
 
 		// Finally set the author.
 		$jsonld['author'] = $this->get_author( $post->post_author, $references );
@@ -505,6 +447,92 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			'width'  => $size['width'],
 			'height' => $size['height'],
 		);
+	}
+
+	/**
+	 * @param $references
+	 * @param $post
+	 * @param $jsonld
+	 *
+	 * @return void
+	 *
+	 */
+	private function set_mentions_and_about( $references, $post, &$jsonld ) {
+
+		if ( count( $references ) === 0 ) {
+			return;
+		}
+
+		// Prepare the `about` and `mentions` array.
+		$about = $mentions = array();
+
+		// If the entity is in the title, then it should be an `about`.
+		foreach ( $references as $reference ) {
+
+			if ( ! $reference instanceof Reference ) {
+				// This condition should never be reached.
+				continue;
+			}
+
+			// Get the entity labels.
+			$labels = $this->entity_service->get_labels( $reference->get_id(), $reference->get_type() );
+			// Get the entity URI.
+			$item = array(
+				'@id' => $this->entity_service->get_uri( $reference->get_id(), $reference->get_type() ),
+			);
+
+			$escaped_labels = array_map( function ( $value ) {
+				return preg_quote( $value, '/' );
+			}, $labels );
+
+
+			$matches = false;
+
+			// When the title is empty, then we shouldn't yield a match to about section.
+			if ( array_filter( $escaped_labels ) ) {
+				// Check if the labels match any part of the title.
+				$matches = 1 === preg_match( '/' . implode( '|', $escaped_labels ) . '/', $post->post_title );
+			}
+
+			// If the title matches, assign the entity to the about, otherwise to the mentions.
+			if ( $matches ) {
+				$about[] = $item;
+			} else {
+				$mentions[] = $item;
+			}
+		}
+
+		// If we have abouts, assign them to the JSON-LD.
+		if ( 0 < count( $about ) ) {
+			$jsonld['about'] = $about;
+		}
+
+		// If we have mentions, assign them to the JSON-LD.
+		if ( 0 < count( $mentions ) ) {
+			$jsonld['mentions'] = $mentions;
+		}
+
+		return $jsonld;
+	}
+
+	/**
+	 * Convert references to abstract data type if we find any.
+	 *
+	 * @param $references array<int|Reference>
+	 *
+	 * @return Reference[]
+	 */
+	private function convert_references( $references ) {
+		return array_map( function ( $reference ) {
+			// Legacy code may still push numerical references to this
+			// $references variable, so convert it to post references.
+			if ( is_numeric( $reference ) ) {
+				return new Post_Reference( $reference );
+			}
+
+			return $reference;
+
+		}, $references );
 	}
 
 }

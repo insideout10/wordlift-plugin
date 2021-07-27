@@ -1437,7 +1437,47 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 
 	public function test_when_the_linked_entity_has_no_labels_should_not_add_to_about() {
+		$post = $this->factory()->post->create();
 
+		// create a tag.
+		$tag     = wp_create_tag( 'linked_tag' );
+		$term_id = $tag['term_id'];
+		// create an entity.
+		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		add_term_meta( $term_id, '_wl_entity_id', wl_get_entity_uri( $entity ) );
+
+		// set this tag to the post.
+		wp_set_object_terms( $post, array( $term_id ), 'post_tag' );
+
+		wp_update_post( array(
+			'ID'         => $entity,
+			'post_title' => ''
+		) );
+
+		// get the jsonld
+		$jsonld = Wordlift_Jsonld_Service::get_instance()->get_jsonld(
+			false,
+			$post
+		);
+
+		$article_jsonld = $jsonld[0];
+		$this->assertFalse( array_key_exists( 'about', $article_jsonld ), 'About should not be present since it has empty labels' );
+	}
+
+
+	public function test_when_the_linked_entity_title_matches_the_title_of_post_should_add_it_to_about() {
+		$post   = $this->factory()->post->create( array( 'post_title' => 'Windows 7 ' ) );
+		$entity = $this->factory()->post->create( array( 'post_type' => 'entity', 'post_title' => 'Windows' ) );
+		wl_core_add_relation_instance( $post, WL_WHAT_RELATION, $entity );
+		// get the jsonld
+		$jsonld         = Wordlift_Jsonld_Service::get_instance()->get_jsonld(
+			false,
+			$post
+		);
+		$article_jsonld = $jsonld[0];
+		$this->assertTrue( array_key_exists( 'about', $article_jsonld ), 'About should  be present since the title matches' );
+		$this->assertCount( 1, $article_jsonld['about'] );
+		$this->assertSame( array( '@id' => wl_get_entity_uri( $entity ) ), $article_jsonld['about'][0], 'The entity id should be correctly added on about key' );
 	}
 
 
