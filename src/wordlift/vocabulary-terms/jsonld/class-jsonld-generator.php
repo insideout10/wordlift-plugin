@@ -24,11 +24,16 @@ class Jsonld_Generator {
 	 * @var Type_Service
 	 */
 	private $term_entity_type_service;
+	/**
+	 * @var \Wordlift_Entity_Service
+	 */
+	private $entity_service;
 
 	public function __construct( $entity_type_service, $property_getter ) {
 		$this->entity_type_service      = $entity_type_service;
 		$this->property_getter          = $property_getter;
 		$this->term_entity_type_service = Type_Service::get_instance();
+		$this->entity_service           = \Wordlift_Entity_Service::get_instance();
 	}
 
 	public function init() {
@@ -133,6 +138,15 @@ class Jsonld_Generator {
 				 */
 				return new Post_Reference( $property_entity_reference->get_id() );
 			}, $value ) );
+
+			$that = $this;
+
+			return array_map( function ( $reference ) use ( $that ) {
+				/**
+				 * @var $reference \Wordlift_Property_Entity_Reference
+				 */
+				return array( '@id' => $that->entity_service->get_uri( $reference->get_id() ) );
+			}, $value );
 
 		}
 

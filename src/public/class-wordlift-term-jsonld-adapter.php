@@ -10,6 +10,7 @@
  */
 
 use Wordlift\Jsonld\Jsonld_Context_Enum;
+use Wordlift\Jsonld\Reference;
 
 /**
  * Define the {@link Wordlift_Term_JsonLd_Adapter} class.
@@ -257,7 +258,13 @@ class Wordlift_Term_JsonLd_Adapter {
 		$references_jsonld = array();
 		// Expand the references.
 		foreach ( $references as $reference ) {
-			$references_jsonld[] = $jsonld_service->get_jsonld( false, $reference );
+
+			$post_id = $reference;
+			if ( $reference instanceof Reference) {
+				$post_id = $reference->get_id();
+			}
+
+			$references_jsonld[] = $jsonld_service->get_jsonld( false, $post_id );
 		}
 
 		return $references_jsonld;
