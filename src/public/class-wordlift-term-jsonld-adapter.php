@@ -184,7 +184,6 @@ class Wordlift_Term_JsonLd_Adapter {
 			'references' => array()
 		);
 
-
 		/**
 		 * @since 3.26.3
 		 * Filter: wl_term_jsonld_array
@@ -245,7 +244,7 @@ class Wordlift_Term_JsonLd_Adapter {
 		// Reset the `url` to the term page.
 		$jsonld[0]['url'] = get_term_link( $term_id );
 
-		return $jsonld;
+		return array( $jsonld );
 	}
 
 
@@ -276,8 +275,5 @@ class Wordlift_Term_JsonLd_Adapter {
 
 	}
 
-	private function make_one( $value ) {
-		return count( $value ) === 1 ? $value[0] : $value;
-	}
 
 }
