@@ -56,6 +56,7 @@ class Jsonld_Generator {
 
 		$references = array_merge( $references, $term_jsonld_data['references'] );
 
+
 		array_unshift( $jsonld, $term_jsonld );
 
 		return array(
@@ -138,6 +139,7 @@ class Jsonld_Generator {
 				 */
 				return new Post_Reference( $property_entity_reference->get_id() );
 			}, $value ) );
+
 
 			$that = $this;
 

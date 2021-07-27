@@ -162,7 +162,7 @@ class Wordlift_Term_JsonLd_Adapter {
 		 *
 		 * @since 3.26.0
 		 */
-		$jsonld_array  = array();
+		$jsonld_array = array();
 
 		if ( Jsonld_Context_Enum::PAGE === $context ) {
 			$carousel_data = $this->get_carousel_jsonld( $id );
@@ -186,6 +186,7 @@ class Wordlift_Term_JsonLd_Adapter {
 		 * @var $jsonld_array array An array containing jsonld for term and entities.
 		 */
 		$arr = apply_filters( 'wl_term_jsonld_array', $result, $id );
+
 		/**
 		 * @since 3.32.0
 		 * Expand the references returned by this filter.
@@ -258,17 +259,19 @@ class Wordlift_Term_JsonLd_Adapter {
 		$references_jsonld = array();
 		// Expand the references.
 		foreach ( $references as $reference ) {
-
 			$post_id = $reference;
-			if ( $reference instanceof Reference) {
+			if ( $reference instanceof Reference ) {
 				$post_id = $reference->get_id();
 			}
-
-			$references_jsonld[] = $jsonld_service->get_jsonld( false, $post_id );
+			$references_jsonld[] = $this->make_one( $jsonld_service->get_jsonld( false, $post_id ) );
 		}
 
 		return $references_jsonld;
 
+	}
+
+	private function make_one( $value ) {
+		return count( $value ) === 1 ? $value[0] : $value;
 	}
 
 }

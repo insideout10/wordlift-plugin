@@ -44,8 +44,9 @@ class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 		$this->assertArrayHasKey( 'birthPlace', $term_entity_jsonld );
 		$this->assertCount( 2, $jsonld, 'Term and the birth place reference should be expanded' );
 		$this->assertCount( 1, $term_entity_jsonld['birthPlace'], 'Birth place ids should be present' );
-		$birth_place_data = array( '@id' => wl_get_entity_uri($birth_place_entity_id ));
-		$this->assertSame( $birth_place_data, $term_entity_jsonld['birthPlace'][0], 'Reference data should be expanded correctly.');
+		$birth_place_data = array( '@id' => wl_get_entity_uri( $birth_place_entity_id ) );
+		$this->assertSame( $birth_place_data, $term_entity_jsonld['birthPlace'][0], 'Reference data should be expanded correctly.' );
+		$this->assertSame( $jsonld[1]['@id'], wl_get_entity_uri( $birth_place_entity_id ), 'Entity URI should be present' );
 
 	}
 
