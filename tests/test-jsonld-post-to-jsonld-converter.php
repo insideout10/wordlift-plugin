@@ -1397,10 +1397,10 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$term_reference = new Term_Reference( 1 );
 
 		$this->assertSame( (string) $post_reference, Object_Type_Enum::POST . "_1", "Post reference should be 
-		able to convert to string");
+		able to convert to string" );
 
 		$this->assertSame( (string) $term_reference, Object_Type_Enum::TERM . "_1", "Term reference should be 
-		able to convert to string");
+		able to convert to string" );
 
 		$this->assertCount( 2, array_unique( array(
 			$post_reference,
@@ -1410,6 +1410,36 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		) ), 'Duplicate references should not be present ' );
 
 	}
+
+	public function test_when_the_article_is_linked_to_entity_should_not_have_duplicate_mentions() {
+
+		$post = $this->factory()->post->create();
+
+		// create an entity and link it to this post.
+		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+
+		// create a relation.
+		wl_core_add_relation_instance( $post, WL_WHAT_RELATION, $entity );
+		// create duplicate relation
+		wl_core_add_relation_instance( $post, WL_WHAT_RELATION, $entity );
+
+		$jsonld = Wordlift_Jsonld_Service::get_instance()->get_jsonld(
+			false,
+			$post
+		);
+
+		$this->assertArrayHasKey( 'mentions', $jsonld[0] );
+
+		$mentions = $jsonld[0]['mentions'];
+		$this->assertCount( 1, $mentions );
+		$this->assertEquals( array( '@id' => wl_get_entity_uri( $entity ) ), $mentions[0] );
+	}
+
+
+	public function test_when_the_linked_entity_has_no_labels_should_not_add_to_about() {
+
+	}
+
 
 	/**
 	 * Get the word count for a {@link WP_Post}.
