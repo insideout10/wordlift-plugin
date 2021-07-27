@@ -87,4 +87,16 @@ class Type_Service extends Singleton {
 		return $this->schema_service->get_schema( 'thing' );
 	}
 
+	/**
+	 * Removes all the existing entity types and set the entity types for the term.
+	 * @param $term_id int
+	 * @param $entity_types array
+	 */
+	public function set_entity_types( $term_id, $entity_types ) {
+		delete_term_meta( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		foreach ( $entity_types as $entity_type ) {
+			add_term_meta( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $entity_type );
+		}
+	}
+
 }
