@@ -6,6 +6,7 @@
 
 namespace Wordlift\Vocabulary_Terms\Jsonld;
 
+use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Term\Type_Service;
 
@@ -68,8 +69,9 @@ class Jsonld_Generator {
 			return false;
 		}
 
-		$term      = get_term( $term_id );
-		$permalink = get_term_link( $term );
+		$references = array();
+		$term       = get_term( $term_id );
+		$permalink  = get_term_link( $term );
 
 		$custom_fields = $this->entity_type_service->get_custom_fields_for_term( $term_id );
 		$term          = get_term( $term_id );
@@ -88,9 +90,12 @@ class Jsonld_Generator {
 		foreach ( $custom_fields as $key => $value ) {
 			$name  = $this->relative_to_schema_context( $value['predicate'] );
 			$value = $this->property_getter->get( $term_id, $key, Object_Type_Enum::TERM );
-			if ( $value ) {
-				$jsonld[ $name ] = $value;
+			$value = $this->process_value( $value, $references );
+			if ( ! $value ) {
+				continue;
 			}
+			$jsonld[ $name ] = $value;
+
 		}
 
 		if ( $permalink ) {
@@ -100,7 +105,7 @@ class Jsonld_Generator {
 
 		return apply_filters( 'wl_no_vocabulary_term_jsonld_array', array(
 			'jsonld'     => $jsonld,
-			'references' => array()
+			'references' => $references
 		), $term_id );
 
 
@@ -109,6 +114,29 @@ class Jsonld_Generator {
 
 	private function relative_to_schema_context( $predicate ) {
 		return str_replace( 'http://schema.org/', '', $predicate );
+	}
+
+	private function process_value( $value, &$references ) {
+
+		if ( ! $value ) {
+			return false;
+		}
+
+		if ( is_array( $value )
+		     && count( $value ) > 0
+		     && $value[0] instanceof \Wordlift_Property_Entity_Reference ) {
+
+			// All of the references from the custom fields are post references.
+			$references = array_merge( $references, array_map( function ( $property_entity_reference ) {
+				/**
+				 * @var $property_entity_reference \Wordlift_Property_Entity_Reference
+				 */
+				return new Post_Reference( $property_entity_reference->get_id() );
+			}, $value ) );
+
+		}
+
+		return $value;
 	}
 
 }

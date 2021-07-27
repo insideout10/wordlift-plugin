@@ -17,14 +17,14 @@ class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 
 
 	public function test_when_term_saved_should_generate_entity_uri() {
-		$term_id = $this->create_and_get_term();
+		$term_id    = $this->create_and_get_term();
 		$entity_uri = get_term_meta( $term_id, 'entity_url', true );
 		$this->assertNotEmpty( $entity_uri, 'Entity uri should be set upon term save' );
 	}
 
 	public function test_when_the_dataset_uri_not_present_dont_add_it_to_jsonld() {
 		$term_id = $this->create_and_get_term();
-		delete_term_meta( $term_id, 'entity_url');
+		delete_term_meta( $term_id, 'entity_url' );
 		// Try to get the jsonld for this term.
 		$jsonld = Wordlift_Term_JsonLd_Adapter::get_instance()->get( $term_id, Jsonld_Context_Enum::UNKNOWN );
 		$this->assertCount( 0, $jsonld );
@@ -36,10 +36,10 @@ class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 		$term_type_service = Type_Service::get_instance();
 		$term_type_service->set_entity_types( $term_id, array( 'person' ) );
 		// Set  the birthPlace property to refer to another entity.
-		$birth_place_entity_id = $this->factory()->post->create(array('post_type' => 'entity'));
+		$birth_place_entity_id = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 		update_term_meta( $term_id, 'wl_birth_place', $birth_place_entity_id );
 		// We should have this property on jsonld.
-		$jsonld = Wordlift_Term_JsonLd_Adapter::get_instance()->get( $term_id, Jsonld_Context_Enum::UNKNOWN );
+		$jsonld             = Wordlift_Term_JsonLd_Adapter::get_instance()->get( $term_id, Jsonld_Context_Enum::UNKNOWN );
 		$term_entity_jsonld = $jsonld[0];
 		$this->assertArrayHasKey( 'birthPlace', $term_entity_jsonld );
 		$this->assertCount( 2, $jsonld, 'Term and the birth place reference should be expanded' );
@@ -71,16 +71,16 @@ class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 		$references = Object_Relation_Service::get_instance()->get_references( $post_id, Object_Type_Enum::POST );
 		$term_uri   = Uri_Service::get_instance()->get_uri_by_term( $references[0]->get_id() );
 		$this->assertSame( $term_uri, $jsonld[1]['@id'], 'The term @id should be present in jsonld' );
-		$this->assertSame( array('Thing'), $jsonld[1]['@type'], 'The term @type should be present in jsonld' );
+		$this->assertSame( array( 'Thing' ), $jsonld[1]['@type'], 'The term @type should be present in jsonld' );
 	}
 
 
 	public function test_should_get_annotation_also_for_terms() {
 
-		$term_data        = wp_insert_term( 'term_analysis_test_1',  'category' );
+		$term_data        = wp_insert_term( 'term_analysis_test_1', 'category' );
 		$term             = get_term( $term_data['term_id'] );
 		$term_uri_service = Uri_Service::get_instance();
-		$term_uri_service->set_entity_uri( $term->term_id, "http://example.org/content_analysis_test_2");
+		$term_uri_service->set_entity_uri( $term->term_id, "http://example.org/content_analysis_test_2" );
 
 		$request_body = file_get_contents( dirname( __FILE__ ) . '/assets/content-term-analysis-request.json' );
 		$request_json = json_decode( $request_body, true );
