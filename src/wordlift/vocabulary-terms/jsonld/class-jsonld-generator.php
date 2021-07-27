@@ -40,6 +40,12 @@ class Jsonld_Generator {
 
 		$term_jsonld_data = $this->get_jsonld_data_for_term( $term_id );
 
+		// Return early if we dont have the entity data
+		// for the term.
+		if ( ! $term_jsonld_data ) {
+			return $data;
+		}
+
 		$term_jsonld = $term_jsonld_data['jsonld'];
 
 		$references = array_merge( $references, $term_jsonld_data['references'] );
@@ -53,15 +59,25 @@ class Jsonld_Generator {
 	}
 
 	private function get_jsonld_data_for_term( $term_id ) {
-		$term          = get_term( $term_id );
-		$permalink     = get_term_link( $term );
+
+		$id = wl_get_term_entity_uri( $term_id );
+
+		// If we dont have a dataset  URI, then dont publish the term data
+		// on this page.
+		if ( ! $id ) {
+			return false;
+		}
+
+		$term      = get_term( $term_id );
+		$permalink = get_term_link( $term );
+
 		$custom_fields = $this->entity_type_service->get_custom_fields_for_term( $term_id );
 		$term          = get_term( $term_id );
 		$jsonld        = array(
 			'@context'    => 'http://schema.org',
 			'name'        => $term->name,
 			'@type'       => $this->term_entity_type_service->get_entity_types_labels( $term_id ),
-			'@id'         => wl_get_term_entity_uri( $term_id ),
+			'@id'         => $id,
 			'description' => $term->description,
 		);
 
