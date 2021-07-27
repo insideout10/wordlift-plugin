@@ -107,6 +107,7 @@ EOF;
 
 
 	public function test_on_save_post_should_import_data_for_jw_player() {
+		$this->markTestSkipped("Temporarily disabled since jw player api calls fail on github ci");
 		$post_id = $this->factory()->post->create();
 		add_post_meta( $post_id, '_jwppp-video-url-1', 'nT18k1bf' );
 		wp_update_post( array(
