@@ -1,0 +1,83 @@
+{
+  "title": "AI-powered SEO Explained",
+  "description": "A quick introduction by Courtney McGhee from WooRank on how artificial intelligence and semantic technologies can help you grow the traffic on your website.\n\nFind out more on https://wordlift.io/ai-powered-seo",
+  "kind": "Single Item",
+  "playlist": [
+    {
+      "title": "AI-powered SEO Explained",
+      "mediaid": "nT18k1bf",
+      "link": "https://cdn.jwplayer.com/previews/nT18k1bf",
+      "image": "https://cdn.jwplayer.com/v2/media/nT18k1bf/poster.jpg?width=720",
+      "images": [
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/nT18k1bf/poster.jpg?width=320",
+          "width": 320,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/nT18k1bf/poster.jpg?width=480",
+          "width": 480,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/nT18k1bf/poster.jpg?width=640",
+          "width": 640,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/nT18k1bf/poster.jpg?width=720",
+          "width": 720,
+          "type": "image/jpeg"
+        }
+      ],
+      "duration": 103,
+      "pubdate": 1549021572,
+      "description": "A quick introduction by Courtney McGhee from WooRank on how artificial intelligence and semantic technologies can help you grow the traffic on your website.\n\nFind out more on https://wordlift.io/ai-powered-seo",
+      "tags": "ai,seo,wordlift,wordpress,machine learning",
+      "sources": [
+        {
+          "file": "https://cdn.jwplayer.com/manifests/nT18k1bf.m3u8",
+          "type": "application/vnd.apple.mpegurl"
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/nT18k1bf-eir90hOW.mp4",
+          "type": "video/mp4",
+          "height": 180,
+          "width": 320,
+          "label": "H.264 320px",
+          "filesize": 3240664
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/nT18k1bf-rxTKHieL.mp4",
+          "type": "video/mp4",
+          "height": 360,
+          "width": 640,
+          "label": "H.264 640px",
+          "filesize": 5102920
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/nT18k1bf-0juCgc3x.mp4",
+          "type": "video/mp4",
+          "height": 720,
+          "width": 1280,
+          "label": "H.264 1280px",
+          "filesize": 14080110
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/nT18k1bf-BFAxJ20w.m4a",
+          "type": "audio/mp4",
+          "label": "AAC Audio",
+          "filesize": 1465495
+        }
+      ],
+      "tracks": [
+        {
+          "file": "https://cdn.jwplayer.com/strips/nT18k1bf-120.vtt",
+          "kind": "thumbnails"
+        }
+      ],
+      "variations": {}
+    }
+  ],
+  "feed_instance_id": "a4ddb7e7-bf98-40e1-9880-882c167d7a9c"
+}
