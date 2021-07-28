@@ -19,7 +19,6 @@ class Jw_Player_Capture {
 
 
 	public function wl_videoobject_embedded_videos( $embedded_videos, $post_id ) {
-
 		// we cant reliably determine count for external plugin without
 		// this method.
 		global $wpdb;
@@ -33,12 +32,11 @@ EOF;
 			return $embedded_videos;
 		}
 
+		var_dump(get_post_meta( $post_id, '_jwppp-video-url-1'));
+
 		$jw_player_videos = array_map( function ( $video_id ) {
 			return new Default_Embedded_Video( 'https://cdn.jwplayer.com/v2/media/' . $video_id );
 		}, $video_ids );
-
-		var_dump("Method returned");
-		var_dump($jw_player_videos);
 
 		return array_merge( $embedded_videos, $jw_player_videos );
 	}
