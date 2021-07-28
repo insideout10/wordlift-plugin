@@ -32,7 +32,7 @@ abstract class Wordlift_Videoobject_Unit_Test_Case extends Wordlift_Unit_Test_Ca
 		if ( $response_file_exists ) {
 			return array(
 				'body'     => file_get_contents( $mock_response_file ),
-				'response' => array( 'code' => 200, )
+				'response' => array( 'code' => 200 )
 			);
 		}
 
