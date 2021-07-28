@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        WP-ver: [wlp-wp-4.4, wlp-wp-4.7, wlp-wp-5.0, wlp-wp-5.4, wlp-wp-5.5, wlp-wp-5.6, wlp-wp-5.7]
+        WP-ver: [wlp-wp-4.4, wlp-wp-4.7, wlp-wp-5.0, wlp-wp-5.4, wlp-wp-5.5, wlp-wp-5.6, wlp-wp-5.7, wlp-wp-5.8]
     steps:
       -
         name: Checkout

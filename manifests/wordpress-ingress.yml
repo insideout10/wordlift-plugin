@@ -69,3 +69,10 @@ spec:
                 name: qa-wordpress-57
                 port:
                   number: 80
+          - path: /5.8/
+            pathType: Prefix
+            backend:
+              service:
+                name: qa-wordpress-58
+                port:
+                  number: 80
