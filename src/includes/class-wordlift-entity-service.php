@@ -355,14 +355,17 @@ class Wordlift_Entity_Service {
 	 * Retrieve the labels for an entity, i.e. the title + the synonyms.
 	 *
 	 * @param int $post_id The entity {@link WP_Post} id.
+	 * @param int $object_type The object type {@link Object_Type_Enum}
 	 *
 	 * @return array An array with the entity title and labels.
 	 * @since 3.12.0
-	 *
 	 */
-	public function get_labels( $post_id ) {
-
-		return array_merge( (array) get_the_title( $post_id ), $this->get_alternative_labels( $post_id ) );
+	public function get_labels( $post_id, $object_type = Object_Type_Enum::POST ) {
+		if ( $object_type === Object_Type_Enum::POST ) {
+			return array_merge( (array) get_the_title( $post_id ), $this->get_alternative_labels( $post_id ) );
+		}
+		// Term Reference dont have synonyms yet.
+		return array();
 	}
 
 	/**

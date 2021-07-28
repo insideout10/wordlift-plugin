@@ -1397,10 +1397,10 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$term_reference = new Term_Reference( 1 );
 
 		$this->assertSame( (string) $post_reference, Object_Type_Enum::POST . "_1", "Post reference should be 
-		able to convert to string");
+		able to convert to string" );
 
 		$this->assertSame( (string) $term_reference, Object_Type_Enum::TERM . "_1", "Term reference should be 
-		able to convert to string");
+		able to convert to string" );
 
 		$this->assertCount( 2, array_unique( array(
 			$post_reference,
@@ -1410,6 +1410,76 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		) ), 'Duplicate references should not be present ' );
 
 	}
+
+	public function test_when_the_article_is_linked_to_entity_should_not_have_duplicate_mentions() {
+
+		$post = $this->factory()->post->create();
+
+		// create an entity and link it to this post.
+		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+
+		// create a relation.
+		wl_core_add_relation_instance( $post, WL_WHAT_RELATION, $entity );
+		// create duplicate relation
+		wl_core_add_relation_instance( $post, WL_WHAT_RELATION, $entity );
+
+		$jsonld = Wordlift_Jsonld_Service::get_instance()->get_jsonld(
+			false,
+			$post
+		);
+
+		$this->assertArrayHasKey( 'mentions', $jsonld[0] );
+
+		$mentions = $jsonld[0]['mentions'];
+		$this->assertCount( 1, $mentions );
+		$this->assertEquals( array( '@id' => wl_get_entity_uri( $entity ) ), $mentions[0] );
+	}
+
+
+	public function test_when_the_linked_entity_has_no_labels_should_not_add_to_about() {
+		$post = $this->factory()->post->create();
+
+		// create a tag.
+		$tag     = wp_create_tag( 'linked_tag' );
+		$term_id = $tag['term_id'];
+		// create an entity.
+		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		add_term_meta( $term_id, '_wl_entity_id', wl_get_entity_uri( $entity ) );
+
+		// set this tag to the post.
+		wp_set_object_terms( $post, array( $term_id ), 'post_tag' );
+
+		wp_update_post( array(
+			'ID'         => $entity,
+			'post_title' => ''
+		) );
+
+		// get the jsonld
+		$jsonld = Wordlift_Jsonld_Service::get_instance()->get_jsonld(
+			false,
+			$post
+		);
+
+		$article_jsonld = $jsonld[0];
+		$this->assertFalse( array_key_exists( 'about', $article_jsonld ), 'About should not be present since it has empty labels' );
+	}
+
+
+	public function test_when_the_linked_entity_title_matches_the_title_of_post_should_add_it_to_about() {
+		$post   = $this->factory()->post->create( array( 'post_title' => 'Windows 7 ' ) );
+		$entity = $this->factory()->post->create( array( 'post_type' => 'entity', 'post_title' => 'Windows' ) );
+		wl_core_add_relation_instance( $post, WL_WHAT_RELATION, $entity );
+		// get the jsonld
+		$jsonld         = Wordlift_Jsonld_Service::get_instance()->get_jsonld(
+			false,
+			$post
+		);
+		$article_jsonld = $jsonld[0];
+		$this->assertTrue( array_key_exists( 'about', $article_jsonld ), 'About should  be present since the title matches' );
+		$this->assertCount( 1, $article_jsonld['about'] );
+		$this->assertSame( array( '@id' => wl_get_entity_uri( $entity ) ), $article_jsonld['about'][0], 'The entity id should be correctly added on about key' );
+	}
+
 
 	/**
 	 * Get the word count for a {@link WP_Post}.
