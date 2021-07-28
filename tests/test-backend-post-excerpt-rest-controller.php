@@ -133,6 +133,31 @@ EOF;
 		$this->assertEquals( $response_data['status'], 'success' );
 	}
 
+	public function test_post_excerpt_should_strip_shortcodes_before_sending_to_server() {
+
+		$post_body_with_shortcode   = <<<EOF
+[wl_navigator] some text here
+EOF;
+		$post_body_without_shortcode = strip_shortcodes( $post_body_with_shortcode );
+
+		$post_id = $this->factory()->post->create();
+
+		// hash the post body and save it.
+		$data = array(
+			'post_body_hash' => md5( $post_body_without_shortcode ),
+			'post_excerpt'   => $post_body_without_shortcode
+		);
+		update_post_meta( $post_id, Post_Excerpt_Rest_Controller::POST_EXCERPT_META_KEY, $data );
+
+		$request = new WP_REST_Request();
+		$request->set_param( 'post_id', $post_id );
+		$request->set_param( 'post_body', $post_body_with_shortcode);
+
+		$response = Post_Excerpt_Rest_Controller::get_post_excerpt( $request );
+		$this->assertSame( $post_body_without_shortcode, $response['post_excerpt'] );
+	}
+
+
 	/**
 	 * When the duplicate request with same body, then it should verify the hash in meta and deliever the response.
 	 */

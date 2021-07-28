@@ -78,6 +78,15 @@ class Wordlift_Admin_Term_Adapter {
 
 		$values = get_term_meta( $tag->term_id, self::META_KEY );
 
+		/**
+		 * @since 3.31.3
+         * @see https://github.com/insideout10/wordlift-plugin/issues/1446
+         * This field should be hidden by default
+		 */
+		if ( ! $values ) {
+		    return;
+        }
+
 		?>
         <tr class="form-field term-name-wrap">
             <th scope="row"><label for="wl-entity-id"><?php _ex( 'Entity', 'term entity', 'wordlift' ); ?></label></th>
@@ -101,16 +110,11 @@ class Wordlift_Admin_Term_Adapter {
 	 */
 	public function add_action( $taxonomy ) {
 		/**
-		 * Filter: wl_feature__enable__taxonomy_term_entity_mapping.
-		 *
-		 * @param bool whether to show the taxonomy term to entity mapping field.
-		 *
-		 * @return bool
-		 * @since 3.27.6
-		 */
-		if ( apply_filters( 'wl_feature__enable__taxonomy_term_entity_mapping', true ) ) {
-			add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_form_fields' ), 10, 2 );
-		}
+		 * Filter wl_feature__enable__taxonomy_term_entity_mapping renamed to wl_feature__enable__term-entity.
+         **/
+
+		add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_form_fields' ), 10, 2 );
+
 	}
 
 	/**
