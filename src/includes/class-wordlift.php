@@ -30,6 +30,7 @@ use Wordlift\Entity\Entity_Helper;
 use Wordlift\Entity\Entity_No_Index_Flag;
 use Wordlift\Entity\Entity_Rest_Service;
 use Wordlift\Entity_Type\Entity_Type_Change_Handler;
+use Wordlift\Entity_Type\Entity_Type_Setter;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Post_Type_Hook;
@@ -1311,11 +1312,11 @@ class Wordlift {
 		 * @since 3.20.0
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-term-jsonld-adapter.php';
-		$term_jsonld_adapter = new Wordlift_Term_JsonLd_Adapter( $this->entity_uri_service );
-		$this->jsonld_service                    = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter, $term_jsonld_adapter );
 
+		$term_jsonld_adapter  = new Wordlift_Term_JsonLd_Adapter( $this->entity_uri_service );
+		$this->jsonld_service = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter, $term_jsonld_adapter );
 
-		$jsonld_service      = new Jsonld_Service(
+		$jsonld_service = new Jsonld_Service(
 			$this->jsonld_service,
 			$term_jsonld_adapter,
 			new Jsonld_User_Service( $this->user_service ) );
@@ -1552,7 +1553,7 @@ class Wordlift {
 		 * The post entity provider has the legacy code which provides the entity
 		 * if the object is post {@link \Wordlift\Object_Type_Enum::POST}
 		 */
-		new Post_Entity_Provider($this->entity_uri_service,
+		new Post_Entity_Provider( $this->entity_uri_service,
 			$this->entity_type_service, $this->storage_factory->post_images() );
 		/**
 		 * @since 3.32.0
@@ -1662,6 +1663,8 @@ class Wordlift {
 			$this->entity_service,
 			$this->entity_type_service
 		);
+
+		new Entity_Type_Setter();
 	}
 
 	/**
@@ -1994,7 +1997,7 @@ class Wordlift {
 		$this->loader->add_action( 'save_post', $this->entity_type_adapter, 'save_post', 9, 3 );
 
 		// Analytics Script Frontend.
-		if ( $this->configuration_service->is_analytics_enable() ) {
+		if ( apply_filters( 'wl_feature__enable__analytics', true ) && $this->configuration_service->is_analytics_enable() ) {
 			$this->loader->add_action( 'wp_enqueue_scripts', $this->analytics_connect, 'enqueue_scripts', 10 );
 		}
 
