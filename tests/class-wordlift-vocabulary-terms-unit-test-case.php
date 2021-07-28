@@ -27,7 +27,6 @@ abstract class Wordlift_Vocabulary_Terms_Unit_Test_Case extends Wordlift_Unit_Te
 		// vocabulary terms feature should now be enabled.
 		run_wordlift();
 		do_action('plugins_loaded');
-		$features_registry->initialize_all_features();
 
 	}
 
