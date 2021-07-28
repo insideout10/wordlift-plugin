@@ -29,8 +29,6 @@ SELECT meta_value FROM $post_meta_table_name WHERE meta_key LIKE '_jwppp-video-u
 EOF;
 		$query                = $wpdb->prepare( $query_template, $post_id );
 		$video_ids            = $wpdb->get_col( $query );
-		var_dump("Method returned");
-		var_dump($video_ids);
 		if ( ! $video_ids ) {
 			return $embedded_videos;
 		}
@@ -38,6 +36,9 @@ EOF;
 		$jw_player_videos = array_map( function ( $video_id ) {
 			return new Default_Embedded_Video( 'https://cdn.jwplayer.com/v2/media/' . $video_id );
 		}, $video_ids );
+
+		var_dump("Method returned");
+		var_dump($jw_player_videos);
 
 		return array_merge( $embedded_videos, $jw_player_videos );
 	}
