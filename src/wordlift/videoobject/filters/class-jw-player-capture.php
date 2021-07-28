@@ -26,6 +26,7 @@ class Jw_Player_Capture {
 		$query_template = <<<EOF
 SELECT meta_value FROM $post_meta_table_name WHERE meta_key LIKE '_jwppp-video-url-%' AND post_id=%d
 EOF;
+		var_dump($query_template);
 		$query                = $wpdb->prepare( $query_template, $post_id );
 		var_dump($query);
 		$video_ids            = $wpdb->get_col( $query );
