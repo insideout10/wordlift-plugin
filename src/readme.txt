@@ -142,6 +142,14 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.32.3 (2021-07-__) =
+
+* Enhancement [#1444](https://github.com/insideout10/wordlift-plugin/issues/1444): Add terms as mentions to the Article
+* Enhancement [#1434](https://github.com/insideout10/wordlift-plugin/issues/1434): Restrict entity types by the subscription
+
+* Fix [#1446](https://github.com/insideout10/wordlift-plugin/issues/1446): Hide entity field on term page by default
+* Fix [#1442](https://github.com/insideout10/wordlift-plugin/issues/1442): WordLift Plugin, Automatic Summarization, shortcode stripping
+
 = 3.32.2 (2021-07-23) =
 
 * Fix: Videoobject fix embedded videos with jw player
