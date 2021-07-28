@@ -5,6 +5,7 @@ use Wordlift\Jsonld\Jsonld_Context_Enum;
 use Wordlift\Jsonld\Jsonld_Service;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Object_Relation_Service;
+use Wordlift\Term\Type_Service;
 use Wordlift\Term\Uri_Service;
 
 /**
@@ -16,10 +17,58 @@ class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 
 
 	public function test_when_term_saved_should_generate_entity_uri() {
-		$term_id    = wp_insert_term( 'vocabulary_term_test_1', 'no_vocabulary_terms' );
-		$term_id    = $term_id['term_id'];
+		$term_id    = $this->create_and_get_term();
 		$entity_uri = get_term_meta( $term_id, 'entity_url', true );
 		$this->assertNotEmpty( $entity_uri, 'Entity uri should be set upon term save' );
+	}
+
+	public function test_when_the_dataset_uri_not_present_dont_add_it_to_jsonld() {
+		$term_id = $this->create_and_get_term();
+		delete_term_meta( $term_id, 'entity_url' );
+		// Try to get the jsonld for this term.
+		$jsonld = Wordlift_Term_JsonLd_Adapter::get_instance()->get( $term_id, Jsonld_Context_Enum::UNKNOWN );
+		$this->assertCount( 0, $jsonld );
+	}
+
+	public function test_when_the_property_reference_gets_added_to_the_term_should_print_correctly() {
+		$term_id = $this->create_and_get_term();
+		// Set the Entity type to Person.
+		$term_type_service = Type_Service::get_instance();
+		$term_type_service->set_entity_types( $term_id, array( 'person' ) );
+		// Set  the birthPlace property to refer to another entity.
+		$birth_place_entity_id = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		update_term_meta( $term_id, 'wl_birth_place', $birth_place_entity_id );
+		// We should have this property on jsonld.
+		$jsonld             = Wordlift_Term_JsonLd_Adapter::get_instance()->get( $term_id, Jsonld_Context_Enum::UNKNOWN );
+		$term_entity_jsonld = $jsonld[0];
+		$this->assertArrayHasKey( 'birthPlace', $term_entity_jsonld );
+		$this->assertCount( 2, $jsonld, 'Term and the birth place reference should be expanded' );
+		$this->assertCount( 1, $term_entity_jsonld['birthPlace'], 'Birth place ids should be present' );
+		$birth_place_data = array( '@id' => wl_get_entity_uri( $birth_place_entity_id ) );
+		$this->assertSame( $birth_place_data, $term_entity_jsonld['birthPlace'][0], 'Reference data should be expanded correctly.' );
+		$this->assertSame( $jsonld[1]['@id'], wl_get_entity_uri( $birth_place_entity_id ), 'Entity URI should be present' );
+	}
+
+	public function test_when_term_has_post_entity_reference_and_linked_to_different_entity_should_generate_correct_jsonld() {
+		$tag     = wp_create_tag( "test_jsonld_tag" );
+		$term_id = $tag['term_id'];
+		// Set the Entity type to Person.
+		$term_type_service = Type_Service::get_instance();
+		$term_type_service->set_entity_types( $term_id, array( 'person' ) );
+		// Set the birthPlace property to refer to another entity.
+		$birth_place_entity_id = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		update_term_meta( $term_id, 'wl_birth_place', $birth_place_entity_id );
+		// Link another entity to birthplace entity.
+		$another_entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		wl_core_add_relation_instance( $birth_place_entity_id, WL_WHAT_RELATION, $another_entity );
+		// Now generate the jsonld.
+		$jsonld = Wordlift_Term_JsonLd_Adapter::get_instance()->get(
+			$term_id,
+			Jsonld_Context_Enum::PAGE
+		);
+		$this->assertCount( 2, $jsonld, 'We should have term, as well as the post entity reference' );
+
+		$this->assertSame( $jsonld[1]['@id'], wl_get_entity_uri( $birth_place_entity_id ) );
 	}
 
 
@@ -76,6 +125,18 @@ class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 	}
 
 
+	/**
+	 * @return int|mixed
+	 */
+	private function create_and_get_term() {
+		$term_id = wp_insert_term( 'vocabulary_term_test_1', 'no_vocabulary_terms' );
+		$term_id = $term_id['term_id'];
+
+		return $term_id;
+	}
+
+
+
 	public function test_when_post_is_annotated_with_term_without_dataset_uri_should_not_add_it_to_mentions() {
 
 		$term_data = wp_insert_term( 'vocabulary_term_test_3', 'no_vocabulary_terms' );
@@ -114,6 +175,4 @@ class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 		$this->assertCount( 1, $post_jsonld['mentions'], 'The term mention should be present' );
 
 	}
-
-
 }
