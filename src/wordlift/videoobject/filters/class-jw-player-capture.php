@@ -26,17 +26,11 @@ class Jw_Player_Capture {
 		$query_template = <<<EOF
 SELECT meta_value FROM $post_meta_table_name WHERE meta_key LIKE '_jwppp-video-url-%' AND post_id=%d
 EOF;
-
-		var_dump($post_id);
 		$query                = $wpdb->prepare( $query_template, $post_id );
-		var_dump( $wpdb->print_error() );
-		var_dump($query);
 		$video_ids            = $wpdb->get_col( $query );
 		if ( ! $video_ids ) {
 			return $embedded_videos;
 		}
-
-
 
 		$jw_player_videos = array_map( function ( $video_id ) {
 			return new Default_Embedded_Video( 'https://cdn.jwplayer.com/v2/media/' . $video_id );
