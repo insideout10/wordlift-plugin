@@ -129,7 +129,7 @@ class Wordlift_Admin_Term_Adapter {
 	public function edit_term( $term_id, $tt_id, $taxonomy ) {
 
 		// Bail if the action isn't related to the term currently being edited.
-		if ( ! isset( $_POST['tag_ID'] ) || $term_id !== (int) (int) $_POST['tag_ID'] ) {
+		if ( ! isset( $_POST['tag_ID'] ) || $term_id !== (int) $_POST['tag_ID'] ) {
 			return;
 		}
 
