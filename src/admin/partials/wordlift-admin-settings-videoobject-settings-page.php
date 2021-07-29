@@ -82,7 +82,7 @@ if ( isset( $_POST['submit'] ) ) {
     </table>
     <h1><?php _e( 'Video Sitemap', 'wordlift' ); ?></h1>
     <p>
-		<?php _e( 'The Video Sitemap works like any other XML Sitemap. Search engines will use it to display rich snippets in result pages.' ); ?>
+		<?php _e( 'The Video Sitemap works like any other XML Sitemap. Search engines will use it to display rich snippets in result pages.', 'wordlift'  ); ?>
     </p>
 	<?php $is_sitemap_enabled = get_option( '_wl_video_sitemap_generation', false ) ? 'checked' : '' ?>
     <p> <?php _e( 'Enable Video Sitemap' ); ?>
