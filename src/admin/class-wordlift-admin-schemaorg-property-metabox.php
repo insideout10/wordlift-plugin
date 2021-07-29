@@ -155,7 +155,7 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 
 		//region ## CHECKS.
 		// Add nonce for security and authentication.
-		$nonce_name = isset( $_POST[ self::NONCE_NAME ] ) ? $_POST[ self::NONCE_NAME ] : '';
+		$nonce_name = isset( $_POST[ self::NONCE_NAME ] ) ? (string) $_POST[ self::NONCE_NAME ] : '';
 
 		// Check if nonce is set.
 		if ( ! isset( $nonce_name ) ) {
