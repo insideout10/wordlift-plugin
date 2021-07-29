@@ -165,8 +165,8 @@ class Wordlift_Admin_Entity_Type_Settings {
 
 		$this->set_setting(
 			$term_id,
-			trim( wp_unslash( $_POST['title'] ) ),
-			wp_unslash( $_POST['description'] )
+			trim( wp_unslash( (string) $_POST['title'] ) ),
+			wp_unslash( (string) $_POST['description'] )
 		);
 
 		// Redirect back to the term settings page and indicate a save was done.
