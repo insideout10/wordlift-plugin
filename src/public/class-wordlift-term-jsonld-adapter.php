@@ -240,11 +240,11 @@ class Wordlift_Term_JsonLd_Adapter {
 		}
 
 		$post   = $this->entity_uri_service->get_entity( array_shift( $local_entity_ids ) );
-		$jsonld = $this->post_id_to_jsonld_converter->convert( $post->ID );
+		$single_entity_jsonld = $this->post_id_to_jsonld_converter->convert( $post->ID );
 		// Reset the `url` to the term page.
-		$jsonld[0]['url'] = get_term_link( $term_id );
+		$single_entity_jsonld['url'] = get_term_link( $term_id );
 
-		return array( $jsonld );
+		return array( $single_entity_jsonld );
 	}
 
 
