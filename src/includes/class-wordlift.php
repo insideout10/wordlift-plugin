@@ -2085,10 +2085,10 @@ class Wordlift {
 		$enabled_blocks = array();
 
 		/**
-		 * Filter name: wl_feature_enable__product_navigator
-		 * @since 3.30.0
+		 * Filter name: wl_feature__enable__product-navigator
+		 * @since 3.32.3
 		 */
-		if ( apply_filters( 'wl_feature_enable__product-navigator', true ) ) {
+		if ( apply_filters( 'wl_feature__enable__product-navigator', true ) ) {
 			$enabled_blocks[] = 'wordlift/products-navigator';
 		}
 
