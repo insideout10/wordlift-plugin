@@ -136,7 +136,6 @@ class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 	}
 
 
-
 	public function test_when_post_is_annotated_with_term_without_dataset_uri_should_not_add_it_to_mentions() {
 
 		$term_data = wp_insert_term( 'vocabulary_term_test_3', 'no_vocabulary_terms' );
@@ -173,6 +172,22 @@ class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 		$post_jsonld = $jsonld[0];
 		$this->assertTrue( array_key_exists( 'mentions', $post_jsonld ), 'Mentions should have the terms' );
 		$this->assertCount( 1, $post_jsonld['mentions'], 'The term mention should be present' );
+
+	}
+
+	function test_when_the_post_has_term_which_is_converted_to_entity_should_be_added_to_mentions() {
+		$post_id   = $this->factory()->post->create();
+		$term_data = wp_insert_term( 'vocabulary_term_test_5', 'no_vocabulary_terms' );
+		$term_id   = $term_data['term_id'];
+		wp_set_object_terms( $post_id, array( $term_id ), 'no_vocabulary_terms' );
+
+		$jsonld = Wordlift_Jsonld_Service::get_instance()
+		                                 ->get_jsonld( false, $post_id, Jsonld_Context_Enum::PAGE );
+
+		// we should have the term entity in mentions.
+		$term_entity_uri = wl_get_term_entity_uri( $term_id );
+		$this->assertSame( array( '@id' => $term_entity_uri ), $jsonld[0]['mentions'][0] );
+		$this->assertSame( $term_entity_uri, $jsonld[1]['@id'] );
 
 	}
 }
