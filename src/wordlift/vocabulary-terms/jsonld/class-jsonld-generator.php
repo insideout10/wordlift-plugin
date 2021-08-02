@@ -6,6 +6,7 @@
 
 namespace Wordlift\Vocabulary_Terms\Jsonld;
 
+use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Term\Type_Service;
 
@@ -23,11 +24,16 @@ class Jsonld_Generator {
 	 * @var Type_Service
 	 */
 	private $term_entity_type_service;
+	/**
+	 * @var \Wordlift_Entity_Service
+	 */
+	private $entity_service;
 
 	public function __construct( $entity_type_service, $property_getter ) {
 		$this->entity_type_service      = $entity_type_service;
 		$this->property_getter          = $property_getter;
 		$this->term_entity_type_service = Type_Service::get_instance();
+		$this->entity_service           = \Wordlift_Entity_Service::get_instance();
 	}
 
 	public function init() {
@@ -40,9 +46,16 @@ class Jsonld_Generator {
 
 		$term_jsonld_data = $this->get_jsonld_data_for_term( $term_id );
 
+		// Return early if we dont have the entity data
+		// for the term.
+		if ( ! $term_jsonld_data ) {
+			return $data;
+		}
+
 		$term_jsonld = $term_jsonld_data['jsonld'];
 
 		$references = array_merge( $references, $term_jsonld_data['references'] );
+
 
 		array_unshift( $jsonld, $term_jsonld );
 
@@ -53,15 +66,26 @@ class Jsonld_Generator {
 	}
 
 	private function get_jsonld_data_for_term( $term_id ) {
-		$term          = get_term( $term_id );
-		$permalink     = get_term_link( $term );
+
+		$id = wl_get_term_entity_uri( $term_id );
+
+		// If we dont have a dataset  URI, then dont publish the term data
+		// on this page.
+		if ( ! $id ) {
+			return false;
+		}
+
+		$references = array();
+		$term       = get_term( $term_id );
+		$permalink  = get_term_link( $term );
+
 		$custom_fields = $this->entity_type_service->get_custom_fields_for_term( $term_id );
 		$term          = get_term( $term_id );
 		$jsonld        = array(
 			'@context'    => 'http://schema.org',
 			'name'        => $term->name,
 			'@type'       => $this->term_entity_type_service->get_entity_types_labels( $term_id ),
-			'@id'         => wl_get_term_entity_uri( $term_id ),
+			'@id'         => $id,
 			'description' => $term->description,
 		);
 
@@ -72,9 +96,12 @@ class Jsonld_Generator {
 		foreach ( $custom_fields as $key => $value ) {
 			$name  = $this->relative_to_schema_context( $value['predicate'] );
 			$value = $this->property_getter->get( $term_id, $key, Object_Type_Enum::TERM );
-			if ( $value ) {
-				$jsonld[ $name ] = $value;
+			$value = $this->process_value( $value, $references );
+			if ( ! $value ) {
+				continue;
 			}
+			$jsonld[ $name ] = $value;
+
 		}
 
 		if ( $permalink ) {
@@ -84,7 +111,7 @@ class Jsonld_Generator {
 
 		return apply_filters( 'wl_no_vocabulary_term_jsonld_array', array(
 			'jsonld'     => $jsonld,
-			'references' => array()
+			'references' => $references
 		), $term_id );
 
 
@@ -93,6 +120,39 @@ class Jsonld_Generator {
 
 	private function relative_to_schema_context( $predicate ) {
 		return str_replace( 'http://schema.org/', '', $predicate );
+	}
+
+	private function process_value( $value, &$references ) {
+
+		if ( ! $value ) {
+			return false;
+		}
+
+		if ( is_array( $value )
+		     && count( $value ) > 0
+		     && $value[0] instanceof \Wordlift_Property_Entity_Reference ) {
+
+			// All of the references from the custom fields are post references.
+			$references = array_merge( $references, array_map( function ( $property_entity_reference ) {
+				/**
+				 * @var $property_entity_reference \Wordlift_Property_Entity_Reference
+				 */
+				return new Post_Reference( $property_entity_reference->get_id() );
+			}, $value ) );
+
+
+			$that = $this;
+
+			return array_map( function ( $reference ) use ( $that ) {
+				/**
+				 * @var $reference \Wordlift_Property_Entity_Reference
+				 */
+				return array( '@id' => $that->entity_service->get_uri( $reference->get_id() ) );
+			}, $value );
+
+		}
+
+		return $value;
 	}
 
 }

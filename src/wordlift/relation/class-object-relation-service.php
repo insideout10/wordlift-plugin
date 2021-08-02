@@ -54,7 +54,11 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 		$post_references = $this->post_relation_service->get_references( $subject_id, $subject_type );
 		$term_references = $this->term_relation_service->get_references( $subject_id, $subject_type );
 
-		return array_merge( $post_references, $term_references );
+		/**
+		 * @since 3.31.3
+		 * Should return only unique references.
+		 */
+		return array_unique( array_merge( $post_references, $term_references ) );
 	}
 
 

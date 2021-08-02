@@ -10,6 +10,7 @@
  */
 
 use Wordlift\Jsonld\Jsonld_Context_Enum;
+use Wordlift\Jsonld\Reference;
 
 /**
  * Define the {@link Wordlift_Term_JsonLd_Adapter} class.
@@ -30,19 +31,25 @@ class Wordlift_Term_JsonLd_Adapter {
 	private static $instance;
 
 	/**
+	 * @var Wordlift_Post_Converter
+	 */
+	private $post_id_to_jsonld_converter;
+
+	/**
 	 * Wordlift_Term_JsonLd_Adapter constructor.
 	 *
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
-	 * @param \Wordlift_Jsonld_Service $jsonld_service The {@link Wordlift_Jsonld_Service} instance.
+	 * @param \Wordlift_Post_Converter $post_id_to_jsonld_converter The {@link Wordlift_Post_Converter} instance.
 	 *
 	 * @since 3.20.0
 	 *
 	 */
-	public function __construct( $entity_uri_service ) {
+	public function __construct( $entity_uri_service, $post_id_to_jsonld_converter ) {
 
 		add_action( 'wp_head', array( $this, 'wp_head' ) );
 
-		$this->entity_uri_service = $entity_uri_service;
+		$this->entity_uri_service          = $entity_uri_service;
+		$this->post_id_to_jsonld_converter = $post_id_to_jsonld_converter;
 
 		self::$instance = $this;
 	}
@@ -161,7 +168,7 @@ class Wordlift_Term_JsonLd_Adapter {
 		 *
 		 * @since 3.26.0
 		 */
-		$jsonld_array  = array();
+		$jsonld_array = array();
 
 		if ( Jsonld_Context_Enum::PAGE === $context ) {
 			$carousel_data = $this->get_carousel_jsonld( $id );
@@ -177,7 +184,6 @@ class Wordlift_Term_JsonLd_Adapter {
 			'references' => array()
 		);
 
-
 		/**
 		 * @since 3.26.3
 		 * Filter: wl_term_jsonld_array
@@ -185,6 +191,7 @@ class Wordlift_Term_JsonLd_Adapter {
 		 * @var $jsonld_array array An array containing jsonld for term and entities.
 		 */
 		$arr = apply_filters( 'wl_term_jsonld_array', $result, $id );
+
 		/**
 		 * @since 3.32.0
 		 * Expand the references returned by this filter.
@@ -218,10 +225,12 @@ class Wordlift_Term_JsonLd_Adapter {
 	 * @return array
 	 */
 	private function get_entity_jsonld( $term_id, $context ) {
-		$jsonld_service = Wordlift_Jsonld_Service::get_instance();
+
 		// The `_wl_entity_id` are URIs.
 		$entity_ids         = get_term_meta( $term_id, '_wl_entity_id' );
 		$entity_uri_service = $this->entity_uri_service;
+
+		$wordlift_jsonld_service = Wordlift_Jsonld_Service::get_instance();
 
 		$local_entity_ids = array_filter( $entity_ids, function ( $uri ) use ( $entity_uri_service ) {
 			return $entity_uri_service->is_internal( $uri );
@@ -233,11 +242,11 @@ class Wordlift_Term_JsonLd_Adapter {
 		}
 
 		$post   = $this->entity_uri_service->get_entity( array_shift( $local_entity_ids ) );
-		$jsonld = $jsonld_service->get_jsonld( false, $post->ID, $context );
+		$entities_jsonld = $wordlift_jsonld_service->get_jsonld( false, $post->ID );
 		// Reset the `url` to the term page.
-		$jsonld[0]['url'] = get_term_link( $term_id );
+		$entities_jsonld[0]['url'] = get_term_link( $term_id );
 
-		return $jsonld;
+		return  $entities_jsonld;
 	}
 
 
@@ -247,7 +256,7 @@ class Wordlift_Term_JsonLd_Adapter {
 	 * @return array
 	 */
 	private function expand_references( $references ) {
-		$jsonld_service = Wordlift_Jsonld_Service::get_instance();
+
 		// @TODO: we are assuming all the references are posts
 		// in this method, since now terms are getting converted to
 		// entities, this might not be true in all cases.
@@ -257,11 +266,16 @@ class Wordlift_Term_JsonLd_Adapter {
 		$references_jsonld = array();
 		// Expand the references.
 		foreach ( $references as $reference ) {
-			$references_jsonld[] = $jsonld_service->get_jsonld( false, $reference );
+			$post_id = $reference;
+			if ( $reference instanceof Reference ) {
+				$post_id = $reference->get_id();
+			}
+			$references_jsonld[] = $this->post_id_to_jsonld_converter->convert( $post_id );
 		}
 
 		return $references_jsonld;
 
 	}
+
 
 }

@@ -431,7 +431,6 @@ class Wordlift_Configuration_Service {
 	 *
 	 */
 	public function set_package_type( $value ) {
-
 		$this->set( 'wl_advanced_settings', self::PACKAGE_TYPE, $value );
 	}
 
