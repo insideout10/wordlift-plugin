@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.32.3 (2021-07-__) =
+= 3.32.3 (2021-08-02) =
 
 * Enhancement [#1444](https://github.com/insideout10/wordlift-plugin/issues/1444): Add terms as mentions to the Article
 * Enhancement [#1434](https://github.com/insideout10/wordlift-plugin/issues/1434): Restrict entity types by the subscription
