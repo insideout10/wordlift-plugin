@@ -1,0 +1,137 @@
+{
+  "total": 2,
+  "page": 1,
+  "per_page": 25,
+  "paging": {
+    "next": null,
+    "previous": null,
+    "first": "/videos/?uris=%2Fvideos%2F162427937%2C%2Fvideos%2F49219317&fields=name%2Cdescription%2Clink%2Curi%2Cduration%2Crelease_time%2Cpictures%2Cstats&page=1",
+    "last": "/videos/?uris=%2Fvideos%2F162427937%2C%2Fvideos%2F49219317&fields=name%2Cdescription%2Clink%2Curi%2Cduration%2Crelease_time%2Cpictures%2Cstats&page=1"
+  },
+  "data": [
+    {
+      "uri": "/videos/49219317",
+      "name": "Hexagon Example",
+      "description": "http://www.DigitalSandwich.net\n\nAn example of the \"Create C4D-style shader effector within AE\" tutorial found here: https://vimeo.com/49216173",
+      "link": "https://vimeo.com/49219317",
+      "duration": 4,
+      "release_time": "2012-09-11T06:50:13+00:00",
+      "pictures": {
+        "uri": "/videos/49219317/pictures/339541620",
+        "active": true,
+        "type": "custom",
+        "sizes": [
+          {
+            "width": 100,
+            "height": 75,
+            "link": "https://i.vimeocdn.com/video/339541620_100x75?r=pad",
+            "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F339541620_100x75&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+          },
+          {
+            "width": 200,
+            "height": 150,
+            "link": "https://i.vimeocdn.com/video/339541620_200x150?r=pad",
+            "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F339541620_200x150&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+          },
+          {
+            "width": 295,
+            "height": 166,
+            "link": "https://i.vimeocdn.com/video/339541620_295x166?r=pad",
+            "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F339541620_295x166&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+          },
+          {
+            "width": 640,
+            "height": 360,
+            "link": "https://i.vimeocdn.com/video/339541620_640x360?r=pad",
+            "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F339541620_640x360&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+          },
+          {
+            "width": 960,
+            "height": 540,
+            "link": "https://i.vimeocdn.com/video/339541620_960x540?r=pad",
+            "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F339541620_960x540&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+          },
+          {
+            "width": 1280,
+            "height": 720,
+            "link": "https://i.vimeocdn.com/video/339541620_1280x720?r=pad",
+            "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F339541620_1280x720&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+          },
+          {
+            "width": 1920,
+            "height": 1080,
+            "link": "https://i.vimeocdn.com/video/339541620_1920x1080?r=pad",
+            "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F339541620_1920x1080&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+          }
+        ],
+        "resource_key": "fc895a716cd48f59eca6ecfe1b82c1b6064338bb",
+        "default_picture": false
+      },
+      "stats": {
+        "plays": null
+      }
+    },
+    {
+      "uri": "/videos/162427937",
+      "name": "EXAMPLE#1",
+      "description": "Animation example for projection mapping.\n\nProject on Behance:\ngoo.gl/h9pQmc",
+      "link": "https://vimeo.com/162427937",
+      "duration": 24,
+      "release_time": "2016-04-11T19:59:54+00:00",
+      "pictures": {
+        "uri": "/videos/162427937/pictures/567447764",
+        "active": true,
+        "type": "custom",
+        "sizes": [
+          {
+            "width": 100,
+            "height": 75,
+            "link": "https://i.vimeocdn.com/video/567447764_100x75?r=pad",
+            "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F567447764_100x75&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+          },
+          {
+            "width": 200,
+            "height": 150,
+            "link": "https://i.vimeocdn.com/video/567447764_200x150?r=pad",
+            "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F567447764_200x150&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+          },
+          {
+            "width": 295,
+            "height": 166,
+            "link": "https://i.vimeocdn.com/video/567447764_295x166?r=pad",
+            "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F567447764_295x166&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+          },
+          {
+            "width": 640,
+            "height": 360,
+            "link": "https://i.vimeocdn.com/video/567447764_640x360?r=pad",
+            "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F567447764_640x360&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+          },
+          {
+            "width": 960,
+            "height": 540,
+            "link": "https://i.vimeocdn.com/video/567447764_960x540?r=pad",
+            "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F567447764_960x540&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+          },
+          {
+            "width": 1280,
+            "height": 720,
+            "link": "https://i.vimeocdn.com/video/567447764_1280x720?r=pad",
+            "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F567447764_1280x720&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+          },
+          {
+            "width": 1920,
+            "height": 1080,
+            "link": "https://i.vimeocdn.com/video/567447764_1920x1080?r=pad",
+            "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F567447764_1920x1080&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+          }
+        ],
+        "resource_key": "3916671c92378b4bb40fb7b4ea1860a3cb0d2206",
+        "default_picture": false
+      },
+      "stats": {
+        "plays": 1112
+      }
+    }
+  ]
+}

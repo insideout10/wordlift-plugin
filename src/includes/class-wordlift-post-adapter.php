@@ -252,7 +252,7 @@ class Wordlift_Post_Adapter {
 	 * @param $post_id int
 	 * @param $references int[]
 	 */
-	public function add_mentions( $post_id, &$references ) {
+	public function add_references( $post_id, &$references ) {
 		$tags = get_the_tags( $post_id );
 
 		if ( $tags && ! is_wp_error( $tags ) ) {

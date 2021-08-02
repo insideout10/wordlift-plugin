@@ -9,6 +9,7 @@ namespace Wordlift\Vocabulary_Terms;
 use Wordlift\Common\Loader\Default_Loader;
 use Wordlift\Vocabulary_Terms\Hooks\Term_Save;
 use Wordlift\Vocabulary_Terms\Jsonld\Jsonld_Generator;
+use Wordlift\Vocabulary_Terms\Jsonld\Post_Jsonld;
 
 
 class Vocabulary_Terms_Loader extends Default_Loader {
@@ -42,6 +43,8 @@ class Vocabulary_Terms_Loader extends Default_Loader {
 		$jsonld->init();
 		$term_save_hook = new Term_Save();
 		$term_save_hook->init();
+		$post_jsonld = new Post_Jsonld();
+		$post_jsonld->init();
 	}
 
 	protected function get_feature_slug() {

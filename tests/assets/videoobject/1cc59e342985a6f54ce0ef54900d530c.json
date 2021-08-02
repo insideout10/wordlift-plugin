@@ -1,0 +1,147 @@
+{
+  "kind": "youtube#videoListResponse",
+  "etag": "RkIibqsuVdxjf-V8a_534USJzVg",
+  "items": [
+    {
+      "kind": "youtube#video",
+      "etag": "FLH9Xx5_4qoa2p6NdzZ269Dbe4I",
+      "id": "fJAPDAK4GiI",
+      "snippet": {
+        "publishedAt": "2020-09-21T10:00:26Z",
+        "channelId": "UC4EW8bTZUPItoYhNeaWnQFg",
+        "title": "WordLift Review: How to Leverage AI to Improve your SEO",
+        "description": "Semantic Search has forever shifted how SEO should be approached. Today's SEO's need to optimize their pages so that machines can grasp the meaning in the same way their readers can.  While this sounds overwhelming, there are some amazing tools on the market that can help you streamline this process. \n\nIn this video, we will review WordLift,  \"An AI-powered SEO tool that does the heavy lifting for you.\" We will share what is it, why you need it, some of the results we are already seeing and how it works. \n\nIf you want to learn more about WordLift, check out: https://wordlift.io/\n\n\n🎓 Want to learn how to leverage Schema.org to improve your SEO results? Get my course \"Mastering Structured Data & Schema.org for Rich Results\" here: https://learn.simplifiedsearch.net/courses/mastering-structured-data-schema-org-for-rich-results\n\n______________________________________________\n\n📺 Learn more about Schema.org & Structured Data: https://www.youtube.com/playlist?list=PLRFTkssEVFpdb_M7rxX5LlVzvvVn5MHy6\n\n🎬  How to Use Schema.org to Create and Add Structured Data to Your Website: https://www.youtube.com/watch?v=xQeRA-Ojq5c&list=PLRFTkssEVFpdb_M7rxX5LlVzvvVn5MHy6&index=4&t=0s\n\n🎬  Where To Put Schema Markup On Your Website: https://www.youtube.com/watch?v=Uq9FjFngcUg\n\n_____________________________________________\n\nWho is SMA Marketing? \n\nSMA Marketing is an international search marketing agency that has been helping global and local brands grow online since 2009. \n\nWe specialize in SEO and Inbound lead generation. Levering both data and intuition, we've help hundreds of companies succeed online and trained thousands of entrepreneurs and marketers with the help of our videos. \n\nLearn more at: https://www.smamarketing.net\n\n#aiseo #schema.org #structureddata",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/fJAPDAK4GiI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/fJAPDAK4GiI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/fJAPDAK4GiI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/fJAPDAK4GiI/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/fJAPDAK4GiI/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "SMA Marketing",
+        "tags": [
+          "schema.org",
+          "structured data",
+          "ai tools for seo",
+          "AI SEO",
+          "WORDLIFT",
+          "technical seo",
+          "technical seo tutorial",
+          "technical seo 2020"
+        ],
+        "categoryId": "22",
+        "liveBroadcastContent": "none",
+        "localized": {
+          "title": "WordLift Review: How to Leverage AI to Improve your SEO",
+          "description": "Semantic Search has forever shifted how SEO should be approached. Today's SEO's need to optimize their pages so that machines can grasp the meaning in the same way their readers can.  While this sounds overwhelming, there are some amazing tools on the market that can help you streamline this process. \n\nIn this video, we will review WordLift,  \"An AI-powered SEO tool that does the heavy lifting for you.\" We will share what is it, why you need it, some of the results we are already seeing and how it works. \n\nIf you want to learn more about WordLift, check out: https://wordlift.io/\n\n\n🎓 Want to learn how to leverage Schema.org to improve your SEO results? Get my course \"Mastering Structured Data & Schema.org for Rich Results\" here: https://learn.simplifiedsearch.net/courses/mastering-structured-data-schema-org-for-rich-results\n\n______________________________________________\n\n📺 Learn more about Schema.org & Structured Data: https://www.youtube.com/playlist?list=PLRFTkssEVFpdb_M7rxX5LlVzvvVn5MHy6\n\n🎬  How to Use Schema.org to Create and Add Structured Data to Your Website: https://www.youtube.com/watch?v=xQeRA-Ojq5c&list=PLRFTkssEVFpdb_M7rxX5LlVzvvVn5MHy6&index=4&t=0s\n\n🎬  Where To Put Schema Markup On Your Website: https://www.youtube.com/watch?v=Uq9FjFngcUg\n\n_____________________________________________\n\nWho is SMA Marketing? \n\nSMA Marketing is an international search marketing agency that has been helping global and local brands grow online since 2009. \n\nWe specialize in SEO and Inbound lead generation. Levering both data and intuition, we've help hundreds of companies succeed online and trained thousands of entrepreneurs and marketers with the help of our videos. \n\nLearn more at: https://www.smamarketing.net\n\n#aiseo #schema.org #structureddata"
+        },
+        "defaultAudioLanguage": "en"
+      },
+      "contentDetails": {
+        "duration": "PT14M56S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false",
+        "licensedContent": true,
+        "contentRating": {},
+        "projection": "rectangular"
+      },
+      "statistics": {
+        "viewCount": "1143",
+        "likeCount": "34",
+        "dislikeCount": "1",
+        "favoriteCount": "0",
+        "commentCount": "10"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "ATjvjcoc2kpMe_8lnQxAxZptla4",
+      "id": "y-n93I5q-0g",
+      "snippet": {
+        "publishedAt": "2020-09-17T09:06:09Z",
+        "channelId": "UClqyCdHaE40_dEQM5cvLSnQ",
+        "title": "WordLift Mappings tutorial",
+        "description": "WordLift Mappings is a new and powerful feature of WordLift, that allows anyone — without any coding skills — to add schema.org markup to their websites enhancing the holistic perspective of the content model with structured data.\n\nOur SEO Expert Doreid Haddad will guide you step-by-step in this short tutorial. Ready?",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/y-n93I5q-0g/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/y-n93I5q-0g/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/y-n93I5q-0g/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/y-n93I5q-0g/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          }
+        },
+        "channelTitle": "WordLift",
+        "tags": [
+          "semantic seo",
+          "ai-powered seo",
+          "wordlift",
+          "search engine optimization",
+          "content modeling"
+        ],
+        "categoryId": "28",
+        "liveBroadcastContent": "none",
+        "defaultLanguage": "en",
+        "localized": {
+          "title": "WordLift Mappings tutorial",
+          "description": "WordLift Mappings is a new and powerful feature of WordLift, that allows anyone — without any coding skills — to add schema.org markup to their websites enhancing the holistic perspective of the content model with structured data.\n\nOur SEO Expert Doreid Haddad will guide you step-by-step in this short tutorial. Ready?"
+        },
+        "defaultAudioLanguage": "en"
+      },
+      "contentDetails": {
+        "duration": "PT19M38S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false",
+        "licensedContent": false,
+        "contentRating": {},
+        "projection": "rectangular"
+      },
+      "statistics": {
+        "viewCount": "272",
+        "likeCount": "8",
+        "dislikeCount": "0",
+        "favoriteCount": "0",
+        "commentCount": "4"
+      }
+    }
+  ],
+  "pageInfo": {
+    "totalResults": 2,
+    "resultsPerPage": 2
+  }
+}

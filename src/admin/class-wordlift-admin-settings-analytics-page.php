@@ -57,11 +57,12 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	/**
 	 * Create a {@link Wordlift_Admin_Settings_Page} instance.
 	 *
+	 * @param \Wordlift_Configuration_Service $configuration_service The wordlift configuration service.
+	 * @param \Wordlift_Admin_Input_Element $input_element An input element class to output input boxes in a settings form.
+	 * @param \Wordlift_Admin_Radio_Input_Element $radio_input_element A radio element input class for use in a settings form.
+	 *
 	 * @since 3.21.0
 	 *
-	 * @param \Wordlift_Configuration_Service     $configuration_service The wordlift configuration service.
-	 * @param \Wordlift_Admin_Input_Element       $input_element         An input element class to output input boxes in a settings form.
-	 * @param \Wordlift_Admin_Radio_Input_Element $radio_input_element   A radio element input class for use in a settings form.
 	 */
 	public function __construct( $configuration_service, $input_element, $radio_input_element ) {
 
@@ -80,8 +81,8 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	/**
 	 * Get the singleton instance of the Notice service.
 	 *
-	 * @since 3.21.0
 	 * @return \Wordlift_Admin_Settings_Page The singleton instance of the settings page service.
+	 * @since 3.21.0
 	 */
 	public static function get_instance() {
 
@@ -140,8 +141,8 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	 * Returns the string to use for the tab slug on main admin settings page.
 	 *
 	 * @method get_admin_page_tab_slug
-	 * @since  3.21.0
 	 * @return string
+	 * @since  3.21.0
 	 */
 	public function get_admin_page_tab_slug() {
 		return 'analytics';
@@ -151,14 +152,18 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	 * Adds pages to the tabs menu on the main admin settings page.
 	 *
 	 * @method add_admin_page_tab
+	 * @param array $tabs an array of tab titles and slugs to use when building a tabbed menu on option pages.
+	 *
 	 * @since  3.21.0
-	 * @param  array $tabs an array of tab titles and slugs to use when building a tabbed menu on option pages.
 	 */
 	public function add_admin_page_tab( $tabs ) {
-		$tabs[] = array(
-			'title' => $this->get_menu_title(),
-			'slug'  => $this->get_admin_page_tab_slug(),
-		);
+		if ( apply_filters( 'wl_feature__enable__analytics', true ) ) {
+			$tabs[] = array(
+				'title' => $this->get_menu_title(),
+				'slug'  => $this->get_admin_page_tab_slug(),
+			);
+		}
+
 		return $tabs;
 	}
 
@@ -250,9 +255,10 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	 * TODO: Needs a feedback method to pass back error messages.
 	 *
 	 * @method validate_entity_uri
-	 * @since 3.21.0
-	 * @param  string $uri a sting representing an entity ID that can be converted to a uri.
+	 * @param string $uri a sting representing an entity ID that can be converted to a uri.
+	 *
 	 * @return int
+	 * @since 3.21.0
 	 */
 	public function validate_entity_uri( $uri ) {
 		// Basic validation is to ensure number is between 1 and 20.
@@ -262,6 +268,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 			// if we are out of range then pass the default value.
 			$uri = $this->configuration_service->get_analytics_entity_uri_dimension();
 		}
+
 		return absint( $uri );
 	}
 
@@ -271,9 +278,10 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	 * TODO: Needs a feedback method to pass back error messages.
 	 *
 	 * @method validate_entity_type
-	 * @since  3.21.0
-	 * @param  string $type This is an entity type ID in string form - really a number.
+	 * @param string $type This is an entity type ID in string form - really a number.
+	 *
 	 * @return int
+	 * @since  3.21.0
 	 */
 	public function validate_entity_type( $type ) {
 		// Basic validation is to ensure number is between 1 and 20.
@@ -283,6 +291,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 			// if we are out of range then pass the default value.
 			$type = $this->configuration_service->get_analytics_entity_type_dimension();
 		}
+
 		return absint( $type );
 	}
 
@@ -292,11 +301,11 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	 * If a new entity is being created for the publisher, create it and set The
 	 * publisher setting.
 	 *
-	 * @since 3.21.0
-	 *
 	 * @param array $input The configuration settings array.
 	 *
 	 * @return array The sanitized input array.
+	 * @since 3.21.0
+	 *
 	 */
 	public function sanitize_callback( $input ) {
 		if ( ! check_admin_referer( 'wl_analytics_settings-options' ) ) {

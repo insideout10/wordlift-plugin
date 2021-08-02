@@ -210,7 +210,7 @@ class Wordlift_Admin_Setup {
 	public function admin_menu() {
 		/**
 		 *
-         * @see https://github.com/insideout10/wordlift-plugin/issues/1209
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/1209
 		 * @since 3.27.7
 		 */
 		// @todo: find another way to do this, since this is adding an empty space in WP's dashboard menu.
@@ -271,7 +271,7 @@ class Wordlift_Admin_Setup {
 		// `key`, holding WL's key,
 		// `vocabulary`, holding the vocabulary path,
 		// `wl-site-language`, with the language code (e.g. `en`),
-        // `wl-country-code` with the country code (e.g. `us`),
+		// `wl-country-code` with the country code (e.g. `us`),
 		// `share-diagnostic`, the user preferences about sharing data with us.
 		// `user_type`, the user type either `personal` or `company`,
 		// `name`, with the `personal` or `company`'s name,
