@@ -70,9 +70,11 @@ class Analysis_Response_Ops  {
 	 *
 	 * If found, the entity id is swapped with the local id and the remote id is added to the sameAs.
 	 *
+	 * @param string $exclude The URI of the current post where the analysis is being performed.
+	 *
 	 * @return Analysis_Response_Ops The current Analysis_Response_Ops instance.
 	 */
-	public function make_entities_local() {
+	public function make_entities_local( $exclude ) {
 
 		if ( ! isset( $this->json->entities ) ) {
 			return $this;
