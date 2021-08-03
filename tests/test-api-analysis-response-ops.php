@@ -248,18 +248,21 @@ EOF;
 
 		$analysis_response_object = json_decode( $analysis_response_string );
 
+
+		$local_entity_uri = \Wordlift_Entity_Service::get_instance()->get_uri( $entity );
+
 		$json =  Analysis_Response_Ops_Factory::get_instance()
 		                                    ->create( $analysis_response_object )
 		                                    ->make_entities_local()
 		                                    ->add_occurrences( "" )
+											->remove_excluded_entities( array( $local_entity_uri  ) )
 		                                    ->get_json();
 
 		// convert json to associative array for easy comparisons.
 		$json = json_decode( json_encode( $json ), true );
 
 		$this->assertCount( 0, $json['entities'], 'This entity should not be present since we are excluding it');
-
-
+		$this->assertCount( 0, $json['annotations'], 'This related annotation should not be present since we are excluding the entity');
 	}
 
 }

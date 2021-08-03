@@ -13,7 +13,7 @@ use stdClass;
 use Wordlift\Analysis\Entity_Provider\Entity_Provider_Registry;
 use Wordlift\Entity\Entity_Helper;
 
-class Analysis_Response_Ops  {
+class Analysis_Response_Ops {
 
 	/**
 	 * The analysis response json.
@@ -55,9 +55,9 @@ class Analysis_Response_Ops  {
 	 */
 	public function __construct( $entity_uri_service, $entity_helper, $entity_provider_registry, $json ) {
 
-		$this->json                = $json;
-		$this->entity_uri_service  = $entity_uri_service;
-		$this->entity_helper       = $entity_helper;
+		$this->json                     = $json;
+		$this->entity_uri_service       = $entity_uri_service;
+		$this->entity_helper            = $entity_helper;
 		$this->entity_provider_registry = $entity_provider_registry;
 	}
 
@@ -70,11 +70,10 @@ class Analysis_Response_Ops  {
 	 *
 	 * If found, the entity id is swapped with the local id and the remote id is added to the sameAs.
 	 *
-	 * @param string $exclude The URI of the current post where the analysis is being performed.
 	 *
 	 * @return Analysis_Response_Ops The current Analysis_Response_Ops instance.
 	 */
-	public function make_entities_local( $exclude ) {
+	public function make_entities_local() {
 
 		if ( ! isset( $this->json->entities ) ) {
 			return $this;
@@ -284,6 +283,34 @@ class Analysis_Response_Ops  {
 
 		return $this->json;
 	}
+
+	/**
+	 * @param $excluded_uris array An array of entity URIs to be excluded.
+	 *
+	 * @return $this
+	 * @since 3.32.3.1
+	 */
+	public function remove_excluded_entities( $excluded_uris ) {
+
+		// If we didnt receive array, return early.
+		if ( ! is_array( $excluded_uris ) ) {
+			return $this;
+		}
+
+		// We may also receive an array of null, make sure to filter uris when receiving.
+		$excluded_uris = array_filter( $excluded_uris, 'is_string' );
+
+		foreach ( $excluded_uris as $excluded_uri ) {
+			// Remove this entity.
+			if ( isset( $this->json->entities->{$excluded_uri} ) ) {
+				unset( $this->json->entities->{$excluded_uri} );
+			}
+		}
+
+
+		return $this;
+	}
+
 
 	/**
 	 * Get the string representation of the JSON.
