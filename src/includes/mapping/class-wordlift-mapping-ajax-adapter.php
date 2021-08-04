@@ -39,7 +39,7 @@ class Wordlift_Mapping_Ajax_Adapter {
 	public function set_entity_types_for_post_type() {
 
 		$post_type    = sanitize_text_field( $_REQUEST['post_type'] );
-		$entity_types = $_REQUEST['entity_types'];
+		$entity_types = (array) $_REQUEST['entity_types'];
 
 		$this->mapping_service->set_entity_types_for_post_type( $post_type, $entity_types );
 
@@ -66,7 +66,7 @@ class Wordlift_Mapping_Ajax_Adapter {
 		$post_type = sanitize_text_field( $_REQUEST['post_type'] );
 
 		// Get the entity types URIs.
-		$entity_types = $_REQUEST['entity_types'];
+		$entity_types = (array) $_REQUEST['entity_types'];
 
 		// Get the offset.
 		$offset = isset( $_REQUEST['offset'] ) ? intval( $_REQUEST['offset'] ) : 0;
