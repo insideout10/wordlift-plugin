@@ -203,7 +203,7 @@ class Analysis_Response_Ops {
 		// function `preselect`, which was called by src/coffee/editpost-widget/app.services.EditorService.coffee in
 		// `embedAnalysis`.
 
-		if ( ! is_bool( $this->json ) ) {
+		if ( ! is_bool( $this->json ) && isset( $this->json->entities ) ) {
 			foreach ( $this->json->entities as $id => $entity ) {
 				$this->json->entities->{$id}->occurrences = isset( $occurrences[ $id ] ) ? $occurrences[ $id ] : array();;
 
