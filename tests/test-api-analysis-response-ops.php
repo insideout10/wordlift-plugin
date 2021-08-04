@@ -254,8 +254,8 @@ EOF;
 		$json = Analysis_Response_Ops_Factory::get_instance()
 		                                     ->create( $analysis_response_object )
 		                                     ->make_entities_local()
-		                                     ->add_occurrences( "" )
 		                                     ->remove_excluded_entities( array( $local_entity_uri ) )
+		                                     ->add_occurrences( "" )
 		                                     ->get_json();
 
 		// convert json to associative array for easy comparisons.
@@ -271,8 +271,11 @@ EOF;
 		// set sameAs to a cloud entity uri.
 		add_post_meta( $entity, 'entity_same_as', 'http://dbpedia.org/resource/Microsoft_Outlook' );
 
-		$request_body = file_get_contents( dirname( __FILE__ ) . '/assets/content-analysis-request-3.json' );
-		$json         = wl_analyze_content( $request_body, 'text/html' );
+		$request_body            = file_get_contents( dirname( __FILE__ ) . '/assets/content-analysis-request-3.json' );
+		$request_body            = json_decode( $request_body, true );
+		$request_body['exclude'] = array( wl_get_entity_uri( $entity ) );
+
+		$json = wl_analyze_content( json_encode( $request_body ), 'text/html' );
 		// convert json to associative array for easy comparisons.
 		$json = json_decode( json_encode( $json ), true );
 		$this->assertCount( 0, $json['entities'], 'This entity should not be present since we are excluding it' );

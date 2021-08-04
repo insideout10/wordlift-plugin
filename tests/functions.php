@@ -406,10 +406,13 @@ function _wl_mock_http_request( $response, $request, $url ) {
 		return $response;
 	}
 	$md5 = md5( $request['body'] );
-	if ( 'POST' === $method && '0c61605b1b97d335644419bdc1c979db' === $md5 ) {
+
+	$request_data = json_decode( $request['body'], true );
+
+	if ( 'POST' === $method && '430c6e5d6b51fa56c4e1a240ad4fdd8d' === md5( $request_data['content'] ) ) {
 		return array(
-			'body'     => file_get_contents( __DIR__ . '/assets/content-analysis-response-3.json'),
-			'headers' => array( 'content-type' => 'application/json' ),
+			'body'     => file_get_contents( __DIR__ . '/assets/content-analysis-response-3.json' ),
+			'headers'  => array( 'content-type' => 'application/json' ),
 			'response' => array( 'code' => 200, )
 		);
 	}
