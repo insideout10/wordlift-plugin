@@ -95,9 +95,10 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 	/**
 	 * Create a {@link Wordlift_Admin_Schemaorg_Property_Metabox} instance.
 	 *
+	 * @param \Wordlift_Schemaorg_Property_Service $schemaorg_property_service The {@link Wordlift_Schemaorg_Property_Service} instance.
+	 *
 	 * @since 3.20.0
 	 *
-	 * @param \Wordlift_Schemaorg_Property_Service $schemaorg_property_service The {@link Wordlift_Schemaorg_Property_Service} instance.
 	 */
 	public function __construct( $schemaorg_property_service ) {
 
@@ -119,9 +120,10 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 	/**
 	 * Hook `add_meta_boxes`.
 	 *
+	 * @param string $post_type The current post type.
+	 *
 	 * @since 3.20.0
 	 *
-	 * @param string $post_type The current post type.
 	 */
 	public function add_meta_boxes( $post_type ) {
 
@@ -147,9 +149,10 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 	 *
 	 * The hook will receive the property data in the `$_POST` array.
 	 *
+	 * @param int $post_id The post id.
+	 *
 	 * @since 3.20.0
 	 *
-	 * @param int $post_id The post id.
 	 */
 	public function save_post( $post_id ) {
 
@@ -226,7 +229,8 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 		//      - value: the prop value.
 		//
 		// `_wl_prop` is *not* Wordlift_Schemaorg_Property_Service::PREFIX.
-		foreach ( $_POST['_wl_prop'] as $name => $instances ) {
+		$wl_prop = (array) $_POST['_wl_prop'];
+		foreach ( $wl_prop as $name => $instances ) {
 			foreach ( $instances as $uuid => $meta ) {
 				foreach ( $meta as $meta_key => $meta_value ) {
 					if ( ! empty( $meta_value ) ) {
@@ -320,10 +324,11 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 		/**
 		 * Filter: wl_schemaorg_properties_for_classes.
 		 *
-		 * @since 3.20.0
-		 *
 		 * @param array $json A json instance as array.
 		 * @param array $classes An array of Schema.org classes.
+		 *
+		 * @since 3.20.0
+		 *
 		 */
 		$properties = apply_filters( 'wl_schemaorg_properties_for_classes', $json, $class_names );
 
