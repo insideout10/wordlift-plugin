@@ -306,6 +306,51 @@ class Analysis_Response_Ops {
 
 		$this->remove_entities_with_excluded_uris( $excluded_uris );
 
+		$this->remove_annotations_with_excluded_uris( $excluded_uris );
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the string representation of the JSON.
+	 *
+	 * @return false|string The string representation or false in case of error.
+	 */
+	public function to_string() {
+
+		// Add the `JSON_UNESCAPED_UNICODE` only for PHP 5.4+.
+		$options = ( version_compare( PHP_VERSION, '5.4', '>=' )
+			? 256 : 0 );
+
+		return wp_json_encode( $this->json, $options );
+	}
+
+	/**
+	 * Remove all the entities with the excluded URIs.
+	 * @param array $excluded_uris The array of URIs to be excluded.
+	 */
+	private function remove_entities_with_excluded_uris( array $excluded_uris ) {
+		// Remove the excluded entity uris.
+		if ( isset( $this->json->entities ) ) {
+			foreach ( $excluded_uris as $excluded_uri ) {
+
+				if ( isset( $this->json->entities->{$excluded_uri} ) ) {
+					// Remove this entity.
+					unset( $this->json->entities->{$excluded_uri} );
+					// Also remove the annotations.
+				}
+			}
+		}
+	}
+
+	/**
+	 * Remove all the annotations with the excluded entity URIs.
+	 * @param array $excluded_uris The array of URIs to be excluded.
+	 *
+	 * @return void
+	 */
+	private function remove_annotations_with_excluded_uris( array $excluded_uris ) {
 		if ( isset( $this->json->annotations ) ) {
 			foreach ( $this->json->annotations as $annotation_key => &$annotation_data ) {
 
@@ -331,39 +376,6 @@ class Analysis_Response_Ops {
 			}
 		}
 
-		return $this;
-	}
-
-
-	/**
-	 * Get the string representation of the JSON.
-	 *
-	 * @return false|string The string representation or false in case of error.
-	 */
-	public function to_string() {
-
-		// Add the `JSON_UNESCAPED_UNICODE` only for PHP 5.4+.
-		$options = ( version_compare( PHP_VERSION, '5.4', '>=' )
-			? 256 : 0 );
-
-		return wp_json_encode( $this->json, $options );
-	}
-
-	/**
-	 * @param array $excluded_uris
-	 */
-	private function remove_entities_with_excluded_uris( array $excluded_uris ) {
-// Remove the excluded entity uris.
-		if ( isset( $this->json->entities ) ) {
-			foreach ( $excluded_uris as $excluded_uri ) {
-
-				if ( isset( $this->json->entities->{$excluded_uri} ) ) {
-					// Remove this entity.
-					unset( $this->json->entities->{$excluded_uri} );
-					// Also remove the annotations.
-				}
-			}
-		}
 	}
 
 }
