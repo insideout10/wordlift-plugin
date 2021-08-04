@@ -380,6 +380,7 @@ function wl_get_attachments( $post_id ) {
 }
 
 function _wl_mock_http_request( $response, $request, $url ) {
+
 	if ( $response || preg_match( '@/wl-api$@', $url ) ) {
 		return $response;
 	}
@@ -404,6 +405,14 @@ function _wl_mock_http_request( $response, $request, $url ) {
 
 		return $response;
 	}
+	$md5 = md5( $request['body'] );
+	if ( 'POST' === $method && '0c61605b1b97d335644419bdc1c979db' === $md5 ) {
+		return array(
+			'body'     => file_get_contents( __DIR__ . '/assets/content-analysis-response-3.json'),
+			'headers' => array( 'content-type' => 'application/json' ),
+			'response' => array( 'code' => 200, )
+		);
+	}
 
 	/** ACF pass-through. */
 	if ( 'GET' === $method && preg_match( '@^https://connect.advancedcustomfields.com/@', $url ) ) {
@@ -421,7 +430,7 @@ function _wl_mock_http_request( $response, $request, $url ) {
 	remove_filter( 'pre_http_request', '_wl_mock_http_request', PHP_INT_MAX );
 
 	echo "An unknown request to $url has been caught:\n";
-	$md5 = md5( $request['body'] );
+
 	echo( "Request Details (Body MD5 $md5): \n" . var_export( $request, true ) );
 	echo( "Response Details: \n" . var_export( wp_remote_request( $url, $request ), true ) );
 

@@ -251,18 +251,36 @@ EOF;
 
 		$local_entity_uri = \Wordlift_Entity_Service::get_instance()->get_uri( $entity );
 
-		$json =  Analysis_Response_Ops_Factory::get_instance()
-		                                    ->create( $analysis_response_object )
-		                                    ->make_entities_local()
-		                                    ->add_occurrences( "" )
-											->remove_excluded_entities( array( $local_entity_uri  ) )
-		                                    ->get_json();
+		$json = Analysis_Response_Ops_Factory::get_instance()
+		                                     ->create( $analysis_response_object )
+		                                     ->make_entities_local()
+		                                     ->add_occurrences( "" )
+		                                     ->remove_excluded_entities( array( $local_entity_uri ) )
+		                                     ->get_json();
 
 		// convert json to associative array for easy comparisons.
 		$json = json_decode( json_encode( $json ), true );
 
-		$this->assertCount( 0, $json['entities'], 'This entity should not be present since we are excluding it');
-		$this->assertCount( 0, $json['annotations'], 'This related annotation should not be present since we are excluding the entity');
+		$this->assertCount( 0, $json['entities'], 'This entity should not be present since we are excluding it' );
+		$this->assertCount( 0, $json['annotations'], 'This related annotation should not be present since we are excluding the entity' );
+	}
+
+	public function test_when_analysis_returns_correct_response() {
+		// Create a local entity with sameAs set to cloud entity uri.
+		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		// set sameAs to a cloud entity uri.
+		add_post_meta( $entity, 'entity_same_as', 'http://dbpedia.org/resource/Microsoft_Outlook' );
+
+		$request_body = file_get_contents( dirname( __FILE__ ) . '/assets/content-analysis-request-3.json' );
+		$json         = wl_analyze_content( $request_body, 'text/html' );
+		// convert json to associative array for easy comparisons.
+		$json = json_decode( json_encode( $json ), true );
+		$this->assertCount( 0, $json['entities'], 'This entity should not be present since we are excluding it' );
+		$this->assertFalse(
+			array_key_exists( 'urn:enhancement-d345e150-f553-475c-a731-29bd806219ca', $json['annotations'] ),
+			'This related annotation should not be present since we are excluding the entity'
+		);
+
 	}
 
 }

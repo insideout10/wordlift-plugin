@@ -59,8 +59,9 @@ function wl_ajax_analyze_action() {
  */
 function wl_analyze_content( $data, $content_type ) {
 
-	$default_response                = json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' );
-	$request_body = json_decode( $data, true );
+	$default_response = json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' );
+	$request_body     = json_decode( $data, true );
+	$excluded_uris    = array_key_exists( 'exclude', $request_body ) ? (array) $request_body['exclude'] : array();
 	if ( $request_body === null ) {
 		/**
 		 * @since 3.27.7
@@ -116,6 +117,7 @@ function wl_analyze_content( $data, $content_type ) {
 	return Analysis_Response_Ops_Factory::get_instance()
 	                                    ->create( $json )
 	                                    ->make_entities_local()
+	                                    ->remove_excluded_entities( $excluded_uris )
 	                                    ->add_occurrences( $request_content )
 	                                    ->get_json();
 
