@@ -405,7 +405,7 @@ function _wl_mock_http_request( $response, $request, $url ) {
 
 		return $response;
 	}
-	$md5 = md5( $request['body'] );
+
 
 	$request_data = json_decode( $request['body'], true );
 
@@ -433,7 +433,7 @@ function _wl_mock_http_request( $response, $request, $url ) {
 	remove_filter( 'pre_http_request', '_wl_mock_http_request', PHP_INT_MAX );
 
 	echo "An unknown request to $url has been caught:\n";
-
+	$md5 = md5( $request['body'] );
 	echo( "Request Details (Body MD5 $md5): \n" . var_export( $request, true ) );
 	echo( "Response Details: \n" . var_export( wp_remote_request( $url, $request ), true ) );
 
