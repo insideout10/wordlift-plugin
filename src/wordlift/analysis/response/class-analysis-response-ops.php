@@ -304,17 +304,7 @@ class Analysis_Response_Ops {
 		// We may also receive an array of null, make sure to filter uris when receiving.
 		$excluded_uris = array_filter( $excluded_uris, 'is_string' );
 
-		// Remove the excluded entity uris.
-		if ( isset( $this->json->entities ) ) {
-			foreach ( $excluded_uris as $excluded_uri ) {
-
-				if ( isset( $this->json->entities->{$excluded_uri} ) ) {
-					// Remove this entity.
-					unset( $this->json->entities->{$excluded_uri} );
-					// Also remove the annotations.
-				}
-			}
-		}
+		$this->remove_entities_with_excluded_uris( $excluded_uris );
 
 		if ( isset( $this->json->annotations ) ) {
 			foreach ( $this->json->annotations as $annotation_key => &$annotation_data ) {
@@ -357,6 +347,23 @@ class Analysis_Response_Ops {
 			? 256 : 0 );
 
 		return wp_json_encode( $this->json, $options );
+	}
+
+	/**
+	 * @param array $excluded_uris
+	 */
+	private function remove_entities_with_excluded_uris( array $excluded_uris ) {
+// Remove the excluded entity uris.
+		if ( isset( $this->json->entities ) ) {
+			foreach ( $excluded_uris as $excluded_uri ) {
+
+				if ( isset( $this->json->entities->{$excluded_uri} ) ) {
+					// Remove this entity.
+					unset( $this->json->entities->{$excluded_uri} );
+					// Also remove the annotations.
+				}
+			}
+		}
 	}
 
 }
