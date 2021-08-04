@@ -407,9 +407,9 @@ function _wl_mock_http_request( $response, $request, $url ) {
 	}
 
 
-	$request_data = json_decode( $request['body'], true );
+	$request_data = is_string($request['body']) ? json_decode( $request['body'], true ) : null;
 
-	if ( 'POST' === $method && '430c6e5d6b51fa56c4e1a240ad4fdd8d' === md5( $request_data['content'] ) ) {
+	if ( is_string($request['body']) && 'POST' === $method && '430c6e5d6b51fa56c4e1a240ad4fdd8d' === md5( $request_data['content'] ) ) {
 		return array(
 			'body'     => file_get_contents( __DIR__ . '/assets/content-analysis-response-3.json' ),
 			'headers'  => array( 'content-type' => 'application/json' ),
