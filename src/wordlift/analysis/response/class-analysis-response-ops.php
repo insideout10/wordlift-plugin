@@ -103,6 +103,7 @@ class Analysis_Response_Ops {
 			unset( $this->json->entities->{$external_uri} );
 		}
 
+		// Set the internal uri in the annotation for the entityMatch in annotations.
 		if ( isset( $this->json->annotations ) ) {
 			foreach ( $this->json->annotations as $key => $annotation ) {
 				if ( isset( $annotation->entityMatches ) ) {
@@ -285,6 +286,9 @@ class Analysis_Response_Ops {
 	}
 
 	/**
+	 * This function should be invoked after `make_entities_local` after this
+	 * method.
+	 *
 	 * @param $excluded_uris array An array of entity URIs to be excluded.
 	 *
 	 * @return $this
@@ -309,6 +313,29 @@ class Analysis_Response_Ops {
 				unset( $this->json->entities->{$excluded_uri} );
 				// Also remove the annotations.
 			}
+		}
+
+		foreach ( $this->json->annotations as $annotation_key => &$annotation_data ) {
+
+			if ( ! isset( $annotation_data->entityMatches ) ) {
+				continue;
+			}
+
+			foreach ( $annotation_data->entityMatches as $entity_match_key => $entity_match_data ) {
+
+				$entity_uri = $entity_match_data->entityId;
+
+				if ( ! in_array( $entity_uri, $excluded_uris ) ) {
+					continue;
+				}
+				unset( $annotation_data->entityMatches[$entity_match_key] );
+			}
+
+			if ( count( $annotation_data->entityMatches ) === 0 ) {
+				// Remove the annotation if we have zero empty annotation matches.
+				unset( $this->json->annotations->{$annotation_key} );
+			}
+
 		}
 
 
