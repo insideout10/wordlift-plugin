@@ -305,38 +305,41 @@ class Analysis_Response_Ops {
 		$excluded_uris = array_filter( $excluded_uris, 'is_string' );
 
 		// Remove the excluded entity uris.
-		foreach ( $excluded_uris as $excluded_uri ) {
+		if ( isset( $this->json->entities ) ) {
+			foreach ( $excluded_uris as $excluded_uri ) {
 
-			if ( isset( $this->json->entities->{$excluded_uri} ) ) {
-				// Remove this entity.
-				unset( $this->json->entities->{$excluded_uri} );
-				// Also remove the annotations.
+				if ( isset( $this->json->entities->{$excluded_uri} ) ) {
+					// Remove this entity.
+					unset( $this->json->entities->{$excluded_uri} );
+					// Also remove the annotations.
+				}
 			}
 		}
 
-		foreach ( $this->json->annotations as $annotation_key => &$annotation_data ) {
+		if ( isset( $this->json->annotations ) ) {
+			foreach ( $this->json->annotations as $annotation_key => &$annotation_data ) {
 
-			if ( ! isset( $annotation_data->entityMatches ) ) {
-				continue;
-			}
-
-			foreach ( $annotation_data->entityMatches as $entity_match_key => $entity_match_data ) {
-
-				$entity_uri = $entity_match_data->entityId;
-
-				if ( ! in_array( $entity_uri, $excluded_uris ) ) {
+				if ( ! isset( $annotation_data->entityMatches ) ) {
 					continue;
 				}
-				unset( $annotation_data->entityMatches[$entity_match_key] );
-			}
 
-			if ( count( $annotation_data->entityMatches ) === 0 ) {
-				// Remove the annotation if we have zero empty annotation matches.
-				unset( $this->json->annotations->{$annotation_key} );
-			}
+				foreach ( $annotation_data->entityMatches as $entity_match_key => $entity_match_data ) {
 
+					$entity_uri = $entity_match_data->entityId;
+
+					if ( ! in_array( $entity_uri, $excluded_uris ) ) {
+						continue;
+					}
+					unset( $annotation_data->entityMatches[ $entity_match_key ] );
+				}
+
+				if ( count( $annotation_data->entityMatches ) === 0 ) {
+					// Remove the annotation if we have zero empty annotation matches.
+					unset( $this->json->annotations->{$annotation_key} );
+				}
+
+			}
 		}
-
 
 		return $this;
 	}
