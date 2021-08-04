@@ -102,7 +102,7 @@ class Wordlift_Timeline_Service {
 	public function ajax_timeline() {
 
 		// Get the ID of the post who requested the timeline.
-		$post_id = ( isset( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : null );
+		$post_id = ( isset( $_REQUEST['post_id'] ) ? (int) $_REQUEST['post_id'] : null );
 
 		// Get the events and transform them for the JSON response, then send them to the client.
 		wp_send_json( $this->to_json( $this->get_events( $post_id ) ) );
@@ -194,7 +194,7 @@ class Wordlift_Timeline_Service {
 		}
 
 		// {media|thumbnail}: if set to 'media' the image is attached to the slide, if set to 'background' the image is set as background.
-		$display_images_as = isset( $_REQUEST['display_images_as'] ) ? $_REQUEST['display_images_as'] : 'media';
+		$display_images_as = isset( $_REQUEST['display_images_as'] ) ? (string) $_REQUEST['display_images_as'] : 'media';
 
 		// The number of words for the excerpt (by default 55, as WordPress).
 		$this->excerpt_length = $excerpt_length = isset( $_REQUEST['excerpt_length'] ) && is_numeric( $_REQUEST['excerpt_length'] ) ? $_REQUEST['excerpt_length'] : 55;
