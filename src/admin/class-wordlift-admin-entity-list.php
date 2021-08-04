@@ -173,7 +173,7 @@ class Wordlift_Entity_List_Service {
 
 		// Was a W already selected?
 		$selected = isset( $_GET['wl-classification-scope'] ) ?
-			$_GET['wl-classification-scope'] : '';
+			(string) $_GET['wl-classification-scope'] : '';
 
 		// Print select box with the 4W
 		$all_w = array(
@@ -208,7 +208,7 @@ class Wordlift_Entity_List_Service {
 		}
 
 		// Check a valid W was requested.
-		$requested_w = $_GET['wl-classification-scope'];
+		$requested_w = (string) $_GET['wl-classification-scope'];
 
 		$all_w = array(
 			WL_WHAT_RELATION,
