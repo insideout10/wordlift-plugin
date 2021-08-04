@@ -300,10 +300,14 @@ class Analysis_Response_Ops {
 		// We may also receive an array of null, make sure to filter uris when receiving.
 		$excluded_uris = array_filter( $excluded_uris, 'is_string' );
 
+
+		// Remove the excluded entity uris.
 		foreach ( $excluded_uris as $excluded_uri ) {
-			// Remove this entity.
+
 			if ( isset( $this->json->entities->{$excluded_uri} ) ) {
+				// Remove this entity.
 				unset( $this->json->entities->{$excluded_uri} );
+				// Also remove the annotations.
 			}
 		}
 
