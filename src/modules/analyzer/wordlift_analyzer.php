@@ -59,8 +59,8 @@ function wl_ajax_analyze_action() {
  */
 function wl_analyze_content( $data, $content_type ) {
 
-	$default_response                = json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' );
-	$request_body = json_decode( $data, true );
+	$default_response = json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' );
+	$request_body     = json_decode( $data, true );
 	if ( $request_body === null ) {
 		/**
 		 * @since 3.27.7
@@ -70,6 +70,7 @@ function wl_analyze_content( $data, $content_type ) {
 		$request_body = json_decode( stripslashes( $data ), true );
 	}
 	$request_body['contentLanguage'] = Wordlift_Configuration_Service::get_instance()->get_language_code();
+	$excluded_uris                   = array_key_exists( 'exclude', $request_body ) ? (array) $request_body['exclude'] : array();
 	$data                            = wp_json_encode( $request_body );
 
 	// If dataset is not enabled, return a locally prepared response without analysis API.
@@ -113,9 +114,11 @@ function wl_analyze_content( $data, $content_type ) {
 		$request_content = $data;
 	}
 
+
 	return Analysis_Response_Ops_Factory::get_instance()
 	                                    ->create( $json )
 	                                    ->make_entities_local()
+	                                    ->remove_excluded_entities( $excluded_uris )
 	                                    ->add_occurrences( $request_content )
 	                                    ->get_json();
 
