@@ -96,8 +96,8 @@ class Wordlift_Batch_Operation_Ajax_Adapter {
 			wp_send_json_error( 'Invalid nonce.' );
 		}
 
-		$offset = is_numeric( $_POST['offset'] ) ? (int) $_POST['offset'] : 0;
-		$limit  = is_numeric( $_POST['limit'] ) ? (int) $_POST['limit'] : 10;
+		$offset = isset( $_POST['offset'] ) ? (int) $_POST['offset'] : 0;
+		$limit  = isset( $_POST['limit'] ) ? (int) $_POST['limit'] : 10;
 
 		// Run the batch operation.
 		$result = $this->operation->process( $offset, $limit );
