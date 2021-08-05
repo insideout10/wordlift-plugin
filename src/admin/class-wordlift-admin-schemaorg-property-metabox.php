@@ -229,7 +229,7 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 		//      - value: the prop value.
 		//
 		// `_wl_prop` is *not* Wordlift_Schemaorg_Property_Service::PREFIX.
-		$wl_prop = (array) $_POST['_wl_prop'];
+		$wl_prop = isset( $_POST['_wl_prop'] ) ? (array) $_POST['_wl_prop'] : array();
 		foreach ( $wl_prop as $name => $instances ) {
 			foreach ( $instances as $uuid => $meta ) {
 				foreach ( $meta as $meta_key => $meta_value ) {
