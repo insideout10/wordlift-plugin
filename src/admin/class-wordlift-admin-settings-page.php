@@ -397,9 +397,9 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 		// Check whether a publisher name has been set.
 		if ( isset( $_POST['wl_publisher'] ) && ! empty( $_POST['wl_publisher']['name'] ) ) { // WPCS: CSRF, input var, sanitization ok.
-			$name         = $_POST['wl_publisher']['name']; // WPCS: CSRF, input var, sanitization ok.
-			$type         = $_POST['wl_publisher']['type']; // WPCS: CSRF, input var, sanitization ok.
-			$thumbnail_id = $_POST['wl_publisher']['thumbnail_id'] ?: null; // WPCS: CSRF, input var, sanitization ok.
+			$name         = isset( $_POST['wl_publisher']['name'] ) ? (string) $_POST['wl_publisher']['name'] : '';
+			$type         = isset( $_POST['wl_publisher']['type'] ) ? (string) $_POST['wl_publisher']['type'] : '';
+			$thumbnail_id = isset( $_POST['wl_publisher']['thumbnail_id'] ) ? $_POST['wl_publisher']['thumbnail_id'] : null; // WPCS: CSRF, input var, sanitization ok.
 
 			// Set the type URI, either http://schema.org/Person or http://schema.org/Organization.
 			$type_uri = sprintf( 'http://schema.org/%s', 'organization' === $type ? 'Organization' : 'Person' );
