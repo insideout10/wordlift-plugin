@@ -77,7 +77,8 @@ class Wordlift_Http_Api {
 			return;
 		}
 
-		$this->do_action( (string) $_REQUEST['action'] );
+		$action = isset( $_REQUEST['action'] ) ? (string) $_REQUEST['action'] : '';
+		$this->do_action( $action );
 
 		exit;
 
@@ -86,9 +87,10 @@ class Wordlift_Http_Api {
 	/**
 	 * Do the requested action.
 	 *
+	 * @param string $action The action to execute.
+	 *
 	 * @since 3.15.3
 	 *
-	 * @param string $action The action to execute.
 	 */
 	private function do_action( $action ) {
 
