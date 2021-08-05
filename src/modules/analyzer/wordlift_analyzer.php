@@ -35,7 +35,7 @@ function wl_ajax_analyze_action() {
 
 	// If you use `filter_input` here, `Ajax_Content_Analysis_Test` would fail because `filter_input` doesn't use
 	// `$_POST`.
-	$data = $_POST['data'];
+	$data = isset( $_POST['data'] ) ? (string) $_POST['data'] : '';
 
 	wp_send_json_success( wl_analyze_content( $data, 'application/json; charset=' . strtolower( get_bloginfo( 'charset' ) ) ) );
 
@@ -59,8 +59,8 @@ function wl_ajax_analyze_action() {
  */
 function wl_analyze_content( $data, $content_type ) {
 
-	$default_response                = json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' );
-	$request_body = json_decode( $data, true );
+	$default_response = json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' );
+	$request_body     = json_decode( $data, true );
 	if ( $request_body === null ) {
 		/**
 		 * @since 3.27.7
