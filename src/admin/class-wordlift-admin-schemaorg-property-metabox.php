@@ -251,7 +251,8 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 
 		//region ## NONCE VALIDATION.
 		// Check nonce, we don't send back a valid nonce if this one isn't valid, of course.
-		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wl_schemaorg_property' ) ) {
+		$nonce = isset( $_REQUEST['_wpnonce'] ) ? (string) $_REQUEST['_wpnonce'] : '';
+		if ( ! wp_verify_nonce( $nonce, 'wl_schemaorg_property' ) ) {
 			wp_send_json_error( array(
 				'message' => '`nonce` missing or invalid.',
 			) );
