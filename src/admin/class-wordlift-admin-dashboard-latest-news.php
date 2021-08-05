@@ -144,8 +144,9 @@ class Wordlift_Dashboard_Latest_News {
 	 */
 	public function ajax_get_latest_news() {
 		// Get wordlift articles
-		$start_position = explode( '_', (string) $_POST['more_posts_link_id'] );
-		$data           = $this->get_last_wordlift_articles( $start_position[ count( $start_position ) - 1 ] );
+		$more_posts_link_id = isset( $_POST['more_posts_link_id'] ) ? (string) $_POST['more_posts_link_id'] : '';
+		$start_position     = explode( '_', $more_posts_link_id );
+		$data               = $this->get_last_wordlift_articles( $start_position[ count( $start_position ) - 1 ] );
 
 		// Return response as json object
 		wp_send_json_success( $data );

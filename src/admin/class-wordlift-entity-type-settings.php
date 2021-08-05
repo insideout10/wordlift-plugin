@@ -163,10 +163,12 @@ class Wordlift_Admin_Entity_Type_Settings {
 
 		$term = get_term( $term_id, 'wl_entity_type' );
 
+		$title       = isset( $_POST['title'] ) ? (string) $_POST['title'] : '';
+		$description = isset( $_POST['description'] ) ? (string) $_POST['description'] : '';
 		$this->set_setting(
 			$term_id,
-			trim( wp_unslash( (string) $_POST['title'] ) ),
-			wp_unslash( (string) $_POST['description'] )
+			trim( wp_unslash( $title ) ),
+			wp_unslash( $description )
 		);
 
 		// Redirect back to the term settings page and indicate a save was done.
