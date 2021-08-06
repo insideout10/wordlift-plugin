@@ -77,35 +77,6 @@ class Wordlift_Admin_Dashboard_V2 {
 
 	}
 
-	/**
-	 * Get the keyword average position.
-	 *
-	 * @return string The formatted average position string (or `n/a` if not available).
-	 * @since 3.20.0
-	 *
-	 */
-	private function get_average_position() {
-
-		// Get the cache value.
-		$average_position = get_transient( self::AVERAGE_POSITION );
-
-		// If there's no cached value, load it.
-		if ( false === $average_position ) {
-			// Get the average position from Search Ranking Service.
-			$average_position = @$this->search_rankings_service->get_average_position();
-
-			// If there was an error return 'n/a'.
-			if ( false === $average_position ) {
-				return esc_html( _x( 'n/a', 'Dashboard', 'wordlift' ) );
-			}
-		}
-
-		// Store the value for one day.
-		set_transient( self::AVERAGE_POSITION, $average_position, 86400 ); // One day.
-
-		// Format the average position with one decimal.
-		return number_format( $average_position, 1 );
-	}
 
 	/**
 	 * Get the top entities.
