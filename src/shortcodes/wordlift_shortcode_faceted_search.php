@@ -167,7 +167,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 				$thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
 			$post_obj->permalink  = get_permalink( $post_obj->ID );
 			$post_obj->srcset     = Srcset_Util::get_srcset( $post_obj->ID, Srcset_Util::FACETED_SEARCH_WIDGET );
-			$post_obj->post_title = strip_tags( html_entity_decode( $post_obj->post_title, ENT_QUOTES, 'UTF-8' ) );
+			$post_obj->post_title = wp_strip_all_tags( html_entity_decode( $post_obj->post_title, ENT_QUOTES, 'UTF-8' ) );
 			$result               = $post_obj;
 			$post_results[]       = $result;
 		}
@@ -264,7 +264,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 
 function wl_shortcode_faceted_search_get_the_title( $post_id ) {
 
-	$title = strip_tags( get_the_title( $post_id ) );
+	$title = wp_strip_all_tags( get_the_title( $post_id ) );
 
 	if ( get_post_type( $post_id ) !== Wordlift_Entity_Service::TYPE_NAME ) {
 		$alternative_labels = Wordlift_Entity_Service::get_instance()->get_alternative_labels( $post_id );
