@@ -217,7 +217,7 @@ Wordlift_Admin_Dashboard_V2::get_todays_tip_block();
 
 <?php
 $configuration_service = Wordlift_Configuration_Service::get_instance();
-$country_code = $configuration_service->get_country_code();
+$country_code          = $configuration_service->get_country_code();
 
 $top_entities = $this->get_top_entities();
 if ( ! empty( $top_entities ) ) {
@@ -263,10 +263,10 @@ if ( ! empty( $top_entities ) ) {
                     <input id="wl-dashboard__show-more" type="checkbox">
                     <label for="wl-dashboard__show-more">
                         <span>
-						    <?php echo esc_html( __( 'Show more', 'Dashboard', 'wordlift' ) ); ?>
+						    <?php echo esc_html( __( 'Show more', 'wordlift' ) ); ?>
                         </span>
                         <span>
-                            <?php echo esc_html( __( 'Hide', 'Dashboard', 'wordlift' ) ); ?>
+                            <?php echo esc_html( __( 'Hide', 'wordlift' ) ); ?>
                         </span>
                     </label>
 					<?php
@@ -321,7 +321,7 @@ $not_enriched_url = admin_url( 'edit.php?post_type=post&wl_enriched=no' ); ?>
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * Action name : wl_admin_dashboard_widgets
  */
-do_action('wl_admin_dashboard_widgets')
+do_action( 'wl_admin_dashboard_widgets' )
 
 ?>
 <div style="display: none;">
