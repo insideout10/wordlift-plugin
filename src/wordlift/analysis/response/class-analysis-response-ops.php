@@ -203,7 +203,7 @@ class Analysis_Response_Ops  {
 
 		if ( ! is_bool( $this->json ) ) {
 			foreach ( $this->json->entities as $id => $entity ) {
-				$this->json->entities->{$id}->occurrences = isset( $occurrences[ $id ] ) ? $occurrences[ $id ] : array();;
+				$this->json->entities->{$id}->occurrences = isset( $occurrences[ $id ] ) ? $occurrences[ $id ] : array();
 
 				foreach ( $this->json->entities->{$id}->occurrences as $annotation_id ) {
 					$this->json->entities->{$id}->annotations[ $annotation_id ] = array(
