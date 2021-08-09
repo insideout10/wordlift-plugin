@@ -19,7 +19,7 @@
 				. ' field below. Otherwise %s!',
 				'wordlift'
 			),
-			$grab_a_key_link
+			esc_attr( $grab_a_key_link )
 		);
 		?>
 	</p>
