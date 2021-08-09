@@ -84,7 +84,7 @@ $reasons = array(
 								/>
 
 								<span class="description">
-									<?php echo $reason['text']; ?>
+									<?php echo esc_html( $reason['text'] ); ?>
 								</span>
 							</label>
 
@@ -123,11 +123,11 @@ $reasons = array(
 
 		<div class="wl-modal-footer">
 			<a href="#" class="button button-secondary wl-modal-button-close">
-				<?php _e( 'Cancel', 'wordlift' ); ?>
+				<?php esc_html_e( 'Cancel', 'wordlift' ); ?>
 			</a>
 
 			<a href="#" class="button button-primary wl-modal-button-deactivate">
-				<?php _e( 'Deactivate', 'wordlift' ); ?>
+				<?php esc_html_e( 'Deactivate', 'wordlift' ); ?>
 			</a>
 			<div class="clear"></div>
 		</div>
@@ -136,7 +136,7 @@ $reasons = array(
 			type="hidden"
 			name="wl_deactivation_feedback_nonce"
 			class="wl_deactivation_feedback_nonce"
-			value="<?php echo wp_create_nonce( 'wl_deactivation_feedback_nonce' ); ?>"
+			value="<?php echo esc_attr( wp_create_nonce( 'wl_deactivation_feedback_nonce' ) ); ?>"
 		>
 	</div>
 </div>
