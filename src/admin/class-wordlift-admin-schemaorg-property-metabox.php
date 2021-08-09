@@ -345,8 +345,8 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 	 */
 	public function render() {
 		?>
-        <input type="hidden" name="<?php echo self::NONCE_NAME; ?>"
-               value="<?php echo wp_create_nonce( self::ACTION_NAME ); ?>"/>
+        <input type="hidden" name="<?php echo esc_attr( self::NONCE_NAME ); ?>"
+               value="<?php echo esc_attr( wp_create_nonce( self::ACTION_NAME ) ); ?>"/>
         <div id="wl-schema-properties-form"></div>
 		<?php
 	}
