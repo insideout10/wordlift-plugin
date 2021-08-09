@@ -88,14 +88,14 @@ if ( isset( $_POST['submit'] ) ) {
 	<p>
 		<?php _e( 'The Video Sitemap works like any other XML Sitemap. Search engines will use it to display rich snippets in result pages.', 'wordlift' ); ?>
 	</p>
-	<?php $is_sitemap_enabled = get_option( '_wl_video_sitemap_generation', false ) ? 'checked' : ''; ?>
+	<?php $wl_is_sitemap_enabled = esc_attr( get_option( '_wl_video_sitemap_generation', false ) ? 'checked' : '' ); ?>
 	<p> <?php _e( 'Enable Video Sitemap' ); ?>
-		<input type="checkbox" name="wl_enable_video_sitemap" value="1" <?php echo $is_sitemap_enabled; ?> ></p>
+		<input type="checkbox" name="wl_enable_video_sitemap" value="1" <?php echo $wl_is_sitemap_enabled; ?> ></p>
 	<p> 
 	<?php
-	if ( $is_sitemap_enabled ) {
-		$sitemap_link = get_home_url( null, 'wl-video-sitemap.xml' );
-		printf( __( 'Here is <a href="%s">link</a> to your Video Sitemap. Add it now, to Google Search Console.', 'wordlift' ), $sitemap_link );
+	if ( $wl_is_sitemap_enabled ) {
+		$wl_sitemap_link = esc_attr( get_home_url( null, 'wl-video-sitemap.xml' ) );
+		printf( __( 'Here is <a href="%s">link</a> to your Video Sitemap. Add it now, to Google Search Console.', 'wordlift' ), $wl_sitemap_link );
 	}
 	?>
 		</p>
