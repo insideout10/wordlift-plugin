@@ -39,9 +39,10 @@ class Wordlift_Entity_List_Service {
 	/**
 	 * Create a Wordlift_Entity_List_Service.
 	 *
+	 * @param \Wordlift_Rating_Service $rating_service A {@link Wordlift_Rating_Service} instance.
+	 *
 	 * @since 3.3.0
 	 *
-	 * @param \Wordlift_Rating_Service $rating_service A {@link Wordlift_Rating_Service} instance.
 	 */
 	public function __construct( $rating_service ) {
 
@@ -127,7 +128,7 @@ class Wordlift_Entity_List_Service {
 	 * @since 3.3.0
 	 *
 	 * @param string $column The current column.
-	 * @param int    $entity_id An entity post id.
+	 * @param int $entity_id An entity post id.
 	 */
 	public function render_custom_columns( $column, $entity_id ) {
 
@@ -154,7 +155,7 @@ class Wordlift_Entity_List_Service {
 			case 'wl_column_rating':
 
 				$rating = $this->rating_service->get_rating_for( $entity_id );
-				echo '<i class="wl-traffic-light wl-tl-' . $rating['traffic_light_score'] . '">' . $rating['percentage_score'] . '%</i>';
+				echo '<i class="wl-traffic-light wl-tl-' . esc_attr( $rating['traffic_light_score'] ) . '">' . esc_html( $rating['percentage_score'] ) . '%</i>';
 				break;
 		}
 
@@ -186,7 +187,7 @@ class Wordlift_Entity_List_Service {
 		echo '<select name="wl-classification-scope" id="wl-dropdown-classification-scope">';
 		foreach ( $all_w as $v => $w ) {
 			$default = ( $selected === $v ) ? 'selected' : '';
-			echo sprintf( '<option value="%s" %s >%s</option>', esc_attr( $v ), $default, esc_html( $w ) );
+			echo sprintf( '<option value="%s" %s >%s</option>', esc_attr( $v ), esc_html( $default ), esc_html( $w ) );
 		}
 		echo '</select>';
 	}
@@ -195,11 +196,11 @@ class Wordlift_Entity_List_Service {
 	 * Server side response operations for the classification filter set in
 	 * *restrict_manage_posts_classification_scope_filter*.
 	 *
-	 * @since 3.3.0
-	 *
 	 * @param array $clauses WP main query clauses.
 	 *
 	 * @return array Modified clauses.
+	 * @since 3.3.0
+	 *
 	 */
 	public function posts_clauses_classification_scope( $clauses ) {
 
@@ -237,9 +238,9 @@ class Wordlift_Entity_List_Service {
 	 * Amend the "all entities" list admin screen with entities from other
 	 * post types, not only the entities one.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param WP_Query $query The WP_Query instance (passed by reference).
+	 *
+	 * @since 3.15.0
 	 *
 	 */
 	public function pre_get_posts( $query ) {
