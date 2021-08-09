@@ -207,9 +207,9 @@ class Wl_Metabox_Field implements Field {
 	 * Overwrite this method in a child class to obtain custom behaviour.
 	 */
 	function get_data() {
-	    $instance = Store_Factory::get_instance( $this->type );
-	    // @todo: check if $instance is not null.
-	    $this->data =  $instance::get_data( $this->id, $this->meta_name );
+		$instance = Store_Factory::get_instance( $this->type );
+		// @todo: check if $instance is not null.
+		$this->data = $instance::get_data( $this->id, $this->meta_name );
 	}
 
 	/**
@@ -280,7 +280,7 @@ class Wl_Metabox_Field implements Field {
 	 */
 	function save_data( $values ) {
 		$santizied_data = $this->sanitize_data( $values );
-		$instance = Store_Factory::get_instance( $this->type );
+		$instance       = Store_Factory::get_instance( $this->type );
 		$instance::save_data( $this->id, $this->meta_name, $this->cardinality, $santizied_data );
 	}
 
@@ -453,7 +453,7 @@ class Wl_Metabox_Field implements Field {
             <input
                     type="text"
                     id="<?php echo esc_attr( $this->meta_name ); ?>"
-                    name="wl_metaboxes[<?php echo $this->meta_name ?>][]"
+                    name="wl_metaboxes[<?php echo esc_attr( $this->meta_name ) ?>][]"
                     value="<?php echo esc_attr( $value ); ?>"
                     style="width:88%"
             />
