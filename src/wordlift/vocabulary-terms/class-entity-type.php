@@ -66,7 +66,7 @@ class Entity_Type {
 EOF;
 
 
-		echo sprintf( $template, $entity_types_text, $terms_html );
+		echo sprintf( $template, esc_html( $entity_types_text ), $terms_html );
 	}
 
 	public function save_field( $term_id ) {
