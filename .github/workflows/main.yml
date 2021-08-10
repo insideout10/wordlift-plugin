@@ -33,19 +33,6 @@ jobs:
           ./vendor/bin/phpcs src/ --extensions=php --ignore=class-wordlift-entity-types-taxonomy-walker-5-3.php,autoload_static.php \
               --standard=PHPCompatibilityWP --runtime-set testVersion 5.3
 
-  wpcs:
-    runs-on: ubuntu-latest
-    container:
-      # Do not upgrade to 2.0.9+ unless you want to use PHP 8,
-      image: composer:2.0.8
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: test
-        run: |
-          composer install
-          ./vendor/bin/phpcs src/ --extensions=php --standard=Wordpress
-
   # These tests need updating.
   #  js_karma:
   #    runs-on: ubuntu-latest
