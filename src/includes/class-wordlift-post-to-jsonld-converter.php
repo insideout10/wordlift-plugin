@@ -261,7 +261,8 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 				'@id'        => $author_uri,
 				'name'       => $author,
 				'givenName'  => $author_first_name,
-				'familyName' => $author_last_name
+				'familyName' => $author_last_name,
+				'url'        => get_author_posts_url( $author_id ),
 			);
 		}
 
