@@ -243,7 +243,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * @since 3.14.0
 	 *
 	 */
-	private function get_author( $author_id, &$references ) {
+	public function get_author( $author_id, &$references ) {
 
 		// Get the entity bound to this user.
 		$entity_id = $this->user_service->get_entity( $author_id );
