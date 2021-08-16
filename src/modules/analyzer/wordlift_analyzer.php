@@ -85,8 +85,11 @@ function wl_analyze_content( $data, $content_type ) {
 	}
 
 	add_filter( 'wl_api_service_api_url_path', 'wl_use_analysis_on_api_wordlift_io' );
+
+
 	$json = Wordlift_Api_Service::get_instance()
 	                            ->post_custom_content_type( 'analysis/single', $data, $content_type );
+
 	remove_filter( 'wl_api_service_api_url_path', 'wl_use_analysis_on_api_wordlift_io' );
 
 	// If it's an error log it.

@@ -286,4 +286,12 @@ EOF;
 
 	}
 
+	public function test_when_webpage_analysis_flag_is_enabled_should_send_html_content_from_frontend() {
+
+		$post = $this->factory()->post->create( array( 'post_content' => 'test_post' ) );
+
+
+
+	}
+
 }
