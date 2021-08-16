@@ -54,7 +54,8 @@ function* handleRequestAnalysis() {
 
     const response = yield call(global["wp"].ajax.post, "wl_analyze", {
         _wpnonce: settings["analysis"]["_wpnonce"],
-        data: JSON.stringify(request)
+        data: JSON.stringify(request),
+        postId: wp.data.select("core/editor").getCurrentPostId()
     });
 
     embedAnalysis(editorOps, response);

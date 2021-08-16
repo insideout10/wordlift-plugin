@@ -8,6 +8,9 @@
 
 namespace Wordlift\Analysis;
 
+use Wordlift\Features\Feature_Utils;
+use Wordlift\Features\Features_Registry;
+
 /**
  * Factory class to construct @link \Wordlift_Api_Service
  */
@@ -19,6 +22,10 @@ class Analysis_Service_Factory {
 	 * @return Analysis_Service
 	 */
 	public static function get_instance() {
+
+		if ( Feature_Utils::is_feature_on( 'analysis-v2' ) ) {
+			return V2_Analysis_Service::get_instance();
+		}
 
 		return V1_Analysis_Service::get_instance();
 	}
