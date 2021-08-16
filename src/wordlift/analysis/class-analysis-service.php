@@ -14,6 +14,15 @@ namespace Wordlift\Analysis;
  */
 interface Analysis_Service {
 
-	public function get_analysis_response( $data, $content_type );
+	/**
+	 * Return analysis response from the service.
+	 *
+	 * @param array  $data The analysis data.
+	 * @param String $content_type Content type for the request.
+	 * @param int    $post_id Post id.
+	 *
+	 * @return string|object|\WP_Error A {@link WP_Error} instance or the actual response content.
+	 */
+	public function get_analysis_response( $data, $content_type, $post_id );
 
 }

@@ -8,23 +8,26 @@
 
 namespace Wordlift\Analysis;
 
+use Wordlift\Common\Singleton;
+
 /**
  * The abstract analysis service is extended by the v1, v2 analysis services.
  */
-abstract class Abstract_Analysis_Service implements  Analysis_Service {
+abstract class Abstract_Analysis_Service extends Singleton implements  Analysis_Service {
 
 	/**
 	 * Wordlift api service.
 	 *
 	 * @var \Wordlift_Api_Service
 	 */
-	private $api_service;
+	protected $api_service;
 
 	/**
-	 * @param \Wordlift_Api_Service $api_service The WordLift Api service.
+	 * Abstract_Analysis_Service constructor.
 	 */
-	public function __construct( $api_service ) {
-		$this->api_service = $api_service;
+	public function __construct() {
+		parent::__construct();
+		$this->api_service = \Wordlift_Api_Service::get_instance();
 	}
 
 }
