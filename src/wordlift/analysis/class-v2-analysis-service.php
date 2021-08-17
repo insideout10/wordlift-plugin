@@ -17,6 +17,8 @@ class V2_Analysis_Service extends Abstract_Analysis_Service {
 
 		$v2_analysis_request = new V2_Analysis_Request( $post_id );
 
-		return $this->api_service->post_custom_content_type( 'analysis/v2/analyze', $v2_analysis_request->get_data(), $content_type );
+		$json_encoded_body = wp_json_encode( $v2_analysis_request->get_data() );
+
+		return $this->api_service->post_custom_content_type( 'analysis/v2/analyze', $json_encoded_body, $content_type );
 	}
 }
