@@ -7,6 +7,7 @@
  */
 
 import V1AnalysisService from "./analysis-service/v1-analysis-service";
+import V2AnalysisService from "./analysis-service/v2-analysis-service";
 
 export default class AnalysisServiceFactory {
 
