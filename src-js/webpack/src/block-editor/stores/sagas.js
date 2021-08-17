@@ -38,6 +38,7 @@ import getRelatedPosts from "../../common/api/get-related-posts";
 import ClassicEditorBlock from "../api/classic-editor-block";
 import ClassicEditorBlockValidator from "./classic-editor-block-validator";
 import {getMainType} from "../../Edit/stores/sagas";
+import {getAnalysisService} from "../analysis/analysis-service-factory";
 
 function* handleRequestAnalysis() {
     const editorOps = new EditorOps(EDITOR_STORE);
@@ -58,7 +59,7 @@ function* handleRequestAnalysis() {
         postId: wp.data.select("core/editor").getCurrentPostId()
     });
 
-    embedAnalysis(editorOps, response);
+    getAnalysisService().embedAnalysis(editorOps, response);
 
     const parsed = parseAnalysisResponse(response);
 

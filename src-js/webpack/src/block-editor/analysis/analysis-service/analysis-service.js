@@ -6,7 +6,7 @@
  * @since 3.32.5
  */
 
-export default class Analysis {
+export default class AnalysisService {
 
 	embedAnalysis(editorOps, response) {
 		throw new Error( "Method embedAnalysis not implemented" )
