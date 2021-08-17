@@ -12,22 +12,22 @@ import AnalysisService from "./analysis-service";
 export default class V2AnalysisService extends AnalysisService {
 
     embedAnalysis(editorOps, response) {
-        super.embedAnalysis(editorOps, response);
+        // Do nothing, we dont want to annotate here.
     }
 
     * toggleEntity({entity}) {
-        yield* super.toggleEntity({entity});
+        //TODO: we want to create or remove relation based on the toggle.
     }
 
     * toggleLink({entity}) {
-        yield* super.toggleLink({entity});
+        // Do nothing, we cant create links here.
     }
 
     * toggleAnnotation({annotation}) {
-        yield* super.toggleAnnotation({annotation});
+        // Do nothing, we wont have annotation.
     }
 
     * handleAddEntityRequest({payload}) {
-        yield* super.handleAddEntityRequest({payload});
+        // TODO: implement this method and update the sidebar.
     }
 }
