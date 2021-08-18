@@ -23,8 +23,8 @@ class Analysis_Service_Factory {
 	 */
 	public static function get_instance() {
 
-		if ( Feature_Utils::is_feature_on( 'analysis-v2' ) ) {
-			return V2_Analysis_Service::get_instance();
+		if ( Feature_Utils::is_feature_on( 'no-editor-analysis' ) ) {
+			return No_Editor_Analysis_Service::get_instance();
 		}
 
 		return V1_Analysis_Service::get_instance();

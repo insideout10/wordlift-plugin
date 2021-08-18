@@ -8,7 +8,7 @@
 
 namespace Wordlift\Analysis;
 
-class V2_Analysis_Request {
+class No_Editor_Analysis_Request {
 
 
 	private $post_id;

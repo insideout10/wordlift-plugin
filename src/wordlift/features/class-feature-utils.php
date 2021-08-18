@@ -21,8 +21,7 @@ class Feature_Utils {
 	 * @return bool
 	 */
 	public static function is_feature_on( $feature_slug ) {
-		$existing_features = get_option( Response_Adapter::WL_FEATURES, array() );
-		return array_key_exists( $feature_slug, $existing_features ) && $existing_features[ $feature_slug ];
+		return apply_filters( 'wl_feature__enable__' . $feature_slug, false );
 	}
 
 }
