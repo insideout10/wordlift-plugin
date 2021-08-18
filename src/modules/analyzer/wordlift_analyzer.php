@@ -90,10 +90,9 @@ function wl_analyze_content( $data, $content_type ) {
 
 	add_filter( 'wl_api_service_api_url_path', 'wl_use_analysis_on_api_wordlift_io' );
 
-	$post_id = isset( $data['postId'] ) ? intval( $data['postId'] ) : 0;
-	$json    = Analysis_Service_Factory::get_instance()
+	$post_id = isset( $_REQUEST['postId'] ) ? intval( $_REQUEST['postId'] ) : 0;
+	$json    = Analysis_Service_Factory::get_instance( $post_id )
 								->get_analysis_response( $data, $content_type, $post_id );
-
 	remove_filter( 'wl_api_service_api_url_path', 'wl_use_analysis_on_api_wordlift_io' );
 
 	// If it's an error log it.

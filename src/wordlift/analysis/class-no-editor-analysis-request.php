@@ -22,12 +22,13 @@ class No_Editor_Analysis_Request {
 	 */
 	public function get_data() {
 
-		$preview_link = get_preview_post_link( $this->post_id );
+		$preview_link = get_permalink( $this->post_id );
 
-		$post_content = wp_remote_get( $preview_link );
+		$post_content_response = wp_remote_get( $preview_link );
+		$page_body = wp_remote_retrieve_body( $post_content_response );
 
 		return array(
-			'html'     => array( 'page' => $post_content ),
+			'html'     => array( 'page' => $page_body ),
 			'language' => \Wordlift_Configuration_Service::get_instance()->get_language_code(),
 			'scope'    => 'all',
 			'matches'  => 1,
