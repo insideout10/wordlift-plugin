@@ -30480,8 +30480,7 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', 
       });
     };
     service._updateStatus = function(status) {
-      service._isRunning = status;
-      return $rootScope.$broadcast("analysisServiceStatusUpdated", status);
+      return service._isRunning = status;
     };
     service.perform = function(content) {
       var promise;
@@ -30963,11 +30962,7 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', ['
         ed = EditorAdapter.getEditor();
         return ed.id === editor.id;
       },
-      updateContentEditableStatus: function(status) {
-        var ed;
-        ed = EditorAdapter.getEditor();
-        return ed.getBody().setAttribute('contenteditable', status);
-      },
+      updateContentEditableStatus: function(status) {},
       createTextAnnotationFromCurrentSelection: function() {
         var content, ed, htmlPosition, text, textAnnotation, textAnnotationSpan, textContent, textPosition, traslator;
         ed = EditorAdapter.getEditor();
@@ -31008,58 +31003,7 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', ['
       },
       embedAnalysis: (function(_this) {
         return function(analysis) {
-          var annotation, annotations, ed, element, em, entity, html, isDirty, j, k, len, len1, ref, ref1, ref2, ref3;
-          $log.debug('Embedding analysis...');
-          ed = EditorAdapter.getEditor();
-          html = EditorAdapter.getHTML();
-          annotations = Object.values(analysis.annotations).sort(function(a, b) {
-            if (a.end > b.end) {
-              return -1;
-            } else if (a.end < b.end) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-          for (j = 0, len = annotations.length; j < len; j++) {
-            annotation = annotations[j];
-            if (annotation.entityMatches.length === 0) {
-              $log.warn("Annotation " + annotation.text + " [" + annotation.start + ":" + annotation.end + "] with id " + annotation.id + " has no entity matches!");
-              continue;
-            }
-            if (ed.dom.get(annotation.id) != null) {
-              continue;
-            }
-            element = "<span id=\"" + annotation.id + "\" class=\"textannotation";
-            if (-1 < ((ref = annotation.cssClass) != null ? ref.indexOf('wl-no-link') : void 0)) {
-              element += ' wl-no-link';
-            }
-            if (-1 < ((ref1 = annotation.cssClass) != null ? ref1.indexOf('wl-link') : void 0)) {
-              element += ' wl-link';
-            }
-            ref2 = annotation.entityMatches;
-            for (k = 0, len1 = ref2.length; k < len1; k++) {
-              em = ref2[k];
-              if (analysis.entities[em.entityId] == null) {
-                $log.warn(em.entityId + " not found in `entities`, skipping.");
-                continue;
-              }
-              entity = analysis.entities[em.entityId];
-              if (ref3 = annotation.id, indexOf.call(entity.occurrences, ref3) >= 0) {
-                element += " disambiguated wl-" + entity.mainType + "\" itemid=\"" + entity.id;
-              }
-            }
-            element += "\">";
-            html = html.substring(0, annotation.end) + '</span>' + html.substring(annotation.end);
-            html = html.substring(0, annotation.start) + element + html.substring(annotation.start);
-          }
-          html = html.replace(/<\/span>/gim, "</span>" + INVISIBLE_CHAR);
-          $rootScope.$broadcast("analysisEmbedded");
-          isDirty = ed.isDirty();
-          ed.setContent(html, {
-            format: 'raw'
-          });
-          return ed.isNotDirty = !isDirty;
+          return $rootScope.$broadcast("analysisEmbedded");
         };
       })(this)
     };
@@ -31246,12 +31190,15 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
 
 ((function(_this) {
   return function($, angular) {
-    var container, editPostConditionalServices, editPostWidgetServices, injector, spinner;
+    var container, editPostConditionalServices, editPostWidgetServices, injector, isNoEditorAnalysisActive, spinner;
+    isNoEditorAnalysisActive = function() {
+      return (typeof wlSettings !== "undefined" && wlSettings !== null) && (wlSettings.analysis != null) && (wlSettings.analysis.isEditorPresent != null) && wlSettings.analysis.isEditorPresent === false;
+    };
     editPostConditionalServices = function() {
-      if ((typeof wlSettings !== "undefined" && wlSettings !== null) && (wlSettings.analysis != null) && (wlSettings.analysis.isEditorPresent != null) && wlSettings.analysis.isEditorPresent === false) {
-        return ['wordlift.editpost.widget.services.NoAnnotationAnalysisService', 'wordlift.editpost.widget.services.EditorService'];
+      if (isNoEditorAnalysisActive()) {
+        return ['wordlift.editpost.widget.services.NoAnnotationAnalysisService', 'wordlift.editpost.widget.services.NoAnnotationEditorService'];
       }
-      return ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.NoAnnotationEditorService'];
+      return ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService'];
     };
     editPostWidgetServices = ['ngAnimate', 'wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityList', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService'];
     editPostWidgetServices = editPostWidgetServices.concat(editPostConditionalServices());
@@ -31285,6 +31232,13 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
             return $('.wl-widget-spinner svg').attr('class', css);
           });
         }
+      }
+    ]);
+    injector.invoke([
+      'AnalysisService', '$rootScope', '$log', function(AnalysisService, $rootScope, $log) {
+        return $rootScope.$apply(function() {
+          return AnalysisService.perform("");
+        });
       }
     ]);
     if (window['wlSettings'] != null) {

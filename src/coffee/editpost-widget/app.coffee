@@ -2,10 +2,13 @@
 #  # Set the well-known $ reference to jQuery.
 #  $ = jQuery
 
+  isNoEditorAnalysisActive = () ->
+    return  wlSettings? and wlSettings.analysis? and wlSettings.analysis.isEditorPresent? and wlSettings.analysis.isEditorPresent == false
+
   editPostConditionalServices = () ->
-    if  wlSettings? and wlSettings.analysis? and wlSettings.analysis.isEditorPresent? and wlSettings.analysis.isEditorPresent == false
-      return ['wordlift.editpost.widget.services.NoAnnotationAnalysisService','wordlift.editpost.widget.services.EditorService']
-    return ['wordlift.editpost.widget.services.AnalysisService','wordlift.editpost.widget.services.NoAnnotationEditorService']
+    if isNoEditorAnalysisActive()
+      return ['wordlift.editpost.widget.services.NoAnnotationAnalysisService','wordlift.editpost.widget.services.NoAnnotationEditorService']
+    return ['wordlift.editpost.widget.services.AnalysisService','wordlift.editpost.widget.services.EditorService']
 
   editPostWidgetServices = [
     'ngAnimate'
@@ -24,7 +27,6 @@
   ]
 
   editPostWidgetServices = editPostWidgetServices.concat( editPostConditionalServices() )
-
   # Create the main AngularJS module, and set it dependent on controllers and directives.
   angular.module('wordlift.editpost.widget', editPostWidgetServices)
 
@@ -77,6 +79,16 @@
         $('.wl-widget-spinner svg').attr 'class', css
 
   ])
+
+  injector.invoke(['AnalysisService', '$rootScope', '$log'
+    (AnalysisService, $rootScope, $log) ->
+# execute the following commands in the angular js context.
+      $rootScope.$apply(->
+# Get the html content of the editor.
+        AnalysisService.perform ""
+      )
+  ])
+
 
   if window['wlSettings']?
     # Add WordLift as a plugin of the TinyMCE editor.
@@ -153,7 +165,6 @@
             $rootScope.$apply(->
   # Get the html content of the editor.
               html = editor.getContent format: 'raw'
-
               if "" isnt html
                 EditorService.updateContentEditableStatus false
                 AnalysisService.perform html
@@ -219,6 +230,7 @@
 
         startAnalysis()
       )
+
 
       # Fires when the user changes node location using the mouse or keyboard in the TinyMCE editor.
       fireEvent(editor, "NodeChange", (e) ->
