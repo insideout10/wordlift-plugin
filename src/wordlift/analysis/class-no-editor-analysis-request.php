@@ -22,9 +22,14 @@ class No_Editor_Analysis_Request {
 	 */
 	public function get_data() {
 
-		$preview_link = get_permalink( $this->post_id );
+		$permalink = get_permalink( $this->post_id );
 
-		$post_content_response = wp_remote_get( $preview_link );
+		// TODO: remove this Https.
+		$permalink = str_replace( 'https', 'http', $permalink );
+		// TODO: remove this Https.
+
+		$post_content_response = wp_remote_get( $permalink  );
+
 		$page_body = wp_remote_retrieve_body( $post_content_response );
 
 		return array(
