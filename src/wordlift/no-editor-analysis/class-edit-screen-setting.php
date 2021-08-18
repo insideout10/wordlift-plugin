@@ -14,7 +14,7 @@ class Edit_Screen_Setting {
 	}
 
 	function wl_admin_settings( $settings ) {
-		$settings['wl_no_editor_analysis'] = post_type_supports( get_post_type( get_the_ID() ), 'editor' );
+		$settings['analysis']['isEditorPresent'] =  post_type_supports( get_post_type( get_the_ID() ), 'editor' );
 		return $settings;
 	}
 
