@@ -29307,7 +29307,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch']).directive('wlCarousel', [
   }
 ]);
 
-angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.GeoLocationService', 'wordlift.editpost.widget.providers.ConfigurationProvider']).filter('filterEntitiesByTypesAndRelevance', [
+angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.NoAnnotationAnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.GeoLocationService', 'wordlift.editpost.widget.providers.ConfigurationProvider']).filter('filterEntitiesByTypesAndRelevance', [
   'configuration', '$log', function(configuration, $log) {
     return function(items, types) {
       var entity, filtered, id, ref;
@@ -30257,7 +30257,564 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
   }
 ]);
 
+angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', ['wordlift.editpost.widget.services.AnnotationParser', 'wordlift.editpost.widget.services.EditorAdapter']).service('AnalysisService', [
+  'AnnotationParser', 'EditorAdapter', 'configuration', '$log', '$http', '$rootScope', '$q', function(AnnotationParser, EditorAdapter, configuration, $log, $http, $rootScope, $q) {
+    var box, extend, findAnnotation, j, k, len, len1, merge, ref, ref1, service, type, uniqueId;
+    uniqueId = function(length) {
+      var id;
+      if (length == null) {
+        length = 8;
+      }
+      id = '';
+      while (id.length < length) {
+        id += Math.random().toString(36).substr(2);
+      }
+      return id.substr(0, length);
+    };
+    merge = function(options, overrides) {
+      return extend(extend({}, options), overrides);
+    };
+    extend = function(object, properties) {
+      var key, val;
+      for (key in properties) {
+        val = properties[key];
+        object[key] = val;
+      }
+      return object;
+    };
+    findAnnotation = function(annotations, start, end) {
+      var annotation, id;
+      for (id in annotations) {
+        annotation = annotations[id];
+        if (annotation.start === start && annotation.end === end) {
+          return annotation;
+        }
+      }
+    };
+    service = {
+      _isRunning: false,
+      _currentAnalysis: void 0,
+      _supportedTypes: [],
+      _defaultType: "thing"
+    };
+    service.cleanAnnotations = function(analysis, positions) {
+      var annotation, annotationId, annotationRange, isOverlapping, j, k, len, pos, ref, ref1, ref2, results1;
+      if (positions == null) {
+        positions = [];
+      }
+      ref = analysis.annotations;
+      for (annotationId in ref) {
+        annotation = ref[annotationId];
+        if (annotation.start > 0 && annotation.end > annotation.start) {
+          annotationRange = (function() {
+            results1 = [];
+            for (var j = ref1 = annotation.start, ref2 = annotation.end; ref1 <= ref2 ? j <= ref2 : j >= ref2; ref1 <= ref2 ? j++ : j--){ results1.push(j); }
+            return results1;
+          }).apply(this);
+          isOverlapping = false;
+          for (k = 0, len = annotationRange.length; k < len; k++) {
+            pos = annotationRange[k];
+            if (indexOf.call(positions, pos) >= 0) {
+              isOverlapping = true;
+            }
+            break;
+          }
+          if (isOverlapping) {
+            $log.warn("Annotation with id: " + annotationId + " start: " + annotation.start + " end: " + annotation.end + " overlaps an existing annotation");
+            this.deleteAnnotation(analysis, annotationId);
+          } else {
+            positions = positions.concat(annotationRange);
+          }
+        }
+      }
+      return analysis;
+    };
+    if (configuration.classificationBoxes != null) {
+      ref = configuration.classificationBoxes;
+      for (j = 0, len = ref.length; j < len; j++) {
+        box = ref[j];
+        ref1 = box.registeredTypes;
+        for (k = 0, len1 = ref1.length; k < len1; k++) {
+          type = ref1[k];
+          if (indexOf.call(service._supportedTypes, type) < 0) {
+            service._supportedTypes.push(type);
+          }
+        }
+      }
+    }
+    service.createEntity = function(params) {
+      var defaults;
+      if (params == null) {
+        params = {};
+      }
+      defaults = {
+        id: 'local-entity-' + uniqueId(32),
+        label: '',
+        description: '',
+        mainType: '',
+        types: [],
+        images: [],
+        confidence: 1,
+        occurrences: [],
+        annotations: {}
+      };
+      return merge(defaults, params);
+    };
+    service.deleteAnnotation = function(analysis, annotationId) {
+      var ea, index, l, len2, ref2;
+      $log.warn("Going to remove overlapping annotation with id " + annotationId);
+      if (analysis.annotations[annotationId] != null) {
+        ref2 = analysis.annotations[annotationId].entityMatches;
+        for (index = l = 0, len2 = ref2.length; l < len2; index = ++l) {
+          ea = ref2[index];
+          delete analysis.entities[ea.entityId].annotations[annotationId];
+        }
+        delete analysis.annotations[annotationId];
+      }
+      return analysis;
+    };
+    service.createAnnotation = function(params) {
+      var defaults;
+      if (params == null) {
+        params = {};
+      }
+      defaults = {
+        id: 'urn:local-text-annotation-' + uniqueId(32),
+        text: '',
+        start: 0,
+        end: 0,
+        entities: [],
+        entityMatches: []
+      };
+      return merge(defaults, params);
+    };
+    service.parse = function(data) {
+      var annotation, ea, entity, id, index, l, len2, ref2, ref3, ref4;
+      $log.debug('Parsing data...', data);
+      ref2 = data.entities;
+      for (id in ref2) {
+        entity = ref2[id];
+        entity.id = id;
+        if (entity.occurrences == null) {
+          entity.occurrences = [];
+        }
+        if (entity.annotations == null) {
+          entity.annotations = {};
+        }
+      }
+      ref3 = data.annotations;
+      for (id in ref3) {
+        annotation = ref3[id];
+        annotation.id = id;
+        annotation.entities = {};
+        ref4 = data.annotations[id].entityMatches;
+        for (index = l = 0, len2 = ref4.length; l < len2; index = ++l) {
+          ea = ref4[index];
+          if (data.entities[ea.entityId] == null) {
+            $log.warn(ea.entityId + " not found in `entities`, skipping.");
+            continue;
+          }
+          if (data.entities[ea.entityId].annotations == null) {
+            data.entities[ea.entityId].annotations = {};
+          }
+          data.entities[ea.entityId].annotations[id] = annotation;
+          data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId];
+        }
+      }
+      $log.debug('Parsed data: ', data);
+      return data;
+    };
+    service.getSuggestedSameAs = function(content) {
+      var entity, id, matches, promise, ref2, suggestions;
+      promise = this._innerPerform(content).then(function(response) {});
+      suggestions = [];
+      ref2 = response.data.entities;
+      for (id in ref2) {
+        entity = ref2[id];
+        if (matches = id.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)) {
+          suggestions.push({
+            id: id,
+            label: entity.label,
+            mainType: entity.mainType,
+            source: matches[1]
+          });
+        }
+      }
+      $log.debug(suggestions);
+      return $rootScope.$broadcast("sameAsRetrieved", suggestions);
+    };
+    service._innerPerform = function(content, annotations) {
+      var data;
+      if (annotations == null) {
+        annotations = [];
+      }
+      data = {
+        content: content,
+        annotations: annotations,
+        contentType: 'text/html',
+        version: Traslator.version
+      };
+      if ((typeof wlSettings !== "undefined" && wlSettings !== null)) {
+        if ((wlSettings.language != null)) {
+          data.contentLanguage = wlSettings.language;
+        }
+        if ((wlSettings.itemId != null)) {
+          data.exclude = [wlSettings.itemId];
+        }
+        if (this.canCreateEntities) {
+          data.scope = 'all';
+        } else {
+          data.scope = 'local';
+        }
+      }
+      return $q(function(resolve, reject) {
+        return wp.ajax.post('wl_analyze', {
+          _wpnonce: wlSettings['analysis']['_wpnonce'],
+          data: JSON.stringify(data),
+          postId: wlSettings['post_id']
+        }).done(function(response) {
+          return resolve(response);
+        }).fail(function(response) {
+          return reject(response);
+        });
+      });
+    };
+    service._updateStatus = function(status) {
+      service._isRunning = status;
+      return $rootScope.$broadcast("analysisServiceStatusUpdated", status);
+    };
+    service.perform = function(content) {
+      var promise;
+      if (service._currentAnalysis) {
+        $log.warn("Analysis already run! Nothing to do ...");
+        service._updateStatus(false);
+        return;
+      }
+      service._updateStatus(true);
+      $log.debug('Requesting analysis...');
+      promise = this._innerPerform(content, {});
+      promise.then(function(response) {
+        var data, result;
+        data = response;
+        service._currentAnalysis = data;
+        result = service.parse(data);
+        $rootScope.$broadcast("analysisPerformed", result);
+        return wp.wordlift.trigger('analysis.result', result);
+      });
+      promise["catch"](function(response) {
+        $log.error(response.data);
+        return $rootScope.$broadcast("analysisFailed", response.data);
+      });
+      return promise["finally"](function(response) {
+        return service._updateStatus(false);
+      });
+    };
+    service.preselect = function(analysis, annotations) {
+      var annotation, e, entity, id, l, len2, ref2, ref3, results1, textAnnotation;
+      $log.debug("Selecting " + annotations.length + " entity annotation(s)...");
+      results1 = [];
+      for (l = 0, len2 = annotations.length; l < len2; l++) {
+        annotation = annotations[l];
+        if (annotation.start === annotation.end) {
+          $log.warn("There is a broken empty annotation for entityId " + annotation.uri);
+          continue;
+        }
+        textAnnotation = findAnnotation(analysis.annotations, annotation.start, annotation.end);
+        if (textAnnotation == null) {
+          $log.warn("Text annotation " + annotation.start + ":" + annotation.end + " for entityId " + annotation.uri + " misses in the analysis");
+          textAnnotation = this.createAnnotation({
+            start: annotation.start,
+            end: annotation.end,
+            text: annotation.label,
+            cssClass: annotation.cssClass != null ? annotation.cssClass : void 0
+          });
+          analysis.annotations[textAnnotation.id] = textAnnotation;
+        }
+        entity = analysis.entities[annotation.uri];
+        ref2 = configuration.entities;
+        for (id in ref2) {
+          e = ref2[id];
+          if (ref3 = annotation.uri, indexOf.call(e.sameAs, ref3) >= 0) {
+            entity = analysis.entities[e.id];
+          }
+        }
+        if (entity == null) {
+          $log.warn("Entity with uri " + annotation.uri + " is missing both in analysis results and in local storage");
+          continue;
+        }
+        analysis.entities[entity.id].occurrences.push(textAnnotation.id);
+        if (analysis.entities[entity.id].annotations[textAnnotation.id] == null) {
+          analysis.entities[entity.id].annotations[textAnnotation.id] = textAnnotation;
+          analysis.annotations[textAnnotation.id].entityMatches.push({
+            entityId: entity.id,
+            confidence: 1
+          });
+          results1.push(analysis.annotations[textAnnotation.id].entities[entity.id] = analysis.entities[entity.id]);
+        } else {
+          results1.push(void 0);
+        }
+      }
+      return results1;
+    };
+    service.canCreateEntities = (wlSettings['can_create_entities'] != null) && 'yes' === wlSettings['can_create_entities'];
+    return service;
+  }
+]);
+
 angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.editpost.widget.services.EditorAdapter', 'wordlift.editpost.widget.services.AnalysisService']).service('EditorService', [
+  'configuration', 'AnalysisService', 'EditorAdapter', '$log', '$http', '$rootScope', function(configuration, AnalysisService, EditorAdapter, $log, $http, $rootScope) {
+    var INVISIBLE_CHAR, currentOccurrencesForEntity, dedisambiguate, disambiguate, editor, findEntities, findPositions, service;
+    INVISIBLE_CHAR = '\uFEFF';
+    findEntities = function(html) {
+      var annotation, match, pattern, results1;
+      pattern = /<(\w+)[^>]*\sclass="([^"]+)"\s+(?:id="[^"]+"\s+)?itemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim;
+      results1 = [];
+      while (match = pattern.exec(html)) {
+        annotation = {
+          start: match.index,
+          end: match.index + match[0].length,
+          uri: match[3],
+          label: match[4],
+          cssClass: match[2]
+        };
+        results1.push(annotation);
+      }
+      return results1;
+    };
+    findPositions = function(entities) {
+      var entityAnnotation, j, k, len, positions, ref, ref1, results1;
+      positions = [];
+      for (j = 0, len = entities.length; j < len; j++) {
+        entityAnnotation = entities[j];
+        positions = positions.concat((function() {
+          results1 = [];
+          for (var k = ref = entityAnnotation.start, ref1 = entityAnnotation.end; ref <= ref1 ? k <= ref1 : k >= ref1; ref <= ref1 ? k++ : k--){ results1.push(k); }
+          return results1;
+        }).apply(this));
+      }
+      return positions;
+    };
+    editor = function() {
+      return tinyMCE.get('content');
+    };
+    disambiguate = function(annotationId, entity) {
+      var discardedItemId, ed, j, len, ref, type;
+      ed = EditorAdapter.getEditor();
+      ed.dom.addClass(annotationId, "disambiguated");
+      console.log({
+        configuration: configuration
+      });
+      ref = configuration.types;
+      for (j = 0, len = ref.length; j < len; j++) {
+        type = ref[j];
+        ed.dom.removeClass(annotationId, type.css);
+      }
+      ed.dom.removeClass(annotationId, "unlinked");
+      ed.dom.addClass(annotationId, "wl-" + entity.mainType);
+      discardedItemId = ed.dom.getAttrib(annotationId, "itemid");
+      ed.dom.setAttrib(annotationId, "itemid", entity.id);
+      return discardedItemId;
+    };
+    dedisambiguate = function(annotationId, entity) {
+      var discardedItemId, ed;
+      ed = EditorAdapter.getEditor();
+      ed.dom.removeClass(annotationId, "disambiguated");
+      ed.dom.removeClass(annotationId, "wl-" + entity.mainType);
+      discardedItemId = ed.dom.getAttrib(annotationId, "itemid");
+      ed.dom.setAttrib(annotationId, "itemid", "");
+      return discardedItemId;
+    };
+    currentOccurrencesForEntity = function(entityId) {
+      var annotation, annotations, ed, itemId, j, len, occurrences;
+      $log.info("Calculating occurrences for entity " + entityId + "...");
+      ed = EditorAdapter.getEditor();
+      occurrences = [];
+      if (entityId === "") {
+        return occurrences;
+      }
+      annotations = ed.dom.select("span.textannotation");
+      $log.info("Found " + annotations.length + " annotation(s) for entity " + entityId + ".");
+      for (j = 0, len = annotations.length; j < len; j++) {
+        annotation = annotations[j];
+        itemId = ed.dom.getAttrib(annotation.id, "itemid");
+        if (itemId === entityId) {
+          occurrences.push(annotation.id);
+        }
+      }
+      return occurrences;
+    };
+    $rootScope.$on("analysisPerformed", function(event, analysis) {
+      if ((analysis != null) && (analysis.annotations != null)) {
+        return service.embedAnalysis(analysis);
+      }
+    });
+    $rootScope.$on("entitySelected", function(event, entity, annotationId) {
+      var annotation, discarded, entityId, id, j, len, occurrences, ref;
+      $log.debug('[ app.services.EditorService ] `entitySelected` event received.', event, entity, annotationId);
+      discarded = [];
+      if (annotationId != null) {
+        discarded.push(disambiguate(annotationId, entity));
+      } else {
+        ref = entity.annotations;
+        for (id in ref) {
+          annotation = ref[id];
+          discarded.push(disambiguate(annotation.id, entity));
+        }
+      }
+      for (j = 0, len = discarded.length; j < len; j++) {
+        entityId = discarded[j];
+        if (entityId) {
+          occurrences = currentOccurrencesForEntity(entityId);
+          $rootScope.$broadcast("updateOccurencesForEntity", entityId, occurrences);
+        }
+      }
+      occurrences = currentOccurrencesForEntity(entity.id);
+      return $rootScope.$broadcast("updateOccurencesForEntity", entity.id, occurrences);
+    });
+    $rootScope.$on("entityDeselected", function(event, entity, annotationId) {
+      var annotation, id, occurrences, ref;
+      console.debug('EditorService::$rootScope.$on "entityDeselected" (event)', {
+        event: event,
+        entity: entity,
+        annotationId: annotationId
+      });
+      if (annotationId != null) {
+        dedisambiguate(annotationId, entity);
+      } else {
+        ref = entity.annotations;
+        for (id in ref) {
+          annotation = ref[id];
+          dedisambiguate(annotation.id, entity);
+        }
+      }
+      occurrences = currentOccurrencesForEntity(entity.id);
+      console.debug('EditorService::$rootScope.$on "entityDeselected" (event)', {
+        occurrences: occurrences
+      });
+      return $rootScope.$broadcast("updateOccurencesForEntity", entity.id, occurrences);
+    });
+    service = {
+      hasSelection: function() {
+        var ed;
+        ed = EditorAdapter.getEditor();
+        if (ed != null) {
+          if (ed.selection.isCollapsed()) {
+            return false;
+          }
+          return true;
+        }
+        return false;
+      },
+      isEditor: function(editor) {
+        var ed;
+        ed = EditorAdapter.getEditor();
+        return ed.id === editor.id;
+      },
+      updateContentEditableStatus: function(status) {
+        var ed;
+        ed = EditorAdapter.getEditor();
+        return ed.getBody().setAttribute('contenteditable', status);
+      },
+      createTextAnnotationFromCurrentSelection: function() {
+        var content, ed, htmlPosition, text, textAnnotation, textAnnotationSpan, textContent, textPosition, traslator;
+        ed = EditorAdapter.getEditor();
+        if (ed.selection.isCollapsed()) {
+          $log.warn("Invalid selection! The text annotation cannot be created");
+          return;
+        }
+        text = "" + (ed.selection.getSel());
+        textAnnotation = AnalysisService.createAnnotation({
+          text: text
+        });
+        textContent = ed.selection.getContent({
+          format: 'text'
+        });
+        textAnnotationSpan = "<span id=\"" + textAnnotation.id + "\" class=\"textannotation unlinked selected\">" + textContent + "</span>" + INVISIBLE_CHAR;
+        ed.selection.setContent(textAnnotationSpan);
+        content = EditorAdapter.getHTML();
+        traslator = Traslator.create(content);
+        htmlPosition = content.indexOf(textAnnotationSpan);
+        textPosition = traslator.html2text(htmlPosition);
+        textAnnotation.start = textPosition;
+        textAnnotation.end = textAnnotation.start + text.length;
+        return $rootScope.$broadcast('textAnnotationAdded', textAnnotation);
+      },
+      selectAnnotation: function(annotationId) {
+        var annotation, ed, j, len, ref;
+        ed = EditorAdapter.getEditor();
+        ref = ed.dom.select("span.textannotation");
+        for (j = 0, len = ref.length; j < len; j++) {
+          annotation = ref[j];
+          ed.dom.removeClass(annotation.id, "selected");
+        }
+        $rootScope.$broadcast('textAnnotationClicked', void 0);
+        if (ed.dom.hasClass(annotationId, "textannotation")) {
+          ed.dom.addClass(annotationId, "selected");
+          return $rootScope.$broadcast('textAnnotationClicked', annotationId);
+        }
+      },
+      embedAnalysis: (function(_this) {
+        return function(analysis) {
+          var annotation, annotations, ed, element, em, entity, html, isDirty, j, k, len, len1, ref, ref1, ref2, ref3;
+          $log.debug('Embedding analysis...');
+          ed = EditorAdapter.getEditor();
+          html = EditorAdapter.getHTML();
+          annotations = Object.values(analysis.annotations).sort(function(a, b) {
+            if (a.end > b.end) {
+              return -1;
+            } else if (a.end < b.end) {
+              return 1;
+            } else {
+              return 0;
+            }
+          });
+          for (j = 0, len = annotations.length; j < len; j++) {
+            annotation = annotations[j];
+            if (annotation.entityMatches.length === 0) {
+              $log.warn("Annotation " + annotation.text + " [" + annotation.start + ":" + annotation.end + "] with id " + annotation.id + " has no entity matches!");
+              continue;
+            }
+            if (ed.dom.get(annotation.id) != null) {
+              continue;
+            }
+            element = "<span id=\"" + annotation.id + "\" class=\"textannotation";
+            if (-1 < ((ref = annotation.cssClass) != null ? ref.indexOf('wl-no-link') : void 0)) {
+              element += ' wl-no-link';
+            }
+            if (-1 < ((ref1 = annotation.cssClass) != null ? ref1.indexOf('wl-link') : void 0)) {
+              element += ' wl-link';
+            }
+            ref2 = annotation.entityMatches;
+            for (k = 0, len1 = ref2.length; k < len1; k++) {
+              em = ref2[k];
+              if (analysis.entities[em.entityId] == null) {
+                $log.warn(em.entityId + " not found in `entities`, skipping.");
+                continue;
+              }
+              entity = analysis.entities[em.entityId];
+              if (ref3 = annotation.id, indexOf.call(entity.occurrences, ref3) >= 0) {
+                element += " disambiguated wl-" + entity.mainType + "\" itemid=\"" + entity.id;
+              }
+            }
+            element += "\">";
+            html = html.substring(0, annotation.end) + '</span>' + html.substring(annotation.end);
+            html = html.substring(0, annotation.start) + element + html.substring(annotation.start);
+          }
+          html = html.replace(/<\/span>/gim, "</span>" + INVISIBLE_CHAR);
+          $rootScope.$broadcast("analysisEmbedded");
+          isDirty = ed.isDirty();
+          ed.setContent(html, {
+            format: 'raw'
+          });
+          return ed.isNotDirty = !isDirty;
+        };
+      })(this)
+    };
+    return service;
+  }
+]);
+
+angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', ['wordlift.editpost.widget.services.EditorAdapter', 'wordlift.editpost.widget.services.AnalysisService']).service('EditorService', [
   'configuration', 'AnalysisService', 'EditorAdapter', '$log', '$http', '$rootScope', function(configuration, AnalysisService, EditorAdapter, $log, $http, $rootScope) {
     var INVISIBLE_CHAR, currentOccurrencesForEntity, dedisambiguate, disambiguate, editor, findEntities, findPositions, service;
     INVISIBLE_CHAR = '\uFEFF';
@@ -30694,7 +31251,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
       if ((typeof wlSettings !== "undefined" && wlSettings !== null) && (wlSettings.analysis != null) && (wlSettings.analysis.isEditorPresent != null) && wlSettings.analysis.isEditorPresent === false) {
         return ['wordlift.editpost.widget.services.NoAnnotationAnalysisService', 'wordlift.editpost.widget.services.EditorService'];
       }
-      return ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService'];
+      return ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.NoAnnotationEditorService'];
     };
     editPostWidgetServices = ['ngAnimate', 'wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityList', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService'];
     editPostWidgetServices = editPostWidgetServices.concat(editPostConditionalServices());

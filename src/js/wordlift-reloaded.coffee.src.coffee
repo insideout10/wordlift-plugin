@@ -372,6 +372,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 ])
 angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', [
   'wordlift.editpost.widget.services.AnalysisService'
+  'wordlift.editpost.widget.services.NoAnnotationAnalysisService'
   'wordlift.editpost.widget.services.EditorService'
   'wordlift.editpost.widget.services.GeoLocationService'
   'wordlift.editpost.widget.providers.ConfigurationProvider'
@@ -1361,8 +1362,687 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
 ])
 
+angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', [
+  'wordlift.editpost.widget.services.AnnotationParser',
+  'wordlift.editpost.widget.services.EditorAdapter',
+])
+# Manage redlink analysis responses
+# @since 1.0.0
+  .service('AnalysisService', ['AnnotationParser', 'EditorAdapter', 'configuration', '$log', '$http', '$rootScope', '$q'
+  (AnnotationParser, EditorAdapter, configuration, $log, $http, $rootScope, $q)->
+
+# Creates a unique ID of the specified length (default 8).
+    uniqueId = (length = 8) ->
+      id = ''
+      id += Math.random().toString(36).substr(2) while id.length < length
+      id.substr 0, length
+
+    # Merges two objects by copying overrides param onto the options.
+    merge = (options, overrides) ->
+      extend (extend {}, options), overrides
+    extend = (object, properties) ->
+      for key, val of properties
+        object[key] = val
+      object
+
+    findAnnotation = (annotations, start, end) ->
+      return annotation for id, annotation of annotations when annotation.start is start and annotation.end is end
+
+    service =
+      _isRunning: false
+      _currentAnalysis: undefined
+      _supportedTypes: []
+      _defaultType: "thing"
+
+    service.cleanAnnotations = (analysis, positions = []) ->
+# Take existing entities as mandatory
+      for annotationId, annotation of analysis.annotations
+        if annotation.start > 0 and annotation.end > annotation.start
+          annotationRange = [ annotation.start..annotation.end ]
+          # TODO Replace with an Array intersection check
+          isOverlapping = false
+          for pos in annotationRange
+            if pos in positions
+              isOverlapping = true
+            break
+
+          if isOverlapping
+            $log.warn "Annotation with id: #{annotationId} start: #{annotation.start} end: #{annotation.end} overlaps an existing annotation"
+            @.deleteAnnotation analysis, annotationId
+          else
+            positions = positions.concat annotationRange
+
+      return analysis
+
+    # Retrieve supported type from current classification boxes configuration
+    if configuration.classificationBoxes?
+      for box in configuration.classificationBoxes
+        for type in box.registeredTypes
+          if type not in service._supportedTypes
+            service._supportedTypes.push type
+
+    service.createEntity = (params = {}) ->
+# Set the defalut values.
+      defaults =
+        id: 'local-entity-' + uniqueId 32
+        label: ''
+        description: ''
+        mainType: '' # No DefaultType
+        types: []
+        images: []
+        confidence: 1
+        occurrences: []
+        annotations: {}
+
+      merge defaults, params
+
+    # Delete an annotation from a given analyis and an annotationId
+    service.deleteAnnotation = (analysis, annotationId)->
+      $log.warn "Going to remove overlapping annotation with id #{annotationId}"
+
+      if analysis.annotations[annotationId]?
+        for ea, index in analysis.annotations[annotationId].entityMatches
+          delete analysis.entities[ea.entityId].annotations[annotationId]
+        delete analysis.annotations[annotationId]
+
+      analysis
+
+    service.createAnnotation = (params = {}) ->
+# Set the defalut values.
+      defaults =
+        id: 'urn:local-text-annotation-' + uniqueId 32
+        text: ''
+        start: 0
+        end: 0
+        entities: []
+        entityMatches: []
+
+      merge defaults, params
+
+    service.parse = (data) ->
+
+      $log.debug 'Parsing data...', data
+
+# Add local entities
+# Add id to entity obj
+# Add id to annotation obj
+# Add occurences as a blank array
+# Add annotation references to each entity
+
+# TMP ... Should be done on WLS side
+#      unless data.topics?
+#        data.topics = []
+#      dt = @._defaultType
+
+#      if data.topics?
+#        data.topics = data.topics.map (topic)->
+#          topic.id = topic.uri
+#          topic.occurrences = []
+#          topic.mainType = dt
+#          topic
+
+#      $log.debug "Found #{Object.keys(configuration.entities).length} entities in configuration...", configuration
+
+      # This isn't needed anymore as it is delegated to the WP analysis end-point to merge disambiguated entities.
+#      for id, localEntity of configuration.entities
+#        data.entities[id] = localEntity
+
+      for id, entity of data.entities
+
+# Remove the current entity from the proposed entities.
+#
+# See https://github.com/insideout10/wordlift-plugin/issues/437
+# See https://github.com/insideout10/wordlift-plugin/issues/345
+#        if configuration.currentPostUri is id
+#          delete data.entities[id]
+#          continue
+
+#        if not entity.label
+#          $log.warn "Label missing for entity #{id}"
+#
+#        if not entity.description
+#          $log.warn "Description missing for entity #{id}"
+
+#        if not entity.sameAs
+#          $log.warn "sameAs missing for entity #{id}"
+#          entity.sameAs = []
+#          configuration.entities[id]?.sameAs = []
+#          $log.debug "Schema.org sameAs overridden for entity #{id}"
+
+#        if entity.mainType not in @._supportedTypes
+#          $log.warn "Schema.org type #{entity.mainType} for entity #{id} is not supported from current classification boxes configuration"
+#          entity.mainType = @._defaultType
+#          configuration.entities[id]?.mainType = @._defaultType
+#          $log.debug "Schema.org type overridden for entity #{id}"
+
+        entity.id = id
+#        # This is not necessary anymore because Analysis_Response_Ops (in PHP) populates it.
+        entity.occurrences = [] if not entity.occurrences?
+        entity.annotations = {} if not entity.annotations?
+        # See #550: the confidence is set by the server.
+        # entity.confidence = 1
+
+      for id, annotation of data.annotations
+        annotation.id = id
+        annotation.entities = {}
+
+        # Filter out annotations that don't have a corresponding entity. The entities list might be filtered, in order
+        # to remove the local entity.
+        #  data.annotations[id].entityMatches = (ea for ea in annotation.entityMatches when ea.entityId of data.entities)
+
+        # Remove the annotation if there's no entity matches left.
+        #
+        # See https://github.com/insideout10/wordlift-plugin/issues/437
+        # See https://github.com/insideout10/wordlift-plugin/issues/345
+        # if 0 is data.annotations[id].entityMatches.length
+        #   delete data.annotations[id]
+        #   continue
+
+        for ea, index in data.annotations[id].entityMatches
+
+          # if not data.entities[ea.entityId].label
+          #   data.entities[ea.entityId].label = annotation.text
+          #   $log.debug "Missing label retrieved from related annotation for entity #{ea.entityId}"
+
+          if not data.entities[ea.entityId]?
+            $log.warn "#{ea.entityId} not found in `entities`, skipping."
+            continue
+
+          data.entities[ea.entityId].annotations = {} if not data.entities[ea.entityId].annotations?
+          data.entities[ea.entityId].annotations[id] = annotation
+          data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId]
+
+#      # TODO move this calculation on the server
+#      for id, entity of data.entities
+#        for annotationId, annotation of data.annotations
+#          local_confidence = 1
+#          for em in annotation.entityMatches
+#            if em.entityId? and em.entityId is id
+#              local_confidence = em.confidence
+#          entity.confidence = entity.confidence * local_confidence
+
+      $log.debug 'Parsed data: ', data
+
+      data
+
+    service.getSuggestedSameAs = (content)->
+      promise = @._innerPerform content
+# If successful, broadcast an *sameAsReceived* event.
+        .then (response) ->
+      suggestions = []
+
+      for id, entity of response.data.entities
+
+        if matches = id.match /^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i
+          suggestions.push {
+            id: id
+            label: entity.label
+            mainType: entity.mainType
+            source: matches[1]
+          }
+      $log.debug suggestions
+      $rootScope.$broadcast "sameAsRetrieved", suggestions
+
+    service._innerPerform = (content, annotations = [])->
+
+      # Set the data as two parameters, content and annotations.
+      data = { content: content, annotations: annotations, contentType: 'text/html', version: Traslator.version }
+
+      if (wlSettings?)
+        if (wlSettings.language?) then data.contentLanguage = wlSettings.language
+        # We set the current entity URI as exclude from the analysis results.
+        #
+        # See https://github.com/insideout10/wordlift-plugin/issues/345
+        if (wlSettings.itemId?) then data.exclude = [wlSettings.itemId]
+        # Set the scope according to the user capability.
+        if @canCreateEntities then data.scope = 'all' else data.scope = 'local'
+
+      return $q( (resolve, reject) ->
+        wp.ajax.post( 'wl_analyze', {
+          _wpnonce: wlSettings['analysis']['_wpnonce'],
+          data: JSON.stringify( data ),
+          postId: wlSettings['post_id']
+        })
+          .done( ( response ) -> resolve( response ) )
+          .fail( ( response ) -> reject( response ) )
+      )
+
+    service._updateStatus = (status)->
+      service._isRunning = status
+      $rootScope.$broadcast "analysisServiceStatusUpdated", status
+
+    service.perform = (content)->
+      if service._currentAnalysis
+        $log.warn "Analysis already run! Nothing to do ..."
+        service._updateStatus false
+
+        return
+
+      service._updateStatus true
+
+      # Get the existing annotations in the text.
+      # annotations = AnnotationParser.parse(EditorAdapter.getHTML())
+
+      $log.debug 'Requesting analysis...'
+
+      promise = @._innerPerform content, {}
+      # If successful, broadcast an *analysisPerformed* event.
+      promise.then (response) ->
+        data = response
+
+#        # Catch wp_json_send_error responses.
+#        if response.data.success? and !response.data.success
+#          # Yes `data.data`, the first one to get the body of the response, the
+#          # second for the body internal structure.
+#          $rootScope.$broadcast "analysisFailed", response.data.data.message
+#          return
+
+        # Store current analysis obj
+        service._currentAnalysis = data
+
+        result = service.parse(data)
+        $rootScope.$broadcast "analysisPerformed", result
+        wp.wordlift.trigger 'analysis.result', result
+
+      # On failure, broadcast an *analysisFailed* event.
+      promise.catch (response) ->
+        $log.error response.data
+        $rootScope.$broadcast "analysisFailed", response.data
+
+      # Update service running status in each case
+      promise.finally (response) ->
+        service._updateStatus false
+
+    # Preselect entity annotations in the provided analysis using the provided collection of annotations.
+    service.preselect = (analysis, annotations) ->
+
+      $log.debug "Selecting #{annotations.length} entity annotation(s)..."
+
+      # Find the existing entities in the html
+      for annotation in annotations
+
+        if annotation.start is annotation.end
+          $log.warn "There is a broken empty annotation for entityId #{annotation.uri}"
+          continue
+
+        # Find the proper annotation
+        textAnnotation = findAnnotation analysis.annotations, annotation.start, annotation.end
+
+        # If there is no textAnnotation then create it and add to the current analysis
+        # It can be normal for new entities that are queued for Redlink re-indexing
+        if not textAnnotation?
+
+          $log.warn "Text annotation #{annotation.start}:#{annotation.end} for entityId #{annotation.uri} misses in the analysis"
+
+          textAnnotation = @createAnnotation({
+            start: annotation.start
+            end: annotation.end
+            text: annotation.label
+            # The css class of the original text annotation (now removed from the
+            # body. The css class is useful because we store there the `wl-no-link`
+            # class.
+            cssClass: annotation.cssClass if annotation.cssClass?
+          })
+          analysis.annotations[textAnnotation.id] = textAnnotation
+
+        # Look for the entity in the current analysis result
+        # Local entities are merged previously during the analysis parsing
+        entity = analysis.entities[annotation.uri]
+        for id, e of configuration.entities
+          entity = analysis.entities[e.id] if annotation.uri in e.sameAs
+
+        # If no entity is found we have a problem
+        if not entity?
+          $log.warn "Entity with uri #{annotation.uri} is missing both in analysis results and in local storage"
+          continue
+        # Enhance analysis accordingly
+        analysis.entities[entity.id].occurrences.push textAnnotation.id
+        if not analysis.entities[entity.id].annotations[textAnnotation.id]?
+          analysis.entities[entity.id].annotations[textAnnotation.id] = textAnnotation
+          analysis.annotations[textAnnotation.id].entityMatches.push {entityId: entity.id, confidence: 1}
+          analysis.annotations[textAnnotation.id].entities[entity.id] = analysis.entities[entity.id]
+
+    # Set the scope according to the user permissions.
+    #
+    # See https://github.com/insideout10/wordlift-plugin/issues/561
+    service.canCreateEntities = wlSettings['can_create_entities']? and 'yes' is wlSettings['can_create_entities']
+
+    service
+
+])
+
 # Create the main AngularJS module, and set it dependent on controllers and directives.
 angular.module('wordlift.editpost.widget.services.EditorService', [
+  'wordlift.editpost.widget.services.EditorAdapter',
+  'wordlift.editpost.widget.services.AnalysisService'
+])
+# Manage redlink analysis responses
+  .service('EditorService', ['configuration', 'AnalysisService',
+  'EditorAdapter', '$log', '$http', '$rootScope',
+  (configuration, AnalysisService, EditorAdapter, $log, $http, $rootScope)->
+    INVISIBLE_CHAR = '\uFEFF'
+
+    # Find existing entities selected in the html content (by looking for *itemid* attributes).
+    findEntities = (html) ->
+# Prepare a traslator instance that will traslate Html and Text positions.
+#      traslator = Traslator.create html
+
+      # Set the pattern to look for *itemid* attributes.
+      # pattern = /<(\w+)[^>]*\sclass="([^"]+)"\sitemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim
+      #
+      # Internet Explorer 11 and Edge have cases where the `id` attribute is sorted,
+      # after the `class` attribute, so we consider it in the pattern.
+      #
+      # See https://github.com/insideout10/wordlift-plugin/issues/520
+      pattern = /<(\w+)[^>]*\sclass="([^"]+)"\s+(?:id="[^"]+"\s+)?itemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim
+
+      # Get the matches and return them.
+      (while match = pattern.exec html
+
+        annotation =
+#          start: traslator.html2text match.index
+#          end: traslator.html2text (match.index + match[0].length)
+          start: match.index
+          end: match.index + match[0].length
+          uri: match[3]
+          label: match[4]
+          cssClass: match[2]
+
+        annotation
+      )
+
+    findPositions = (entities) ->
+      positions = []
+      for entityAnnotation in entities
+        positions = positions.concat [ entityAnnotation.start..entityAnnotation.end ]
+      positions
+
+    # @deprecated use EditorAdapter.getEditor()
+    editor = ->
+      tinyMCE.get('content')
+
+    disambiguate = (annotationId, entity)->
+      ed = EditorAdapter.getEditor()
+      ed.dom.addClass annotationId, "disambiguated"
+      console.log { configuration }
+      for type in configuration.types
+        ed.dom.removeClass annotationId, type.css
+      ed.dom.removeClass annotationId, "unlinked"
+      ed.dom.addClass annotationId, "wl-#{entity.mainType}"
+      discardedItemId = ed.dom.getAttrib annotationId, "itemid"
+      ed.dom.setAttrib annotationId, "itemid", entity.id
+      discardedItemId
+
+    dedisambiguate = (annotationId, entity)->
+      ed = EditorAdapter.getEditor()
+      ed.dom.removeClass annotationId, "disambiguated"
+      ed.dom.removeClass annotationId, "wl-#{entity.mainType}"
+      discardedItemId = ed.dom.getAttrib annotationId, "itemid"
+      ed.dom.setAttrib annotationId, "itemid", ""
+      discardedItemId
+
+    # TODO refactoring with regex
+    currentOccurrencesForEntity = (entityId) ->
+      $log.info "Calculating occurrences for entity #{entityId}..."
+
+      ed = EditorAdapter.getEditor()
+      occurrences = []
+      return occurrences if entityId is ""
+
+      annotations = ed.dom.select "span.textannotation"
+
+      $log.info "Found #{annotations.length} annotation(s) for entity #{entityId}."
+
+      for annotation in annotations
+        itemId = ed.dom.getAttrib annotation.id, "itemid"
+        occurrences.push annotation.id  if itemId is entityId
+
+      occurrences
+
+    $rootScope.$on "analysisPerformed", (event, analysis) ->
+      service.embedAnalysis analysis if analysis? and analysis.annotations?
+
+    # Disambiguate a single annotation or every entity related ones
+    # Discarded entities are considered too
+    $rootScope.$on "entitySelected", (event, entity, annotationId) ->
+
+      $log.debug '[ app.services.EditorService ] `entitySelected` event received.', event, entity, annotationId
+
+      discarded = []
+      if annotationId?
+        discarded.push disambiguate annotationId, entity
+      else
+        for id, annotation of entity.annotations
+          discarded.push disambiguate annotation.id, entity
+
+      for entityId in discarded
+        if entityId
+          occurrences = currentOccurrencesForEntity entityId
+          $rootScope.$broadcast "updateOccurencesForEntity", entityId, occurrences
+
+      occurrences = currentOccurrencesForEntity entity.id
+      $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
+
+    $rootScope.$on "entityDeselected", (event, entity, annotationId) ->
+
+      console.debug 'EditorService::$rootScope.$on "entityDeselected" (event)', { event, entity, annotationId }
+
+      if annotationId?
+        dedisambiguate annotationId, entity
+      else
+        for id, annotation of entity.annotations
+          dedisambiguate annotation.id, entity
+
+      occurrences = currentOccurrencesForEntity entity.id
+
+      console.debug 'EditorService::$rootScope.$on "entityDeselected" (event)', { occurrences }
+
+      $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
+
+    service =
+# Detect if there is a current selection
+      hasSelection: ()->
+# A reference to the editor.
+        ed = EditorAdapter.getEditor()
+        if ed?
+          if ed.selection.isCollapsed()
+            return false
+
+#          if /<([\/]*[a-z]+)[^<]*>/.test ed.selection.getContent()
+#            $log.warn "The selection overlaps html code"
+#            return false
+          return true
+
+        false
+
+# Check if the given editor is the current editor
+      isEditor: (editor)->
+        ed = EditorAdapter.getEditor()
+        ed.id is editor.id
+
+# Update contenteditable status for the editor
+      updateContentEditableStatus: (status)->
+# A reference to the editor.
+        ed = EditorAdapter.getEditor()
+        ed.getBody().setAttribute 'contenteditable', status
+
+# Create a textAnnotation starting from the current selection
+      createTextAnnotationFromCurrentSelection: ()->
+# A reference to the editor.
+        ed = EditorAdapter.getEditor()
+
+        # If the current selection is collapsed / blank, then nothing to do
+        if ed.selection.isCollapsed()
+          $log.warn "Invalid selection! The text annotation cannot be created"
+          return
+
+        # Retrieve the selected text
+        # Notice that toString() method of browser native selection obj is used
+        text = "#{ed.selection.getSel()}"
+
+        # Create the text annotation
+        textAnnotation = AnalysisService.createAnnotation {
+          text: text
+        }
+
+        # Prepare span wrapper for the new text annotation
+        #
+        # @since 3.23.5 we want to remove existing annotations.
+        # @see https://github.com/insideout10/wordlift-plugin/issues/993
+        textContent = ed.selection.getContent( { format: 'text' } );
+        textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation unlinked selected\">#{textContent}</span>#{INVISIBLE_CHAR}"
+
+        # Update the content within the editor
+        ed.selection.setContent textAnnotationSpan
+
+        # Retrieve the current heml content
+        content = EditorAdapter.getHTML() # ed.getContent format: 'raw'
+
+        # Create a Traslator instance
+        traslator = Traslator.create content
+
+        # Retrieve the index position of the new span
+        htmlPosition = content.indexOf(textAnnotationSpan);
+
+        # Detect the corresponding text position
+        textPosition = traslator.html2text htmlPosition
+
+        # Set start & end text annotation properties
+        textAnnotation.start = textPosition
+        textAnnotation.end = textAnnotation.start + text.length
+
+        # Send a message about the new textAnnotation.
+        $rootScope.$broadcast 'textAnnotationAdded', textAnnotation
+
+# Select annotation with a id annotationId if available
+      selectAnnotation: (annotationId)->
+# A reference to the editor.
+        ed = EditorAdapter.getEditor()
+        # Unselect all annotations
+        for annotation in ed.dom.select "span.textannotation"
+          ed.dom.removeClass annotation.id, "selected"
+        # Notify it
+        $rootScope.$broadcast 'textAnnotationClicked', undefined
+        # If current is a text annotation, then select it and notify
+        if ed.dom.hasClass annotationId, "textannotation"
+          ed.dom.addClass annotationId, "selected"
+          $rootScope.$broadcast 'textAnnotationClicked', annotationId
+
+# Embed the provided analysis in the editor.
+      embedAnalysis: (analysis) =>
+
+        $log.debug 'Embedding analysis...'
+
+# A reference to the editor.
+        ed = EditorAdapter.getEditor()
+
+        # Get the TinyMCE editor html content.
+        html = EditorAdapter.getHTML() # ed.getContent format: 'raw'
+
+        ##
+        # @since 3.23.0 no more necessary.
+        # Find existing entities.
+        # entities = findEntities html
+
+        ##
+        # The following isn't anymore necessary with the new Analysis micro service since it already removes overlapping
+        # annotations.
+        # @since 3.23.0
+        #
+        # Remove overlapping annotations preserving selected entities
+        # AnalysisService.cleanAnnotations analysis, findPositions(entities)
+
+        ##
+        # The following isn't anymore necessary because we're sending to the new Analysis micro service the editor html
+        # and the analysis micro service returns us the html positions, hence we're not removing existing annotations
+        # anymore.
+        #
+        # @since 3.23.0
+        #
+        # Preselect entities found in html. We also keep track of the original
+        # text annotation css classes which may turn useful when checking additional
+        # classes added to the text annotation, for example the `wl-no-link` css
+        # class which we use to decide whether to activate or not a link.
+        # We need to keep track now of the css classes because in a while we're
+        # going to remove the text annotations and put them back.
+        # AnalysisService.preselect analysis, entities
+
+        # Remove existing text annotations (the while-match is necessary to remove nested spans).
+        # while html.match(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]+)<\/\1>/gim, '$2')
+        #  html = html.replace(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]*)<\/\1>/gim, '$2')
+
+        # Prepare a traslator instance that will traslate Html and Text positions.
+        # traslator = Traslator.create html
+
+        # Add text annotations to the html
+        # @since 3.23.0 We need to sort the annotations from the last one to the first one in order to insert them into
+        #               the html without the need to recalculate positions.
+        annotations = Object.values( analysis.annotations ).sort ( a, b ) ->
+          if a.end > b.end
+            return -1
+          else if a.end < b.end
+            return 1
+          else
+            return 0
+
+        for annotation in annotations
+
+          # If the annotation has no entity matches it could be a problem
+          if annotation.entityMatches.length is 0
+            $log.warn "Annotation #{annotation.text} [#{annotation.start}:#{annotation.end}] with id #{annotation.id} has no entity matches!"
+            continue
+
+          # Do not insert an annotation if it already exists in editor's DOM.
+          if ed.dom.get( annotation.id )?
+            continue
+
+          element = "<span id=\"#{annotation.id}\" class=\"textannotation"
+
+          # Add the `wl-no-link` class if it was present in the original annotation.
+          element += ' wl-no-link' if -1 < annotation.cssClass?.indexOf('wl-no-link')
+
+          # Add the `wl-link` class if it was present in the original annotation.
+          element += ' wl-link' if -1 < annotation.cssClass?.indexOf('wl-link')
+
+          # Loop annotation to see which has to be preselected
+          for em in annotation.entityMatches
+
+            if not analysis.entities[em.entityId]?
+              $log.warn "#{em.entityId} not found in `entities`, skipping."
+              continue
+
+            entity = analysis.entities[em.entityId]
+
+            if annotation.id in entity.occurrences
+              element += " disambiguated wl-#{entity.mainType}\" itemid=\"#{entity.id}"
+
+          element += "\">"
+
+          # Finally insert the HTML code.
+          # traslator.insertHtml element, text: annotation.start
+          # traslator.insertHtml '</span>', text: annotation.end
+
+          html = html.substring(0, annotation.end) + '</span>' + html.substring(annotation.end)
+          html = html.substring(0, annotation.start) + element + html.substring(annotation.start)
+
+
+        # Add a zero-width no-break space after each annotation
+        # to be sure that a caret container is available
+        # See https://github.com/tinymce/tinymce/blob/master/js/tinymce/classes/Formatter.js#L2030
+        # html = traslator.getHtml()
+        html = html.replace(/<\/span>/gim, "</span>#{INVISIBLE_CHAR}")
+
+        $rootScope.$broadcast "analysisEmbedded"
+        # Update the editor Html code.
+        isDirty = ed.isDirty()
+        ed.setContent html, format: 'raw'
+        ed.isNotDirty = not isDirty
+
+    service
+])
+
+# Create the main AngularJS module, and set it dependent on controllers and directives.
+angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', [
   'wordlift.editpost.widget.services.EditorAdapter',
   'wordlift.editpost.widget.services.AnalysisService'
 ])
@@ -1875,7 +2555,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
   editPostConditionalServices = () ->
     if  wlSettings? and wlSettings.analysis? and wlSettings.analysis.isEditorPresent? and wlSettings.analysis.isEditorPresent == false
       return ['wordlift.editpost.widget.services.NoAnnotationAnalysisService','wordlift.editpost.widget.services.EditorService']
-    return ['wordlift.editpost.widget.services.AnalysisService','wordlift.editpost.widget.services.EditorService']
+    return ['wordlift.editpost.widget.services.AnalysisService','wordlift.editpost.widget.services.NoAnnotationEditorService']
 
   editPostWidgetServices = [
     'ngAnimate'
