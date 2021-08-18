@@ -49,42 +49,14 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', [
       tinyMCE.get('content')
 
     disambiguate = (annotationId, entity)->
-      ed = EditorAdapter.getEditor()
-      ed.dom.addClass annotationId, "disambiguated"
-      console.log { configuration }
-      for type in configuration.types
-        ed.dom.removeClass annotationId, type.css
-      ed.dom.removeClass annotationId, "unlinked"
-      ed.dom.addClass annotationId, "wl-#{entity.mainType}"
-      discardedItemId = ed.dom.getAttrib annotationId, "itemid"
-      ed.dom.setAttrib annotationId, "itemid", entity.id
-      discardedItemId
+      # dont do annotation operations.
 
     dedisambiguate = (annotationId, entity)->
-      ed = EditorAdapter.getEditor()
-      ed.dom.removeClass annotationId, "disambiguated"
-      ed.dom.removeClass annotationId, "wl-#{entity.mainType}"
-      discardedItemId = ed.dom.getAttrib annotationId, "itemid"
-      ed.dom.setAttrib annotationId, "itemid", ""
-      discardedItemId
+      # dont do annotation operations.
 
     # TODO refactoring with regex
     currentOccurrencesForEntity = (entityId) ->
-      $log.info "Calculating occurrences for entity #{entityId}..."
-
-      ed = EditorAdapter.getEditor()
-      occurrences = []
-      return occurrences if entityId is ""
-
-      annotations = ed.dom.select "span.textannotation"
-
-      $log.info "Found #{annotations.length} annotation(s) for entity #{entityId}."
-
-      for annotation in annotations
-        itemId = ed.dom.getAttrib annotation.id, "itemid"
-        occurrences.push annotation.id  if itemId is entityId
-
-      occurrences
+      # dont do annotation operations.
 
     $rootScope.$on "analysisPerformed", (event, analysis) ->
       service.embedAnalysis analysis if analysis? and analysis.annotations?
@@ -93,7 +65,7 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', [
     # Discarded entities are considered too
     $rootScope.$on "entitySelected", (event, entity, annotationId) ->
 
-      $log.debug '[ app.services.EditorService ] `entitySelected` event received.', event, entity, annotationId
+      $log.debug '[ app.services.NoAnnotationEditorService ] `entitySelected` event received.', event, entity, annotationId
 
       discarded = []
       if annotationId?

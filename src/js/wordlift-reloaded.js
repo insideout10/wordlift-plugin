@@ -29307,7 +29307,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch']).directive('wlCarousel', [
   }
 ]);
 
-angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.NoAnnotationAnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.GeoLocationService', 'wordlift.editpost.widget.providers.ConfigurationProvider']).filter('filterEntitiesByTypesAndRelevance', [
+angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.GeoLocationService', 'wordlift.editpost.widget.providers.ConfigurationProvider']).filter('filterEntitiesByTypesAndRelevance', [
   'configuration', '$log', function(configuration, $log) {
     return function(items, types) {
       var entity, filtered, id, ref;
@@ -29661,12 +29661,14 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
           });
         }
       }
+      $log.info("emitting " + action);
       $scope.$emit(action, entity, $scope.annotation);
       wp.wordlift.trigger(action, {
         entity: entity,
         annotation: $scope.annotation
       });
       $scope.updateRelatedPosts();
+      $log.info("Before calling selectAnnotation");
       return $scope.selectAnnotation(void 0);
     };
     $scope.isGeoLocationAllowed = function() {
@@ -30849,52 +30851,9 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', ['
     editor = function() {
       return tinyMCE.get('content');
     };
-    disambiguate = function(annotationId, entity) {
-      var discardedItemId, ed, j, len, ref, type;
-      ed = EditorAdapter.getEditor();
-      ed.dom.addClass(annotationId, "disambiguated");
-      console.log({
-        configuration: configuration
-      });
-      ref = configuration.types;
-      for (j = 0, len = ref.length; j < len; j++) {
-        type = ref[j];
-        ed.dom.removeClass(annotationId, type.css);
-      }
-      ed.dom.removeClass(annotationId, "unlinked");
-      ed.dom.addClass(annotationId, "wl-" + entity.mainType);
-      discardedItemId = ed.dom.getAttrib(annotationId, "itemid");
-      ed.dom.setAttrib(annotationId, "itemid", entity.id);
-      return discardedItemId;
-    };
-    dedisambiguate = function(annotationId, entity) {
-      var discardedItemId, ed;
-      ed = EditorAdapter.getEditor();
-      ed.dom.removeClass(annotationId, "disambiguated");
-      ed.dom.removeClass(annotationId, "wl-" + entity.mainType);
-      discardedItemId = ed.dom.getAttrib(annotationId, "itemid");
-      ed.dom.setAttrib(annotationId, "itemid", "");
-      return discardedItemId;
-    };
-    currentOccurrencesForEntity = function(entityId) {
-      var annotation, annotations, ed, itemId, j, len, occurrences;
-      $log.info("Calculating occurrences for entity " + entityId + "...");
-      ed = EditorAdapter.getEditor();
-      occurrences = [];
-      if (entityId === "") {
-        return occurrences;
-      }
-      annotations = ed.dom.select("span.textannotation");
-      $log.info("Found " + annotations.length + " annotation(s) for entity " + entityId + ".");
-      for (j = 0, len = annotations.length; j < len; j++) {
-        annotation = annotations[j];
-        itemId = ed.dom.getAttrib(annotation.id, "itemid");
-        if (itemId === entityId) {
-          occurrences.push(annotation.id);
-        }
-      }
-      return occurrences;
-    };
+    disambiguate = function(annotationId, entity) {};
+    dedisambiguate = function(annotationId, entity) {};
+    currentOccurrencesForEntity = function(entityId) {};
     $rootScope.$on("analysisPerformed", function(event, analysis) {
       if ((analysis != null) && (analysis.annotations != null)) {
         return service.embedAnalysis(analysis);
@@ -30902,7 +30861,7 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', ['
     });
     $rootScope.$on("entitySelected", function(event, entity, annotationId) {
       var annotation, discarded, entityId, id, j, len, occurrences, ref;
-      $log.debug('[ app.services.EditorService ] `entitySelected` event received.', event, entity, annotationId);
+      $log.debug('[ app.services.NoAnnotationEditorService ] `entitySelected` event received.', event, entity, annotationId);
       discarded = [];
       if (annotationId != null) {
         discarded.push(disambiguate(annotationId, entity));
