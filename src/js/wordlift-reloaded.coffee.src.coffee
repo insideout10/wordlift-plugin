@@ -1873,6 +1873,8 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
 #  $ = jQuery
 
   editPostConditionalServices = () ->
+    if  wlSettings? and wlSettings.analysis? and wlSettings.analysis.isEditorPresent? and wlSettings.analysis.isEditorPresent == false
+      return ['wordlift.editpost.widget.services.NoAnnotationAnalysisService','wordlift.editpost.widget.services.EditorService']
     return ['wordlift.editpost.widget.services.AnalysisService','wordlift.editpost.widget.services.EditorService']
 
   editPostWidgetServices = [

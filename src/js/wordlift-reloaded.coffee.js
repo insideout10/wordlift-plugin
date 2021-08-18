@@ -1743,6 +1743,9 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
   return function($, angular) {
     var container, editPostConditionalServices, editPostWidgetServices, injector, spinner;
     editPostConditionalServices = function() {
+      if ((typeof wlSettings !== "undefined" && wlSettings !== null) && (wlSettings.analysis != null) && (wlSettings.analysis.isEditorPresent != null) && wlSettings.analysis.isEditorPresent === false) {
+        return ['wordlift.editpost.widget.services.NoAnnotationAnalysisService', 'wordlift.editpost.widget.services.EditorService'];
+      }
       return ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService'];
     };
     editPostWidgetServices = ['ngAnimate', 'wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityList', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService'];
