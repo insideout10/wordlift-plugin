@@ -359,7 +359,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch']).directive('wlCarousel', [
   }
 ]);
 
-angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.NoAnnotationAnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.GeoLocationService', 'wordlift.editpost.widget.providers.ConfigurationProvider']).filter('filterEntitiesByTypesAndRelevance', [
+angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.GeoLocationService', 'wordlift.editpost.widget.providers.ConfigurationProvider']).filter('filterEntitiesByTypesAndRelevance', [
   'configuration', '$log', function(configuration, $log) {
     return function(items, types) {
       var entity, filtered, id, ref;
@@ -2040,18 +2040,7 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', ['
         return $rootScope.$broadcast('textAnnotationAdded', textAnnotation);
       },
       selectAnnotation: function(annotationId) {
-        var annotation, ed, j, len, ref;
-        ed = EditorAdapter.getEditor();
-        ref = ed.dom.select("span.textannotation");
-        for (j = 0, len = ref.length; j < len; j++) {
-          annotation = ref[j];
-          ed.dom.removeClass(annotation.id, "selected");
-        }
-        $rootScope.$broadcast('textAnnotationClicked', void 0);
-        if (ed.dom.hasClass(annotationId, "textannotation")) {
-          ed.dom.addClass(annotationId, "selected");
-          return $rootScope.$broadcast('textAnnotationClicked', annotationId);
-        }
+        return $log.info("Select annotation for editor service complete");
       },
       embedAnalysis: (function(_this) {
         return function(analysis) {

@@ -372,7 +372,6 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 ])
 angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', [
   'wordlift.editpost.widget.services.AnalysisService'
-  'wordlift.editpost.widget.services.NoAnnotationAnalysisService'
   'wordlift.editpost.widget.services.EditorService'
   'wordlift.editpost.widget.services.GeoLocationService'
   'wordlift.editpost.widget.providers.ConfigurationProvider'
@@ -2244,17 +2243,8 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', [
 
 # Select annotation with a id annotationId if available
       selectAnnotation: (annotationId)->
-# A reference to the editor.
-        ed = EditorAdapter.getEditor()
-        # Unselect all annotations
-        for annotation in ed.dom.select "span.textannotation"
-          ed.dom.removeClass annotation.id, "selected"
-        # Notify it
-        $rootScope.$broadcast 'textAnnotationClicked', undefined
-        # If current is a text annotation, then select it and notify
-        if ed.dom.hasClass annotationId, "textannotation"
-          ed.dom.addClass annotationId, "selected"
-          $rootScope.$broadcast 'textAnnotationClicked', annotationId
+        $log.info "Select annotation for editor service complete"
+        # do nothing, we dont want to create annotations.
 
 # Embed the provided analysis in the editor.
       embedAnalysis: (analysis) =>
