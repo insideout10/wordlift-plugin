@@ -1741,8 +1741,13 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
 
 ((function(_this) {
   return function($, angular) {
-    var container, injector, spinner;
-    angular.module('wordlift.editpost.widget', ['ngAnimate', 'wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityList', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService']).config(function(configurationProvider) {
+    var container, editPostConditionalServices, editPostWidgetServices, injector, spinner;
+    editPostConditionalServices = function() {
+      return ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService'];
+    };
+    editPostWidgetServices = ['ngAnimate', 'wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityList', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService'];
+    editPostWidgetServices = editPostWidgetServices.concat(editPostConditionalServices());
+    angular.module('wordlift.editpost.widget', editPostWidgetServices).config(function(configurationProvider) {
       var params;
       params = Object.assign({}, window['_wlMetaBoxSettings'].settings, {
         types: window['_wlEntityTypes']
