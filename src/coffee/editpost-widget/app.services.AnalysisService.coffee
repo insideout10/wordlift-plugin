@@ -236,7 +236,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
       return $q( (resolve, reject) ->
         wp.ajax.post( 'wl_analyze', {
           _wpnonce: wlSettings['analysis']['_wpnonce'],
-          data: JSON.stringify( data )
+          data: JSON.stringify( data ),
+          postId: wlSettings['post_id']
         })
           .done( ( response ) -> resolve( response ) )
           .fail( ( response ) -> reject( response ) )

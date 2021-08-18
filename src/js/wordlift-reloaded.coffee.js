@@ -1218,7 +1218,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
       return $q(function(resolve, reject) {
         return wp.ajax.post('wl_analyze', {
           _wpnonce: wlSettings['analysis']['_wpnonce'],
-          data: JSON.stringify(data)
+          data: JSON.stringify(data),
+          postId: wlSettings['post_id']
         }).done(function(response) {
           return resolve(response);
         }).fail(function(response) {
