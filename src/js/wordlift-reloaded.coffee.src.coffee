@@ -372,7 +372,8 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 ])
 angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', [
   'wordlift.editpost.widget.services.AnalysisService'
-  'wordlift.editpost.widget.services.EditorService'
+  'wordlift.editpost.widget.services.NoAnnotationAnalysisService'
+  'wordlift.editpost.widget.services.EditorService',
   'wordlift.editpost.widget.services.GeoLocationService'
   'wordlift.editpost.widget.providers.ConfigurationProvider'
 ])
