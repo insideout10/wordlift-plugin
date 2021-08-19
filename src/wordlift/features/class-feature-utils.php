@@ -20,8 +20,8 @@ class Feature_Utils {
 	 *
 	 * @return bool
 	 */
-	public static function is_feature_on( $feature_slug ) {
-		return apply_filters( 'wl_feature__enable__' . $feature_slug, false );
+	public static function is_feature_on( $feature_slug, $default  ) {
+		return apply_filters( 'wl_feature__enable__' . $feature_slug, $default );
 	}
 
 }
