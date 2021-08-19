@@ -201,7 +201,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	// Reset previously saved instances.
 	wl_core_delete_relation_instances( $post_id );
 
-
 	$relations = Object_Relation_Factory::get_instance( $post_id )
 	                                    ->get_relations_from_content( $updated_post_content, Object_Type_Enum::POST );
 

@@ -22,7 +22,6 @@ class Analysis_Service_Factory {
 	 * @return Analysis_Service
 	 */
 	public static function get_instance( $post_id ) {
-
 		// We want this analysis to happen only when the editor is not present.
 		if ( Feature_Utils::is_feature_on( 'no-editor-analysis', false )
 		     && ! post_type_supports( get_post_type( $post_id ), 'editor' ) ) {

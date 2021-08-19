@@ -12,6 +12,7 @@ class Test_No_Editor_Analysis_Save_content extends Wordlift_No_Editor_Analysis_U
 
 	public function test_when_feature_is_active_should_create_relations_without_entity_on_content() {
 		global $wp_filter;
+
 		$wl_entities                                                                           = array();
 		$wl_entities['http://dbpedia.org/resource/Welcome_(Erick_Sermon_song)']['uri']         = 'http://dbpedia.org/resource/Welcome_(Erick_Sermon_song)';
 		$wl_entities['http://dbpedia.org/resource/Welcome_(Erick_Sermon_song)']['label']       = 'Welcome';
