@@ -2198,7 +2198,9 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
     injector.invoke([
       'AnalysisService', '$rootScope', '$log', function(AnalysisService, $rootScope, $log) {
         return $rootScope.$apply(function() {
-          return AnalysisService.perform("");
+          if (isNoEditorAnalysisActive()) {
+            return AnalysisService.perform("");
+          }
         });
       }
     ]);

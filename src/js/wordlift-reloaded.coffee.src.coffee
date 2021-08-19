@@ -1460,61 +1460,8 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', 
       merge defaults, params
 
     service.parse = (data) ->
-
       $log.debug 'Parsing data...', data
-
-# Add local entities
-# Add id to entity obj
-# Add id to annotation obj
-# Add occurences as a blank array
-# Add annotation references to each entity
-
-# TMP ... Should be done on WLS side
-#      unless data.topics?
-#        data.topics = []
-#      dt = @._defaultType
-
-#      if data.topics?
-#        data.topics = data.topics.map (topic)->
-#          topic.id = topic.uri
-#          topic.occurrences = []
-#          topic.mainType = dt
-#          topic
-
-#      $log.debug "Found #{Object.keys(configuration.entities).length} entities in configuration...", configuration
-
-      # This isn't needed anymore as it is delegated to the WP analysis end-point to merge disambiguated entities.
-#      for id, localEntity of configuration.entities
-#        data.entities[id] = localEntity
-
       for id, entity of data.entities
-
-# Remove the current entity from the proposed entities.
-#
-# See https://github.com/insideout10/wordlift-plugin/issues/437
-# See https://github.com/insideout10/wordlift-plugin/issues/345
-#        if configuration.currentPostUri is id
-#          delete data.entities[id]
-#          continue
-
-#        if not entity.label
-#          $log.warn "Label missing for entity #{id}"
-#
-#        if not entity.description
-#          $log.warn "Description missing for entity #{id}"
-
-#        if not entity.sameAs
-#          $log.warn "sameAs missing for entity #{id}"
-#          entity.sameAs = []
-#          configuration.entities[id]?.sameAs = []
-#          $log.debug "Schema.org sameAs overridden for entity #{id}"
-
-#        if entity.mainType not in @._supportedTypes
-#          $log.warn "Schema.org type #{entity.mainType} for entity #{id} is not supported from current classification boxes configuration"
-#          entity.mainType = @._defaultType
-#          configuration.entities[id]?.mainType = @._defaultType
-#          $log.debug "Schema.org type overridden for entity #{id}"
-
         entity.id = id
 #        # This is not necessary anymore because Analysis_Response_Ops (in PHP) populates it.
         entity.occurrences = [] if not entity.occurrences?
@@ -1525,24 +1472,7 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', 
       for id, annotation of data.annotations
         annotation.id = id
         annotation.entities = {}
-
-        # Filter out annotations that don't have a corresponding entity. The entities list might be filtered, in order
-        # to remove the local entity.
-        #  data.annotations[id].entityMatches = (ea for ea in annotation.entityMatches when ea.entityId of data.entities)
-
-        # Remove the annotation if there's no entity matches left.
-        #
-        # See https://github.com/insideout10/wordlift-plugin/issues/437
-        # See https://github.com/insideout10/wordlift-plugin/issues/345
-        # if 0 is data.annotations[id].entityMatches.length
-        #   delete data.annotations[id]
-        #   continue
-
         for ea, index in data.annotations[id].entityMatches
-
-          # if not data.entities[ea.entityId].label
-          #   data.entities[ea.entityId].label = annotation.text
-          #   $log.debug "Missing label retrieved from related annotation for entity #{ea.entityId}"
 
           if not data.entities[ea.entityId]?
             $log.warn "#{ea.entityId} not found in `entities`, skipping."
@@ -1551,16 +1481,6 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', 
           data.entities[ea.entityId].annotations = {} if not data.entities[ea.entityId].annotations?
           data.entities[ea.entityId].annotations[id] = annotation
           data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId]
-
-#      # TODO move this calculation on the server
-#      for id, entity of data.entities
-#        for annotationId, annotation of data.annotations
-#          local_confidence = 1
-#          for em in annotation.entityMatches
-#            if em.entityId? and em.entityId is id
-#              local_confidence = em.confidence
-#          entity.confidence = entity.confidence * local_confidence
-
       $log.debug 'Parsed data: ', data
 
       data
@@ -2459,12 +2379,14 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
 
   ])
 
+
   injector.invoke(['AnalysisService', '$rootScope', '$log'
     (AnalysisService, $rootScope, $log) ->
-# execute the following commands in the angular js context.
+      # execute the following commands in the angular js context.
       $rootScope.$apply(->
-# Get the html content of the editor.
-        AnalysisService.perform ""
+        if isNoEditorAnalysisActive()
+          # Get the html content of the editor.
+          AnalysisService.perform ""
       )
   ])
 

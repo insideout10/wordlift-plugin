@@ -44,6 +44,7 @@ class No_Annotation_Strategy extends Singleton implements Occurrences {
 
 	private function get_occurences( $entity_id, $linked_entity_uris ) {
 		if ( in_array( $entity_id, $linked_entity_uris ) ) {
+			// we need a single occurrence in order to notify the user the entity is selected.
 			return array('placeholder-occurrence');
 		}
 		return array();
