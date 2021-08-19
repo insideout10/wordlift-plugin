@@ -64,16 +64,7 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 
 	public function get_relations_from_content( $content, $subject_type ) {
 		$entity_uris = Object_Relation_Service::get_entity_uris( $content );
-		$that        = $this;
-
-		return array_map( function ( $entity_uri ) use ( $subject_type, $that ) {
-			$term = $that->term_uri_service->get_term( $entity_uri );
-			if ( ! $term ) {
-				return false;
-			}
-
-			return new Term_Relation( $term->term_id, $that->get_relation_type( $term->term_id ), $subject_type );
-		}, $entity_uris );
+		return $this->get_relations_from_entity_uris( $subject_type, $entity_uris );
 	}
 
 	/**
@@ -93,6 +84,25 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 		}
 
 		return WL_WHAT_RELATION;
+	}
+
+	/**
+	 * @param $subject_type
+	 * @param $entity_uris
+	 *
+	 * @return false[]|Types\Relation[]
+	 */
+	public function get_relations_from_entity_uris( $subject_type, $entity_uris ) {
+		$that = $this;
+
+		return array_map( function ( $entity_uri ) use ( $subject_type, $that ) {
+			$term = $that->term_uri_service->get_term( $entity_uri );
+			if ( ! $term ) {
+				return false;
+			}
+
+			return new Term_Relation( $term->term_id, $that->get_relation_type( $term->term_id ), $subject_type );
+		}, $entity_uris );
 	}
 
 

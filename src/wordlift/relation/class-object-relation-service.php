@@ -14,17 +14,18 @@ namespace Wordlift\Relation;
 
 use Wordlift\Common\Singleton;
 use Wordlift\Jsonld\Reference;
+use Wordlift\Relation\Types\Relation;
 
 class Object_Relation_Service extends Singleton implements Relation_Service_Interface {
 
 	/**
 	 * @var \Wordlift_Relation_Service
 	 */
-	private $post_relation_service;
+	protected $post_relation_service;
 	/**
 	 * @var Term_Relation_Service
 	 */
-	private $term_relation_service;
+	protected $term_relation_service;
 
 	/**
 	 * @var \Wordlift_Log_Service
@@ -63,8 +64,6 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 
 
 	public function get_relations_from_content( $content, $subject_type ) {
-		$entity_uris = array_unique( self::get_entity_uris( $content ) );
-		$this->log->debug( "Found " . var_export( $entity_uris, true ) . " by object relation service" );
 		$post_relations = $this->post_relation_service->get_relations_from_content( $content, $subject_type );
 		$term_relations = $this->term_relation_service->get_relations_from_content( $content, $subject_type );
 		return array_filter( array_merge( $post_relations, $term_relations) );
@@ -88,5 +87,11 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 		}
 
 		return $matches[1];
+	}
+
+	public function get_relations_from_entity_uris( $subject_type, $entity_uris ) {
+		$post_relations = $this->post_relation_service->get_relations_from_entity_uris( $subject_type, $entity_uris );
+		$term_relations = $this->term_relation_service->get_relations_from_entity_uris( $subject_type, $entity_uris );
+		return array_filter( array_merge( $post_relations, $term_relations) );
 	}
 }

@@ -34,4 +34,13 @@ interface  Relation_Service_Interface {
 	public function get_relations_from_content( $content, $subject_type );
 
 
+	/**
+	 * @param $subject_type
+	 * @param $entity_uris
+	 *
+	 * @return Relation[] | false[]
+	 */
+	public function get_relations_from_entity_uris( $subject_type, $entity_uris );
+
+
 }
