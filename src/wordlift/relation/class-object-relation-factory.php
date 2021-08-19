@@ -12,6 +12,7 @@
 namespace Wordlift\Relation;
 
 use Wordlift\Features\Feature_Utils;
+use Wordlift\No_Editor_Analysis\No_Editor_Analysis_Feature;
 
 class Object_Relation_Factory {
 
@@ -22,8 +23,7 @@ class Object_Relation_Factory {
 	 */
 	public static function get_instance( $post_id ) {
 		// The post type doesnt have an editor and no-editor-analysis feature is turned on.
-		if ( Feature_Utils::is_feature_on( 'no-editor-analysis', false ) &&
-		     ! post_type_supports( get_post_type( $post_id ), 'editor' ) ) {
+		if ( No_Editor_Analysis_Feature::can_no_editor_analysis_be_used( $post_id ) ) {
 			return Object_No_Annotation_Relation_Service::get_instance();
 		}
 

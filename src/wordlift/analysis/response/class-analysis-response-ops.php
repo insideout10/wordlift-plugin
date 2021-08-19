@@ -11,6 +11,7 @@ namespace Wordlift\Analysis\Response;
 
 use stdClass;
 use Wordlift\Analysis\Entity_Provider\Entity_Provider_Registry;
+use Wordlift\Analysis\Occurrences\Occurrences_Factory;
 use Wordlift\Entity\Entity_Helper;
 
 class Analysis_Response_Ops {
@@ -44,6 +45,11 @@ class Analysis_Response_Ops {
 	private $entity_provider_registry;
 
 	/**
+	 * @var int $post_id
+	 */
+	private $post_id;
+
+	/**
 	 * Analysis_Response_Ops constructor.
 	 *
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service}.
@@ -53,12 +59,13 @@ class Analysis_Response_Ops {
 	 *
 	 * @since 3.21.5
 	 */
-	public function __construct( $entity_uri_service, $entity_helper, $entity_provider_registry, $json ) {
+	public function __construct( $entity_uri_service, $entity_helper, $entity_provider_registry, $json, $post_id ) {
 
 		$this->json                     = $json;
 		$this->entity_uri_service       = $entity_uri_service;
 		$this->entity_helper            = $entity_helper;
 		$this->entity_provider_registry = $entity_provider_registry;
+		$this->post_id = $post_id;
 	}
 
 	/**
@@ -204,22 +211,8 @@ class Analysis_Response_Ops {
 		// `embedAnalysis`.
 
 		if ( ! is_bool( $this->json ) && isset( $this->json->entities ) ) {
-
-			$json = $this->json;
-
-			foreach ( $json->entities as $id => $entity ) {
-				$json->entities->{$id}->occurrences = isset( $occurrences[ $id ] ) ? $occurrences[ $id ] : array();;
-
-				foreach ( $json->entities->{$id}->occurrences as $annotation_id ) {
-					$json->entities->{$id}->annotations[ $annotation_id ] = array(
-						'id' => $annotation_id,
-					);
-				}
-			}
-
-			$this->json = $json;
-
-
+			$occurrences_processor = Occurrences_Factory::get_instance( $this->post_id );
+			$this->json = $occurrences_processor->add_occurences_to_entities( $occurrences, $this->json, $this->post_id );
 		}
 
 		// Add the missing annotations. This allows the analysis response to work also if we didn't receive results

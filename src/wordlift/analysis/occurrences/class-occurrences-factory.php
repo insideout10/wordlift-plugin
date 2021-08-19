@@ -6,10 +6,19 @@
  */
 namespace Wordlift\Analysis\Occurrences;
 
+use Wordlift\No_Editor_Analysis\No_Editor_Analysis_Feature;
+
 class Occurrences_Factory {
 
-	public function get_instance( $post_id ) {
-
+	/**
+	 * @param $post_id
+	 *
+	 * @return Occurrences
+	 */
+	public static function get_instance( $post_id ) {
+		if ( No_Editor_Analysis_Feature::can_no_editor_analysis_be_used( $post_id ) ) {
+			return No_Annotation_Strategy::get_instance();
+		}
 		return Default_Strategy::get_instance();
 	}
 

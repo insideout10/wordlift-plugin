@@ -44,7 +44,7 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 	public function test_response_not_an_array() {
 
 		Analysis_Response_Ops_Factory::get_instance()
-		                             ->create_with_response( "something else" );
+		                             ->create_with_response( "something else", null );
 
 	}
 
@@ -57,7 +57,7 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 	public function test_response_array_without_body() {
 
 		Analysis_Response_Ops_Factory::get_instance()
-		                             ->create_with_response( array() );
+		                             ->create_with_response( array(), null );
 
 	}
 
@@ -70,7 +70,7 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 	public function test_response_body() {
 
 		Analysis_Response_Ops_Factory::get_instance()
-		                             ->create_with_response( array( 'body' => null ) );
+		                             ->create_with_response( array( 'body' => null ), null );
 
 	}
 
@@ -121,7 +121,7 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 
 		// Create the Analysis_Response_Ops with the response.
 		$ops = Analysis_Response_Ops_Factory::get_instance()->create_with_response(
-			array( 'body' => json_encode( $analysis_response, JSON_UNESCAPED_UNICODE ) ) );
+			array( 'body' => json_encode( $analysis_response, JSON_UNESCAPED_UNICODE ), $post_id ) );
 
 		// Make local and get the JSON.
 		$json = json_decode( $ops->make_entities_local()->to_string(), true );
@@ -156,7 +156,7 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 
 		$response_json = Analysis_Response_Ops_Factory
 			::get_instance()
-			->create( json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' ) )
+			->create( json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' ), $post_id )
 			->make_entities_local()
 			->add_occurrences( str_replace( '{ENTITY_URL}', $entity_url, $request_json['content'] ) )
 			->get_json();
@@ -252,7 +252,8 @@ EOF;
 		$local_entity_uri = \Wordlift_Entity_Service::get_instance()->get_uri( $entity );
 
 		$json = Analysis_Response_Ops_Factory::get_instance()
-		                                     ->create( $analysis_response_object )
+			// TODO: fix the post id here.
+		                                     ->create( $analysis_response_object, null )
 		                                     ->make_entities_local()
 		                                     ->remove_excluded_entities( array( $local_entity_uri ) )
 		                                     ->add_occurrences( "" )
@@ -287,23 +288,6 @@ EOF;
 	}
 
 
-	public function test_when_no_editor_analysis_is_enabled_should_add_a_fake_occurrence() {
-		// Create a local entity with sameAs set to cloud entity uri.
-		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
-		// set sameAs to a cloud entity uri.
-		add_post_meta( $entity, 'entity_same_as', 'http://dbpedia.org/resource/Microsoft_Outlook' );
 
-		$local_entity_uri = wl_get_entity_uri( $entity );
-
-		$request_body            = file_get_contents( dirname( __FILE__ ) . '/assets/content-analysis-request-4.json' );
-		$request_body            = json_decode( $request_body, true );
-
-		$json = wl_analyze_content( json_encode( $request_body ), 'text/html' );
-		// convert json to associative array for easy comparisons.
-		$json = json_decode( json_encode( $json ), true );
-		$this->assertCount( 1, $json['entities'], '1 entity should not be present' );
-		$this->assertCount( 1, $json['entities']['http://dbpedia.org/resource/Microsoft_Outlook']['occurences'], '1 occurence should be present' );
-
-	}
 
 }

@@ -10,7 +10,7 @@ use Wordlift\Common\Singleton;
 
 class Default_Strategy extends Singleton implements Occurrences {
 
-	public function add_occurences_to_entities( $occurences, $json ) {
+	public function add_occurences_to_entities( $occurences, $json, $post_id ) {
 
 		foreach ( $json->entities as $id => $entity ) {
 
