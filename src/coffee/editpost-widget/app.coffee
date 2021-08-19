@@ -83,6 +83,8 @@
 
   injector.invoke(['AnalysisService','$rootScope', '$log'
     (AnalysisService, $rootScope, $log) ->
+      # Bind this function to use on EditPostWidgetController.
+      $rootScope.isNoEditorAnalysisActive = isNoEditorAnalysisActive
       # execute the following commands in the angular js context.
       $rootScope.$apply(->
         if isNoEditorAnalysisActive()

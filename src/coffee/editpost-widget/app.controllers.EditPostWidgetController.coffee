@@ -95,7 +95,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         # Create a new entity
         $scope.currentEntity = AnalysisService.createEntity()
 
-        if !$scope.isThereASelection and !$scope.annotation?
+        if !$scope.isThereASelection and !$scope.annotation? and !$rootScope.isNoEditorAnalysisActive()
           $scope.addMsg 'Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation', 'error'
           $scope.unsetCurrentEntity()
           return

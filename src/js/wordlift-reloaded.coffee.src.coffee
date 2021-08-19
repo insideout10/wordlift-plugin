@@ -467,7 +467,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         # Create a new entity
         $scope.currentEntity = AnalysisService.createEntity()
 
-        if !$scope.isThereASelection and !$scope.annotation?
+        if !$scope.isThereASelection and !$scope.annotation? and !$rootScope.isNoEditorAnalysisActive()
           $scope.addMsg 'Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation', 'error'
           $scope.unsetCurrentEntity()
           return
@@ -1977,7 +1977,7 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', [
     # Discarded entities are considered too
     $rootScope.$on "entitySelected", (event, entity, annotationId) ->
       # dont do annotation operations.
-      $rootScope.$broadcast "updateOccurencesForEntity", entity.id, ["fake-annotation"]
+      $rootScope.$broadcast "updateOccurencesForEntity", entity.id, ["placeholder-annotation"]
 
     $rootScope.$on "entityDeselected", (event, entity, annotationId) ->
       # dont do annotation operations.
@@ -2010,51 +2010,8 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', [
 
 # Create a textAnnotation starting from the current selection
       createTextAnnotationFromCurrentSelection: ()->
-# A reference to the editor.
-        ed = EditorAdapter.getEditor()
-
-        # If the current selection is collapsed / blank, then nothing to do
-        if ed.selection.isCollapsed()
-          $log.warn "Invalid selection! The text annotation cannot be created"
-          return
-
-        # Retrieve the selected text
-        # Notice that toString() method of browser native selection obj is used
-        text = "#{ed.selection.getSel()}"
-
-        # Create the text annotation
-        textAnnotation = AnalysisService.createAnnotation {
-          text: text
-        }
-
-        # Prepare span wrapper for the new text annotation
-        #
-        # @since 3.23.5 we want to remove existing annotations.
-        # @see https://github.com/insideout10/wordlift-plugin/issues/993
-        textContent = ed.selection.getContent( { format: 'text' } );
-        textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation unlinked selected\">#{textContent}</span>#{INVISIBLE_CHAR}"
-
-        # Update the content within the editor
-        ed.selection.setContent textAnnotationSpan
-
-        # Retrieve the current heml content
-        content = EditorAdapter.getHTML() # ed.getContent format: 'raw'
-
-        # Create a Traslator instance
-        traslator = Traslator.create content
-
-        # Retrieve the index position of the new span
-        htmlPosition = content.indexOf(textAnnotationSpan);
-
-        # Detect the corresponding text position
-        textPosition = traslator.html2text htmlPosition
-
-        # Set start & end text annotation properties
-        textAnnotation.start = textPosition
-        textAnnotation.end = textAnnotation.start + text.length
-
         # Send a message about the new textAnnotation.
-        $rootScope.$broadcast 'textAnnotationAdded', textAnnotation
+        $rootScope.$broadcast 'textAnnotationAdded', { id: "placeholder-annotation", start: -1, end:-1}
 
 # Select annotation with a id annotationId if available
       selectAnnotation: (annotationId)->
@@ -2331,6 +2288,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
 
   injector.invoke(['AnalysisService','$rootScope', '$log'
     (AnalysisService, $rootScope, $log) ->
+      $rootScope.isNoEditorAnalysisActive = isNoEditorAnalysisActive
       # execute the following commands in the angular js context.
       $rootScope.$apply(->
         if isNoEditorAnalysisActive()
