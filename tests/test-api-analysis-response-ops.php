@@ -287,7 +287,7 @@ EOF;
 	}
 
 
-	public function test_when_no_editor_analysis_is_enabled_should_add_a_fake_occurence() {
+	public function test_when_no_editor_analysis_is_enabled_should_add_a_fake_occurrence() {
 		// Create a local entity with sameAs set to cloud entity uri.
 		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 		// set sameAs to a cloud entity uri.

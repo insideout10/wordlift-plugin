@@ -204,15 +204,22 @@ class Analysis_Response_Ops {
 		// `embedAnalysis`.
 
 		if ( ! is_bool( $this->json ) && isset( $this->json->entities ) ) {
-			foreach ( $this->json->entities as $id => $entity ) {
-				$this->json->entities->{$id}->occurrences = isset( $occurrences[ $id ] ) ? $occurrences[ $id ] : array();;
 
-				foreach ( $this->json->entities->{$id}->occurrences as $annotation_id ) {
-					$this->json->entities->{$id}->annotations[ $annotation_id ] = array(
+			$json = $this->json;
+
+			foreach ( $json->entities as $id => $entity ) {
+				$json->entities->{$id}->occurrences = isset( $occurrences[ $id ] ) ? $occurrences[ $id ] : array();;
+
+				foreach ( $json->entities->{$id}->occurrences as $annotation_id ) {
+					$json->entities->{$id}->annotations[ $annotation_id ] = array(
 						'id' => $annotation_id,
 					);
 				}
 			}
+
+			$this->json = $json;
+
+
 		}
 
 		// Add the missing annotations. This allows the analysis response to work also if we didn't receive results
