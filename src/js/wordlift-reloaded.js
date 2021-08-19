@@ -30509,53 +30509,6 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', 
         return service._updateStatus(false);
       });
     };
-    service.preselect = function(analysis, annotations) {
-      var annotation, e, entity, id, l, len2, ref2, ref3, results1, textAnnotation;
-      $log.debug("Selecting " + annotations.length + " entity annotation(s)...");
-      results1 = [];
-      for (l = 0, len2 = annotations.length; l < len2; l++) {
-        annotation = annotations[l];
-        if (annotation.start === annotation.end) {
-          $log.warn("There is a broken empty annotation for entityId " + annotation.uri);
-          continue;
-        }
-        textAnnotation = findAnnotation(analysis.annotations, annotation.start, annotation.end);
-        if (textAnnotation == null) {
-          $log.warn("Text annotation " + annotation.start + ":" + annotation.end + " for entityId " + annotation.uri + " misses in the analysis");
-          textAnnotation = this.createAnnotation({
-            start: annotation.start,
-            end: annotation.end,
-            text: annotation.label,
-            cssClass: annotation.cssClass != null ? annotation.cssClass : void 0
-          });
-          analysis.annotations[textAnnotation.id] = textAnnotation;
-        }
-        entity = analysis.entities[annotation.uri];
-        ref2 = configuration.entities;
-        for (id in ref2) {
-          e = ref2[id];
-          if (ref3 = annotation.uri, indexOf.call(e.sameAs, ref3) >= 0) {
-            entity = analysis.entities[e.id];
-          }
-        }
-        if (entity == null) {
-          $log.warn("Entity with uri " + annotation.uri + " is missing both in analysis results and in local storage");
-          continue;
-        }
-        analysis.entities[entity.id].occurrences.push(textAnnotation.id);
-        if (analysis.entities[entity.id].annotations[textAnnotation.id] == null) {
-          analysis.entities[entity.id].annotations[textAnnotation.id] = textAnnotation;
-          analysis.annotations[textAnnotation.id].entityMatches.push({
-            entityId: entity.id,
-            confidence: 1
-          });
-          results1.push(analysis.annotations[textAnnotation.id].entities[entity.id] = analysis.entities[entity.id]);
-        } else {
-          results1.push(void 0);
-        }
-      }
-      return results1;
-    };
     service.canCreateEntities = (wlSettings['can_create_entities'] != null) && 'yes' === wlSettings['can_create_entities'];
     return service;
   }

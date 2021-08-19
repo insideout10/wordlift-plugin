@@ -209,54 +209,6 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', 
       promise.finally (response) ->
         service._updateStatus false
 
-    # Preselect entity annotations in the provided analysis using the provided collection of annotations.
-    service.preselect = (analysis, annotations) ->
-
-      $log.debug "Selecting #{annotations.length} entity annotation(s)..."
-
-      # Find the existing entities in the html
-      for annotation in annotations
-
-        if annotation.start is annotation.end
-          $log.warn "There is a broken empty annotation for entityId #{annotation.uri}"
-          continue
-
-        # Find the proper annotation
-        textAnnotation = findAnnotation analysis.annotations, annotation.start, annotation.end
-
-        # If there is no textAnnotation then create it and add to the current analysis
-        # It can be normal for new entities that are queued for Redlink re-indexing
-        if not textAnnotation?
-
-          $log.warn "Text annotation #{annotation.start}:#{annotation.end} for entityId #{annotation.uri} misses in the analysis"
-
-          textAnnotation = @createAnnotation({
-            start: annotation.start
-            end: annotation.end
-            text: annotation.label
-            # The css class of the original text annotation (now removed from the
-            # body. The css class is useful because we store there the `wl-no-link`
-            # class.
-            cssClass: annotation.cssClass if annotation.cssClass?
-          })
-          analysis.annotations[textAnnotation.id] = textAnnotation
-
-        # Look for the entity in the current analysis result
-        # Local entities are merged previously during the analysis parsing
-        entity = analysis.entities[annotation.uri]
-        for id, e of configuration.entities
-          entity = analysis.entities[e.id] if annotation.uri in e.sameAs
-
-        # If no entity is found we have a problem
-        if not entity?
-          $log.warn "Entity with uri #{annotation.uri} is missing both in analysis results and in local storage"
-          continue
-        # Enhance analysis accordingly
-        analysis.entities[entity.id].occurrences.push textAnnotation.id
-        if not analysis.entities[entity.id].annotations[textAnnotation.id]?
-          analysis.entities[entity.id].annotations[textAnnotation.id] = textAnnotation
-          analysis.annotations[textAnnotation.id].entityMatches.push {entityId: entity.id, confidence: 1}
-          analysis.annotations[textAnnotation.id].entities[entity.id] = analysis.entities[entity.id]
 
     # Set the scope according to the user permissions.
     #
