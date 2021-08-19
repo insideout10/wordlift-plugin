@@ -1912,49 +1912,10 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', ['
       }
     });
     $rootScope.$on("entitySelected", function(event, entity, annotationId) {
-      var annotation, discarded, entityId, id, j, len, occurrences, ref;
-      $log.debug('[ app.services.NoAnnotationEditorService ] `entitySelected` event received.', event, entity, annotationId);
-      discarded = [];
-      if (annotationId != null) {
-        discarded.push(disambiguate(annotationId, entity));
-      } else {
-        ref = entity.annotations;
-        for (id in ref) {
-          annotation = ref[id];
-          discarded.push(disambiguate(annotation.id, entity));
-        }
-      }
-      for (j = 0, len = discarded.length; j < len; j++) {
-        entityId = discarded[j];
-        if (entityId) {
-          occurrences = currentOccurrencesForEntity(entityId);
-          $rootScope.$broadcast("updateOccurencesForEntity", entityId, occurrences);
-        }
-      }
-      occurrences = currentOccurrencesForEntity(entity.id);
-      return $rootScope.$broadcast("updateOccurencesForEntity", entity.id, occurrences);
+      return $rootScope.$broadcast("updateOccurencesForEntity", entity.id, ["fake-annotation"]);
     });
     $rootScope.$on("entityDeselected", function(event, entity, annotationId) {
-      var annotation, id, occurrences, ref;
-      console.debug('EditorService::$rootScope.$on "entityDeselected" (event)', {
-        event: event,
-        entity: entity,
-        annotationId: annotationId
-      });
-      if (annotationId != null) {
-        dedisambiguate(annotationId, entity);
-      } else {
-        ref = entity.annotations;
-        for (id in ref) {
-          annotation = ref[id];
-          dedisambiguate(annotation.id, entity);
-        }
-      }
-      occurrences = currentOccurrencesForEntity(entity.id);
-      console.debug('EditorService::$rootScope.$on "entityDeselected" (event)', {
-        occurrences: occurrences
-      });
-      return $rootScope.$broadcast("updateOccurencesForEntity", entity.id, occurrences);
+      return $rootScope.$broadcast("updateOccurencesForEntity", entity.id, []);
     });
     service = {
       hasSelection: function() {

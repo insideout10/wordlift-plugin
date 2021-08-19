@@ -64,39 +64,12 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', [
     # Disambiguate a single annotation or every entity related ones
     # Discarded entities are considered too
     $rootScope.$on "entitySelected", (event, entity, annotationId) ->
-
-      $log.debug '[ app.services.NoAnnotationEditorService ] `entitySelected` event received.', event, entity, annotationId
-
-      discarded = []
-      if annotationId?
-        discarded.push disambiguate annotationId, entity
-      else
-        for id, annotation of entity.annotations
-          discarded.push disambiguate annotation.id, entity
-
-      for entityId in discarded
-        if entityId
-          occurrences = currentOccurrencesForEntity entityId
-          $rootScope.$broadcast "updateOccurencesForEntity", entityId, occurrences
-
-      occurrences = currentOccurrencesForEntity entity.id
-      $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
+      # dont do annotation operations.
+      $rootScope.$broadcast "updateOccurencesForEntity", entity.id, ["fake-annotation"]
 
     $rootScope.$on "entityDeselected", (event, entity, annotationId) ->
-
-      console.debug 'EditorService::$rootScope.$on "entityDeselected" (event)', { event, entity, annotationId }
-
-      if annotationId?
-        dedisambiguate annotationId, entity
-      else
-        for id, annotation of entity.annotations
-          dedisambiguate annotation.id, entity
-
-      occurrences = currentOccurrencesForEntity entity.id
-
-      console.debug 'EditorService::$rootScope.$on "entityDeselected" (event)', { occurrences }
-
-      $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
+      # dont do annotation operations.
+      $rootScope.$broadcast "updateOccurencesForEntity", entity.id, []
 
     service =
 # Detect if there is a current selection
