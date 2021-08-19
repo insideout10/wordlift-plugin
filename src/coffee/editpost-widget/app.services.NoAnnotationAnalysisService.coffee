@@ -122,22 +122,7 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', 
       data
 
     service.getSuggestedSameAs = (content)->
-      promise = @._innerPerform content
-# If successful, broadcast an *sameAsReceived* event.
-        .then (response) ->
-      suggestions = []
-
-      for id, entity of response.data.entities
-
-        if matches = id.match /^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i
-          suggestions.push {
-            id: id
-            label: entity.label
-            mainType: entity.mainType
-            source: matches[1]
-          }
-      $log.debug suggestions
-      $rootScope.$broadcast "sameAsRetrieved", suggestions
+      # do nothing
 
     service._innerPerform = (content, annotations = [])->
 

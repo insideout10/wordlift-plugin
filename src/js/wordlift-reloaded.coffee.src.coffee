@@ -593,9 +593,14 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     # Add new entity to the analysis
     $scope.analysis.entities[ $scope.currentEntity.id ] = $scope.currentEntity
     annotation = $scope.analysis.annotations[ $scope.annotation ]
-    annotation.entityMatches.push { entityId: $scope.currentEntity.id, confidence: 1 }
-    $scope.analysis.entities[ $scope.currentEntity.id ].annotations[ annotation.id ] = annotation
-    $scope.analysis.annotations[ $scope.annotation ].entities[ $scope.currentEntity.id ] = $scope.currentEntity
+    if annotation? and annotation.entityMatches?
+      annotation.entityMatches.push { entityId: $scope.currentEntity.id, confidence: 1 }
+    $log.debug "Before creating new entity"
+    $log.debug $scope.analysis.entities[ $scope.currentEntity.id ]
+    if $scope.analysis.entities?
+      $scope.analysis.entities[ $scope.currentEntity.id ].annotations[ annotation.id ] = annotation
+    if $scope.analysis.annotations[ $scope.annotation ].entities?
+      $scope.analysis.annotations[ $scope.annotation ].entities[ $scope.currentEntity.id ] = $scope.currentEntity
 
     $scope.onSelectedEntityTile $scope.analysis.entities[ $scope.currentEntity.id ]
 
@@ -1483,22 +1488,7 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', 
       data
 
     service.getSuggestedSameAs = (content)->
-      promise = @._innerPerform content
-# If successful, broadcast an *sameAsReceived* event.
-        .then (response) ->
-      suggestions = []
-
-      for id, entity of response.data.entities
-
-        if matches = id.match /^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i
-          suggestions.push {
-            id: id
-            label: entity.label
-            mainType: entity.mainType
-            source: matches[1]
-          }
-      $log.debug suggestions
-      $rootScope.$broadcast "sameAsRetrieved", suggestions
+      # do nothing
 
     service._innerPerform = (content, annotations = [])->
 
@@ -2288,6 +2278,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
 
   injector.invoke(['AnalysisService','$rootScope', '$log'
     (AnalysisService, $rootScope, $log) ->
+      # Bind this function to use on EditPostWidgetController.
       $rootScope.isNoEditorAnalysisActive = isNoEditorAnalysisActive
       # execute the following commands in the angular js context.
       $rootScope.$apply(->

@@ -29514,12 +29514,20 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       delete $scope.currentEntity.suggestedSameAs;
       $scope.analysis.entities[$scope.currentEntity.id] = $scope.currentEntity;
       annotation = $scope.analysis.annotations[$scope.annotation];
-      annotation.entityMatches.push({
-        entityId: $scope.currentEntity.id,
-        confidence: 1
-      });
-      $scope.analysis.entities[$scope.currentEntity.id].annotations[annotation.id] = annotation;
-      $scope.analysis.annotations[$scope.annotation].entities[$scope.currentEntity.id] = $scope.currentEntity;
+      if ((annotation != null) && (annotation.entityMatches != null)) {
+        annotation.entityMatches.push({
+          entityId: $scope.currentEntity.id,
+          confidence: 1
+        });
+      }
+      $log.debug("Before creating new entity");
+      $log.debug($scope.analysis.entities[$scope.currentEntity.id]);
+      if ($scope.analysis.entities != null) {
+        $scope.analysis.entities[$scope.currentEntity.id].annotations[annotation.id] = annotation;
+      }
+      if ($scope.analysis.annotations[$scope.annotation].entities != null) {
+        $scope.analysis.annotations[$scope.annotation].entities[$scope.currentEntity.id] = $scope.currentEntity;
+      }
       return $scope.onSelectedEntityTile($scope.analysis.entities[$scope.currentEntity.id]);
     };
     $scope.$on("updateOccurencesForEntity", function(event, entityId, occurrences) {
@@ -30424,25 +30432,7 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', 
       $log.debug('Parsed data: ', data);
       return data;
     };
-    service.getSuggestedSameAs = function(content) {
-      var entity, id, matches, promise, ref2, suggestions;
-      promise = this._innerPerform(content).then(function(response) {});
-      suggestions = [];
-      ref2 = response.data.entities;
-      for (id in ref2) {
-        entity = ref2[id];
-        if (matches = id.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)) {
-          suggestions.push({
-            id: id,
-            label: entity.label,
-            mainType: entity.mainType,
-            source: matches[1]
-          });
-        }
-      }
-      $log.debug(suggestions);
-      return $rootScope.$broadcast("sameAsRetrieved", suggestions);
-    };
+    service.getSuggestedSameAs = function(content) {};
     service._innerPerform = function(content, annotations) {
       var data;
       if (annotations == null) {
