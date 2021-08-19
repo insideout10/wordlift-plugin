@@ -85,7 +85,6 @@ class Analysis_Response_Ops {
 		if ( ! isset( $this->json->entities ) ) {
 			return $this;
 		}
-
 		// Get the URIs.
 		$uris     = array_keys( get_object_vars( $this->json->entities ) );
 		$mappings = $this->entity_helper->map_many_to_local( $uris );

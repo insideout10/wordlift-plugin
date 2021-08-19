@@ -15,16 +15,22 @@ class No_Annotation_Strategy extends Singleton implements Occurrences {
 	public function add_occurences_to_entities( $occurences, $json, $post_id ) {
 
 
-		$relations = Object_Relation_Service::get_instance()->get_references(
+		 $references = Object_Relation_Service::get_instance()->get_references(
 			$post_id,
 			Object_Type_Enum::POST
 		);
+
+		 $entity_service = \Wordlift_Entity_Service::get_instance();
+
+		$linked_entity_uris = array_map( function ( $reference ) use ( $entity_service ) {
+			return $entity_service->get_uri( $reference->get_id(), $reference->get_type() );
+		}, $references );
 
 
 
 		foreach ( $json->entities as $entity_id => $entity ) {
 
-			$json->entities->{$entity_id}->occurrences = $this->get_occurences( $entity_id );
+			$json->entities->{$entity_id}->occurrences = $this->get_occurences( $entity_id, $linked_entity_uris );
 
 			foreach ( $json->entities->{$entity_id}->occurrences as $annotation_id ) {
 				$json->entities->{$entity_id}->annotations[ $annotation_id ] = array(
@@ -36,7 +42,10 @@ class No_Annotation_Strategy extends Singleton implements Occurrences {
 		return $json;
 	}
 
-	private function get_occurences( $entity_id ) {
-		return array(1);
+	private function get_occurences( $entity_id, $linked_entity_uris ) {
+		if ( in_array( $entity_id, $linked_entity_uris ) ) {
+			return array('placeholder-occurrence');
+		}
+		return array();
 	}
 }

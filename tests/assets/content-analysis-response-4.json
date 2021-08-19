@@ -1,6 +1,6 @@
 {
   "entities": {
-    "http://dbpedia.org/resource/Microsoft_Outlook": {
+    "{{LOCAL_ENTITY_URI}}": {
       "entityId": "http://dbpedia.org/resource/Microsoft_Outlook",
       "confidence": 1.0,
       "mainType": "creative-work",

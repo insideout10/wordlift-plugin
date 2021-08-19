@@ -7,9 +7,13 @@ use Wordlift\Features\Features_Registry;
 
 abstract class Wordlift_No_Editor_Analysis_Unit_Test_Case extends Wordlift_Unit_Test_Case {
 
+
+	protected $url_patterns_json_response_map = array();
+
+
 	public function setUp() {
 		parent::setUp();
-
+		add_filter( 'pre_http_request', 'pre_http_request', PHP_INT_MAX, 3 );
 		// Reset all global filters.
 		global $wp_filter, $wp_scripts, $wp_styles;
 		$features_registry = Features_Registry::get_instance();
@@ -47,6 +51,30 @@ abstract class Wordlift_No_Editor_Analysis_Unit_Test_Case extends Wordlift_Unit_
 				'show_in_nav_menus'   => false,
 			) );
 		});
+		add_filter( 'pre_http_request', array( $this, 'v2_analysis_request_capture'), PHP_INT_MAX, 3 );
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+		$this->url_patterns_json_response_map = array();
+	}
+
+	public function v2_analysis_request_capture( $response, $request, $url ) {
+
+
+		foreach ( $this->url_patterns_json_response_map as $url_pattern => $json_response ) {
+			if (  preg_match( $url_pattern, $url ) ) {
+				return array(
+					'body'     => $json_response,
+					'headers'  => array( 'content-type' => 'application/json' ),
+					'response' => array( 'code' => 200, )
+				);
+			}
+		}
+
+
+
+		return $response;
 
 	}
 

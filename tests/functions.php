@@ -381,6 +381,7 @@ function wl_get_attachments( $post_id ) {
 
 function _wl_mock_http_request( $response, $request, $url ) {
 
+
 	if ( $response || preg_match( '@/wl-api$@', $url ) ) {
 		return $response;
 	}
@@ -412,14 +413,6 @@ function _wl_mock_http_request( $response, $request, $url ) {
 	if ( is_string($request['body']) && 'POST' === $method && '430c6e5d6b51fa56c4e1a240ad4fdd8d' === md5( $request_data['content'] ) ) {
 		return array(
 			'body'     => file_get_contents( __DIR__ . '/assets/content-analysis-response-3.json' ),
-			'headers'  => array( 'content-type' => 'application/json' ),
-			'response' => array( 'code' => 200, )
-		);
-	}
-
-	if ( is_string($request['body']) && 'POST' === $method && '530f766795a1c734ee077878260d20af' === md5( $request_data['content'] ) ) {
-		return array(
-			'body'     => file_get_contents( __DIR__ . '/assets/content-analysis-response-4.json' ),
 			'headers'  => array( 'content-type' => 'application/json' ),
 			'response' => array( 'code' => 200, )
 		);
