@@ -12,7 +12,7 @@ use Wordlift\Relation\Object_Relation_Service;
 
 class No_Annotation_Strategy extends Singleton implements Occurrences {
 
-	public function add_occurences_to_entities( $occurences, $json, $post_id ) {
+	public function add_occurences_to_entities( $occurrences, $json, $post_id ) {
 
 
 		 $references = Object_Relation_Service::get_instance()->get_references(
