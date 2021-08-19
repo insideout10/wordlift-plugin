@@ -30,8 +30,6 @@ class Test_No_Editor_Analysis_Save_content extends Wordlift_No_Editor_Analysis_U
 
 		$post_id = $this->factory()->post->create(array('post_type' => 'no-editor-analysis'));
 
-		global $wp_filter;
-
 		wl_linked_data_save_post_and_related_entities( $post_id );
 
 		$relations = Object_Relation_Service::get_instance()

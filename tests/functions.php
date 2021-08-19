@@ -417,6 +417,14 @@ function _wl_mock_http_request( $response, $request, $url ) {
 		);
 	}
 
+	if ( is_string($request['body']) && 'POST' === $method && '530f766795a1c734ee077878260d20af' === md5( $request_data['content'] ) ) {
+		return array(
+			'body'     => file_get_contents( __DIR__ . '/assets/content-analysis-response-4.json' ),
+			'headers'  => array( 'content-type' => 'application/json' ),
+			'response' => array( 'code' => 200, )
+		);
+	}
+
 	/** ACF pass-through. */
 	if ( 'GET' === $method && preg_match( '@^https://connect.advancedcustomfields.com/@', $url ) ) {
 		return $response;

@@ -286,11 +286,23 @@ EOF;
 
 	}
 
-	public function test_when_webpage_analysis_flag_is_enabled_should_send_html_content_from_frontend() {
 
-		$post = $this->factory()->post->create( array( 'post_content' => 'test_post' ) );
+	public function test_when_no_editor_analysis_is_enabled_should_add_a_fake_occurence() {
+		// Create a local entity with sameAs set to cloud entity uri.
+		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		// set sameAs to a cloud entity uri.
+		add_post_meta( $entity, 'entity_same_as', 'http://dbpedia.org/resource/Microsoft_Outlook' );
 
+		$local_entity_uri = wl_get_entity_uri( $entity );
 
+		$request_body            = file_get_contents( dirname( __FILE__ ) . '/assets/content-analysis-request-4.json' );
+		$request_body            = json_decode( $request_body, true );
+
+		$json = wl_analyze_content( json_encode( $request_body ), 'text/html' );
+		// convert json to associative array for easy comparisons.
+		$json = json_decode( json_encode( $json ), true );
+		$this->assertCount( 1, $json['entities'], '1 entity should not be present' );
+		$this->assertCount( 1, $json['entities']['http://dbpedia.org/resource/Microsoft_Outlook']['occurences'], '1 occurence should be present' );
 
 	}
 

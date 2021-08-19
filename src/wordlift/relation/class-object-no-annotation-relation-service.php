@@ -3,14 +3,12 @@
  * This class is created to provide object relation service when there is no annotation.
  *
  * @author Naveen Muthusamy <naveen@wordlift.io>
- * @since 3.32.0
+ * @since 3.32.6
  *
  * @package Wordlift
  * @subpackage Wordlift\Relation
  */
 namespace Wordlift\Relation;
-
-use Wordlift\Relation\Types\Relation;
 
 class Object_No_Annotation_Relation_Service extends Object_Relation_Service {
 
