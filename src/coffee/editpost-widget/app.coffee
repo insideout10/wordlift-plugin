@@ -81,13 +81,12 @@
   ])
 
 
-  injector.invoke(['AnalysisService', '$rootScope', '$log'
+  injector.invoke(['AnalysisService','$rootScope', '$log'
     (AnalysisService, $rootScope, $log) ->
       # execute the following commands in the angular js context.
       $rootScope.$apply(->
         if isNoEditorAnalysisActive()
           # Get the html content of the editor.
-          EditorService.updateContentEditableStatus false
           AnalysisService.perform ""
       )
   ])

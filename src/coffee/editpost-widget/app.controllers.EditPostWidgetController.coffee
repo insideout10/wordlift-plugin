@@ -1,6 +1,6 @@
 angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', [
   'wordlift.editpost.widget.services.AnalysisService'
-  'wordlift.editpost.widget.services.EditorService',
+  'wordlift.editpost.widget.services.EditorService'
   'wordlift.editpost.widget.services.GeoLocationService'
   'wordlift.editpost.widget.providers.ConfigurationProvider'
 ])
@@ -358,8 +358,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         # Remove current entity images from suggested images collection
         $scope.images = $scope.images.filter (img)->
           img not in entity.images
-
-    $log.info "emitting " + action
     # Notify to EditorService
     $scope.$emit action, entity, $scope.annotation
 
@@ -368,7 +366,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
     # Update related posts
     $scope.updateRelatedPosts()
-    $log.info "Before calling selectAnnotation"
     # Reset current annotation
     $scope.selectAnnotation undefined
 

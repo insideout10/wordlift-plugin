@@ -165,7 +165,7 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', 
 
     service._updateStatus = (status)->
       service._isRunning = status
-      #$rootScope.$broadcast "analysisServiceStatusUpdated", status
+      $rootScope.$broadcast "analysisServiceStatusUpdated", status
 
     service.perform = (content)->
       if service._currentAnalysis

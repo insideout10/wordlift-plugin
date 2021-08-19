@@ -713,14 +713,12 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
           });
         }
       }
-      $log.info("emitting " + action);
       $scope.$emit(action, entity, $scope.annotation);
       wp.wordlift.trigger(action, {
         entity: entity,
         annotation: $scope.annotation
       });
       $scope.updateRelatedPosts();
-      $log.info("Before calling selectAnnotation");
       return $scope.selectAnnotation(void 0);
     };
     $scope.isGeoLocationAllowed = function() {
@@ -1534,7 +1532,8 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', 
       });
     };
     service._updateStatus = function(status) {
-      return service._isRunning = status;
+      service._isRunning = status;
+      return $rootScope.$broadcast("analysisServiceStatusUpdated", status);
     };
     service.perform = function(content) {
       var promise;

@@ -372,7 +372,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 ])
 angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', [
   'wordlift.editpost.widget.services.AnalysisService'
-  'wordlift.editpost.widget.services.EditorService',
+  'wordlift.editpost.widget.services.EditorService'
   'wordlift.editpost.widget.services.GeoLocationService'
   'wordlift.editpost.widget.providers.ConfigurationProvider'
 ])
@@ -730,8 +730,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         # Remove current entity images from suggested images collection
         $scope.images = $scope.images.filter (img)->
           img not in entity.images
-
-    $log.info "emitting " + action
     # Notify to EditorService
     $scope.$emit action, entity, $scope.annotation
 
@@ -740,7 +738,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
     # Update related posts
     $scope.updateRelatedPosts()
-    $log.info "Before calling selectAnnotation"
     # Reset current annotation
     $scope.selectAnnotation undefined
 
@@ -1529,7 +1526,7 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', 
 
     service._updateStatus = (status)->
       service._isRunning = status
-      #$rootScope.$broadcast "analysisServiceStatusUpdated", status
+      $rootScope.$broadcast "analysisServiceStatusUpdated", status
 
     service.perform = (content)->
       if service._currentAnalysis
@@ -2380,7 +2377,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
   ])
 
 
-  injector.invoke(['AnalysisService', '$rootScope', '$log'
+  injector.invoke(['AnalysisService','$rootScope', '$log'
     (AnalysisService, $rootScope, $log) ->
       # execute the following commands in the angular js context.
       $rootScope.$apply(->
