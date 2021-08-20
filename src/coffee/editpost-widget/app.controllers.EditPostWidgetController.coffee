@@ -81,6 +81,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   # @see https://github.com/insideout10/wordlift-plugin/issues/561
   $scope.canCreateEntities = AnalysisService.canCreateEntities
 
+  # populate the $scope.currentEntity with empty structure
+  # if its a new entity, or set the data. when its a new entity
+  # the saga sets the other properties of the entity.
   $scope.setCurrentEntity = (entity, entityType)->
 
     $scope.currentEntity = entity
@@ -110,10 +113,12 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         EditorService.createTextAnnotationFromCurrentSelection()
 
 
+  # Removes the $scope.currentEntity entity.
   $scope.unsetCurrentEntity = ()->
     $scope.currentEntity = undefined
     $scope.currentEntityType = undefined
 
+  # Store the entity in $scope.currentEntity to $scope.analysis[entityId]
   $scope.storeCurrentEntity = ()->
     unless $scope.currentEntity.mainType
       $scope.addMsg 'Select an entity type.', 'error'
@@ -212,6 +217,8 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.isLinkedToCurrentAnnotation = (entity)->
     return ($scope.annotation in entity.occurrences)
 
+  # sets the annotations, occurrences and entitymatches data for the
+  # $scope.currentEntity if it is present.
   $scope.addNewEntityToAnalysis = ()->
 
     delete $scope.currentEntity.suggestedSameAs
@@ -236,7 +243,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
     # Ghost event to bridge React.
     wp.wordlift.trigger 'updateOccurrencesForEntity', { entityId: entityId, occurrences: occurrences }
-
     if occurrences.length is 0
       for box, entities of $scope.selectedEntities
         delete $scope.selectedEntities[ box ][ entityId ]
@@ -282,7 +288,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.$on "analysisPerformed", (event, analysis) ->
     $log.info "An analysis has been performed."
-    $log.info "Analysis is stored as " + $scope.analysis
     $scope.analysis = analysis
 
     # Topic Preselect
