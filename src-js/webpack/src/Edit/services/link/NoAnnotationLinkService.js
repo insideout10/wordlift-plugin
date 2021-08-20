@@ -34,21 +34,27 @@ export default class NoAnnotationLinkService extends LinkServiceInterface {
    *     elements).
    * @param {boolean} value True to enable linking or false to disable it.
    */
-  setLink(occurrences, value) {}
+  setLink(occurrences, value) {
+    // Perform no link action
+  }
   /**
    * Switch the link on.
    *
    * @since 3.13.0
    * @param {object} elem A DOM element.
    */
-  setYesLink(elem) {}
+  setYesLink(elem) {
+    // Perform no link action
+  }
   /**
    * Switch the link off.
    *
    * @since 3.13.0
    * @param {object} elem A DOM element.
    */
-  setNoLink(elem) {}
+  setNoLink(elem) {
+    // Perform no link action
+  }
   /**
    * Get the link flag given the provided `occurrences`. A link flag is
    * considered true when at least one occurrences enables linking.
@@ -58,5 +64,7 @@ export default class NoAnnotationLinkService extends LinkServiceInterface {
    * @return {boolean} True if at least one occurrences enables linking,
    *     otherwise false.
    */
-  getLink(occurrences) {}
+  getLink(occurrences) {
+    // Perform no link action
+  }
 }

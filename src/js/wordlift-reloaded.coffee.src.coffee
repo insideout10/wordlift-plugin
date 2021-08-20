@@ -487,7 +487,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.currentEntityType = undefined
 
   $scope.storeCurrentEntity = ()->
-
     unless $scope.currentEntity.mainType
       $scope.addMsg 'Select an entity type.', 'error'
       return
@@ -503,7 +502,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         $scope.addMsg 'Annotation is created', 'positive'
 
     $scope.unsetCurrentEntity()
-
     # Trigger again the analysis results to have React update its tree
     wp.wordlift.trigger 'analysis.result', $scope.analysis
 
@@ -595,8 +593,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     annotation = $scope.analysis.annotations[ $scope.annotation ]
     if annotation? and annotation.entityMatches?
       annotation.entityMatches.push { entityId: $scope.currentEntity.id, confidence: 1 }
-    $log.debug "Before creating new entity"
-    $log.debug $scope.analysis.entities[ $scope.currentEntity.id ]
     if $scope.analysis.entities?
       $scope.analysis.entities[ $scope.currentEntity.id ].annotations[ annotation.id ] = annotation
     if $scope.analysis.annotations[ $scope.annotation ].entities?
@@ -658,6 +654,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.$on "analysisPerformed", (event, analysis) ->
     $log.info "An analysis has been performed."
+    $log.info "Analysis is stored as " + $scope.analysis
     $scope.analysis = analysis
 
     # Topic Preselect

@@ -29520,8 +29520,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
           confidence: 1
         });
       }
-      $log.debug("Before creating new entity");
-      $log.debug($scope.analysis.entities[$scope.currentEntity.id]);
       if ($scope.analysis.entities != null) {
         $scope.analysis.entities[$scope.currentEntity.id].annotations[annotation.id] = annotation;
       }
@@ -29582,6 +29580,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.$on("analysisPerformed", function(event, analysis) {
       var entities, entity, entityId, image, k, l, len1, len2, len3, len4, m, n, ref1, ref2, ref3, ref4, topic;
       $log.info("An analysis has been performed.");
+      $log.info("Analysis is stored as " + $scope.analysis);
       $scope.analysis = analysis;
       if ($scope.configuration.topic != null) {
         $log.info("Preselecting topics...");
