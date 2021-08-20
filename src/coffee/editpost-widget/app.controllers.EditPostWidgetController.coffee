@@ -133,7 +133,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         $log.debug 'Unset a new entity'
         $scope.addNewEntityToAnalysis()
         $scope.addMsg 'Annotation is created', 'positive'
-
     $scope.unsetCurrentEntity()
     # Trigger again the analysis results to have React update its tree
     wp.wordlift.trigger 'analysis.result', $scope.analysis

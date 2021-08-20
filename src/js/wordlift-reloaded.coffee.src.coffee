@@ -505,7 +505,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         $log.debug 'Unset a new entity'
         $scope.addNewEntityToAnalysis()
         $scope.addMsg 'Annotation is created', 'positive'
-
     $scope.unsetCurrentEntity()
     # Trigger again the analysis results to have React update its tree
     wp.wordlift.trigger 'analysis.result', $scope.analysis
@@ -1968,6 +1967,7 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', [
     # Disambiguate a single annotation or every entity related ones
     # Discarded entities are considered too
     $rootScope.$on "entitySelected", (event, entity, annotationId) ->
+      $log.debug '[ app.services.EditorService ] `entitySelected` event received on no annotation editor.', event, entity, annotationId
       # dont do annotation operations.
       $rootScope.$broadcast "updateOccurencesForEntity", entity.id, ["placeholder-annotation"]
 
@@ -2008,6 +2008,7 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', [
 # Select annotation with a id annotationId if available
       selectAnnotation: (annotationId)->
         $log.info "Select annotation for editor service complete"
+        $rootScope.$broadcast 'textAnnotationClicked', undefined
         # do nothing, we dont want to create annotations.
 
 # Embed the provided analysis in the editor.

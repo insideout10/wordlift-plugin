@@ -76,7 +76,6 @@ function* addEntity({ payload }) {
     // Save the entity.
     ctrl.storeCurrentEntity();
   });
-  console.log("going to fire add entity success")
   yield put(addEntitySuccess());
 }
 

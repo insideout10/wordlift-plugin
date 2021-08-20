@@ -1852,6 +1852,7 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', ['
       }
     });
     $rootScope.$on("entitySelected", function(event, entity, annotationId) {
+      $log.debug('[ app.services.EditorService ] `entitySelected` event received on no annotation editor.', event, entity, annotationId);
       return $rootScope.$broadcast("updateOccurencesForEntity", entity.id, ["placeholder-annotation"]);
     });
     $rootScope.$on("entityDeselected", function(event, entity, annotationId) {
@@ -1883,7 +1884,8 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', ['
         });
       },
       selectAnnotation: function(annotationId) {
-        return $log.info("Select annotation for editor service complete");
+        $log.info("Select annotation for editor service complete");
+        return $rootScope.$broadcast('textAnnotationClicked', void 0);
       },
       embedAnalysis: (function(_this) {
         return function(analysis) {
