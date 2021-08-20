@@ -252,7 +252,6 @@ EOF;
 		$local_entity_uri = \Wordlift_Entity_Service::get_instance()->get_uri( $entity );
 
 		$json = Analysis_Response_Ops_Factory::get_instance()
-			// TODO: fix the post id here.
 		                                     ->create( $analysis_response_object, null )
 		                                     ->make_entities_local()
 		                                     ->remove_excluded_entities( array( $local_entity_uri ) )
