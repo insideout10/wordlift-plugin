@@ -1910,56 +1910,9 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', [
   .service('EditorService', ['configuration', 'AnalysisService',
   'EditorAdapter', '$log', '$http', '$rootScope',
   (configuration, AnalysisService, EditorAdapter, $log, $http, $rootScope)->
-    INVISIBLE_CHAR = '\uFEFF'
-
-    # Find existing entities selected in the html content (by looking for *itemid* attributes).
-    findEntities = (html) ->
-# Prepare a traslator instance that will traslate Html and Text positions.
-#      traslator = Traslator.create html
-
-      # Set the pattern to look for *itemid* attributes.
-      # pattern = /<(\w+)[^>]*\sclass="([^"]+)"\sitemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim
-      #
-      # Internet Explorer 11 and Edge have cases where the `id` attribute is sorted,
-      # after the `class` attribute, so we consider it in the pattern.
-      #
-      # See https://github.com/insideout10/wordlift-plugin/issues/520
-      pattern = /<(\w+)[^>]*\sclass="([^"]+)"\s+(?:id="[^"]+"\s+)?itemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim
-
-      # Get the matches and return them.
-      (while match = pattern.exec html
-
-        annotation =
-#          start: traslator.html2text match.index
-#          end: traslator.html2text (match.index + match[0].length)
-          start: match.index
-          end: match.index + match[0].length
-          uri: match[3]
-          label: match[4]
-          cssClass: match[2]
-
-        annotation
-      )
-
-    findPositions = (entities) ->
-      positions = []
-      for entityAnnotation in entities
-        positions = positions.concat [ entityAnnotation.start..entityAnnotation.end ]
-      positions
-
     # @deprecated use EditorAdapter.getEditor()
     editor = ->
       tinyMCE.get('content')
-
-    disambiguate = (annotationId, entity)->
-      # dont do annotation operations.
-
-    dedisambiguate = (annotationId, entity)->
-      # dont do annotation operations.
-
-    # TODO refactoring with regex
-    currentOccurrencesForEntity = (entityId) ->
-      # dont do annotation operations.
 
     $rootScope.$on "analysisPerformed", (event, analysis) ->
       service.embedAnalysis analysis if analysis? and analysis.annotations?

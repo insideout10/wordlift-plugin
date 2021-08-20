@@ -1809,43 +1809,10 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
 
 angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', ['wordlift.editpost.widget.services.EditorAdapter', 'wordlift.editpost.widget.services.AnalysisService']).service('EditorService', [
   'configuration', 'AnalysisService', 'EditorAdapter', '$log', '$http', '$rootScope', function(configuration, AnalysisService, EditorAdapter, $log, $http, $rootScope) {
-    var INVISIBLE_CHAR, currentOccurrencesForEntity, dedisambiguate, disambiguate, editor, findEntities, findPositions, service;
-    INVISIBLE_CHAR = '\uFEFF';
-    findEntities = function(html) {
-      var annotation, match, pattern, results1;
-      pattern = /<(\w+)[^>]*\sclass="([^"]+)"\s+(?:id="[^"]+"\s+)?itemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim;
-      results1 = [];
-      while (match = pattern.exec(html)) {
-        annotation = {
-          start: match.index,
-          end: match.index + match[0].length,
-          uri: match[3],
-          label: match[4],
-          cssClass: match[2]
-        };
-        results1.push(annotation);
-      }
-      return results1;
-    };
-    findPositions = function(entities) {
-      var entityAnnotation, j, k, len, positions, ref, ref1, results1;
-      positions = [];
-      for (j = 0, len = entities.length; j < len; j++) {
-        entityAnnotation = entities[j];
-        positions = positions.concat((function() {
-          results1 = [];
-          for (var k = ref = entityAnnotation.start, ref1 = entityAnnotation.end; ref <= ref1 ? k <= ref1 : k >= ref1; ref <= ref1 ? k++ : k--){ results1.push(k); }
-          return results1;
-        }).apply(this));
-      }
-      return positions;
-    };
+    var editor, service;
     editor = function() {
       return tinyMCE.get('content');
     };
-    disambiguate = function(annotationId, entity) {};
-    dedisambiguate = function(annotationId, entity) {};
-    currentOccurrencesForEntity = function(entityId) {};
     $rootScope.$on("analysisPerformed", function(event, analysis) {
       if ((analysis != null) && (analysis.annotations != null)) {
         return service.embedAnalysis(analysis);
