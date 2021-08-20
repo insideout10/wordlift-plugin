@@ -121,7 +121,7 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 
 		// Create the Analysis_Response_Ops with the response.
 		$ops = Analysis_Response_Ops_Factory::get_instance()->create_with_response(
-			array( 'body' => json_encode( $analysis_response, JSON_UNESCAPED_UNICODE ), $post_id ) );
+			array( 'body' => json_encode( $analysis_response, JSON_UNESCAPED_UNICODE ) ), $post_id );
 
 		// Make local and get the JSON.
 		$json = json_decode( $ops->make_entities_local()->to_string(), true );
