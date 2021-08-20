@@ -8,7 +8,7 @@
 /**
  * External dependencies
  */
-import { call, delay, put, select, takeEvery, takeLatest } from "redux-saga/effects";
+import { delay, put, select, takeEvery, takeLatest } from "redux-saga/effects";
 /**
  * Internal dependencies
  */
@@ -30,7 +30,7 @@ import {
 } from "../components/AddEntity/actions";
 import React from "react";
 import LinkServiceFactory from "../services/link/LinkServiceFactory";
-import {addAction, doAction} from "@wordpress/hooks";
+import {doAction} from "@wordpress/hooks";
 
 /**
  * Handle the {@link TOGGLE_ENTITY} action.
