@@ -21,9 +21,6 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', 
         object[key] = val
       object
 
-    findAnnotation = (annotations, start, end) ->
-      return annotation for id, annotation of annotations when annotation.start is start and annotation.end is end
-
     service =
       _isRunning: false
       _currentAnalysis: undefined
@@ -31,26 +28,8 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', 
       _defaultType: "thing"
 
     service.cleanAnnotations = (analysis, positions = []) ->
-# Take existing entities as mandatory
-      for annotationId, annotation of analysis.annotations
-        if annotation.start > 0 and annotation.end > annotation.start
-          annotationRange = [ annotation.start..annotation.end ]
-          # TODO Replace with an Array intersection check
-          isOverlapping = false
-          for pos in annotationRange
-            if pos in positions
-              isOverlapping = true
-            break
+      # inactive, since no annotations will be present.
 
-          if isOverlapping
-            $log.warn "Annotation with id: #{annotationId} start: #{annotation.start} end: #{annotation.end} overlaps an existing annotation"
-            @.deleteAnnotation analysis, annotationId
-          else
-            positions = positions.concat annotationRange
-
-      return analysis
-
-    # Retrieve supported type from current classification boxes configuration
     if configuration.classificationBoxes?
       for box in configuration.classificationBoxes
         for type in box.registeredTypes

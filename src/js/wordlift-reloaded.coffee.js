@@ -1317,7 +1317,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
 
 angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', ['wordlift.editpost.widget.services.AnnotationParser', 'wordlift.editpost.widget.services.EditorAdapter']).service('AnalysisService', [
   'AnnotationParser', 'EditorAdapter', 'configuration', '$log', '$http', '$rootScope', '$q', function(AnnotationParser, EditorAdapter, configuration, $log, $http, $rootScope, $q) {
-    var box, extend, findAnnotation, j, k, len, len1, merge, ref, ref1, service, type, uniqueId;
+    var box, extend, j, k, len, len1, merge, ref, ref1, service, type, uniqueId;
     uniqueId = function(length) {
       var id;
       if (length == null) {
@@ -1340,15 +1340,6 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', 
       }
       return object;
     };
-    findAnnotation = function(annotations, start, end) {
-      var annotation, id;
-      for (id in annotations) {
-        annotation = annotations[id];
-        if (annotation.start === start && annotation.end === end) {
-          return annotation;
-        }
-      }
-    };
     service = {
       _isRunning: false,
       _currentAnalysis: void 0,
@@ -1356,36 +1347,9 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', 
       _defaultType: "thing"
     };
     service.cleanAnnotations = function(analysis, positions) {
-      var annotation, annotationId, annotationRange, isOverlapping, j, k, len, pos, ref, ref1, ref2, results1;
       if (positions == null) {
         positions = [];
       }
-      ref = analysis.annotations;
-      for (annotationId in ref) {
-        annotation = ref[annotationId];
-        if (annotation.start > 0 && annotation.end > annotation.start) {
-          annotationRange = (function() {
-            results1 = [];
-            for (var j = ref1 = annotation.start, ref2 = annotation.end; ref1 <= ref2 ? j <= ref2 : j >= ref2; ref1 <= ref2 ? j++ : j--){ results1.push(j); }
-            return results1;
-          }).apply(this);
-          isOverlapping = false;
-          for (k = 0, len = annotationRange.length; k < len; k++) {
-            pos = annotationRange[k];
-            if (indexOf.call(positions, pos) >= 0) {
-              isOverlapping = true;
-            }
-            break;
-          }
-          if (isOverlapping) {
-            $log.warn("Annotation with id: " + annotationId + " start: " + annotation.start + " end: " + annotation.end + " overlaps an existing annotation");
-            this.deleteAnnotation(analysis, annotationId);
-          } else {
-            positions = positions.concat(annotationRange);
-          }
-        }
-      }
-      return analysis;
     };
     if (configuration.classificationBoxes != null) {
       ref = configuration.classificationBoxes;

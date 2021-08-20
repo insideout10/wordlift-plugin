@@ -19,6 +19,7 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', [
     $rootScope.$on "entitySelected", (event, entity, annotationId) ->
       $log.debug '[ app.services.EditorService ] `entitySelected` event received on no annotation editor.', event, entity, annotationId
       # dont do annotation operations.
+      # we supply a placeholder annotation, because entities with one occurrences show as selected on ui.
       $rootScope.$broadcast "updateOccurencesForEntity", entity.id, ["placeholder-annotation"]
 
     $rootScope.$on "entityDeselected", (event, entity, annotationId) ->
