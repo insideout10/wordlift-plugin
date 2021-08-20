@@ -14,6 +14,7 @@ export class LinkServiceInterface {
      * @abstract
      */
     setLink(occurrences, value) {
+        // Child class should implement this.
     }
 
     /**
@@ -24,6 +25,7 @@ export class LinkServiceInterface {
      * @abstract
      */
     setYesLink(elem) {
+        // Child class should implement this.
     }
 
     /**
@@ -34,6 +36,7 @@ export class LinkServiceInterface {
      * @abstract
      */
     setNoLink(elem) {
+        // Child class should implement this.
     }
 
     /**
@@ -47,5 +50,6 @@ export class LinkServiceInterface {
      * @abstract
      */
     getLink(occurrences) {
+        // Child class should implement this.
     }
 }
