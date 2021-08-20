@@ -30,6 +30,7 @@ import {
 } from "../components/AddEntity/actions";
 import React from "react";
 import LinkServiceFactory from "../services/link/LinkServiceFactory";
+import {addAction, doAction} from "@wordpress/hooks";
 
 /**
  * Handle the {@link TOGGLE_ENTITY} action.
@@ -76,6 +77,8 @@ function* addEntity({ payload }) {
     // Save the entity.
     ctrl.storeCurrentEntity();
   });
+  doAction("unstable_wordlift.closeEntitySelect")
+
   yield put(addEntitySuccess());
 }
 
