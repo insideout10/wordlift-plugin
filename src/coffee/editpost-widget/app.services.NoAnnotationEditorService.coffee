@@ -33,10 +33,6 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationEditorService', [
         if ed?
           if ed.selection.isCollapsed()
             return false
-
-#          if /<([\/]*[a-z]+)[^<]*>/.test ed.selection.getContent()
-#            $log.warn "The selection overlaps html code"
-#            return false
           return true
 
         false

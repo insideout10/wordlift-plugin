@@ -170,14 +170,6 @@ angular.module('wordlift.editpost.widget.services.NoAnnotationAnalysisService', 
       # If successful, broadcast an *analysisPerformed* event.
       promise.then (response) ->
         data = response
-
-#        # Catch wp_json_send_error responses.
-#        if response.data.success? and !response.data.success
-#          # Yes `data.data`, the first one to get the body of the response, the
-#          # second for the body internal structure.
-#          $rootScope.$broadcast "analysisFailed", response.data.data.message
-#          return
-
         # Store current analysis obj
         service._currentAnalysis = data
 
