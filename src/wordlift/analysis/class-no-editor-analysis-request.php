@@ -10,7 +10,6 @@ namespace Wordlift\Analysis;
 
 class No_Editor_Analysis_Request {
 
-
 	private $post_id;
 
 	public function __construct( $post_id ) {
@@ -23,10 +22,6 @@ class No_Editor_Analysis_Request {
 	public function get_data() {
 
 		$permalink = get_permalink( $this->post_id );
-
-		// TODO: remove this Https.
-		$permalink = str_replace( 'https', 'http', $permalink );
-		// TODO: remove this Https.
 
 		$post_content_response = wp_remote_get( $permalink  );
 
