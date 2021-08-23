@@ -29406,7 +29406,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         default:
           $log.debug("A new entity");
           $scope.currentEntity = AnalysisService.createEntity();
-          if (!$scope.isThereASelection && ($scope.annotation == null) && !$rootScope.isNoEditorAnalysisActive()) {
+          if (!$scope.isThereASelection && ($scope.annotation == null)) {
             $scope.addMsg('Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation', 'error');
             $scope.unsetCurrentEntity();
             return;
@@ -29514,18 +29514,12 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       delete $scope.currentEntity.suggestedSameAs;
       $scope.analysis.entities[$scope.currentEntity.id] = $scope.currentEntity;
       annotation = $scope.analysis.annotations[$scope.annotation];
-      if ((annotation != null) && (annotation.entityMatches != null)) {
-        annotation.entityMatches.push({
-          entityId: $scope.currentEntity.id,
-          confidence: 1
-        });
-      }
-      if ($scope.analysis.entities != null) {
-        $scope.analysis.entities[$scope.currentEntity.id].annotations[annotation.id] = annotation;
-      }
-      if ($scope.analysis.annotations[$scope.annotation].entities != null) {
-        $scope.analysis.annotations[$scope.annotation].entities[$scope.currentEntity.id] = $scope.currentEntity;
-      }
+      annotation.entityMatches.push({
+        entityId: $scope.currentEntity.id,
+        confidence: 1
+      });
+      $scope.analysis.entities[$scope.currentEntity.id].annotations[annotation.id] = annotation;
+      $scope.analysis.annotations[$scope.annotation].entities[$scope.currentEntity.id] = $scope.currentEntity;
       return $scope.onSelectedEntityTile($scope.analysis.entities[$scope.currentEntity.id]);
     };
     $scope.$on("updateOccurencesForEntity", function(event, entityId, occurrences) {
@@ -30172,8 +30166,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
       return $q(function(resolve, reject) {
         return wp.ajax.post('wl_analyze', {
           _wpnonce: wlSettings['analysis']['_wpnonce'],
-          data: JSON.stringify(data),
-          postId: wlSettings['post_id']
+          data: JSON.stringify(data)
         }).done(function(response) {
           return resolve(response);
         }).fail(function(response) {
@@ -30695,19 +30688,8 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
 
 ((function(_this) {
   return function($, angular) {
-    var container, editPostConditionalServices, editPostWidgetServices, injector, isNoEditorAnalysisActive, spinner;
-    isNoEditorAnalysisActive = function() {
-      return (typeof wlSettings !== "undefined" && wlSettings !== null) && (wlSettings.analysis != null) && (wlSettings.analysis.isEditorPresent != null) && wlSettings.analysis.isEditorPresent === false;
-    };
-    editPostConditionalServices = function() {
-      if (isNoEditorAnalysisActive()) {
-        return ['wordlift.editpost.widget.services.NoAnnotationAnalysisService', 'wordlift.editpost.widget.services.NoAnnotationEditorService'];
-      }
-      return ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService'];
-    };
-    editPostWidgetServices = ['ngAnimate', 'wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityList', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService'];
-    editPostWidgetServices = editPostWidgetServices.concat(editPostConditionalServices());
-    angular.module('wordlift.editpost.widget', editPostWidgetServices).config(function(configurationProvider) {
+    var container, injector, spinner;
+    angular.module('wordlift.editpost.widget', ['ngAnimate', 'wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityList', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService']).config(function(configurationProvider) {
       var params;
       params = Object.assign({}, window['_wlMetaBoxSettings'].settings, {
         types: window['_wlEntityTypes']

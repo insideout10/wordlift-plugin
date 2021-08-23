@@ -2,33 +2,24 @@
 #  # Set the well-known $ reference to jQuery.
 #  $ = jQuery
 
-  isNoEditorAnalysisActive = () ->
-    return  wlSettings? and wlSettings.analysis? and wlSettings.analysis.isEditorPresent? and wlSettings.analysis.isEditorPresent == false
-
-  editPostConditionalServices = () ->
-    if isNoEditorAnalysisActive()
-      return ['wordlift.editpost.widget.services.NoAnnotationAnalysisService','wordlift.editpost.widget.services.NoAnnotationEditorService']
-    return ['wordlift.editpost.widget.services.AnalysisService','wordlift.editpost.widget.services.EditorService']
-
-  editPostWidgetServices = [
+  # Create the main AngularJS module, and set it dependent on controllers and directives.
+  angular.module('wordlift.editpost.widget', [
     'ngAnimate'
     'wordlift.ui.carousel'
     'wordlift.utils.directives'
     'wordlift.editpost.widget.providers.ConfigurationProvider',
     'wordlift.editpost.widget.controllers.EditPostWidgetController',
     'wordlift.editpost.widget.directives.wlClassificationBox',
-# Beware that while we're not using Angular components, we're using the element to hook the React application.
-# The Classification Box is in fact a React application.
+    # Beware that while we're not using Angular components, we're using the element to hook the React application.
+    # The Classification Box is in fact a React application.
     'wordlift.editpost.widget.directives.wlEntityList',
     'wordlift.editpost.widget.directives.wlEntityForm',
 #    'wordlift.editpost.widget.directives.wlEntityTile',
     'wordlift.editpost.widget.directives.wlEntityInputBox',
+    'wordlift.editpost.widget.services.AnalysisService',
+    'wordlift.editpost.widget.services.EditorService',
     'wordlift.editpost.widget.services.RelatedPostDataRetrieverService'
-  ]
-
-  editPostWidgetServices = editPostWidgetServices.concat( editPostConditionalServices() )
-  # Create the main AngularJS module, and set it dependent on controllers and directives.
-  angular.module('wordlift.editpost.widget', editPostWidgetServices)
+  ])
 
   .config((configurationProvider)->
     params = Object.assign({}, window['_wlMetaBoxSettings'].settings, { types: window['_wlEntityTypes'] })
@@ -79,8 +70,6 @@
         $('.wl-widget-spinner svg').attr 'class', css
 
   ])
-
-
 
   if window['wlSettings']?
     # Add WordLift as a plugin of the TinyMCE editor.
@@ -157,6 +146,7 @@
             $rootScope.$apply(->
   # Get the html content of the editor.
               html = editor.getContent format: 'raw'
+
               if "" isnt html
                 EditorService.updateContentEditableStatus false
                 AnalysisService.perform html
@@ -222,7 +212,6 @@
 
         startAnalysis()
       )
-
 
       # Fires when the user changes node location using the mouse or keyboard in the TinyMCE editor.
       fireEvent(editor, "NodeChange", (e) ->

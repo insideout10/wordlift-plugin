@@ -81,9 +81,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   # @see https://github.com/insideout10/wordlift-plugin/issues/561
   $scope.canCreateEntities = AnalysisService.canCreateEntities
 
-  # populate the $scope.currentEntity with empty structure
-  # if its a new entity, or set the data. when its a new entity
-  # the saga sets the other properties of the entity.
   $scope.setCurrentEntity = (entity, entityType)->
 
     $scope.currentEntity = entity
@@ -98,7 +95,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         # Create a new entity
         $scope.currentEntity = AnalysisService.createEntity()
 
-        if !$scope.isThereASelection and !$scope.annotation? and !$rootScope.isNoEditorAnalysisActive()
+        if !$scope.isThereASelection and !$scope.annotation?
           $scope.addMsg 'Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation', 'error'
           $scope.unsetCurrentEntity()
           return
@@ -113,13 +110,12 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         EditorService.createTextAnnotationFromCurrentSelection()
 
 
-  # Removes the $scope.currentEntity entity.
   $scope.unsetCurrentEntity = ()->
     $scope.currentEntity = undefined
     $scope.currentEntityType = undefined
 
-  # Store the entity in $scope.currentEntity to $scope.analysis[entityId]
   $scope.storeCurrentEntity = ()->
+
     unless $scope.currentEntity.mainType
       $scope.addMsg 'Select an entity type.', 'error'
       return
@@ -133,7 +129,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         $log.debug 'Unset a new entity'
         $scope.addNewEntityToAnalysis()
         $scope.addMsg 'Annotation is created', 'positive'
+
     $scope.unsetCurrentEntity()
+
     # Trigger again the analysis results to have React update its tree
     wp.wordlift.trigger 'analysis.result', $scope.analysis
 
@@ -216,8 +214,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.isLinkedToCurrentAnnotation = (entity)->
     return ($scope.annotation in entity.occurrences)
 
-  # sets the annotations, occurrences and entitymatches data for the
-  # $scope.currentEntity if it is present.
   $scope.addNewEntityToAnalysis = ()->
 
     delete $scope.currentEntity.suggestedSameAs
@@ -225,12 +221,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     # Add new entity to the analysis
     $scope.analysis.entities[ $scope.currentEntity.id ] = $scope.currentEntity
     annotation = $scope.analysis.annotations[ $scope.annotation ]
-    if annotation? and annotation.entityMatches?
-      annotation.entityMatches.push { entityId: $scope.currentEntity.id, confidence: 1 }
-    if $scope.analysis.entities?
-      $scope.analysis.entities[ $scope.currentEntity.id ].annotations[ annotation.id ] = annotation
-    if $scope.analysis.annotations[ $scope.annotation ].entities?
-      $scope.analysis.annotations[ $scope.annotation ].entities[ $scope.currentEntity.id ] = $scope.currentEntity
+    annotation.entityMatches.push { entityId: $scope.currentEntity.id, confidence: 1 }
+    $scope.analysis.entities[ $scope.currentEntity.id ].annotations[ annotation.id ] = annotation
+    $scope.analysis.annotations[ $scope.annotation ].entities[ $scope.currentEntity.id ] = $scope.currentEntity
 
     $scope.onSelectedEntityTile $scope.analysis.entities[ $scope.currentEntity.id ]
 
@@ -242,6 +235,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
     # Ghost event to bridge React.
     wp.wordlift.trigger 'updateOccurrencesForEntity', { entityId: entityId, occurrences: occurrences }
+
     if occurrences.length is 0
       for box, entities of $scope.selectedEntities
         delete $scope.selectedEntities[ box ][ entityId ]
@@ -364,6 +358,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         # Remove current entity images from suggested images collection
         $scope.images = $scope.images.filter (img)->
           img not in entity.images
+
     # Notify to EditorService
     $scope.$emit action, entity, $scope.annotation
 
@@ -372,6 +367,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
     # Update related posts
     $scope.updateRelatedPosts()
+
     # Reset current annotation
     $scope.selectAnnotation undefined
 
