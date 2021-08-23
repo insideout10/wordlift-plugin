@@ -16,6 +16,8 @@ class Loader extends Default_Loader {
 	public function init_all_dependencies() {
 		$edit_screen_setting = new Edit_Screen_Setting();
 		$edit_screen_setting->add_setting();
+		$meta_box = new Meta_Box();
+		$meta_box->init();
 	}
 
 	/**
