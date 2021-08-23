@@ -26,7 +26,7 @@ window.addEventListener("load", () => {
     );
 
     // Load the analysis results.
-    store.dispatch( requestAnalysis() );
+    store.dispatch( requestAnalysis({ loading: true }) );
 
 
 })

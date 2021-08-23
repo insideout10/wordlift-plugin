@@ -28,6 +28,10 @@ import React from "react";
 import {requestAnalysis} from "../../block-editor/stores/actions";
 import parseAnalysisResponse from "../../block-editor/stores/compat";
 import {receiveAnalysisResults, updateOccurrencesForEntity} from "../../Edit/actions";
+import {syncFormData} from "../actions";
+import {NO_EDITOR_SYNC_FORM_DATA} from "../actions/types";
+import AnalysisStorage from "../analysis-storage";
+import {getAllSelectedEntities} from "../selectors";
 
 /**
  * Handle the {@link TOGGLE_ENTITY} action.
@@ -43,6 +47,7 @@ function* toggleEntity(payload) {
   else {
     yield put(updateOccurrencesForEntity(entity.id, []));
   }
+  yield put(syncFormData())
 }
 
 function* handleRequestAnalysis() {
@@ -64,11 +69,9 @@ function* handleRequestAnalysis() {
     data: JSON.stringify(request),
     postId: settings["post_id"]
   });
-
-
   const parsed = parseAnalysisResponse(response);
-
   yield put(receiveAnalysisResults(parsed));
+  yield put(syncFormData())
 }
 
 function* setCurrentEntity({ entity }) {
@@ -136,6 +139,12 @@ function* handleEditorSelectionChanged({ payload }) {
   };
 }
 
+function* handleSyncFormData() {
+  const selectedEntities = yield select(getAllSelectedEntities)
+  const storage = new AnalysisStorage("wl-no-editor-analysis-meta-box-storage");
+  storage.syncData(selectedEntities)
+}
+
 /**
  * Connect the side effects.
  */
@@ -146,6 +155,7 @@ function* sagas() {
   yield takeEvery(addEntityRequest, addEntity);
   yield takeEvery(createEntityRequest, createEntity);
   yield takeLatest(EDITOR_SELECTION_CHANGED, handleEditorSelectionChanged);
+  yield takeEvery(NO_EDITOR_SYNC_FORM_DATA, handleSyncFormData)
 }
 
 export default sagas;

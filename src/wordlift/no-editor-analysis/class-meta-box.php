@@ -21,15 +21,15 @@ class Meta_Box {
 
 		// We enable it for only the post types which doesn't support the editor and
 		// enabled on the filter.
-		if (  ! wl_post_type_supports_editor( $post_type)
-		 && $this->is_no_editor_analysis_enabled_for_post_type( $post_type ) ) {
+		if ( ! wl_post_type_supports_editor( $post_type )
+		     && $this->is_no_editor_analysis_enabled_for_post_type( $post_type ) ) {
 			return;
 		}
 
 		add_meta_box(
 			self::META_BOX_ID,
 			__( 'WordLift', 'wordlift' ),
-			array( $this, 'render_meta_box'),
+			array( $this, 'render_meta_box' ),
 			$post_type,
 			'side',
 			'high'
@@ -38,7 +38,11 @@ class Meta_Box {
 	}
 
 	public function render_meta_box() {
-		echo sprintf("<div id='%s'></div>", esc_html('wl-no-editor-analysis-meta-box-content'));
+		echo sprintf( "<div id='%s'></div><div id='%s'></div>",
+			esc_attr( 'wl-no-editor-analysis-meta-box-content' ),
+			// Div to store the entities.
+			esc_attr( 'wl-no-editor-analysis-meta-box-storage' )
+		);
 	}
 
 	private function is_no_editor_analysis_enabled_for_post_type( $post_type ) {
@@ -47,6 +51,7 @@ class Meta_Box {
 			'wl_no_editor_analysis_post_types',
 			array()
 		);
+
 		return in_array( $post_type, $no_editor_analysis_post_types );
 	}
 
