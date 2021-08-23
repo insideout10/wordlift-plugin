@@ -1480,6 +1480,24 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertSame( array( '@id' => wl_get_entity_uri( $entity ) ), $article_jsonld['about'][0], 'The entity id should be correctly added on about key' );
 	}
 
+	/**
+	 * Add the author.url to the article markup.
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/1461
+	 */
+	public function test_author_url_property_should_be_present_on_the_post_jsonld() {
+
+		$user_id = wl_test_create_user();
+
+		$empty_references = array();
+
+		$result = Wordlift_Post_To_Jsonld_Converter::get_instance()->get_author( $user_id, $empty_references );
+
+		$this->assertArrayHasKey( 'url', $result );
+
+		$this->assertSame( get_author_posts_url( $user_id ), $result['url'], 'The author url should be present on the jsonld' );
+	}
+
 
 	/**
 	 * Get the word count for a {@link WP_Post}.
