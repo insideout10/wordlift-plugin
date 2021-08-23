@@ -29,31 +29,13 @@ class No_Annotation_Strategy extends Singleton implements Occurrences {
 
 		 $entity_service = \Wordlift_Entity_Service::get_instance();
 
-		$linked_entity_uris = array_map( function ( $reference ) use ( $entity_service ) {
-			return $entity_service->get_uri( $reference->get_id(), $reference->get_type() );
-		}, $references );
-
-
-
-		foreach ( $json->entities as $entity_id => $entity ) {
-
-			$json->entities->{$entity_id}->occurrences = $this->get_occurences( $entity_id, $linked_entity_uris );
-
-			foreach ( $json->entities->{$entity_id}->occurrences as $annotation_id ) {
-				$json->entities->{$entity_id}->annotations[ $annotation_id ] = array(
-					'id' => $annotation_id,
-				);
-			}
+		foreach ( $references as $reference ) {
+			$entity_uri = $entity_service->get_uri( $reference->get_id(), $reference->get_type() );
+			$entity_data = wl_serialize_entity(  $reference->get_id()  );
+			$entity_data['occurrences'] = array('placeholder-occurrence');
+			$json->entities->{$entity_uri} = $entity_data;
 		}
 
 		return $json;
-	}
-
-	private function get_occurences( $entity_id, $linked_entity_uris ) {
-		if ( in_array( $entity_id, $linked_entity_uris ) ) {
-			// we need a single occurrence in order to notify the user the entity is selected.
-			return array('placeholder-occurrence');
-		}
-		return array();
 	}
 }

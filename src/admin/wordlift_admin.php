@@ -11,7 +11,7 @@ require_once( 'wordlift_admin_menu.php' );
 /**
  * Serialize an entity post.
  *
- * @param array $entity The entity post or the entity post id.
+ * @param int|array $entity The entity post or the entity post id.
  *
  * @return array mixed The entity data array.
  */
