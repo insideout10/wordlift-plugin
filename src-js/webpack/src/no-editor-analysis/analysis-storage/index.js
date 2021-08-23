@@ -16,8 +16,8 @@ export default class AnalysisStorage {
 
 
     syncData(entities) {
-
-
+        console.log(entities)
+        console.log(" is received by sync data")
         const el = document.getElementById(this.id);
 
         if (!el) {
@@ -57,7 +57,6 @@ export default class AnalysisStorage {
     }
 
     generateHtmlForSingleEntity(entity) {
-        console.log(entity)
         let html = "";
         let entityId = entity.id;
         html += this.generateForSingleField(entityId, "uri", entityId)

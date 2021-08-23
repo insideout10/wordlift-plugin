@@ -13,6 +13,7 @@ import {call, delay, put, select, takeEvery, takeLatest} from "redux-saga/effect
  * Internal dependencies
  */
 import {
+  ADD_ENTITY,
   EDITOR_SELECTION_CHANGED,
   SET_CURRENT_ENTITY,
   TOGGLE_ENTITY,
@@ -32,6 +33,7 @@ import {syncFormData} from "../actions";
 import {NO_EDITOR_SYNC_FORM_DATA} from "../actions/types";
 import AnalysisStorage from "../analysis-storage";
 import {getAllSelectedEntities} from "../selectors";
+import {doAction} from "@wordpress/hooks";
 
 /**
  * Handle the {@link TOGGLE_ENTITY} action.
@@ -80,9 +82,12 @@ function* setCurrentEntity({ entity }) {
 }
 
 function* addEntity({ payload }) {
-  // TODO: add some code for the entity.
-
+  // Add them to the state and sync it.
+  payload.occurrences = ["placeholder-annotation"]
+  yield put({type: ADD_ENTITY, payload: payload});
   yield put(addEntitySuccess());
+  doAction("unstable_wordlift.closeEntitySelect")
+  yield put(syncFormData())
 }
 
 function* createEntity({ payload }) {
