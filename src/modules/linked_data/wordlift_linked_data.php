@@ -114,17 +114,14 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	$entities_uri_mapping = array();
 
 	// Save the entities coming with POST data.
-	if ( isset( $_POST['wl_entities'] ) && isset( $_POST['wl_boxes'] ) ) {
+	if ( isset( $_POST['wl_entities'] ) ) {
 
 		wl_write_log( "[ post id :: $post_id ][ POST(wl_entities) :: " );
 		wl_write_log( json_encode( $_POST['wl_entities'] ) );
 		wl_write_log( "]" );
-		wl_write_log( "[ post id :: $post_id ][ POST(wl_boxes) :: " );
-		wl_write_log( json_encode( $_POST['wl_boxes'], true ) );
-		wl_write_log( "]" );
 
 		$entities_via_post = $_POST['wl_entities'];
-		$boxes_via_post    = $_POST['wl_boxes'];
+
 
 		foreach ( $entities_via_post as $entity_uri => $entity ) {
 
