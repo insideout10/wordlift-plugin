@@ -85,12 +85,6 @@ function* addEntity({ payload }) {
   yield put(syncFormData())
 }
 
-function* createEntity({ payload }) {
-
-  // TODO: add the code to create entity in DOM.
-
-  yield put(createEntitySuccess());
-}
 
 
 function* handleSyncFormData() {
@@ -106,7 +100,6 @@ function* sagas() {
   yield takeEvery(TOGGLE_ENTITY, toggleEntity);
   yield takeLatest(requestAnalysis, handleRequestAnalysis);
   yield takeEvery(addEntityRequest, addEntity);
-  yield takeEvery(createEntityRequest, createEntity);
   yield takeEvery(NO_EDITOR_SYNC_FORM_DATA, handleSyncFormData)
 }
 

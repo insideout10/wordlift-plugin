@@ -1,9 +1,20 @@
-import store from './stores'
+/**
+ * External dependencies.
+ */
 import ReactDOM from "react-dom";
 import {Provider} from "react-redux";
-import App from "../Edit/components/App";
 import React from "react";
+
+/**
+ * Internal dependencies.
+ */
+import store from './stores'
+import App from "../Edit/components/App";
 import {requestAnalysis} from "../block-editor/stores/actions";
+import registerFilters from "../block-editor/filters/add-entity.filters";
+
+
+registerFilters(store)
 
 window.addEventListener("load", () => {
 
