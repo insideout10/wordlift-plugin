@@ -22,8 +22,10 @@ export default  class LinkServiceFactory {
     }
 
     static isNoEditorAnalysisActive() {
-        return wlSettings !== undefined && wlSettings.analysis !== undefined &&
-            wlSettings.analysis.isEditorPresent === false
+        return wlSettings !== undefined
+            && wlSettings.analysis !== undefined
+            && wlSettings.analysis.isEditorPresent !== undefined
+            && wlSettings.analysis.isEditorPresent === false
     }
 
 }

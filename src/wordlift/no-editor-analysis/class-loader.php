@@ -18,6 +18,9 @@ class Loader extends Default_Loader {
 		$edit_screen_setting->add_setting();
 		$meta_box = new Meta_Box();
 		$meta_box->init();
+		$edit_post_scripts = new Edit_Post_Scripts();
+		$edit_post_scripts->init();
+
 	}
 
 	/**
