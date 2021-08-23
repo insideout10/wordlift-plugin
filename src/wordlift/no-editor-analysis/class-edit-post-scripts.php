@@ -10,6 +10,10 @@ class Edit_Post_Scripts extends  Edit_Post_Loader {
 
 	public function run_on_edit_post_screen() {
 
+		// Dont load this script if the post doesnt support it.
+		if ( ! No_Editor_Analysis_Feature::can_no_editor_analysis_be_used( get_the_ID() ) ) {
+			return;
+		}
 
 		Scripts_Helper::enqueue_based_on_wordpress_version(
 			self::HANDLE,
