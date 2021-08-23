@@ -27,7 +27,7 @@ import {
 import React from "react";
 import {requestAnalysis} from "../../block-editor/stores/actions";
 import parseAnalysisResponse from "../../block-editor/stores/compat";
-import {receiveAnalysisResults} from "../../Edit/actions";
+import {receiveAnalysisResults, updateOccurrencesForEntity} from "../../Edit/actions";
 
 /**
  * Handle the {@link TOGGLE_ENTITY} action.
@@ -36,7 +36,13 @@ import {receiveAnalysisResults} from "../../Edit/actions";
  */
 function* toggleEntity(payload) {
   const entity = yield select(getEntity, payload.entity.id);
-//  EditPostWidgetController().$apply(EditPostWidgetController().onSelectedEntityTile(entity));
+  if ( entity.occurrences.length === 0) {
+    // turn on the entity
+    yield put(updateOccurrencesForEntity(entity.id, ["placeholder-annotation"]));
+  }
+  else {
+    yield put(updateOccurrencesForEntity(entity.id, []));
+  }
 }
 
 function* handleRequestAnalysis() {
