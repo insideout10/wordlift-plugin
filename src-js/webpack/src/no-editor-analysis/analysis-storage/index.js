@@ -16,8 +16,6 @@ export default class AnalysisStorage {
 
 
     syncData(entities) {
-        console.log(entities)
-        console.log(" is received by sync data")
         const el = document.getElementById(this.id);
 
         if (!el) {
@@ -42,7 +40,14 @@ export default class AnalysisStorage {
         const fieldHtmlName = isArrayField ?
             `wl_entities[${entityId}][${fieldName}][]`
             : `wl_entities[${entityId}][${fieldName}]`
-        return `<input type='hidden' name="${fieldHtmlName}" value="${value}">`
+
+        const el = document.createElement('input')
+
+        el.setAttribute('type', 'hidden')
+        el.setAttribute('name', fieldHtmlName)
+        el.setAttribute('value', value)
+
+        return el.outerHTML
     }
 
     generateForArrayField(entityId, fieldName, values) {
