@@ -8,6 +8,7 @@
 
 namespace Wordlift\No_Editor_Analysis;
 
+
 class Meta_Box {
 
 	const META_BOX_ID = 'wl-no-editor-analysis-meta-box';
@@ -21,8 +22,7 @@ class Meta_Box {
 
 		// We enable it for only the post types which doesn't support the editor and
 		// enabled on the filter.
-		if ( ! wl_post_type_supports_editor( $post_type )
-		     && $this->is_no_editor_analysis_enabled_for_post_type( $post_type ) ) {
+		if ( ! No_Editor_Analysis_Feature::can_no_editor_analysis_be_used( get_the_ID() ) ) {
 			return;
 		}
 
@@ -45,15 +45,7 @@ class Meta_Box {
 		);
 	}
 
-	private function is_no_editor_analysis_enabled_for_post_type( $post_type ) {
 
-		$no_editor_analysis_post_types = apply_filters(
-			'wl_no_editor_analysis_post_types',
-			array()
-		);
-
-		return in_array( $post_type, $no_editor_analysis_post_types );
-	}
 
 
 }

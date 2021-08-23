@@ -14,8 +14,8 @@ use Wordlift\Features\Feature_Utils;
 class No_Editor_Analysis_Feature {
 
 	public static function can_no_editor_analysis_be_used( $post_id ) {
-		return Feature_Utils::is_feature_on( 'no-editor-analysis', false ) &&
-		       ! post_type_supports( get_post_type( $post_id ), 'editor' );
+		return Feature_Utils::is_feature_on( 'no-editor-analysis', false )
+		       && Post_Type::is_no_editor_analysis_enabled_for_post_type( get_post_type( $post_id ) );
 	}
 
 }

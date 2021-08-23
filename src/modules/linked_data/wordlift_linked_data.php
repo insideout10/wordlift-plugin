@@ -45,8 +45,10 @@ function wl_linked_data_save_post( $post_id ) {
 	 */
 	$is_editor_supported = wl_post_type_supports_editor( $post_type );
 
+	$is_no_editor_analysis_enabled = Wordlift\No_Editor_Analysis\No_Editor_Analysis_Feature::can_no_editor_analysis_be_used( $post_id);
 	// Bail out if it's not an entity.
-	if ( ! $is_editor_supported ) {
+	if ( ! $is_editor_supported
+	     && ! $is_no_editor_analysis_enabled) {
 		$log->debug( "Skipping $post_id, because $post_type doesn't support the editor (content)." );
 
 		return;
@@ -61,7 +63,7 @@ function wl_linked_data_save_post( $post_id ) {
 	$supported_types = Wordlift_Entity_Service::valid_entity_post_types();
 
 	// Bail out if it's not a valid entity.
-	if ( ! in_array( $post_type, $supported_types ) ) {
+	if ( ! in_array( $post_type, $supported_types ) && ! $is_no_editor_analysis_enabled ) {
 		$log->debug( "Skipping $post_id, because $post_type is not a valid entity." );
 
 		return;
@@ -115,7 +117,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	// Save the entities coming with POST data.
 	if ( isset( $_POST['wl_entities'] ) ) {
-
 		wl_write_log( "[ post id :: $post_id ][ POST(wl_entities) :: " );
 		wl_write_log( json_encode( $_POST['wl_entities'] ) );
 		wl_write_log( "]" );

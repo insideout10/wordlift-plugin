@@ -81,18 +81,6 @@
   ])
 
 
-  injector.invoke(['AnalysisService','$rootScope', '$log'
-    (AnalysisService, $rootScope, $log) ->
-      # Bind this function to use on EditPostWidgetController.
-      $rootScope.isNoEditorAnalysisActive = isNoEditorAnalysisActive
-      # execute the following commands in the angular js context.
-      $rootScope.$apply(->
-        if isNoEditorAnalysisActive()
-          # Get the html content of the editor.
-          AnalysisService.perform ""
-      )
-  ])
-
 
   if window['wlSettings']?
     # Add WordLift as a plugin of the TinyMCE editor.
