@@ -1,19 +1,19 @@
 <?php
 
+use Wordlift\Analysis\Occurrences\No_Annotation_Strategy;
 use Wordlift\Relation\Object_Relation_Service;
 
 /**
  * @since 3.32.6
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
-
-class Test_No_Editor_Analysis_Response extends Wordlift_No_Editor_Analysis_Unit_Test_Case  {
+class Test_No_Editor_Analysis_Response extends Wordlift_No_Editor_Analysis_Unit_Test_Case {
 
 
 	public function test_when_no_editor_analysis_is_enabled_should_add_a_fake_occurrence() {
 
 
-		$post_id = $this->factory()->post->create(array('post_type' => 'no-editor-analysis'));
+		$post_id = $this->factory()->post->create( array( 'post_type' => 'no-editor-analysis' ) );
 
 		// Create a local entity with sameAs set to cloud entity uri.
 		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
@@ -21,8 +21,8 @@ class Test_No_Editor_Analysis_Response extends Wordlift_No_Editor_Analysis_Unit_
 		add_post_meta( $entity, 'entity_same_as', 'http://dbpedia.org/resource/Microsoft_Outlook' );
 		wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $entity );
 
-		$request_body            = file_get_contents( dirname( __FILE__ ) . '/assets/content-analysis-request-4.json' );
-		$request_body            = json_decode( $request_body, true );
+		$request_body = file_get_contents( dirname( __FILE__ ) . '/assets/content-analysis-request-4.json' );
+		$request_body = json_decode( $request_body, true );
 
 
 		$_REQUEST['postId'] = $post_id;
@@ -34,8 +34,35 @@ class Test_No_Editor_Analysis_Response extends Wordlift_No_Editor_Analysis_Unit_
 		// convert json to associative array for easy comparisons.
 		$json = json_decode( json_encode( $json ), true );
 		$this->assertCount( 1, $json['entities'], '1 entity should not be present' );
-		$this->assertCount( 1, $json['entities'][$local_entity_uri]['occurrences'], '1 occurence should be present' );
+		$this->assertCount( 1, $json['entities'][ $local_entity_uri ]['occurrences'], '1 occurence should be present' );
 
+	}
+
+
+	/**
+	 * We already rewrite the URIs from the analysis service to local entities, but in a case like an entity created from
+	 * the create entity box, the analysis would not return it, we wont be able to add it since there is no annotation,
+	 * so we need to add those entities manually in the response.
+	 */
+	public function test_on_no_annotation_strategy_we_should_have_all_the_local_entities_in_response() {
+
+		// Lets create  a post and 2 linked entities, we should have them in the json.
+		$post_id  = $this->factory()->post->create();
+		$entity_1 = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$entity_2 = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+
+		wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $entity_1 );
+		wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $entity_2 );
+
+		$strategy = No_Annotation_Strategy::get_instance();
+
+		$analysis_response = new StdClass;
+		$analysis_response->entities = new StdClass;
+
+		$json = $strategy->add_occurences_to_entities( array(), $analysis_response, $post_id );
+
+		$json_arr = json_decode( wp_json_encode( $json ), true );
+		$this->assertCount( 2, array_keys( $json_arr['entities'] ) );
 	}
 
 
@@ -43,6 +70,7 @@ class Test_No_Editor_Analysis_Response extends Wordlift_No_Editor_Analysis_Unit_
 
 		$response = file_get_contents( __DIR__ . '/assets/content-analysis-response-4.json' );
 		$response = str_replace( '{{LOCAL_ENTITY_URI}}', $local_entity_uri, $response );
+
 		return $response;
 	}
 

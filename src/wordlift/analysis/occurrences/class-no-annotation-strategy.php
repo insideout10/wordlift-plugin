@@ -11,6 +11,13 @@ use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Object_Relation_Service;
 
 class No_Annotation_Strategy extends Singleton implements Occurrences {
+	/**
+	 * @return No_Annotation_Strategy
+	 */
+	public static function get_instance() {
+		return parent::get_instance();
+	}
+
 
 	public function add_occurences_to_entities( $occurrences, $json, $post_id ) {
 
