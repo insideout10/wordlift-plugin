@@ -15,25 +15,59 @@ export default class AnalysisStorage {
     }
 
 
-    syncData( entities ) {
+    syncData(entities) {
 
-        console.log("trying to sync data for " + this.id)
-        const el = document.getElementById( this.id);
-        console.log(entities)
-        if ( ! el ) {
+
+        const el = document.getElementById(this.id);
+
+        if (!el) {
             return;
         }
 
         // Reset the state.
         el.innerHTML = "";
 
-        entities.forEach(this.addSingleEntityHtml)
-
+        let fieldHtml = "";
+        for (const [key, value] of entities.entries()) {
+            fieldHtml += this.generateHtmlForSingleEntity( value)
+        }
+        el.innerHTML = fieldHtml
     }
 
 
-    addSingleEntityHtml(value, key) {
-        console.log(value)
-        return "";
+
+
+    generateForSingleField(entityId, fieldName, value, isArrayField = false) {
+
+        const fieldHtmlName = isArrayField ?
+            `wl_entities[${entityId}][${fieldName}][]`
+            : `wl_entities[${entityId}][${fieldName}]`
+        return `<input type='hidden' name="${fieldHtmlName}" value="${value}">`
+    }
+
+    generateForArrayField(entityId, fieldName, values) {
+        if (!Array.isArray(values)) {
+            return ''
+        }
+        let arrHtml = ""
+        for (let value of values) {
+            arrHtml += this.generateForSingleField(entityId, fieldName, value, true)
+        }
+        return arrHtml
+    }
+
+    generateHtmlForSingleEntity(entity) {
+        console.log(entity)
+        let html = "";
+        let entityId = entity.id;
+        html += this.generateForSingleField(entityId, "uri", entityId)
+        html += this.generateForSingleField(entityId, "label", entity.label)
+        html += this.generateForSingleField(entityId, "description", entity.description)
+        html += this.generateForSingleField(entityId, "main_type", "wl-" + entity.mainType)
+        html += this.generateForArrayField(entityId, "type", entity.types)
+        html += this.generateForArrayField(entityId, "image", entity.images)
+        html += this.generateForArrayField(entityId, "sameas", entity.sameAs)
+        html += this.generateForArrayField(entityId, "synonym", entity.synonyms)
+        return html
     }
 }
