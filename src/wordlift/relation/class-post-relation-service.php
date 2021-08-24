@@ -54,7 +54,7 @@ class Post_Relation_Service extends Singleton implements Relation_Service_Interf
 		}, $post_ids );
 	}
 
-	public function get_relations_from_content( $content, $subject_type ) {
+	public function get_relations_from_content( $content, $subject_type, $local_entity_uris ) {
 		$entity_uris = Object_Relation_Service::get_entity_uris( $content );
 
 		return $this->get_relations_from_entity_uris( $subject_type, $entity_uris );

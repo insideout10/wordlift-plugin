@@ -63,9 +63,9 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 	}
 
 
-	public function get_relations_from_content( $content, $subject_type ) {
-		$post_relations = $this->post_relation_service->get_relations_from_content( $content, $subject_type );
-		$term_relations = $this->term_relation_service->get_relations_from_content( $content, $subject_type );
+	public function get_relations_from_content( $content, $subject_type, $local_entity_uris ) {
+		$post_relations = $this->post_relation_service->get_relations_from_content( $content, $subject_type, $local_entity_uris );
+		$term_relations = $this->term_relation_service->get_relations_from_content( $content, $subject_type, $local_entity_uris );
 		return array_filter( array_merge( $post_relations, $term_relations) );
 	}
 

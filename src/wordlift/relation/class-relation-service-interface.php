@@ -28,10 +28,11 @@ interface  Relation_Service_Interface {
 	/**
 	 * @param $content string
 	 * @param int $subject_type {@link Object_Type_Enum}
+	 * @param array $internal_entity_uris An array of internal uri present for post.
 	 * @return array<Relation>
 	 * Extracts the relations from the post content.
 	 */
-	public function get_relations_from_content( $content, $subject_type );
+	public function get_relations_from_content( $content, $subject_type, $local_entity_uris );
 
 
 	/**

@@ -8,19 +8,17 @@
  * @package Wordlift
  * @subpackage Wordlift\Relation
  */
+
 namespace Wordlift\Relation;
 
 class Object_No_Annotation_Relation_Service extends Object_Relation_Service {
 
 
-	public function get_relations_from_content( $content, $subject_type ) {
-		if ( ! isset($_POST['wl_entities'])) {
+	public function get_relations_from_content( $content, $subject_type, $local_entity_uris ) {
+		if ( !  $local_entity_uris ) {
 			return array();
 		}
 
-		$selected_entities = (array) $_POST['wl_entities'];
-		// Returns the list of entity ids.
-		$entity_uris =  array_keys( $selected_entities );
-		return $this->get_relations_from_entity_uris( $subject_type, $entity_uris );
+		return $this->get_relations_from_entity_uris( $subject_type, $local_entity_uris );
 	}
 }

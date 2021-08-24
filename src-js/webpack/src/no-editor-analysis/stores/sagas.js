@@ -13,7 +13,7 @@ import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
  * Internal dependencies
  */
 import {
-  ADD_ENTITY,
+  ADD_ENTITY, SET_CURRENT_ENTITY,
   TOGGLE_ENTITY,
 } from "../../Edit/constants/ActionTypes";
 import { getEntity } from "./selectors";
@@ -99,6 +99,11 @@ function* handleCreateEntityRequest() {
   doAction("unstable_wordlift.closeEntitySelect");
 }
 
+function* handleSetCurrentEntity({entity}) {
+  const url = `${window["wp"].ajax.settings.url}?action=wordlift_redirect&uri=${encodeURIComponent(entity.id)}&to=edit`;
+  window.open(url, "_blank");
+}
+
 /**
  * Connect the side effects.
  */
@@ -108,6 +113,7 @@ function* sagas() {
   yield takeEvery(addEntityRequest, addEntity);
   yield takeEvery(NO_EDITOR_SYNC_FORM_DATA, handleSyncFormData)
   yield takeEvery(createEntityRequest, handleCreateEntityRequest);
+  yield takeEvery(SET_CURRENT_ENTITY, handleSetCurrentEntity)
 }
 
 export default sagas;
