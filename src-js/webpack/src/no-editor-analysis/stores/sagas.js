@@ -1,37 +1,30 @@
 /**
  * This file contains the side effects managed via redux-sagas.
  *
- * @author David Riccitelli <david@wordlift.io>
- * @since 3.23.0
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ * @since 3.32.6
  */
 
 /**
  * External dependencies
  */
 import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
+import React from "react";
+import {doAction} from "@wordpress/hooks";
 /**
  * Internal dependencies
  */
-import {
-  ADD_ENTITY, SET_CURRENT_ENTITY,
-  TOGGLE_ENTITY,
-} from "../../Edit/constants/ActionTypes";
-import { getEntity } from "./selectors";
-import {
-  addEntityRequest,
-  addEntitySuccess,
-  createEntityRequest
-} from "../../Edit/components/AddEntity/actions";
-import React from "react";
+import {ADD_ENTITY, SET_CURRENT_ENTITY, TOGGLE_ENTITY,} from "../../Edit/constants/ActionTypes";
+import {getEntity, getAllSelectedEntities} from "./selectors";
+import {addEntityRequest, addEntitySuccess, createEntityRequest} from "../../Edit/components/AddEntity/actions";
 import {requestAnalysis} from "../../block-editor/stores/actions";
 import parseAnalysisResponse from "../../block-editor/stores/compat";
 import {receiveAnalysisResults, updateOccurrencesForEntity} from "../../Edit/actions";
 import {analysisStateChanged, syncFormData} from "../actions";
 import {NO_EDITOR_SYNC_FORM_DATA} from "../actions/types";
 import AnalysisStorage from "../analysis-storage";
-import {getAllSelectedEntities} from "../selectors";
-import {doAction} from "@wordpress/hooks";
 import uuid from "../../Edit/uuid";
+
 /**
  * Handle the {@link TOGGLE_ENTITY} action.
  *
