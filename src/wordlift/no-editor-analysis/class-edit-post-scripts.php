@@ -28,7 +28,7 @@ class Edit_Post_Scripts extends  Edit_Post_Loader {
 			plugin_dir_url(dirname(__DIR__)) . 'js/dist/no-editor-analysis.full.css',
 			array('wp-components'),
 			true
-		);;
+		);
 
 	}
 
