@@ -8,22 +8,19 @@
 /**
  * External dependencies
  */
-import {call, delay, put, select, takeEvery, takeLatest} from "redux-saga/effects";
+import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 /**
  * Internal dependencies
  */
 import {
   ADD_ENTITY,
-  EDITOR_SELECTION_CHANGED,
-  SET_CURRENT_ENTITY,
   TOGGLE_ENTITY,
 } from "../../Edit/constants/ActionTypes";
 import { getEntity } from "./selectors";
 import {
   addEntityRequest,
   addEntitySuccess,
-  createEntityRequest,
-  createEntitySuccess
+  createEntityRequest
 } from "../../Edit/components/AddEntity/actions";
 import React from "react";
 import {requestAnalysis} from "../../block-editor/stores/actions";
@@ -34,7 +31,7 @@ import {NO_EDITOR_SYNC_FORM_DATA} from "../actions/types";
 import AnalysisStorage from "../analysis-storage";
 import {getAllSelectedEntities} from "../selectors";
 import {doAction} from "@wordpress/hooks";
-
+import uuid from "../../Edit/uuid";
 /**
  * Handle the {@link TOGGLE_ENTITY} action.
  *
@@ -82,6 +79,7 @@ function* handleRequestAnalysis() {
 function* addEntity({ payload }) {
   // Add them to the state and sync it.
   payload.occurrences = ["placeholder-annotation"]
+  payload.id = payload.id ? payload.id : 'local-entity-' + uuid()
   yield put({type: ADD_ENTITY, payload: payload});
   yield put(addEntitySuccess());
   doAction("unstable_wordlift.closeEntitySelect")
@@ -96,6 +94,11 @@ function* handleSyncFormData() {
   storage.syncData(selectedEntities)
 }
 
+function* handleCreateEntityRequest() {
+  // Call the WP hook to close the entity select (see ../../Edit/components/AddEntity/index.js).
+  doAction("unstable_wordlift.closeEntitySelect");
+}
+
 /**
  * Connect the side effects.
  */
@@ -104,6 +107,7 @@ function* sagas() {
   yield takeLatest(requestAnalysis, handleRequestAnalysis);
   yield takeEvery(addEntityRequest, addEntity);
   yield takeEvery(NO_EDITOR_SYNC_FORM_DATA, handleSyncFormData)
+  yield takeEvery(createEntityRequest, handleCreateEntityRequest);
 }
 
 export default sagas;

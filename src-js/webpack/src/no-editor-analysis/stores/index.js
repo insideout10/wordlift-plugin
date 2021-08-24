@@ -26,7 +26,7 @@ import annotationFilter from "../../Edit/reducers/annotationFilter";
 import visibilityFilter from "../../Edit/reducers/visibilityFilter";
 import editor from "../../Edit/reducers/editor";
 import {ANALYSIS_COMPLETE, ANALYSIS_RUNNING} from "../actions/types";
-
+import createEntityForm from "../../common/containers/create-entity-form/actions";
 // Create the store.
 const sagaMiddleware = createSagaMiddleware();
 
@@ -45,12 +45,14 @@ const analysisRunning = function (state = false, action ) {
     return state;
 }
 
+
 const reducer = combineReducers({
     entities,
     annotationFilter,
     visibilityFilter,
     editor,
-    analysisRunning
+    analysisRunning,
+    createEntityForm
 });
 
 

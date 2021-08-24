@@ -21,15 +21,7 @@ registerFilters(store)
 
 window.addEventListener("load", () => {
 
-    // Request analysis when the page is loaded.
-
-
-    // Before that render the component.
-
     const container = document.getElementById('wl-no-editor-analysis-meta-box-content')
-
-    console.log(store.getState())
-    console.log(store.getState().analysisRunning)
 
     // Render the `React` tree at the `wl-entity-list` element.
     ReactDOM.render(

@@ -18,7 +18,7 @@ class Edit_Post_Scripts extends  Edit_Post_Loader {
 		Scripts_Helper::enqueue_based_on_wordpress_version(
 			self::HANDLE,
 			plugin_dir_url(dirname(__DIR__)) . 'js/dist/no-editor-analysis',
-			array(),
+			array('react', 'react-dom', 'wp-components', 'wp-hooks', 'wp-polyfill'),
 			true
 		);
 
@@ -26,7 +26,7 @@ class Edit_Post_Scripts extends  Edit_Post_Loader {
 		wp_enqueue_style(
 			self::HANDLE,
 			plugin_dir_url(dirname(__DIR__)) . 'js/dist/no-editor-analysis.full.css',
-			array(),
+			array('wp-components'),
 			true
 		);;
 
