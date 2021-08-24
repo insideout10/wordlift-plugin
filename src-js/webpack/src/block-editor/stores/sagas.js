@@ -194,6 +194,19 @@ function* toggleAnnotation({annotation}) {
     blocks.apply();
 }
 
+export function getEntityType(entityToAdd) {
+    if (entityToAdd.types) {
+        // Set the main type using the same function used by classic editor.
+        return getMainType(entityToAdd.types)
+    } else if (entityToAdd.category) {
+        // When the user manually adds entity in the editor
+        // set the mainType from category
+        return entityToAdd.category
+            .replace("http://schema.org/", "")
+            .replace("https://schema.org/", "")
+    }
+}
+
 /**
  * Handles the request to add an entity.
  *
@@ -244,18 +257,7 @@ function* handleAddEntityRequest({payload}) {
         occurrences: [annotationId]
     };
 
-
-    if ( entityToAdd.types ) {
-        // Set the main type using the same function used by classic editor.
-        entityToAdd.mainType = getMainType(entityToAdd.types)
-    }
-    else if (entityToAdd.category) {
-        // When the user manually adds entity in the editor
-        // set the mainType from category
-        entityToAdd.mainType = entityToAdd.category
-            .replace("http://schema.org/", "")
-            .replace("https://schema.org/", "")
-    }
+    entityToAdd.mainType  = getEntityType(entityToAdd);
 
     console.debug("Adding Entity", entityToAdd);
     const annotationAttributes = {id: annotationId, class: "disambiguated", itemid: entityToAdd.id};

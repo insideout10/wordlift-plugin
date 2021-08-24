@@ -24,6 +24,7 @@ import {analysisStateChanged, syncFormData} from "../actions";
 import {NO_EDITOR_SYNC_FORM_DATA} from "../actions/types";
 import AnalysisStorage from "../analysis-storage";
 import uuid from "../../Edit/uuid";
+import {getEntityType} from "../../block-editor/stores/sagas";
 
 /**
  * Handle the {@link TOGGLE_ENTITY} action.
@@ -73,6 +74,7 @@ function* addEntity({ payload }) {
   // Add them to the state and sync it.
   payload.occurrences = ["placeholder-annotation"]
   payload.id = payload.id ? payload.id : 'local-entity-' + uuid()
+  payload.mainType  = getEntityType(payload);
   yield put({type: ADD_ENTITY, payload: payload});
   yield put(addEntitySuccess());
   doAction("unstable_wordlift.closeEntitySelect")
