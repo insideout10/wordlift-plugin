@@ -51,6 +51,10 @@ abstract class Wordlift_No_Editor_Analysis_Unit_Test_Case extends Wordlift_Unit_
 				'show_in_nav_menus'   => false,
 			) );
 		});
+		add_action( 'wl_no_editor_analysis_post_types', function ( $post_types ) {
+			$post_types[] = 'no-editor-analysis';
+			return $post_types;
+		});
 		add_filter( 'pre_http_request', array( $this, 'v2_analysis_request_capture'), PHP_INT_MAX, 3 );
 	}
 
