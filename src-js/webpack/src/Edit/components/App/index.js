@@ -11,7 +11,7 @@
  * External dependencies
  */
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 /**
  * Internal dependencies
@@ -21,7 +21,7 @@ import Header from "../Header";
 import VisibleEntityList from "../../containers/VisibleEntityList";
 import Accordion from "../Accordion";
 import AddEntity from "../../components/AddEntity";
-import {addEntityRequest, createEntityRequest} from "../AddEntity/actions";
+import { addEntityRequest, createEntityRequest } from "../AddEntity/actions";
 
 const wlSettings = global["wlSettings"];
 const canCreateEntities =

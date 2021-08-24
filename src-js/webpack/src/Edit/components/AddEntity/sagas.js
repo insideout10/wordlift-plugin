@@ -1,10 +1,19 @@
 /* global wp */
 
-import {eventChannel} from "redux-saga";
-import {call, delay, fork, put, race, select, take, takeEvery, takeLatest} from "redux-saga/effects";
+import { eventChannel } from "redux-saga";
+import { call, delay, fork, put, race, select, take, takeEvery, takeLatest } from "redux-saga/effects";
 
-import {addEntitySuccess, close, createEntitySuccess, loadItemsSuccess, open, setValue,} from "./actions";
-import {autocomplete} from "./api";
+import {
+  addEntitySuccess,
+  createEntityRequest,
+  createEntitySuccess,
+  setValue,
+  loadItemsSuccess,
+  close,
+  open,
+} from "./actions";
+import { autocomplete } from "./api";
+import EditPostWidgetController from "../../angular/EditPostWidgetController";
 
 function* loadItems({ payload }) {
   if ("undefined" === typeof payload || "" === payload) return;

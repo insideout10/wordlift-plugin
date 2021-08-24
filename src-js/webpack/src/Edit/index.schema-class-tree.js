@@ -11,7 +11,7 @@
  */
 import React from "react";
 import ReactDOM from "react-dom";
-import {SchemaClassTree} from "@wordlift/wordlift-for-schemaorg";
+import { SchemaClassTree } from "@wordlift/wordlift-for-schemaorg";
 
 import withLoader from "./SchemaClassTree/withLoader";
 import withProps from "./SchemaClassTree/withProps";

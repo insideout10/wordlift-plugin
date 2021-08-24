@@ -10,8 +10,8 @@
  * Internal dependencies
  */
 import * as types from "../constants/ActionTypes";
-import {TOGGLE_LINK_SUCCESS} from "../constants/ActionTypes";
-import {createAction} from "redux-actions";
+import { createAction } from "redux-actions";
+import { TOGGLE_LINK_SUCCESS } from "../constants/ActionTypes";
 
 /**
  * Set the current annotation. If `undefined` no annotation is selected.

@@ -8,7 +8,7 @@
 /**
  * External dependencies.
  */
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 
 /**
  * Internal dependencies.

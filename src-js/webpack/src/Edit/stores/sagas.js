@@ -8,7 +8,7 @@
 /**
  * External dependencies
  */
-import {delay, put, select, takeEvery, takeLatest} from "redux-saga/effects";
+import { delay, put, select, takeEvery, takeLatest } from "redux-saga/effects";
 /**
  * Internal dependencies
  */
@@ -20,8 +20,8 @@ import {
   TOGGLE_LINK
 } from "../constants/ActionTypes";
 import EditPostWidgetController from "../angular/EditPostWidgetController";
-import {getEntity} from "./selectors";
-import {toggleLinkSuccess} from "../actions";
+import { getEntity } from "./selectors";
+import { toggleLinkSuccess } from "../actions";
 import {
   addEntityRequest,
   addEntitySuccess,
@@ -29,7 +29,7 @@ import {
   createEntitySuccess
 } from "../components/AddEntity/actions";
 import React from "react";
-import LinkService from "../services/LinkService";
+import LinkServiceFactory from "../services/link/LinkServiceFactory";
 import {doAction} from "@wordpress/hooks";
 
 /**
@@ -43,10 +43,10 @@ function* toggleEntity(payload) {
 }
 
 function* toggleLink({ entity }) {
-
+  const linkService = LinkServiceFactory.getInstance();
   // Toggle the link/no link on entity's occurrences.
   // Toggle the link on the occurrences.
-  LinkService.setLink(entity.occurrences, !entity.link);
+  linkService.setLink(entity.occurrences, !entity.link);
 
   yield put(
     toggleLinkSuccess({

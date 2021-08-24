@@ -12,12 +12,12 @@
 /**
  * External dependencies
  */
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 /**
  * Internal dependencies
  */
-import {setCurrentEntity, toggleEntity, toggleLink} from "../actions";
+import { setCurrentEntity, toggleEntity, toggleLink } from "../actions";
 import EntityList from "../components/EntityList";
 
 /**
