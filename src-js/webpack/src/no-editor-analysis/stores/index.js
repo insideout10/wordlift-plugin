@@ -13,19 +13,48 @@
  * External dependencies.
  */
 import logger from "redux-logger";
-import { applyMiddleware, createStore } from "redux";
+import {applyMiddleware, combineReducers, createStore} from "redux";
 import createSagaMiddleware from "redux-saga";
 import thunk from "redux-thunk";
 
 /**
  * Internal dependencies.
  */
-import reducer from "../../Edit/reducers";
 import sagas from "./sagas";
+import entities from "../../Edit/reducers/entities";
+import annotationFilter from "../../Edit/reducers/annotationFilter";
+import visibilityFilter from "../../Edit/reducers/visibilityFilter";
+import editor from "../../Edit/reducers/editor";
+import {ANALYSIS_COMPLETE, ANALYSIS_RUNNING} from "../actions/types";
 
 // Create the store.
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer, applyMiddleware(sagaMiddleware, thunk, logger));
+
+const analysisRunning = function (state = false, action ) {
+
+    const type = action.type
+
+    if ( type === ANALYSIS_COMPLETE ) {
+        return false
+    }
+
+    if ( type === ANALYSIS_RUNNING ) {
+        return true
+    }
+
+    return state;
+}
+
+const reducer = combineReducers({
+    entities,
+    annotationFilter,
+    visibilityFilter,
+    editor,
+    analysisRunning
+});
+
+
+const store = createStore(reducer, { analysisRunning: false}, applyMiddleware(sagaMiddleware, thunk, logger));
 sagaMiddleware.run(sagas);
 
 // Finally export the store.

@@ -29,7 +29,7 @@ import React from "react";
 import {requestAnalysis} from "../../block-editor/stores/actions";
 import parseAnalysisResponse from "../../block-editor/stores/compat";
 import {receiveAnalysisResults, updateOccurrencesForEntity} from "../../Edit/actions";
-import {syncFormData} from "../actions";
+import {analysisStateChanged, syncFormData} from "../actions";
 import {NO_EDITOR_SYNC_FORM_DATA} from "../actions/types";
 import AnalysisStorage from "../analysis-storage";
 import {getAllSelectedEntities} from "../selectors";
@@ -66,11 +66,14 @@ function* handleRequestAnalysis() {
       exclude: [_wlMetaBoxSettings["currentPostUri"]]
   };
 
+  yield put( analysisStateChanged(true) )
+
   const response = yield call(global["wp"].ajax.post, "wl_analyze", {
     _wpnonce: settings["analysis"]["_wpnonce"],
     data: JSON.stringify(request),
     postId: settings["post_id"]
   });
+  yield put( analysisStateChanged(false) )
   const parsed = parseAnalysisResponse(response);
   yield put(receiveAnalysisResults(parsed));
   yield put(syncFormData())
