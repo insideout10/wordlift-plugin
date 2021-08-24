@@ -23,7 +23,9 @@ class No_Editor_Analysis_Request {
 
 		$permalink = get_permalink( $this->post_id );
 
-		$post_content_response = wp_remote_get( $permalink  );
+		// TODO: remove this after local testing
+		$post_content_response = wp_remote_get( $permalink , array( 'sslverify'=> false));
+		// TODO: remove this after local testing
 
 		$page_body = wp_remote_retrieve_body( $post_content_response );
 
