@@ -5,7 +5,7 @@
  */
 import React from "react";
 import ReactDOM from "react-dom";
-import { Form } from "@wordlift/wordlift-for-schemaorg";
+import {Form} from "@wordlift/wordlift-for-schemaorg";
 
 import uuid from "./uuid";
 

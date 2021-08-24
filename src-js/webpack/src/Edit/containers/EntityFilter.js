@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 /**
  * Internal dependencies
  */
-import { setEntityVisibility } from '../actions';
+import {setEntityVisibility} from '../actions';
 import Link from '../components/Link';
 
 /**

@@ -9,24 +9,22 @@
 /**
  * Internal dependencies
  */
-import EditorService from "../EditorService";
-import {LinkServiceInterface} from "./LinkServiceInterface";
+import EditorService from "./EditorService";
 
 /**
  * Define the `LinkService` class.
  *
  * @since 3.11.0
  */
-export default  class LinkService extends LinkServiceInterface {
+class LinkService  {
   /**
    * Create an `LinkService` instance.
    *
    * @since 3.13.0
    */
-  constructor() {
+  constructor( linkByDefault ) {
     // Set the `link by default` setting.
-    super();
-    this.linkByDefault = ( "1" === wlSettings.link_by_default );
+    this.linkByDefault = linkByDefault;
   }
 
   /**
@@ -110,3 +108,5 @@ export default  class LinkService extends LinkServiceInterface {
     }
   }
 }
+
+export default new LinkService("1" === wlSettings.link_by_default);

@@ -12,7 +12,7 @@
 /**
  * Internal dependencies
  */
-import { receiveAnalysisResults } from '../actions'
+import {receiveAnalysisResults} from '../actions'
 
 /**
  * Define the `ReceiveAnalysisResultsEvent` event.

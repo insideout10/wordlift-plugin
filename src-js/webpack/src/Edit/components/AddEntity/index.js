@@ -1,18 +1,18 @@
 /**
  * External dependencies
  */
-import React, { Fragment } from "react";
-import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
+import React, {Fragment} from "react";
+import {Provider} from "react-redux";
+import {applyMiddleware, createStore} from "redux";
 import createSagaMiddleware from "redux-saga";
 import logger from "redux-logger";
 import PropTypes from "prop-types";
-import { on } from "backbone";
+import {on} from "backbone";
 
 /**
  * WordPress dependencies
  */
-import { addAction, applyFilters } from "@wordpress/hooks";
+import {addAction, applyFilters} from "@wordpress/hooks";
 
 /**
  * Internal dependencies
@@ -22,8 +22,8 @@ import EntitySelectContainer from "./EntitySelectContainer";
 import WrapperContainer from "./WrapperContainer";
 import Arrow from "../Arrow";
 import saga from "./sagas";
-import { addEntitySuccess, close, reducer, setValue } from "./actions";
-import { SELECTION_CHANGED } from "../../../common/constants";
+import {addEntitySuccess, close, reducer, setValue} from "./actions";
+import {SELECTION_CHANGED} from "../../../common/constants";
 
 // Create the saga middleware.
 const sagaMiddleware = createSagaMiddleware();

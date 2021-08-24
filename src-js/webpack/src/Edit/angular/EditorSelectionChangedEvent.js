@@ -12,7 +12,7 @@
 /**
  * Internal dependencies
  */
-import { editorSelectionChanged } from "../actions";
+import {editorSelectionChanged} from "../actions";
 
 /**
  * Define the `EditorSelectionChangedEvent` event.

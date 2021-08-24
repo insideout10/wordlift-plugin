@@ -1,6 +1,6 @@
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 
-import { open } from "./actions";
+import {open} from "./actions";
 import Button from "../Button";
 
 const mapStateToProps = ({ enabled, value }) => ({

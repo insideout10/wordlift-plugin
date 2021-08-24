@@ -12,7 +12,7 @@
 /**
  * Internal dependencies
  */
-import { setCurrentAnnotation } from '../actions'
+import {setCurrentAnnotation} from '../actions'
 
 /**
  * Define the `AnnotationEvent` event.

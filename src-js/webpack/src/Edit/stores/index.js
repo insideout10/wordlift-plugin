@@ -13,7 +13,7 @@
  * External dependencies.
  */
 import logger from "redux-logger";
-import { applyMiddleware, createStore } from "redux";
+import {applyMiddleware, createStore} from "redux";
 import createSagaMiddleware from "redux-saga";
 import thunk from "redux-thunk";
 

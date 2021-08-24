@@ -12,7 +12,7 @@
 /**
  * Internal dependencies
  */
-import { updateOccurrencesForEntity } from '../actions'
+import {updateOccurrencesForEntity} from '../actions'
 
 /**
  * Define the `UpdateOccurrencesForEntityEvent` event.

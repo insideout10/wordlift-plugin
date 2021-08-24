@@ -17,7 +17,7 @@ import {Map} from "immutable";
 import * as types from "../constants/ActionTypes";
 import {TOGGLE_LINK_SUCCESS} from "../constants/ActionTypes";
 import WsService from "../services/WsService";
-import LinkServiceFactory from "../services/link/LinkServiceFactory";
+import LinkService from "../services/LinkService";
 
 /**
  * Define the reducers.
@@ -28,7 +28,6 @@ import LinkServiceFactory from "../services/link/LinkServiceFactory";
  * @returns {object} The new state.
  */
 const entities = function (state = Map(), action) {
-    const linkService = LinkServiceFactory.getInstance()
     switch (action.type) {
         case types.ADD_ENTITY:
             return state.merge(Map({[action.payload.id]: action.payload}));
@@ -44,7 +43,7 @@ const entities = function (state = Map(), action) {
                 Map(action.results.entities)
                     .map(x =>
                         Object.assign({}, x, {
-                            link: linkService.getLink(x.occurrences),
+                            link: LinkService.getLink(x.occurrences),
                             local: 0 === x.id.indexOf(wlSettings["datasetUri"]),
                             w: WsService.getW(x),
                             edit: "no" !== wlSettings["can_create_entities"],
