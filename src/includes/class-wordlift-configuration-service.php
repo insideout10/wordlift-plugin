@@ -292,6 +292,11 @@ class Wordlift_Configuration_Service {
 	}
 
 	/**
+	 * @deprecated As of 3.32.7 this below method has no effect on setting the language, we use the
+	 * language code form wordpress directly.
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/1466
+	 *
 	 * Set WordLift's language code, used when storing strings to the Linked Data dataset.
 	 *
 	 * @param string $value WordLift's language code.
