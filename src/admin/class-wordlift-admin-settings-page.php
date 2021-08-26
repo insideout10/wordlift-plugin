@@ -277,19 +277,28 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			$entity_base_path_args
 		);
 
+
+		$language_name = Wordlift_Languages::get_language_name(
+			$this->configuration_service->get_language_code()
+		);
+
 		// Add the `language_name` field.
 		add_settings_field(
 			'wl-site-language',
 			__( 'Site Language', 'wordlift' ),
-			array( $this->language_select_element, 'render' ),
+			array( $this->input_element, 'render' ),
 			'wl_general_settings',
 			'wl_general_settings_section',
 			array(
 				// The array of arguments to pass to the callback. In this case, just a description.
 				'id'          => 'wl-site-language',
 				'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::LANGUAGE . ']',
-				'value'       => $this->configuration_service->get_language_code(),
-				'description' => __( 'Each WordLift Key can be used only in one language. Pick yours.', 'wordlift' ),
+				'value'       => $language_name,
+				'description' => sprintf( __(
+					'WordLift uses the site language, You can change the language from <a href="%s">settings</a>.', 'wordlift' ),
+					admin_url('options-general.php/#WPLANG')
+				),
+				'readonly' => true
 			)
 		);
 

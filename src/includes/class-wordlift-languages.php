@@ -89,7 +89,7 @@ class Wordlift_Languages {
 
 			// Get the language names from WP's own (multisite) function.
 			foreach ( self::$codes as $key ) {
-				self::$languages[ $key ] = self::format_code_lang( $key );
+				self::$languages[ $key ] = self::get_language_name( $key );
 			}
 
 			// Sort by language name.
@@ -109,7 +109,7 @@ class Wordlift_Languages {
 	 * @return string The language corresponding to $code if it exists. If it does not exist,
 	 *                then the first two letters of $code is returned.
 	 */
-	private static function format_code_lang( $code = '' ) {
+	public static function get_language_name( $code = '' ) {
 		$code       = strtolower( substr( $code, 0, 2 ) );
 		$lang_codes = array(
 			'aa' => 'Afar',
