@@ -71,17 +71,6 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
-	/**
-	 * Test setting a new language, that the language is saved in the configuration.
-	 */
-	function test_wl_configuration_site_language() {
-
-		$value = 'kl';
-		$this->configuration_service->set_language_code( $value );
-
-		$this->assertEquals( $value, $this->configuration_service->get_language_code() );
-
-	}
 
 	/**
 	 * Test the `link by default` setting.
