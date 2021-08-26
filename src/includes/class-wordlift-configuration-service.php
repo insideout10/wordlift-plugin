@@ -284,7 +284,11 @@ class Wordlift_Configuration_Service {
 	 */
 	public function get_language_code() {
 
-		return $this->get( 'wl_general_settings', self::LANGUAGE, 'en' );
+		$language = get_bloginfo('language');
+		if ( ! $language ) {
+			return 'en';
+		}
+		return substr( $language, 0, 2);
 	}
 
 	/**
