@@ -286,20 +286,14 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		add_settings_field(
 			'wl-site-language',
 			__( 'Site Language', 'wordlift' ),
-			array( $this->input_element, 'render' ),
-			'wl_general_settings',
-			'wl_general_settings_section',
-			array(
-				// The array of arguments to pass to the callback. In this case, just a description.
-				'id'          => 'wl-site-language',
-				'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::LANGUAGE . ']',
-				'value'       => $language_name,
-				'description' => sprintf( __(
-					'WordLift uses the site language, You can change the language from <a href="%s">settings</a>.', 'wordlift' ),
+			function () use ( $language_name ) {
+				echo sprintf( '<p><label>%s</label></p>', esc_html( $language_name ));
+				echo  sprintf( __( '<br/><p>WordLift uses the site language, You can change the language from <a href="%s">settings.</a></p>', 'wordlift' ),
 					admin_url('options-general.php/#WPLANG')
-				),
-				'readonly' => true
-			)
+				);
+			},
+			'wl_general_settings',
+			'wl_general_settings_section'
 		);
 
 		// Add the `country_code` field.
