@@ -1665,6 +1665,8 @@ class Wordlift {
 		);
 
 		new Entity_Type_Setter();
+		$no_editor_analysis_loader = new \Wordlift\No_Editor_Analysis\Loader();
+		$no_editor_analysis_loader->init_feature();
 	}
 
 	/**
