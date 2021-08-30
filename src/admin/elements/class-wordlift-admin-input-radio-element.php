@@ -21,8 +21,6 @@ class Wordlift_Admin_Radio_Input_Element implements Wordlift_Admin_Element {
 	/**
 	 * Output the HTML for an input box type settings_page.
 	 *
-	 * @since      3.13.0
-	 *
 	 * @param array $args {
 	 *                           An array of arguments.
 	 *
@@ -40,6 +38,8 @@ class Wordlift_Admin_Radio_Input_Element implements Wordlift_Admin_Element {
 	 *                           empty string.
 	 * }
 	 * @return $this|Wordlift_Admin_Element
+	 * @since      3.13.0
+	 *
 	 */
 	public function render( $args ) {
 		/*
@@ -56,19 +56,19 @@ class Wordlift_Admin_Radio_Input_Element implements Wordlift_Admin_Element {
 
 		// Set the readonly and class attributes and the description.
 		$value       = $params['value'];
-		$css_class   = ! empty( $params['css_class'] ) ? esc_attr( $params['css_class'] ) : '';
+		$css_class   = ! empty( $params['css_class'] ) ? ' class="' . esc_attr( $params['css_class'] ) . '"' : '';
 		$description = ! empty( $params['description'] ) ? '<p>' . wp_kses( $params['description'], array( 'a' => array( 'href' => array() ) ) ) . '</p>' : '';
 
 		?>
 
         <input type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
                name="<?php echo esc_attr( $params['name'] ); ?>"
-               value="yes" class="<?php echo esc_attr( $css_class ); ?>"
+               value="yes" <?php echo $css_class; ?>
 			<?php checked( $value, 'yes' ); ?>
         /> Yes
         <input type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
                name="<?php echo esc_attr( $params['name'] ); ?>"
-               value="no" class="<?php echo esc_attr( $css_class ); ?>"
+               value="no" <?php echo $css_class; ?>
 			<?php checked( $value, 'no' ); ?>
         /> No
 

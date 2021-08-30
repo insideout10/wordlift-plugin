@@ -44,7 +44,7 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 				id="<?php echo esc_attr( $params['id'] ); ?>"
 				name="<?php echo esc_attr( $params['name'] ); ?>"
 				class="<?php echo esc_attr( $params['class'] ); ?>"
-			<?php echo esc_html( $this->get_data_attributes( $params['data'] ) ); ?>
+			<?php echo $this->get_data_attributes( $params['data'] ); ?>
 		>
 			<?php $this->render_options( $params ); ?>
 		</select>
