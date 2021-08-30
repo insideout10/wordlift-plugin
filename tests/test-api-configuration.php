@@ -71,17 +71,6 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
-	/**
-	 * Test setting a new language, that the language is saved in the configuration.
-	 */
-	function test_wl_configuration_site_language() {
-
-		$value = 'kl';
-		$this->configuration_service->set_language_code( $value );
-
-		$this->assertEquals( $value, $this->configuration_service->get_language_code() );
-
-	}
 
 	/**
 	 * Test the `link by default` setting.
@@ -223,6 +212,23 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 
 		$this->configuration_service->set_package_type( $package_type );
 
+	}
+
+
+	public function test_when_the_language_code_not_set_by_wordlift_should_use_system_language_code() {
+		global $wp_filter;
+		// Dont trigger any filters.
+		$wp_filter_copy = $wp_filter;
+		$wp_filter = array();
+
+		// we set a custom language code in configuration, but we should not get this value.
+		$this->configuration_service->set_language_code( 'ta' );
+
+		// set the filters back.
+		$wp_filter = $wp_filter_copy;
+
+		//substr( get_bloginfo('language'), 0, 2)
+		$this->assertSame( 'en', $this->configuration_service->get_language_code(), 'Language code should not be from wordlift settings.');
 	}
 
 	/**

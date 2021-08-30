@@ -1,0 +1,10 @@
+{
+  "contentType": "text/html",
+  "scope": "all",
+  "content": "test-no-editor-analysis-service",
+  "version": "1.0.0",
+  "contentLanguage": "de",
+  "exclude": [
+    "http://data.wordlift.io/wl02565/entity/microsoft_outlook"
+  ]
+}

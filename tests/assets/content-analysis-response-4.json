@@ -1,0 +1,53 @@
+{
+  "entities": {
+    "{{LOCAL_ENTITY_URI}}": {
+      "entityId": "http://dbpedia.org/resource/Microsoft_Outlook",
+      "confidence": 1.0,
+      "mainType": "creative-work",
+      "types": [
+        "creative-work"
+      ],
+      "label": "Microsoft Outlook",
+      "description": "Microsoft Outlook (engl. []) für Windows und Macintosh wie auch das ehemalige Microsoft Entourage für Mac OS sind verbreitete Personal Information Manager (PIM) der Firma Microsoft. Die Macintosh-Versionen des PIM-Clients zwischen 2001 und 2008 hießen Entourage. Vom Funktionsumfang her sind beide Produkte ähnlich. Outlook ist primär der Client zum Exchange Server, ein Einsatz ohne Exchange ist aber auch möglich. Erstmals erschien es 1997 im Zusammenhang mit Microsoft Exchange Server 5.5, wo es den „Exchange Client“, der bis Exchange Server 5.0 noch ausgeliefert wurde, sowie Schedule+ vereinte und ersetzte. Durch die starke Integration in Microsoft Office kann Outlook auch als Teil des Office-Pakets von Microsoft angesehen werden und wird auch als PIM mit diesem zusammen verkauft. Bei dem E-Mail- und Newsclient Outlook Express (für Windows) handelt es sich trotz der Namensähnlichkeit um ein anderes Programm.",
+      "images": [],
+      "sameAs": [
+        "http://de.dbpedia.org/resource/Microsoft_Outlook",
+        "http://no.dbpedia.org/resource/Microsoft_Office_Outlook",
+        "http://ru.dbpedia.org/resource/Microsoft_Outlook",
+        "http://fi.dbpedia.org/resource/Microsoft_Outlook",
+        "http://pt.dbpedia.org/resource/Microsoft_Outlook",
+        "http://hr.dbpedia.org/resource/Microsoft_Outlook",
+        "http://fr.dbpedia.org/resource/Microsoft_Outlook",
+        "http://hu.dbpedia.org/resource/Microsoft_Outlook",
+        "http://uk.dbpedia.org/resource/Microsoft_Outlook",
+        "http://id.dbpedia.org/resource/Microsoft_Outlook",
+        "http://ca.dbpedia.org/resource/Microsoft_Outlook",
+        "http://sv.dbpedia.org/resource/Microsoft_Outlook",
+        "http://en.dbpedia.org/resource/Microsoft_Outlook",
+        "http://it.dbpedia.org/resource/Microsoft_Outlook",
+        "http://es.dbpedia.org/resource/Microsoft_Outlook",
+        "http://et.dbpedia.org/resource/Microsoft_Outlook",
+        "http://cs.dbpedia.org/resource/Microsoft_Outlook",
+        "http://pl.dbpedia.org/resource/Microsoft_Outlook",
+        "http://ro.dbpedia.org/resource/Microsoft_Outlook",
+        "http://da.dbpedia.org/resource/Microsoft_Outlook",
+        "http://nl.dbpedia.org/resource/Microsoft_Outlook",
+        "http://tr.dbpedia.org/resource/Microsoft_Outlook"
+      ]
+    }
+  },
+  "annotations": {
+    "urn:enhancement-d345e150-f553-475c-a731-29bd806219ca": {
+      "annotationId": "urn:enhancement-d345e150-f553-475c-a731-29bd806219ca",
+      "start": 25,
+      "end": 42,
+      "text": "Microsoft Outlook",
+      "entityMatches": [
+        {
+          "confidence": 1.0,
+          "entityId": "http://dbpedia.org/resource/Microsoft_Outlook"
+        }
+      ]
+    }
+  }
+}

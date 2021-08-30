@@ -23,7 +23,8 @@ import Tabs from 'modules/tabs';
     KeyValidator('#wl-key');
     $('#wl-key').trigger('keyup');
 
-    CountryValidator('#wl-country-code', '#wl-site-language');
+    // @since 3.32.7, country validation is disabled.
+    //CountryValidator('#wl-country-code', '#wl-site-language');
 
     // Attach the Media Uploader to the #wl-publisher-logo
     MediaUploader(

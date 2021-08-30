@@ -142,7 +142,19 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.32.3 (2021-07-__) =
+= 3.32.6 (2021-08-23) =
+
+* Enhancement [#1461](https://github.com/insideout10/wordlift-plugin/issues/1461): Add the author.url property
+
+= 3.32.5 (2021-08-10) =
+
+* Fix [#1459](https://github.com/insideout10/wordlift-plugin/issues/1459): Term entity fields not appearing on CPT or custom taxonomies.
+
+= 3.32.4 (2021-08-04) =
+
+* Fix [#1456](https://github.com/insideout10/wordlift-plugin/issues/1456): Analysis Exclude doesnt work when the cloud entity is returned with sameAs referring to local entity
+
+= 3.32.3 (2021-08-02) =
 
 * Enhancement [#1444](https://github.com/insideout10/wordlift-plugin/issues/1444): Add terms as mentions to the Article
 * Enhancement [#1434](https://github.com/insideout10/wordlift-plugin/issues/1434): Restrict entity types by the subscription

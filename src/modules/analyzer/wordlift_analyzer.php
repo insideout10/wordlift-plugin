@@ -1,11 +1,13 @@
 <?php
 
+use Wordlift\Analysis\Analysis_Service_Factory;
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 
 /**
  * This function returns empty array response from analysis,
  * this is usually called when the analysis is disabled using
  * `wl_feature__enable__analysis` hook.
+ *
  * @since 3.27.6
  */
 function wl_ajax_analyze_disabled_action() {
@@ -13,11 +15,13 @@ function wl_ajax_analyze_disabled_action() {
 	if ( ! headers_sent() ) {
 		header( 'X-WordLift-Analysis: OFF' );
 	}
-	wp_send_json_success( array(
-		'entities'    => array(),
-		'annotations' => array(),
-		'topics'      => array()
-	) );
+	wp_send_json_success(
+		array(
+			'entities'    => array(),
+			'annotations' => array(),
+			'topics'      => array(),
+		)
+	);
 }
 
 /**
@@ -61,6 +65,9 @@ function wl_analyze_content( $data, $content_type ) {
 
 	$default_response = json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' );
 	$request_body     = json_decode( $data, true );
+
+	$post_id = isset( $_REQUEST['postId'] ) ? intval( $_REQUEST['postId'] ) : 0;
+
 	if ( $request_body === null ) {
 		/**
 		 * @since 3.27.7
@@ -70,32 +77,35 @@ function wl_analyze_content( $data, $content_type ) {
 		$request_body = json_decode( stripslashes( $data ), true );
 	}
 	$request_body['contentLanguage'] = Wordlift_Configuration_Service::get_instance()->get_language_code();
+	$excluded_uris                   = array_key_exists( 'exclude', $request_body ) ? (array) $request_body['exclude'] : array();
 	$data                            = wp_json_encode( $request_body );
 
 	// If dataset is not enabled, return a locally prepared response without analysis API.
 	if ( ! apply_filters( 'wl_features__enable__dataset', true ) ) {
 
 		return Analysis_Response_Ops_Factory::get_instance()
-		                                    ->create( $default_response )
-		                                    ->make_entities_local()
-		                                    ->add_occurrences( $request_body['content'] )
-		                                    ->add_local_entities()
-		                                    ->get_json();
+											->create( $default_response, $post_id )
+											->make_entities_local()
+											->add_occurrences( $request_body['content'] )
+											->add_local_entities()
+											->get_json();
 	}
 
 	add_filter( 'wl_api_service_api_url_path', 'wl_use_analysis_on_api_wordlift_io' );
-	$json = Wordlift_Api_Service::get_instance()
-	                            ->post_custom_content_type( 'analysis/single', $data, $content_type );
+
+
+	$json    = Analysis_Service_Factory::get_instance( $post_id )
+								->get_analysis_response( $data, $content_type, $post_id );
+
 	remove_filter( 'wl_api_service_api_url_path', 'wl_use_analysis_on_api_wordlift_io' );
 
 	// If it's an error log it.
 	if ( is_wp_error( $json ) ) {
-
 		return Analysis_Response_Ops_Factory::get_instance()
-		                                    ->create( $default_response )
-		                                    ->make_entities_local()
-		                                    ->add_occurrences( $request_body['content'] )
-		                                    ->get_json();
+											->create( $default_response, $post_id )
+											->make_entities_local()
+											->add_occurrences( $request_body['content'] )
+											->get_json();
 	}
 
 	/*
@@ -114,10 +124,11 @@ function wl_analyze_content( $data, $content_type ) {
 	}
 
 	return Analysis_Response_Ops_Factory::get_instance()
-	                                    ->create( $json )
-	                                    ->make_entities_local()
-	                                    ->add_occurrences( $request_content )
-	                                    ->get_json();
+										->create( $json, $post_id )
+										->make_entities_local()
+										->remove_excluded_entities( $excluded_uris )
+										->add_occurrences( $request_content )
+										->get_json();
 
 }
 

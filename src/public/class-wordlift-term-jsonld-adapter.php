@@ -230,6 +230,8 @@ class Wordlift_Term_JsonLd_Adapter {
 		$entity_ids         = get_term_meta( $term_id, '_wl_entity_id' );
 		$entity_uri_service = $this->entity_uri_service;
 
+		$wordlift_jsonld_service = Wordlift_Jsonld_Service::get_instance();
+
 		$local_entity_ids = array_filter( $entity_ids, function ( $uri ) use ( $entity_uri_service ) {
 			return $entity_uri_service->is_internal( $uri );
 		} );
@@ -240,11 +242,11 @@ class Wordlift_Term_JsonLd_Adapter {
 		}
 
 		$post   = $this->entity_uri_service->get_entity( array_shift( $local_entity_ids ) );
-		$jsonld = $this->post_id_to_jsonld_converter->convert( $post->ID );
+		$entities_jsonld = $wordlift_jsonld_service->get_jsonld( false, $post->ID );
 		// Reset the `url` to the term page.
-		$jsonld[0]['url'] = get_term_link( $term_id );
+		$entities_jsonld[0]['url'] = get_term_link( $term_id );
 
-		return array( $jsonld );
+		return  $entities_jsonld;
 	}
 
 

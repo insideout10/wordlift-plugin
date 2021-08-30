@@ -44,7 +44,7 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 	public function test_response_not_an_array() {
 
 		Analysis_Response_Ops_Factory::get_instance()
-		                             ->create_with_response( "something else" );
+		                             ->create_with_response( "something else", null );
 
 	}
 
@@ -57,7 +57,7 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 	public function test_response_array_without_body() {
 
 		Analysis_Response_Ops_Factory::get_instance()
-		                             ->create_with_response( array() );
+		                             ->create_with_response( array(), null );
 
 	}
 
@@ -70,7 +70,7 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 	public function test_response_body() {
 
 		Analysis_Response_Ops_Factory::get_instance()
-		                             ->create_with_response( array( 'body' => null ) );
+		                             ->create_with_response( array( 'body' => null ), null );
 
 	}
 
@@ -121,7 +121,7 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 
 		// Create the Analysis_Response_Ops with the response.
 		$ops = Analysis_Response_Ops_Factory::get_instance()->create_with_response(
-			array( 'body' => json_encode( $analysis_response, JSON_UNESCAPED_UNICODE ) ) );
+			array( 'body' => json_encode( $analysis_response, JSON_UNESCAPED_UNICODE ) ), $post_id );
 
 		// Make local and get the JSON.
 		$json = json_decode( $ops->make_entities_local()->to_string(), true );
@@ -152,13 +152,13 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 
 
 		// Trigger plugins loaded action to register the providers.
-		do_action('plugins_loaded');
+		do_action( 'plugins_loaded' );
 
 		$response_json = Analysis_Response_Ops_Factory
 			::get_instance()
-			->create( json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' ) )
+			->create( json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' ), $post_id )
 			->make_entities_local()
-			->add_occurrences( str_replace('{ENTITY_URL}', $entity_url, $request_json['content'] ) )
+			->add_occurrences( str_replace( '{ENTITY_URL}', $entity_url, $request_json['content'] ) )
 			->get_json();
 
 		$this->assertTrue( isset( $response_json->entities ), 'The entities property must exist.' );
@@ -180,5 +180,113 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 			'Our mock entity must have annotations.' );
 
 	}
+
+	public function test_when_analysis_returns_entity_pointing_to_local_uri_for_same_entity_should_not_annotate() {
+
+		// Create a local entity with sameAs set to cloud entity uri.
+		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+
+		// set sameAs to a cloud entity uri.
+		add_post_meta( $entity, 'entity_same_as', 'http://dbpedia.org/resource/Microsoft_Outlook' );
+
+		// Now perform analysis for this entity page.
+		$analysis_response_string = <<<EOF
+{
+  "entities": {
+    "http://dbpedia.org/resource/Microsoft_Outlook": {
+      "entityId": "http://dbpedia.org/resource/Microsoft_Outlook",
+      "confidence": 1.0,
+      "mainType": "creative-work",
+      "types": [
+        "creative-work"
+      ],
+      "label": "Microsoft Outlook",
+      "description": "Microsoft Outlook (engl. []) für Windows und Macintosh wie auch das ehemalige Microsoft Entourage für Mac OS sind verbreitete Personal Information Manager (PIM) der Firma Microsoft. Die Macintosh-Versionen des PIM-Clients zwischen 2001 und 2008 hießen Entourage. Vom Funktionsumfang her sind beide Produkte ähnlich. Outlook ist primär der Client zum Exchange Server, ein Einsatz ohne Exchange ist aber auch möglich. Erstmals erschien es 1997 im Zusammenhang mit Microsoft Exchange Server 5.5, wo es den „Exchange Client“, der bis Exchange Server 5.0 noch ausgeliefert wurde, sowie Schedule+ vereinte und ersetzte. Durch die starke Integration in Microsoft Office kann Outlook auch als Teil des Office-Pakets von Microsoft angesehen werden und wird auch als PIM mit diesem zusammen verkauft. Bei dem E-Mail- und Newsclient Outlook Express (für Windows) handelt es sich trotz der Namensähnlichkeit um ein anderes Programm.",
+      "images": [],
+      "sameAs": [
+        "http://de.dbpedia.org/resource/Microsoft_Outlook",
+        "http://no.dbpedia.org/resource/Microsoft_Office_Outlook",
+        "http://ru.dbpedia.org/resource/Microsoft_Outlook",
+        "http://fi.dbpedia.org/resource/Microsoft_Outlook",
+        "http://pt.dbpedia.org/resource/Microsoft_Outlook",
+        "http://hr.dbpedia.org/resource/Microsoft_Outlook",
+        "http://fr.dbpedia.org/resource/Microsoft_Outlook",
+        "http://hu.dbpedia.org/resource/Microsoft_Outlook",
+        "http://uk.dbpedia.org/resource/Microsoft_Outlook",
+        "http://id.dbpedia.org/resource/Microsoft_Outlook",
+        "http://ca.dbpedia.org/resource/Microsoft_Outlook",
+        "http://sv.dbpedia.org/resource/Microsoft_Outlook",
+        "http://en.dbpedia.org/resource/Microsoft_Outlook",
+        "http://it.dbpedia.org/resource/Microsoft_Outlook",
+        "http://es.dbpedia.org/resource/Microsoft_Outlook",
+        "http://et.dbpedia.org/resource/Microsoft_Outlook",
+        "http://cs.dbpedia.org/resource/Microsoft_Outlook",
+        "http://pl.dbpedia.org/resource/Microsoft_Outlook",
+        "http://ro.dbpedia.org/resource/Microsoft_Outlook",
+        "http://da.dbpedia.org/resource/Microsoft_Outlook",
+        "http://nl.dbpedia.org/resource/Microsoft_Outlook",
+        "http://tr.dbpedia.org/resource/Microsoft_Outlook"
+      ]
+    }
+  },
+  "annotations": {
+    "urn:enhancement-d345e150-f553-475c-a731-29bd806219ca": {
+      "annotationId": "urn:enhancement-d345e150-f553-475c-a731-29bd806219ca",
+      "start": 25,
+      "end": 42,
+      "text": "Microsoft Outlook",
+      "entityMatches": [
+        {
+          "confidence": 1.0,
+          "entityId": "http://dbpedia.org/resource/Microsoft_Outlook"
+        }
+      ]
+    }
+  }
+}
+EOF;
+
+		$analysis_response_object = json_decode( $analysis_response_string );
+
+
+		$local_entity_uri = \Wordlift_Entity_Service::get_instance()->get_uri( $entity );
+
+		$json = Analysis_Response_Ops_Factory::get_instance()
+		                                     ->create( $analysis_response_object, null )
+		                                     ->make_entities_local()
+		                                     ->remove_excluded_entities( array( $local_entity_uri ) )
+		                                     ->add_occurrences( "" )
+		                                     ->get_json();
+
+		// convert json to associative array for easy comparisons.
+		$json = json_decode( json_encode( $json ), true );
+
+		$this->assertCount( 0, $json['entities'], 'This entity should not be present since we are excluding it' );
+		$this->assertCount( 0, $json['annotations'], 'This related annotation should not be present since we are excluding the entity' );
+	}
+
+	public function test_when_analysis_returns_correct_response() {
+		// Create a local entity with sameAs set to cloud entity uri.
+		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		// set sameAs to a cloud entity uri.
+		add_post_meta( $entity, 'entity_same_as', 'http://dbpedia.org/resource/Microsoft_Outlook' );
+
+		$request_body            = file_get_contents( dirname( __FILE__ ) . '/assets/content-analysis-request-3.json' );
+		$request_body            = json_decode( $request_body, true );
+		$request_body['exclude'] = array( wl_get_entity_uri( $entity ) );
+
+		$json = wl_analyze_content( json_encode( $request_body ), 'text/html' );
+		// convert json to associative array for easy comparisons.
+		$json = json_decode( json_encode( $json ), true );
+		$this->assertCount( 0, $json['entities'], 'This entity should not be present since we are excluding it' );
+		$this->assertFalse(
+			array_key_exists( 'urn:enhancement-d345e150-f553-475c-a731-29bd806219ca', $json['annotations'] ),
+			'This related annotation should not be present since we are excluding the entity'
+		);
+
+	}
+
+
+
 
 }

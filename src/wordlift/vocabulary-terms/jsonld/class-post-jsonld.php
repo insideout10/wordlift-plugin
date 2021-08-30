@@ -78,7 +78,7 @@ class Post_Jsonld {
 
 		$term_mentions = array_map( function ( $term_reference ) {
 			return array(
-				'@id' => $term_reference->get_id()
+				'@id' => wl_get_term_entity_uri( $term_reference->get_id() )
 			);
 		}, $term_references );
 
