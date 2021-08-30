@@ -112,10 +112,10 @@ abstract class Wordlift_Shortcode_REST {
 
 		// Directly accessing $_SERVER['REQUEST_URI'] or $_GET['rest_route'] here as it's too early to use global $wp reliably
 
-		if ( $_SERVER['REQUEST_URI'] && strpos( $_SERVER['REQUEST_URI'], $compare_route ) ) {
+		if ( $_SERVER['REQUEST_URI'] && strpos( (string) $_SERVER['REQUEST_URI'], $compare_route ) ) {
 			return true;
 		}
-		if ( ! empty( $_GET['rest_route'] ) && strpos( $_GET['rest_route'], $compare_route ) ) {
+		if ( ! empty( $_GET['rest_route'] ) && strpos( (string) $_GET['rest_route'], $compare_route ) ) {
 			return true;
 		}
 

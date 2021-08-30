@@ -113,14 +113,14 @@ class Image_License_Page extends Submenu_Page_Base {
 		$script_id = "wl-image-$idx";
 		$row_id    = "wl-row-$idx";
 		?>
-        <tr id="<?php echo $row_id; ?>">
+        <tr id="<?php echo esc_html( $row_id ); ?>">
             <td><?php echo wp_get_attachment_image( $attachment_id, array( 100, ) ); ?></td>
             <td><?php echo esc_html( $image['filename'] ); ?></td>
             <td><?php echo esc_html( $image['license'] ); ?></td>
             <td><?php echo $author; ?></td>
             <td><?php echo $proposed_caption; ?></td>
             <td>
-                <a href="<?php echo $more_info_link_esc; ?>"
+                <a href="<?php echo esc_url( $more_info_link_esc ); ?>"
                    target="_blank"><?php esc_html_e( 'More information', 'wordlift' ); ?></a>
             </td>
             <td>
@@ -131,19 +131,19 @@ class Image_License_Page extends Submenu_Page_Base {
             </td>
             <td>
                 <script type="application/json"
-                        id="<?php echo $script_id; ?>"><?php echo json_encode( $image ); ?></script>
-                <button data-id="<?php echo $script_id; ?>"
-                        data-row-id="<?php echo $row_id; ?>"
+                        id="<?php echo esc_attr( $script_id ); ?>"><?php echo json_encode( $image ); ?></script>
+                <button data-id="<?php echo esc_attr( $script_id ); ?>"
+                        data-row-id="<?php echo esc_attr( $row_id ); ?>"
                         data-action="wl_remove_all_images_task__single"
                         class="button wl-action-btn"><?php esc_html_e( 'Remove image', 'wordlift' ); ?></button>
 				<?php if ( ! $is_unknown_license ) { ?>
-                    <button data-id="<?php echo $script_id; ?>"
-                            data-row-id="<?php echo $row_id; ?>"
+                    <button data-id="<?php echo esc_attr( $script_id ); ?>"
+                            data-row-id="<?php echo esc_attr( $row_id ); ?>"
                             data-action="wl_add_license_caption_or_remove__single"
                             class="button wl-action-btn"><?php esc_html_e( 'Add license caption', 'wordlift' ); ?></button>
 				<?php } ?>
                 <a class="button"
-                   href=" <?php echo get_edit_post_link( $attachment_id ); ?>"
+                   href=" <?php echo esc_attr( get_edit_post_link( $attachment_id ) ); ?>"
                    target="_blank"><?php esc_html_e( 'Edit image', 'wordlift' ); ?> <span
                             class="dashicons dashicons-external"></span></a>
             </td>
@@ -162,7 +162,7 @@ class Image_License_Page extends Submenu_Page_Base {
 		echo esc_html( sprintf( $label, $count ) );
 		foreach ( $data as $post_id ) {
 			$post = get_post( $post_id ); ?>
-            <a href="<?php echo get_permalink( $post_id ); ?>"><?php echo esc_html( $post->post_title ); ?></a>
+            <a href="<?php echo esc_attr( get_permalink( $post_id ) ); ?>"><?php echo esc_html( $post->post_title ); ?></a>
 			<?php
 		}
 	}

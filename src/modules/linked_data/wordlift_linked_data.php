@@ -126,7 +126,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 		$entities_via_post = $_POST['wl_entities'];
 
-
 		foreach ( $entities_via_post as $entity_uri => $entity ) {
 
 			// Only if the current entity is created from scratch let's avoid to

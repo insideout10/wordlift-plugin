@@ -140,7 +140,7 @@ class Wordlift_Admin_Entity_Type_Settings {
 		}
 
 		// Get the term id and the actual term.
-		$term_id = (int) $_REQUEST['tag_ID'];
+		$term_id = isset( $_REQUEST['tag_ID'] ) ? (int) $_REQUEST['tag_ID'] : 0;
 
 		if ( ! term_exists( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) ) {
 			wp_die( __( 'You attempted to edit an entity type term that doesn&#8217;t exist.', 'wordlift' ) );
@@ -156,17 +156,19 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 */
 	function handle_form_submission() {
 
-		$term_id = (int) $_POST['tag_ID'];
+		$term_id = isset( $_POST['tag_ID'] ) ? (int) $_POST['tag_ID'] : 0;
 
 		// Check the nonce.
 		check_admin_referer( 'update-entity_type_term_' . $term_id );
 
 		$term = get_term( $term_id, 'wl_entity_type' );
 
+		$title       = isset( $_POST['title'] ) ? (string) $_POST['title'] : '';
+		$description = isset( $_POST['description'] ) ? (string) $_POST['description'] : '';
 		$this->set_setting(
 			$term_id,
-			trim( wp_unslash( $_POST['title'] ) ),
-			wp_unslash( $_POST['description'] )
+			trim( wp_unslash( $title ) ),
+			wp_unslash( $description )
 		);
 
 		// Redirect back to the term settings page and indicate a save was done.
@@ -187,7 +189,7 @@ class Wordlift_Admin_Entity_Type_Settings {
 	function render() {
 
 		// Set variables used by the partial
-		$term_id  = absint( $_REQUEST['tag_ID'] );
+		$term_id  = isset( $_REQUEST['tag_ID'] ) ? absint( $_REQUEST['tag_ID'] ) : 0;
 		$settings = $this->get_setting( $term_id );
 
 		include plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wordlift-admin-entity-type-settings.php';

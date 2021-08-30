@@ -1,5 +1,7 @@
 <?php
+
 namespace Wordlift\Metabox\Field;
+
 /**
  * Metaxboxes: Date Field.
  *
@@ -72,23 +74,23 @@ class Wl_Metabox_Field_Date extends Wl_Metabox_Field {
 	 */
 	public function html_input( $date ) {
 
-		$this->log->debug("Creating date input with date value $date...");
+		$this->log->debug( "Creating date input with date value $date..." );
 
 		ob_start();
 		?>
-			<div class="wl-input-wrapper">
-				<input
+		<div class="wl-input-wrapper">
+			<input
 					type="text"
 					class="<?php echo esc_attr( $this->meta_name ); ?>"
-					name="wl_metaboxes[<?php echo $this->meta_name ?>][]"
-					value="<?php echo $date ?>"
+					name="wl_metaboxes[<?php echo esc_attr( $this->meta_name ); ?>][]"
+					value="<?php echo esc_attr( $date ); ?>"
 					style="width:88%"
-				/>
+			/>
 
-				<button class="button wl-remove-input wl-button" type="button">
-					<?php esc_html_e( 'Remove', 'wordlift' ); ?>
-				</button>
-			</div>
+			<button class="button wl-remove-input wl-button" type="button">
+				<?php esc_html_e( 'Remove', 'wordlift' ); ?>
+			</button>
+		</div>
 		<?php
 		$html = ob_get_clean();
 
@@ -108,20 +110,20 @@ class Wl_Metabox_Field_Date extends Wl_Metabox_Field {
 		// See in http://trentrichardson.com/examples/timepicker.
 		@ob_start();
 		?>
-			<script type='text/javascript'>
-				( function( $ ) {
+		<script type='text/javascript'>
+			(function ($) {
 
-					$( function() {
+				$(function () {
 
-						$( '.<?php echo $this->meta_name; ?>[type=text]' ).flatpickr( {
-							enableTime: <?php echo $timepicker; ?>,
-							noCalendar: <?php echo $no_calendar; ?>,
-							time_24hr: true,
-							dateFormat: <?php echo $date_format; ?>
-						 } );
-					} );
-				} ) ( jQuery );
-			</script>
+					$('.<?php echo esc_js( $this->meta_name ); ?>[type=text]').flatpickr({
+						enableTime: <?php echo esc_js( $timepicker ); ?>,
+						noCalendar: <?php echo esc_js( $no_calendar ); ?>,
+						time_24hr: true,
+						dateFormat: <?php echo esc_js( $date_format ); ?>
+					});
+				});
+			})(jQuery);
+		</script>
 		<?php
 		$html = ob_get_clean();
 

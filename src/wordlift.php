@@ -573,7 +573,7 @@ function wordlift_plugin_autoload_register() {
 		$full_path = plugin_dir_path( __FILE__ ) . $path . DIRECTORY_SEPARATOR . $file;
 
 		if ( ! file_exists( $full_path ) ) {
-			echo( "Class $class_name not found at $full_path." );
+			echo esc_html( "Class $class_name not found at $full_path." );
 
 			return false;
 		}

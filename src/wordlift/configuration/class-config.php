@@ -28,7 +28,7 @@ class Config {
 
 		$this->admin_setup            = $admin_setup;
 		$this->key_validation_service = $key_validation_service;
-		$this->configuration_service = $configuration_service;
+		$this->configuration_service  = $configuration_service;
 		add_action( 'wp_ajax_nopriv_wl_config_plugin', array( $this, 'config' ) );
 
 	}
@@ -64,7 +64,7 @@ class Config {
 		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( get_option( 'home' ) ) );
 
 
-		if ( $account_info_data['url'] === null) {
+		if ( $account_info_data['url'] === null ) {
 			return true;
 		}
 
@@ -92,7 +92,7 @@ class Config {
 			'license'
 		);
 
-		header('Access-Control-Allow-Origin: *');
+		header( 'Access-Control-Allow-Origin: *' );
 
 		// validate all the fields before processing
 		foreach ( $required_fields as $field ) {
@@ -136,16 +136,17 @@ class Config {
 		$attachment_id = $this->may_be_get_attachment_id();
 
 		$params = array(
-			'key'              => (string) $_POST['license'],
-			'vocabulary'       => (string) $_POST['vocabulary'],
-			'wl-site-language' => (string) $_POST['language'],
-			'wl-country-code'  => (string) $_POST['country'],
-			'name'             => (string) $_POST['publisherName'],
-			'user_type'        => (string) $_POST['publisher'],
+			'key'              => isset( $_POST['license'] ) ? (string) $_POST['license'] : '',
+			'vocabulary'       => isset( $_POST['vocabulary'] ) ? (string) $_POST['vocabulary'] : '',
+			'wl-site-language' => isset( $_POST['language'] ) ? (string) $_POST['language'] : '',
+			'wl-country-code'  => isset( $_POST['country'] ) ? (string) $_POST['country'] : '',
+			'name'             => isset( $_POST['publisherName'] ) ? (string) $_POST['publisherName'] : '',
+			'user_type'        => isset( $_POST['publisher'] ) ? (string) $_POST['publisher'] : '',
 			'logo'             => $attachment_id
 		);
 
-		if ( (bool) $_POST['diagnostic'] ) {
+		$diagnostic = isset( $_POST['diagnostic'] ) ? (bool) $_POST['diagnostic'] : false;
+		if ( $diagnostic ) {
 			$params['share-diagnostic'] = 'on';
 		}
 

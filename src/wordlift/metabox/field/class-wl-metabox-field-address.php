@@ -1,6 +1,8 @@
 <?php
 namespace Wordlift\Metabox\Field;
-use Wordlift\Metabox\Wl_Metabox;/**
+use Wordlift\Metabox\Wl_Metabox;
+
+/**
  * Field to manage the address. The pattern followed is to simply build an array of subfields using the base WL_Metabox_field class,
  * and act as a proxy between WL_Metabox and them.
  * 
@@ -72,7 +74,7 @@ class Wl_Metabox_Field_Address extends Wl_Metabox_Field {
 		// Open main <div> for the Field, then insert label and nonce
 		?>
 			<div class='wl-field'>
-			<h3><?php echo $this->label ?></h3>
+			<h3><?php echo esc_attr( $this->label ); ?></h3>
 			<?php echo $this->html_nonce() ?>
 
 		<?php
@@ -82,16 +84,16 @@ class Wl_Metabox_Field_Address extends Wl_Metabox_Field {
 		?>
 			<div class="wl-input-wrapper">
 				<label
-					for="wl_metaboxes[<?php echo $this->meta_name ?>][<?php echo $subfield->meta_name ?>]"
+					for="wl_metaboxes[<?php echo esc_attr( $this->meta_name ); ?>][<?php echo esc_attr( $subfield->meta_name); ?>]"
 					style="display:inline-block; width:20%;"
 				>
-					<?php echo $subfield->label ?>
+					<?php echo esc_html( $subfield->label ); ?>
 				</label>
 
 				<input
 					type="text"
-					name="wl_metaboxes[<?php echo $this->meta_name ?>][<?php echo $subfield->meta_name ?>]"
-					value="<?php echo $value; ?>"
+					name="wl_metaboxes[<?php echo esc_attr($this->meta_name); ?>][<?php echo esc_attr( $subfield->meta_name ); ?>]"
+					value="<?php echo esc_attr( $value ); ?>"
 					style="width:78%;"
 				/>
 			</div>

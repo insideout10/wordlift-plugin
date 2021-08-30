@@ -63,15 +63,15 @@ class Entity_Type {
             </td>
         </tr>
 EOF;
-
-		echo sprintf( $template, $entity_types_text, $terms_html );
+		echo sprintf( $template, esc_html( $entity_types_text ), $terms_html );
 	}
 
 	public function save_field( $term_id ) {
 		if ( ! isset( $_REQUEST['tax_input'] ) ) {
 			return;
 		}
-		$entity_types = $_REQUEST['tax_input'][ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ];
+		$entity_types = isset( $_REQUEST['tax_input'][ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ] )
+			? (array) $_REQUEST['tax_input'][ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ] : array();
 		if ( isset( $entity_types ) && is_array( $entity_types ) ) {
 			// Save the taxonomies.
 			delete_term_meta( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );

@@ -66,7 +66,7 @@ class Wordlift_Post_Adapter {
 		 */
 		$post_content = apply_filters( 'wl_post_content', $post->post_content, $post );
 
-		return self::str_word_count_utf8( strip_tags( strip_shortcodes( $post_content ) ) );
+		return self::str_word_count_utf8( wp_strip_all_tags( strip_shortcodes( $post_content ) ) );
 	}
 
 	/**

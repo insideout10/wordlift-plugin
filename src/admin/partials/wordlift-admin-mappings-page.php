@@ -74,7 +74,7 @@ $mapping_service = Wordlift_Mapping_Service::get_instance();
 
     <div id="schemaorg-sync">
         <button>Sync Schema.org classes</button>
-        <div class="count"><?php echo( Wordlift_Schemaorg_Sync_Batch_Operation::get_instance()->count() ); ?></div>
+        <div class="count"><?php echo esc_html( Wordlift_Schemaorg_Sync_Batch_Operation::get_instance()->count() ); ?></div>
     </div>
 
     <div class="clear"></div>

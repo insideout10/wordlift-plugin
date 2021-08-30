@@ -90,6 +90,7 @@ function wl_entity_ajax_get_by_title() {
 	//
 	// See https://github.com/insideout10/wordlift-plugin/issues/438.
 	$title = $_POST['title'] ?: $_GET['title'];
+	$title = (string) $title;
 
 	// Are we searching for a specific title or for a containing title?
 	$autocomplete = isset( $_GET['autocomplete'] );

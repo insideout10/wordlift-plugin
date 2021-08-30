@@ -60,10 +60,10 @@
 
     <header>
         <h1><img class="wizard-logo"
-                 src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/logo-wl-transparent-240x90.png'; ?>"/>
+                 src="<?php echo esc_attr( plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/logo-wl-transparent-240x90.png' ); ?>"/>
         </h1>
         <img class="shapes"
-             src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/shapes.png'; ?>"/>
+             src="<?php echo esc_attr( plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/shapes.png'); ?>"/>
     </header>
 
 

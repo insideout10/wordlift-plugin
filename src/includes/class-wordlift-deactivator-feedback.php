@@ -143,9 +143,9 @@ class Wordlift_Deactivator_Feedback {
 		// Prepare the options.
 		$options = array(
 			// The deactivation reason.
-			'code'             => $_POST['code'],
+			'code'             => (string) $_POST['code'],
 			// Additional information if provided.
-			'details'          => ( ! empty( $_POST['details'] ) ) ? $_POST['details'] : '',
+			'details'          => ( ! empty( $_POST['details'] ) ) ? (string) $_POST['details'] : '',
 			// The website url.
 			'url'              => get_bloginfo( 'url' ),
 			// WP version.
