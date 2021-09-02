@@ -1,6 +1,7 @@
 <?php
 
 use Wordlift\No_Editor_Analysis\No_Editor_Analysis_Feature;
+use Wordlift\No_Editor_Analysis\Post_Type;
 use Wordlift\Relation\Object_Relation_Service;
 
 /**
@@ -15,6 +16,8 @@ class Test_No_Editor_Analysis_Save_content extends Wordlift_No_Editor_Analysis_U
 		$this->assertFalse( No_Editor_Analysis_Feature::can_no_editor_analysis_be_used( false ), 'Post id is falsy should not enable this no editor analysis feature' );
 		$this->assertFalse( No_Editor_Analysis_Feature::can_no_editor_analysis_be_used( null ), 'Post id is falsy should not enable this no editor analysis feature' );
 		$this->assertFalse( No_Editor_Analysis_Feature::can_no_editor_analysis_be_used( "" ), 'Post id is falsy should not enable this no editor analysis feature' );
+		$this->assertFalse( Post_Type::is_no_editor_analysis_enabled_for_post_type( "" ), 'Post type is falsy should not enable this no editor analysis feature' );
+		$this->assertFalse( Post_Type::is_no_editor_analysis_enabled_for_post_type( "unknown_post_type" ), 'Post type is falsy should not enable this no editor analysis feature' );
 	}
 
 
