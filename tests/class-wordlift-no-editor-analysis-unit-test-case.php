@@ -10,6 +10,8 @@ abstract class Wordlift_No_Editor_Analysis_Unit_Test_Case extends Wordlift_Unit_
 
 	protected $url_patterns_json_response_map = array();
 
+	const NO_EDITOR_ANALYSIS_POST_TYPE = 'no-editor-analysis';
+
 
 	public function setUp() {
 		parent::setUp();

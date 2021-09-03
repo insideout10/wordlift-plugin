@@ -1,6 +1,7 @@
 <?php
 
 use Wordlift\Analysis\Occurrences\No_Annotation_Strategy;
+use Wordlift\Relation\Object_No_Annotation_Relation_Service;
 use Wordlift\Relation\Object_Relation_Service;
 
 /**
@@ -56,13 +57,43 @@ class Test_No_Editor_Analysis_Response extends Wordlift_No_Editor_Analysis_Unit_
 
 		$strategy = No_Annotation_Strategy::get_instance();
 
-		$analysis_response = new StdClass;
+		$analysis_response           = new StdClass;
 		$analysis_response->entities = new StdClass;
 
 		$json = $strategy->add_occurences_to_entities( array(), $analysis_response, $post_id );
 
 		$json_arr = json_decode( wp_json_encode( $json ), true );
 		$this->assertCount( 2, array_keys( $json_arr['entities'] ) );
+	}
+
+
+	public function test_when_no_annotation_relation_service_should_return_also_article_entities() {
+
+		// create a no editor post type.
+		$post = $this->factory()->post->create( array( 'post_type' => self::NO_EDITOR_ANALYSIS_POST_TYPE ) );
+
+		$entity_1 = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$entity_2 = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+
+		wl_core_add_relation_instance( $post, WL_WHAT_RELATION, $entity_1 );
+		wl_core_add_relation_instance( $post, WL_WHAT_RELATION, $entity_2 );
+
+		// set Article as schema type for $entity_1.
+		Wordlift_Entity_Type_Service::get_instance()
+		                            ->set( $entity_1, 'http://schema.org/Article' );
+
+
+		$json = new StdClass;
+		$json->entities = new StdClass;
+
+		// we should return two entities for no annotation relation service.
+		$json = No_Annotation_Strategy::get_instance()
+			->add_occurences_to_entities( array(), $json, $post );
+
+		// convert json to array for easy assertions.
+		$json = json_decode( json_encode($json), true );
+		$this->assertCount( 2, $json['entities'], 'Article entity should also be returned by the analysis' );
+
 	}
 
 
