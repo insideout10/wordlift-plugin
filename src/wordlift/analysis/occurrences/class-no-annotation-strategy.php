@@ -23,9 +23,9 @@ class No_Annotation_Strategy extends Singleton implements Occurrences {
 
 	public function add_occurences_to_entities( $occurrences, $json, $post_id ) {
 
-
 		$references = Object_Relation_Factory::get_instance( $post_id )->get_references(
 			$post_id,
+			// TODO: when term content analysis is implemented, the subject_type should be sent by editor.
 			Object_Type_Enum::POST
 		);
 
