@@ -6,7 +6,6 @@ import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 /**
  * WordPress dependencies
  */
-import apiFetch from "@wordpress/api-fetch";
 import * as data from "@wordpress/data";
 
 /**
