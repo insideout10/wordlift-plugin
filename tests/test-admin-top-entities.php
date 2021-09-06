@@ -22,7 +22,7 @@ class Top_Entities_Test extends Wordlift_Unit_Test_Case {
 		}
 		$event = wp_get_scheduled_event( Top_Entities::CRON_ACTION );
 		$this->assertNotNull( $event, "Cron should be registered" );
-		$this->assertEquals( 'hourly', $event->schedule, "Cron should run hourly" );
+		$this->assertEquals( 'daily', $event->schedule, "Cron should run daily" );
 	}
 
 	public function test_upon_deactivation_should_remove_the_cron() {
