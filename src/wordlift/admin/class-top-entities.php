@@ -24,35 +24,31 @@ class Top_Entities {
 
 		global $wpdb;
 
-		$query = <<<EOF
-SELECT p.ID
-     , p.post_title
-     , coalesce(sum(case when obj_t.slug is null then 1 end), 0)     entities
-     , coalesce(sum(case when obj_t.slug is not null then 1 end), 0) posts
-     , count(entity.subject_id) AS                                   total
-FROM {$wpdb->prefix}wl_relation_instances entity
-       INNER JOIN {$wpdb->prefix}posts p
-                  ON p.ID = entity.object_id
-       INNER JOIN {$wpdb->prefix}term_relationships tr
-                  ON tr.object_id = entity.object_id
-       INNER JOIN {$wpdb->prefix}term_taxonomy tt
-                  ON tt.term_id = tr.term_taxonomy_id
-                    AND tt.taxonomy = 'wl_entity_type'
-       INNER JOIN {$wpdb->prefix}terms t
-                  ON t.term_id = tt.term_id
-                    AND 'article' != t.slug
-       INNER JOIN {$wpdb->prefix}term_relationships obj_tr
-                  ON obj_tr.object_id = entity.subject_id
-       INNER JOIN {$wpdb->prefix}term_taxonomy obj_tt
-                  ON obj_tt.term_id = obj_tr.term_taxonomy_id
-                    AND obj_tt.taxonomy = 'wl_entity_type'
-       LEFT OUTER JOIN {$wpdb->prefix}terms obj_t
-                       ON obj_t.term_id = obj_tt.term_id
-                         AND 'article' = obj_t.slug
-GROUP BY p.ID, p.post_title
-ORDER BY total DESC
-LIMIT 20;
-EOF;
+		$query = "
+			SELECT p_as_object.ID
+			    , p_as_object.post_title
+			    , COALESCE(SUM(CASE WHEN t_as_subject.slug IS NULL THEN 1 END), 0)     entities
+			    , COALESCE(SUM(CASE WHEN t_as_subject.slug IS NOT NULL THEN 1 END), 0) posts
+			    , COUNT(1) AS total
+			FROM {$wpdb->prefix}wl_relation_instances ri
+			INNER JOIN {$wpdb->prefix}posts p_as_object
+			    ON p_as_object.ID = ri.object_id
+			        AND p_as_object.post_status = 'publish'
+			INNER JOIN {$wpdb->prefix}posts p_as_subject
+			    ON p_as_subject.ID = ri.subject_id
+			        AND p_as_subject.post_status = 'publish'
+			INNER JOIN {$wpdb->prefix}term_relationships tr_as_subject
+				ON tr_as_subject.object_id = p_as_subject.ID
+			INNER JOIN {$wpdb->prefix}term_taxonomy tt_as_subject
+			    ON tt_as_subject.term_id = tr_as_subject.term_taxonomy_id
+			        AND tt_as_subject.taxonomy = 'wl_entity_type'
+			LEFT OUTER JOIN {$wpdb->prefix}terms t_as_subject
+			    ON t_as_subject.term_id = tt_as_subject.term_id
+			        AND 'article' = t_as_subject.slug
+			GROUP BY p_as_object.ID, p_as_object.post_title
+			ORDER BY total DESC
+			LIMIT 20
+		";
 
 		$results = $wpdb->get_results( $query );
 
@@ -62,7 +58,7 @@ EOF;
 
 	public static function activate() {
 		if ( ! wp_next_scheduled( self::CRON_ACTION ) ) {
-			wp_schedule_event( time(), 'hourly', self::CRON_ACTION );
+			wp_schedule_event( time(), 'daily', self::CRON_ACTION );
 		}
 	}
 
