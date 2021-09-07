@@ -284,7 +284,7 @@ class Wordlift_Configuration_Service {
 	 */
 	public function get_language_code() {
 
-		$language = get_bloginfo('language');
+		$language = get_locale();
 		if ( ! $language ) {
 			return 'en';
 		}
