@@ -7,7 +7,7 @@ metadata:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/proxy-body-size: 100m
-    nginx.ingress.kubernetes.io/proxy-connect-timeout: 60s
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: 30s
     nginx.ingress.kubernetes.io/proxy-send-timeout: 180s
     nginx.ingress.kubernetes.io/proxy-read-timeout: 180s
 

@@ -33,6 +33,20 @@ spec:
       containers:
       - image: ghcr.io/wordlift/wlp-wp-4.4:latest
         name: wordpress-44
+        livenessProbe:
+          exec:
+            command:
+              - touch
+              - /tmp/healthy
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+              - touch
+              - /tmp/ready
+          initialDelaySeconds: 5
+          periodSeconds: 5
         workingDir: /var/www/html/4.4/
         resources:
           requests:
