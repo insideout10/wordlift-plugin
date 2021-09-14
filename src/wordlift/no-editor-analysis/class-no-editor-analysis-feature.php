@@ -27,6 +27,8 @@ class No_Editor_Analysis_Feature {
 			       Post_Type::is_no_editor_analysis_enabled_for_post_type( get_post_type( $post_id ) )
 			       // check if Divi is enabled, then we can use no editor analysis.
 			       || self::is_divi_page_builder_enabled( $post_id )
+			       // Check if elementor is enabled, then we can use no editor analysis.
+			       || self::is_elementor_enabled( $post_id )
 			       // Custom builders can hook in to this filter to enable no editor analysis.
 			       /**
 			        * @param $post_id
@@ -42,6 +44,10 @@ class No_Editor_Analysis_Feature {
 	private static function is_divi_page_builder_enabled( $post_id ) {
 		return function_exists( 'et_pb_is_pagebuilder_used' ) &&
 		       et_pb_is_pagebuilder_used( $post_id );
+	}
+
+	private static function is_elementor_enabled( $post_id ) {
+		return get_post_meta( $post_id, '_elementor_edit_mode', true ) === 'builder';
 	}
 
 }
