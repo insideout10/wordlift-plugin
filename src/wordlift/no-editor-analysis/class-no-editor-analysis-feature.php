@@ -47,7 +47,8 @@ class No_Editor_Analysis_Feature {
 	}
 
 	private static function is_elementor_enabled( $post_id ) {
-		return get_post_meta( $post_id, '_elementor_edit_mode', true ) === 'builder';
+		return defined('ELEMENTOR_VERSION') &&
+		       get_post_meta( $post_id, '_elementor_edit_mode', true ) === 'builder';
 	}
 
 }
