@@ -6,6 +6,7 @@
  */
 
 use Wordlift\Metabox\Wl_Metabox;
+use Wordlift\No_Editor_Analysis\No_Editor_Analysis_Feature;
 
 /**
  * Build WL_Metabox and the contained WL_Metabox_Field(s)
@@ -25,8 +26,9 @@ if ( is_admin() ) {
  * Adds the entities meta box (called from *add_meta_boxes* hook).
  *
  * @param string $post_type The type of the current open post.
+ * @param WP_Post $post Wordpress post.
  */
-function wl_admin_add_entities_meta_box( $post_type ) {
+function wl_admin_add_entities_meta_box( $post_type, $post ) {
 
 	/*
 	 * Call the `wl_can_see_classification_box` filter to determine whether we can display the classification box.
@@ -48,7 +50,10 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 		return;
 	}
 
-	if ( ! Wordlift_Admin::is_gutenberg() ) {
+	// If the editor is not gutenberg and not any other custom editor then we use the sidebar.
+	if ( ! Wordlift_Admin::is_gutenberg() && ! No_Editor_Analysis_Feature::can_no_editor_analysis_be_used(
+			$post->ID
+		) ) {
 		// Add main meta box for related entities and 4W only if not Gutenberg
 		add_meta_box(
 			'wordlift_entities_box', __( 'WordLift', 'wordlift' ), 'wl_entities_box_content', $post_type, 'side', 'high'
@@ -57,7 +62,7 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 
 }
 
-add_action( 'add_meta_boxes', 'wl_admin_add_entities_meta_box' );
+add_action( 'add_meta_boxes', 'wl_admin_add_entities_meta_box', 10, 2 );
 
 /**
  * Whether the post type supports the editor UI.
