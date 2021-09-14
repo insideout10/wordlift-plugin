@@ -20,7 +20,25 @@ class No_Editor_Analysis_Feature {
 			return false;
 		}
 		return Feature_Utils::is_feature_on( 'no-editor-analysis', false )
-		       && Post_Type::is_no_editor_analysis_enabled_for_post_type( get_post_type( $post_id ) );
+		       &&  (
+				   // If the post doesnt have `editor` attribute
+				   Post_Type::is_no_editor_analysis_enabled_for_post_type( get_post_type( $post_id ) )
+				   // check if Divi is enabled, then we can use no editor analysis.
+					|| self::is_divi_page_builder_enabled($post_id)
+				   // Custom builders can hook in to this filter to enable no editor analysis.
+				   /**
+				    * @since 3.33.0
+				    * Filter name : wl_no_editor_analysis_should_be_enabled_for_post_id
+				    * @param $post_id
+				    * @return bool | False by default.
+				    */
+					|| apply_filters( 'wl_no_editor_analysis_should_be_enabled_for_post_id', false, $post_id )
+		       );
+	}
+
+	private static function is_divi_page_builder_enabled( $post_id ) {
+		return function_exists('et_pb_is_pagebuilder_used') &&
+		       et_pb_is_pagebuilder_used( $post_id );
 	}
 
 }
