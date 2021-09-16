@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.33.0 (2021-09-15) =
+= 3.33.0 (2021-09-16) =
 
 * Enhancement [#1466](https://github.com/insideout10/wordlift-plugin/issues/1466): Use WordPress languages in settings screen
 * Enhancement [#1463](https://github.com/insideout10/wordlift-plugin/issues/1463): Support for visual editors / html output for WordPress annotations
