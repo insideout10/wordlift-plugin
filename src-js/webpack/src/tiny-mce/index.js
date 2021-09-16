@@ -19,8 +19,7 @@
  * External dependencies
  */
 import React from "react";
-import { on, trigger } from "backbone";
-import { createPopover, Button } from "@wordlift/design";
+import { trigger } from "backbone";
 
 /**
  * Internal dependencies

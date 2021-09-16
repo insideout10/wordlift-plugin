@@ -74,7 +74,7 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		if ( ! is_null( $id ) ) {
 			$term                       = get_term( $id );
-			$post_jsonld['description'] = strip_tags( strip_shortcodes( $term->description ) );
+			$post_jsonld['description'] = wp_strip_all_tags( strip_shortcodes( $term->description ) );
 			$thumbnail_id               = get_term_meta( $id, 'thumbnail_id', true );
 			if ( ! empty( $thumbnail_id ) ) {
 				$post_jsonld['image'] = wp_get_attachment_url( $thumbnail_id );

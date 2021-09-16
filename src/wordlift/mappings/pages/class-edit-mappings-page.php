@@ -52,6 +52,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 
 	/**
 	 * Load the text settings needed for the edit_mappings_page.
+	 *
 	 * @param array $edit_mapping_settings Key value pair of settings used by edit mappings page.
 	 *
 	 * @return array Adding text settings to the main settings array.
@@ -61,6 +62,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		$edit_mapping_settings['wl_edit_mapping_text']    = __( 'Edit Mapping', 'wordlift' );
 		$edit_mapping_settings['wl_edit_mapping_no_item'] = __( 'Unable to find the mapping item', 'wordlift' );
 		$edit_mapping_settings['page']                    = 'wl_edit_mapping';
+
 		return $edit_mapping_settings;
 	}
 
@@ -164,17 +166,17 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 	}
 
 	/**
+	 * @return array An Array containing key value pairs of settings.
 	 * @since 3.25.0
 	 * Load dependencies required for js client.
-	 * @return array An Array containing key value pairs of settings.
 	 */
 	public function get_ui_settings_array() {
 		// Create ui settings array to be used by js client.
-		$edit_mapping_settings                               = array();
-		$edit_mapping_settings                               = $this->load_rest_settings( $edit_mapping_settings );
-		$edit_mapping_settings = $this->load_text_settings_for_edit_mapping_page( $edit_mapping_settings );
+		$edit_mapping_settings                                  = array();
+		$edit_mapping_settings                                  = $this->load_rest_settings( $edit_mapping_settings );
+		$edit_mapping_settings                                  = $this->load_text_settings_for_edit_mapping_page( $edit_mapping_settings );
 		$edit_mapping_settings['wl_transform_function_options'] = $this->transform_function_registry->get_options();
-		$edit_mapping_settings = $this->load_field_type_and_name_options( $edit_mapping_settings );
+		$edit_mapping_settings                                  = $this->load_field_type_and_name_options( $edit_mapping_settings );
 		// Load logic field options.
 		$edit_mapping_settings = $this->load_logic_field_options( $edit_mapping_settings );
 		$edit_mapping_settings = $this->load_rule_field_options( $edit_mapping_settings );
@@ -202,20 +204,21 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 			);
 		}
 		// Post type is also included in the list of taxonomies, so get the post type and merge with options.
-		$post_type_array =  self::get_post_type_key_and_value();
+		$post_type_array  = self::get_post_type_key_and_value();
 		$post_type_option = $post_type_array['post_type_option_name'];
 		// Get also the list of post types from the post_type_array.
 		$post_type_option_values = $post_type_array['post_type_option_values'];
 
-        $post_taxonomy_array =  self::get_post_taxonomy_key_and_value();
-        $post_taxonomy_option = $post_taxonomy_array['post_taxonomy_option_name'];
+		$post_taxonomy_array  = self::get_post_taxonomy_key_and_value();
+		$post_taxonomy_option = $post_taxonomy_array['post_taxonomy_option_name'];
 
 		// Merge the post type option and post types in the taxonomy options
-		array_push( $taxonomy_options, $post_type_option, $post_taxonomy_option);
+		array_push( $taxonomy_options, $post_type_option, $post_taxonomy_option );
 		$term_options = array_merge( $term_options, $post_type_option_values );
+
 		return array(
 			'taxonomy_options' => $taxonomy_options,
-			'term_options' => $term_options
+			'term_options'     => $term_options
 		);
 	}
 
@@ -249,35 +252,36 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		}
 
 		return array(
-			'post_type_option_name' =>  $post_type_option_name,
+			'post_type_option_name'   => $post_type_option_name,
 			'post_type_option_values' => $post_type_option_values
 		);
 	}
 
-    /**
-     * Return post type option and post type option values.
-     *
-     * @return array Array of post_type_option and post_type_option_values.
-     */
-    private static function get_post_taxonomy_key_and_value() {
+	/**
+	 * Return post type option and post type option values.
+	 *
+	 * @return array Array of post_type_option and post_type_option_values.
+	 */
+	private static function get_post_taxonomy_key_and_value() {
 
-        $post_taxonomy_option_name   = array(
-            'label'      => __( 'Post Taxonomy', 'wordlift' ),
-            'value'      => Wordlift\Mappings\Validators\Post_Taxonomy_Term_Rule_Validator::POST_TAXONOMY,
-            'api_source' => 'post_taxonomy'
-        );
-        $post_taxonomy_option_values = array();
+		$post_taxonomy_option_name   = array(
+			'label'      => __( 'Post Taxonomy', 'wordlift' ),
+			'value'      => Wordlift\Mappings\Validators\Post_Taxonomy_Term_Rule_Validator::POST_TAXONOMY,
+			'api_source' => 'post_taxonomy'
+		);
+		$post_taxonomy_option_values = array();
 
-        return array(
-            'post_taxonomy_option_name' =>  $post_taxonomy_option_name,
-            'post_taxonomy_option_values' => $post_taxonomy_option_values
-        );
-    }
+		return array(
+			'post_taxonomy_option_name'   => $post_taxonomy_option_name,
+			'post_taxonomy_option_values' => $post_taxonomy_option_values
+		);
+	}
 
 	/**
 	 * This function loads the equal to, not equal to operator to the edit mapping settings.
 	 *
 	 * @param array $edit_mapping_settings
+	 *
 	 * @return array Loads the logic field options to the $edit_mapping_settings.
 	 */
 	private function load_logic_field_options( array $edit_mapping_settings ) {
@@ -299,14 +303,17 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 	 * Validates the nonce posted by client and then assign the mapping id which should be edited.
 	 *
 	 * @param array $edit_mapping_settings
+	 *
 	 * @return array Edit mapping settings array with the mapping id if the nonce is valid.
 	 */
 	private function validate_nonce_and_assign_mapping_id( array $edit_mapping_settings ) {
-        // We verify the nonce before making to load the edit mapping page for the wl_edit_mapping_id
+		// We verify the nonce before making to load the edit mapping page for the wl_edit_mapping_id
 		if ( isset( $_REQUEST['_wl_edit_mapping_nonce'] )
 		     && wp_verify_nonce( $_REQUEST['_wl_edit_mapping_nonce'], 'wl-edit-mapping-nonce' ) ) {
 			// We're using `INPUT_GET` here because this is a link from the UI, i.e. no POST.
-			$edit_mapping_settings['wl_edit_mapping_id'] = (int) filter_var( $_REQUEST['wl_edit_mapping_id'], FILTER_VALIDATE_INT );
+			$mapping_id                                  = isset( $_REQUEST['wl_edit_mapping_id'] ) ?
+				(int) filter_var( $_REQUEST['wl_edit_mapping_id'], FILTER_VALIDATE_INT ) : 0;
+			$edit_mapping_settings['wl_edit_mapping_id'] = $mapping_id;
 		}
 
 		return $edit_mapping_settings;
@@ -316,6 +323,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 	 * Load the rest settings required for the edit_mappings js client.
 	 *
 	 * @param array $edit_mapping_settings
+	 *
 	 * @return array
 	 */
 	private function load_rest_settings( array $edit_mapping_settings ) {
@@ -335,7 +343,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 	 * @param array $edit_mapping_settings
 	 *
 	 * @return array Return the settings.
- 	 */
+	 */
 	private function load_rule_field_options( array $edit_mapping_settings ) {
 		// Load the rule field options.
 		$rule_field_data                                    = self::get_post_taxonomies_and_terms();
@@ -382,6 +390,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 
 	/**
 	 * Load field type and field name options to the settings array.
+	 *
 	 * @param array $edit_mapping_settings
 	 *
 	 * @return array

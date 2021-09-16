@@ -160,9 +160,9 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
             <input
                     type="text"
                     readonly="readonly"
-                    id="<?php echo $this->meta_name ?>"
-                    name="wl_metaboxes[<?php echo $this->meta_name ?>][]"
-                    value="<?php echo $value ?>"
+                    id="<?php echo esc_attr( $this->meta_name ); ?>"
+                    name="wl_metaboxes[<?php echo esc_attr( $this->meta_name ); ?>][]"
+                    value="<?php echo esc_attr( $value ); ?>"
             />
 
             <button class="wl-remove-input wl-remove-input--sameas"></button>

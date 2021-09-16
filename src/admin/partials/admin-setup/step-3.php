@@ -6,7 +6,7 @@
 
 	<p class="page-txt">
 		<?php
-		$grab_a_key_link = sprintf(
+		$grab_a_key_link_html = sprintf(
 			'<a target="_blank" href="%s">%s</a>',
 			esc_attr__( 'https://wordlift.io/pricing', 'wordlift' ),
 			esc_html__( 'grab a key', 'wordlift' )
@@ -19,7 +19,7 @@
 				. ' field below. Otherwise %s!',
 				'wordlift'
 			),
-			$grab_a_key_link
+			 $grab_a_key_link_html
 		);
 		?>
 	</p>

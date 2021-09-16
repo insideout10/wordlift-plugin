@@ -231,7 +231,7 @@ class Faq_Rest_Controller {
 			 * We are using time() and a random integer to prevent
 			 * duplication problem.
 			 */
-			$faq_item['id'] = time() + rand( 1, 100 ) + rand( 1, 100 );
+			$faq_item['id'] = time() + wp_rand( 1, 100 ) + wp_rand( 1, 100 );
 			add_post_meta( (int) $post_id, self::FAQ_META_KEY, $faq_item );
 		}
 

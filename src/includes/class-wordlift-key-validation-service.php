@@ -134,7 +134,7 @@ class Wordlift_Key_Validation_Service {
 			wp_send_json_error( 'The key parameter is required.' );
 		}
 
-		$response = $this->get_account_info( $_POST['key'] );
+		$response = $this->get_account_info( (string) $_POST['key'] );
 
 		// If we got an error, return invalid.
 		if ( is_wp_error( $response ) || 2 !== (int) $response['response']['code'] / 100 ) {
@@ -200,7 +200,7 @@ class Wordlift_Key_Validation_Service {
 		if ( get_transient( 'wl-key-error-msg' ) ) {
 			?>
             <div class="updated notice is-dismissible error">
-                <p><?php _e( get_transient( 'wl-key-error-msg' ), 'wordlift' ); ?></p>
+                <p><?php esc_html_e( get_transient( 'wl-key-error-msg' ), 'wordlift' ); ?></p>
             </div>
 			<?php
 		}

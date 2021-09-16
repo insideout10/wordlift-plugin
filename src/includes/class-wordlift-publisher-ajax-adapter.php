@@ -60,7 +60,7 @@ class Wordlift_Publisher_Ajax_Adapter {
 		}
 
 		// Get the response.
-		$response = $this->publisher_service->query( $_POST['q'] );
+		$response = $this->publisher_service->query( (string) $_POST['q'] );
 
 		// Finally output the response.
 		wp_send_json_success( $response );

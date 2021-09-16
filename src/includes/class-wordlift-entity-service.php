@@ -291,7 +291,7 @@ class Wordlift_Entity_Service {
 		}
 
 		// Get the alt labels from the request (or empty array).
-		$alt_labels = isset( $_REQUEST['wl_alternative_label'] ) ? $_REQUEST['wl_alternative_label'] : array();
+		$alt_labels = isset( $_REQUEST['wl_alternative_label'] ) ? (array) $_REQUEST['wl_alternative_label'] : array();
 
 		if ( ( ! empty( $_POST['content'] ) && ! empty( $_POST['post_content'] ) ) || isset( $_REQUEST['wl_alternative_label'] ) ) {
 			// This is via classic editor, so set the alternative labels.
@@ -331,7 +331,7 @@ class Wordlift_Entity_Service {
 		// Set the alternative labels.
 		foreach ( $alt_labels as $alt_label ) {
 			if ( ! empty( $alt_label ) ) {
-				add_post_meta( $post_id, self::ALTERNATIVE_LABEL_META_KEY, $alt_label );
+				add_post_meta( $post_id, self::ALTERNATIVE_LABEL_META_KEY, (string) $alt_label );
 			}
 		}
 

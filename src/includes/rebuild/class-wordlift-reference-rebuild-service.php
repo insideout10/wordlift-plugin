@@ -40,8 +40,8 @@ class Wordlift_Reference_Rebuild_Service extends Wordlift_Rebuild_Service {
 		header( 'Content-type: text/plain; charset=utf-8' );
 
 		// We start at 0 by default and get to max.
-		$offset = $_GET['offset'] ?: 0;
-		$limit  = $_GET['limit'] ?: 1;
+		$offset = isset( $_GET['offset'] ) ? (int) $_GET['offset'] : 0;
+		$limit  = isset( $_GET['limit'] ) ? (int) $_GET['limit'] : 1;
 		$max    = $offset + $limit;
 
 		$this->log->debug( 'Processing references...' );

@@ -381,6 +381,7 @@ function wl_get_attachments( $post_id ) {
 
 function _wl_mock_http_request( $response, $request, $url ) {
 
+
 	if ( $response || preg_match( '@/wl-api$@', $url ) ) {
 		return $response;
 	}

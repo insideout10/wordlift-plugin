@@ -774,7 +774,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.32.6';
+		$this->version     = '3.33.0';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1665,6 +1665,8 @@ class Wordlift {
 		);
 
 		new Entity_Type_Setter();
+		$no_editor_analysis_loader = new \Wordlift\No_Editor_Analysis\Loader();
+		$no_editor_analysis_loader->init_feature();
 	}
 
 	/**

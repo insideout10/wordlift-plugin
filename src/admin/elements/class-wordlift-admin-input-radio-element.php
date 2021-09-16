@@ -21,8 +21,6 @@ class Wordlift_Admin_Radio_Input_Element implements Wordlift_Admin_Element {
 	/**
 	 * Output the HTML for an input box type settings_page.
 	 *
-	 * @since      3.13.0
-	 *
 	 * @param array $args {
 	 *                           An array of arguments.
 	 *
@@ -40,6 +38,8 @@ class Wordlift_Admin_Radio_Input_Element implements Wordlift_Admin_Element {
 	 *                           empty string.
 	 * }
 	 * @return $this|Wordlift_Admin_Element
+	 * @since      3.13.0
+	 *
 	 */
 	public function render( $args ) {
 		/*

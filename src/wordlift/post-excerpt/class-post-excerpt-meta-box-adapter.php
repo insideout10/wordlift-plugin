@@ -42,7 +42,7 @@ final class Post_Excerpt_Meta_Box_Adapter {
 	public function print_wordlift_custom_post_excerpt_box( $post ) {
 		call_user_func( $this->wordpress_excerpt_callback, $post );
 		// Invoke our call back to add additional html, the react script will find this id and render the component there.
-		echo "<div id='" . self::WORDLIFT_EXCERPT_DIV_ID . "'></div>";
+		echo "<div id='" . esc_html( self::WORDLIFT_EXCERPT_DIV_ID ) . "'></div>";
 	}
 
 	/**

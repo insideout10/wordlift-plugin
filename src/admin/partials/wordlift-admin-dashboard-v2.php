@@ -123,7 +123,7 @@
     #wl-dashboard-v2 .wl-dashboard__block--top-entities .wl-dashboard__block__body > div:nth-child(even) {
         flex: calc(100% - 120px);
         background-color: #ebf6ff;
-        background-image: url('<?php echo $blu_dot_url; ?>'), url('<?php echo $blu_dot_url; ?>'), url('<?php echo $blu_dot_url; ?>');
+        background-image: url('<?php echo esc_url( $blu_dot_url ); ?>'), url('<?php echo esc_url( $blu_dot_url ); ?>'), url('<?php echo esc_url( $blu_dot_url ); ?>');
         background-position: 25% center, 50%, 75%;
         background-size: 1px 4px;
         background-repeat: repeat-y;
@@ -217,7 +217,7 @@ Wordlift_Admin_Dashboard_V2::get_todays_tip_block();
 
 <?php
 $configuration_service = Wordlift_Configuration_Service::get_instance();
-$country_code = $configuration_service->get_country_code();
+$country_code          = $configuration_service->get_country_code();
 
 $top_entities = $this->get_top_entities();
 if ( ! empty( $top_entities ) ) {
@@ -238,7 +238,8 @@ if ( ! empty( $top_entities ) ) {
 			?>
             <div></div>
             <div class="wl-dashboard__block__body__table-header">
-				<?php for ( $i = 0; $i <= $max_value; $i += $chunk_value ) { ?><span><?php echo $i; ?></span><?php } ?>
+				<?php for ( $i = 0; $i <= $max_value; $i += $chunk_value ) { ?>
+                    <span><?php echo esc_html( $i ); ?></span><?php } ?>
             </div>
 			<?php
 			$i = 0;
@@ -251,10 +252,11 @@ if ( ! empty( $top_entities ) ) {
 				?>
                 <div><a href="<?php echo esc_attr( $permalink ); ?>"><?php echo esc_html( $title ); ?></a></div>
                 <div>
-                    <div class="wl-dashboard__bar wl-dashboard__bar--posts" style="width: <?php echo $posts_100 ?>%;">
+                    <div class="wl-dashboard__bar wl-dashboard__bar--posts"
+                         style="width: <?php echo esc_attr( $posts_100 ); ?>%;">
                     </div>
                     <div class="wl-dashboard__bar wl-dashboard__bar--entities"
-                         style="width: <?php echo $entities_100 ?>%;">
+                         style="width: <?php echo esc_attr( $entities_100 ); ?>%;">
                     </div>
                 </div>
 				<?php
@@ -262,12 +264,12 @@ if ( ! empty( $top_entities ) ) {
 					?>
                     <input id="wl-dashboard__show-more" type="checkbox">
                     <label for="wl-dashboard__show-more">
+						<span>
+							<?php echo esc_html( __( 'Show more', 'wordlift' ) ); ?>
+						</span>
                         <span>
-						    <?php echo esc_html( __( 'Show more', 'Dashboard', 'wordlift' ) ); ?>
-                        </span>
-                        <span>
-                            <?php echo esc_html( __( 'Hide', 'Dashboard', 'wordlift' ) ); ?>
-                        </span>
+							<?php echo esc_html( __( 'Hide', 'wordlift' ) ); ?>
+						</span>
                     </label>
 					<?php
 				}
@@ -278,16 +280,17 @@ if ( ! empty( $top_entities ) ) {
 	<?php
 }
 
-$not_enriched_url = admin_url( 'edit.php?post_type=post&wl_enriched=no' ); ?>
+$not_enriched_url = admin_url( 'edit.php?post_type=post&wl_enriched=no' );
+?>
 <div class="wl-dashboard__block wl-dashboard__block--enriched-posts">
     <header>
         <span class="dashicons dashicons-editor-help"></span>
-        <h3><?php echo __( 'Enriched posts', 'wordlift' ); ?></h3>
+        <h3><?php echo esc_html__( 'Enriched posts', 'wordlift' ); ?></h3>
     </header>
     <div class="wl-dashboard__block__body">
-        <a href="<?php echo $not_enriched_url; ?>"><?php echo $this->dashboard_service->count_annotated_posts(); ?></a>
-        / <?php echo $this->dashboard_service->count_posts(); ?>
-        <a href="<?php echo $not_enriched_url; ?>"><?php echo esc_html( _x( 'Enrich', 'Dashboard', 'wordlift' ) ); ?></a>
+        <a href="<?php echo esc_url( $not_enriched_url ); ?>"><?php echo esc_html( $this->dashboard_service->count_annotated_posts() ); ?></a>
+        / <?php echo esc_html( $this->dashboard_service->count_posts() ); ?>
+        <a href="<?php echo esc_url( $not_enriched_url ); ?>"><?php echo esc_html( _x( 'Enrich', 'Dashboard', 'wordlift' ) ); ?></a>
     </div>
 </div>
 
@@ -295,11 +298,11 @@ $not_enriched_url = admin_url( 'edit.php?post_type=post&wl_enriched=no' ); ?>
 <div class="wl-dashboard__block wl-dashboard__block--created-entities">
     <header>
         <span class="dashicons dashicons-editor-help"></span>
-        <h3><?php echo __( 'Created entities', 'wordlift' ); ?></h3>
+        <h3><?php esc_html_e( 'Created entities', 'wordlift' ); ?></h3>
     </header>
     <div class="wl-dashboard__block__body">
-        <a href="<?php echo $vocabulary_url; ?>"><?php echo $this->entity_service->count(); ?></a>
-        <a href="<?php echo $vocabulary_url; ?>"><?php echo esc_html( _x( 'Vocabulary', 'Dashboard', 'wordlift' ) ); ?></a>
+        <a href="<?php echo esc_url( $vocabulary_url ); ?>"><?php echo esc_html( $this->entity_service->count() ); ?></a>
+        <a href="<?php echo esc_url( $vocabulary_url ); ?>"><?php echo esc_html( _x( 'Vocabulary', 'Dashboard', 'wordlift' ) ); ?></a>
     </div>
 </div>
 
@@ -307,27 +310,28 @@ $not_enriched_url = admin_url( 'edit.php?post_type=post&wl_enriched=no' ); ?>
 <div class="wl-dashboard__block wl-dashboard__block--average-entity-rating">
     <header>
         <span class="dashicons dashicons-editor-help"></span>
-        <h3><?php echo __( 'Average entity rating', 'wordlift' ); ?></h3>
+        <h3><?php echo esc_html__( 'Average entity rating', 'wordlift' ); ?></h3>
     </header>
     <div class="wl-dashboard__block__body">
-        <a href="<?php echo $boost_url; ?>"><?php echo $this->dashboard_service->average_entities_rating(); ?></a>
-        <a href="<?php echo $boost_url; ?>"><?php echo esc_html( _x( 'Boost', 'Dashboard', 'wordlift' ) ); ?></a>
+        <a href="<?php echo esc_url( $boost_url ); ?>"><?php echo esc_html( $this->dashboard_service->average_entities_rating() ); ?></a>
+        <a href="<?php echo esc_url( $boost_url ); ?>"><?php echo esc_html( _x( 'Boost', 'Dashboard', 'wordlift' ) ); ?></a>
     </div>
 </div>
 <?php
 /**
  * Action to render additional widgets on admin dashboard.
+ *
  * @since 3.30.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * Action name : wl_admin_dashboard_widgets
  */
-do_action('wl_admin_dashboard_widgets')
+do_action( 'wl_admin_dashboard_widgets' )
 
 ?>
 <div style="display: none;">
     <header>
         <span class="dashicons dashicons-editor-help"></span>
-        <h3><?php echo __( 'Graph data', 'wordlift' ); ?></h3>
+        <h3><?php esc_html_e( 'Graph data', 'wordlift' ); ?></h3>
     </header>
     <div>
 		<?php echo esc_html( _x( 'Created triples', 'Dashboard', 'wordlift' ) ); ?>

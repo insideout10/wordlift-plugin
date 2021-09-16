@@ -24,7 +24,7 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 	}
 
 	// Get the current post
-	$post_id = $_GET["post_id"];
+	$post_id = (int) $_GET["post_id"];
 	$post    = get_post( $post_id );
 
 	Wordlift_Log_Service::get_logger( 'wordlift_ajax_related_posts' )->trace( "Going to find posts related to current with post id: $post_id ..." );

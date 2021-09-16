@@ -101,8 +101,8 @@ import delay from "modules/delay";
           //console.log('validating...');
         });
 
-      // Country validation
-      CountryValidator("#wl-country-code", "#wl-site-language");
+      // @since 3.32.7, country validation is disabled.
+     // CountryValidator("#wl-country-code", "#wl-site-language");
 
       // Check that a name has been provided.
       $("input[data-wl-name]").on("keyup", function() {

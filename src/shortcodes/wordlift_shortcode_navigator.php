@@ -110,10 +110,10 @@ function _wl_navigator_get_data() {
 	$post_types          = explode( ',', $post_types );
 	$existing_post_types = get_post_types();
 	$post_types          = array_values( array_intersect( $existing_post_types, $post_types ) );
-	$current_post_id     = $_GET['post_id'];
+	$current_post_id     = (int) $_GET['post_id'];
 	$current_post        = get_post( $current_post_id );
 
-	$navigator_id = $_GET['uniqid'];
+	$navigator_id = (string) $_GET['uniqid'];
 
 	// Post ID has to match an existing item
 	if ( null === $current_post ) {
@@ -387,7 +387,7 @@ add_action( 'rest_api_init', function () {
  * @since 2.2.0
  */
 add_action( 'plugins_loaded', function () {
-	$action = array_key_exists( 'action', $_REQUEST ) ? $_REQUEST['action'] : '';
+	$action = array_key_exists( 'action', $_REQUEST ) ? (string) $_REQUEST['action'] : '';
 	if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX || 'wl_navigator' !== $action ) {
 		return;
 	}
@@ -398,7 +398,7 @@ add_action( 'plugins_loaded', function () {
 }, 0 );
 
 add_action( 'init', function () {
-	$action = array_key_exists( 'action', $_REQUEST ) ? $_REQUEST['action'] : '';
+	$action = array_key_exists( 'action', $_REQUEST ) ? (string) $_REQUEST['action'] : '';
 	if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX || 'wl_navigator' !== $action ) {
 		return;
 	}

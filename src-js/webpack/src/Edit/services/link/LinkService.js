@@ -1,4 +1,3 @@
-/*global wlSettings*/
 /**
  * Services: Link Service.
  *
@@ -10,23 +9,24 @@
 /**
  * Internal dependencies
  */
-import EditorService from "./EditorService";
+import EditorService from "../EditorService";
+import {LinkServiceInterface} from "./LinkServiceInterface";
 
 /**
  * Define the `LinkService` class.
  *
  * @since 3.11.0
  */
-class LinkService {
+export default  class LinkService extends LinkServiceInterface {
   /**
    * Create an `LinkService` instance.
    *
    * @since 3.13.0
-   * @param {boolean} linkByDefault Whether to link by default.
    */
-  constructor(linkByDefault) {
+  constructor() {
     // Set the `link by default` setting.
-    this.linkByDefault = linkByDefault;
+    super();
+    this.linkByDefault = ( "1" === wlSettings.link_by_default );
   }
 
   /**
@@ -48,7 +48,6 @@ class LinkService {
       occurrences.forEach(x => this.setNoLink(x));
     }
   }
-
   /**
    * Switch the link on.
    *
@@ -60,7 +59,6 @@ class LinkService {
     dom.removeClass(elem, "wl-no-link");
     dom.addClass(elem, "wl-link");
   }
-
   /**
    * Switch the link off.
    *
@@ -72,7 +70,6 @@ class LinkService {
     dom.removeClass(elem, "wl-link");
     dom.addClass(elem, "wl-no-link");
   }
-
   /**
    * Get the link flag given the provided `occurrences`. A link flag is
    * considered true when at least one occurrences enables linking.
@@ -84,40 +81,32 @@ class LinkService {
    */
   getLink(occurrences) {
     const ed = EditorService.get();
-
     if (ed) {
       // Handle classic editor
-
       return occurrences.reduce((acc, id) => {
         const dom = ed.dom;
-
         return acc || (this.linkByDefault ? !dom.hasClass(id, "wl-no-link") : dom.hasClass(id, "wl-link"));
       }, false);
     } else {
       // Handle block editor
-
       const divElem = document.createElement("div");
       divElem.innerHTML = wp.data
-        .select("core/editor")
-        .getBlocks()
-        .map(block => block.originalContent)
-        .join();
-
+          .select("core/editor")
+          .getBlocks()
+          .map(block => block.originalContent)
+          .join();
       return occurrences.reduce((acc, id) => {
         return (
-          acc ||
-          (this.linkByDefault
-            ? !(
-                divElem.querySelector(`[id="${id}"]`) &&
-                divElem.querySelector(`[id="${id}"]`).classList.contains("wl-no-link")
-              )
-            : divElem.querySelector(`[id="${id}"]`) &&
-              divElem.querySelector(`[id="${id}"]`).classList.contains("wl-link"))
+            acc ||
+            (this.linkByDefault
+                ? !(
+                    divElem.querySelector(`[id="${id}"]`) &&
+                    divElem.querySelector(`[id="${id}"]`).classList.contains("wl-no-link")
+                )
+                : divElem.querySelector(`[id="${id}"]`) &&
+                divElem.querySelector(`[id="${id}"]`).classList.contains("wl-link"))
         );
       }, false);
     }
   }
 }
-
-// Finally export the `LinkService`.
-export default new LinkService("1" === wlSettings.link_by_default);
