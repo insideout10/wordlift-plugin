@@ -47,13 +47,11 @@ abstract class Abstract_Duplicate_Markup_Remover {
 
 			/**
 			 * Two possibilities:
-			 * 1. The referenced entity has only FAQ Page markup, in that case remove the complete entity.
-			 * 2. The referenced entity has multiple types, in that case completely remove the faq markup, but
+			 * 1. The referenced entity has only supplied SchemaType markup, in that case remove the complete entity.
+			 * 2. The referenced entity has multiple types, in that case completely remove the supplied SchemaType markup, but
 			 * retain the other entity data.
 			 */
-
-
-			// If the referenced entity is purely a faq page, the remove it.
+			// If the referenced entity is purely supplied SchemaType markup, then remove it.
 
 			if ( is_string( $type ) && $type === $this->type_to_remove ) {
 				// Remove the entity completely.
@@ -61,7 +59,7 @@ abstract class Abstract_Duplicate_Markup_Remover {
 			}
 
 			if ( is_array( $type ) && in_array( $this->type_to_remove, $type ) ) {
-				// Remove the faq page type.
+				// Remove the supplied SchemaType markup.
 				$position = array_search( $this->type_to_remove, $type );
 				// Also update the type.
 				if ( $position !== false ) {
@@ -70,7 +68,7 @@ abstract class Abstract_Duplicate_Markup_Remover {
 				}
 
 				foreach ( $this->properties_to_remove as $property ) {
-					// Remove keys of faq page.
+					// Remove keys of supplied SchemaType.
 					unset( $value[ $property ] );
 				}
 			}
