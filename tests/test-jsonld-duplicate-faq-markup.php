@@ -90,7 +90,7 @@ class Duplicate_Faq_Markup_Test extends Wordlift_Unit_Test_Case {
 			$post_jsonld,
 			// entity jsonld.
 			array(
-				'@type'      => array( 'FAQPage', 'HowTo' ),
+				'@type'      => array( 'FAQPage', 'Thing' ),
 				'foo'        => 'bar',
 				'mainEntity' => array(
 					$faq_element_structure,
@@ -106,7 +106,7 @@ class Duplicate_Faq_Markup_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( array(
 			$post_jsonld,
 			array(
-				'@type' => array( 'HowTo' ),
+				'@type' => array( 'Thing' ),
 				'foo'   => 'bar',
 			)
 		), $result );
