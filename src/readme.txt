@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.33.1 (2021-09-21) =
+* Fix [#1473](https://github.com/insideout10/wordlift-plugin/pull/1473): Allow `Wl_Abstract_Metabox` field class to use global instances
+* Fix [#1472](https://github.com/insideout10/wordlift-plugin/issues/1472): Remove duplicated HowTo markup from jsonld.
+
 = 3.33.0 (2021-09-16) =
 
 * Enhancement [#1466](https://github.com/insideout10/wordlift-plugin/issues/1466): Use WordPress languages in settings screen
