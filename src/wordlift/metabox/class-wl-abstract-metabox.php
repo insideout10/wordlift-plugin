@@ -272,17 +272,22 @@ class Wl_Abstract_Metabox {
 		 * @since 3.31.6
 		 * Add namespace to initialize class.
 		 */
+		/**
+		 * @since 3.31.6
+		 * Add namespace to initialize class.
+		 */
 		if ( substr( $field_class, 0, 1 ) !== '\\' ) {
 			$field_class = 'Wordlift\Metabox\Field\\' . $field_class;
 			// End if().
 		}
 
 		if ( class_exists( $field_class ) ) {
+			// Get decorator and use it as wrapper for save_data and get_data methods.
 			$instance = new $field_class( $args, $id, $type );
+			// Call apropriate constructor (e.g. Wl_Metabox_Field... ).
+			$this->fields[] = $instance;
 		}
 
-		// Call apropriate constructor (e.g. Wl_Metabox_Field... ).
-		$this->fields[] = $instance;
 	}
 
 	/**
