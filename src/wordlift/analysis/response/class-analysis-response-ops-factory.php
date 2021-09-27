@@ -50,10 +50,10 @@ class Analysis_Response_Ops_Factory {
 	 */
 	public function __construct( $entity_uri_service, $entity_helper, $entity_provider_registry ) {
 
-		$this->entity_uri_service  = $entity_uri_service;
-		$this->entity_helper       = $entity_helper;
+		$this->entity_uri_service       = $entity_uri_service;
+		$this->entity_helper            = $entity_helper;
 		$this->entity_provider_registry = $entity_provider_registry;
-		self::$instance = $this;
+		self::$instance                 = $this;
 
 	}
 
@@ -62,13 +62,14 @@ class Analysis_Response_Ops_Factory {
 		return self::$instance;
 	}
 
-	public function create( $json ) {
+	public function create( $json, $post_id ) {
 
 		return new Analysis_Response_Ops(
 			$this->entity_uri_service,
 			$this->entity_helper,
 			$this->entity_provider_registry,
-			$json );
+			$json,
+			$post_id );
 	}
 
 	/**
@@ -82,13 +83,13 @@ class Analysis_Response_Ops_Factory {
 	 * @return Analysis_Response_Ops A new Analysis_Response_Ops instance.
 	 * @throws \Exception if the provided response doesn't contain a `body` element.
 	 */
-	public function create_with_response( $response ) {
+	public function create_with_response( $response, $post_id ) {
 
 		if ( ! isset( $response['body'] ) ) {
 			throw new \Exception( "`body` is required in response." );
 		}
 
-		return $this->create( json_decode( $response['body'] ) );
+		return $this->create( json_decode( $response['body'] ), $post_id );
 	}
 
 }

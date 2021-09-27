@@ -81,7 +81,8 @@ class Ttl_Cache_Cleaner {
 			@unlink( $file[ Ttl_Cache_Cleaner::PATH ] );
 		}
 
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX && 'wl_ttl_cache_cleaner__flush' === $_REQUEST['action'] ) {
+		$action = isset( $_REQUEST['action'] ) ? (string) $_REQUEST['action'] : '';
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX && 'wl_ttl_cache_cleaner__flush' === $action ) {
 			wp_send_json_success( count( $files ) );
 		}
 	}

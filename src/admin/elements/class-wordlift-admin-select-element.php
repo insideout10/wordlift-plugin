@@ -40,14 +40,14 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 			)
 		);
 		?>
-        <select
-                id="<?php echo esc_attr( $params['id'] ); ?>"
-                name="<?php echo esc_attr( $params['name'] ); ?>"
-                class="<?php echo esc_attr( $params['class'] ); ?>"
+		<select
+				id="<?php echo esc_attr( $params['id'] ); ?>"
+				name="<?php echo esc_attr( $params['name'] ); ?>"
+				class="<?php echo esc_attr( $params['class'] ); ?>"
 			<?php echo $this->get_data_attributes( $params['data'] ); ?>
-        >
+		>
 			<?php $this->render_options( $params ); ?>
-        </select>
+		</select>
 
 		<?php
 		// Print the notice message if there is such.
@@ -106,7 +106,7 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 		// Print the notice message.
 		printf(
 			'<small class="wl-select-notices">%s</small>',
-			$notice
+			esc_html( $notice )
 		);
 	}
 

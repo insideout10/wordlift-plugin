@@ -54,7 +54,7 @@ class Wordlift_Debug_Service {
 			wp_send_json_error( 'id not set' );
 		}
 
-		$post_id = $_GET['id'];
+		$post_id = (int) $_GET['id'];
 
 		$post = get_post( $post_id );
 

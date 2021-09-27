@@ -113,7 +113,7 @@ class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 
 		$response_json = Analysis_Response_Ops_Factory
 			::get_instance()
-			->create( json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' ) )
+			->create( json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' ), null )
 			->make_entities_local()
 			->add_occurrences( $request_json['content'] )
 			->to_string();

@@ -15,7 +15,7 @@ function wl_shortcode_geomap_ajax() {
 	$post_id = ( isset( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : null );
 
 	$map_data = ( is_numeric( $post_id )
-		? wl_shortcode_geomap_ajax_single_post( $post_id )
+		? wl_shortcode_geomap_ajax_single_post( (int) $post_id )
 		: wl_shortcode_geomap_ajax_all_posts() );
 
 	wl_core_send_json( wl_shortcode_geomap_format_results( $map_data, $post_id ) );

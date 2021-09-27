@@ -8,7 +8,7 @@
  */
 
 use Wordlift\Object_Type_Enum;
-use Wordlift\Relation\Object_Relation_Service;
+use Wordlift\Relation\Object_Relation_Factory;
 
 /**
  * Receive events from post saves, and split them according to the post type.
@@ -44,8 +44,10 @@ function wl_linked_data_save_post( $post_id ) {
 	 */
 	$is_editor_supported = wl_post_type_supports_editor( $post_type );
 
+	$is_no_editor_analysis_enabled = Wordlift\No_Editor_Analysis\No_Editor_Analysis_Feature::can_no_editor_analysis_be_used( $post_id );
 	// Bail out if it's not an entity.
-	if ( ! $is_editor_supported ) {
+	if ( ! $is_editor_supported
+	     && ! $is_no_editor_analysis_enabled ) {
 		$log->debug( "Skipping $post_id, because $post_type doesn't support the editor (content)." );
 
 		return;
@@ -60,7 +62,7 @@ function wl_linked_data_save_post( $post_id ) {
 	$supported_types = Wordlift_Entity_Service::valid_entity_post_types();
 
 	// Bail out if it's not a valid entity.
-	if ( ! in_array( $post_type, $supported_types ) ) {
+	if ( ! in_array( $post_type, $supported_types ) && ! $is_no_editor_analysis_enabled ) {
 		$log->debug( "Skipping $post_id, because $post_type is not a valid entity." );
 
 		return;
@@ -112,18 +114,17 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	// Store mapping between tmp new entities uris and real new entities uri
 	$entities_uri_mapping = array();
 
-	// Save the entities coming with POST data.
-	if ( isset( $_POST['wl_entities'] ) && isset( $_POST['wl_boxes'] ) ) {
 
+	// Save all the selected internal entity uris to this variable.
+	$internal_entity_uris = array();
+
+	// Save the entities coming with POST data.
+	if ( isset( $_POST['wl_entities'] ) ) {
 		wl_write_log( "[ post id :: $post_id ][ POST(wl_entities) :: " );
 		wl_write_log( json_encode( $_POST['wl_entities'] ) );
 		wl_write_log( "]" );
-		wl_write_log( "[ post id :: $post_id ][ POST(wl_boxes) :: " );
-		wl_write_log( json_encode( $_POST['wl_boxes'], true ) );
-		wl_write_log( "]" );
 
 		$entities_via_post = $_POST['wl_entities'];
-		$boxes_via_post    = $_POST['wl_boxes'];
 
 		foreach ( $entities_via_post as $entity_uri => $entity ) {
 
@@ -138,18 +139,19 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			$ie = $entity_service->get_entity_post_by_uri( $entity_uri );
 
 			// Dont save the entities which are not found, but also local.
-			if ( $ie === null &&  Wordlift_Entity_Uri_Service::get_instance()->is_internal( $entity_uri ) ) {
+			if ( $ie === null && Wordlift_Entity_Uri_Service::get_instance()->is_internal( $entity_uri ) ) {
+				$internal_entity_uris[] = $entity_uri;
 				continue;
 			}
 
 			// Detect the uri depending if is an existing or a new entity
-			$uri = ( null === $ie ) ?
+			$uri                    = ( null === $ie ) ?
 				Wordlift_Uri_Service::get_instance()->build_uri(
 					$entity['label'],
 					Wordlift_Entity_Service::TYPE_NAME,
 					$entity_type
 				) : wl_get_entity_uri( $ie->ID );
-
+			$internal_entity_uris[] = $uri;
 			wl_write_log( "Map $entity_uri on $uri" );
 			$entities_uri_mapping[ $entity_uri ] = $uri;
 
@@ -200,15 +202,18 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	// Reset previously saved instances.
 	wl_core_delete_relation_instances( $post_id );
 
-
-	$relations = Object_Relation_Service::get_instance()
-	                                    ->get_relations_from_content( $updated_post_content, Object_Type_Enum::POST );
+	$relations = Object_Relation_Factory::get_instance( $post_id )
+	                                    ->get_relations_from_content(
+		                                    $updated_post_content,
+		                                    Object_Type_Enum::POST,
+		                                    $internal_entity_uris
+	                                    );
 
 	// Save relation instances
 	foreach ( $relations as $relation ) {
 
 		wl_core_add_relation_instance(
-			// subject id.
+		// subject id.
 			$post_id,
 			// what, where, when, who
 			$relation->get_relation_type(),
@@ -511,7 +516,7 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 
 //    wl_write_log("wl_update_related_entities [ content :: $content ][ data :: " . var_export($data, true). " ][ matches :: " . var_export($matches, true) . " ]");
 
-	$uris  = $matches[1];
+	$uris = $matches[1];
 	// Collect the entities.
 	$entities = array();
 	foreach ( $uris as $uri ) {

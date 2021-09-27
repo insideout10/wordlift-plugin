@@ -25,6 +25,7 @@ use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Configuration\Config;
 use Wordlift\Duplicate_Markup_Remover\Faq_Duplicate_Markup_Remover;
+use Wordlift\Duplicate_Markup_Remover\How_To_Duplicate_Markup_Remover;
 use Wordlift\Duplicate_Markup_Remover\Videoobject_Duplicate_Remover;
 use Wordlift\Entity\Entity_Helper;
 use Wordlift\Entity\Entity_No_Index_Flag;
@@ -774,7 +775,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.32.3';
+		$this->version     = '3.33.1';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1593,6 +1594,12 @@ class Wordlift {
 		 */
 		new Faq_Duplicate_Markup_Remover();
 		/**
+		 * @since 3.33.1
+		 * Remove the duplicate HowTo Markup.
+		 */
+		new How_To_Duplicate_Markup_Remover();
+
+		/**
 		 * @since 3.27.8
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/1248
 		 */
@@ -1665,6 +1672,8 @@ class Wordlift {
 		);
 
 		new Entity_Type_Setter();
+		$no_editor_analysis_loader = new \Wordlift\No_Editor_Analysis\Loader();
+		$no_editor_analysis_loader->init_feature();
 	}
 
 	/**

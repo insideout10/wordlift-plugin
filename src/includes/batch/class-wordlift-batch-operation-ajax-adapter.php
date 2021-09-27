@@ -45,8 +45,8 @@ class Wordlift_Batch_Operation_Ajax_Adapter {
 	 * Wordlift_Batch_Operation_Ajax_Adapter constructor.
 	 *
 	 * @param \Wordlift_Batch_Operation_Interface $operation The batch operation.
-	 * @param string                              $action The action name.
-	 * @param int                                 $access The access level.
+	 * @param string $action The action name.
+	 * @param int $access The access level.
 	 */
 	public function __construct( $operation, $action, $access = self::ACCESS_ADMIN ) {
 
@@ -71,11 +71,11 @@ class Wordlift_Batch_Operation_Ajax_Adapter {
 	/**
 	 * Hook to `wl_admin_settings`, adds the nonce.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param array $params An array of settings.
 	 *
 	 * @return array The updated array of settings.
+	 * @since 3.20.0
+	 *
 	 */
 	public function add_nonce( $params ) {
 
@@ -90,14 +90,14 @@ class Wordlift_Batch_Operation_Ajax_Adapter {
 	 * @since 3.20.0
 	 */
 	public function process() {
-
+		$nonce = isset( $_POST['_nonce'] ) ? (string) $_POST['_nonce'] : '';
 		// Validate the nonce.
-		if ( ! wp_verify_nonce( $_POST['_nonce'], $this->action ) ) {
+		if ( ! wp_verify_nonce( $nonce, $this->action ) ) {
 			wp_send_json_error( 'Invalid nonce.' );
 		}
 
-		$offset = is_numeric( $_POST['offset'] ) ? (int) $_POST['offset'] : 0;
-		$limit  = is_numeric( $_POST['limit'] ) ? (int) $_POST['limit'] : 10;
+		$offset = isset( $_POST['offset'] ) ? (int) $_POST['offset'] : 0;
+		$limit  = isset( $_POST['limit'] ) ? (int) $_POST['limit'] : 10;
 
 		// Run the batch operation.
 		$result = $this->operation->process( $offset, $limit );
@@ -117,7 +117,8 @@ class Wordlift_Batch_Operation_Ajax_Adapter {
 	public function count() {
 
 		// Validate the nonce.
-		if ( ! wp_verify_nonce( $_POST['_nonce'], $this->action ) ) {
+		$nonce = isset( $_POST['_nonce'] ) ? (string) $_POST['_nonce'] : '';
+		if ( ! wp_verify_nonce( $nonce, $this->action ) ) {
 			wp_send_json_error( 'Invalid nonce.' );
 		}
 
@@ -135,9 +136,9 @@ class Wordlift_Batch_Operation_Ajax_Adapter {
 	/**
 	 * Create a nonce for the ajax operation.
 	 *
+	 * @return string The nonce.
 	 * @since 3.20.0
 	 *
-	 * @return string The nonce.
 	 */
 	public function create_nonce() {
 

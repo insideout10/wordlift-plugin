@@ -42,7 +42,8 @@ const webpackConfig = {
     "vocabulary": "./src/vocabulary/index.js",
     "vocabulary-term-page": "./src/vocabulary/screens/term-page/index.js",
     "vocabulary-settings-page": "./src/vocabulary/screens/settings/index.js",
-    "videoobject" : "./src/videoobject/index.js"
+    "videoobject" : "./src/videoobject/index.js",
+    "no-editor-analysis" : "./src/no-editor-analysis/index.js"
   },
   output: {
     filename: "[name].js",

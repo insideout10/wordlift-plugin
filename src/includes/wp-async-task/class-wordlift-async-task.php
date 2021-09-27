@@ -191,17 +191,12 @@ abstract class Wordlift_Async_Task {
 	 * @uses wp_die()
 	 */
 	public function handle_postback() {
-		if ( isset( $_POST['_nonce'] ) && $this->verify_async_nonce( $_POST['_nonce'] ) ) {
+		if ( isset( $_POST['_nonce'] ) && $this->verify_async_nonce( (string) $_POST['_nonce'] ) ) {
 			if ( ! is_user_logged_in() ) {
 				$this->action = "nopriv_$this->action";
 			}
 			$this->run_action();
 		}
-
-//		add_filter( 'wp_die_handler', function () {
-//			die();
-//		} );
-//		wp_die();
 	}
 
 	/**

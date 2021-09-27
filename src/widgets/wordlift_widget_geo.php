@@ -80,7 +80,7 @@ class WordLift_Geo_Widget extends WP_Widget {
 	) {
 
 		$instance          = array();
-		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
 
 		return $instance;
 	}

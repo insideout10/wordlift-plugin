@@ -11,9 +11,10 @@ namespace Wordlift\Analysis\Response;
 
 use stdClass;
 use Wordlift\Analysis\Entity_Provider\Entity_Provider_Registry;
+use Wordlift\Analysis\Occurrences\Occurrences_Factory;
 use Wordlift\Entity\Entity_Helper;
 
-class Analysis_Response_Ops  {
+class Analysis_Response_Ops {
 
 	/**
 	 * The analysis response json.
@@ -44,6 +45,11 @@ class Analysis_Response_Ops  {
 	private $entity_provider_registry;
 
 	/**
+	 * @var int $post_id
+	 */
+	private $post_id;
+
+	/**
 	 * Analysis_Response_Ops constructor.
 	 *
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service}.
@@ -53,12 +59,13 @@ class Analysis_Response_Ops  {
 	 *
 	 * @since 3.21.5
 	 */
-	public function __construct( $entity_uri_service, $entity_helper, $entity_provider_registry, $json ) {
+	public function __construct( $entity_uri_service, $entity_helper, $entity_provider_registry, $json, $post_id ) {
 
-		$this->json                = $json;
-		$this->entity_uri_service  = $entity_uri_service;
-		$this->entity_helper       = $entity_helper;
+		$this->json                     = $json;
+		$this->entity_uri_service       = $entity_uri_service;
+		$this->entity_helper            = $entity_helper;
 		$this->entity_provider_registry = $entity_provider_registry;
+		$this->post_id = $post_id;
 	}
 
 	/**
@@ -70,6 +77,7 @@ class Analysis_Response_Ops  {
 	 *
 	 * If found, the entity id is swapped with the local id and the remote id is added to the sameAs.
 	 *
+	 *
 	 * @return Analysis_Response_Ops The current Analysis_Response_Ops instance.
 	 */
 	public function make_entities_local() {
@@ -77,7 +85,6 @@ class Analysis_Response_Ops  {
 		if ( ! isset( $this->json->entities ) ) {
 			return $this;
 		}
-
 		// Get the URIs.
 		$uris     = array_keys( get_object_vars( $this->json->entities ) );
 		$mappings = $this->entity_helper->map_many_to_local( $uris );
@@ -102,6 +109,7 @@ class Analysis_Response_Ops  {
 			unset( $this->json->entities->{$external_uri} );
 		}
 
+		// Set the internal uri in the annotation for the entityMatch in annotations.
 		if ( isset( $this->json->annotations ) ) {
 			foreach ( $this->json->annotations as $key => $annotation ) {
 				if ( isset( $annotation->entityMatches ) ) {
@@ -201,16 +209,9 @@ class Analysis_Response_Ops  {
 		// function `preselect`, which was called by src/coffee/editpost-widget/app.services.EditorService.coffee in
 		// `embedAnalysis`.
 
-		if ( ! is_bool( $this->json ) ) {
-			foreach ( $this->json->entities as $id => $entity ) {
-				$this->json->entities->{$id}->occurrences = isset( $occurrences[ $id ] ) ? $occurrences[ $id ] : array();;
-
-				foreach ( $this->json->entities->{$id}->occurrences as $annotation_id ) {
-					$this->json->entities->{$id}->annotations[ $annotation_id ] = array(
-						'id' => $annotation_id,
-					);
-				}
-			}
+		if ( ! is_bool( $this->json ) && isset( $this->json->entities ) ) {
+			$occurrences_processor = Occurrences_Factory::get_instance( $this->post_id );
+			$this->json = $occurrences_processor->add_occurences_to_entities( $occurrences, $this->json, $this->post_id );
 		}
 
 		// Add the missing annotations. This allows the analysis response to work also if we didn't receive results
@@ -284,6 +285,33 @@ class Analysis_Response_Ops  {
 	}
 
 	/**
+	 * This function should be invoked after `make_entities_local` after this
+	 * method.
+	 *
+	 * @param $excluded_uris array An array of entity URIs to be excluded.
+	 *
+	 * @return $this
+	 * @since 3.32.3.1
+	 */
+	public function remove_excluded_entities( $excluded_uris ) {
+
+		// If we didnt receive array, return early.
+		if ( ! is_array( $excluded_uris ) ) {
+			return $this;
+		}
+
+		// We may also receive an array of null, make sure to filter uris when receiving.
+		$excluded_uris = array_filter( $excluded_uris, 'is_string' );
+
+		$this->remove_entities_with_excluded_uris( $excluded_uris );
+
+		$this->remove_annotations_with_excluded_uris( $excluded_uris );
+
+		return $this;
+	}
+
+
+	/**
 	 * Get the string representation of the JSON.
 	 *
 	 * @return false|string The string representation or false in case of error.
@@ -295,6 +323,58 @@ class Analysis_Response_Ops  {
 			? 256 : 0 );
 
 		return wp_json_encode( $this->json, $options );
+	}
+
+	/**
+	 * Remove all the entities with the excluded URIs.
+	 * @param array $excluded_uris The array of URIs to be excluded.
+	 */
+	private function remove_entities_with_excluded_uris( array $excluded_uris ) {
+		// Remove the excluded entity uris.
+		if ( isset( $this->json->entities ) ) {
+			foreach ( $excluded_uris as $excluded_uri ) {
+
+				if ( isset( $this->json->entities->{$excluded_uri} ) ) {
+					// Remove this entity.
+					unset( $this->json->entities->{$excluded_uri} );
+					// Also remove the annotations.
+				}
+			}
+		}
+	}
+
+	/**
+	 * Remove all the annotations with the excluded entity URIs.
+	 * @param array $excluded_uris The array of URIs to be excluded.
+	 *
+	 * @return void
+	 */
+	private function remove_annotations_with_excluded_uris( array $excluded_uris ) {
+		if ( isset( $this->json->annotations ) ) {
+			foreach ( $this->json->annotations as $annotation_key => &$annotation_data ) {
+
+				if ( ! isset( $annotation_data->entityMatches ) ) {
+					continue;
+				}
+
+				foreach ( $annotation_data->entityMatches as $entity_match_key => $entity_match_data ) {
+
+					$entity_uri = $entity_match_data->entityId;
+
+					if ( ! in_array( $entity_uri, $excluded_uris ) ) {
+						continue;
+					}
+					unset( $annotation_data->entityMatches[ $entity_match_key ] );
+				}
+
+				if ( count( $annotation_data->entityMatches ) === 0 ) {
+					// Remove the annotation if we have zero empty annotation matches.
+					unset( $this->json->annotations->{$annotation_key} );
+				}
+
+			}
+		}
+
 	}
 
 }

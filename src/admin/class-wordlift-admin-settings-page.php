@@ -277,20 +277,23 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			$entity_base_path_args
 		);
 
+
+		$language_name = Wordlift_Languages::get_language_name(
+			$this->configuration_service->get_language_code()
+		);
+
 		// Add the `language_name` field.
 		add_settings_field(
 			'wl-site-language',
 			__( 'Site Language', 'wordlift' ),
-			array( $this->language_select_element, 'render' ),
+			function () use ( $language_name ) {
+				echo sprintf( '<p><label>%s</label></p>', esc_html( $language_name ));
+				echo  sprintf( __( '<br/><p>WordLift uses the site language, You can change the language from <a href="%s">settings.</a></p>', 'wordlift' ),
+					admin_url('options-general.php/#WPLANG')
+				);
+			},
 			'wl_general_settings',
-			'wl_general_settings_section',
-			array(
-				// The array of arguments to pass to the callback. In this case, just a description.
-				'id'          => 'wl-site-language',
-				'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::LANGUAGE . ']',
-				'value'       => $this->configuration_service->get_language_code(),
-				'description' => __( 'Each WordLift Key can be used only in one language. Pick yours.', 'wordlift' ),
-			)
+			'wl_general_settings_section'
 		);
 
 		// Add the `country_code` field.
@@ -397,9 +400,9 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 		// Check whether a publisher name has been set.
 		if ( isset( $_POST['wl_publisher'] ) && ! empty( $_POST['wl_publisher']['name'] ) ) { // WPCS: CSRF, input var, sanitization ok.
-			$name         = $_POST['wl_publisher']['name']; // WPCS: CSRF, input var, sanitization ok.
-			$type         = $_POST['wl_publisher']['type']; // WPCS: CSRF, input var, sanitization ok.
-			$thumbnail_id = $_POST['wl_publisher']['thumbnail_id'] ?: null; // WPCS: CSRF, input var, sanitization ok.
+			$name         = isset( $_POST['wl_publisher']['name'] ) ? (string) $_POST['wl_publisher']['name'] : '';
+			$type         = isset( $_POST['wl_publisher']['type'] ) ? (string) $_POST['wl_publisher']['type'] : '';
+			$thumbnail_id = isset( $_POST['wl_publisher']['thumbnail_id'] ) ? $_POST['wl_publisher']['thumbnail_id'] : null; // WPCS: CSRF, input var, sanitization ok.
 
 			// Set the type URI, either http://schema.org/Person or http://schema.org/Organization.
 			$type_uri = sprintf( 'http://schema.org/%s', 'organization' === $type ? 'Organization' : 'Person' );

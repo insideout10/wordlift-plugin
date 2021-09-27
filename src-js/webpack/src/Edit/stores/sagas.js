@@ -8,7 +8,7 @@
 /**
  * External dependencies
  */
-import { call, delay, put, select, takeEvery, takeLatest } from "redux-saga/effects";
+import { delay, put, select, takeEvery, takeLatest } from "redux-saga/effects";
 /**
  * Internal dependencies
  */
@@ -21,7 +21,6 @@ import {
 } from "../constants/ActionTypes";
 import EditPostWidgetController from "../angular/EditPostWidgetController";
 import { getEntity } from "./selectors";
-import LinkService from "../services/LinkService";
 import { toggleLinkSuccess } from "../actions";
 import {
   addEntityRequest,
@@ -30,6 +29,8 @@ import {
   createEntitySuccess
 } from "../components/AddEntity/actions";
 import React from "react";
+import LinkServiceFactory from "../services/link/LinkServiceFactory";
+import {doAction} from "@wordpress/hooks";
 
 /**
  * Handle the {@link TOGGLE_ENTITY} action.
@@ -42,14 +43,15 @@ function* toggleEntity(payload) {
 }
 
 function* toggleLink({ entity }) {
+  const linkService = LinkServiceFactory.getInstance();
   // Toggle the link/no link on entity's occurrences.
   // Toggle the link on the occurrences.
-  LinkService.setLink(entity.occurrences, !entity.link);
+  linkService.setLink(entity.occurrences, !entity.link);
 
   yield put(
     toggleLinkSuccess({
       id: entity.id,
-      link: LinkService.getLink(entity.occurrences)
+      link: linkService.getLink(entity.occurrences)
     })
   );
 }
@@ -75,6 +77,7 @@ function* addEntity({ payload }) {
     // Save the entity.
     ctrl.storeCurrentEntity();
   });
+  doAction("unstable_wordlift.closeEntitySelect")
 
   yield put(addEntitySuccess());
 }

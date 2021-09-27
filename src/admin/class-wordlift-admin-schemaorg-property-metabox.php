@@ -95,9 +95,10 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 	/**
 	 * Create a {@link Wordlift_Admin_Schemaorg_Property_Metabox} instance.
 	 *
+	 * @param \Wordlift_Schemaorg_Property_Service $schemaorg_property_service The {@link Wordlift_Schemaorg_Property_Service} instance.
+	 *
 	 * @since 3.20.0
 	 *
-	 * @param \Wordlift_Schemaorg_Property_Service $schemaorg_property_service The {@link Wordlift_Schemaorg_Property_Service} instance.
 	 */
 	public function __construct( $schemaorg_property_service ) {
 
@@ -119,9 +120,10 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 	/**
 	 * Hook `add_meta_boxes`.
 	 *
+	 * @param string $post_type The current post type.
+	 *
 	 * @since 3.20.0
 	 *
-	 * @param string $post_type The current post type.
 	 */
 	public function add_meta_boxes( $post_type ) {
 
@@ -147,15 +149,16 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 	 *
 	 * The hook will receive the property data in the `$_POST` array.
 	 *
+	 * @param int $post_id The post id.
+	 *
 	 * @since 3.20.0
 	 *
-	 * @param int $post_id The post id.
 	 */
 	public function save_post( $post_id ) {
 
 		//region ## CHECKS.
 		// Add nonce for security and authentication.
-		$nonce_name = isset( $_POST[ self::NONCE_NAME ] ) ? $_POST[ self::NONCE_NAME ] : '';
+		$nonce_name = isset( $_POST[ self::NONCE_NAME ] ) ? (string) $_POST[ self::NONCE_NAME ] : '';
 
 		// Check if nonce is set.
 		if ( ! isset( $nonce_name ) ) {
@@ -226,7 +229,8 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 		//      - value: the prop value.
 		//
 		// `_wl_prop` is *not* Wordlift_Schemaorg_Property_Service::PREFIX.
-		foreach ( $_POST['_wl_prop'] as $name => $instances ) {
+		$wl_prop = isset( $_POST['_wl_prop'] ) ? (array) $_POST['_wl_prop'] : array();
+		foreach ( $wl_prop as $name => $instances ) {
 			foreach ( $instances as $uuid => $meta ) {
 				foreach ( $meta as $meta_key => $meta_value ) {
 					if ( ! empty( $meta_value ) ) {
@@ -247,7 +251,8 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 
 		//region ## NONCE VALIDATION.
 		// Check nonce, we don't send back a valid nonce if this one isn't valid, of course.
-		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wl_schemaorg_property' ) ) {
+		$nonce = isset( $_REQUEST['_wpnonce'] ) ? (string) $_REQUEST['_wpnonce'] : '';
+		if ( ! wp_verify_nonce( $nonce, 'wl_schemaorg_property' ) ) {
 			wp_send_json_error( array(
 				'message' => '`nonce` missing or invalid.',
 			) );
@@ -320,10 +325,11 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 		/**
 		 * Filter: wl_schemaorg_properties_for_classes.
 		 *
-		 * @since 3.20.0
-		 *
 		 * @param array $json A json instance as array.
 		 * @param array $classes An array of Schema.org classes.
+		 *
+		 * @since 3.20.0
+		 *
 		 */
 		$properties = apply_filters( 'wl_schemaorg_properties_for_classes', $json, $class_names );
 
@@ -339,8 +345,8 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 	 */
 	public function render() {
 		?>
-        <input type="hidden" name="<?php echo self::NONCE_NAME; ?>"
-               value="<?php echo wp_create_nonce( self::ACTION_NAME ); ?>"/>
+        <input type="hidden" name="<?php echo esc_attr( self::NONCE_NAME ); ?>"
+               value="<?php echo esc_attr( wp_create_nonce( self::ACTION_NAME ) ); ?>"/>
         <div id="wl-schema-properties-form"></div>
 		<?php
 	}

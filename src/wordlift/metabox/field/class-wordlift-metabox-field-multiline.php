@@ -29,7 +29,7 @@ class Wordlift_Metabox_Field_Multiline extends Wl_Metabox_Field {
 				<textarea
 					id="<?php echo esc_attr( $this->meta_name ) ?>"
 					class="<?php echo esc_attr( $this->meta_name ) ?>"
-					name="wl_metaboxes[<?php echo $this->meta_name ?>][]"
+					name="wl_metaboxes[<?php echo esc_attr( $this->meta_name ); ?>][]"
 					style="width:88%"
 				><?php echo esc_textarea( $text ) ?></textarea>
 

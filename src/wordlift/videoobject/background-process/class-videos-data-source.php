@@ -26,11 +26,14 @@ class Videos_Data_Source extends Data_Source {
 			'numberposts' => $this->get_batch_size(),
 			'offset'      => $this->get_state()->index,
 			/**
+			 * @return array<string> An array of supported post types for the video import procedure.
 			 * @since 3.31.4
 			 * Filter name : wl_videoobject_procedure_post_types
-			 * @return array<string> An array of supported post types for the video import procedure.
 			 */
-			'post_type'   => apply_filters( 'wl_videoobject_procedure_post_types', array( 'post' ) )
+			'post_type'   => array_unique( apply_filters( 'wl_videoobject_procedure_post_types', array(
+				'post',
+				'page'
+			) ) )
 		) );
 	}
 
@@ -40,11 +43,14 @@ class Videos_Data_Source extends Data_Source {
 			'numberposts' => - 1,
 			'post_status' => 'any',
 			/**
+			 * @return array<string> An array of supported post types for the video import procedure.
 			 * @since 3.31.4
 			 * Filter name : wl_videoobject_procedure_post_types
-			 * @return array<string> An array of supported post types for the video import procedure.
 			 */
-			'post_type'   => apply_filters( 'wl_videoobject_procedure_post_types', array( 'post' ) )
+			'post_type'   => array_unique( apply_filters( 'wl_videoobject_procedure_post_types', array(
+				'post',
+				'page'
+			) ) )
 		) ) );
 
 	}
