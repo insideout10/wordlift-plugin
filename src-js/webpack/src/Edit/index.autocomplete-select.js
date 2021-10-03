@@ -68,3 +68,33 @@ window.addEventListener("load", () => {
     element
   );
 });
+
+
+// ### Render the sameAs metabox field autocomplete select.
+window.addEventListener("load", () => {
+    const element = document.getElementById("wl-field-url");
+
+    // Check that the document element is there.
+    if (null === element) {
+        return;
+    }
+
+    ReactDOM.render(
+        <AutocompleteSelect
+            loadOptions={autocomplete}
+            name="wl_metaboxes[field_url][]"
+            placeholder=""
+            filterOption={(option, filter) => true}
+            searchPromptText={
+                settings.l10n["Type at least 3 characters to search..."]
+            }
+            loadingPlaceholder={
+                settings.l10n[
+                    "Please wait while we look for entities in the linked data cloud..."
+                    ]
+            }
+            noResultsText={settings.l10n["No results found for your search."]}
+        />,
+        element
+    );
+});

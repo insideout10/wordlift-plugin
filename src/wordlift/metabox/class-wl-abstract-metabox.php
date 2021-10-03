@@ -2,6 +2,7 @@
 
 namespace Wordlift\Metabox;
 
+use Wordlift\Metabox\Field\Field_Url;
 use Wordlift\Metabox\Field\Post_Field_Decorator;
 use Wordlift\Metabox\Field\Term_Field_Decorator;
 use Wordlift\Object_Type_Enum;
@@ -99,6 +100,9 @@ class Wl_Abstract_Metabox {
 			// print field HTML (nonce included).
 			echo $field->html();
 		}
+
+		$field_url = new Field_Url();
+		$field_url->render();
 
 	}
 
