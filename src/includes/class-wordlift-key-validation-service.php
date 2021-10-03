@@ -138,7 +138,8 @@ class Wordlift_Key_Validation_Service {
 
 		// If we got an error, return invalid.
 		if ( is_wp_error( $response ) || 2 !== (int) $response['response']['code'] / 100 ) {
-			wp_send_json_success( array( 'valid' => false, 'message' => '' ) );
+			wp_send_json_success( array( 'valid' => false, 'message' => '' , 'response' => $response,
+                                         'api_url' => Default_Api_Service::get_instance()->get_base_url() ) );
 		}
 
 		$res_body = json_decode( wp_remote_retrieve_body( $response ), true );
