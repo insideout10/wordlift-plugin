@@ -42,3 +42,8 @@
 
 
 }
+
+.interface-complementary-area .components-panel__header {
+  // Prevent plugin sidebar from overriding the video modal.
+  z-index: 0;
+}
