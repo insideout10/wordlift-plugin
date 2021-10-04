@@ -19,14 +19,43 @@ import {getAllVideos} from "./actions";
 let isListenerAdded = false
 
 
+function mayBeCreateModalDiv() {
+    const id = 'wl-video-modal';
+    let modalDiv = document.getElementById(id)
+    if (modalDiv) {
+        return modalDiv
+    }
+    // create a modal div at root level.
+    modalDiv = document.createElement('div')
+    modalDiv.setAttribute('id', id)
+
+    const body = document.querySelector('body')
+    if (body) {
+        body.appendChild(modalDiv)
+    }
+
+    return modalDiv
+}
+
 const renderVideoList = () => {
     const videoList = document.getElementById("wl-video-list")
     if (videoList && videoList.innerHTML === "") {
+
+        const modalDiv = mayBeCreateModalDiv();
+
+        ReactDOM.render(
+            <Provider store={store}>
+                <React.Fragment>
+                    <VideoModal/>
+                </React.Fragment>
+            </Provider>,
+            modalDiv
+        );
+
         ReactDOM.render(
             <Provider store={store}>
                 <React.Fragment>
                     <VideoList/>
-                    <VideoModal/>
                 </React.Fragment>
             </Provider>,
             videoList
