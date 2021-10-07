@@ -248,8 +248,8 @@ spec:
         workingDir: /var/www/html/5.5/
         resources:
           requests:
-            cpu: "850m"
-            memory: "850Mi"
+            cpu: "650m"
+            memory: "650Mi"
           limits:
             cpu: "850m"
             memory: "850Mi"
