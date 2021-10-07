@@ -10,7 +10,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "1800"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "1800"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
-
+    nginx.ingress.kubernetes.io/proxy-next-upstream: error timeout http_502
 spec:
   tls:
     - hosts:
