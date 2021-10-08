@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.33.2 (????-??-??) =
+* Fix [#1476](https://github.com/insideout10/wordlift-plugin/pull/1476): Fix for Overlapping tiles on VideoObject modal window
+* Fix [#1482](https://github.com/insideout10/wordlift-plugin/issues/1472): No Editor Analysis : Link Service factory Should use inverted condition.
+
 = 3.33.1 (2021-09-21) =
 * Fix [#1473](https://github.com/insideout10/wordlift-plugin/pull/1473): Allow `Wl_Abstract_Metabox` field class to use global instances
 * Fix [#1472](https://github.com/insideout10/wordlift-plugin/issues/1472): Remove duplicated HowTo markup from jsonld.
