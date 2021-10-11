@@ -331,7 +331,7 @@ class Wordlift_Entity_Service {
 		// Set the alternative labels.
 		foreach ( $alt_labels as $alt_label ) {
 
-			if ( ! preg_match('/^(\w| |-|,)+$/', $alt_label )  ) {
+			if ( ! preg_match('/^[\w\-, ]+$/', $alt_label )  ) {
 				continue;
 			}
 
