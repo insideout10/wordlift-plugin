@@ -330,6 +330,11 @@ class Wordlift_Entity_Service {
 
 		// Set the alternative labels.
 		foreach ( $alt_labels as $alt_label ) {
+
+			if ( ! preg_match('/^(\w| |-|,)+$/', $alt_label )  ) {
+				continue;
+			}
+
 			if ( ! empty( $alt_label ) ) {
 				add_post_meta( $post_id, self::ALTERNATIVE_LABEL_META_KEY, (string) $alt_label );
 			}
