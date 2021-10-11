@@ -570,7 +570,7 @@ EOF;
 		$related_post_ids = wl_core_get_related_post_ids( $entity_id, array( "predicate" => "what" ) );
 		$this->assertCount( 0, $related_post_ids );
 		// Generate e label and set it as alternative label for the new entity
-		$alternative_label = uniqid( 'entity-alternative', true );
+		$alternative_label = "test synonym";
 		Wordlift_Entity_Service::get_instance()->set_alternative_labels( $entity_id, $alternative_label );
 		// Check that the alternative label is properly set
 		$labels = Wordlift_Entity_Service::get_instance()->get_alternative_labels( $entity_id );
