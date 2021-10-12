@@ -1,11 +1,11 @@
 <!-- Pane 5 content -->
 <script type="text/html" id="page-4">
     <h2 class="page-title">
-		<?php esc_html_e( 'Language and Country', 'wordlift' ); ?>
+		<?php esc_html_e( 'Country', 'wordlift' ); ?>
     </h2>
 
     <p class="page-txt">
-		<?php esc_html_e( 'Each WordLift key can be used only in one language. Pick yours.', 'wordlift' ); ?>
+		<?php esc_html_e( 'Each WordLift key can be used only in one language.', 'wordlift' ); ?>
     </p>
 
 	<?php
@@ -16,15 +16,6 @@
 	$parts    = explode( '_', $locale );
 	$language = isset( $parts[0] ) ? $parts[0] : '';
 	$country  = isset( $parts[1] ) ? strtolower( $parts[1] ) : '';
-
-	// Render language select element.
-	$language_select->render(
-		array(
-			'id'    => 'wl-site-language',
-			'name'  => 'wl-site-language',
-			'value' => $language,
-		)
-	);
 	?>
 
     <br>

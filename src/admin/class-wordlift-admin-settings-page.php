@@ -289,7 +289,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			function () use ( $language_name ) {
 				echo sprintf( '<p><label>%s</label></p>', esc_html( $language_name ));
 				echo  sprintf( __( '<br/><p>WordLift uses the site language, You can change the language from <a href="%s">settings.</a></p>', 'wordlift' ),
-					admin_url('options-general.php/#WPLANG')
+					admin_url('options-general.php#WPLANG')
 				);
 			},
 			'wl_general_settings',

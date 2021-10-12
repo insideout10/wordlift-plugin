@@ -85,7 +85,8 @@ class Config {
 		$required_fields = array(
 			'diagnostic',
 			'vocabulary',
-			'language',
+// Don't ask for language from webapp.
+//			'language',
 			'country',
 			'publisherName',
 			'publisher',
