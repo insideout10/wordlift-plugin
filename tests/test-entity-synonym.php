@@ -23,7 +23,6 @@ class Entity_Synonym_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	public function test_synonym_with_html_code_should_not_be_saved() {
-
 		$post_id = $this->factory()->post->create();
 
 		$this->entity_service->set_alternative_labels(
