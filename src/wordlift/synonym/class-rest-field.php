@@ -45,14 +45,10 @@ class Rest_Field {
 		if ( ! is_array( $meta_values ) ) {
 			return;
 		}
-		delete_post_meta( $post->ID, Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY );
 
-		// @todo: check if the keys have to be unique.
-		$meta_values = array_unique( $meta_values );
+		$entity_service = Wordlift_Entity_Service::get_instance();
 
-		foreach ( $meta_values as $item ) {
-			add_post_meta( $post->ID, \Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY, $item );
-		}
+		$entity_service->set_alternative_labels( $post->ID, $meta_values );
 	}
 
 	/**

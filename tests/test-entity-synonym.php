@@ -5,6 +5,7 @@
  */
 
 use Wordlift\Entity\Entity_No_Index_Flag;
+use Wordlift\Synonym\Rest_Field;
 
 /**
  * Class Entity_Save_Test
@@ -29,6 +30,21 @@ class Entity_Synonym_Test extends Wordlift_Unit_Test_Case {
 			$post_id,
 			array( "<a href='google.com'>test</a>" )
 		);
+		$this->assertCount( 0, $this->entity_service->get_alternative_labels( $post_id ) );
+
+	}
+
+	public function test_synonym_with_html_code_should_not_be_saved_in_rest_endpoint() {
+		$post_id = $this->factory()->post->create();
+
+		$rest_field = new Rest_Field();
+
+		$rest_field->update_value(
+			array( "<a href='google.com'>test</a>" ),
+			get_post( $post_id ),
+			Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY
+		);
+
 		$this->assertCount( 0, $this->entity_service->get_alternative_labels( $post_id ) );
 
 	}
