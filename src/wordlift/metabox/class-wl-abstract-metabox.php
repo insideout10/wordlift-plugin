@@ -303,6 +303,13 @@ class Wl_Abstract_Metabox {
 
 		$this->log->trace( "Saving form data for entity post $id..." );
 
+		// Skip saving if the save is called for a different post.
+		if ( isset( $_POST['post_ID'] ) && (int) $_POST['post_ID'] !== $id  && $type === Object_Type_Enum::POST ) {
+			$this->log->debug( "`wl_metaboxes`, skipping because the post id from request doesnt match the id from filter." );
+			return;
+		}
+
+
 		// Build Field objects.
 		$this->instantiate_fields( $id, $type );
 
