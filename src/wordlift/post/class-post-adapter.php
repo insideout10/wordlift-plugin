@@ -125,6 +125,12 @@ class Post_Adapter {
 
 			foreach ( $entities as $entity ) {
 
+				$entity_id = array_key_exists( 'id', $entity ) ? $entity['id'] : '';
+
+				if ( ! $this->entity_id_valid( $entity_id ) ) {
+					continue;
+				}
+
 				$entity_uris = $this->get_entity_uris( $entity );
 
 				if ( $this->get_first_matching_entity_by_uri( $entity_uris ) === null &&
@@ -381,6 +387,10 @@ class Post_Adapter {
 			(array) $ids,
 			(array) $entity['sameAs']
 		);
+	}
+
+	private function entity_id_valid( $entity_id ) {
+		return preg_match( '#^https?://#i', $entity_id ) === 1;
 	}
 
 }
