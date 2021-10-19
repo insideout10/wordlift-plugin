@@ -116,14 +116,19 @@ class Entity_Save_Test extends Wordlift_Unit_Test_Case {
 <!-- wp:paragraph -->
 <p><span id="urn:enhancement-8e9e7fe8-fedc-4a68-9b62-6393933cbe7b" class="textannotation">Sales</span> and <span id="urn:enhancement-ee3578d2-a7b7-4ccc-b273-503b27c3efb6" class="textannotation">marketing</span> <span id="urn:enhancement-d2af76de-8e05-4e55-970a-66742737b9de" class="textannotation">teams</span> can rely on <span id="urn:enhancement-e534df16-467c-410d-b970-a24641ad3765" class="textannotation">intent</span> <span id="urn:enhancement-8671298f-64d7-4a4d-b76d-894e71c490c0" class="textannotation">data</span> to ensure effective <a href="https://pipeline.zoominfo.com/marketing/how-to-build-gtm-strategy" data-type="post" data-id="16130"><span id="urn:local-annotation-527244" class="textannotation disambiguated" itemid="/post/how_to_build_your_go-to-market_strategy_2">go-to-market strategies</span></a>, accurate <span id="urn:enhancement-731096b1-201f-48b7-a15f-f11038f0fcd3" class="textannotation">segmentation</span>, and personalized outreach to <span id="urn:enhancement-aa0d52c0-461b-44f9-ac3d-429062c72c02" class="textannotation">the right</span> <span id="urn:enhancement-bd13ef59-2207-4631-8c8a-4d1490fad4b6" class="textannotation">people</span>.</p>
 <!-- /wp:paragraph -->
-<!-- wp:wordlift/classification {"entities":[{"annotations":{"urn:local-annotation-527244":{"start":70,"end":93}},"id":"/post/how_to_build_your_go-to-market_strategy_2", "sameAs":[], "label":["How To Build Your Go-To-Market Strategy"],"mainType":"thing","occurrences":["urn:local-annotation-527244"],"types":["http://schema.org/Thing"]}]} /-->
+<!-- wp:wordlift/classification {"entities":[{"annotations":{"urn:local-annotation-527244":{"start":70,"end":93}},"description":"test", "id":"/post/how_to_build_your_go-to-market_strategy_2", "sameAs":[], "label":["How To Build Your Go-To-Market Strategy"],"mainType":"thing","occurrences":["urn:local-annotation-527244"],"types":["http://schema.org/Thing"]}]} /-->
 EOF;
 		$post_id      = $this->factory()->post->create( array( 'post_content' => $post_content ) );
 
-		$this->assertCount( 0, get_posts( array(
+		$created_entities  = get_posts( array(
 			'post_type'   => 'entity',
 			'post_status' => 'any'
-		) ), 'No entity should be created for invalid id' );
+		) );
+		// Filtering the entities here since we also create author entity on post save.
+		$filtered_entities = array_filter( $created_entities, function ( $item ) {
+			return $item->post_content !== '';
+		} );
+		$this->assertCount( 0, $filtered_entities, 'No entity should be created for invalid id' );
 	}
 
 
