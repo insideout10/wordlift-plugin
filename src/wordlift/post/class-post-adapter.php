@@ -143,7 +143,6 @@ class Post_Adapter {
 			}
 
 		} catch ( \Exception $e ) {
-			var_dump( $e->getMessage() );
 			$this->log->error( $e->getMessage() );
 		}
 
