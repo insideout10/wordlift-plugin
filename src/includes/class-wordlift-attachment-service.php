@@ -39,9 +39,9 @@ class Wordlift_Attachment_Service {
 	/**
 	 * Get the singleton instance.
 	 *
+	 * @return \Wordlift_Attachment_Service The singleton instance.
 	 * @since 3.20.0
 	 *
-	 * @return \Wordlift_Attachment_Service The singleton instance.
 	 */
 	public static function get_instance() {
 
@@ -53,11 +53,11 @@ class Wordlift_Attachment_Service {
 	 *
 	 * Inspired from https://wpscholar.com/blog/get-attachment-id-from-wp-image-url/
 	 *
-	 * @since 3.10.0
-	 *
 	 * @param string $url The attachment URL.
 	 *
 	 * @return int|false Attachment ID on success, false on failure
+	 * @since 3.10.0
+	 *
 	 */
 	public function get_attachment_id( $url ) {
 
@@ -65,13 +65,12 @@ class Wordlift_Attachment_Service {
 		// the URL we received is within WP.
 		$dir = wp_upload_dir();
 
-		// If the image is not inside WP's base url, return.
-		if ( false === strpos( $url, $dir['baseurl'] . '/' ) ) {
+		// Get the filename, the extension is kept.
+		if ( 1 !== preg_match( "@^{$dir['baseurl']}/(.+?)(?:-\d+x\d+)?(\.\w+)$@", $url, $matches ) ) {
 			return false;
 		}
 
-		// Get the filename, the extension is kept.
-		$filename = basename( $url );
+		$filename = $matches[1] . $matches[2];
 
 		// The following query is CPU-intensive, we need to review it.
 		//
@@ -79,34 +78,37 @@ class Wordlift_Attachment_Service {
 		//
 		// Query for attachments with the specified filename.
 		$query = new WP_Query( array(
-			'post_type'   => 'attachment',
-			'post_status' => 'inherit',
-			'fields'      => 'ids',
-			'meta_query'  => array(
+			'post_type'           => 'attachment',
+			'post_status'         => 'inherit',
+			'fields'              => 'ids',
+			'meta_query'          => array(
 				array(
 					'value'   => $filename,
-					'compare' => 'LIKE',
-					'key'     => '_wp_attachment_metadata',
+					'compare' => '=',
+					'key'     => '_wp_attached_file',
 				),
 			),
+			'posts_per_page'      => 1,
+			'ignore_sticky_posts' => true,
 		) );
 
 		// If there are no posts, return.
 		if ( $query->have_posts() ) {
-			foreach ( $query->posts as $attachment_id ) {
-
-				// Get the attachment metadata, we need the filename.
-				$metadata          = wp_get_attachment_metadata( $attachment_id );
-				$original_filename = basename( $metadata['file'] );
-
-				// Get the cropped filenames, or an empty array in case there are no files.
-				$sizes_filenames = isset( $metadata['sizes'] ) ? wp_list_pluck( $metadata['sizes'], 'file' ) : array();
-
-				// If the provided filename matches the attachment filename (or one of its resized images), return the id.
-				if ( $original_filename === $filename || in_array( $filename, $sizes_filenames ) ) {
-					return $attachment_id;
-				}
-			}
+			return $query->posts[0];
+//			foreach ( $query->posts as $attachment_id ) {
+//
+//				// Get the attachment metadata, we need the filename.
+//				$metadata          = wp_get_attachment_metadata( $attachment_id );
+//				$original_filename = basename( $metadata['file'] );
+//
+//				// Get the cropped filenames, or an empty array in case there are no files.
+//				$sizes_filenames = isset( $metadata['sizes'] ) ? wp_list_pluck( $metadata['sizes'], 'file' ) : array();
+//
+//				// If the provided filename matches the attachment filename (or one of its resized images), return the id.
+//				if ( $original_filename === $filename || in_array( $filename, $sizes_filenames ) ) {
+//					return $attachment_id;
+//				}
+//			}
 		}
 
 		// If we got here, we couldn't find any attachment.
@@ -116,11 +118,11 @@ class Wordlift_Attachment_Service {
 	/**
 	 * Get images embedded in the post content.
 	 *
-	 * @since 3.10.0
-	 *
 	 * @param string $content The post content.
 	 *
 	 * @return array An array of attachment ids.
+	 * @since 3.10.0
+	 *
 	 */
 	public function get_image_embeds( $content ) {
 
@@ -146,11 +148,11 @@ class Wordlift_Attachment_Service {
 	/**
 	 * Get images linked via the `gallery` shortcode.
 	 *
-	 * @since 3.10.0
-	 *
 	 * @param \WP_Post $post A {@link WP_Post} instance.
 	 *
 	 * @return array An array of attachment ids.
+	 * @since 3.10.0
+	 *
 	 */
 	public function get_gallery( $post ) {
 

@@ -253,8 +253,11 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		// See https://github.com/insideout10/wordlift-plugin/issues/689.
 		//
 		// Get the embeds, removing existing ids.
-		// $embeds = array_diff( $this->attachment_service->get_image_embeds( $post->post_content ), $ids );
-		$embeds = array();
+		if ( apply_filters( 'wl_feature__enable__image-embeds', true ) ) {
+			$embeds = array_diff( $attachment_service->get_image_embeds( $post->post_content ), $ids );
+		} else {
+			$embeds = array();
+		}
 
 		// Get the gallery, removing existing ids.
 		$gallery = array_diff( $attachment_service->get_gallery( $post ), $ids, $embeds );
