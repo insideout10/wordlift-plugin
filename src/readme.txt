@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.33.3 (2021-10-19) =
+* Fix[#1488](https://github.com/insideout10/wordlift-plugin/issues/1488): Fix duplicate entities should not be created when entity id is invalid.
+
 = 3.33.2 (2021-10-13) =
 * Fix [#1476](https://github.com/insideout10/wordlift-plugin/issues/1476): Fix for Overlapping tiles on VideoObject modal window
 * Fix [#1482](https://github.com/insideout10/wordlift-plugin/issues/1482): Fix for Link Service factory Should use inverted condition.
