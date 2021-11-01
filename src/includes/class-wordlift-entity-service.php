@@ -332,7 +332,7 @@ class Wordlift_Entity_Service {
 		foreach ( $alt_labels as $alt_label ) {
 
 			// If it has html code dont save.
-			if ( $alt_label !== wp_strip_all_tags($alt_label) ) {
+			if ( $alt_label !== wp_strip_all_tags( $alt_label ) ) {
 				continue;
 			}
 
@@ -370,6 +370,7 @@ class Wordlift_Entity_Service {
 		if ( $object_type === Object_Type_Enum::POST ) {
 			return array_merge( (array) get_the_title( $post_id ), $this->get_alternative_labels( $post_id ) );
 		}
+
 		// Term Reference dont have synonyms yet.
 		return array();
 	}
