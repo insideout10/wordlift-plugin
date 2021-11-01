@@ -31,7 +31,10 @@ class Woocommerce_Shipping_Data_Test_6_1 extends WP_UnitTestCase {
 			)
 		), $product_id, array() );
 
-		$this->assertEquals( '01:00+02:00', $jsonld['offers'][0]['shippingDetails'][1]['deliveryTime']['cutOffTime'] );
+		$datetime_gmt    = date_create( 'now', timezone_open( 'GMT' ) );
+		$diff_in_seconds = timezone_offset_get( timezone_open( 'Europe/Rome' ), $datetime_gmt );
+		$diff_in_hour    = gmdate( "H:i", $diff_in_seconds );
+		$this->assertEquals( "01:00+${diff_in_hour}", $jsonld['offers'][0]['shippingDetails'][1]['deliveryTime']['cutOffTime'] );
 
 	}
 

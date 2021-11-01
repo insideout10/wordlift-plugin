@@ -598,4 +598,3 @@ function wl_block_categories( $categories, $post ) {
 }
 
 add_filter( 'block_categories', 'wl_block_categories', 10, 2 );
-
