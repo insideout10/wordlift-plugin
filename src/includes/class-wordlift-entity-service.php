@@ -331,7 +331,8 @@ class Wordlift_Entity_Service {
 		// Set the alternative labels.
 		foreach ( $alt_labels as $alt_label ) {
 
-			if ( ! preg_match('/^[\w\-, ]+$/', $alt_label )  ) {
+			// If it has html code dont save.
+			if ( $alt_label !== wp_strip_all_tags($alt_label) ) {
 				continue;
 			}
 

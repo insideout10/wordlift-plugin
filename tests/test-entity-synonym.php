@@ -49,14 +49,14 @@ class Entity_Synonym_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
-	public function test_synonym_with_parenthisis_should_not_be_saved() {
+	public function test_synonym_with_parenthisis_should_be_saved() {
 		$post_id = $this->factory()->post->create();
 
 		$this->entity_service->set_alternative_labels(
 			$post_id,
 			array( "synonym with (parenthisis)" )
 		);
-		$this->assertCount( 0, $this->entity_service->get_alternative_labels( $post_id ) );
+		$this->assertCount( 1, $this->entity_service->get_alternative_labels( $post_id ) );
 
 	}
 
