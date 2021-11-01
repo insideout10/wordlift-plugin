@@ -328,13 +328,14 @@ class Wordlift_Entity_Service {
 		// Delete all the existing alternate labels.
 		delete_post_meta( $post_id, self::ALTERNATIVE_LABEL_META_KEY );
 
+		// Save only unique synonymns.
+		$alt_labels = array_unique( $alt_labels );
+
 		// Set the alternative labels.
 		foreach ( $alt_labels as $alt_label ) {
 
-			// If it has html code dont save.
-			if ( $alt_label !== wp_strip_all_tags( $alt_label ) ) {
-				continue;
-			}
+			// Strip html code from synonym.
+			$alt_label = wp_strip_all_tags( $alt_label );
 
 			if ( ! empty( $alt_label ) ) {
 				add_post_meta( $post_id, self::ALTERNATIVE_LABEL_META_KEY, (string) $alt_label );
