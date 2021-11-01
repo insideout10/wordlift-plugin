@@ -23,18 +23,33 @@ class Entity_Synonym_Test extends Wordlift_Unit_Test_Case {
 		$this->entity_service = Wordlift_Entity_Service::get_instance();
 	}
 
-	public function test_synonym_with_html_code_should_not_be_saved() {
+	public function test_synonym_with_html_code_should_be_saved_with_html_tags_removed() {
 		$post_id = $this->factory()->post->create();
 
 		$this->entity_service->set_alternative_labels(
 			$post_id,
 			array( "<a href='google.com'>test</a>" )
 		);
-		$this->assertCount( 0, $this->entity_service->get_alternative_labels( $post_id ) );
+		$alt_labels = $this->entity_service->get_alternative_labels( $post_id );
+		$this->assertCount( 1, $alt_labels );
+		$this->assertEquals( 'test', $alt_labels[0], 'Should save synonym with html code stripped' );
 
 	}
 
-	public function test_synonym_with_html_code_should_not_be_saved_in_rest_endpoint() {
+	public function test_synonyms_should_be_unique() {
+		$post_id = $this->factory()->post->create();
+
+		$this->entity_service->set_alternative_labels(
+			$post_id,
+			array( "<a href='google.com'>test</a>", "<a href='google.com'>test</a>" )
+		);
+		$alt_labels = $this->entity_service->get_alternative_labels( $post_id );
+		$this->assertCount( 1, $alt_labels );
+		$this->assertEquals( 'test', $alt_labels[0], 'Should save synonym with html code stripped' );
+
+	}
+
+	public function test_synonym_with_html_code_should_be_saved_in_rest_endpoint_with_html_removed() {
 		$post_id = $this->factory()->post->create();
 
 		$rest_field = new Rest_Field();
@@ -45,18 +60,19 @@ class Entity_Synonym_Test extends Wordlift_Unit_Test_Case {
 			Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY
 		);
 
-		$this->assertCount( 0, $this->entity_service->get_alternative_labels( $post_id ) );
-
+		$alt_labels = $this->entity_service->get_alternative_labels( $post_id );
+		$this->assertCount( 1, $alt_labels );
+		$this->assertEquals( 'test', $alt_labels[0] );
 	}
 
-	public function test_synonym_with_parenthisis_should_not_be_saved() {
+	public function test_synonym_with_parenthisis_should_be_saved() {
 		$post_id = $this->factory()->post->create();
 
 		$this->entity_service->set_alternative_labels(
 			$post_id,
 			array( "synonym with (parenthisis)" )
 		);
-		$this->assertCount( 0, $this->entity_service->get_alternative_labels( $post_id ) );
+		$this->assertCount( 1, $this->entity_service->get_alternative_labels( $post_id ) );
 
 	}
 
