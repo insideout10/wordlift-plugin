@@ -33,9 +33,13 @@ class Woocommerce_Shipping_Data_Test_6_1 extends WP_UnitTestCase {
 
 		$datetime_gmt    = date_create( 'now', timezone_open( 'GMT' ) );
 		$diff_in_seconds = timezone_offset_get( timezone_open( 'Europe/Rome' ), $datetime_gmt );
-		$diff_in_hour    = gmdate( "H:i", $diff_in_seconds );
+		$diff_in_hour    = $this->format_time( $diff_in_seconds );
 		$this->assertEquals( "01:00+${diff_in_hour}", $jsonld['offers'][0]['shippingDetails'][1]['deliveryTime']['cutOffTime'] );
 
+	}
+
+	function format_time( $time_in_seconds ) {
+		return sprintf( "%02d:%02d", floor( $time_in_seconds / 3600 ), ( $time_in_seconds / 60 ) % 60 );
 	}
 
 	private function add_zone_italy() {
