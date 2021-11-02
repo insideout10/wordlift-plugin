@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.33.4 (2021-11-02) =
+* Fix[#1493] (https://github.com/insideout10/wordlift-plugin/issues/1493): Synonyms filter to strip html code from synonym.
+* Fix[#689] (https://github.com/insideout10/wordlift-plugin/issues/689): Embedded image attachment support.
+
 = 3.33.3 (2021-10-19) =
 * Fix[#1488](https://github.com/insideout10/wordlift-plugin/issues/1488): Fix duplicate entities should not be created when entity id is invalid.
 
