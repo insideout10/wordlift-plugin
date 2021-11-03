@@ -50,7 +50,7 @@ class Settings_Tab {
                         array_merge( get_option( 'wl_webhook_url' ), array( $url ) ) :
                         array( $url );
         } else {
-            add_settings_error( 'wl_webhook_error', esc_attr( 'settings_updated' ), __( 'Please enter a valid url' ), 'error' );
+            add_settings_error( 'wl_webhook_error', esc_attr( 'settings_updated' ), __( 'Please enter a valid url', 'wordlift' ), 'error' );
             $url = get_option( 'wl_webhook_url' );
         }
 
