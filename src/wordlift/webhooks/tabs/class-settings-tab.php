@@ -24,7 +24,7 @@ class Settings_Tab {
 
     // Call back function to register the option group
     public function wl_admin_register_setting() {
-        add_option( 'wl_webhook_url', '');
+        add_option( 'wl_webhook_url', array(), '', false);
         $args = array(
                 'type' => 'string',
                 'sanitize_callback' => array( $this, 'sanitize_callback' ),
@@ -38,24 +38,22 @@ class Settings_Tab {
 
     // Callback function to process the data optioned from Webhook admin settings page
     function sanitize_callback($url) {
+
         $url = filter_var( $url, FILTER_SANITIZE_URL );
+
         if ( filter_var( $url, FILTER_VALIDATE_URL ) ) {
-            if( get_option( 'wl_webhook_url' ) ) {
-                $url =  array_merge( get_option( 'wl_webhook_url' ), array( $url ) );
-            }
-            else {
-                $url = array( $url );
-            }
+
+            /* If wl_webhook_url doesn't contain an existing entry then form an array of the input
+            * Else merge the input with the value stored in the mentioned option field
+            */
+            $url = get_option( 'wl_webhook_url' ) ?
+                        array_merge( get_option( 'wl_webhook_url' ), array( $url ) ) :
+                        array( $url );
         } else {
             add_settings_error( 'wl_webhook_error', esc_attr( 'settings_updated' ), __( 'Please enter a valid url' ), 'error' );
             $url = get_option( 'wl_webhook_url' );
         }
-        // Code to set the autoload to no as by default it is set to yes
-        global $wpdb;
-        $wpdb->update( 'wp_options', array( 'autoload' => 'no'),array('option_name'=>'wl_webhook_url'));
 
-        //return the processed data
         return $url;
     }
-
 }

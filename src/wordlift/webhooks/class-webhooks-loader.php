@@ -28,5 +28,4 @@ class Webhooks_Loader {
 	public function get_feature_default_value() {
 		return false;
 	}
-
 }

@@ -37,10 +37,10 @@ class Wordlift_Install_3_24_2 extends Wordlift_Install {
 
 		// Added for feature request 1496 (Webhooks)
 		if ( false === get_option( 'wl_webhooks_settings' ) ) {
-			add_option( 'wl_webhooks_settings', array(), '', true );
+			add_option( 'wl_webhooks_settings', array(), '', false );
 		}
 
-		$wpdb->query( "UPDATE {$wpdb->options} SET autoload = 'yes'"
+		$wpdb->query( "UPDATE {$wpdb->options} SET autoload = 'no'"
 		              . " WHERE option_name IN ( 'wl_mappings', 'wl_analytics_settings', 'wl_entity_type_settings', 'wl_webhooks_settings', 'WPLANG' )" );
 
 	}
