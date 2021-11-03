@@ -66,6 +66,7 @@ use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
 use Wordlift\Templates\Templates_Ajax_Endpoint;
 use Wordlift\Videoobject\Loader;
 use Wordlift\Vocabulary\Vocabulary_Loader;
+use Wordlift\Webhooks\Webhooks_Loader;
 use Wordlift\Vocabulary_Terms\Vocabulary_Terms_Loader;
 use Wordlift\Widgets\Async_Template_Decorator;
 
@@ -1641,6 +1642,13 @@ class Wordlift {
 		 */
 		$wordlift_admin_checkbox = new Admin_User_Option();
 		$wordlift_admin_checkbox->connect_hook();
+
+		/**
+		 *Added for feature request 1496 (Webhooks)
+		 */
+		$webhook_loader = new Webhooks_Loader();
+		$webhook_loader->init_all_dependencies();
+
 		/**
 		 * @since 3.31.0
 		 * Init loader class for videoobject.
