@@ -120,6 +120,11 @@ class Sync_Service {
 			return false;
 		}
 
+		/**
+		 * Allow 3rd parties to run additional sync work.
+		 */
+		add_action( 'wl_sync__delete_one', $type, $object_id, $uri );
+
 		return true;
 	}
 
@@ -142,6 +147,7 @@ class Sync_Service {
 			}
 			$new_hash = sha1( $payload_as_string );
 			$old_hash = $object->get_meta( self::JSONLD_HASH, true );
+
 			// JSON-LD hasn't changed, bail out.
 			if ( ! $force && $new_hash === $old_hash ) {
 				continue;
@@ -162,6 +168,7 @@ class Sync_Service {
 			array( 'Content-Type' => 'application/json', ),
 			// Put the payload in a JSON array w/o decoding/encoding again.
 			'[ ' . implode( ', ', $payloads ) . ' ]' );
+
 		// Update the sync date in case of success, otherwise log an error.
 		if ( ! $response->is_success() ) {
 			return false;
@@ -175,6 +182,11 @@ class Sync_Service {
 			$object->update_meta( self::SYNCED_GMT, current_time( 'mysql', true ) );
 		}
 
+		/**
+		 * Allow 3rd parties to run additional sync work.
+		 */
+		add_action( 'wl_sync__sync_many', $payloads, array_column( $hashes, 0 ) );
+
 		return true;
 	}
 
@@ -185,8 +197,8 @@ class Sync_Service {
 	 * @throws Exception
 	 */
 	private function get_payload_as_string( $object ) {
-		$type      = $object->get_type();
-		$object_id = $object->get_object_id();
+		$type             = $object->get_type();
+		$object_id        = $object->get_object_id();
 		$jsonld_as_string = wp_json_encode( apply_filters( 'wl_dataset__sync_service__sync_item__jsonld',
 			$this->jsonld_service->get( $type, $object_id ), $type, $object_id ) );
 		$uri              = $this->entity_service->get_uri( $object_id, $type );

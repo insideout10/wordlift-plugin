@@ -104,7 +104,7 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 
 	public function do_delete( $term_id ) {
 		try {
-			$this->sync_service->delete_one( Object_Type_Enum::TERM, $term_id );
+			$this->sync_service->delete_one( Object_Type_Enum::TERM, $term_id,  get_term_meta( $term_id, 'entity_url', true ) );
 		} catch ( \Exception $e ) {
 			$this->log->error( "An error occurred while trying to delete term $term_id: " . $e->getMessage(), $e );
 		}
