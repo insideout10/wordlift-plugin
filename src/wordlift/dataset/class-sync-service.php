@@ -123,7 +123,7 @@ class Sync_Service {
 		/**
 		 * Allow 3rd parties to run additional sync work.
 		 */
-		add_action( 'wl_sync__delete_one', $type, $object_id, $uri );
+		do_action( 'wl_sync__delete_one', $type, $object_id, $uri );
 
 		return true;
 	}
@@ -185,7 +185,7 @@ class Sync_Service {
 		/**
 		 * Allow 3rd parties to run additional sync work.
 		 */
-		add_action( 'wl_sync__sync_many', $payloads, array_column( $hashes, 0 ) );
+		do_action( 'wl_sync__sync_many', $payloads, array_column( $hashes, 0 ) );
 
 		return true;
 	}
