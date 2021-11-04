@@ -2,6 +2,7 @@
 /**
  * @since 3.31.0
  * @author
+ * Class to call up webhooks and send them requested message
  */
 
 namespace Wordlift\Webhooks\Api;
@@ -11,11 +12,21 @@ use WP_REST_Server;
 
 class Rest_Controller {
 
+    /**
+     * Registering the actions to call up sync_many or sync_delete methods
+     */
 
     public function __construct() {
 	    add_action( 'wl_sync_many', array( $this, 'register_sync_many' ), 10, 2 );
 	    add_action( 'wl_sync_delete', array( $this, 'register_sync_delete' ), 10, 3 );
     }
+
+    /**
+     * Method to call up webhook with post requested
+     * @param array $payloads
+     * @param array $object
+     * @return json
+     */
 
 	public function register_sync_many( $payloads, $object ) {
 
@@ -46,6 +57,14 @@ class Rest_Controller {
         }
 
 	}
+
+    /**
+     * Method to call up webhook with delete requested
+     * @param string $type
+     * @param int $object_id
+     * @param string $uri
+     * @return json
+     */
 
 	public function register_sync_delete( $type, $object_id, $uri ) {
 
