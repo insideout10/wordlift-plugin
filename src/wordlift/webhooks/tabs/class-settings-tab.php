@@ -22,7 +22,10 @@ class Settings_Tab {
         add_action('admin_init', array( &$this, 'wl_admin_register_setting' ) );
 	}
 
-    // Call back function to register the option group
+    /**
+     * Call back function to register the option group
+     */
+
     public function wl_admin_register_setting() {
         add_option( 'wl_webhook_url', array(), '', false);
         $args = array(
@@ -36,7 +39,12 @@ class Settings_Tab {
                 $args );
     }
 
-    // Callback function to process the data optioned from Webhook admin settings page
+    /**
+     * Callback function to process the data optioned from Webhook admin settings page
+     * @param string $url
+     * @return string
+     */
+
     function sanitize_callback($url) {
 
         $url = filter_var( $url, FILTER_SANITIZE_URL );
