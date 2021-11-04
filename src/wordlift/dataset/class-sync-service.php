@@ -115,10 +115,15 @@ class Sync_Service {
 		$response = $this->api_service->request(
 			'DELETE', sprintf( '/middleware/dataset?uri=%s', rawurlencode( $uri ) ) );
 
+
 		// Update the sync date in case of success, otherwise log an error.
 		if ( ! $response->is_success() ) {
 			return false;
 		}
+
+        // Code Added by Nishit to implement feature request 1496
+        do_action( 'wl_sync_delete', $type, $object_id, $uri );
+        // Change Ends
 
 		return true;
 	}
@@ -162,6 +167,7 @@ class Sync_Service {
 			array( 'Content-Type' => 'application/json', ),
 			// Put the payload in a JSON array w/o decoding/encoding again.
 			'[ ' . implode( ', ', $payloads ) . ' ]' );
+
 		// Update the sync date in case of success, otherwise log an error.
 		if ( ! $response->is_success() ) {
 			return false;
@@ -174,6 +180,10 @@ class Sync_Service {
 			$object->update_meta( self::JSONLD_HASH, $new_hash );
 			$object->update_meta( self::SYNCED_GMT, current_time( 'mysql', true ) );
 		}
+
+        // Code Added by Nishit to implement feature request 1496
+        do_action( 'wl_sync_many', $payloads, $object );
+        // Change Ends
 
 		return true;
 	}
@@ -214,6 +224,7 @@ class Sync_Service {
 		$response = $this->api_service->request(
 			'DELETE', '/middleware/dataset?uri=' . rawurlencode( $uri ),
 			array( 'Content-Type' => 'application/ld+json', ) );
+
 	}
 
 	public function get_batch_size() {

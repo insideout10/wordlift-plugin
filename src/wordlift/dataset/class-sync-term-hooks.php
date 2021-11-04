@@ -54,7 +54,9 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 
 		// Sync all the terms without filtering.
 		$this->sync( $term_id );
-
+        // Experimentl chnges for 1496 done by Nishit
+        $this->log->debug( "Successfully sent saved_term $term_id Nishit: " );
+        // Experimentl chnges ends
 	}
 
 	public function changed_term_meta( $meta_id, $term_id, $meta_key, $_meta_value ) {
@@ -78,6 +80,9 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 	private function sync( $term_id ) {
 
 		$this->enqueue( array( 'do_sync', $term_id ) );
+        // Experimentl chnges for 1496 done by Nishit
+        $this->log->debug( "Successfully sent sync $term_id Nishit: " );
+        // Experimentl chnges ends
 	}
 
 	public function do_sync( $term_id ) {
@@ -90,6 +95,9 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 			$this->sync_service->sync_many( array(
 				$this->sync_object_factory->create( Object_Type_Enum::TERM, $term_id ),
 			) );
+            // Experimentl chnges for 1496 done by Nishit
+            $this->log->debug( "Successfully sent do_sync $term_id Nishit: " );
+            // Experimentl chnges ends
 		} catch ( \Exception $e ) {
 			$this->log->error( "An error occurred while trying to sync post $term_id: " . $e->getMessage(), $e );
 		}
@@ -100,14 +108,21 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 	 */
 	public function delete_term( $term ) {
 		$this->enqueue( array( 'do_delete', $term->term_id ) );
+        // Experimentl chnges for 1496 done by Nishit
+        $this->log->debug( "Successfully sent delete_term $term Nishit: " );
+        // Experimentl chnges ends
 	}
 
 	public function do_delete( $term_id ) {
 		try {
 			$this->sync_service->delete_one( Object_Type_Enum::TERM, $term_id );
+
+			// Experimentl chnges for 1496 done by Nishit
+			$this->log->debug( "Successfully sent delete_one $term_id Nishit: " );
+			// Experimentl chnges ends
+
 		} catch ( \Exception $e ) {
 			$this->log->error( "An error occurred while trying to delete term $term_id: " . $e->getMessage(), $e );
 		}
 	}
-
 }

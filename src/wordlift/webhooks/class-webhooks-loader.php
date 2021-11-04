@@ -4,7 +4,7 @@ namespace Wordlift\Webhooks;
 
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Webhooks\Tabs\Settings_Tab;
-
+use Wordlift\Webhooks\Api\Rest_Controller;
 
 
 /**
@@ -27,5 +27,9 @@ class Webhooks_Loader {
 
 	public function get_feature_default_value() {
 		return false;
+	}
+
+	public function get_rest_controller_object() {
+		return new Rest_Controller();
 	}
 }

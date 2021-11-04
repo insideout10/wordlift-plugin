@@ -762,6 +762,10 @@ class Wordlift {
 
 	//</editor-fold>
 
+	// Experimental code added by Nishit for feature request 1496
+	private $webhook_loader;
+	// Experimental code ents here
+
 	/**
 	 * Define the core functionality of the plugin.
 	 *
@@ -1646,8 +1650,8 @@ class Wordlift {
 		/**
 		 *Added for feature request 1496 (Webhooks)
 		 */
-		$webhook_loader = new Webhooks_Loader();
-		$webhook_loader->init_all_dependencies();
+		$this->webhook_loader = new Webhooks_Loader();
+		$this->webhook_loader->init_all_dependencies();
 
 		/**
 		 * @since 3.31.0
@@ -2017,6 +2021,12 @@ class Wordlift {
 		if ( apply_filters( 'wl_feature__enable__analytics', true ) && $this->configuration_service->is_analytics_enable() ) {
 			$this->loader->add_action( 'wp_enqueue_scripts', $this->analytics_connect, 'enqueue_scripts', 10 );
 		}
+
+		// Experimentl chnges for 1496 done by Nishit
+		$rest_controller_object = $this->webhook_loader->get_rest_controller_object();
+	    $this->loader->add_action( 'wl_sync_many', array( $rest_controller_object, 'register_sync_many' ), 10, 2 );
+	    $this->loader->add_action( 'wl_sync_delete', array( $rest_controller_object, 'register_sync_delete' ), 10, 3 );
+        // Experimentl chnges ends
 
 	}
 
