@@ -68,13 +68,7 @@ class Rest_Controller {
 
 	public function register_sync_delete( $type, $object_id, $uri ) {
 
-        // Experimentl chnges for 1496 done by Nishit
-        $this->write_log( "Inside register_sync_delete callback function of Rest_Controller  Nishit: " );
-        // Experimentl chnges ends
-        $this->write_log( get_option('wl_webhook_url') );
-
         $webhook_urls = get_option('wl_webhook_url');
-        // Experimentl chnges ends
         if( ! empty( $webhook_urls ) ) {
             foreach( $webhook_urls as $webhook_url ) {
                 $handle = curl_init( $webhook_url );

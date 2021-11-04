@@ -182,7 +182,7 @@ class Sync_Service {
 		}
 
         // Code Added by Nishit to implement feature request 1496
-        do_action( 'wl_sync_many', $payloads, $object );
+        do_action( 'wl_sync_many', $payloads, array_column( $hashes, 0 ) );
         // Change Ends
 
 		return true;
