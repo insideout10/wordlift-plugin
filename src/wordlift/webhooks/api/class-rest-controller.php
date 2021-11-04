@@ -68,7 +68,7 @@ class Rest_Controller {
 
                 $encodedData = json_encode( $data );
 
-                curl_setopt( $handle, CURLOPT_CUSTOMREQUEST, "POST" );
+                curl_setopt( $handle, CURLOPT_CUSTOMREQUEST, "DELETE" );
                // curl_setopt($handle, CURLOPT_POST, 1);
                 curl_setopt( $handle, CURLOPT_POSTFIELDS, $encodedData );
                 curl_setopt( $handle, CURLOPT_RETURNTRANSFER, true );
