@@ -34,14 +34,28 @@ class Rest_Controller {
 
         foreach( $webhook_urls as $webhook_url ) {
 
-            $result = wp_remote_request( $webhook_url,
-                array(
-                    'method'    => 'POST',
-                    'body'      => json_encode( $payloads )
-                )
-            );
+            // Check if the $payloads is an array of payload.
+            // If true then send each en payload separately
+            if( is_array( $payloads ) ) {
 
-            return $result;
+                foreach( $payloads as $payload ) {
+                    $result = wp_remote_request( $webhook_url,
+                        array(
+                            'method'    => 'POST',
+                            'body'      => json_encode( $payload )
+                        )
+                    );
+                }
+                return $result;
+            }
+            else {
+                return wp_remote_request( $webhook_url,
+                    array(
+                        'method'    => 'POST',
+                        'body'      => json_encode( $payloads )
+                    )
+                );
+            }
         }
 
 	}
