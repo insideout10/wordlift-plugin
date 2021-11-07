@@ -42,7 +42,7 @@ class Rest_Controller {
                     $result = wp_remote_request( $webhook_url,
                         array(
                             'method'    => 'POST',
-                            'body'      => json_encode( $payload )
+                            'body'      => $payload
                         )
                     );
                 }
@@ -52,7 +52,7 @@ class Rest_Controller {
                 return wp_remote_request( $webhook_url,
                     array(
                         'method'    => 'POST',
-                        'body'      => json_encode( $payloads )
+                        'body'      => $payloads
                     )
                 );
             }
