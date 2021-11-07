@@ -34,9 +34,16 @@ class Rest_Controller {
 
         foreach( $webhook_urls as $webhook_url ) {
 
-            $data = array(
-                'payload'   => $payloads
-            );
+            $data = array();
+            if( is_array( $payloads ) ) {
+                foreach( $payloads as $payload ) {
+                    $data = array_merge( $data, explode( ",", $payload ) );
+                }
+            }
+            else {
+                $data = explode( ",", $payloads );
+            }
+
             $encoded_data = json_encode( $data );
 
             $result = wp_remote_request( $webhook_url,
