@@ -7,9 +7,6 @@
 
 namespace Wordlift\Webhooks\Api;
 
-use WP_REST_Server;
-
-
 class Rest_Controller {
 
     /**
@@ -17,8 +14,8 @@ class Rest_Controller {
      */
 
     public function __construct() {
-	    add_action( 'wl_sync_many', array( $this, 'register_sync_many' ), 10, 2 );
-	    add_action( 'wl_sync_delete', array( $this, 'register_sync_delete' ), 10, 3 );
+	    add_action( 'wl_sync__sync_many', array( $this, 'register_sync_many' ), 10, 1 );
+	    add_action( 'wl_sync__delete_one', array( $this, 'register_sync_delete' ), 10, 3 );
     }
 
     /**
@@ -28,32 +25,28 @@ class Rest_Controller {
      * @return json
      */
 
-	public function register_sync_many( $payloads, $object ) {
+	public function register_sync_many( $payloads ) {
 
         $webhook_urls = get_option('wl_webhook_url');
-        if( ! empty( $webhook_urls ) ) {
-            foreach( $webhook_urls as $webhook_url ) {
-                $handle = curl_init( $webhook_url ); //'https://ensh04p5m7cs4hw.m.pipedream.net';
+         if( empty( $webhook_urls ) ) {
+            return;
+         }
 
-                $data = [
-                    'payload'   => $payloads,
-                    'object'    => $object
-                ];
+        foreach( $webhook_urls as $webhook_url ) {
 
-                $encodedData = json_encode( $data );
+            $data = array(
+                'payload'   => $payloads
+            );
+            $encoded_data = json_encode( $data );
 
-                curl_setopt( $handle, CURLOPT_CUSTOMREQUEST, "POST" );
-               // curl_setopt($handle, CURLOPT_POST, 1);
-                curl_setopt( $handle, CURLOPT_POSTFIELDS, $encodedData );
-                curl_setopt( $handle, CURLOPT_RETURNTRANSFER, true );
-                curl_setopt( $handle, CURLOPT_HTTPHEADER, array(
-                    'Content-Type: application/json',
-                    'Content-Length: ' . strlen( $encodedData ) )
-                );
+            $result = wp_remote_request( $webhook_url,
+                array(
+                    'method'    => 'POST',
+                    'body'      => $encoded_data
+                )
+            );
 
-                $result = curl_exec( $handle );
-                return $result;
-            }
+            return $result;
         }
 
 	}
@@ -68,31 +61,28 @@ class Rest_Controller {
 
 	public function register_sync_delete( $type, $object_id, $uri ) {
 
-        $webhook_urls = get_option('wl_webhook_url');
-        if( ! empty( $webhook_urls ) ) {
-            foreach( $webhook_urls as $webhook_url ) {
-                $handle = curl_init( $webhook_url );
+         $webhook_urls = get_option('wl_webhook_url');
+         if( empty( $webhook_urls ) ) {
+            return;
+         }
 
-                $data = [
-                    'type'          => $type,
-                    'object_id'     => $object_id,
-                    'uri'           => $uri
-                ];
+        foreach( $webhook_urls as $webhook_url ) {
 
-                $encodedData = json_encode( $data );
+            $data = array(
+                'type'          => $type,
+                'object_id'     => $object_id,
+                'uri'           => $uri
+            );
+            $encoded_data = json_encode( $data );
 
-                curl_setopt( $handle, CURLOPT_CUSTOMREQUEST, "DELETE" );
-               // curl_setopt($handle, CURLOPT_POST, 1);
-                curl_setopt( $handle, CURLOPT_POSTFIELDS, $encodedData );
-                curl_setopt( $handle, CURLOPT_RETURNTRANSFER, true );
-                curl_setopt( $handle, CURLOPT_HTTPHEADER, array(
-                    'Content-Type: application/json',
-                    'Content-Length: ' . strlen( $encodedData ) )
-                );
+            $result = wp_remote_request( $webhook_url,
+                array(
+                    'method'    => 'DELETE',
+                    'body'      => $encoded_data
+                )
+            );
 
-                $result = curl_exec( $handle );
-                return $result;
-            }
+            return $result;
         }
     }
 }

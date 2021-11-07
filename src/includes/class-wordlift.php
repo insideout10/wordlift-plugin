@@ -2024,8 +2024,6 @@ class Wordlift {
 
 		// Experimentl chnges for 1496 done by Nishit
 		$rest_controller_object = $this->webhook_loader->get_rest_controller_object();
-	    $this->loader->add_action( 'wl_sync_many', array( $rest_controller_object, 'register_sync_many' ), 10, 2 );
-	    $this->loader->add_action( 'wl_sync_delete', array( $rest_controller_object, 'register_sync_delete' ), 10, 3 );
         // Experimentl chnges ends
 
 	}

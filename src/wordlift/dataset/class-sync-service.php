@@ -122,7 +122,7 @@ class Sync_Service {
 		}
 
         // Code Added by Nishit to implement feature request 1496
-        do_action( 'wl_sync_delete', $type, $object_id, $uri );
+        do_action( 'wl_sync__delete_one', $type, $object_id, $uri );
         // Change Ends
 
 		return true;
@@ -182,7 +182,7 @@ class Sync_Service {
 		}
 
         // Code Added by Nishit to implement feature request 1496
-        do_action( 'wl_sync_many', $payloads, array_column( $hashes, 0 ) );
+        do_action( 'wl_sync__sync_many', $payloads );
         // Change Ends
 
 		return true;
