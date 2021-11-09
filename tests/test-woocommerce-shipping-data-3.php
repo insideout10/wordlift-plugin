@@ -38,7 +38,7 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 			'shippingRate'        => array(
 				array(
 					'@type'       => 'MonetaryAmount',
-					'name'        => 'Free shipping',
+					'name'        => 'Custom Free shipping Label',
 					'description' => 'Free shipping is a special method which can be triggered with coupons and minimum spends.',
 					'value'       => '0',
 					'currency'    => 'GBP'
