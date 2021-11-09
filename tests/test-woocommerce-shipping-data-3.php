@@ -38,7 +38,7 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 			'shippingRate'        => array(
 				array(
 					'@type'       => 'MonetaryAmount',
-					'name'        => 'Free shipping',
+					'name'        => 'Custom Free Shipping Name',
 					'description' => 'Free shipping is a special method which can be triggered with coupons and minimum spends.',
 					'value'       => '0',
 					'currency'    => 'GBP'
@@ -95,7 +95,7 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 
 		$shipping_method_id        = $zone->add_shipping_method( 'flat_rate' );
 		$flat_rate_shipping_method = WC_Shipping_Zones::get_shipping_method( $shipping_method_id );
-		$flat_rate_shipping_method->add_rate( array( 'label' => 'Free Shipping', 'cost' => 10, ) );
+		$flat_rate_shipping_method->add_rate( array( 'label' => 'Custom Free Shipping Name', 'cost' => 10, ) );
 
 		update_option( "woocommerce_flat_rate_{$shipping_method_id}_settings", array(
 			'title'         => 'Flat rate',
