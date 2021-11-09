@@ -95,10 +95,10 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 
 		$shipping_method_id        = $zone->add_shipping_method( 'flat_rate' );
 		$flat_rate_shipping_method = WC_Shipping_Zones::get_shipping_method( $shipping_method_id );
-		$flat_rate_shipping_method->add_rate( array( 'label' => 'Custom Flat Rate Label', 'cost' => 10, ) );
+		$flat_rate_shipping_method->add_rate( array( 'label' => 'Flat Rate', 'cost' => 10, ) );
 
 		update_option( "woocommerce_flat_rate_{$shipping_method_id}_settings", array(
-			'title'         => 'Flat rate',
+			'title'         => 'Custom Flat Rate Label',
 			'tax_status'    => 'taxable',
 			'cost'          => '10',
 			'class_costs'   => '',
