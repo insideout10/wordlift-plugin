@@ -56,7 +56,7 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 			'shippingRate'        => array(
 				array(
 					'@type'       => 'MonetaryAmount',
-					'name'        => 'Flat rate',
+					'name'        => 'Custom Flat Rate Label',
 					'description' => 'Lets you charge a fixed rate for shipping.',
 					'value'       => '10',
 					'currency'    => 'GBP'
@@ -95,7 +95,7 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 
 		$shipping_method_id        = $zone->add_shipping_method( 'flat_rate' );
 		$flat_rate_shipping_method = WC_Shipping_Zones::get_shipping_method( $shipping_method_id );
-		$flat_rate_shipping_method->add_rate( array( 'label' => 'Free Shipping', 'cost' => 10, ) );
+		$flat_rate_shipping_method->add_rate( array( 'label' => 'Custom Flat Rate Label', 'cost' => 10, ) );
 
 		update_option( "woocommerce_flat_rate_{$shipping_method_id}_settings", array(
 			'title'         => 'Flat rate',
