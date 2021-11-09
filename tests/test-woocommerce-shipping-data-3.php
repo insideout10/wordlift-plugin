@@ -91,7 +91,10 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 		$zone->add_location( 'IT:RM', 'state' );
 		$zone->add_location( 'IT:MI', 'state' );
 
-		$zone->add_shipping_method( 'free_shipping' );
+		$free_shipping_method_id = $zone->add_shipping_method( 'free_shipping' );
+		update_option( "woocommerce_free_shipping_{$free_shipping_method_id}_settings", array(
+			'title'         => 'Custom Free shipping Label',
+		), true );
 
 		$shipping_method_id        = $zone->add_shipping_method( 'flat_rate' );
 		$flat_rate_shipping_method = WC_Shipping_Zones::get_shipping_method( $shipping_method_id );
