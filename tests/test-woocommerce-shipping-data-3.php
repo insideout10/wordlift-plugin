@@ -73,7 +73,7 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 			'shippingRate'        => array(
 				array(
 					'@type'       => 'MonetaryAmount',
-					'name'        => 'Local pickup',
+					'name'        => 'Custom Local Pickup Label',
 					'description' => 'Allow customers to pick up orders themselves. By default, when using local pickup store base taxes will apply regardless of customer address.',
 					'value'       => '10',
 					'currency'    => 'GBP'
@@ -123,7 +123,7 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 		$local_pickup_shipping_method->add_rate( array( 'label' => 'Local Pickup', 'cost' => 10, ) );
 
 		update_option( "woocommerce_local_pickup_{$shipping_method_id}_settings", array(
-			'title'      => 'Local pickup',
+			'title'      => 'Custom Local Pickup Label',
 			'tax_status' => 'none',
 			'cost'       => '10',
 		), true );
