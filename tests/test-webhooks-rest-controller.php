@@ -28,6 +28,7 @@ class Webhooks_Rest_Controller_Test extends Wordlift_Unit_Test_Case {
 	function test_register_sync_remote_call() {
 
         $payload = array( "Test Content" );
+        $mul_payload = array( "Test Content 1", "Test Content 2" );
         $type = 0;
         $object_id = 3;
         $uri = 'http://data-dev.wordlift.io/wl040/page/privacy_policy';
@@ -52,6 +53,7 @@ class Webhooks_Rest_Controller_Test extends Wordlift_Unit_Test_Case {
         // Calling $stub->register_sync_many and register_sync_delete will now return
         // value stored in expected_object.
         $this->assertEquals( $expected_object, $stub->register_sync_many( $payload ) );
+        $this->assertEquals( $expected_object, $stub->register_sync_many( $mul_payload ) );
         $this->assertEquals( $expected_object, $stub->register_sync_delete( $type, $object_id, $uri ) );
 	}
 
