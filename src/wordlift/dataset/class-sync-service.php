@@ -123,6 +123,7 @@ class Sync_Service {
 
         // Code Added by Nishit to implement feature request 1496
         do_action( 'wl_sync__delete_one', $type, $object_id, $uri );
+
         // Change Ends
 
 		return true;

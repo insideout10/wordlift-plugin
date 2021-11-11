@@ -46,6 +46,7 @@ class Rest_Controller {
                         )
                     );
                 }
+
                 return $result;
             }
             else {

@@ -18,7 +18,7 @@ class Webhooks_Loader {
 
 		$settings_tab = new Settings_Tab();
 		$settings_tab->init();
-
+        return $settings_tab;
 	}
 
 	public function get_feature_slug() {
