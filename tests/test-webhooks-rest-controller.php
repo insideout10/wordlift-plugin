@@ -34,23 +34,23 @@ class Webhooks_Rest_Controller_Test extends Wordlift_Unit_Test_Case {
         $uri = 'http://data-dev.wordlift.io/wl040/page/privacy_policy';
         $expected_object = array( "name" => "John", "age" => 30, "car" => null );
 
-        // Create a stub for the SomeClass class.
+        // Create a stub for the Rest_Controller class.
 		$mock_rest_controller = $this->getMockBuilder( 'Rest_Controller' )
 		             ->setMethods( array('register_sync_many', 'register_sync_delete' ) )
 		             ->disableOriginalConstructor()
 		             ->getMock();
 
-        // Configure the stub.
+        // Configure the mock_rest_controller.
         $mock_rest_controller->expects($this->any())
              ->method( 'register_sync_many' )
              ->willReturn( $expected_object );
 
-        // Configure the stub.
+        // Configure the mock_rest_controller.
         $mock_rest_controller->expects($this->any())
              ->method( 'register_sync_delete' )
              ->willReturn( $expected_object );
 
-        // Calling $stub->register_sync_many and register_sync_delete will now return
+        // Calling $mock_rest_controller->register_sync_many and register_sync_delete will now return
         // value stored in expected_object.
         $this->assertEquals( $expected_object, $mock_rest_controller->register_sync_many( $payload ) );
         $this->assertEquals( $expected_object, $mock_rest_controller->register_sync_many( $mul_payload ) );
@@ -59,5 +59,4 @@ class Webhooks_Rest_Controller_Test extends Wordlift_Unit_Test_Case {
             $mock_rest_controller->register_sync_delete( $type, $object_id, $uri )
         );
 	}
-
 }
