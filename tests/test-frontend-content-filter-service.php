@@ -107,6 +107,8 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_content_with_entity() {
 
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		$this->setup_link_options( $entity_url, $entity_link, $entity_title, $entity_id );
 
 		// test with no synonym
@@ -258,6 +260,7 @@ EOF;
 	public function test_entity_default_no_link_entity_no_link() {
 
 		$this->configuration_service->set_link_by_default( false );
+		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Add a filter to set the permalink to a fixed value we can test.
 		add_filter( 'post_link', array( $this, 'post_link' ), 10, 3 );
@@ -282,6 +285,7 @@ EOF;
 	public function test_entity_default_no_link_entity_not_specified() {
 
 		$this->configuration_service->set_link_by_default( false );
+		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$this->assertFalse( $this->configuration_service->is_link_by_default() );
 
@@ -306,7 +310,9 @@ EOF;
 	 */
 	public function test_entity_default_no_link_entity_link() {
 
+
 		$this->configuration_service->set_link_by_default( false );
+		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
 
 		$entity_url  = $this->configuration_service->get_dataset_uri() . "/entity";
 		$entity_id   = $this->create_entity_with_uri( $entity_url );
@@ -333,9 +339,11 @@ EOF;
 	 * @since 3.13.0
 	 */
 	public function test_entity_default_link_entity_link() {
-		$this->setup_link_options( $entity_url, $entity_link, $entity_title, $entity_id );
-		$this->configuration_service->set_link_by_default( true );
 
+		$this->configuration_service->set_link_by_default( true );
+		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
+
+		$this->setup_link_options( $entity_url, $entity_link, $entity_title, $entity_id );
 
 		// The content.
 		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation wl-link disambiguated wl-person" itemid="' . $entity_url . '">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
@@ -358,6 +366,8 @@ EOF;
 	public function test_entity_default_link_entity_not_specified() {
 
 		$this->configuration_service->set_link_by_default( true );
+		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
+
 		$this->setup_link_options( $entity_url, $entity_link, $entity_title, $entity_id );
 		// Add a filter to set the permalink to a fixed value we can test.
 		add_filter( 'post_link', array( $this, 'post_link' ), 10, 3 );
@@ -383,6 +393,7 @@ EOF;
 	public function test_entity_default_link_entity_no_link() {
 
 		$this->configuration_service->set_link_by_default( true );
+		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
 
 		// Add a filter to set the permalink to a fixed value we can test.
 		add_filter( 'post_link', array( $this, 'post_link' ), 10, 3 );

@@ -79,6 +79,9 @@ class Wordlift_Term_Jsonld_Adapter_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	public function test_if_term_has_entity_linked_should_have_entity_data_in_jsonld() {
+
+		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+
 		// lets create a category
 		$term_id = wp_insert_category( array( 'cat_name' => 'foo' ) );
 

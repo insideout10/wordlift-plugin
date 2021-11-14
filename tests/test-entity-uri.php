@@ -8,6 +8,8 @@ class GetEntityUriTest extends Wordlift_Unit_Test_Case {
 
 	function testEntityUriWithConfiguredDatasetUri() {
 
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		$post_id     = wl_create_post( 'A body', 'post-1', uniqid( 'post', true ), 'draft', 'post' );
 		$dataset_uri = wl_configuration_get_redlink_dataset_uri();
 		$this->assertNotEmpty( $dataset_uri );

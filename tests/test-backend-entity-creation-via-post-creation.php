@@ -50,6 +50,8 @@ class EntityCreationViaPostCreationTest extends Wordlift_Unit_Test_Case {
 	// Please notice here the entity is properly referenced by post content
 	function testEntityIsCreatedAndLinkedToThePost() {
 
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
 		$fake  = $this->prepare_fake_global_post_array_from_file(
@@ -166,6 +168,8 @@ EOF;
 	// is created trough the disambiguation workflow
 	function testEntitiesWithSameLabelAndTypeOverride() {
 
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		// Create a post referincing to the created entity
 		$entity_id = wl_create_post( '', 'tex_willer', 'Tex Willer', 'draft', 'entity' );
 		wl_set_entity_main_type( $entity_id, 'wl-person' );
@@ -215,6 +219,8 @@ EOF;
 	// created trough the disambiguation workflow
 	// We expect they are properly created and linked to the post
 	function testThreeEntitiesWithTheSameLabelsAreProperlyCreatedAndLinkedToThePost() {
+
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_two_entities_with_same_label_and_different_types.json'
@@ -275,6 +281,8 @@ EOF;
 	// Same test of the previous one but with escaped chars in the entity label
 	function testNewEntityWithEscapedCharsIsCreatedAndLinkedToThePost() {
 
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_a_new_entity_linked_with_escaped_chars.json'
 		);
@@ -316,6 +324,8 @@ EOF;
 
 	// Same test of the previous one but with utf8 chars in the entity label
 	function testNewEntityWithUtf8CharsIsCreatedAndLinkedToThePost() {
+
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_a_new_entity_linked_with_utf8_chars.json'
@@ -362,6 +372,8 @@ EOF;
 	// that needs to be processed before the save entity routine
 	// Ea: local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt
 	function testNewEntityIsCreatedAndLinkedToThePost() {
+
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_a_new_entity_linked_as_who.json'
@@ -469,6 +481,8 @@ EOF;
 	// If an entity with status 'public' is related to a post in draft
 	// I expect that the 'public' status is properly preserved
 	function testPublicEntityStatusIsPreservedWhenLinkedToDraftPost() {
+
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_one_entity_linked_as_what.json'

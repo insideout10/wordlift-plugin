@@ -22,6 +22,10 @@ class Wordlift_Install_Package_Type_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_must_install_true() {
 
+		if ( empty( $this->configuration_service->get_key() ) ) {
+			$this->markTestSkipped( 'The env WORDLIFT_KEY must be set for this test to work.' );
+		}
+
 		$this->set_current_screen( 'dashboard-user' );
 
 		$package_type = $this->configuration_service->get_package_type();
@@ -45,6 +49,10 @@ class Wordlift_Install_Package_Type_Test extends Wordlift_Unit_Test_Case {
 	 * @since 3.20.0
 	 */
 	public function test_must_install_not_in_admin() {
+
+		if ( empty( $this->configuration_service->get_key() ) ) {
+			$this->markTestSkipped( 'The env WORDLIFT_KEY must be set for this test to work.' );
+		}
 
 		$package_type = $this->configuration_service->get_package_type();
 		$this->configuration_service->set_package_type( null );
@@ -94,6 +102,10 @@ class Wordlift_Install_Package_Type_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_must_install_package_type_not_empty() {
 
+		if ( empty( $this->configuration_service->get_key() ) ) {
+			$this->markTestSkipped( 'The env WORDLIFT_KEY must be set for this test to work.' );
+		}
+
 		$this->set_current_screen( 'dashboard-user' );
 
 		$package_type = $this->configuration_service->get_package_type();
@@ -133,6 +145,10 @@ class Wordlift_Install_Package_Type_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	public function test_install() {
+
+		if ( empty( $this->configuration_service->get_key() ) ) {
+			$this->markTestSkipped( 'The env WORDLIFT_KEY must be set for this test to work.' );
+		}
 
 		$package_type = $this->configuration_service->get_package_type();
 		$this->configuration_service->set_package_type( null );

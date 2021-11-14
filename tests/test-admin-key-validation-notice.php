@@ -28,11 +28,19 @@ class Admin_Key_Notice_Test extends Wordlift_Unit_Test_Case {
 	public function test_when_key_validation_is_errored_should_show_error() {
 
 		// Create a mock key validation service.
-		$stub = $this->getMockBuilder( 'Wordlift_Key_Validation_Service' )
-		             ->disableOriginalConstructor()
-		             ->getMock();
-		$stub->method( 'is_key_valid' )->willReturn( false );
-		$instance = new Key_Validation_Notice( $stub, Wordlift_Configuration_Service::get_instance() );
+		$key_validation_service_mock = $this->getMockBuilder( 'Wordlift_Key_Validation_Service' )
+		                                    ->disableOriginalConstructor()
+		                                    ->getMock();
+		$key_validation_service_mock->method( 'is_key_valid' )->willReturn( false );
+		$key_validation_service_mock->expects( $this->once() )->method( 'is_key_valid' );
+
+		$configuration_service_mock = $this->getMockBuilder( 'Wordlift_Configuration_Service' )
+		                                   ->disableOriginalConstructor()
+		                                   ->getMock();
+		$configuration_service_mock->method( 'get_key' )->willReturn( 'a_key' );
+		$configuration_service_mock->expects( $this->atLeastOnce() )->method( 'get_key' );
+
+		$instance = new Key_Validation_Notice( $key_validation_service_mock, $configuration_service_mock );
 		$html     = $this->do_admin_notices();
 		$this->assertNotNull( $html );
 		$this->assertTrue( strlen( $html ) !== 0 );
@@ -42,11 +50,11 @@ class Admin_Key_Notice_Test extends Wordlift_Unit_Test_Case {
 	public function test_when_key_validation_is_errored_but_filter_is_turned_on_should_not_show_error() {
 		add_filter( 'wl_feature__enable__notices', '__return_false' );
 		// Create a mock key validation service.
-		$stub = $this->getMockBuilder( 'Wordlift_Key_Validation_Service' )
-		             ->disableOriginalConstructor()
-		             ->getMock();
-		$stub->method( 'is_key_valid' )->willReturn( false );
-		$instance = new Key_Validation_Notice( $stub, Wordlift_Configuration_Service::get_instance() );
+		$key_validation_service_mock = $this->getMockBuilder( 'Wordlift_Key_Validation_Service' )
+		                                    ->disableOriginalConstructor()
+		                                    ->getMock();
+		$key_validation_service_mock->method( 'is_key_valid' )->willReturn( false );
+		$instance = new Key_Validation_Notice( $key_validation_service_mock, Wordlift_Configuration_Service::get_instance() );
 		$html     = $this->do_admin_notices();
 		$this->assertNotNull( $html );
 		$this->assertTrue( strlen( $html ) === 0, 'Error should not be shown since the filter is turned on' );
@@ -54,18 +62,32 @@ class Admin_Key_Notice_Test extends Wordlift_Unit_Test_Case {
 
 
 	public function test_key_validation_results_should_be_cached() {
+
+		$ttl_cache_service = new Ttl_Cache( 'key-validation-notification', 60 * 60 * 8 );
+		$ttl_cache_service->flush();
+
 		// Create a mock key validation service.
 		$key_validation_service_mock = $this->getMockBuilder( 'Wordlift_Key_Validation_Service' )
 		                                    ->disableOriginalConstructor()
 		                                    ->getMock();
 		$key_validation_service_mock->method( 'is_key_valid' )->willReturn( false );
 		// Since its not cached. the key validation service method would be called once.
-		$key_validation_service_mock->expects( $this->once() )
-		                            ->method( 'is_key_valid' );
-		$instance = new Key_Validation_Notice( $key_validation_service_mock, Wordlift_Configuration_Service::get_instance() );
+		$key_validation_service_mock->expects( $this->once() )->method( 'is_key_valid' );
+
+		$configuration_service_mock = $this->getMockBuilder( 'Wordlift_Configuration_Service' )
+		                                   ->disableOriginalConstructor()
+		                                   ->getMock();
+		$configuration_service_mock->method( 'get_key' )->willReturn( 'a_key' );
+		$configuration_service_mock->expects( $this->atLeastOnce() )->method( 'get_key' );
+
+
+		$instance = new Key_Validation_Notice( $key_validation_service_mock, $configuration_service_mock );
+
 		$this->do_admin_notices();
+
 		// is_key_valid would be called only once.
 		$this->do_admin_notices();
+
 	}
 
 
@@ -107,7 +129,15 @@ class Admin_Key_Notice_Test extends Wordlift_Unit_Test_Case {
 		                                    ->disableOriginalConstructor()
 		                                    ->getMock();
 		$key_validation_service_mock->method( 'is_key_valid' )->willReturn( false );
-		$instance = new Key_Validation_Notice( $key_validation_service_mock, Wordlift_Configuration_Service::get_instance() );
+
+		$configuration_service_mock = $this->getMockBuilder( 'Wordlift_Configuration_Service' )
+		                                   ->disableOriginalConstructor()
+		                                   ->getMock();
+		$configuration_service_mock->method( 'get_key' )->willReturn( 'a_key' );
+		$configuration_service_mock->expects( $this->atLeastOnce() )->method( 'get_key' );
+
+		$instance = new Key_Validation_Notice( $key_validation_service_mock, $configuration_service_mock );
+
 		$this->do_admin_notices();
 		// the cache should be now cleared.
 		$this->assertFalse( get_option( Key_Validation_Notice::NOTIFICATION_OPTION_KEY, false ) );

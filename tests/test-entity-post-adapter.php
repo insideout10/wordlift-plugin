@@ -30,6 +30,9 @@ class Wordlift_Entity_Post_Save_Test extends Wordlift_Unit_Test_Case {
 
 
 	public function test_when_local_entity_uri_is_on_post_content_but_doesnt_found_dont_create_a_new_entity() {
+
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		$local_dataset_uri = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
 
 		$this->assertCount( 0, get_posts( array( 'post_type' => 'entity' ) ), '0 Entities should be present' );

@@ -139,10 +139,9 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 	 */
 	function test_maybe_update_dataset_uri_dataset_uri_not_empty() {
 
-		add_filter( 'pre_http_request', array(
-			$this,
-			'pre_http_request',
-		), 10, 3 );
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
+		add_filter( 'pre_http_request', array( $this, 'pre_http_request', ), 10, 3 );
 
 		$old_key = $new_key = uniqid( true );
 
@@ -219,7 +218,7 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 		global $wp_filter;
 		// Dont trigger any filters.
 		$wp_filter_copy = $wp_filter;
-		$wp_filter = array();
+		$wp_filter      = array();
 
 		// we set a custom language code in configuration, but we should not get this value.
 		$this->configuration_service->set_language_code( 'ta' );
@@ -228,7 +227,7 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 		$wp_filter = $wp_filter_copy;
 
 		//substr( get_bloginfo('language'), 0, 2)
-		$this->assertSame( 'en', $this->configuration_service->get_language_code(), 'Language code should not be from wordlift settings.');
+		$this->assertSame( 'en', $this->configuration_service->get_language_code(), 'Language code should not be from wordlift settings.' );
 	}
 
 	/**

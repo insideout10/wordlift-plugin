@@ -60,7 +60,7 @@ class Wordlift_Key_Validation_Service {
 		/**
 		 * Filter: wl_feature__enable__notices.
 		 *
-		 * @param bool whether the notices needs to be enabled or not.
+		 * @param bool whether notices need to be enabled or not.
 		 *
 		 * @return bool
 		 * @since 3.27.6
@@ -69,7 +69,7 @@ class Wordlift_Key_Validation_Service {
 			add_action( 'admin_notices', array( $this, 'wl_key_update_notice' ) );
 		}
 
-		$this->ttl_cache_service = new Ttl_Cache( 'key-validation-notification');
+		$this->ttl_cache_service = new Ttl_Cache( 'key-validation-notification' );
 
 	}
 
@@ -138,8 +138,12 @@ class Wordlift_Key_Validation_Service {
 
 		// If we got an error, return invalid.
 		if ( is_wp_error( $response ) || 2 !== (int) $response['response']['code'] / 100 ) {
-			wp_send_json_success( array( 'valid' => false, 'message' => '' , 'response' => $response,
-                                         'api_url' => Default_Api_Service::get_instance()->get_base_url() ) );
+			wp_send_json_success( array(
+				'valid'    => false,
+				'message'  => '',
+				'response' => $response,
+				'api_url'  => Default_Api_Service::get_instance()->get_base_url()
+			) );
 		}
 
 		$res_body = json_decode( wp_remote_retrieve_body( $response ), true );
@@ -153,8 +157,8 @@ class Wordlift_Key_Validation_Service {
 
 		// If the URL isn't set or matches, then it's valid.
 		if ( is_null( $url ) || $url === $site_url ) {
-		    // Invalidate the cache key
-			$this->ttl_cache_service->delete('is_key_valid' );
+			// Invalidate the cache key
+			$this->ttl_cache_service->delete( 'is_key_valid' );
 			wp_send_json_success( array( 'valid' => true, 'message' => '' ) );
 		}
 

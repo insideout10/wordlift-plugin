@@ -127,6 +127,8 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	function test_get_entity_post_by_uri_with_external_uris() {
 
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
 		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
@@ -167,6 +169,8 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	function test_get_entity_post_by_uri_with_cross_referenced_internal_entities() {
 
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
 		// Create the first entity
@@ -194,6 +198,8 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	function test_entity_usage_on_related_entities() {
 
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		$entity_service = Wordlift_Entity_Service::get_instance();
 		// Create the first entity
 		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
@@ -214,6 +220,8 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 	 * @since 3.4.0
 	 */
 	function test_entity_usage_on_entities_used_as_meta_value() {
+
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$entity_service = Wordlift_Entity_Service::get_instance();
 		// Create the first entity
@@ -236,6 +244,8 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	function test_entity_usage_on_referenced_entities() {
 
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		$entity_service = Wordlift_Entity_Service::get_instance();
 		// Create the first entity
 		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
@@ -257,6 +267,8 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	function test_entity_usage_on_a_standard_post() {
 
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		$entity_service = Wordlift_Entity_Service::get_instance();
 		// Create the first entity
 		$post_id = wl_create_post( '', 'post-1', uniqid( 'post', true ), 'draft', 'post' );
@@ -270,6 +282,8 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 	 * @since 3.5.0
 	 */
 	function test_build_uri_when_there_is_no_entity_with_the_same_label() {
+
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
@@ -293,6 +307,8 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 	 * @since 3.5.0
 	 */
 	function test_build_uri_when_there_is_already_an_entity_with_the_same_label() {
+
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
@@ -322,6 +338,8 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 	 * @since 3.5.0
 	 */
 	function test_build_uri_override_when_there_is_already_an_entity_with_the_same_label_and_type() {
+
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
@@ -355,6 +373,8 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 	 * @since 3.5.0
 	 */
 	function test_get_classification_scope_for() {
+
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
@@ -417,6 +437,8 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	function test_is_entity_835() {
 
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		// No entity type, expect default of `Thing`.
 		$post_1      = $this->factory()->post->create( array(
 			'post_type' => 'entity',
@@ -457,6 +479,8 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	public function test_996() {
+
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$post_id = $this->factory()->post->create( array(
 			'post_title' => 'Test 996'

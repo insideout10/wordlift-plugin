@@ -15,6 +15,8 @@ class UserServiceTest extends Wordlift_Unit_Test_Case {
 	 */
 	function test_user_service() {
 
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		$users_ids = get_users( array( 'fields' => 'id' ) );
 
 		foreach ( $users_ids as $user_id ) {

@@ -47,6 +47,9 @@ class Wordlift_Revision_Generation_Test extends Wordlift_Unit_Test_Case {
 	 * @since 3.12.0
 	 */
 	function testPostEntityRelationshipWhenRevisionChange() {
+
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		// create two entities
 		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
 		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', true ), 'draft', 'entity' );
@@ -102,6 +105,9 @@ EOF;
 	 * @since 3.12.0
 	 */
 	function testEntityToEntityRelationshipWhenRevisionChange() {
+
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		// create two entities
 		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
 		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', true ), 'draft', 'entity' );
@@ -147,4 +153,5 @@ EOF;
 		wp_restore_post_revision( $original->ID );
 		$this->assertCount( 2, wl_core_get_related_entity_ids( $entity_3_id ) );
 	}
+
 }

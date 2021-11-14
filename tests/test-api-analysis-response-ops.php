@@ -12,7 +12,6 @@ namespace Wordlift\Analysis\Response;
 
 use Exception;
 use stdClass;
-use Wordlift\Term\Uri_Service;
 use Wordlift_Entity_Type_Taxonomy_Service;
 
 /**
@@ -183,18 +182,24 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 
 	public function test_when_analysis_returns_entity_pointing_to_local_uri_for_same_entity_should_not_annotate() {
 
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		// Create a local entity with sameAs set to cloud entity uri.
-		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$entity = $this->factory()->post->create( array(
+			'post_title' => 'test_when_analysis_returns_entity_pointing_to_local_uri_for_same_entity_should_not_annotate',
+			'post_type'  => 'entity'
+		) );
 
 		// set sameAs to a cloud entity uri.
-		add_post_meta( $entity, 'entity_same_as', 'http://dbpedia.org/resource/Microsoft_Outlook' );
+		$same_as = 'http://dbpedia.example.org/data/test_when_analysis_returns_entity_pointing_to_local_uri_for_same_entity_should_not_annotate';
+		add_post_meta( $entity, 'entity_same_as', $same_as );
 
 		// Now perform analysis for this entity page.
 		$analysis_response_string = <<<EOF
 {
   "entities": {
-    "http://dbpedia.org/resource/Microsoft_Outlook": {
-      "entityId": "http://dbpedia.org/resource/Microsoft_Outlook",
+    "$same_as": {
+      "entityId": "$same_as",
       "confidence": 1.0,
       "mainType": "creative-work",
       "types": [
@@ -238,7 +243,7 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
       "entityMatches": [
         {
           "confidence": 1.0,
-          "entityId": "http://dbpedia.org/resource/Microsoft_Outlook"
+          "entityId": "$same_as"
         }
       ]
     }
@@ -247,7 +252,6 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 EOF;
 
 		$analysis_response_object = json_decode( $analysis_response_string );
-
 
 		$local_entity_uri = \Wordlift_Entity_Service::get_instance()->get_uri( $entity );
 
@@ -266,8 +270,12 @@ EOF;
 	}
 
 	public function test_when_analysis_returns_correct_response() {
+
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		// Create a local entity with sameAs set to cloud entity uri.
 		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+
 		// set sameAs to a cloud entity uri.
 		add_post_meta( $entity, 'entity_same_as', 'http://dbpedia.org/resource/Microsoft_Outlook' );
 
@@ -285,8 +293,5 @@ EOF;
 		);
 
 	}
-
-
-
 
 }

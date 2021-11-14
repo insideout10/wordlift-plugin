@@ -40,6 +40,9 @@ class Sameas_Metabox_Validation_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	public function test_given_text_should_not_save() {
+
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		$post_id          = $this->factory()->post->create();
 		$instance         = new Wl_Metabox_Field_sameas( $this->config, $post_id, Object_Type_Enum::POST );
 		$_POST['post_ID'] = $post_id;
@@ -58,6 +61,9 @@ class Sameas_Metabox_Validation_Test extends Wordlift_Unit_Test_Case {
 
 
 	public function test_given_local_dataset_url_should_not_save() {
+
+		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+
 		$post_id          = $this->factory()->post->create();
 		$instance         = new Wl_Metabox_Field_sameas( $this->config, $post_id, Object_Type_Enum::POST );
 		$_POST['post_ID'] = $post_id;
