@@ -66,7 +66,7 @@ class Webhooks_Settings_Tab_Test extends Wordlift_Unit_Test_Case {
     */
 
 	public function test_should_have_admin_tab_registered_for_match_terms() {
-        $this->assertTrue( is_numeric( has_action( 'admin_init', array( $this->settings_tab, 'wl_admin_register_setting' ) ) ) );
+        $this->assertTrue( is_numeric( has_action( 'admin_menu', array( $this->settings_tab, 'wl_admin_register_setting' ) ) ) );
 		$tabs = apply_filters( 'wl_admin_page_tabs', array() );
 		$this->assertCount( 1, $tabs );
 		$match_terms_tab = $tabs[0];
