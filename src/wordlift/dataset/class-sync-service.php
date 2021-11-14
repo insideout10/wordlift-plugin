@@ -115,6 +115,7 @@ class Sync_Service {
 		$response = $this->api_service->request(
 			'DELETE', sprintf( '/middleware/dataset?uri=%s', rawurlencode( $uri ) ) );
 
+
 		// Update the sync date in case of success, otherwise log an error.
 		if ( ! $response->is_success() ) {
 			return false;
@@ -226,6 +227,7 @@ class Sync_Service {
 		$response = $this->api_service->request(
 			'DELETE', '/middleware/dataset?uri=' . rawurlencode( $uri ),
 			array( 'Content-Type' => 'application/ld+json', ) );
+
 	}
 
 	public function get_batch_size() {

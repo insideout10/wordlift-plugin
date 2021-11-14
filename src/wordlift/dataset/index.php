@@ -15,6 +15,7 @@ use Wordlift\Jsonld\Jsonld_Service;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
 // Register the Dataset JSON Endpoint. The `$api_service` variable must be defined in the calling file (wordlift.php).
 if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
 
@@ -22,7 +23,6 @@ if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
 	$sync_service                = new Sync_Service( $api_service, $sync_object_adapter_factory, Jsonld_Service::get_instance(), Wordlift_Entity_Service::get_instance() );
 	new Sync_Post_Hooks( $sync_service, $sync_object_adapter_factory );
 	new Sync_User_Hooks( $sync_service );
-
 
 	if ( apply_filters( 'wl_feature__enable__no-vocabulary-terms', false ) ) {
 		new Sync_Term_Hooks( $sync_service, $sync_object_adapter_factory );

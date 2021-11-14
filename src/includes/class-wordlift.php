@@ -66,6 +66,7 @@ use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
 use Wordlift\Templates\Templates_Ajax_Endpoint;
 use Wordlift\Videoobject\Loader;
 use Wordlift\Vocabulary\Vocabulary_Loader;
+use Wordlift\Webhooks\Webhooks_Loader;
 use Wordlift\Vocabulary_Terms\Vocabulary_Terms_Loader;
 use Wordlift\Widgets\Async_Template_Decorator;
 
@@ -760,6 +761,10 @@ class Wordlift {
 	private $features_registry;
 
 	//</editor-fold>
+
+	// Experimental code added by Nishit for feature request 1496
+	private $webhook_loader;
+	// Experimental code ents here
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -1641,6 +1646,13 @@ class Wordlift {
 		 */
 		$wordlift_admin_checkbox = new Admin_User_Option();
 		$wordlift_admin_checkbox->connect_hook();
+
+		/**
+		 *Added for feature request 1496 (Webhooks)
+		 */
+		$this->webhook_loader = new Webhooks_Loader();
+		$this->webhook_loader->init_all_dependencies();
+
 		/**
 		 * @since 3.31.0
 		 * Init loader class for videoobject.
@@ -2009,6 +2021,10 @@ class Wordlift {
 		if ( apply_filters( 'wl_feature__enable__analytics', true ) && $this->configuration_service->is_analytics_enable() ) {
 			$this->loader->add_action( 'wp_enqueue_scripts', $this->analytics_connect, 'enqueue_scripts', 10 );
 		}
+
+		// Experimentl chnges for 1496 done by Nishit
+		$rest_controller_object = $this->webhook_loader->get_rest_controller_object();
+        // Experimentl chnges ends
 
 	}
 

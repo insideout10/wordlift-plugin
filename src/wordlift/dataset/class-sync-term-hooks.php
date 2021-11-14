@@ -54,7 +54,6 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 
 		// Sync all the terms without filtering.
 		$this->sync( $term_id );
-
 	}
 
 	public function changed_term_meta( $meta_id, $term_id, $meta_key, $_meta_value ) {
@@ -109,5 +108,4 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 			$this->log->error( "An error occurred while trying to delete term $term_id: " . $e->getMessage(), $e );
 		}
 	}
-
 }
