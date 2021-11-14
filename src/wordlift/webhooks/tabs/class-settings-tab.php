@@ -19,7 +19,7 @@ class Settings_Tab {
 		} );
 
 		// Registering the option group during setup
-        add_action('admin_init', array( &$this, 'wl_admin_register_setting' ) );
+        add_action('admin_menu', array( $this, 'wl_admin_register_setting' ) );
 	}
 
     /**
@@ -29,14 +29,15 @@ class Settings_Tab {
     public function wl_admin_register_setting() {
         add_option( 'wl_webhook_url', array(), '', false);
         $args = array(
-                'type' => 'string',
-                'sanitize_callback' => array( $this, 'sanitize_callback' ),
-                'default' => NULL,
-                );
+                    'type' => 'string',
+                    'sanitize_callback' => array( $this, 'sanitize_callback' ),
+                    'default' => NULL
+        );
         register_setting(
                 'wl_webhooks_settings',
                 'wl_webhook_url',
-                $args );
+                $args
+        );
     }
 
     /**
