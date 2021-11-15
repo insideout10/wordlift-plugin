@@ -182,10 +182,11 @@ class Sync_Service {
 			$object->update_meta( self::SYNCED_GMT, current_time( 'mysql', true ) );
 		}
 
+
 		/**
 		 * Allow 3rd parties to run additional sync work.
 		 */
-		do_action( 'wl_sync__sync_many', $payloads, array_column( $hashes, 0 ) );
+		do_action( 'wl_sync__sync_many', $payloads, wp_list_pluck( $hashes, 0 ) );
 
 		return true;
 	}
