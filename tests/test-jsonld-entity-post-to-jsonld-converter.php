@@ -68,7 +68,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 	 */
 	public function test_event_conversion() {
 
-		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create an entity post and assign it the Event type.
 		$name     = 'Test Entity Post to Json-Ld conversion test_event_conversion ' . rand_str();
@@ -173,7 +173,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 	 */
 	public function test_place_conversion() {
 
-		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create a location entity post and bind it to the location property.
 		$name     = rand_str();
@@ -275,7 +275,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 	 */
 	public function test_create_work_conversion() {
 
-		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create a location entity post and bind it to the location property.
 		$name           = rand_str();
@@ -340,7 +340,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 	 */
 	public function test_organization_conversion() {
 
-		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create a location entity post and bind it to the location property.
 		$name            = rand_str();
@@ -447,7 +447,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 	 */
 	public function test_person_conversion() {
 
-		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create an entity post and assign it the Event type.
 		$name      = rand_str();
@@ -555,7 +555,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 	 */
 	public function test_local_business_conversion() {
 
-		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create a location entity post and bind it to the location property.
 		$name              = rand_str();
@@ -684,7 +684,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 	 */
 	public function test_offer_conversion() {
 
-		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create an entity post and assign it the Offer type.
 		$name     = rand_str();
@@ -785,7 +785,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 	 */
 	public function test_convert_835() {
 
-		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$post_id = $this->factory()->post->create( array(
 			'post_type' => 'entity',

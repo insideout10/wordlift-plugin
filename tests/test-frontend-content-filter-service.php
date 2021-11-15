@@ -260,7 +260,7 @@ EOF;
 	public function test_entity_default_no_link_entity_no_link() {
 
 		$this->configuration_service->set_link_by_default( false );
-		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Add a filter to set the permalink to a fixed value we can test.
 		add_filter( 'post_link', array( $this, 'post_link' ), 10, 3 );
@@ -285,7 +285,7 @@ EOF;
 	public function test_entity_default_no_link_entity_not_specified() {
 
 		$this->configuration_service->set_link_by_default( false );
-		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$this->assertFalse( $this->configuration_service->is_link_by_default() );
 
@@ -312,7 +312,7 @@ EOF;
 
 
 		$this->configuration_service->set_link_by_default( false );
-		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
+		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
 
 		$entity_url  = $this->configuration_service->get_dataset_uri() . "/entity";
 		$entity_id   = $this->create_entity_with_uri( $entity_url );
@@ -341,7 +341,7 @@ EOF;
 	public function test_entity_default_link_entity_link() {
 
 		$this->configuration_service->set_link_by_default( true );
-		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
+		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
 
 		$this->setup_link_options( $entity_url, $entity_link, $entity_title, $entity_id );
 
@@ -366,7 +366,7 @@ EOF;
 	public function test_entity_default_link_entity_not_specified() {
 
 		$this->configuration_service->set_link_by_default( true );
-		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
+		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
 
 		$this->setup_link_options( $entity_url, $entity_link, $entity_title, $entity_id );
 		// Add a filter to set the permalink to a fixed value we can test.
@@ -393,7 +393,7 @@ EOF;
 	public function test_entity_default_link_entity_no_link() {
 
 		$this->configuration_service->set_link_by_default( true );
-		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
+		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
 
 		// Add a filter to set the permalink to a fixed value we can test.
 		add_filter( 'post_link', array( $this, 'post_link' ), 10, 3 );

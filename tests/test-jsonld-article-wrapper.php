@@ -207,7 +207,7 @@ class Wordlift_Jsonld_Article_Wrapper extends Wordlift_Unit_Test_Case {
 
 	public function test_when_author_reference_added_in_article_jsonld_should_be_expanded() {
 
-		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$jsonld = $this->setup_env_for_linked_entity_test();
 
@@ -226,7 +226,7 @@ class Wordlift_Jsonld_Article_Wrapper extends Wordlift_Unit_Test_Case {
 
 	public function test_when_author_reference_added_in_article_jsonld_with_entity_type_set_to_person_should_not_duplicate() {
 
-		$this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$jsonld = $this->setup_env_for_linked_entity_test( 'http://schema.org/Person' );
 
