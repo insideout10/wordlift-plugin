@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.33.5 (2021-11-12) =
+= 3.33.5 (2021-11-15) =
 * Fix[#1499] (https://github.com/insideout10/wordlift-plugin/issues/1499): Fix shippingRate.name property on jsonld to use custom title set by user.
 * Fix[#1501] (https://github.com/insideout10/wordlift-plugin/issues/1501): Added a filter for post content for post excerpt feature.
 
