@@ -30,7 +30,7 @@ class Local_Pickup_Shipping_Method extends Shipping_Method {
 
 		$offer_shipping_details['shippingRate'][] = array(
 			'@type'       => 'MonetaryAmount',
-			'name'        => $this->wc_shipping_method->get_method_title(),
+			'name'        => $this->wc_shipping_method->get_title(),
 			'description' => wp_strip_all_tags( $this->wc_shipping_method->get_method_description() ),
 			'value'       => $this->wc_shipping_method->get_option( 'cost' ) ?: '0',
 			'currency'    => get_woocommerce_currency(),
