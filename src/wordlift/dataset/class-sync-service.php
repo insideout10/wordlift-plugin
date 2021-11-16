@@ -155,7 +155,7 @@ class Sync_Service {
 			}
 
 			// Collect the hashes and the payloads.
-			$hashes[]   = array( $object, $new_hash );
+			$hashes[]   = array( $object, $new_hash, $payload_as_string );
 			$payloads[] = $payload_as_string;
 		}
 
@@ -187,7 +187,7 @@ class Sync_Service {
 		/**
 		 * Allow 3rd parties to run additional sync work.
 		 */
-		do_action( 'wl_sync__sync_many', $payloads, wp_list_pluck( $hashes, 0 ) );
+		do_action( 'wl_sync__sync_many', $hashes );
 
 		return true;
 	}

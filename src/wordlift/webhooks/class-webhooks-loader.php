@@ -14,19 +14,14 @@ use Wordlift\Webhooks\Api\Rest_Controller;
  */
 class Webhooks_Loader {
 
+	const URLS_OPTION_NAME = 'wl_webhooks_urls';
+
 	public function init_all_dependencies() {
 
 		$settings_tab = new Settings_Tab();
 		$settings_tab->init();
-        return $settings_tab;
-	}
 
-	public function get_feature_slug() {
-		return 'webhooksobject';
-	}
-
-	public function get_feature_default_value() {
-		return false;
+		return $settings_tab;
 	}
 
 	public function get_rest_controller_object() {

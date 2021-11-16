@@ -7,13 +7,15 @@
 
 namespace Wordlift\Webhooks\Tabs;
 
+use Wordlift\Webhooks\Webhooks_Loader;
+
 class Settings_Tab {
 
 	public function init() {
 
 		add_filter( 'wl_admin_page_tabs', function ( $tabs ) {
 			$tabs[] = array(
-				'slug'  => 'webhooksobject-settings',
+				'slug' => 'webhooksobject-settings',
 				'title' => __( 'Webhooks Settings', 'wordlift' )
 			);
 
@@ -29,36 +31,34 @@ class Settings_Tab {
 	 */
 
 	public function wl_admin_register_setting() {
-		add_option( 'wl_webhook_url', array(), '', false );
-		register_setting(
-			'wl_webhooks_settings', 'wl_webhook_url', array( $this, 'sanitize_callback' ) );
+		register_setting( 'wl_settings__webhooks', Webhooks_Loader::URLS_OPTION_NAME, array(
+			$this,
+			'sanitize_callback'
+		) );
+		add_settings_section( 'wl_settings__webhooks__general', __( 'Webhooks Settings', 'wordlift' ), function ( $args ) {
+			echo __( 'Set one or more URLs that should be called when data is changed.', 'wordlift' );
+		}, 'wl_settings__webhooks' );
+		add_settings_field( 'wl_settings__webhooks__general__urls', __( 'URLs:', 'wordlift' ), function ( $args ) {
+			?>
+            <textarea id="wl_settings__webhooks__general__urls"
+                      name="wl_webhooks_urls"><?php echo esc_html( get_option( Webhooks_Loader::URLS_OPTION_NAME, '' ) ); ?></textarea>
+			<?php
+		}, 'wl_settings__webhooks', 'wl_settings__webhooks__general' );
 	}
 
 	/**
 	 * Callback function to process the data optioned from Webhook admin settings page
 	 *
-	 * @param string $url
+	 * @param string $values
 	 *
 	 * @return string
 	 */
+	function sanitize_callback( $values ) {
 
-	function sanitize_callback( $url ) {
-
-		$url = filter_var( $url, FILTER_SANITIZE_URL );
-
-		if ( filter_var( $url, FILTER_VALIDATE_URL ) ) {
-
-			/* If wl_webhook_url doesn't contain an existing entry then form an array of the input
-			* Else merge the input with the value stored in the mentioned option field
-			*/
-			$url = get_option( 'wl_webhook_url' ) ?
-				array_merge( get_option( 'wl_webhook_url' ), array( $url ) ) :
-				array( $url );
-		} else {
-			add_settings_error( 'wl_webhook_error', esc_attr( 'settings_updated' ), __( 'Please enter a valid url', 'wordlift' ), 'error' );
-			$url = get_option( 'wl_webhook_url' );
-		}
-
-		return $url;
+		return implode( "\n", array_unique( array_filter(
+			explode( "\n", str_replace( array( "\r\n", "\r" ), "\n", $values ) ),
+			function ( $value ) {
+				return filter_var( $value, FILTER_VALIDATE_URL ) && preg_match( '@^https?://.*$@', $value );
+			} ) ) );
 	}
 }

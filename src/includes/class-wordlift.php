@@ -1638,6 +1638,15 @@ class Wordlift {
 				$vocabulary_loader->init_vocabulary();
 			}
 
+			/**
+			 *Added for feature request 1496 (Webhooks)
+			 */
+			if ( apply_filters( 'wl_feature__enable__webhooks', false ) ) {
+				$this->webhook_loader = new Webhooks_Loader();
+				$this->webhook_loader->init_all_dependencies();
+				$this->webhook_loader->get_rest_controller_object();
+			}
+
 		} );
 
 		/**
@@ -1646,12 +1655,6 @@ class Wordlift {
 		 */
 		$wordlift_admin_checkbox = new Admin_User_Option();
 		$wordlift_admin_checkbox->connect_hook();
-
-		/**
-		 *Added for feature request 1496 (Webhooks)
-		 */
-		$this->webhook_loader = new Webhooks_Loader();
-		$this->webhook_loader->init_all_dependencies();
 
 		/**
 		 * @since 3.31.0
@@ -2021,10 +2024,6 @@ class Wordlift {
 		if ( apply_filters( 'wl_feature__enable__analytics', true ) && $this->configuration_service->is_analytics_enable() ) {
 			$this->loader->add_action( 'wp_enqueue_scripts', $this->analytics_connect, 'enqueue_scripts', 10 );
 		}
-
-		// Experimentl chnges for 1496 done by Nishit
-		$rest_controller_object = $this->webhook_loader->get_rest_controller_object();
-        // Experimentl chnges ends
 
 	}
 

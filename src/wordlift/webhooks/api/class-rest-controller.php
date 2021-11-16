@@ -7,93 +7,82 @@
 
 namespace Wordlift\Webhooks\Api;
 
+use Wordlift\Dataset\Sync_Object_Adapter;
+use Wordlift\Webhooks\Webhooks_Loader;
+
 class Rest_Controller {
 
-    /**
-     * Registering the actions to call up sync_many or sync_delete methods
-     */
+	/**
+	 * Registering the actions to call up sync_many or sync_delete methods
+	 */
 
-    public function __construct() {
-	    add_action( 'wl_sync__sync_many', array( $this, 'register_sync_many' ), 10, 1 );
-	    add_action( 'wl_sync__delete_one', array( $this, 'register_sync_delete' ), 10, 3 );
-    }
+	public function __construct() {
+		add_action( 'wl_sync__sync_many', array( $this, 'sync_many' ), 10 );
+		add_action( 'wl_sync__delete_one', array( $this, 'sync_delete' ), 10, 3 );
+	}
 
-    /**
-     * Method to call up webhook with post requested
-     * @param array $payloads
-     * @param array $object
-     * @return json
-     */
+	/**
+	 * Method to call up webhook with post requested
+	 *
+	 * @param array $hashes
+	 */
 
-	public function register_sync_many( $payloads ) {
+	public function sync_many( $hashes ) {
 
-        $webhook_urls = get_option('wl_webhook_url');
-         if( empty( $webhook_urls ) ) {
-            return;
-         }
+		$urls = (array)get_option( Webhooks_Loader::URLS_OPTION_NAME, '' );
+		if ( empty( $urls ) ) {
+			return;
+		}
 
-        foreach( $webhook_urls as $webhook_url ) {
+		/**
+		 * Allow 3rd parties to filter out the objects that we want to send via webhooks.
+		 * @since 3.34.0
+		 * @var Sync_Object_Adapter[] $filtered_objects
+		 */
+		$filtered_hashes = apply_filters( 'wl_webhooks__sync_many__objects', $hashes );
 
-            // Check if the $payloads is an array of payload.
-            // If true then send each en payload separately
-            if( is_array( $payloads ) ) {
+		foreach ( $urls as $url ) {
+			foreach ( $filtered_hashes as $hash ) {
+				$jsonld       = $hash[2];
+				$filtered_url = apply_filters( 'wl_webhooks__sync_many__url', $url, $hash );
+				wp_remote_request( $filtered_url, array(
+					'blocking' => false,
+					'method'   => 'PUT',
+					'headers'  => array( 'Content-Type' => 'application/json; ' . get_bloginfo( 'charset' ) ),
+					'body'     => $jsonld
+				) );
+			}
+		}
+	}
 
-                foreach( $payloads as $payload ) {
-                    $result = wp_remote_request( $webhook_url,
-                        array(
-                            'method'    => 'POST',
-                            'body'      => $payload
-                        )
-                    );
-                }
+	/**
+	 * Method to call up webhook with delete requested
+	 *
+	 * @param string $type
+	 * @param int $object_id
+	 * @param string $uri
+	 */
 
-                return $result;
-            }
-            else {
-                return wp_remote_request( $webhook_url,
-                    array(
-                        'method'    => 'POST',
-                        'body'      => $payloads
-                    )
-                );
-            }
-        }
+	public function sync_delete( $type, $object_id, $uri ) {
+
+		$urls = (array)get_option( Webhooks_Loader::URLS_OPTION_NAME, '' );
+		if ( empty( $urls ) ) {
+			return;
+		}
+
+		if ( ! apply_filters( 'wl_webhooks__sync_delete', true, $type, $object_id, $uri ) ) {
+			return;
+		}
+
+		foreach ( $urls as $template_url ) {
+			$url          = add_query_arg( array( 'uri' => $uri ), $template_url );
+			$filtered_url = apply_filters( 'wl_webhooks__sync_delete__url', $url, $type, $object_id, $uri );
+			wp_remote_request( $filtered_url, array(
+				'blocking' => false,
+				'method'   => 'DELETE',
+			) );
+		}
 
 	}
 
-    /**
-     * Method to call up webhook with delete requested
-     * @param string $type
-     * @param int $object_id
-     * @param string $uri
-     * @return json
-     */
-
-	public function register_sync_delete( $type, $object_id, $uri ) {
-
-         $webhook_urls = get_option('wl_webhook_url');
-         if( empty( $webhook_urls ) ) {
-            return;
-         }
-
-        foreach( $webhook_urls as $webhook_url ) {
-
-            $data = array(
-                'type'          => $type,
-                'object_id'     => $object_id,
-                'uri'           => $uri
-            );
-            $encoded_data = json_encode( $data );
-
-            $result = wp_remote_request( $webhook_url,
-                array(
-                    'method'    => 'DELETE',
-                    'body'      => $encoded_data
-                )
-            );
-
-            return $result;
-        }
-    }
 }
-
