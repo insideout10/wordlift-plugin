@@ -39,7 +39,6 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 				array(
 					'@type'       => 'MonetaryAmount',
 					'name'        => 'Custom Free shipping Label',
-					'description' => 'Free shipping is a special method which can be triggered with coupons and minimum spends.',
 					'value'       => '0',
 					'currency'    => 'GBP'
 				),
@@ -57,7 +56,6 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 				array(
 					'@type'       => 'MonetaryAmount',
 					'name'        => 'Custom Flat Rate Label',
-					'description' => 'Lets you charge a fixed rate for shipping.',
 					'value'       => '10',
 					'currency'    => 'GBP'
 				)
@@ -74,7 +72,6 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 				array(
 					'@type'       => 'MonetaryAmount',
 					'name'        => 'Custom Local Pickup Label',
-					'description' => 'Allow customers to pick up orders themselves. By default, when using local pickup store base taxes will apply regardless of customer address.',
 					'value'       => '10',
 					'currency'    => 'GBP'
 				)
