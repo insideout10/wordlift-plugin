@@ -38,7 +38,7 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 			'shippingRate'        => array(
 				array(
 					'@type'       => 'MonetaryAmount',
-					'name'        => 'Free shipping',
+					'name'        => 'Custom Free shipping Label',
 					'description' => 'Free shipping is a special method which can be triggered with coupons and minimum spends.',
 					'value'       => '0',
 					'currency'    => 'GBP'
@@ -56,7 +56,7 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 			'shippingRate'        => array(
 				array(
 					'@type'       => 'MonetaryAmount',
-					'name'        => 'Flat rate',
+					'name'        => 'Custom Flat Rate Label',
 					'description' => 'Lets you charge a fixed rate for shipping.',
 					'value'       => '10',
 					'currency'    => 'GBP'
@@ -73,7 +73,7 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 			'shippingRate'        => array(
 				array(
 					'@type'       => 'MonetaryAmount',
-					'name'        => 'Local pickup',
+					'name'        => 'Custom Local Pickup Label',
 					'description' => 'Allow customers to pick up orders themselves. By default, when using local pickup store base taxes will apply regardless of customer address.',
 					'value'       => '10',
 					'currency'    => 'GBP'
@@ -91,14 +91,17 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 		$zone->add_location( 'IT:RM', 'state' );
 		$zone->add_location( 'IT:MI', 'state' );
 
-		$zone->add_shipping_method( 'free_shipping' );
+		$free_shipping_method_id = $zone->add_shipping_method( 'free_shipping' );
+		update_option( "woocommerce_free_shipping_{$free_shipping_method_id}_settings", array(
+			'title'         => 'Custom Free shipping Label',
+		), true );
 
 		$shipping_method_id        = $zone->add_shipping_method( 'flat_rate' );
 		$flat_rate_shipping_method = WC_Shipping_Zones::get_shipping_method( $shipping_method_id );
-		$flat_rate_shipping_method->add_rate( array( 'label' => 'Free Shipping', 'cost' => 10, ) );
+		$flat_rate_shipping_method->add_rate( array( 'label' => 'Flat Rate', 'cost' => 10, ) );
 
 		update_option( "woocommerce_flat_rate_{$shipping_method_id}_settings", array(
-			'title'         => 'Flat rate',
+			'title'         => 'Custom Flat Rate Label',
 			'tax_status'    => 'taxable',
 			'cost'          => '10',
 			'class_costs'   => '',
@@ -123,7 +126,7 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 		$local_pickup_shipping_method->add_rate( array( 'label' => 'Local Pickup', 'cost' => 10, ) );
 
 		update_option( "woocommerce_local_pickup_{$shipping_method_id}_settings", array(
-			'title'      => 'Local pickup',
+			'title'      => 'Custom Local Pickup Label',
 			'tax_status' => 'none',
 			'cost'       => '10',
 		), true );
