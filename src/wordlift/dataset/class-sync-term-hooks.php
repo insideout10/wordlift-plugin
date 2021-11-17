@@ -97,13 +97,19 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 	/**
 	 * @param $term \WP_Term
 	 */
-	public function delete_term( $term ) {
-		$this->enqueue( array( 'do_delete', $term->term_id ) );
+	public function delete_term( $term_id ) {
+		$args = array( $term_id, get_term_meta( $term_id, 'entity_url', true ) );
+		// We can't postpone the execution for a delete because we would miss the actual data.
+		$this->do_delete( $args );
+		// $this->enqueue( array( 'do_delete', $args ) );
 	}
 
-	public function do_delete( $term_id ) {
+	public function do_delete( $args ) {
+		$term_id         = $args[0];
+		$term_entity_uri = $args[1];
+
 		try {
-			$this->sync_service->delete_one( Object_Type_Enum::TERM, $term_id,  get_term_meta( $term_id, 'entity_url', true ) );
+			$this->sync_service->delete_one( Object_Type_Enum::TERM, $term_id, $term_entity_uri );
 		} catch ( \Exception $e ) {
 			$this->log->error( "An error occurred while trying to delete term $term_id: " . $e->getMessage(), $e );
 		}

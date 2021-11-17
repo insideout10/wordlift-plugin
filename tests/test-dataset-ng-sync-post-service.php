@@ -325,7 +325,7 @@ class Test_Dataset_Ng_Sync_Post_Service extends Wordlift_Unit_Test_Case {
 			                       $this->equalTo( 'DELETE' ),
 			                       $this->equalTo( '/middleware/dataset?uri=https%3A%2F%2Flocaldomain.localhost' ) );
 
-		$this->assertTrue( $this->sync_service->delete_one( Object_Type_Enum::POST, $post_id ) );
+		$this->assertTrue( $this->sync_service->delete_one( Object_Type_Enum::POST, $post_id, 'https://localdomain.localhost' ) );
 
 	}
 

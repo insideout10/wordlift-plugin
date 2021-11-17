@@ -1,21 +1,17 @@
 <?php
 /**
- * @since 3.31.0
- * @author
- * Added for feature request 1496 (Webhooks)
+ * @since 3.34.0
  */
 
-namespace Wordlift\Webhooks\Tabs;
+namespace Wordlift\Webhooks;
 
-use Wordlift\Webhooks\Webhooks_Loader;
-
-class Settings_Tab {
+class Webhooks_Settings {
 
 	public function init() {
 
 		add_filter( 'wl_admin_page_tabs', function ( $tabs ) {
 			$tabs[] = array(
-				'slug' => 'webhooksobject-settings',
+				'slug'  => 'webhooksobject-settings',
 				'title' => __( 'Webhooks Settings', 'wordlift' )
 			);
 

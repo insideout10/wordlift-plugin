@@ -10,7 +10,7 @@ use Wordlift\Term\Uri_Service;
 
 /**
  * @since 3.31.7
- * @group no_vocabulary_terms
+ * @group no-vocabulary-terms
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Case {

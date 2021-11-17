@@ -7,6 +7,7 @@ use Wordlift\Relation\Object_Relation_Service;
 /**
  * @since 3.32.6
  * @author Naveen Muthusamy <naveen@wordlift.io>
+ * @group no-editor
  */
 class Test_No_Editor_Analysis_Response extends Wordlift_No_Editor_Analysis_Unit_Test_Case {
 

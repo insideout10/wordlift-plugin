@@ -1643,8 +1643,7 @@ class Wordlift {
 			 */
 			if ( apply_filters( 'wl_feature__enable__webhooks', false ) ) {
 				$this->webhook_loader = new Webhooks_Loader();
-				$this->webhook_loader->init_all_dependencies();
-				$this->webhook_loader->get_rest_controller_object();
+				$this->webhook_loader->init();
 			}
 
 		} );

@@ -5,7 +5,7 @@ use Wordlift\Term\Type_Service;
 
 /**
  * @since 3.31.7
- * @group no_vocabulary_terms
+ * @group no-vocabulary-terms
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 class No_Vocabulary_Terms_Save extends \Wordlift_Vocabulary_Terms_Unit_Test_Case {

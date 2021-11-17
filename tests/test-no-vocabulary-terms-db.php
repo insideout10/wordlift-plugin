@@ -9,7 +9,7 @@ use Wordlift\Relation\Types\Term_Relation;
 
 /**
  * @since 3.31.7
- * @group no_vocabulary_terms
+ * @group no-vocabulary-terms
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 class No_Vocbulary_Terms_Db_Test extends \Wordlift_Vocabulary_Terms_Unit_Test_Case {

@@ -10,7 +10,7 @@ use Wordlift\Vocabulary_Terms\Term_Metabox;
  * @see https://github.com/insideout10/wordlift-plugin/issues/1398
  *
  * @since 3.32.5
- * @group no_vocabulary_terms
+ * @group no-vocabulary-terms
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 class No_Vocbulary_Terms_Ui_Test extends \Wordlift_Vocabulary_Terms_Unit_Test_Case {

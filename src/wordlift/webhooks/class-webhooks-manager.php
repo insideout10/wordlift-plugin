@@ -1,16 +1,15 @@
 <?php
 /**
- * @since 3.31.0
- * @author
+ * @since 3.34.0
+ *
  * Class to call up webhooks and send them requested message
  */
 
-namespace Wordlift\Webhooks\Api;
+namespace Wordlift\Webhooks;
 
 use Wordlift\Dataset\Sync_Object_Adapter;
-use Wordlift\Webhooks\Webhooks_Loader;
 
-class Rest_Controller {
+class Webhooks_Manager {
 
 	/**
 	 * Registering the actions to call up sync_many or sync_delete methods
@@ -29,7 +28,7 @@ class Rest_Controller {
 
 	public function sync_many( $hashes ) {
 
-		$urls = (array)get_option( Webhooks_Loader::URLS_OPTION_NAME, '' );
+		$urls = explode( "\n", get_option( Webhooks_Loader::URLS_OPTION_NAME, '' ) );
 		if ( empty( $urls ) ) {
 			return;
 		}
@@ -45,12 +44,12 @@ class Rest_Controller {
 			foreach ( $filtered_hashes as $hash ) {
 				$jsonld       = $hash[2];
 				$filtered_url = apply_filters( 'wl_webhooks__sync_many__url', $url, $hash );
-				wp_remote_request( $filtered_url, array(
+				wp_remote_request( $filtered_url, apply_filters( 'wl_webhooks__sync_many__args', array(
 					'blocking' => false,
 					'method'   => 'PUT',
 					'headers'  => array( 'Content-Type' => 'application/json; ' . get_bloginfo( 'charset' ) ),
 					'body'     => $jsonld
-				) );
+				) ) );
 			}
 		}
 	}
@@ -65,7 +64,7 @@ class Rest_Controller {
 
 	public function sync_delete( $type, $object_id, $uri ) {
 
-		$urls = (array)get_option( Webhooks_Loader::URLS_OPTION_NAME, '' );
+		$urls = explode( "\n", get_option( Webhooks_Loader::URLS_OPTION_NAME, '' ) );
 		if ( empty( $urls ) ) {
 			return;
 		}
@@ -77,10 +76,10 @@ class Rest_Controller {
 		foreach ( $urls as $template_url ) {
 			$url          = add_query_arg( array( 'uri' => $uri ), $template_url );
 			$filtered_url = apply_filters( 'wl_webhooks__sync_delete__url', $url, $type, $object_id, $uri );
-			wp_remote_request( $filtered_url, array(
+			wp_remote_request( $filtered_url, apply_filters( 'wl_webhooks__sync_delete__args', array(
 				'blocking' => false,
 				'method'   => 'DELETE',
-			) );
+			) ) );
 		}
 
 	}
