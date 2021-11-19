@@ -1642,8 +1642,8 @@ class Wordlift {
 			 *Added for feature request 1496 (Webhooks)
 			 */
 			if ( apply_filters( 'wl_feature__enable__webhooks', false ) ) {
-				$this->webhook_loader = new Webhooks_Loader();
-				$this->webhook_loader->init();
+				$that->webhook_loader = new Webhooks_Loader();
+				$that->webhook_loader->init();
 			}
 
 		} );
