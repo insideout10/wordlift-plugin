@@ -62,5 +62,4 @@ class Entity_List_Utils {
 		return $active_entity_ids;
 	}
 
-
 }
