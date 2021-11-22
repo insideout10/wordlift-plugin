@@ -17,6 +17,8 @@ import { createReducer } from "@reduxjs/toolkit";
 import { entitySaga } from "./saga";
 import {reducer} from "./reducer"
 import EntityList from "./entity-list";
+import SearchEntity from "../../components/search-entity";
+import AutocompleteSelect from "../../../Edit/components/Autocomplete/AutocompleteSelect";
 
 /**
  * Internal dependencies.
@@ -49,6 +51,7 @@ window.addEventListener("load", () => {
       <Provider store={store}>
         <React.Fragment>
           <EntityList />
+          <SearchEntity />
         </React.Fragment>
       </Provider>,
       el

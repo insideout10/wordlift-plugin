@@ -3,12 +3,9 @@
 namespace Wordlift\Vocabulary\Hooks;
 
 use Wordlift\Scripts\Scripts_Helper;
-use Wordlift\Vocabulary\Analysis_Background_Service;
 use Wordlift\Vocabulary\Api\Api_Config;
-use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Data\Entity_List\Entity_List_Utils;
 use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
-use Wordlift\Vocabulary\Pages\Match_Terms;
 use Wordlift\Vocabulary\Terms_Compat;
 
 /**
@@ -69,6 +66,11 @@ class Term_Page_Hook {
 				<th>Match</th>
 				<td style='width: 100%;' id='wl_vocabulary_terms_widget'></td>
 			</tr>";
+
+		echo "<tr class=\"form-field\">
+		     <th></th>
+		     <td id='wl_vocabulary_terms_autocomplete_select'></td></tr>";
+
 	}
 
 }
