@@ -7,6 +7,8 @@
 import React from "react";
 import AutocompleteSelect from "../../../Edit/components/Autocomplete/AutocompleteSelect";
 
+const {__} = wp.i18n;
+
 
 class SearchEntity extends React.Component {
 
@@ -21,11 +23,12 @@ class SearchEntity extends React.Component {
     }
 
     render() {
-        return(
+        return (
             <React.Fragment>
                 <AutocompleteSelect
                     loadOptions={this.autoComplete}
-                />,
+                />
+                <p className="description">{__("Use the above field to search and match entities", "wordlift")}</p>
             </React.Fragment>
         )
     }

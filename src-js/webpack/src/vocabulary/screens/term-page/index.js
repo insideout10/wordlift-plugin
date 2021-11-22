@@ -17,8 +17,7 @@ import { createReducer } from "@reduxjs/toolkit";
 import { entitySaga } from "./saga";
 import {reducer} from "./reducer"
 import EntityList from "./entity-list";
-import SearchEntity from "../../components/search-entity";
-import AutocompleteSelect from "../../../Edit/components/Autocomplete/AutocompleteSelect";
+import SearchEntity from "./search-entity";
 
 /**
  * Internal dependencies.
