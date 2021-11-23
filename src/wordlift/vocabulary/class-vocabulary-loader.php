@@ -44,7 +44,7 @@ class Vocabulary_Loader {
 		$tag_rest_endpoint = new Tag_Rest_Endpoint( $term_data_factory );
 		$tag_rest_endpoint->register_routes();
 
-		new Search_Entity_Rest_Endpoint( $api_service );
+		new Search_Entity_Rest_Endpoint( $analysis_service );
 
 		$entity_rest_endpoint = new Entity_Rest_Endpoint();
 		$entity_rest_endpoint->register_routes();

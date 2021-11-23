@@ -28,8 +28,11 @@ export const reducer = createReducer(null, {
     "SET_ENTITY_INACTIVE" : (state, action) => {
         const {entityIndex} = action.payload
         setEntityStatus(state, entityIndex, false)
-    }
+    },
 
+    "ADD_ENTITY_FROM_SEARCH": (state, action) => {
+        state.entities = state.entities.concat(action.payload)
+    }
 
 
 })

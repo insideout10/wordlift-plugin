@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import AutocompleteSelect from "../../../Edit/components/Autocomplete/AutocompleteSelect";
+import {TermEntityAutocomplete} from "./term-entity-autocomplete";
 
 const {__} = wp.i18n;
 
@@ -14,8 +14,15 @@ class SearchEntity extends React.Component {
 
     constructor(props) {
         super(props);
+        this.props = props
         this.settings = window["_wlVocabularyTermPageSettings"];
         this.autoComplete = this.autoComplete.bind(this);
+        this.onStateChange = this.onStateChange.bind(this);
+    }
+
+    onStateChange(selectedEntities) {
+        this.props.addNewEntity(selectedEntities)
+        return []
     }
 
     autoComplete(query, callback) {
@@ -58,7 +65,7 @@ class SearchEntity extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <AutocompleteSelect
+                <TermEntityAutocomplete
                     loadOptions={this.autoComplete}
                     name="wl_metaboxes[entity_same_as][]"
                     placeholder=""
@@ -66,6 +73,7 @@ class SearchEntity extends React.Component {
                     searchPromptText={__("Type at least 3 characters to search...", "wordlift")}
                     loadingPlaceholder={__("Please wait while we look for entities...", "wordlift")}
                     noResultsText={__("No results found for your search.", "wordlift")}
+                    onStateChange={this.onStateChange}
                 />
                 <p className="description">{__("Use the above field to search and match entities", "wordlift")}</p>
             </React.Fragment>

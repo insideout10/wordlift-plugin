@@ -2,17 +2,17 @@
 
 namespace Wordlift\Vocabulary\Api;
 
-use Wordlift\Api\Api_Service;
+use Wordlift\Vocabulary\Analysis_Service;
 
 class Search_Entity_Rest_Endpoint {
 
 	/**
-	 * @var Api_Service
+	 * @var Analysis_Service
 	 */
-	private $api_service;
+	private $analysis_service;
 
 	public function __construct( $api_service ) {
-		$this->api_service = $api_service;
+		$this->analysis_service = $api_service;
 		add_action( 'rest_api_init', array( $this, 'register_route_callback' ) );
 	}
 
@@ -38,33 +38,11 @@ class Search_Entity_Rest_Endpoint {
 	}
 
 	public function get_entities_from_api( $request ) {
-		$data   = $request->get_params();
-		$search = $data['entity'];
+		$data     = $request->get_params();
+		$search   = $data['entity'];
+		$entities = $this->analysis_service->get_entities_by_search_query( (string) $search );
 
-		$response = $this->api_service->request(
-			'POST',
-			"/analysis/single",
-			array( 'Content-Type' => 'application/json' ),
-			wp_json_encode( array(
-				"content"         => $search,
-				"contentType"     => "text/plain",
-				"version"         => "1.0.0",
-				"contentLanguage" => "en",
-				"scope"           => "all",
-			) )
-		);
-
-		if ( ! $response->is_success() ) {
-			return false;
-		}
-
-		$response = json_decode( $response->get_body(), true );
-
-		if ( ! array_key_exists( 'entities', $response ) ) {
-			return false;
-		}
-
-		return $this->convert_to_autocomplete_ui_response( $response['entities'] );
+		return $this->convert_to_autocomplete_ui_response( $entities );
 	}
 
 	private function convert_to_autocomplete_ui_response( $entities ) {
@@ -76,7 +54,7 @@ class Search_Entity_Rest_Endpoint {
 			$label                   = $entity_data['label'];
 			$types                   = $entity_data['types'];
 			$autocomplete_entities[] = array(
-				"id"           => $entity_id,
+				"id"           => $entity_data["entityId"],
 				"labels"       => array( $label ),
 				"descriptions" => array( $entity_data['description'] ),
 				"types"        => $types,
@@ -88,7 +66,9 @@ class Search_Entity_Rest_Endpoint {
 				"mainType"     => $entity_data['mainType'],
 				"label"        => $label,
 				"displayTypes" => $types,
-				"value"        => $entity_id
+				"value"        => $entity_id,
+				"confidence"   => $entity_data["confidence"],
+				"meta"         => $entity_data["meta"]
 			);
 		}
 
