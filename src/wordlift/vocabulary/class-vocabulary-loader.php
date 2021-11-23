@@ -31,7 +31,7 @@ class Vocabulary_Loader {
 			apply_filters( 'wl_api_base_url', WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE ),
 			60,
 			User_Agent::get_user_agent(),
-			$configuration_service->get_key(),
+			$configuration_service->get_key()
 		);
 
 		$cache_service    = Cache_Service_Factory::get_cache_service();
@@ -44,7 +44,7 @@ class Vocabulary_Loader {
 		$tag_rest_endpoint = new Tag_Rest_Endpoint( $term_data_factory );
 		$tag_rest_endpoint->register_routes();
 
-		new Search_Entity_Rest_Endpoint( $analysis_service );
+		new Search_Entity_Rest_Endpoint( $analysis_service, $cache_service );
 
 		$entity_rest_endpoint = new Entity_Rest_Endpoint();
 		$entity_rest_endpoint->register_routes();

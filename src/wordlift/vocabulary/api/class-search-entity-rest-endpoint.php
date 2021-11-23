@@ -3,6 +3,7 @@
 namespace Wordlift\Vocabulary\Api;
 
 use Wordlift\Vocabulary\Analysis_Service;
+use Wordlift\Vocabulary\Cache\Cache;
 
 class Search_Entity_Rest_Endpoint {
 
@@ -11,8 +12,15 @@ class Search_Entity_Rest_Endpoint {
 	 */
 	private $analysis_service;
 
-	public function __construct( $api_service ) {
+
+	/**
+	 * @var Cache
+	 */
+	private $cache_service;
+
+	public function __construct( $api_service, $cache_service ) {
 		$this->analysis_service = $api_service;
+		$this->cache_service  = $cache_service;
 		add_action( 'rest_api_init', array( $this, 'register_route_callback' ) );
 	}
 
@@ -35,6 +43,40 @@ class Search_Entity_Rest_Endpoint {
 				}
 			)
 		);
+
+		register_rest_route(
+			Api_Config::REST_NAMESPACE,
+			'/add-entity',
+			array(
+				'methods'             => \WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'add_entity_to_matches' ),
+				'args'                => array(
+					'entity_data' => array(
+						'validate_callback' => function ( $param ) {
+							return is_array( $param );
+						}
+					),
+					'term_id'     => array(
+						'validate_callback' => function ( $param ) {
+							return is_numeric( $param );
+						}
+					)
+				),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				}
+			)
+		);
+	}
+
+	public function add_entity_to_matches( $request ) {
+		$data        = $request->get_params();
+		$entity_data = $data['entity_data'];
+		$term_id     = (int) $data['term_id'];
+		$existing_entities = $this->cache_service->get( $term_id );
+		$existing_entities[] = $entity_data;
+		$this->cache_service->put( $term_id, $existing_entities );
+		return $existing_entities;
 	}
 
 	public function get_entities_from_api( $request ) {

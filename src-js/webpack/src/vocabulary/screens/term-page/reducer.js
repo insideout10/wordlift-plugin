@@ -30,8 +30,11 @@ export const reducer = createReducer(null, {
         setEntityStatus(state, entityIndex, false)
     },
 
-    "ADD_ENTITY_FROM_SEARCH": (state, action) => {
-        state.entities = state.entities.concat(action.payload)
+    "ENTITY_ADDED_TO_CACHE": (state, action) => {
+        if ( ! state.entities ) {
+            state.entities = []
+        }
+        state.entities.push(action.payload)
     }
 
 
