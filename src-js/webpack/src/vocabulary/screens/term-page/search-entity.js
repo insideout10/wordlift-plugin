@@ -45,7 +45,7 @@ class SearchEntity extends React.Component {
                 })
             })
                 .then(response => response.json())
-                .then(json => callback(null, {options: json} ))
+                .then(json => callback(query, {options: json} ))
                 .catch( (error) => {
                     console.log(error);
                 })
