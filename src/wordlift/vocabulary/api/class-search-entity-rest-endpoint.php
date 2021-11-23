@@ -19,7 +19,7 @@ class Search_Entity_Rest_Endpoint {
 	public function register_route_callback() {
 		register_rest_route(
 			Api_Config::REST_NAMESPACE,
-			'/search-entity/(?P<entity>[a-zA-Z0-9_-]+)',
+			'/search-entity',
 			array(
 				'methods'             => \WP_REST_Server::CREATABLE,
 				'callback'            => array( $this, 'get_entities_from_api' ),

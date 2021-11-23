@@ -34,14 +34,14 @@ class SearchEntity extends React.Component {
         }
 
         autocompleteTimeout = setTimeout(() => {
-            fetch(restUrl + query, {
+            fetch(restUrl, {
                 method: "POST",
                 headers: {
                     "content-type": "application/json",
                     "X-WP-Nonce": nonce
                 },
                 body: JSON.stringify({
-                    query: query
+                    entity: query
                 })
             })
                 .then(response => response.json())
