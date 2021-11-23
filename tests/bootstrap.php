@@ -2,7 +2,7 @@
 /**
  * Fix error: The PHPUnit Polyfills library is a requirement for running the WP test suite.
  */
-require_once __DIR__ . "/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php";
+//require_once __DIR__ . "/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php";
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 if ( ! $_tests_dir ) {
