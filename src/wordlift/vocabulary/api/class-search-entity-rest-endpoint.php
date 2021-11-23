@@ -64,6 +64,34 @@ class Search_Entity_Rest_Endpoint {
 			return false;
 		}
 
-		return $response['entities'];
+		return $this->convert_to_autocomplete_ui_response( $response['entities'] );
+	}
+
+	private function convert_to_autocomplete_ui_response( $entities ) {
+
+		$autocomplete_entities = array();
+
+		foreach ( $entities as $entity_id => $entity_data ) {
+
+			$label                   = $entity_data['label'];
+			$types                   = $entity_data['types'];
+			$autocomplete_entities[] = array(
+				"id"           => $entity_id,
+				"labels"       => array( $label ),
+				"descriptions" => array( $entity_data['description'] ),
+				"types"        => $types,
+				"urls"         => array( $entity_id ),
+				"images"       => array(),
+				"sameAss"      => $entity_data['sameAs'],
+				"scope"        => "cloud",
+				"description"  => $entity_data['description'],
+				"mainType"     => $entity_data['mainType'],
+				"label"        => $label,
+				"displayTypes" => $types,
+				"value"        => $entity_id
+			);
+		}
+
+		return $autocomplete_entities;
 	}
 }
