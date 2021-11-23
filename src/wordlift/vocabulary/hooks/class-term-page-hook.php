@@ -32,7 +32,7 @@ class Term_Page_Hook {
 	public function connect_hook() {
 		$taxonomies = Terms_Compat::get_public_taxonomies();
 		foreach ( $taxonomies as $taxonomy ) {
-			add_action( "${taxonomy}_edit_form_fields", array( $this, 'load_scripts' ), PHP_INT_MAX );
+			add_action( "${taxonomy}_edit_form_fields", array( $this, 'load_scripts' ), 2, PHP_INT_MAX );
 		}
 	}
 
@@ -59,7 +59,9 @@ class Term_Page_Hook {
 
 		wp_localize_script( self::HANDLE, self::LOCALIZED_KEY, array(
 			'termData'  => $term_data_arr,
-			'apiConfig' => Api_Config::get_api_config()
+			'apiConfig' => Api_Config::get_api_config(),
+			'restUrl'   => get_rest_url( null, Api_Config::REST_NAMESPACE . '/search-entity/' ),
+			'nonce'     => wp_create_nonce( 'wp_rest' ),
 		) );
 
 		echo "<tr class=\"form-field\">

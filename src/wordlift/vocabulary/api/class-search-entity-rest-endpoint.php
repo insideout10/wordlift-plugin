@@ -38,15 +38,15 @@ class Search_Entity_Rest_Endpoint {
 	}
 
 	public function get_entities_from_api( $request ) {
-		$data               = $request->get_params();
-		$autocomplete_input = $data['entity'];
+		$data   = $request->get_params();
+		$search = $data['entity'];
 
 		$response = $this->api_service->request(
 			'POST',
 			"/analysis/single",
 			array( 'Content-Type' => 'application/json' ),
 			wp_json_encode( array(
-				"content"         => $autocomplete_input,
+				"content"         => $search,
 				"contentType"     => "text/plain",
 				"version"         => "1.0.0",
 				"contentLanguage" => "en",
@@ -64,6 +64,6 @@ class Search_Entity_Rest_Endpoint {
 			return false;
 		}
 
-		return $response;
+		return $response['entities'];
 	}
 }
