@@ -62,7 +62,7 @@ class SearchEntity extends React.Component {
                     loadOptions={this.autoComplete}
                     name="wl_metaboxes[entity_same_as][]"
                     placeholder=""
-                    filterOption={(option, filter) => true}
+                    filterOptions={(option, filter) => true}
                     searchPromptText={__("Type at least 3 characters to search...", "wordlift")}
                     loadingPlaceholder={__("Please wait while we look for entities...", "wordlift")}
                     noResultsText={__("No results found for your search.", "wordlift")}
