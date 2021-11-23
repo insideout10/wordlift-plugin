@@ -2,8 +2,10 @@
 
 namespace Wordlift\Vocabulary\Api;
 
+use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Vocabulary\Analysis_Service;
 use Wordlift\Vocabulary\Cache\Cache;
+use Wordlift\Vocabulary\Data\Entity_List\Entity_List_Factory;
 
 class Search_Entity_Rest_Endpoint {
 
@@ -20,7 +22,7 @@ class Search_Entity_Rest_Endpoint {
 
 	public function __construct( $api_service, $cache_service ) {
 		$this->analysis_service = $api_service;
-		$this->cache_service  = $cache_service;
+		$this->cache_service    = $cache_service;
 		add_action( 'rest_api_init', array( $this, 'register_route_callback' ) );
 	}
 
@@ -70,12 +72,18 @@ class Search_Entity_Rest_Endpoint {
 	}
 
 	public function add_entity_to_matches( $request ) {
-		$data        = $request->get_params();
-		$entity_data = $data['entity_data'];
-		$term_id     = (int) $data['term_id'];
-		$existing_entities = $this->cache_service->get( $term_id );
+		$data                = $request->get_params();
+		$entity_data         = $data['entity_data'];
+		$term_id             = (int) $data['term_id'];
+		$existing_entities   = $this->cache_service->get( $term_id );
 		$existing_entities[] = $entity_data;
 		$this->cache_service->put( $term_id, $existing_entities );
+
+		$entity = Entity_List_Factory::get_instance( $term_id );
+		$entity->save_jsonld_data( $entity_data );
+		update_term_meta( $term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, 1 );
+		Ttl_Cache::flush_all();
+
 		return $existing_entities;
 	}
 
