@@ -105,9 +105,10 @@ class Jsonld_Generator {
 		}
 
 		if ( $permalink ) {
-			$jsonld['url']              = $permalink;
 			$jsonld['mainEntityOfPage'] = $permalink;
 		}
+
+		$this->add_url( $jsonld, $term_id );
 
 		return apply_filters( 'wl_no_vocabulary_term_jsonld_array', array(
 			'jsonld'     => $jsonld,
@@ -117,6 +118,17 @@ class Jsonld_Generator {
 
 	}
 
+	private function add_url( &$jsonld, $term_id ) {
+		$urls = get_term_meta( $term_id, 'wl_schema_url' );
+		if ( empty( $urls ) ) {
+			return;
+		}
+
+		$permalink     = get_term_link( $term_id );
+		$jsonld['url'] = array_map( function ( $item ) use ( $permalink ) {
+			return str_replace( '<permalink>', $permalink, $item );
+		}, $urls );
+	}
 
 	private function relative_to_schema_context( $predicate ) {
 		return str_replace( 'http://schema.org/', '', $predicate );

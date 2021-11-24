@@ -49,7 +49,7 @@ class Webhooks_Manager {
 					'method'   => 'PUT',
 					'headers'  => array( 'content-type' => 'application/json; ' . get_bloginfo( 'charset' ) ),
 					'body'     => $jsonld
-				) ) );
+				), $hash ) );
 			}
 		}
 	}
