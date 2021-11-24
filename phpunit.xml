@@ -20,6 +20,7 @@
         </exclude>
     </groups>
     <php>
+        <ini name="display_errors" value="true"/>
         <const name="WP_DEBUG_LOG" value="true"/>
         <const name="WP_DEBUG_DISPLAY" value="false"/>
         <const name="WL_DEBUG" value="true"/>

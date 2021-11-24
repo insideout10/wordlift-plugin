@@ -28,10 +28,7 @@ require_once $_tests_dir . '/includes/functions.php';
 
 
 $wordpress_version = substr( getenv( 'WORDPRESS_VERSION' ), - 3 );
-echo  "Using wordpress version $wordpress_version";
 if ( version_compare( $wordpress_version, '5.2', '>=' ) ) {
-	echo "comparing $wordpress_version against 5.2 ";
-	echo "including polyfills";
 	require_once __DIR__ . "/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php";
 }
 
