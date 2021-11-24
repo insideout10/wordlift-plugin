@@ -26,6 +26,11 @@ echo( "Successfully connected.\n" );
 
 require_once $_tests_dir . '/includes/functions.php';
 
+$wordpress_version = getenv('WORDPRESS_VERSION' );
+if ( version_compare( $wordpress_version, '5.2', '>=') ) {
+	require_once __DIR__ . "/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php";
+}
+
 function _manually_load_plugin() {
 	require dirname( __FILE__ ) . '/../src/wordlift.php';
 
