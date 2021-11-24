@@ -15,6 +15,7 @@ class SearchEntity extends React.Component {
     constructor(props) {
         super(props);
         this.props = props
+        this.autocompleteTimeout = null;
         this.settings = window["_wlVocabularyTermPageSettings"];
         this.autoComplete = this.autoComplete.bind(this);
         this.onStateChange = this.onStateChange.bind(this);
@@ -28,7 +29,6 @@ class SearchEntity extends React.Component {
     autoComplete(query, callback) {
 
         const {restUrl, nonce} = this.settings;
-        let autocompleteTimeout = null;
 
         //minimum 3 characters.
         if (3 > query.length) {
@@ -36,11 +36,11 @@ class SearchEntity extends React.Component {
             return;
         }
 
-        if (autocompleteTimeout !== null) {
-            clearTimeout(autocompleteTimeout)
+        if (this.autocompleteTimeout !== null) {
+            clearTimeout(this.autocompleteTimeout)
         }
 
-        autocompleteTimeout = setTimeout(() => {
+        this.autocompleteTimeout = setTimeout(() => {
             fetch(restUrl, {
                 method: "POST",
                 headers: {
@@ -57,7 +57,7 @@ class SearchEntity extends React.Component {
                     console.log(error);
                 })
 
-        }, 1000);
+        }, 3000);
 
 
     }
