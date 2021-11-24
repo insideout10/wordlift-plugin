@@ -47,9 +47,9 @@ class Webhooks_Manager {
 				wp_remote_request( $filtered_url, apply_filters( 'wl_webhooks__sync_many__args', array(
 					'blocking' => false,
 					'method'   => 'PUT',
-					'headers'  => array( 'Content-Type' => 'application/json; ' . get_bloginfo( 'charset' ) ),
+					'headers'  => array( 'content-type' => 'application/json; ' . get_bloginfo( 'charset' ) ),
 					'body'     => $jsonld
-				) ) );
+				), $hash ) );
 			}
 		}
 	}
