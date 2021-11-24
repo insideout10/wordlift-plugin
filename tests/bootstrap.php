@@ -26,8 +26,8 @@ echo( "Successfully connected.\n" );
 
 require_once $_tests_dir . '/includes/functions.php';
 
-$wordpress_version = getenv('WORDPRESS_VERSION' );
-if ( version_compare( $wordpress_version, '5.2', '>=') ) {
+$wordpress_version = substr( getenv( 'WORDPRESS_VERSION' ), - 3 );
+if ( version_compare( $wordpress_version, '5.2', '>=' ) ) {
 	require_once __DIR__ . "/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php";
 }
 
