@@ -139,7 +139,7 @@ jobs:
       VIMEO_API_KEY: ${{  secrets.VIMEO_API_KEY }}
       WORDLIFT_KEY: ${{ secrets.WORDLIFT_KEY }}
       WL_DATASET_NG: ${{ matrix.dataset-ng }}
-      WORDPRESS_VERSION: ${{ matrix.image }}
+      WORDPRESS_VERSION: 5.3
 
     services:
       db:
