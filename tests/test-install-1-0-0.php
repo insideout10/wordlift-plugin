@@ -43,7 +43,7 @@ class Wordlift_Install_1_0_0_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_install() {
 
-		if ( empty( $this->configuration_service->get_key() ) ) {
+		if ( wl_is_empty( $this->configuration_service->get_key() ) ) {
 			$this->markTestSkipped( 'The env WORDLIFT_KEY must be set for this test to work.' );
 		}
 

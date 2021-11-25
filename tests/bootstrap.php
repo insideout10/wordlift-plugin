@@ -1,4 +1,17 @@
 <?php
+
+/**
+ * empty() needs to access the value by reference (in order to check whether that reference points to something that exists),
+ * and PHP before 5.5 didn't support references to temporary values returned from functions.
+ * @param $var
+ * @return bool
+ */
+function wl_is_empty( $var ) {
+	return empty($var);
+}
+
+register_shutdown_function('shutdown');
+
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 if ( ! $_tests_dir ) {
 	$_tests_dir = '/tmp/wordpress-tests-lib';
