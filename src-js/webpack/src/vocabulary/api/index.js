@@ -94,3 +94,24 @@ export function undoApiCall(termId, apiConfig) {
         .then(json => json);
 }
 
+
+export function addEntityToCache(termId, apiConfig, entityData) {
+    console.log("adding entity to cache")
+    console.log(entityData)
+    const {baseUrl, nonce} = apiConfig;
+
+    return fetch(baseUrl + "/add-entity", {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+            "X-WP-Nonce": nonce
+        },
+        body: JSON.stringify({
+            term_id: termId,
+            entity_data: entityData
+        })
+    })
+        .then(response => response.json())
+        .then(json => json);
+}
+

@@ -15,3 +15,7 @@ export const entityRejected = createAction("ENTITY_REJECTED");
 export const setEntityActive = createAction("SET_ENTITY_ACTIVE");
 
 export const setEntityInActive = createAction("SET_ENTITY_INACTIVE");
+
+export const addEntityFromSearch = createAction("ADD_ENTITY_FROM_SEARCH");
+
+export const entityAddedToCache = createAction("ENTITY_ADDED_TO_CACHE");

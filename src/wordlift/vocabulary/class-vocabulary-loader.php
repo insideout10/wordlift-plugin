@@ -7,6 +7,7 @@ use Wordlift\Api\User_Agent;
 use Wordlift\Vocabulary\Api\Background_Analysis_Endpoint;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Api\Reconcile_Progress_Endpoint;
+use Wordlift\Vocabulary\Api\Search_Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Api\Tag_Rest_Endpoint;
 use Wordlift\Vocabulary\Cache\Cache_Service_Factory;
 use Wordlift\Vocabulary\Dashboard\Term_Matches_Widget;
@@ -43,8 +44,12 @@ class Vocabulary_Loader {
 		$tag_rest_endpoint = new Tag_Rest_Endpoint( $term_data_factory );
 		$tag_rest_endpoint->register_routes();
 
+		new Search_Entity_Rest_Endpoint( $analysis_service, $cache_service );
+
 		$entity_rest_endpoint = new Entity_Rest_Endpoint();
 		$entity_rest_endpoint->register_routes();
+
+
 
 		$post_jsonld = new Post_Jsonld();
 		$post_jsonld->enhance_post_jsonld();

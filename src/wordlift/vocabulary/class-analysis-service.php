@@ -59,32 +59,13 @@ class Analysis_Service {
 		}
 
 		// send the request.
-		$response = $this->api_service->request(
-			'POST',
-			"/analysis/single",
-			array( 'Content-Type' => 'application/json' ),
-			wp_json_encode( array(
-				"content"         => $tag->name,
-				"contentType"     => "text/plain",
-				"version"         => "1.0.0",
-				"contentLanguage" => "en",
-				"scope"           => "all",
-			) )
-		);
+		$tag_name = $tag->name;
 
+		$entities = $this->get_entities_by_search_query( $tag_name );
 
-		if ( ! $response->is_success() ) {
+		if ( ! $entities ) {
 			return false;
 		}
-
-		$response = json_decode( $response->get_body(), true );
-
-		if ( ! array_key_exists( 'entities', $response ) ) {
-			return false;
-		}
-
-
-		$entities = $this->get_meta_for_entities( $response['entities'] );
 
 		$this->cache_service->put( $cache_key, $entities );
 
@@ -155,18 +136,54 @@ class Analysis_Service {
 		$filtered_entities = array();
 		foreach ( $entities as $entity ) {
 			$entity['meta'] = array();
-			$meta = $this->get_meta( $entity['entityId'] );
-			$meta = Default_Entity_List::compact_jsonld($meta);
+			$meta           = $this->get_meta( $entity['entityId'] );
+			$meta           = Default_Entity_List::compact_jsonld( $meta );
 			if ( $meta ) {
 				$entity['meta'] = $meta;
 			}
 			$filtered_entities[] = $entity;
 		}
-		$this->log->debug("Returning filtered entities as");
-		$this->log->debug(var_export($filtered_entities, true));
+		$this->log->debug( "Returning filtered entities as" );
+		$this->log->debug( var_export( $filtered_entities, true ) );
 
 		return $filtered_entities;
 
+	}
+
+	/**
+	 * @param $tag_name
+	 *
+	 * @return array
+	 */
+	public function get_entities_by_search_query( $tag_name ) {
+		$response = $this->api_service->request(
+			'POST',
+			"/analysis/single",
+			array( 'Content-Type' => 'application/json' ),
+			wp_json_encode( array(
+				"content"         => $tag_name,
+				"contentType"     => "text/plain",
+				"version"         => "1.0.0",
+				"contentLanguage" => "en",
+				"scope"           => "all",
+			) )
+		);
+
+
+		if ( ! $response->is_success() ) {
+			return false;
+		}
+
+		$response = json_decode( $response->get_body(), true );
+
+		if ( ! array_key_exists( 'entities', $response ) ) {
+			return false;
+		}
+
+
+		$entities = $this->get_meta_for_entities( $response['entities'] );
+
+		return $entities;
 	}
 
 
