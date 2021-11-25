@@ -1,0 +1,13 @@
+{
+    "name": "wordlift/tests",
+    "authors": [
+        {
+            "name": "support",
+            "email": "hello@wordlift.io"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "yoast/phpunit-polyfills": "*"
+    }
+}
