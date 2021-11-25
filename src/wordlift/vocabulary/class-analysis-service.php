@@ -114,6 +114,12 @@ class Analysis_Service {
 
 		$response = wp_remote_get( $meta_url );
 
+		if ( is_wp_error( $response )
+		     || ! isset( $response['response']['code'] )
+		     || 2 !== (int) $response['response']['code'] / 100 ) {
+			return false;
+		}
+
 		$this->log->debug( "Requesting entity data for url :" . $meta_url );
 		$this->log->debug( "Got entity meta data as : " );
 		$this->log->debug( var_export( $response, true ) );
@@ -139,9 +145,9 @@ class Analysis_Service {
 			$meta           = $this->get_meta( $entity['entityId'] );
 			$meta           = Default_Entity_List::compact_jsonld( $meta );
 			if ( $meta ) {
-				$entity['meta'] = $meta;
+				$entity['meta']      = $meta;
+				$filtered_entities[] = $entity;
 			}
-			$filtered_entities[] = $entity;
 		}
 		$this->log->debug( "Returning filtered entities as" );
 		$this->log->debug( var_export( $filtered_entities, true ) );
