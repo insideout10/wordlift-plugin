@@ -28,8 +28,14 @@ export const reducer = createReducer(null, {
     "SET_ENTITY_INACTIVE" : (state, action) => {
         const {entityIndex} = action.payload
         setEntityStatus(state, entityIndex, false)
-    }
+    },
 
+    "ENTITY_ADDED_TO_CACHE": (state, action) => {
+        if ( ! state.entities ) {
+            state.entities = []
+        }
+        state.entities.push(action.payload)
+    }
 
 
 })
