@@ -32,8 +32,7 @@ echo version_compare( $wordpress_version, '5.2', '>=' ) ? "Loading polyfill libr
 	: "Not loading polyfill library because wp < 5.2";
 
 if ( version_compare( $wordpress_version, '5.2', '>=' ) ) {
-	echo shell_exec("cd tests && composer install");
-	require_once __DIR__ . "/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php";
+	require_once __DIR__ . "/polyfill/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php";
 }
 
 function _manually_load_plugin() {
