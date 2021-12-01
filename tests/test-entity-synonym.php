@@ -65,6 +65,37 @@ class Entity_Synonym_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'test', $alt_labels[0] );
 	}
 
+
+	public function test_synonym_with_html_code_should_be_saved_in_entity_store_with_html_removed() {
+
+		$entity_store = \Wordlift\Entity\Entity_Store::get_instance();
+
+		$post_id    = $entity_store->create( array(
+			'labels'      => array( 'test1', '<a href="google.com">test2</a>' ),
+			'description' => 'test',
+			'same_as'     => array()
+		) );
+		$alt_labels = $this->entity_service->get_alternative_labels( $post_id );
+		$this->assertCount( 1, $alt_labels );
+		$this->assertEquals( 'test2', $alt_labels[0] );
+	}
+
+	public function test_synonym_with_html_code_should_be_updated_in_entity_store_with_html_removed() {
+
+		$entity_store = \Wordlift\Entity\Entity_Store::get_instance();
+
+		$post_id = $this->factory()->post->create( array( 'post_type' => 'entity', 'post_title' => 'test1' ) );
+
+		$entity_store->update( array(
+			'ID'      => $post_id,
+			'labels'  => array( 'test1', '<a href="google.com">test2</a>' ),
+			'same_as' => array()
+		) );
+		$alt_labels = $this->entity_service->get_alternative_labels( $post_id );
+		$this->assertCount( 1, $alt_labels );
+		$this->assertEquals( 'test2', $alt_labels[0] );
+	}
+
 	public function test_synonym_with_parenthisis_should_be_saved() {
 		$post_id = $this->factory()->post->create();
 

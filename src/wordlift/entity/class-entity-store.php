@@ -72,15 +72,15 @@ class Entity_Store {
 	/**
 	 * Create and persist an entity.
 	 *
-	 * @param array       $params {
+	 * @param array $params {
 	 *      The entity parameters.
 	 *
 	 * @type string|array $labels A label, or an array of labels. The first label is set as post title.
-	 * @type string       $description The entity description, stored in the post content.
+	 * @type string $description The entity description, stored in the post content.
 	 * @type string|array $same_as One or more entity URIs, stored in the sameAs post meta.
 	 * }
 	 *
-	 * @param string      $post_status The post status, by default `draft`.
+	 * @param string $post_status The post status, by default `draft`.
 	 *
 	 * @return int|\WP_Error
 	 * @throws \Exception
@@ -109,8 +109,8 @@ class Entity_Store {
 		if ( empty( $post_id ) || is_wp_error( $post_id ) ) {
 			throw new \Exception( "An error occurred while creating an entity." );
 		}
-
-		$this->merge_post_meta( $post_id, \Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY, $labels, get_the_title( $post_id ) );
+		// Save synonyms except title.
+		$this->entity_service->set_alternative_labels( $post_id, array_diff( $labels, array( $label ) ) );
 		$this->merge_post_meta( $post_id, \Wordlift_Schema_Service::FIELD_SAME_AS, (array) $args['same_as'], get_post_meta( $post_id, WL_ENTITY_URL_META_NAME ) );
 
 		return $post_id;
@@ -121,7 +121,7 @@ class Entity_Store {
 	 *
 	 * @param array $params {
 	 *
-	 * @type int    $ID The post ID.
+	 * @type int $ID The post ID.
 	 * @type string|array One or more labels to add to the synonyms.
 	 * @type string|array One or more URIs to add to the sameAs.
 	 * }
@@ -138,7 +138,8 @@ class Entity_Store {
 
 		$post_id = $args['ID'];
 
-		$this->merge_post_meta( $post_id, \Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY, (array) $args['labels'], get_the_title( $post_id ) );
+		// Save synonyms except title.
+		$this->entity_service->set_alternative_labels( $post_id, array_diff( (array) $args['labels'], array( get_the_title( $post_id ) ) ) );
 		$this->merge_post_meta( $post_id, \Wordlift_Schema_Service::FIELD_SAME_AS, (array) $args['same_as'], get_post_meta( $post_id, WL_ENTITY_URL_META_NAME ) );
 
 		return $post_id;
@@ -147,8 +148,8 @@ class Entity_Store {
 	/**
 	 * Merge the post meta.
 	 *
-	 * @param int          $post_id The post ID.
-	 * @param string       $meta_key The post meta key.
+	 * @param int $post_id The post ID.
+	 * @param string $meta_key The post meta key.
 	 * @param string|array $values One or more values to add.
 	 * @param string|array $exclusions An additional list of values to exclude.
 	 */
