@@ -172,6 +172,7 @@ $mysql->close();
 EOPHP
 fi
 wp --allow-root core install --url=https://qa-dev.wordlift.io/4.4/ --title="4.4" --admin_name=wordlift --admin_password=8xSnT65T4KM2jWgX --admin_email=you@example.com
+wp plugin install wp-recipe-maker
 #wp --allow-root config set WORDLIFT_API_URL https://api-dev.wordlift.io --path=/var/www/html/4.4/ --anchor='?php' --placement=after
 chown www-data:www-data -R /var/www/html/
 exec "$@"
