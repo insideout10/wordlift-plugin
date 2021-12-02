@@ -175,9 +175,5 @@ wp --allow-root core install --url=https://qa-dev.wordlift.io/4.4/ --title="4.4"
 #wp --allow-root config set WORDLIFT_API_URL https://api-dev.wordlift.io --path=/var/www/html/4.4/ --anchor='?php' --placement=after
 wp --allow-root plugin install wp-recipe-maker
 
-# see https://brandoncc.dev/blog/woocommerce-compatibility-table/, install woocommerce.
-wp --allow-root plugin install woocommerce --version=3.0.7
-
-
 chown www-data:www-data -R /var/www/html/
 exec "$@"
