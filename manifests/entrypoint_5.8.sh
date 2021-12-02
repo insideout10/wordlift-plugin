@@ -99,5 +99,8 @@ wp --allow-root core install --url=https://qa-dev.wordlift.io/5.8/ --title="5.8"
 #wp --allow-root config set WORDLIFT_API_URL https://api-dev.wordlift.io --path=/var/www/html/5.8/ --anchor='?php' --placement=after
 wp --allow-root config set WP_AUTO_UPDATE_CORE false --path=/var/www/html/5.8/ --anchor='?php' --raw --placement=after
 wp --allow-root plugin install wp-recipe-maker
+
+# see https://brandoncc.dev/blog/woocommerce-compatibility-table/, install woocommerce.
+wp --allow-root plugin install woocommerce --version=3.6.0
 chown www-data:www-data -R /var/www/html/
 exec "$@"
