@@ -142,9 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.33.6 (2021-11-25) =
-* Enhancement [#1496](https://github.com/insideout10/wordlift-plugin/issues/1496): You can now add Webhooks to send 3rd parties structured data updates.
+= 3.33.6 (2021-12-06) =
+* Enhancement [#1496](https://github.com/insideout10/wordlift-plugin/issues/1496): Add Webhooks support to send 3rd parties structured data updates.
 * Enhancement [#1506](https://github.com/insideout10/wordlift-plugin/issues/1506): Autocomplete feature for match terms.
+* Fix [#1493](https://github.com/insideout10/wordlift-plugin/issues/1493): Synonyms filter to strip html code from synonym.
 
 = 3.33.5 (2021-11-15) =
 * Fix [#1499](https://github.com/insideout10/wordlift-plugin/issues/1499): Fix shippingRate.name property on jsonld to use custom title set by user.
