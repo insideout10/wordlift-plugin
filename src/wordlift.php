@@ -54,6 +54,15 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+/**
+ * Filter to disable WLP on any request, defaults to true.
+ * @since 3.33.6
+ *
+ */
+if ( ! apply_filters( 'wl_is_enabled', true ) ) {
+	return;
+}
+
 require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 
 // Include WordLift constants.
