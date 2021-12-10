@@ -116,9 +116,10 @@ class Analysis_Background_Service {
 
 			$this->log->debug( "Received result " . var_export( $result ) . " for ${term_id}" );
 
+			// then set the analysis complete flag.
+			update_term_meta( $term_id, self::ANALYSIS_DONE_FLAG, 1 );
+
 			if ( $result !== false ) {
-				// then set the analysis complete flag.
-				update_term_meta( $term_id, self::ANALYSIS_DONE_FLAG, 1 );
 				if ( count( $result ) > 0 ) {
 					update_term_meta( $term_id, self::ENTITIES_PRESENT_FOR_TERM, 1 );
 				}
