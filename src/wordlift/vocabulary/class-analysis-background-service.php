@@ -59,7 +59,7 @@ class Analysis_Background_Service {
 			'fields'     => 'ids',
 			'hide_empty' => false,
 			'number'     => $this->get_batch_size(),
-			'offset'     => $state->index,
+//			'offset'     => $state->index,
 			'meta_query' => array(
 				array(
 					'key'     => self::ANALYSIS_DONE_FLAG,
