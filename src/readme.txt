@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.33.6 (2021-12-13) =
+* Fix [#1512](https://github.com/insideout10/wordlift-plugin/issues/1512): Fix match terms background process.
+* Enhancement [#1510](https://github.com/insideout10/wordlift-plugin/issues/1510): Add post_id attribute to navigator filter.
+
 = 3.33.6 (2021-12-06) =
 * Enhancement [#1496](https://github.com/insideout10/wordlift-plugin/issues/1496): Add Webhooks support to send 3rd parties structured data updates.
 * Enhancement [#1506](https://github.com/insideout10/wordlift-plugin/issues/1506): Autocomplete feature for match terms.
