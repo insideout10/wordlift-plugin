@@ -54,9 +54,10 @@ class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process
 			return false;
 		}
 
-		if ( $term_ids && is_array($term_ids) ) {
+		if ( $term_ids && is_array( $term_ids ) ) {
 			$this->log->debug( sprintf( "Synchronizing terms %s...", implode( ', ', $term_ids ) ) );
 		}
+
 		// Sync the item.
 		return $this->sync_items( $term_ids );
 	}
@@ -80,9 +81,10 @@ class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process
 			$this->push_to_queue( $next );
 			$this->save()->dispatch();
 
-			if ( $next && is_array($next) ) {
+			if ( $next && is_array( $next ) ) {
 				$this->log->debug( sprintf( 'Started with term IDs %s.', implode( ', ', $next ) ) );
 			}
+
 			return true;
 		}
 
@@ -167,14 +169,21 @@ class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process
 
 		$this->log->debug( "sync_items called with term ids : " . join( ",", $term_ids ) );
 
-		if (! $term_ids ) {
+		if ( ! $term_ids ) {
 			$this->cancel_process();
+
 			return false;
 		}
 
 		if ( ! is_array( $term_ids ) ) {
 			$this->log->error( '$term_ids must be an array, received: ' . var_export( $term_ids, true ) );
 
+			return false;
+		}
+
+		if ( empty( $term_ids ) ) {
+			$this->log->error( 'Match terms background process stopped due to no terms' );
+			$this->cancel_process();
 			return false;
 		}
 
