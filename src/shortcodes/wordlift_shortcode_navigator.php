@@ -198,7 +198,7 @@ function _wl_navigator_get_data() {
 		$results[ $result_index ]['entity'] = apply_filters( 'wl_navigator_data_entity', $result['entity'], intval( $result['entity']['id'] ), $navigator_id );
 	}
 
-	$results = apply_filters( 'wl_navigator_results', $results, $navigator_id );
+	$results = apply_filters( 'wl_navigator_results', $results, $navigator_id, $current_post_id );
 
 	return $results;
 }
