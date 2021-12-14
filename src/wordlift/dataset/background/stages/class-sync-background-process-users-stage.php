@@ -37,9 +37,13 @@ class Sync_Background_Process_Users_Stage {
 	function get_sync_object_adapters( $offset, $limit ) {
 
 		global $wpdb;
+		$post_types = get_post_types( array( 'public' => true ) );
+		$in_post_type = implode( "','", array_map( 'esc_sql', $post_types ) );
 		$sql = "
 			SELECT DISTINCT post_author
 			FROM $wpdb->posts
+			WHERE post_type IN ('$in_post_type')
+			AND post_status IN ( 'publish',  'future', 'draft', 'pending', 'private' )
 			LIMIT %d, %d
 			";
 

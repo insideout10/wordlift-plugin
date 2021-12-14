@@ -43,7 +43,21 @@ class Sync_Background_Process_Users_Stage_Test extends Wordlift_Unit_Test_Case {
 
 		$author_user = $this->factory->user->create();
 		$this->factory()->post->create( array( 'post_author' => $author_user ) );
+
+		// Duplicate user id shouldnt be returned.
 		$this->factory()->post->create( array( 'post_author' => $author_user ) );
+
+
+
+		// Invalid post type shouldnt be returned
+		$invalid_post_type_user = $this->factory->user->create();
+		$this->factory()->post->create( array( 'post_author' => $invalid_post_type_user, 'post_type' => 'invalid_post_type') );
+
+
+		// Invalid post status shouldnt be returned
+		$invalid_post_status_user = $this->factory->user->create();
+		$this->factory()->post->create( array( 'post_author' => $invalid_post_status_user, 'post_status' => 'invalid_post_status') );
+
 
 		// Create users without posts.
 		$this->create_users_without_posts();
