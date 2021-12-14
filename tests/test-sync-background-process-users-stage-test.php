@@ -47,17 +47,7 @@ class Sync_Background_Process_Users_Stage_Test extends Wordlift_Unit_Test_Case {
 		// Duplicate user id shouldnt be returned.
 		$this->factory()->post->create( array( 'post_author' => $author_user ) );
 
-
-
-		// Invalid post type shouldnt be returned
-		$invalid_post_type_user = $this->factory->user->create();
-		$this->factory()->post->create( array( 'post_author' => $invalid_post_type_user, 'post_type' => 'invalid_post_type') );
-
-
-		// Invalid post status shouldnt be returned
-		$invalid_post_status_user = $this->factory->user->create();
-		$this->factory()->post->create( array( 'post_author' => $invalid_post_status_user, 'post_status' => 'invalid_post_status') );
-
+		$this->create_invalid_post_type_and_status_users();
 
 		// Create users without posts.
 		$this->create_users_without_posts();
@@ -85,6 +75,7 @@ class Sync_Background_Process_Users_Stage_Test extends Wordlift_Unit_Test_Case {
 
 		$this->factory()->post->create( array( 'post_author' => $author_user ) );
 		$this->factory()->post->create( array( 'post_author' => $author_user ) );
+		$this->create_invalid_post_type_and_status_users();
 		$this->create_users_without_posts();
 
 		$this->assertEquals( 1, $this->sync_background_process_users_stage->count(), 'There should be 1 user .' );
@@ -109,6 +100,26 @@ class Sync_Background_Process_Users_Stage_Test extends Wordlift_Unit_Test_Case {
 		$this->factory->user->create();
 		$this->factory->user->create();
 		$this->factory->user->create();
+	}
+
+	/**
+	 * @return void
+	 */
+	protected function create_invalid_post_type_and_status_users() {
+// Invalid post type shouldnt be returned
+		$invalid_post_type_user = $this->factory->user->create();
+		$this->factory()->post->create( array(
+			'post_author' => $invalid_post_type_user,
+			'post_type'   => 'invalid_post_type'
+		) );
+
+
+		// Invalid post status shouldnt be returned
+		$invalid_post_status_user = $this->factory->user->create();
+		$this->factory()->post->create( array(
+			'post_author' => $invalid_post_status_user,
+			'post_status' => 'invalid_post_status'
+		) );
 	}
 
 }

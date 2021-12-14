@@ -24,10 +24,12 @@ class Sync_Background_Process_Users_Stage {
 	function count() {
 
 		global $wpdb;
-
+		$in_post_type = $this->get_post_types_string();
 		$sql = "
 			SELECT COUNT( DISTINCT post_author )
 			FROM $wpdb->posts
+			WHERE post_type IN ('$in_post_type')
+			AND post_status IN ( 'publish',  'future', 'draft', 'pending', 'private' )
 			";
 
 
@@ -37,8 +39,7 @@ class Sync_Background_Process_Users_Stage {
 	function get_sync_object_adapters( $offset, $limit ) {
 
 		global $wpdb;
-		$post_types = get_post_types( array( 'public' => true ) );
-		$in_post_type = implode( "','", array_map( 'esc_sql', $post_types ) );
+		$in_post_type = $this->get_post_types_string();
 		$sql = "
 			SELECT DISTINCT post_author
 			FROM $wpdb->posts
@@ -50,6 +51,16 @@ class Sync_Background_Process_Users_Stage {
 		$ids = $wpdb->get_col( $wpdb->prepare( $sql, $offset, $limit ) );
 
 		return $this->sync_object_adapter_factory->create_many( Object_Type_Enum::USER, $ids );
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function get_post_types_string() {
+		$post_types   = get_post_types( array( 'public' => true ) );
+		$in_post_type = implode( "','", array_map( 'esc_sql', $post_types ) );
+
+		return $in_post_type;
 	}
 
 }
