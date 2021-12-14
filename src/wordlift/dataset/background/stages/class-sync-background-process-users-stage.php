@@ -58,9 +58,8 @@ class Sync_Background_Process_Users_Stage {
 	 */
 	protected function get_post_types_string() {
 		$post_types   = get_post_types( array( 'public' => true ) );
-		$in_post_type = implode( "','", array_map( 'esc_sql', $post_types ) );
 
-		return $in_post_type;
+		return implode( "','", array_map( 'esc_sql', $post_types ) );
 	}
 
 }
