@@ -90,7 +90,7 @@ class Sync_Background_Process_Users_Stage_Test extends Wordlift_Unit_Test_Case {
 	 * @return void
 	 */
 	protected function create_users_without_posts() {
-// Create users who are not authors.
+		// Create users who are not authors.
 		$this->factory->user->create();
 		$this->factory->user->create();
 		$this->factory->user->create();
