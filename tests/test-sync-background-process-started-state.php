@@ -104,7 +104,7 @@ class Sync_Background_Process_Started_State_Test extends Wordlift_Unit_Test_Case
 
 	public function test_task_and_stop() {
 
-		$this->factory->user->create_many( 15 );
+		$this->create_users_with_post( 15 );
 
 		update_option( '_wl_sync_background_process_offset', 10 );
 		update_option( '_wl_sync_background_process_stage', 2 );
@@ -177,6 +177,13 @@ class Sync_Background_Process_Started_State_Test extends Wordlift_Unit_Test_Case
 
 		$this->sync_background_process_started_state->enter();
 
+	}
+
+	private function create_users_with_post( $number_of_users_to_be_created ) {
+		for ( $i = 0; $i < $number_of_users_to_be_created; $i++) {
+			$user_id = $this->factory()->user->create();
+			$this->factory()->post->create( array( 'post_author' => $user_id ) );
+		}
 	}
 
 }
