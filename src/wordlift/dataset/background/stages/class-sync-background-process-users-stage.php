@@ -25,9 +25,10 @@ class Sync_Background_Process_Users_Stage {
 
 		global $wpdb;
 		$sql = "
-			SELECT COUNT( 1 )
-			FROM $wpdb->users
+			SELECT COUNT( DISTINCT post_author )
+			FROM $wpdb->posts
 			";
+
 
 		return $wpdb->get_var( $sql );
 	}

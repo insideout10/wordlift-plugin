@@ -67,15 +67,18 @@ class Sync_Background_Process_Users_Stage_Test extends Wordlift_Unit_Test_Case {
 		global $wpdb;
 		$wpdb->query( "DELETE FROM $wpdb->users" );
 
-		$expected = array(
-			$this->factory->user->create(),
-			$this->factory->user->create(),
-			$this->factory->user->create(),
-			$this->factory->user->create(),
-			$this->factory->user->create(),
-		);
+		$author_user = $this->factory->user->create();
 
-		$this->assertEquals( 5, $this->sync_background_process_users_stage->count(), 'There must be 5 users.' );
+		$this->factory()->post->create( array( 'post_author' => $author_user ) );
+		$this->factory()->post->create( array( 'post_author' => $author_user ) );
+
+		// Create users who are not authors.
+		$this->factory->user->create();
+		$this->factory->user->create();
+		$this->factory->user->create();
+		$this->factory->user->create();
+
+		$this->assertEquals( 1, $this->sync_background_process_users_stage->count(), 'There must be 1 user .' );
 
 	}
 
