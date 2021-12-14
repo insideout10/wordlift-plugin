@@ -24,6 +24,7 @@ class Sync_Background_Process_Users_Stage {
 	function count() {
 
 		global $wpdb;
+
 		$sql = "
 			SELECT COUNT( DISTINCT post_author )
 			FROM $wpdb->posts
@@ -37,8 +38,8 @@ class Sync_Background_Process_Users_Stage {
 
 		global $wpdb;
 		$sql = "
-			SELECT ID
-			FROM $wpdb->users
+			SELECT DISTINCT post_author
+			FROM $wpdb->posts
 			LIMIT %d, %d
 			";
 

@@ -39,15 +39,17 @@ class Sync_Background_Process_Users_Stage_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_get_sync_object_adapters() {
 
-		global $wpdb;
-		$wpdb->query( "DELETE FROM $wpdb->users" );
+		$this->reset_db();
+
+		$author_user = $this->factory->user->create();
+		$this->factory()->post->create( array( 'post_author' => $author_user ) );
+		$this->factory()->post->create( array( 'post_author' => $author_user ) );
+
+		// Create users without posts.
+		$this->create_users_without_posts();
 
 		$expected = array(
-			$this->factory->user->create(),
-			$this->factory->user->create(),
-			$this->factory->user->create(),
-			$this->factory->user->create(),
-			$this->factory->user->create(),
+			$author_user,
 		);
 
 		$this->mock_sync_object_adapter_factory->expects( $this->once() )
@@ -63,23 +65,36 @@ class Sync_Background_Process_Users_Stage_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	public function test_count() {
-
-		global $wpdb;
-		$wpdb->query( "DELETE FROM $wpdb->users" );
+		$this->reset_db();
 
 		$author_user = $this->factory->user->create();
 
 		$this->factory()->post->create( array( 'post_author' => $author_user ) );
 		$this->factory()->post->create( array( 'post_author' => $author_user ) );
+		$this->create_users_without_posts();
 
-		// Create users who are not authors.
-		$this->factory->user->create();
-		$this->factory->user->create();
-		$this->factory->user->create();
-		$this->factory->user->create();
+		$this->assertEquals( 1, $this->sync_background_process_users_stage->count(), 'There should be 1 user .' );
 
-		$this->assertEquals( 1, $this->sync_background_process_users_stage->count(), 'There must be 1 user .' );
+	}
 
+
+	protected function reset_db() {
+		global $wpdb;
+		// Reset users.
+		$wpdb->query( "DELETE FROM $wpdb->users" );
+		// Reset posts.
+		$wpdb->query( "DELETE FROM $wpdb->posts" );
+	}
+
+	/**
+	 * @return void
+	 */
+	protected function create_users_without_posts() {
+// Create users who are not authors.
+		$this->factory->user->create();
+		$this->factory->user->create();
+		$this->factory->user->create();
+		$this->factory->user->create();
 	}
 
 }
