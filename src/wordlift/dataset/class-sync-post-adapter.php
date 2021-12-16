@@ -35,4 +35,21 @@ class Sync_Post_Adapter extends Abstract_Sync_Object_Adapter {
 		return $post_type_obj->public;
 	}
 
+	public function set_values( $id, $arr ) {
+		global $wpdb;
+
+		$field_names  = implode( ', ', array_map( 'esc_sql', keys( $arr ) ) );
+		$field_values = "'" . implode( "', '", array_map( 'esc_sql', array_values( $arr ) ) ) . "'";
+
+		$update_stmt = implode( ', ', array_map( function ( $key ) use ( $arr ) {
+			return "$key = '" . esc_sql( $arr[ $key ] ) . "'";
+		}, keys( $arr ) ) );
+
+		$wpdb->query( "
+			INSERT INTO {$wpdb->prefix}wl_posts( post_id, $field_names )
+			VALUES ( $field_values )
+			ON DUPLICATE KEY UPDATE $update_stmt;
+		" );
+	}
+
 }

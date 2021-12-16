@@ -21,4 +21,6 @@ interface Sync_Object_Adapter {
 
 	function is_public();
 
+	function set_values( $id, $arr );
+
 }
