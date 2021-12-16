@@ -54,7 +54,8 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 		add_action( 'trashed_post', array( $this, 'delete_post' ) );
 		// Save the post when its untrashed.
 		add_action( 'untrashed_post', array( $this, 'save_post' ) );
-
+		// Get sticky posts changes.
+		add_action( 'update_option_sticky_posts', array( $this, 'sticky_posts' ), 10, 3 );
 
 	}
 
@@ -66,6 +67,16 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 
 		$this->sync( $post_id );
 
+	}
+
+	public function sticky_posts( $old_value, $value, $option ) {
+		foreach ( $old_value as $post_id ) {
+			$this->sync( $post_id );
+		}
+
+		foreach ( $value as $post_id ) {
+			$this->sync( $post_id );
+		}
 	}
 
 	public function changed_post_meta( $meta_id, $post_id, $meta_key, $_meta_value ) {
