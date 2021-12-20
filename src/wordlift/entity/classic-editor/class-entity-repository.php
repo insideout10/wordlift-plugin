@@ -24,44 +24,24 @@ class Entity_Repository {
 
 		foreach ( $this->entities as $entity_uri => $entity ) {
 
-			// Only if the current entity is created from scratch let's avoid to
-			// create more than one entity with same label & entity type.
-			$entity_type = ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) ?
-				$entity['main_type'] : null;
-
-			// Look if current entity uri matches an internal existing entity, meaning:
-			// 1. when $entity_uri is an internal uri
-			// 2. when $entity_uri is an external uri used as sameAs of an internal entity
-			$ie = \Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
+			$classic_editor_entity = new Classic_Editor_Entity( $entity, $entity_uri );
 
 			// Dont save the entities which are not found, but also local.
-			if ( $ie === null && \Wordlift_Entity_Uri_Service::get_instance()->is_internal( $entity_uri ) ) {
+			if ( $classic_editor_entity->is_internal_entity() ) {
 				continue;
 			}
-
-			// Detect the uri depending if is an existing or a new entity
-			$uri = ( null === $ie ) ?
-				\Wordlift_Uri_Service::get_instance()->build_uri(
-					$entity['label'],
-					\Wordlift_Entity_Service::TYPE_NAME,
-					$entity_type
-				) : wl_get_entity_uri( $ie->ID );
 
 			// Local entities have a tmp uri with 'local-entity-' prefix
 			// These uris need to be rewritten here and replaced in the content
 			if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
 				// Override the entity obj
-				$entity['uri'] = $uri;
+				$entity['uri'] = $classic_editor_entity->build_entity_uri();
 			}
 
 			// Update entity data with related post
 			$entity['related_post_id'] = $this->post_id;
 
-			// Save the entity if is a new entity
-			if ( null === $ie ) {
-				wl_save_entity( $entity );
-			}
-
+			wl_save_entity( $entity );
 		}
 	}
 
