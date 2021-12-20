@@ -12,17 +12,32 @@ class Classic_Editor_Entity {
 	private $entity_uri;
 
 	private $entity;
+	/**
+	 * @var \Wordlift_Entity_Service
+	 */
+	private $entity_service;
+	/**
+	 * @var \Wordlift_Entity_Uri_Service
+	 */
+	private $entity_uri_service;
+	/**
+	 * @var \Wordlift_Uri_Service
+	 */
+	private $uri_service;
 
 	public function __construct( $entity, $entity_uri ) {
-		$this->entity     = $entity;
-		$this->entity_uri = $entity_uri;
+		$this->entity             = $entity;
+		$this->entity_uri         = $entity_uri;
+		$this->entity_service     = \Wordlift_Entity_Service::get_instance();
+		$this->entity_uri_service = \Wordlift_Entity_Uri_Service::get_instance();
+		$this->uri_service        = \Wordlift_Uri_Service::get_instance();
 	}
 
 	/**
 	 * @return bool
 	 */
 	public function is_internal_entity() {
-		$internal_entity = \Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $this->entity_uri );
+		$internal_entity = $this->entity_service->get_entity_post_by_uri( $this->entity_uri );
 
 		return $internal_entity === null && $this->entity_uri_in_current_dataset( $this->entity_uri );
 	}
@@ -34,7 +49,7 @@ class Classic_Editor_Entity {
 		$label           = $this->entity['label'];
 		$entity_type     = ( preg_match( '/^local-entity-.+/', $this->entity_uri ) > 0 ) ?
 			$this->entity['main_type'] : null;
-		$internal_entity = \Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $this->entity_uri );
+		$internal_entity = $this->entity_service->get_entity_post_by_uri( $this->entity_uri );
 
 		return ( null === $internal_entity ) ? $this->build_entity_url_if_entity_not_exists( $label, $entity_type )
 			: $this->get_entity_uri_for_existing_entity( $internal_entity );
@@ -48,7 +63,7 @@ class Classic_Editor_Entity {
 	 * @return string
 	 */
 	protected function build_entity_url_if_entity_not_exists( $label, $entity_type ) {
-		return \Wordlift_Uri_Service::get_instance()->build_uri(
+		return $this->uri_service->build_uri(
 			$label,
 			\Wordlift_Entity_Service::TYPE_NAME,
 			$entity_type
@@ -62,7 +77,7 @@ class Classic_Editor_Entity {
 	 * @return bool|true
 	 */
 	protected function entity_uri_in_current_dataset( $entity_uri ) {
-		return \Wordlift_Entity_Uri_Service::get_instance()->is_internal( $entity_uri );
+		return $this->entity_uri_service->is_internal( $entity_uri );
 	}
 
 	/**
