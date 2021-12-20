@@ -39,8 +39,8 @@ require_once $_tests_dir . '/includes/functions.php';
 
 $wordpress_version = substr( getenv( 'WORDPRESS_VERSION' ), - 3 );
 
-echo version_compare( $wordpress_version, '5.2', '>=' ) ? "Loading polyfill library since >= 5.2"
-	: "Not loading polyfill library because wp < 5.2";
+echo version_compare( $wordpress_version, '5.2', '>=' ) ? "Loading polyfill library since >= 5.2\n"
+	: "Not loading polyfill library because wp < 5.2\n";
 
 if ( version_compare( $wordpress_version, '5.2', '>=' ) ) {
 	require_once __DIR__ . "/polyfill/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php";
