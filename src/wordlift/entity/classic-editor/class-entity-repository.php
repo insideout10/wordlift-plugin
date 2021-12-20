@@ -4,7 +4,6 @@ namespace Wordlift\Entity\Classic_Editor;
 
 class Entity_Repository {
 
-	private $internal_entity_uris = array();
 
 	/**
 	 * @var array<array> List of entities posted from classic editor.
@@ -19,15 +18,6 @@ class Entity_Repository {
 		$this->entities = $entities;
 		$this->post_id  = $post_id;
 	}
-
-
-	/**
-	 * @return array
-	 */
-	public function get_internal_entity_uris() {
-		return $this->internal_entity_uris;
-	}
-
 
 
 	public function save_all() {
@@ -46,18 +36,16 @@ class Entity_Repository {
 
 			// Dont save the entities which are not found, but also local.
 			if ( $ie === null && \Wordlift_Entity_Uri_Service::get_instance()->is_internal( $entity_uri ) ) {
-				$this->internal_entity_uris[] = $entity_uri;
 				continue;
 			}
 
 			// Detect the uri depending if is an existing or a new entity
-			$uri                    = ( null === $ie ) ?
+			$uri = ( null === $ie ) ?
 				\Wordlift_Uri_Service::get_instance()->build_uri(
 					$entity['label'],
 					\Wordlift_Entity_Service::TYPE_NAME,
 					$entity_type
 				) : wl_get_entity_uri( $ie->ID );
-			$this->internal_entity_uris[] = $uri;
 
 			// Local entities have a tmp uri with 'local-entity-' prefix
 			// These uris need to be rewritten here and replaced in the content

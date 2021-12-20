@@ -8,7 +8,8 @@
  */
 
 use Wordlift\Entity\Classic_Editor\Entity_Repository;
-use Wordlift\Entity\Classic_Editor\Entity_Uri_Mapper;
+use Wordlift\Entity\Classic_Editor\Entity_Uri_Aggregator;
+use Wordlift\Entity\Classic_Editor\Internal_Entity_Uri_Aggregator;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Object_Relation_Factory;
 
@@ -131,9 +132,10 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		$entity_repository = new Entity_Repository( $entities_via_post, $post_id );
 		$entity_repository->save_all();
 
-		$internal_entity_uris = $entity_repository->get_internal_entity_uris();
+		$entity_uris_aggregator = new Internal_Entity_Uri_Aggregator( $entities_via_post );
+		$internal_entity_uris   = $entity_uris_aggregator->get_internal_entity_uris();
 
-		$entities_uri_mapper  = new Entity_Uri_Mapper( $entities_via_post );
+		$entities_uri_mapper  = new Entity_Uri_Aggregator( $entities_via_post );
 		$entities_uri_mapping = $entities_uri_mapper->get_map();
 	}
 
