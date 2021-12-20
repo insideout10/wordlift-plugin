@@ -7,6 +7,7 @@
  * @subpackage Wordlift/modules/linked_data
  */
 
+use Wordlift\Entity\Classic_Editor\Entity_Repository;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Object_Relation_Factory;
 
@@ -126,52 +127,11 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 		$entities_via_post = $_POST['wl_entities'];
 
-		foreach ( $entities_via_post as $entity_uri => $entity ) {
+		$entity_repository = new Entity_Repository( $entities_via_post, $post_id );
+		$entity_repository->save_all();
 
-			// Only if the current entity is created from scratch let's avoid to
-			// create more than one entity with same label & entity type.
-			$entity_type = ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) ?
-				$entity['main_type'] : null;
-
-			// Look if current entity uri matches an internal existing entity, meaning:
-			// 1. when $entity_uri is an internal uri
-			// 2. when $entity_uri is an external uri used as sameAs of an internal entity
-			$ie = $entity_service->get_entity_post_by_uri( $entity_uri );
-
-			// Dont save the entities which are not found, but also local.
-			if ( $ie === null && Wordlift_Entity_Uri_Service::get_instance()->is_internal( $entity_uri ) ) {
-				$internal_entity_uris[] = $entity_uri;
-				continue;
-			}
-
-			// Detect the uri depending if is an existing or a new entity
-			$uri                    = ( null === $ie ) ?
-				Wordlift_Uri_Service::get_instance()->build_uri(
-					$entity['label'],
-					Wordlift_Entity_Service::TYPE_NAME,
-					$entity_type
-				) : wl_get_entity_uri( $ie->ID );
-			$internal_entity_uris[] = $uri;
-			wl_write_log( "Map $entity_uri on $uri" );
-			$entities_uri_mapping[ $entity_uri ] = $uri;
-
-			// Local entities have a tmp uri with 'local-entity-' prefix
-			// These uris need to be rewritten here and replaced in the content
-			if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
-				// Override the entity obj
-				$entity['uri'] = $uri;
-			}
-
-			// Update entity data with related post
-			$entity['related_post_id'] = $post_id;
-
-			// Save the entity if is a new entity
-			if ( null === $ie ) {
-				wl_save_entity( $entity );
-			}
-
-		}
-
+		$internal_entity_uris = $entity_repository->get_internal_entity_uris();
+		$entities_uri_mapping = $entity_repository->get_entities_uri_mapping();
 	}
 
 	// Replace tmp uris in content post if needed

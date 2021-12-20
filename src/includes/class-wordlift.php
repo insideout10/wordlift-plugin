@@ -27,6 +27,7 @@ use Wordlift\Configuration\Config;
 use Wordlift\Duplicate_Markup_Remover\Faq_Duplicate_Markup_Remover;
 use Wordlift\Duplicate_Markup_Remover\How_To_Duplicate_Markup_Remover;
 use Wordlift\Duplicate_Markup_Remover\Videoobject_Duplicate_Remover;
+use Wordlift\Entity\Entity_Classic_Editor_Save;
 use Wordlift\Entity\Entity_Helper;
 use Wordlift\Entity\Entity_No_Index_Flag;
 use Wordlift\Entity\Entity_Rest_Service;
@@ -1688,6 +1689,9 @@ class Wordlift {
 		new Entity_Type_Setter();
 		$no_editor_analysis_loader = new \Wordlift\No_Editor_Analysis\Loader();
 		$no_editor_analysis_loader->init_feature();
+
+		$entity_classic_editor_save_handler = new Entity_Classic_Editor_Save();
+		$entity_classic_editor_save_handler->init();
 	}
 
 	/**
