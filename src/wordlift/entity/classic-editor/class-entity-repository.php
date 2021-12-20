@@ -6,7 +6,6 @@ class Entity_Repository {
 
 	private $internal_entity_uris = array();
 
-	private $entities_uri_mapping = array();
 	/**
 	 * @var array<array> List of entities posted from classic editor.
 	 */
@@ -29,12 +28,6 @@ class Entity_Repository {
 		return $this->internal_entity_uris;
 	}
 
-	/**
-	 * @return array
-	 */
-	public function get_entities_uri_mapping() {
-		return $this->entities_uri_mapping;
-	}
 
 
 	public function save_all() {
@@ -65,8 +58,6 @@ class Entity_Repository {
 					$entity_type
 				) : wl_get_entity_uri( $ie->ID );
 			$this->internal_entity_uris[] = $uri;
-			wl_write_log( "Map $entity_uri on $uri" );
-			$this->entities_uri_mapping[ $entity_uri ] = $uri;
 
 			// Local entities have a tmp uri with 'local-entity-' prefix
 			// These uris need to be rewritten here and replaced in the content
