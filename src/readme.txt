@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.33.8 (2021-12-21) =
+* Feature [#1519](https://github.com/insideout10/wordlift-plugin/issues/1519): Added filters `wl_jsonld_term_html_output` and `wl_jsonld_post_html_output` to filter jsonld html.
+
 = 3.33.7 (2021-12-13) =
 * Fix [#1512](https://github.com/insideout10/wordlift-plugin/issues/1512): Fix match terms background process.
 * Enhancement [#1510](https://github.com/insideout10/wordlift-plugin/issues/1510): Add post_id attribute to navigator filter.
