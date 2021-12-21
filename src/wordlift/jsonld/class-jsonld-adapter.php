@@ -54,8 +54,12 @@ class Jsonld_Adapter {
 		// Get the JSON-LD.
 		$jsonld = json_encode( $this->jsonld_service->get_jsonld( $is_homepage, $post_id, Jsonld_Context_Enum::PAGE ) );
 		// Finally print the JSON-LD out.
+		$jsonld_tag = <<<EOF
+        <script type="application/ld+json" id="wl-jsonld">$jsonld</script>
+EOF;
+		$jsonld_tag = apply_filters( 'wl_jsonld_post_tag', $jsonld_tag, $post_id )
 		?>
-        <script type="application/ld+json" id="wl-jsonld"><?php echo $jsonld; ?></script>
+		<?php echo $jsonld_tag; ?>
 		<?php
 
 	}
