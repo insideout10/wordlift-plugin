@@ -192,7 +192,7 @@
           title: "WordLift Widgets",
           image:
             tinymce.plugins.wl_shortcodes.pluginUrl +
-            "/../images/svg/wl-logo-icon.svg?ver=3.33.7"
+            "/../images/svg/wl-logo-icon.svg?ver=3.33.8"
           // If SplitButton, must define onclick to avoid error
           //onclick: function(){ /* OPEN YOURSELF ?? */  }
         });

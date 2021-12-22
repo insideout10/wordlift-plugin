@@ -142,8 +142,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= ?.??.? (????-??-??) =
+= 3.33.9 (????-??-??) =
 * Fix [#1515](https://github.com/insideout10/wordlift-plugin/issues/1515): Add support for sticky posts to WordPress ontology.
+
+= 3.33.8 (2021-12-21) =
+* Feature [#1519](https://github.com/insideout10/wordlift-plugin/issues/1519): Added filters `wl_jsonld_term_html_output` and `wl_jsonld_post_html_output` to filter jsonld html.
 
 = 3.33.7 (2021-12-13) =
 * Fix [#1512](https://github.com/insideout10/wordlift-plugin/issues/1512): Fix match terms background process.
