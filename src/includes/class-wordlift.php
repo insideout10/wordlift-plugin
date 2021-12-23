@@ -1646,6 +1646,12 @@ class Wordlift {
 				$that->webhook_loader->init();
 			}
 
+			if ( apply_filters( 'wl_feature__enable__entity-auto-publish', false ) ) {
+				$entity_auto_publish_loader = new \Wordlift\Entity_Auto_Publis\Loader();
+				$entity_auto_publish_loader->init_all_dependencies();
+
+			}
+
 		} );
 
 		/**
