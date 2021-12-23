@@ -35,12 +35,14 @@ function wl_transition_post_status( $new_status, $old_status, $post ) {
 		wl_core_delete_relation_instances( $post->ID );
 	}
 
-	// when a post is published, then all the referenced entities must be published.
-	if ( 'publish' !== $old_status && 'publish' === $new_status ) {
-		foreach ( wl_core_get_related_entity_ids( $post->ID ) as $entity_id ) {
-			wl_update_post_status( $entity_id, 'publish' );
-		}
-	}
+	/**
+	 * @since 3.33.9
+	 * Move entity auto publish behind feature flag.
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/1517
+	 */
+	 do_action( 'wl_classic_editor_after_entities_save', $post, $old_status, $new_status );
+
 }
 
 // hook save events.

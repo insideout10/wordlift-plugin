@@ -330,12 +330,14 @@ class Post_Adapter {
 			// created using rest endpoint on block editor, so that they get published
 			// when the post is published.
 			// Once the entity is published dont update the post status.
-			if ( $post->post_status !== 'publish' ) {
-				wp_update_post( array(
-					'ID'          => $post->ID,
-					'post_status' => $post_status
-				) );
-			}
+			/**
+			 * @since 3.33.9
+			 * Move entity auto publish behind feature flag.
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/1517
+			 */
+			 do_action( 'wl_block_editor_after_entities_save', $post->post_status, $post->ID );
+
 		}
 
 		return $post_id;
