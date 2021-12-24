@@ -26,7 +26,7 @@ class Loader extends Default_Loader {
 				}
 			}
 
-		});
+		}, 10, 3 );
 		// Update post status in block editor.
 		add_action( 'wl_block_editor_after_entities_save', function( $post_status, $post_id ) {
 			if ( $post_status !== 'publish' ) {
@@ -35,7 +35,7 @@ class Loader extends Default_Loader {
 					'post_status' => $post_status
 				) );
 			}
-		});
+		}, 10, 2 );
 	}
 
 	protected function get_feature_slug() {

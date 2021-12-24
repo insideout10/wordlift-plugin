@@ -1653,6 +1653,7 @@ class Wordlift {
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/1517
 			 */
 			 $entity_auto_publish_loader = new \Wordlift\Entity_Auto_Publish\Loader();
+			 $entity_auto_publish_loader->init_feature();
 
 		} );
 
