@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   db:
-    image: mysql:5.7
+    image: mysql:5.6
     volumes:
       - db-data-${WORDPRESS_VERSION:-5.5.0}:/var/lib/mysql
     environment:

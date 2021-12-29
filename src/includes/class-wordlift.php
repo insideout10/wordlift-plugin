@@ -743,7 +743,7 @@ class Wordlift {
 		$that = $this;
 		add_action( 'plugins_loaded', function () use ( $that ) {
 			$that->define_admin_hooks( $that );
-			$that->define_public_hooks();
+			$that->define_public_hooks( $that );
 		} );
 
 		// If we're in `WP_CLI` load the related files.
@@ -1597,7 +1597,7 @@ class Wordlift {
 			 * @since 3.31.5
 			 * Create configuration endpoint for webapp to configure.
 			 */
-			new Config( $this->admin_setup, $this->key_validation_service, $this->configuration_service );
+			new Config( $that->admin_setup, $that->key_validation_service, $that->configuration_service );
 			/**
 			 * @since 3.31.7
 			 * Remove duplicate videoobject.
@@ -1609,12 +1609,12 @@ class Wordlift {
 			 * @since 3.32.0
 			 * Create loader for vocabulary terms.
 			 */
-			$vocabulary_terms_loader = new Vocabulary_Terms_Loader( $this->entity_type_service, $property_getter );
+			$vocabulary_terms_loader = new Vocabulary_Terms_Loader( $that->entity_type_service, $property_getter );
 			$vocabulary_terms_loader->init_feature();
 
 			new Entity_Type_Change_Handler(
-				$this->entity_service,
-				$this->entity_type_service
+				$that->entity_service,
+				$that->entity_type_service
 			);
 
 		} );
@@ -1890,60 +1890,60 @@ class Wordlift {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_public_hooks() {
+	private function define_public_hooks( $that ) {
 
-		$plugin_public = new Wordlift_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Wordlift_Public( $that->get_plugin_name(), $that->get_version() );
 
 		// Register the entity post type.
-		$this->loader->add_action( 'init', $this->entity_post_type_service, 'register' );
+		$that->loader->add_action( 'init', $that->entity_post_type_service, 'register' );
 
 		// Bind the link generation and handling hooks to the entity link service.
-		$this->loader->add_filter( 'post_type_link', $this->entity_link_service, 'post_type_link', 10, 4 );
-		$this->loader->add_action( 'pre_get_posts', $this->entity_link_service, 'pre_get_posts', PHP_INT_MAX, 1 );
-		// $this->loader->add_filter( 'wp_unique_post_slug_is_bad_flat_slug', $this->entity_link_service, 'wp_unique_post_slug_is_bad_flat_slug', 10, 3 );
-		// $this->loader->add_filter( 'wp_unique_post_slug_is_bad_hierarchical_slug', $this->entity_link_service, 'wp_unique_post_slug_is_bad_hierarchical_slug', 10, 4 );
+		$that->loader->add_filter( 'post_type_link', $that->entity_link_service, 'post_type_link', 10, 4 );
+		$that->loader->add_action( 'pre_get_posts', $that->entity_link_service, 'pre_get_posts', PHP_INT_MAX, 1 );
+		// $that->loader->add_filter( 'wp_unique_post_slug_is_bad_flat_slug', $that->entity_link_service, 'wp_unique_post_slug_is_bad_flat_slug', 10, 3 );
+		// $that->loader->add_filter( 'wp_unique_post_slug_is_bad_hierarchical_slug', $that->entity_link_service, 'wp_unique_post_slug_is_bad_hierarchical_slug', 10, 4 );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $this->context_cards_service, 'enqueue_scripts' );
+		$that->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
+		$that->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		$that->loader->add_action( 'wp_enqueue_scripts', $that->context_cards_service, 'enqueue_scripts' );
 
 		// Registering Faq_Content_Filter service used for removing faq question and answer tags from the html.
-		$this->loader->add_filter( 'the_content', $this->faq_content_filter_service, 'remove_all_faq_question_and_answer_tags' );
+		$that->loader->add_filter( 'the_content', $that->faq_content_filter_service, 'remove_all_faq_question_and_answer_tags' );
 		// Hook the content filter service to add entity links.
 		if ( ! defined( 'WL_DISABLE_CONTENT_FILTER' ) || ! WL_DISABLE_CONTENT_FILTER ) {
-			$this->loader->add_filter( 'the_content', $this->content_filter_service, 'the_content' );
+			$that->loader->add_filter( 'the_content', $that->content_filter_service, 'the_content' );
 		}
 
 		// Hook the AJAX wl_timeline action to the Timeline service.
-		$this->loader->add_action( 'wp_ajax_nopriv_wl_timeline', $this->timeline_service, 'ajax_timeline' );
+		$that->loader->add_action( 'wp_ajax_nopriv_wl_timeline', $that->timeline_service, 'ajax_timeline' );
 
 		// Hook the ShareThis service.
-		$this->loader->add_filter( 'the_content', $this->sharethis_service, 'the_content', 99 );
-		$this->loader->add_filter( 'the_excerpt', $this->sharethis_service, 'the_excerpt', 99 );
+		$that->loader->add_filter( 'the_content', $that->sharethis_service, 'the_content', 99 );
+		$that->loader->add_filter( 'the_excerpt', $that->sharethis_service, 'the_excerpt', 99 );
 
 		// Hook the AJAX wl_jsonld action to the JSON-LD service.
-		$this->loader->add_action( 'wp_ajax_nopriv_wl_jsonld', $this->jsonld_service, 'get' );
+		$that->loader->add_action( 'wp_ajax_nopriv_wl_jsonld', $that->jsonld_service, 'get' );
 
 		// Hook the `pre_get_posts` action to the `Wordlift_Category_Taxonomy_Service`
 		// in order to tweak WP's `WP_Query` to include entities in queries related
 		// to categories.
-		$this->loader->add_action( 'pre_get_posts', $this->category_taxonomy_service, 'pre_get_posts', 10, 1 );
+		$that->loader->add_action( 'pre_get_posts', $that->category_taxonomy_service, 'pre_get_posts', 10, 1 );
 
 		/*
 		 * Hook the `pre_get_posts` action to the `Wordlift_Entity_Page_Service`
 		 * in order to tweak WP's `WP_Query` to show event related entities in reverse
 		 * order of start time.
 		 */
-		$this->loader->add_action( 'pre_get_posts', $this->entity_page_service, 'pre_get_posts', 10, 1 );
+		$that->loader->add_action( 'pre_get_posts', $that->entity_page_service, 'pre_get_posts', 10, 1 );
 
-		$this->loader->add_action( 'wl_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
+		$that->loader->add_action( 'wl_async_wl_run_sparql_query', $that->sparql_service, 'run_sparql_query', 10, 1 );
 
 		// This hook have to run before the rating service, as otherwise the post might not be a proper entity when rating is done.
-		$this->loader->add_action( 'save_post', $this->entity_type_adapter, 'save_post', 9, 3 );
+		$that->loader->add_action( 'save_post', $that->entity_type_adapter, 'save_post', 9, 3 );
 
 		// Analytics Script Frontend.
-		if ( apply_filters( 'wl_feature__enable__analytics', true ) && $this->configuration_service->is_analytics_enable() ) {
-			$this->loader->add_action( 'wp_enqueue_scripts', $this->analytics_connect, 'enqueue_scripts', 10 );
+		if ( apply_filters( 'wl_feature__enable__analytics', true ) && $that->configuration_service->is_analytics_enable() ) {
+			$that->loader->add_action( 'wp_enqueue_scripts', $that->analytics_connect, 'enqueue_scripts', 10 );
 		}
 
 	}

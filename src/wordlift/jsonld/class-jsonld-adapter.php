@@ -57,9 +57,9 @@ class Jsonld_Adapter {
 		$jsonld_post_html_output = <<<EOF
         <script type="application/ld+json" id="wl-jsonld">$jsonld</script>
 EOF;
-		$jsonld_post_html_output = apply_filters( 'wl_jsonld_post_html_output', $jsonld_post_html_output, $post_id )
+		$jsonld_post_html_output = apply_filters( 'wl_jsonld_post_html_output', $jsonld_post_html_output, $post_id );
 
-        echo $jsonld_post_html_output;
+		echo $jsonld_post_html_output;
 
 
 	}

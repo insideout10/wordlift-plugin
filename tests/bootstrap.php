@@ -1,5 +1,7 @@
 <?php
-
+ini_set('error_reporting', E_ALL); // or error_reporting(E_ALL);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
 /**
  * empty() needs to access the value by reference (in order to check whether that reference points to something that exists),
  * and PHP before 5.5 didn't support references to temporary values returned from functions.
