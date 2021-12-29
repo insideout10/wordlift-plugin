@@ -11,10 +11,6 @@ abstract class Abstract_Sync_Object_Adapter implements Sync_Object_Adapter {
 
 	private $type;
 
-	private $get_meta;
-
-	private $update_meta;
-
 	private static $meta_name = array(
 		Object_Type_Enum::POST => 'post',
 		Object_Type_Enum::TERM => 'term',
@@ -42,9 +38,6 @@ abstract class Abstract_Sync_Object_Adapter implements Sync_Object_Adapter {
 			throw new \Exception( 'Invalid $object.' );
 		}
 
-		$this->get_meta    = sprintf( 'get_%s_meta', self::$meta_name[ $this->type ] );
-		$this->update_meta = sprintf( 'update_%s_meta', self::$meta_name[ $this->type ] );
-
 	}
 
 	function get_type() {
@@ -53,17 +46,6 @@ abstract class Abstract_Sync_Object_Adapter implements Sync_Object_Adapter {
 
 	function get_object_id() {
 		return $this->object_id;
-	}
-
-	function get_meta( $meta_key, $single ) {
-
-		return call_user_func( $this->get_meta, $this->object_id, $meta_key, $single );
-	}
-
-	function update_meta( $meta_key, $meta_value ) {
-
-		call_user_func( $this->update_meta, $this->object_id, $meta_key, $meta_value );
-
 	}
 
 }

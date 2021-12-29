@@ -9,6 +9,8 @@
 
 namespace Wordlift\Mappings\Transforms;
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Mappings\Mappings_Transform_Function;
 
 /**
@@ -73,7 +75,8 @@ class Post_Id_To_Entity_Transform_Function implements Mappings_Transform_Functio
 			}
 
 			// Get the entity by URI.
-			$entity_url = get_post_meta( $target_post_id, 'entity_url', true );
+			$entity_url = Wordpress_Content_Service::get_instance()
+			                                       ->get_entity_id( Wordpress_Content_Id::create_post( $target_post_id ) );
 
 			// No entity URL.
 			if ( empty( $entity_url ) ) {

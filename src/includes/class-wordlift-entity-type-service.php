@@ -345,14 +345,7 @@ class Wordlift_Entity_Type_Service {
 		// If an URI hasn't been specified just check whether we have at least
 		// one entity type.
 		if ( null === $uri ) {
-
-			// Get the post terms for the specified post ID.
-			$terms = $this->get_post_terms( $post_id );
-
-			$this->log->debug( "Post $post_id has " . count( $terms ) . ' type(s).' );
-
-			// True if there's at least one term bound to the post.
-			return ( 0 < count( $terms ) );
+			return has_term('', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $post_id );
 		}
 
 		$has_entity_type = ( null !== $this->has_post_term_by_uri( $post_id, $uri ) );

@@ -9,6 +9,9 @@
  * @package Wordlift
  */
 
+use Wordlift\Content\Post_Content_Service\Wordpress_Term_Content_Service;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+
 /**
  * The {@link Wordlift_Uri_Service} class.
  *
@@ -87,28 +90,7 @@ class Wordlift_Uri_Service {
 	}
 
 	/**
-	 * Delete all generated URIs from the database.
-	 *
-	 * @since 3.6.0
-	 */
-	public function delete_all() {
-
-		$this->log->trace( 'Going to delete all the `entity_url` post metas...' );
-
-		// Delete URIs associated with posts/entities.
-		$this->wpdb->delete( $this->wpdb->postmeta, array( 'meta_key' => 'entity_url' ) );
-
-		$this->log->trace( 'Going to delete all the `_wl_uri` user metas...' );
-
-		// Delete URIs associated with authors.
-		$this->wpdb->delete( $this->wpdb->usermeta, array( 'meta_key' => '_wl_uri' ) );
-
-		$this->log->debug( '`entity_url` post metas and `_wl_uri` user metas deleted.' );
-
-	}
-
-	/**
-	 * Sanitizes an URI path by replacing the non allowed characters with an underscore.
+	 * Sanitizes an URI path by replacing the not allowed characters with an underscore.
 	 *
 	 * @param string $path The path to sanitize.
 	 * @param string $char The replacement character (by default an underscore).
@@ -169,17 +151,8 @@ class Wordlift_Uri_Service {
 
 		$this->log->trace( "Going to check if uri is used [ new_entity_uri :: $new_entity_uri ] [ increment_digit :: $increment_digit ]" );
 
-		global $wpdb;
-
-		// Check if the candidated uri already is used
-		$stmt = $wpdb->prepare(
-			"SELECT post_id FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %s LIMIT 1",
-			WL_ENTITY_URL_META_NAME,
-			$new_entity_uri
-		);
-
-		// Perform the query
-		$post_id = $wpdb->get_var( $stmt );
+		$content = Wordpress_Content_Service::get_instance()->get_by_entity_id( $new_entity_uri );
+		$post_id = $content && is_a( $content->get_bag(), '\WP_Post' ) ? $content->get_bag()->ID : null;
 
 		// If the post does not exist, then the new uri is returned
 		if ( ! is_numeric( $post_id ) ) {
@@ -202,9 +175,6 @@ class Wordlift_Uri_Service {
 		return $this->build_uri( $title, $post_type, $schema_type, ++ $increment_digit );
 	}
 
-
-
-
 	/**
 	 *
 	 * @param string $title A post title.
@@ -219,7 +189,7 @@ class Wordlift_Uri_Service {
 		// Get the entity slug suffix digit
 		$suffix_digit = $increment_digit + 1;
 
-		$entity_slug = urldecode(  $title  )
+		$entity_slug = urldecode( $title )
 		               . ( 0 === $increment_digit ? '' : '_' . $suffix_digit );
 
 		// Compose a candidate uri.
@@ -231,17 +201,8 @@ class Wordlift_Uri_Service {
 
 		$this->log->trace( "Going to check if uri is used [ new_entity_uri :: $new_entity_uri ] [ increment_digit :: $increment_digit ]" );
 
-		global $wpdb;
-
-		// Check if the candidated uri already is used
-		$stmt = $wpdb->prepare(
-			"SELECT term_id FROM $wpdb->termmeta WHERE meta_key = %s AND meta_value = %s LIMIT 1",
-			WL_ENTITY_URL_META_NAME,
-			$new_entity_uri
-		);
-
-		// Perform the query
-		$term_id = $wpdb->get_var( $stmt );
+		$content = Wordpress_Term_Content_Service::get_instance()->get_by_entity_id( $new_entity_uri );
+		$term_id = $content ? $content->get_bag()->term_id : null;
 
 		// If the post does not exist, then the new uri is returned
 		if ( ! is_numeric( $term_id ) ) {

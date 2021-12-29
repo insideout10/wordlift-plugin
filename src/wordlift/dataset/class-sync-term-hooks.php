@@ -2,6 +2,8 @@
 
 namespace Wordlift\Dataset;
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Term_Content_Service;
 use Wordlift\Object_Type_Enum;
 
 class Sync_Term_Hooks extends Abstract_Sync_Hooks {
@@ -96,12 +98,18 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 
 	/**
 	 * @param $term \WP_Term
+	 *
+	 * @throws \Exception
 	 */
 	public function delete_term( $term_id ) {
-		$args = array( $term_id, get_term_meta( $term_id, 'entity_url', true ) );
-		// We can't postpone the execution for a delete because we would miss the actual data.
+		$args = array(
+			$term_id,
+			Wordpress_Term_Content_Service
+				::get_instance()
+				->get_entity_id( Wordpress_Content_Id::create_term( $term_id ) )
+		);
+		// We can't postpone the execution for a `delete` because we would miss the actual data.
 		$this->do_delete( $args );
-		// $this->enqueue( array( 'do_delete', $args ) );
 	}
 
 	public function do_delete( $args ) {

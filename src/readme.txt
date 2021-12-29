@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.34.0 (????-??-??) =
+* Enhancement [#1496](https://github.com/insideout10/wordlift-plugin/issues/1496): You can now add Webhooks to send 3rd parties structured data updates.
+
 = 3.33.9 (????-??-??) =
 * Fix [#1515](https://github.com/insideout10/wordlift-plugin/issues/1515): Add support for sticky posts to WordPress ontology.
 

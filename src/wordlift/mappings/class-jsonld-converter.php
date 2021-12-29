@@ -229,6 +229,12 @@ class Jsonld_Converter {
 				// we can add the data at last level.
 				$current_property_pointer = &$current_property_pointer[ $key ];
 			}
+
+			// We overwrite the existing value if it's not an array.
+			if ( ! is_array( $current_property_pointer ) ) {
+				$current_property_pointer = array();
+			}
+
 			$current_property_pointer[ $end ] = $property_data;
 		}
 

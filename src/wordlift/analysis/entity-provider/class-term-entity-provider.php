@@ -10,40 +10,34 @@
 
 namespace Wordlift\Analysis\Entity_Provider;
 
+use Wordlift\Content\Wordpress\Wordpress_Term_Content_Service;
 use Wordlift\Term\Type_Service;
-use Wordlift\Term\Uri_Service;
 
 class Term_Entity_Provider extends Entity_Provider {
 
-	/**
-	 * @var Uri_Service
-	 */
-	private $term_uri_service;
 	/**
 	 * @var Type_Service
 	 */
 	private $term_type_service;
 
-
 	public function __construct() {
 		parent::__construct();
-		$this->term_uri_service  = Uri_Service::get_instance();
 		$this->term_type_service = Type_Service::get_instance();
 	}
 
 
 	public function get_entity( $uri ) {
 
-		$term_entity = $this->term_uri_service->get_term( $uri );
+		$content = Wordpress_Term_Content_Service::get_instance()->get_by_entity_id( $uri );
 
-
-		if ( ! $term_entity ) {
+		if ( ! isset( $content ) ) {
 			return false;
 		}
 
-		$term_id = $term_entity->term_id;
+		$term    = $content->get_bag();
+		$term_id = $term->term_id;
 
-		$schema  = $this->term_type_service->get_schema( $term_id );
+		$schema = $this->term_type_service->get_schema( $term_id );
 		// @todo: For now we dont support images
 //		$images = $this->post_image_storage->get( $term_entity->ID );
 		$same_as = get_term_meta( $term_id, 'entity_same_as' );
@@ -51,7 +45,7 @@ class Term_Entity_Provider extends Entity_Provider {
 
 		return (object) array(
 			'id'          => $uri,
-			'label'       => $term_entity->name,
+			'label'       => $term->name,
 			'description' => '',
 			'sameAs'      => $same_as,
 			'mainType'    => str_replace( 'wl-', '', $schema['css_class'] ),

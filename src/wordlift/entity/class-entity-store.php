@@ -16,6 +16,9 @@
 
 namespace Wordlift\Entity;
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+
 /**
  * Entity_Store class definition.
  *
@@ -109,9 +112,10 @@ class Entity_Store {
 		if ( empty( $post_id ) || is_wp_error( $post_id ) ) {
 			throw new \Exception( "An error occurred while creating an entity." );
 		}
-		// Save synonyms except title.
+
 		$this->entity_service->set_alternative_labels( $post_id, array_diff( $labels, array( $label ) ) );
-		$this->merge_post_meta( $post_id, \Wordlift_Schema_Service::FIELD_SAME_AS, (array) $args['same_as'], get_post_meta( $post_id, WL_ENTITY_URL_META_NAME ) );
+		$this->merge_post_meta( $post_id, \Wordlift_Schema_Service::FIELD_SAME_AS, (array) $args['same_as'],
+			(array) Wordpress_Content_Service::get_instance()->get_entity_id( Wordpress_Content_Id::create_post( $post_id ) ) );
 
 		return $post_id;
 	}
@@ -140,7 +144,9 @@ class Entity_Store {
 
 		// Save synonyms except title.
 		$this->entity_service->set_alternative_labels( $post_id, array_diff( (array) $args['labels'], array( get_the_title( $post_id ) ) ) );
-		$this->merge_post_meta( $post_id, \Wordlift_Schema_Service::FIELD_SAME_AS, (array) $args['same_as'], get_post_meta( $post_id, WL_ENTITY_URL_META_NAME ) );
+
+		$this->merge_post_meta( $post_id, \Wordlift_Schema_Service::FIELD_SAME_AS, (array) $args['same_as'],
+			(array) Wordpress_Content_Service::get_instance()->get_entity_id( Wordpress_Content_Id::create_post( $post_id ) ) );
 
 		return $post_id;
 	}

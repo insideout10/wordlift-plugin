@@ -8,16 +8,13 @@
 
 namespace Wordlift\Link;
 
+use Exception;
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Term_Content_Service;
 use Wordlift\Term\Synonyms_Service;
-use Wordlift\Term\Uri_Service;
 use Wordlift_Schema_Service;
 
 class Term_Link extends Default_Link {
-
-	/**
-	 * @var Uri_Service
-	 */
-	private $term_uri_service;
 
 	/**
 	 * @var Synonyms_Service
@@ -26,24 +23,29 @@ class Term_Link extends Default_Link {
 
 	public function __construct() {
 		parent::__construct();
-		$this->term_uri_service = Uri_Service::get_instance();
 		$this->synonyms_service = Synonyms_Service::get_instance();
 	}
 
+	/**
+	 * @throws Exception when the {@link Wordpress_Term_Content_Service} throws one, i.e. when passing a non term content id.
+	 */
 	public function get_same_as_uris( $id ) {
 		return array_merge(
-			(array) $this->term_uri_service->get_uri_by_term( $id ),
+			(array) Wordpress_Term_Content_Service::get_instance()
+			                                      ->get_entity_id( Wordpress_Content_Id::create_term( $id ) ),
 			get_term_meta( $id, Wordlift_Schema_Service::FIELD_SAME_AS )
 		);
 	}
 
 	public function get_id( $uri ) {
-		$term = $this->term_uri_service->get_term( $uri );
-		if ( ! $term ) {
+		$content = Wordpress_Term_Content_Service::get_instance()
+		                                         ->get_by_entity_id( $uri );
+
+		if ( ! isset( $content ) ) {
 			return false;
 		}
 
-		return $term->term_id;
+		return $content->get_bag()->term_id;
 	}
 
 	public function get_synonyms( $id ) {

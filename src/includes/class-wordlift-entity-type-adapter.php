@@ -98,7 +98,7 @@ class Wordlift_Entity_Type_Adapter {
 		}
 
 		// Bail out if the post already has an entity type.
-		if ( $this->entity_type_service->has_entity_type( $post_id ) ) {
+		if ( apply_filters( 'wl_entity_type_adapter__save_post__has_entity_type', $this->entity_type_service->has_entity_type( $post_id ) ) ) {
 			$this->log->debug( "Post $post_id has already an entity type." );
 
 			return;

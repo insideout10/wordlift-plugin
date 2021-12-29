@@ -7,6 +7,8 @@
 
 namespace Wordlift\Vocabulary_Terms\Jsonld;
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Term_Content_Service;
 use Wordlift\Jsonld\Term_Reference;
 
 class Post_Jsonld {
@@ -23,8 +25,8 @@ class Post_Jsonld {
 			return $data;
 		}
 
-		$references         = $data['references'];
-		$jsonld             = $data['jsonld'];
+		$references = $data['references'];
+		$jsonld     = $data['jsonld'];
 
 		$jsonld['mentions'] = $this->append_term_mentions( $jsonld, $term_references );
 
@@ -58,7 +60,9 @@ class Post_Jsonld {
 			/**
 			 * @var \WP_Term $term
 			 */
-			if ( wl_get_term_entity_uri( $term->term_id ) ) {
+			if ( Wordpress_Term_Content_Service::get_instance()
+			                                   ->get_entity_id( Wordpress_Content_Id::create_term( $term->term_id ) )
+			) {
 				return new Term_Reference( $term->term_id );
 			}
 
@@ -78,7 +82,8 @@ class Post_Jsonld {
 
 		$term_mentions = array_map( function ( $term_reference ) {
 			return array(
-				'@id' => wl_get_term_entity_uri( $term_reference->get_id() )
+				'@id' => Wordpress_Term_Content_Service::get_instance()
+				                                       ->get_entity_id( Wordpress_Content_Id::create_term( $term_reference->get_id() ) )
 			);
 		}, $term_references );
 

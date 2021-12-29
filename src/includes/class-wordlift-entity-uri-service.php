@@ -10,6 +10,10 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Content\Content_Service;
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+
 /**
  * Define the {@link Wordlift_Entity_Uri_Service} class.
  *
@@ -54,6 +58,13 @@ class Wordlift_Entity_Uri_Service {
 	protected $uri_to_post;
 
 	/**
+	 * A {@link Content_Service} used to query for {@link Content} given entity IDs.
+	 *
+	 * @var Content_Service $content_service
+	 */
+	private $content_service;
+
+	/**
 	 * Create a {@link Wordlift_Entity_Uri_Service} instance.
 	 *
 	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
@@ -61,17 +72,31 @@ class Wordlift_Entity_Uri_Service {
 	 * @since 3.16.3
 	 *
 	 */
-	public function __construct( $configuration_service ) {
+	public function __construct( $configuration_service, $content_service ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
 		$this->configuration_service = $configuration_service;
+		$this->content_service       = $content_service;
 
 		// Add a filter to the `rest_post_dispatch` filter to add the wl_entity_url meta as `wl:entity_url`.
 		add_filter( 'rest_post_dispatch', array( $this, 'rest_post_dispatch' ) );
+		add_filter( 'wl_content_service__post__not_found', array( $this, 'content_service__post__not_found' ), 10, 2 );
 
 		self::$instance = $this;
 
+	}
+
+	/**
+	 * Try to find a post when the content service doesn't find it.
+	 *
+	 * @param WP_Post|null $post
+	 * @param string $uri
+	 *
+	 * @return false|int
+	 */
+	public function content_service__post__not_found( $post, $uri ) {
+		return $this->get_post_id_from_url( $uri );
 	}
 
 	/**
@@ -112,7 +137,7 @@ class Wordlift_Entity_Uri_Service {
 			SELECT ID FROM $wpdb->posts p
 			INNER JOIN $wpdb->postmeta pm
 			 ON pm.post_id = p.ID
-			  AND pm.meta_key IN ( 'entity_url', 'entity_same_as' )
+			  AND pm.meta_key IN ( 'entity_same_as' )
 			  AND pm.meta_value IN ( '$in_entity_uris' )
 			WHERE p.post_type IN ( '$in_post_types' ) 
 			  AND p.post_status IN ( 'publish', 'draft', 'private', 'future' )
@@ -124,10 +149,14 @@ class Wordlift_Entity_Uri_Service {
 		// Populate the array. We reinitialize the array on purpose because
 		// we don't want these data to long live.
 		$this->uri_to_post = array_reduce( $posts, function ( $carry, $item ) {
-			$uris = array_merge(
-				get_post_meta( $item, WL_ENTITY_URL_META_NAME ),
-				get_post_meta( $item, Wordlift_Schema_Service::FIELD_SAME_AS )
-			);
+			$uris = get_post_meta( $item, Wordlift_Schema_Service::FIELD_SAME_AS );
+
+			$uri = Wordpress_Content_Service::get_instance()
+			                                     ->get_entity_id( Wordpress_Content_Id::create_post( $item ) );
+
+			if ( isset( $uri ) ) {
+				$uris[] = $uri;
+			}
 
 			return $carry
 			       // Get the URI related to the post and fill them with the item id.
@@ -165,66 +194,14 @@ class Wordlift_Entity_Uri_Service {
 
 		$this->log->trace( "Getting an entity post for URI $uri..." );
 
-		// Check if we've been provided with a value otherwise return null.
-		if ( empty( $uri ) ) {
+		$content = $this->content_service->get_by_entity_id_or_same_as( $uri );
+
+		// Return null if the content isn't found or isn't a post.
+		if ( ! isset( $content ) || ! is_a( $content->get_bag(), '\WP_Post' ) ) {
 			return null;
 		}
 
-		$this->log->debug( "Querying post for $uri..." );
-
-		$query_args = array(
-			// See https://github.com/insideout10/wordlift-plugin/issues/654.
-			'ignore_sticky_posts' => 1,
-			'posts_per_page'      => 1,
-			'post_status'         => 'any',
-			'post_type'           => Wordlift_Entity_Service::valid_entity_post_types(),
-			'meta_query'          => array(
-				array(
-					'key'     => WL_ENTITY_URL_META_NAME,
-					'value'   => $uri,
-					'compare' => '=',
-				),
-			),
-		);
-
-		// Only if the current uri is not an internal uri, entity search is
-		// performed also looking at sameAs values.
-		//
-		// This solve issues like https://github.com/insideout10/wordlift-plugin/issues/237
-		if ( ! $this->is_internal( $uri ) ) {
-
-			$query_args['meta_query']['relation'] = 'OR';
-			$query_args['meta_query'][]           = array(
-				'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
-				'value'   => $uri,
-				'compare' => '=',
-			);
-		}
-
-		$posts = get_posts( $query_args );
-
-		// Attempt to find post by URI (only for local entity URLs)
-		if ( empty( $posts ) ) {
-
-			$this->log->debug( "Finding post by $uri..." );
-			$postid = $this->get_post_id_from_url( $uri );
-			if ( $postid ) {
-				$this->log->trace( "Found post $postid by URL" );
-
-				return get_post( $postid );
-			}
-
-		}
-
-		// Return null if no post is found.
-		if ( empty( $posts ) ) {
-			$this->log->warn( "No post for URI $uri." );
-
-			return null;
-		}
-
-		// Return the found post.
-		return current( $posts );
+		return $content->get_bag();
 	}
 
 	/**

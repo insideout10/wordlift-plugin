@@ -25,4 +25,12 @@ class Sync_User_Adapter extends Abstract_Sync_Object_Adapter {
 		return true;
 	}
 
+	function set_values( $arr ) {
+		// @@todo
+	}
+
+	function get_value( $key ) {
+		// @@todo
+	}
+
 }

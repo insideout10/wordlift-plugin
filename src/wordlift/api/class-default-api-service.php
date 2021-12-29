@@ -77,7 +77,7 @@ class Default_Api_Service implements Api_Service {
 
 		// Set the time limit if lesser than our request timeout.
 		$max_execution_time = ini_get( 'max_execution_time' );
-		if ( $max_execution_time < $request_timeout ) {
+		if ( ! ( defined( 'WP_CLI' ) && WP_CLI ) && ( $max_execution_time < $request_timeout ) ) {
 			@set_time_limit( $request_timeout );
 		}
 

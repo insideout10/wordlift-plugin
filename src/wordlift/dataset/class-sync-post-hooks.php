@@ -2,6 +2,8 @@
 
 namespace Wordlift\Dataset;
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Object_Type_Enum;
 
 class Sync_Post_Hooks extends Abstract_Sync_Hooks {
@@ -56,6 +58,7 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 		add_action( 'untrashed_post', array( $this, 'save_post' ) );
 		// Get sticky posts changes.
 		add_action( 'update_option_sticky_posts', array( $this, 'sticky_posts' ), 10, 3 );
+
 
 	}
 
@@ -124,7 +127,8 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 
 	public function do_delete( $post_id ) {
 		try {
-			$this->sync_service->delete_one( Object_Type_Enum::POST, $post_id, get_post_meta( $post_id, 'entity_url', true ) );
+			$this->sync_service->delete_one( Object_Type_Enum::POST, $post_id,
+				Wordpress_Content_Service::get_instance()->get_entity_id( Wordpress_Content_Id::create_post( $post_id ) ) );
 		} catch ( \Exception $e ) {
 			$this->log->error( "An error occurred while trying to delete post $post_id: " . $e->getMessage(), $e );
 		}

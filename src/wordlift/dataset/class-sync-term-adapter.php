@@ -33,4 +33,13 @@ class Sync_Term_Adapter extends Abstract_Sync_Object_Adapter {
 		return get_taxonomy( $term->taxonomy )->public;
 	}
 
+	function set_values( $arr ) {
+		// @@todo
+	}
+
+	function get_value( $key ) {
+		// @@todo
+	}
+
+
 }

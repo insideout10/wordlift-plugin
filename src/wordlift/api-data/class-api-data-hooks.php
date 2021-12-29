@@ -24,6 +24,7 @@ class Api_Data_Hooks {
 		 * Hook for Post Save
 		 */
 		add_action( 'save_post', array( $this, 'post_save_request_delete_cache' ) );
+
 		/**
 		 * Check for Meta Key change on Post Save
 		 */
@@ -45,7 +46,7 @@ class Api_Data_Hooks {
 
 	public function init_purge_cache_requests() {
 		// Bail early.
-		if( empty( $this->cache_requests) ) {
+		if ( empty( $this->cache_requests ) ) {
 			return;
 		}
 
@@ -126,24 +127,14 @@ class Api_Data_Hooks {
 
 		$url  = $this->configuration_service->get_api_url() . 'data/' . $path;
 		$args = array(
-			'method' => 'DELETE'
+			'method'   => 'DELETE',
+			'blocking' => false,
+			'timeout'  => 0.01,
 		);
 
 		// Execute the request
-		$api_response = wp_remote_request( $url, $args );
-
-		// If an error occured, return false
-		if ( is_wp_error( $api_response ) || 200 !== (int) $api_response['response']['code'] ) {
-
-			$log->warn( var_export( $api_response, true ) );
-
-			return false;
-
-		}
-
-		$log->debug( "Request executed successfully" );
-
-		return true;
+		wp_remote_request( $url, $args );
 
 	}
+
 }

@@ -7,6 +7,9 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Assertions;
+use Wordlift\Content\Content_Service;
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Object_Type_Enum;
 
 /**
@@ -55,6 +58,11 @@ class Wordlift_Entity_Service {
 	private $entity_uri_service;
 
 	/**
+	 * @var Content_Service $content_service
+	 */
+	private $content_service;
+
+	/**
 	 * The entity post type name.
 	 *
 	 * @since 3.1.0
@@ -79,7 +87,6 @@ class Wordlift_Entity_Service {
                 <input name="wl_alternative_label[]" size="30" value="%s" id="wl-alternative-label" type="text">
                 <button class="button wl-delete-button">%s</button>
                 </div>';
-
 	/**
 	 * A singleton instance of the Entity service.
 	 *
@@ -99,13 +106,15 @@ class Wordlift_Entity_Service {
 	 * @since 3.2.0
 	 *
 	 */
-	public function __construct( $ui_service, $relation_service, $entity_uri_service ) {
+	public function __construct( $ui_service, $relation_service, $entity_uri_service, $content_service ) {
+		Assertions::is_a( $content_service, '\Wordlift\Content\Content_Service', '`content_service` must be of `\Wordlift\Content\Content_Service` type' );
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Entity_Service' );
 
 		$this->ui_service         = $ui_service;
 		$this->relation_service   = $relation_service;
 		$this->entity_uri_service = $entity_uri_service;
+		$this->content_service    = $content_service;
 
 		// Set the singleton instance.
 		self::$instance = $this;
@@ -133,6 +142,11 @@ class Wordlift_Entity_Service {
 	 *
 	 */
 	public function is_entity( $post_id ) {
+
+		// Improve performance by giving for granted that a product is an entity.
+		if ( 'product' === get_post_type( $post_id ) ) {
+			return true;
+		}
 
 		$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
@@ -411,69 +425,8 @@ class Wordlift_Entity_Service {
 
 	}
 
-	/**
-	 * Get the URI for the entity with the specified post id.
-	 *
-	 * @param int $post_id The entity post id.
-	 *
-	 * @return null|string The entity URI or NULL if not found or the dataset URI is not configured.
-	 * @since 3.6.0
-	 *
-	 */
-	private function get_uri_for_post( $post_id ) {
-
-		$log = Wordlift_Log_Service::get_logger( get_class() );
-
-		// If a null is given, nothing to do
-		if ( is_null( $post_id ) ) {
-			return null;
-		}
-
-		$dataset_uri = wl_configuration_get_redlink_dataset_uri();
-
-		if ( empty( $dataset_uri ) ) {
-			// Continue even if the dataset uri is not properly configured. It is handled in function wl_build_entity_uri()
-			$log->debug( 'Continuing, dataset uri not configured...' );
-		}
-
-		$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
-
-		/*
-		 * Consider the URI invalid if it doesn't start with the dataset URI.
-		 *
-		 * @see https://github.com/insideout10/wordlift-plugin/issues/996
-		 */
-		if ( empty( $dataset_uri ) || 0 !== strpos( $uri, $dataset_uri ) ) {
-			$uri = null;
-		}
-
-		// Set the URI if it isn't set yet.
-		$post_status = get_post_status( $post_id );
-		if ( empty( $uri ) && 'auto-draft' !== $post_status && 'inherit' !== $post_status ) {
-			$uri = wl_build_entity_uri( $post_id );
-			wl_set_entity_uri( $post_id, $uri );
-		}
-
-		return $uri;
-	}
-
 	public function get_uri( $object_id, $type = Object_Type_Enum::POST ) {
-
-		if ( Object_Type_Enum::POST === $type ) {
-			return $this->get_uri_for_post( $object_id );
-		}
-
-		if ( Object_Type_Enum::USER === $type ) {
-			$uri = Wordlift_User_Service::get_instance()->get_uri( $object_id );
-
-			return ( false === $uri ? null : $uri );
-		}
-
-		if ( Object_Type_Enum::TERM === $type ) {
-			return wl_get_term_entity_uri( $object_id );
-		}
-
-		return null;
+		return $this->content_service->get_entity_id( new Wordpress_Content_Id( $object_id, $type ) );
 	}
 
 	/**

@@ -7,6 +7,9 @@
 namespace Wordlift\Vocabulary_Terms\Hooks;
 
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Term_Content_Service;
+
 /**
  * This class assigns the entity_url meta to the term when it is
  * created or edited, we need to check if it already has entity_url before
@@ -27,13 +30,9 @@ class Term_Save {
 
 		// check if entity url already exists.
 
-		$entity_url = get_term_meta( $term_id, WL_ENTITY_URL_META_NAME, true);
+		Wordpress_Term_Content_Service::get_instance()
+		                              ->get_entity_id( Wordpress_Content_Id::create_term( $term_id ) );
 
-		if (  ! $entity_url ) {
-			// we need to build an entity uri for the term.
-			wl_set_term_entity_uri( $term_id, wl_build_term_uri( $term_id ) );
-		}
 	}
-
 
 }
