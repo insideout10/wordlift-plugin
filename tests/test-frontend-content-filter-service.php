@@ -76,7 +76,7 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 		$wordlift_test                = $this->get_wordlift_test();
 		$this->entity_service         = $wordlift_test->get_entity_service();
 		$this->entity_uri_service     = $wordlift_test->get_entity_uri_service();
-		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this, $this->configuration_service, $this->entity_uri_service );
+		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this, $this->entity_uri_service );
 
 	}
 
@@ -259,8 +259,8 @@ EOF;
 	 */
 	public function test_entity_default_no_link_entity_no_link() {
 
-		$this->configuration_service->set_link_by_default( false );
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		Wordlift_Configuration_Service::get_instance()->set_link_by_default( false );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Add a filter to set the permalink to a fixed value we can test.
 		add_filter( 'post_link', array( $this, 'post_link' ), 10, 3 );
@@ -284,10 +284,10 @@ EOF;
 	 */
 	public function test_entity_default_no_link_entity_not_specified() {
 
-		$this->configuration_service->set_link_by_default( false );
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		Wordlift_Configuration_Service::get_instance()->set_link_by_default( false );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
-		$this->assertFalse( $this->configuration_service->is_link_by_default() );
+		$this->assertFalse( Wordlift_Configuration_Service::get_instance()->is_link_by_default() );
 
 		// Add a filter to set the permalink to a fixed value we can test.
 		add_filter( 'post_link', array( $this, 'post_link' ), 10, 3 );
@@ -311,10 +311,10 @@ EOF;
 	public function test_entity_default_no_link_entity_link() {
 
 
-		$this->configuration_service->set_link_by_default( false );
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
+		Wordlift_Configuration_Service::get_instance()->set_link_by_default( false );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data' );
 
-		$entity_url  = $this->configuration_service->get_dataset_uri() . "/entity";
+		$entity_url  = Wordlift_Configuration_Service::get_instance()->get_dataset_uri() . "/entity";
 		$entity_id   = $this->create_entity_with_uri( $entity_url );
 		$entity_link = get_permalink( $entity_id );
 		$post_tile   = get_the_title( $entity_id );
@@ -340,8 +340,8 @@ EOF;
 	 */
 	public function test_entity_default_link_entity_link() {
 
-		$this->configuration_service->set_link_by_default( true );
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
+		Wordlift_Configuration_Service::get_instance()->set_link_by_default( true );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data' );
 
 		$this->setup_link_options( $entity_url, $entity_link, $entity_title, $entity_id );
 
@@ -365,8 +365,8 @@ EOF;
 	 */
 	public function test_entity_default_link_entity_not_specified() {
 
-		$this->configuration_service->set_link_by_default( true );
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
+		Wordlift_Configuration_Service::get_instance()->set_link_by_default( true );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data' );
 
 		$this->setup_link_options( $entity_url, $entity_link, $entity_title, $entity_id );
 		// Add a filter to set the permalink to a fixed value we can test.
@@ -392,8 +392,8 @@ EOF;
 	 */
 	public function test_entity_default_link_entity_no_link() {
 
-		$this->configuration_service->set_link_by_default( true );
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
+		Wordlift_Configuration_Service::get_instance()->set_link_by_default( true );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data' );
 
 		// Add a filter to set the permalink to a fixed value we can test.
 		add_filter( 'post_link', array( $this, 'post_link' ), 10, 3 );
@@ -449,7 +449,7 @@ EOF;
 	 * @param $entity_title
 	 */
 	private function setup_link_options( &$entity_url, &$entity_link, &$entity_title, &$entity_id ) {
-		$entity_url   = $this->configuration_service->get_dataset_uri() . "/entity";
+		$entity_url   = Wordlift_Configuration_Service::get_instance()->get_dataset_uri() . "/entity";
 		$entity_id    = $this->create_entity_with_uri( $entity_url );
 		$entity_link  = get_permalink( $entity_id );
 		$entity_title = get_the_title( $entity_id );

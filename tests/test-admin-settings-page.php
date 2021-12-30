@@ -91,7 +91,7 @@ class Wordlift_Admin_Settings_Page_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( Wordlift_Entity_Service::TYPE_NAME, $post->post_type );
 
 		// Check the schema.org type.
-		$type = $this->entity_type_service->get( $publisher_id );
+		$type = Wordlift_Entity_Type_Service::get_instance()->get( $publisher_id );
 		$this->assertEquals( 'http://schema.org/Person', $type['uri'] );
 
 		// Check that there's no thumbnail.
@@ -146,7 +146,7 @@ class Wordlift_Admin_Settings_Page_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( Wordlift_Entity_Service::TYPE_NAME, $post->post_type );
 
 		// Check that the schema.org type matches.
-		$type = $this->entity_type_service->get( $publisher_id );
+		$type = Wordlift_Entity_Type_Service::get_instance()->get( $publisher_id );
 		$this->assertEquals( 'http://schema.org/Organization', $type['uri'] );
 
 		// Check that the thumbnail id matches.

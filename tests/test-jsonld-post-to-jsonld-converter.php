@@ -80,12 +80,12 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		// Check that we have services' instances.
 		$this->assertNotNull( $this->post_to_jsonld_converter );
-		$this->assertNotNull( $this->configuration_service );
+		$this->assertNotNull( Wordlift_Configuration_Service::get_instance() );
 		$this->assertNotNull( $this->entity_service );
 		$this->assertNotNull( $this->user_service );
-		$this->assertNotNull( $this->entity_type_service );
+		$this->assertNotNull( Wordlift_Entity_Type_Service::get_instance() );
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data' );
 
 		// Create some more mock-up data.
 		$this->author     = $this->factory()->user->create_and_get();
@@ -100,7 +100,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_without_entities() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data' );
 
 		$post      = $this->factory()->post->create_and_get( array( 'post_author' => $this->author->ID ) );
 		$post_uri  = $this->entity_service->get_uri( $post->ID );
@@ -140,7 +140,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_page_without_entities() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$post      = $this->factory()->post->create_and_get( array(
 			'post_type'   => 'page',
@@ -186,19 +186,19 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$publisher = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_a_person_publisher',
 		) );
-		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $publisher->ID, 'http://schema.org/Person' );
 
-		$type = $this->entity_type_service->get( $publisher->ID );
+		$type = Wordlift_Entity_Type_Service::get_instance()->get( $publisher->ID );
 
 		$this->assertTrue( is_array( $type ) );
 		$this->assertTrue( 0 < sizeof( $type ) );
 
 		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
 
-		$this->configuration_service->set_publisher_id( $publisher->ID );
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher->ID );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
-		$this->assertEquals( $publisher->ID, $this->configuration_service->get_publisher_id() );
+		$this->assertEquals( $publisher->ID, Wordlift_Configuration_Service::get_instance()->get_publisher_id() );
 
 
 		$post      = $this->factory()->post->create_and_get( array(
@@ -251,11 +251,11 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$publisher = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_an_organization_publisher_without_logo',
 		) );
-		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Organization' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $publisher->ID, 'http://schema.org/Organization' );
 		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
 
-		$this->configuration_service->set_publisher_id( $publisher->ID );
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher->ID );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$post      = $this->factory()->post->create_and_get( array( 'post_author' => $this->author->ID ) );
 		$post_uri  = $this->entity_service->get_uri( $post->ID );
@@ -307,7 +307,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	private function make_dummy_attachment( $filename, $width, $height, $post_id ) {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Get the mock file.
 		$real_filename = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'image.png';
@@ -340,17 +340,17 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_an_organization_publisher_with_logo() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create a publisher.
 		$publisher = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_an_organization_publisher_with_logo',
 		) );
-		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Organization' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $publisher->ID, 'http://schema.org/Organization' );
 		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
 
 		// Set the publisher.
-		$this->configuration_service->set_publisher_id( $publisher->ID );
+		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher->ID );
 
 		// Set the logo for the publisher.
 		$attachment_id = $this->make_dummy_attachment( 'image.jpg', 200, 100, $publisher->ID );
@@ -414,7 +414,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_entities() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create a post.
 		$post      = $this->factory()->post->create_and_get( array( 'post_author' => $this->author->ID ) );
@@ -425,13 +425,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$entity_1 = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_entities 1',
 		) );
-		$this->entity_type_service->set( $entity_1->ID, 'http://schema.org/Organization' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_1->ID, 'http://schema.org/Organization' );
 		$entity_1_uri = $this->entity_service->get_uri( $entity_1->ID );
 
 		$entity_2 = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_entities 2',
 		) );
-		$this->entity_type_service->set( $entity_2->ID, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_2->ID, 'http://schema.org/Person' );
 		$entity_2_uri = $this->entity_service->get_uri( $entity_2->ID );
 
 		// Bind the entities to the post.
@@ -481,7 +481,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_one_mentions_and_one_about() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create a post.
 		$post      = $this->factory()->post->create_and_get( array(
@@ -495,14 +495,14 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$entity_1 = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_one_mentions_and_one_about 1',
 		) );
-		$this->entity_type_service->set( $entity_1->ID, 'http://schema.org/Organization' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_1->ID, 'http://schema.org/Organization' );
 		$entity_1_uri = $this->entity_service->get_uri( $entity_1->ID );
 
 		// The Post Title is contained in the first Post Title so that this is output as `about` in JSON-LD.
 		$entity_2 = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_one_mentions_and_one_about',
 		) );
-		$this->entity_type_service->set( $entity_2->ID, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_2->ID, 'http://schema.org/Person' );
 		$entity_2_uri = $this->entity_service->get_uri( $entity_2->ID );
 
 		// Bind the entities to the post.
@@ -553,7 +553,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_one_mentions_and_one_about_with_synonym() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create a post.
 		$post      = $this->factory()->post->create_and_get( array(
@@ -567,13 +567,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$entity_1 = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_one_mentions_and_one_about_with_synonym 2',
 		) );
-		$this->entity_type_service->set( $entity_1->ID, 'http://schema.org/Organization' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_1->ID, 'http://schema.org/Organization' );
 		$entity_1_uri = $this->entity_service->get_uri( $entity_1->ID );
 
 		$entity_2 = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_one_mentions_and_one_about_with_synonym 3',
 		) );
-		$this->entity_type_service->set( $entity_2->ID, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_2->ID, 'http://schema.org/Person' );
 		$entity_2_uri = $this->entity_service->get_uri( $entity_2->ID );
 		$this->entity_service->set_alternative_labels( $entity_2->ID, array( 'Lorem' ) );
 
@@ -625,7 +625,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_featured_image_and_entities() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create a post.
 		$post      = $this->factory()->post->create_and_get( array(
@@ -644,13 +644,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$entity_1 = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_featured_image_and_entities 2',
 		) );
-		$this->entity_type_service->set( $entity_1->ID, 'http://schema.org/Organization' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_1->ID, 'http://schema.org/Organization' );
 		$entity_1_uri = $this->entity_service->get_uri( $entity_1->ID );
 
 		$entity_2 = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_featured_image_and_entities 3',
 		) );
-		$this->entity_type_service->set( $entity_2->ID, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_2->ID, 'http://schema.org/Person' );
 		$entity_2_uri = $this->entity_service->get_uri( $entity_2->ID );
 
 		// Bind the entities to the post.
@@ -710,7 +710,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_attached_images_and_entities() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create a post.
 		$post      = $this->factory()->post->create_and_get( array(
@@ -733,13 +733,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$entity_1 = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_attached_images_and_entities 2',
 		) );
-		$this->entity_type_service->set( $entity_1->ID, 'http://schema.org/Organization' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_1->ID, 'http://schema.org/Organization' );
 		$entity_1_uri = $this->entity_service->get_uri( $entity_1->ID );
 
 		$entity_2 = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_attached_images_and_entities 3',
 		) );
-		$this->entity_type_service->set( $entity_2->ID, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_2->ID, 'http://schema.org/Person' );
 		$entity_2_uri = $this->entity_service->get_uri( $entity_2->ID );
 
 		// Bind the entities to the post.
@@ -798,7 +798,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_embedded_images_and_entities() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Attach an image attached to some other post.
 		$other_post      = $this->factory()->post->create_and_get( array(
@@ -826,13 +826,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$entity_1 = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_embedded_images_and_entities 2',
 		) );
-		$this->entity_type_service->set( $entity_1->ID, 'http://schema.org/Organization' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_1->ID, 'http://schema.org/Organization' );
 		$entity_1_uri = $this->entity_service->get_uri( $entity_1->ID );
 
 		$entity_2 = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_embedded_images_and_entities 3',
 		) );
-		$this->entity_type_service->set( $entity_2->ID, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_2->ID, 'http://schema.org/Person' );
 		$entity_2_uri = $this->entity_service->get_uri( $entity_2->ID );
 
 		// Bind the entities to the post.
@@ -903,7 +903,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_attached_gallery_images_and_entities() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// attache an image  attached to some other post
 		$other_post      = $this->factory()->post->create_and_get( array(
@@ -932,13 +932,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$entity_1 = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_attached_gallery_images_and_entities 2',
 		) );
-		$this->entity_type_service->set( $entity_1->ID, 'http://schema.org/Organization' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_1->ID, 'http://schema.org/Organization' );
 		$entity_1_uri = $this->entity_service->get_uri( $entity_1->ID );
 
 		$entity_2 = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_attached_gallery_images_and_entities 3',
 		) );
-		$this->entity_type_service->set( $entity_2->ID, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_2->ID, 'http://schema.org/Person' );
 		$entity_2_uri = $this->entity_service->get_uri( $entity_2->ID );
 
 		// Bind the entities to the post.
@@ -1006,7 +1006,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_gallery_images_and_entities() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// attache an image  attached to some other post
 		$other_post      = $this->factory()->post->create_and_get( array(
@@ -1039,13 +1039,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$entity_1 = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_gallery_images_and_entities 2',
 		) );
-		$this->entity_type_service->set( $entity_1->ID, 'http://schema.org/Organization' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_1->ID, 'http://schema.org/Organization' );
 		$entity_1_uri = $this->entity_service->get_uri( $entity_1->ID );
 
 		$entity_2 = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_gallery_images_and_entities 3',
 		) );
-		$this->entity_type_service->set( $entity_2->ID, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_2->ID, 'http://schema.org/Person' );
 		$entity_2_uri = $this->entity_service->get_uri( $entity_2->ID );
 
 		// Bind the entities to the post.
@@ -1114,7 +1114,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_a_user_without_a_representing_entity() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$author_id  = $this->factory()->user->create( array(
 			'display_name' => 'John Smith',
@@ -1143,7 +1143,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_a_user_with_a_representing_person_entity() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$author_id  = $this->factory()->user->create( array(
 			'display_name' => 'John Smith',
@@ -1156,7 +1156,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		) );
 		$entity_uri = $this->entity_service->get_uri( $entity_id );
 		$entity_url = get_permalink( $entity_id );
-		$this->entity_type_service->set( $entity_id, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_id, 'http://schema.org/Person' );
 
 		$this->assertGreaterThan( 0, $this->user_service->set_entity( $author_id, $entity_id ) );
 
@@ -1190,7 +1190,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_a_user_with_a_representing_organization_entity() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$author_id  = $this->factory()->user->create( array(
 			'display_name' => 'John Smith',
@@ -1203,7 +1203,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		) );
 		$entity_uri = $this->entity_service->get_uri( $entity_id );
 		$entity_url = get_permalink( $entity_id );
-		$this->entity_type_service->set( $entity_id, 'http://schema.org/Organization' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_id, 'http://schema.org/Organization' );
 
 		$this->assertGreaterThan( 0, $this->user_service->set_entity( $author_id, $entity_id ) );
 
@@ -1237,7 +1237,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_a_user_when_the_author_is_updated() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$author_id = $this->factory()->user->create(
 			array(
@@ -1262,7 +1262,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$author_uri   = $this->user_service->get_uri( $author_id );
 		$entity_uri   = $this->entity_service->get_uri( $entity_id );
 		$entity_uri_2 = $this->entity_service->get_uri( $entity_id_2 );
-		$this->entity_type_service->set( $entity_id, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_id, 'http://schema.org/Person' );
 
 		$this->assertGreaterThan( 0, $this->user_service->set_entity( $author_id, $entity_id ) );
 
@@ -1302,7 +1302,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_convert_post_not_found() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$called = 0;
 
@@ -1326,7 +1326,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_convert_post() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$called = 0;
 
@@ -1353,7 +1353,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_issue_858() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create a post.
 		$post_id = $this->factory()->post->create();
@@ -1362,22 +1362,22 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$event_post_id = $this->factory()->post->create( array(
 			'post_type' => 'entity',
 		) );
-		$this->entity_type_service->set( $event_post_id, 'http://schema.org/Event' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $event_post_id, 'http://schema.org/Event' );
 
 		// Check that the event type is set.
-		$this->assertTrue( $this->entity_type_service->has_entity_type( $event_post_id, 'http://schema.org/Event' ) );
+		$this->assertTrue( Wordlift_Entity_Type_Service::get_instance()->has_entity_type( $event_post_id, 'http://schema.org/Event' ) );
 
 		// Create a place to bind to the event.
 		$place_post_id = $this->factory()->post->create( array(
 			'post_type' => 'entity',
 		) );
-		$this->entity_type_service->set( $place_post_id, 'http://schema.org/Place' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $place_post_id, 'http://schema.org/Place' );
 
 		// Bind the place as location for the event.
 		add_post_meta( $event_post_id, Wordlift_Schema_Service::FIELD_LOCATION, $place_post_id );
 
 		// Check that the place type id set.
-		$this->assertTrue( $this->entity_type_service->has_entity_type( $place_post_id, 'http://schema.org/Place' ) );
+		$this->assertTrue( Wordlift_Entity_Type_Service::get_instance()->has_entity_type( $place_post_id, 'http://schema.org/Place' ) );
 
 		// Connect the event to the post and the place to the event.
 		wl_core_add_relation_instances( $post_id, 'when', array( $event_post_id ) );
@@ -1416,9 +1416,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_issue_888_entity_type_set_to_web_page() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
-		$term = $this->entity_type_service->get_term_by_uri( 'http://schema.org/WebPage' );
+		$term = Wordlift_Entity_Type_Service::get_instance()->get_term_by_uri( 'http://schema.org/WebPage' );
 
 		$this->assertTrue( is_a( $term, 'WP_Term' ), 'WebPage should be a WP_Term' );
 
@@ -1429,7 +1429,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 			'post_type' => 'a-cpt',
 		) );
 
-		$this->entity_type_service->set( $post_id, 'http://schema.org/WebPage' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $post_id, 'http://schema.org/WebPage' );
 
 		$terms = wp_get_post_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
@@ -1447,7 +1447,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_should_be_able_to_use_array_unique_on_references() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$post_reference = new Post_Reference( 1 );
 		$term_reference = new Term_Reference( 1 );
@@ -1469,7 +1469,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_when_the_article_is_linked_to_entity_should_not_have_duplicate_mentions() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$post = $this->factory()->post->create();
 
@@ -1496,7 +1496,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_when_the_linked_entity_has_no_labels_should_not_add_to_about() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$post = $this->factory()->post->create();
 
@@ -1528,7 +1528,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_when_the_linked_entity_title_matches_the_title_of_post_should_add_it_to_about() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$post   = $this->factory()->post->create( array( 'post_title' => 'Windows 7 ' ) );
 		$entity = $this->factory()->post->create( array( 'post_type' => 'entity', 'post_title' => 'Windows' ) );
@@ -1551,7 +1551,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_author_url_property_should_be_present_on_the_post_jsonld() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$user_id = wl_test_create_user();
 

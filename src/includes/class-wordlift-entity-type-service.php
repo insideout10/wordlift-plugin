@@ -38,29 +38,16 @@ class Wordlift_Entity_Type_Service {
 	private $log;
 
 	/**
-	 * The {@link Wordlift_Entity_Type_Service} singleton instance.
-	 *
-	 * @since  3.7.0
-	 * @access private
-	 * @var \Wordlift_Entity_Type_Service $instance The {@link Wordlift_Entity_Type_Service} singleton instance.
-	 */
-	private static $instance;
-
-	/**
 	 * Wordlift_Entity_Type_Service constructor.
-	 *
-	 * @param \Wordlift_Schema_Service $schema_service The {@link Wordlift_Schema_Service} instance.
 	 *
 	 * @since 3.7.0
 	 *
 	 */
-	public function __construct( $schema_service ) {
+	protected function __construct() {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Entity_Type_Service' );
 
-		$this->schema_service = $schema_service;
-
-		self::$instance = $this;
+		$this->schema_service = Wordlift_Schema_Service::get_instance();
 
 		$this->prepare_post_types();
 
@@ -83,12 +70,26 @@ class Wordlift_Entity_Type_Service {
 	}
 
 	/**
+	 * The {@link Wordlift_Entity_Type_Service} singleton instance.
+	 *
+	 * @since  3.7.0
+	 * @access private
+	 * @var \Wordlift_Entity_Type_Service $instance The {@link Wordlift_Entity_Type_Service} singleton instance.
+	 */
+	private static $instance = null;
+
+
+	/**
 	 * Get the {@link Wordlift_Entity_Type_Service} singleton instance.
 	 *
 	 * @return \Wordlift_Entity_Type_Service The {@link Wordlift_Entity_Type_Service} singleton instance.
 	 * @since 3.7.0
 	 */
 	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
 
 		return self::$instance;
 	}

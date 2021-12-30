@@ -81,8 +81,8 @@ class Wordlift_Jsonld_Endpoint_Test extends Wordlift_Unit_Test_Case {
 //			'post_title' => $name,
 //			'post_type'  => 'entity',
 //		) );
-//		$this->entity_type_service->set( $local_business_id, 'http://schema.org/LocalBusiness' );
-//		$local_business_type = $this->entity_type_service->get( $local_business_id );
+//		Wordlift_Entity_Type_Service::get_instance()->set( $local_business_id, 'http://schema.org/LocalBusiness' );
+//		$local_business_type = Wordlift_Entity_Type_Service::get_instance()->get( $local_business_id );
 //		$this->assertEquals( 'http://schema.org/LocalBusiness', $local_business_type['uri'] );
 //
 //		$local_business_uri = $this->entity_service->get_uri( $local_business_id );
@@ -120,9 +120,9 @@ class Wordlift_Jsonld_Endpoint_Test extends Wordlift_Unit_Test_Case {
 //		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY, $country );
 //
 //		$person_id = $this->factory()->post->create( array( 'post_type' => 'entity', ) );
-//		$this->entity_type_service->set( $person_id, 'http://schema.org/Person' );
+//		Wordlift_Entity_Type_Service::get_instance()->set( $person_id, 'http://schema.org/Person' );
 //
-//		$person_type = $this->entity_type_service->get( $person_id );
+//		$person_type = Wordlift_Entity_Type_Service::get_instance()->get( $person_id );
 //		$this->assertEquals( 'http://schema.org/Person', $person_type['uri'] );
 //
 //		$person_uri = $this->entity_service->get_uri( $person_id );
@@ -245,9 +245,9 @@ class Wordlift_Jsonld_Endpoint_Test extends Wordlift_Unit_Test_Case {
 //
 //		// Set publisher.
 //		$publisher = $this->entity_factory->create_and_get();
-//		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Person' );
+//		Wordlift_Entity_Type_Service::get_instance()->set( $publisher->ID, 'http://schema.org/Person' );
 //		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
-//		$this->configuration_service->set_publisher_id( $publisher->ID );
+//		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher->ID );
 //
 //		// Create homepage
 //		$homepage_id = $this->factory->post->create( array(
@@ -336,9 +336,9 @@ class Wordlift_Jsonld_Endpoint_Test extends Wordlift_Unit_Test_Case {
 //
 //		// Set publisher.
 //		$publisher = $this->entity_factory->create_and_get();
-//		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Organization' );
+//		Wordlift_Entity_Type_Service::get_instance()->set( $publisher->ID, 'http://schema.org/Organization' );
 //		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
-//		$this->configuration_service->set_publisher_id( $publisher->ID );
+//		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher->ID );
 //
 //		// Set our page as homepage & update the site description
 //		update_option( 'show_on_front', 'page' );
@@ -413,9 +413,9 @@ class Wordlift_Jsonld_Endpoint_Test extends Wordlift_Unit_Test_Case {
 //
 //		// Set publisher.
 //		$publisher = $this->entity_factory->create_and_get();
-//		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Organization' );
+//		Wordlift_Entity_Type_Service::get_instance()->set( $publisher->ID, 'http://schema.org/Organization' );
 //		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
-//		$this->configuration_service->set_publisher_id( $publisher->ID );
+//		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher->ID );
 //
 //		// Get site info
 //		$headline    = get_bloginfo( 'name' );
@@ -487,9 +487,9 @@ class Wordlift_Jsonld_Endpoint_Test extends Wordlift_Unit_Test_Case {
 //
 //		// Set publisher.
 //		$publisher = $this->entity_factory->create_and_get();
-//		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Person' );
+//		Wordlift_Entity_Type_Service::get_instance()->set( $publisher->ID, 'http://schema.org/Person' );
 //		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
-//		$this->configuration_service->set_publisher_id( $publisher->ID );
+//		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher->ID );
 //
 //		// Set our page as homepage & update the site description
 //		update_option( 'show_on_front', 'page' );
@@ -644,7 +644,7 @@ class Wordlift_Jsonld_Endpoint_Test extends Wordlift_Unit_Test_Case {
 //		$recipe_post_id = $this->entity_factory->create( array(
 //			'post_status' => 'publish',
 //		) );
-//		$this->entity_type_service->set( $recipe_post_id, 'http://schema.org/Recipe' );
+//		Wordlift_Entity_Type_Service::get_instance()->set( $recipe_post_id, 'http://schema.org/Recipe' );
 //
 //		wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $recipe_post_id );
 //

@@ -61,7 +61,7 @@ class Wordlift_Issue_711 extends Wordlift_Unit_Test_Case {
 		$post_id_1 = $this->factory->post->create( array(
 			'post_type' => 'entity',
 		) );
-		$this->entity_type_service->set( $post_id_1, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $post_id_1, 'http://schema.org/Person' );
 
 		// Add an entity URI.
 		update_post_meta( $post_id_1, $meta_key, $uri_1 );

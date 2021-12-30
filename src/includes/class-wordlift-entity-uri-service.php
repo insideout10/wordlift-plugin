@@ -40,15 +40,6 @@ class Wordlift_Entity_Uri_Service {
 	private $log;
 
 	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.16.3
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
 	 * An array of URIs to post ID valid for the current request.
 	 *
 	 * @since  3.16.3
@@ -67,16 +58,13 @@ class Wordlift_Entity_Uri_Service {
 	/**
 	 * Create a {@link Wordlift_Entity_Uri_Service} instance.
 	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 *
 	 * @since 3.16.3
 	 *
 	 */
-	public function __construct( $configuration_service, $content_service ) {
+	public function __construct( $content_service ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
-		$this->configuration_service = $configuration_service;
 		$this->content_service       = $content_service;
 
 		// Add a filter to the `rest_post_dispatch` filter to add the wl_entity_url meta as `wl:entity_url`.
@@ -215,7 +203,7 @@ class Wordlift_Entity_Uri_Service {
 	 */
 	public function is_internal( $uri ) {
 
-		return ( 0 === strrpos( $uri, (string) $this->configuration_service->get_dataset_uri() ) );
+		return ( 0 === strrpos( $uri, (string) Wordlift_Configuration_Service::get_instance()->get_dataset_uri() ) );
 	}
 
 	/**

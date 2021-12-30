@@ -124,6 +124,17 @@ class Wordlift_Configuration_Service {
 	private $log;
 
 	/**
+	 * Create a Wordlift_Configuration_Service's instance.
+	 *
+	 * @since 3.6.0
+	 */
+	protected function __construct() {
+
+		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+
+	}
+
+	/**
 	 * The Wordlift_Configuration_Service's singleton instance.
 	 *
 	 * @since  3.6.0
@@ -131,20 +142,7 @@ class Wordlift_Configuration_Service {
 	 * @access private
 	 * @var \Wordlift_Configuration_Service $instance Wordlift_Configuration_Service's singleton instance.
 	 */
-	private static $instance;
-
-	/**
-	 * Create a Wordlift_Configuration_Service's instance.
-	 *
-	 * @since 3.6.0
-	 */
-	public function __construct() {
-
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
-
-		self::$instance = $this;
-
-	}
+	private static $instance = null;
 
 	/**
 	 * Get the singleton instance.
@@ -154,6 +152,10 @@ class Wordlift_Configuration_Service {
 	 *
 	 */
 	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
 
 		return self::$instance;
 	}
@@ -288,18 +290,19 @@ class Wordlift_Configuration_Service {
 		if ( ! $language ) {
 			return 'en';
 		}
-		return substr( $language, 0, 2);
+
+		return substr( $language, 0, 2 );
 	}
 
 	/**
-	 * @deprecated As of 3.32.7 this below method has no effect on setting the language, we use the
-	 * language code form wordpress directly.
+	 * @param string $value WordLift's language code.
 	 *
 	 * @see https://github.com/insideout10/wordlift-plugin/issues/1466
 	 *
 	 * Set WordLift's language code, used when storing strings to the Linked Data dataset.
 	 *
-	 * @param string $value WordLift's language code.
+	 * @deprecated As of 3.32.7 this below method has no effect on setting the language, we use the
+	 * language code form wordpress directly.
 	 *
 	 * @since 3.9.0
 	 *
@@ -528,10 +531,10 @@ class Wordlift_Configuration_Service {
 		 * @since 3.27.7.1
 		 * The Key should be passed to headers, otherwise api would return null.
 		 */
-		$headers     = array(
+		$headers  = array(
 			'Authorization' => "Key $key",
 		);
-		$response    = $api_service->request( 'PUT', $url, $headers )->get_response();
+		$response = $api_service->request( 'PUT', $url, $headers )->get_response();
 
 		// The response is an error.
 		if ( is_wp_error( $response ) ) {

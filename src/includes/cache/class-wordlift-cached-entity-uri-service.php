@@ -37,15 +37,14 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	/**
 	 * Create a {@link Wordlift_Cached_Entity_Uri_Service} instance.
 	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service
 	 * @param \Wordlift_Cache_Service $cache_service
 	 * @param Wordpress_Content_Service $content_service
 	 *
 	 * @since 3.16.3
 	 *
 	 */
-	public function __construct( $configuration_service, $cache_service, $content_service ) {
-		parent::__construct( $configuration_service, $content_service );
+	public function __construct( $cache_service, $content_service ) {
+		parent::__construct( $content_service );
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 

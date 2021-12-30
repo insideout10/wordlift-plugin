@@ -88,7 +88,7 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 	 */
 	public function test_make_entities_local() {
 
-		$dataset_uri = $this->configuration_service->get_dataset_uri();
+		$dataset_uri = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
 		if ( empty( $dataset_uri ) ) {
 			$this->markTestSkipped( 'This test requires the dataset URI to be set.' );
 		}
@@ -141,7 +141,7 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 			'post_status' => 'publish',
 		) );
 
-		$entity_url = $this->configuration_service->get_dataset_uri() . "/content_analysis_test_1";
+		$entity_url = Wordlift_Configuration_Service::get_instance()->get_dataset_uri() . "/content_analysis_test_1";
 		update_post_meta( $post_id, 'entity_url', $entity_url );
 		wp_add_object_terms( $post_id, 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 

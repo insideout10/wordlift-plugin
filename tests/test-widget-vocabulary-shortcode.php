@@ -16,14 +16,6 @@
  * @group widget
  */
 class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
-	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.18.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	protected $configuration_service;
 
 	/**
 	 * Set up the test.
@@ -34,8 +26,6 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 		if ( ! extension_loaded( 'mbstring' ) ) {
 			$this->markTestSkipped( "Test skipped because mbstring is not loaded,vocabulary widget requires mbstring extension " );
 		}
-
-		$this->configuration_service = $this->get_wordlift_test()->get_configuration_service();
 	}
 
 	/**
@@ -79,7 +69,7 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 		);
 
 		// Get the shortcode markup
-		$vocabulary = new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
+		$vocabulary = new Wordlift_Vocabulary_Shortcode();
 		$markup     = $vocabulary->render( array() );
 
 		// Test the markup.
@@ -134,7 +124,7 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 		wp_set_object_terms( $post_2, $cat_id, 'category' );
 
 		// Get the shortcode markup
-		$vocabulary = new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
+		$vocabulary = new Wordlift_Vocabulary_Shortcode();
 		$markup     = $vocabulary->render(
 			array(
 				'cat'     => $cat_id,
@@ -201,7 +191,7 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 		wp_set_object_terms( $post_1, $cat_id, 'category' );
 
 		// Get the shortcode markup
-		$vocabulary = new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
+		$vocabulary = new Wordlift_Vocabulary_Shortcode();
 		$markup     = $vocabulary->render(
 			array(
 				'limit'   => 1,
@@ -262,7 +252,7 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 		wp_set_object_terms( $post_3, 'event', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		// Get the shortcode markup
-		$vocabulary = new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
+		$vocabulary = new Wordlift_Vocabulary_Shortcode();
 		$markup     = $vocabulary->render( array() );
 
 		// Prepate the regular expression.

@@ -139,15 +139,6 @@ class Wordlift_Sample_Data_Service {
 	private $entity_type_service;
 
 	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.12.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
 	 * The {@link Wordlift_User_Service} instance.
 	 *
 	 * @since  3.16.0
@@ -162,13 +153,11 @@ class Wordlift_Sample_Data_Service {
 	 * @since 3.12.0
 	 *
 	 * @param \Wordlift_Entity_Type_Service   $entity_type_service   The {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 * @param \Wordlift_User_Service          $user_service          The {@link Wordlift_User_Service} instance.
 	 */
-	function __construct( $entity_type_service, $configuration_service, $user_service ) {
+	function __construct( $entity_type_service, $user_service ) {
 
 		$this->entity_type_service   = $entity_type_service;
-		$this->configuration_service = $configuration_service;
 		$this->user_service          = $user_service;
 	}
 
@@ -190,7 +179,7 @@ class Wordlift_Sample_Data_Service {
 		add_post_meta( $attachment_id, '_wl_sample_data', 1, true );
 
 		// Get the dataset URI, used for replacements in the `post_content`.
-		$dataset_uri = $this->configuration_service->get_dataset_uri();
+		$dataset_uri = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
 
 		// Create the author and get its id.
 		$author_id = $this->create_author();

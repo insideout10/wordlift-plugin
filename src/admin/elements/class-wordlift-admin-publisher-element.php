@@ -20,15 +20,6 @@
 class Wordlift_Admin_Publisher_Element extends Wordlift_Admin_Author_Element {
 
 	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.11.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
 	 * The {@link Wordlift_Publisher_Service} instance.
 	 *
 	 * @since  3.11.0
@@ -45,18 +36,17 @@ class Wordlift_Admin_Publisher_Element extends Wordlift_Admin_Author_Element {
 	/**
 	 * Create a {@link Wordlift_Admin_Publisher_Element} instance.
 	 *
+	 * @param \Wordlift_Publisher_Service $publisher_service The {@link Wordlift_Publisher_Service} instance.
+	 * @param \Wordlift_Admin_Tabs_Element $tabs_element The {@link Wordlift_Admin_Tabs_Element} instance.
+	 * @param \Wordlift_Admin_Select2_Element $select_element The {@link Wordlift_Admin_Select_Element} instance.
+	 *
 	 * @since 3.11.0
 	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 * @param \Wordlift_Publisher_Service     $publisher_service The {@link Wordlift_Publisher_Service} instance.
-	 * @param \Wordlift_Admin_Tabs_Element    $tabs_element The {@link Wordlift_Admin_Tabs_Element} instance.
-	 * @param \Wordlift_Admin_Select2_Element $select_element The {@link Wordlift_Admin_Select_Element} instance.
 	 */
-	function __construct( $configuration_service, $publisher_service, $tabs_element, $select_element ) {
+	function __construct( $publisher_service, $tabs_element, $select_element ) {
 		parent::__construct( $publisher_service, $select_element );
 
-		$this->configuration_service = $configuration_service;
-		$this->publisher_service     = $publisher_service;
+		$this->publisher_service = $publisher_service;
 
 		// Child elements.
 		$this->tabs_element = $tabs_element;
@@ -102,15 +92,16 @@ class Wordlift_Admin_Publisher_Element extends Wordlift_Admin_Author_Element {
 	/**
 	 * Render the publisher's select.
 	 *
+	 * @param array $params An array of parameters.
+	 *
 	 * @since 3.11.0
 	 *
-	 * @param array $params An array of parameters.
 	 */
 	public function select( $params ) {
 
 		// Get the configured publisher id. In case a publisher id is already configured
 		// this must be pre-loaded in the options.
-		$publisher_id = $this->configuration_service->get_publisher_id();
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
 
 		// Get the publisher data.
 		$data = $this->publisher_service->query();
@@ -129,9 +120,10 @@ class Wordlift_Admin_Publisher_Element extends Wordlift_Admin_Author_Element {
 	/**
 	 * Render the 'create publisher' form.
 	 *
+	 * @param array $params An array of parameters.
+	 *
 	 * @since 3.11.0
 	 *
-	 * @param array $params An array of parameters.
 	 */
 	public function create( $params ) {
 		?>

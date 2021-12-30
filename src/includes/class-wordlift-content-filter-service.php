@@ -39,15 +39,6 @@ class Wordlift_Content_Filter_Service {
 	private $entity_service;
 
 	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.13.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
 	 * The `link by default` setting.
 	 *
 	 * @since  3.13.0
@@ -93,18 +84,16 @@ class Wordlift_Content_Filter_Service {
 	 * Create a {@link Wordlift_Content_Filter_Service} instance.
 	 *
 	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
 	 *
 	 * @since 3.8.0
 	 *
 	 */
-	public function __construct( $entity_service, $configuration_service, $entity_uri_service ) {
+	public function __construct( $entity_service, $entity_uri_service ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
 		$this->entity_service        = $entity_service;
-		$this->configuration_service = $configuration_service;
 		$this->entity_uri_service    = $entity_uri_service;
 		$this->object_link_provider  = Object_Link_Provider::get_instance();
 		self::$instance              = $this;
@@ -141,7 +130,7 @@ class Wordlift_Content_Filter_Service {
 		}
 
 		// Preload the `link by default` setting.
-		$this->is_link_by_default = $this->configuration_service->is_link_by_default();
+		$this->is_link_by_default = Wordlift_Configuration_Service::get_instance()->is_link_by_default();
 
 		// Reset the array of of entity post ids linked from the post content.
 		// This is used to avoid linking more the once the same post.

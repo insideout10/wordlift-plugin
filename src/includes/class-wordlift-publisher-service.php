@@ -19,26 +19,6 @@
 class Wordlift_Publisher_Service {
 
 	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.19.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
-	 * The {@link Wordlift_Publisher_Service} instance.
-	 *
-	 * @since 3.19.0
-	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	public function __construct( $configuration_service ) {
-		$this->configuration_service = $configuration_service;
-	}
-
-	/**
 	 * Counts the number of potential publishers.
 	 *
 	 * @since 3.11.0
@@ -200,7 +180,7 @@ class Wordlift_Publisher_Service {
 		$post_id = get_the_ID();
 
 		// Get the publisher id.
-		$publisher_id = $this->configuration_service->get_publisher_id();
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
 
 
 		// Bail if for some reason the post id is not set.

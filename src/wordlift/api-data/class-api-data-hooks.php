@@ -15,11 +15,8 @@ class Api_Data_Hooks {
 
 	protected $cache_requests = array();
 
-	private $configuration_service;
+	public function __construct() {
 
-	public function __construct( $configuration_service ) {
-
-		$this->configuration_service = $configuration_service;
 		/**
 		 * Hook for Post Save
 		 */
@@ -125,7 +122,7 @@ class Api_Data_Hooks {
 
 		$log->debug( "Delete cache request started:: '$path'" );
 
-		$url  = $this->configuration_service->get_api_url() . 'data/' . $path;
+		$url  = Wordlift_Configuration_Service::get_instance()->get_api_url() . 'data/' . $path;
 		$args = array(
 			'method'   => 'DELETE',
 			'blocking' => false,

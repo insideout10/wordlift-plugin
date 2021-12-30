@@ -195,7 +195,7 @@ function run_wordlift() {
 	new Post_Adapter();
 
 	// Load the API Data Hooks.
-	new Api_Data_Hooks( Wordlift_Configuration_Service::get_instance() );
+	new Api_Data_Hooks();
 
 	add_action( 'plugins_loaded', function () {
 		// Load early. **PLEASE NOTE** that features are applied only to calls that happen **AFTER** the `plugins_loaded`

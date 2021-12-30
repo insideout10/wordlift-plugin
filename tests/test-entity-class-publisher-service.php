@@ -42,7 +42,7 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	function test_nopublishers() {
 
-		$publishers_service = new Wordlift_Publisher_Service( $this->configuration_service );
+		$publishers_service = new Wordlift_Publisher_Service( Wordlift_Configuration_Service::get_instance() );
 
 		// with nothing in the DB
 		$this->assertEquals( 0, $publishers_service->count() );
@@ -57,7 +57,7 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_status' => 'publish',
 		) );
 
-		$this->entity_type_service->set( $pid, 'http://schema.org/LocalBusiness' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $pid, 'http://schema.org/LocalBusiness' );
 
 		$this->assertEquals( 0, $publishers_service->count() );
 		$this->assertEquals( 0, count( $publishers_service->query() ) );
@@ -71,7 +71,7 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	function test_publishers() {
 
-		$publishers_service = new Wordlift_Publisher_Service( $this->configuration_service );
+		$publishers_service = new Wordlift_Publisher_Service( Wordlift_Configuration_Service::get_instance() );
 
 		// create a non publisher entity to make the test more real
 		$busines = $this->factory()->post->create( array(
@@ -80,7 +80,7 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_status' => 'publish',
 		) );
 
-		$this->entity_type_service->set( $busines, 'http://schema.org/LocalBusiness' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $busines, 'http://schema.org/LocalBusiness' );
 
 		// create a person
 		$person = $this->factory()->post->create( array(
@@ -89,7 +89,7 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_status' => 'publish',
 		) );
 
-		$this->entity_type_service->set( $person, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $person, 'http://schema.org/Person' );
 
 		$this->assertEquals( 1, $publishers_service->count() );
 		$this->assertEquals( 1, count( $publishers_service->query() ) );
@@ -103,7 +103,7 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_status' => 'publish',
 		) );
 
-		$this->entity_type_service->set( $org, 'http://schema.org/Organization' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $org, 'http://schema.org/Organization' );
 
 		$this->assertEquals( 2, $publishers_service->count() );
 		$this->assertEquals( 2, count( $publishers_service->query() ) );
@@ -136,7 +136,7 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_status' => 'publish',
 		) );
 
-		$this->entity_type_service->set( $postperson, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $postperson, 'http://schema.org/Person' );
 
 		// create a post organization
 		$postorg = $this->factory()->post->create( array(
@@ -145,7 +145,7 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_status' => 'publish',
 		) );
 
-		$this->entity_type_service->set( $postorg, 'http://schema.org/Organization' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $postorg, 'http://schema.org/Organization' );
 
 		$this->assertEquals( 4, $publishers_service->count() );
 		$this->assertEquals( 4, count( $publishers_service->query() ) );

@@ -38,7 +38,7 @@ class Wordlift_Post_As_Recipe_Test extends Wordlift_Unit_Test_Case {
 		) );
 
 		// Check that the post by default is marked as `http://schema.org/Article`.
-		$type = $this->entity_type_service->get( $post_id );
+		$type = Wordlift_Entity_Type_Service::get_instance()->get( $post_id );
 
 		// Assertions.
 		$this->assertTrue( is_array( $type ) );
@@ -84,10 +84,10 @@ class Wordlift_Post_As_Recipe_Test extends Wordlift_Unit_Test_Case {
 		$post_id = $this->factory->post->create();
 
 		// Assign the `Recipe` class.
-		$this->entity_type_service->set( $post_id, 'http://schema.org/Recipe' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $post_id, 'http://schema.org/Recipe' );
 
 		// Check that the post is now configured as `http://schema.org/Recipe`.
-		$type = $this->entity_type_service->get( $post_id );
+		$type = Wordlift_Entity_Type_Service::get_instance()->get( $post_id );
 
 		// Assertions.
 		$this->assertTrue( is_array( $type ) );

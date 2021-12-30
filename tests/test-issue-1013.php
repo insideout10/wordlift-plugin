@@ -21,13 +21,12 @@ class Wordlift_Issue_1013_Test extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		$configuration_service = Wordlift_Configuration_Service::get_instance();
 		$entity_uri_service    = Wordlift_Cached_Entity_Uri_Service::get_instance();
 		$entity_service        = Wordlift_Entity_Service::get_instance();
 		$entity_helper         = new Entity_Helper( $entity_uri_service, $entity_service );
 
 		$this->linked_data_autocomplete_service = new Linked_Data_Autocomplete_Service(
-			$configuration_service, $entity_helper, $entity_uri_service, $entity_service );
+			$entity_helper, $entity_uri_service, $entity_service );
 
 	}
 

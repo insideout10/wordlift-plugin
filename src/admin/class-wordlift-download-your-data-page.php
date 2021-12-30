@@ -46,19 +46,6 @@ class Wordlift_Admin_Download_Your_Data_Page {
 	);
 
 	/**
-	 * A {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since 3.9.8
-	 *
-	 */
-	function __construct( $configuration_service ) {
-
-		$this->configuration_service = $configuration_service;
-	}
-
-	/**
 	 * Hook to 'admin_menu' to add the 'Download Your Data' page.
 	 *
 	 * @since 3.6.0
@@ -104,7 +91,7 @@ class Wordlift_Admin_Download_Your_Data_Page {
 		}
 
 		// Get WL's key.
-		$key = $this->configuration_service->get_key();
+		$key = Wordlift_Configuration_Service::get_instance()->get_key();
 
 		// Use json suffix by default.
 		$suffix = 'json';

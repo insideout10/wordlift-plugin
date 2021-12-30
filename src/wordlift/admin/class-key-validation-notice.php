@@ -26,10 +26,6 @@ class Key_Validation_Notice {
 	private $key_validation_service;
 
 	/**
-	 * @var \Wordlift_Configuration_Service
-	 */
-	private $configuration_service;
-	/**
 	 * @var Ttl_Cache
 	 */
 	private $ttl_cache_service;
@@ -38,13 +34,10 @@ class Key_Validation_Notice {
 	 * Key_Validation_Notice constructor.
 	 *
 	 * @param \Wordlift_Key_Validation_Service $key_validation_service
-	 * @param \Wordlift_Configuration_Service $configuration_service
 	 */
-	public function __construct( $key_validation_service, $configuration_service ) {
+	public function __construct( $key_validation_service ) {
 
 		$this->key_validation_service = $key_validation_service;
-
-		$this->configuration_service = $configuration_service;
 
 		$this->ttl_cache_service = new Ttl_Cache( 'key-validation-notification', 60 * 60 * 8 );
 
@@ -73,7 +66,7 @@ class Key_Validation_Notice {
 
 	private function is_key_valid() {
 
-		$key = $this->configuration_service->get_key();
+		$key = Wordlift_Configuration_Service::get_instance()->get_key();
 
 		// Check cache if the result is present, if not get the results
 		// save it and return the data.

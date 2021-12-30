@@ -114,7 +114,7 @@ class Wordlift_Admin_Publisher_Element_Test extends Wordlift_Unit_Test_Case {
 		$post_id = $this->entity_service->create( 'Jane Doe', 'http://schema.org/Person', null, 'publish' );
 
 		// Set the publisher.
-		$this->configuration_service->set_publisher_id( $post_id );
+		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $post_id );
 
 		// Call the render and catch the output.
 		ob_start();

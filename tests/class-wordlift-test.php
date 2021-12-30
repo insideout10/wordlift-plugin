@@ -57,7 +57,7 @@ class Wordlift_Test extends Wordlift {
 	 */
 	public function get_configuration_service() {
 
-		return $this->configuration_service;
+		return Wordlift_Configuration_Service::get_instance();
 	}
 
 	/**
@@ -130,7 +130,7 @@ class Wordlift_Test extends Wordlift {
 	 */
 	public function get_entity_type_service() {
 
-		return $this->entity_type_service;
+		return Wordlift_Entity_Type_Service::get_instance();
 	}
 
 	/**

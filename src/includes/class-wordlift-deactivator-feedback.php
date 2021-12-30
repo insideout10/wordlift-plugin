@@ -31,34 +31,22 @@ class Wordlift_Deactivator_Feedback {
 	private $log;
 
 	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.19.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
 	 * Wordlift_Deactivator_Feedback constructor.
 	 *
 	 * @since 3.19.0
-	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 */
-	public function __construct( $configuration_service ) {
+	public function __construct() {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Deactivator_Feedback' );
 
-		$this->configuration_service = $configuration_service;
-
 	}
+
 	/**
 	 * Checks whether we have permissions to show the popup.
 	 *
+	 * @return  bool `true` if we have permissions, false otherwise.
 	 * @version 3.19.0
 	 *
-	 * @return  bool `true` if we have permissions, false otherwise.
 	 */
 	private function has_permission_to_show_popup() {
 		// Get the current page.
@@ -72,7 +60,7 @@ class Wordlift_Deactivator_Feedback {
 
 		// Get the user preferences. We shouldn't show the feedback popup
 		// if we don't have permissions for that.
-		$user_preferences = $this->configuration_service->get_diagnostic_preferences();
+		$user_preferences = Wordlift_Configuration_Service::get_instance()->get_diagnostic_preferences();
 
 		// Bail. We don't have preferences to show the popup.
 		if ( 'yes' !== $user_preferences ) {
@@ -85,9 +73,9 @@ class Wordlift_Deactivator_Feedback {
 	/**
 	 * Render the feedback popup in the footer.
 	 *
+	 * @return  void
 	 * @version 3.19.0
 	 *
-	 * @return  void
 	 */
 	public function render_feedback_popup() {
 		// Bail if we don't have permissions to show the popup.
@@ -101,9 +89,9 @@ class Wordlift_Deactivator_Feedback {
 	/**
 	 * Enqueue required popup scripts and styles.
 	 *
+	 * @return  void
 	 * @version 3.19.0
 	 *
-	 * @return  void
 	 */
 	public function enqueue_popup_scripts() {
 		// Bail if we don't have permissions to show the popup.
@@ -119,9 +107,9 @@ class Wordlift_Deactivator_Feedback {
 	 * Handle the deactivation ajax call
 	 * and perform a request to external server.
 	 *
+	 * @return  void
 	 * @version 3.19.0
 	 *
-	 * @return  void
 	 */
 	public function wl_deactivation_feedback() {
 		// Bail if the nonce is not valid.
@@ -157,7 +145,7 @@ class Wordlift_Deactivator_Feedback {
 		);
 
 		$response = wp_remote_post(
-			$this->configuration_service->get_deactivation_feedback_url(),
+			Wordlift_Configuration_Service::get_instance()->get_deactivation_feedback_url(),
 			array(
 				'method'  => 'POST',
 				'body'    => json_encode( $options ),

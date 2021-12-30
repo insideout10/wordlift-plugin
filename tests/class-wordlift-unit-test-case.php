@@ -27,24 +27,6 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 	private $wordlift_test;
 
 	/**
-	 * The {@link Wordlift_Entity_Type_Service} instance.
-	 *
-	 * @since  3.16.0
-	 * @access protected
-	 * @var \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
-	 */
-	protected $entity_type_service;
-
-	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.16.0
-	 * @access protected
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	protected $configuration_service;
-
-	/**
 	 * The {@link WP_Post} id of the publisher.
 	 *
 	 * @since  3.16.0
@@ -85,9 +67,6 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 		$this->entity_factory = new Wordlift_UnitTest_Factory_For_Entity( $this->factory() );
 
 		$this->wordlift_test = new Wordlift_Test();
-
-		$this->entity_type_service   = $this->wordlift_test->get_entity_type_service();
-		$this->configuration_service = $this->wordlift_test->get_configuration_service();
 
 		// Set up the publisher.
 		$this->setup_publisher();
@@ -165,13 +144,13 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 			'post_type'  => 'entity',
 			'post_title' => 'Edgar Allan Poe',
 		) );
-		$this->entity_type_service->set( $this->publisher_id, 'http://schema.org/Organization' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $this->publisher_id, 'http://schema.org/Organization' );
 
 		// Attach the thumbnail image to the post
 		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $this->publisher_id );
 		set_post_thumbnail( $this->publisher_id, $attachment_id );
 
-		$this->configuration_service->set_publisher_id( $this->publisher_id );
+		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $this->publisher_id );
 
 	}
 

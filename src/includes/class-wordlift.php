@@ -376,15 +376,6 @@ class Wordlift {
 	protected $post_to_jsonld_converter;
 
 	/**
-	 * A {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.10.0
-	 * @access protected
-	 * @var \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
-	 */
-	protected $configuration_service;
-
-	/**
 	 * A {@link Wordlift_Install_Service} instance.
 	 *
 	 * @since  3.18.0
@@ -392,15 +383,6 @@ class Wordlift {
 	 * @var \Wordlift_Install_Service $install_service A {@link Wordlift_Install_Service} instance.
 	 */
 	protected $install_service;
-
-	/**
-	 * A {@link Wordlift_Entity_Type_Service} instance.
-	 *
-	 * @since  3.10.0
-	 * @access protected
-	 * @var \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 */
-	protected $entity_type_service;
 
 	/**
 	 * A {@link Wordlift_Entity_Post_To_Jsonld_Converter} instance.
@@ -1116,19 +1098,18 @@ class Wordlift {
 
 		// Load the Install Service.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-service.php';
-		$this->install_service       = new Wordlift_Install_Service();
-		$this->configuration_service = new Wordlift_Configuration_Service();
-		$this->notice_service        = new Wordlift_Notice_Service();
-		$this->user_service          = new Wordlift_User_Service();
+		$this->install_service = new Wordlift_Install_Service();
+		$this->notice_service  = new Wordlift_Notice_Service();
+		$this->user_service    = new Wordlift_User_Service();
 		// create an instance of the entity type list admin page controller.
 		$this->entity_type_admin_page        = new Wordlift_Admin_Entity_Taxonomy_List_Page();
 		$this->topic_taxonomy_service        = new Wordlift_Topic_Taxonomy_Service();
 		$this->entity_types_taxonomy_service = new Wordlift_Entity_Type_Taxonomy_Service();
 		// Create an entity type service instance. It'll be later bound to the init action.
 		$this->entity_post_type_service = new Wordlift_Entity_Post_Type_Service(
-			Wordlift_Entity_Service::TYPE_NAME, $this->configuration_service->get_entity_base_path() );
+			Wordlift_Entity_Service::TYPE_NAME, Wordlift_Configuration_Service::get_instance()->get_entity_base_path() );
 		/* WordPress Admin. */
-		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
+		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();
 		// create an instance of the entity type setting admin page controller.
 		$this->entity_type_settings_admin_page = new Wordlift_Admin_Entity_Type_Settings();
 
@@ -1138,10 +1119,10 @@ class Wordlift {
 
 			/** Services. */
 			// Create the configuration service.
-			$api_service = new Wordlift_Api_Service( $that->configuration_service );
+			$api_service = new Wordlift_Api_Service();
 
 			// Create an entity link service instance. It'll be later bound to the post_type_link and pre_get_posts actions.
-			$that->entity_link_service = new Wordlift_Entity_Link_Service( $that->entity_post_type_service, $that->configuration_service->get_entity_base_path() );
+			$that->entity_link_service = new Wordlift_Entity_Link_Service( $that->entity_post_type_service, Wordlift_Configuration_Service::get_instance()->get_entity_base_path() );
 
 			// Create an instance of the UI service.
 			$that->ui_service = new Wordlift_UI_Service();
@@ -1150,24 +1131,24 @@ class Wordlift {
 			$that->relation_service      = new Wordlift_Relation_Service();
 
 			if ( ! apply_filters( 'wl_feature__enable__rel-item-id', false ) ) {
-				$post_content_service = new Wordpress_Post_Content_Legacy_Service( $that->configuration_service->get_dataset_uri() );
+				$post_content_service = new Wordpress_Post_Content_Legacy_Service( Wordlift_Configuration_Service::get_instance()->get_dataset_uri() );
 			} else {
 				// Migrate `entity_url` from postmeta to wl_entities.
 				$content_migration = new Content_Migration();
 				$content_migration->migrate();
 
 				// Create the post content service that uses wl_entities.
-				$post_content_service = new Wordpress_Post_Content_Service( $that->configuration_service->get_dataset_uri() );
+				$post_content_service = new Wordpress_Post_Content_Service( Wordlift_Configuration_Service::get_instance()->get_dataset_uri() );
 			}
 
 			$content_service = new Wordpress_Content_Service( array(
 				$post_content_service,
-				new Wordpress_Term_Content_Service( $that->configuration_service->get_dataset_uri() ),
-				new Wordpress_User_Content_Service( $that->configuration_service->get_dataset_uri() ),
+				new Wordpress_Term_Content_Service( Wordlift_Configuration_Service::get_instance()->get_dataset_uri() ),
+				new Wordpress_User_Content_Service( Wordlift_Configuration_Service::get_instance()->get_dataset_uri() ),
 			) );
 
 			$entity_uri_cache_service = new Wordlift_File_Cache_Service( WL_TEMP_DIR . 'entity_uri/' );
-			$that->entity_uri_service = new Wordlift_Cached_Entity_Uri_Service( $that->configuration_service, $entity_uri_cache_service, $content_service );
+			$that->entity_uri_service = new Wordlift_Cached_Entity_Uri_Service( $entity_uri_cache_service, $content_service );
 
 			$entity_store         = new Entity_Store();
 			$that->entity_service = new Wordlift_Entity_Service( $that->ui_service, $that->relation_service, $that->entity_uri_service, $content_service );
@@ -1175,15 +1156,11 @@ class Wordlift {
 			// Instantiate the JSON-LD service.
 			$property_getter = Wordlift_Property_Getter_Factory::create( $that->entity_service );
 
-			/** Linked Data. */
-			$that->schema_service = new Wordlift_Schema_Service( $that->configuration_service );
-
 			// Create a new instance of the Redirect service.
-			$that->redirect_service    = new Wordlift_Redirect_Service( $that->entity_uri_service );
-			$that->entity_type_service = new Wordlift_Entity_Type_Service( $that->schema_service );
+			$that->redirect_service = new Wordlift_Redirect_Service( $that->entity_uri_service );
 
 			// Create a new instance of the Timeline service and Timeline shortcode.
-			$that->timeline_service = new Wordlift_Timeline_Service( $that->entity_service, $that->entity_type_service );
+			$that->timeline_service = new Wordlift_Timeline_Service( $that->entity_service, Wordlift_Entity_Type_Service::get_instance() );
 
 			$that->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
@@ -1196,13 +1173,13 @@ class Wordlift {
 			$uri_service = new Wordlift_Uri_Service( $GLOBALS['wpdb'] );
 
 			// Create the entity rating service.
-			$that->rating_service = new Wordlift_Rating_Service( $that->entity_service, $that->entity_type_service, $that->notice_service );
+			$that->rating_service = new Wordlift_Rating_Service( $that->entity_service, Wordlift_Entity_Type_Service::get_instance(), $that->notice_service );
 
 			// Create entity list customization (wp-admin/edit.php).
 			$that->entity_list_service = new Wordlift_Entity_List_Service( $that->rating_service );
 
 			// Create an instance of the Publisher Service and the AJAX Adapter.
-			$that->publisher_service = new Wordlift_Publisher_Service( $that->configuration_service );
+			$that->publisher_service = new Wordlift_Publisher_Service();
 			$that->property_factory  = new Wordlift_Property_Factory( $schema_url_property_service );
 			$that->property_factory->register( Wordlift_Schema_Url_Property_Service::META_KEY, $schema_url_property_service );
 
@@ -1210,13 +1187,13 @@ class Wordlift {
 
 			// Instantiate the JSON-LD service.
 			$property_getter                       = Wordlift_Property_Getter_Factory::create( $that->entity_service );
-			$that->post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $that->entity_type_service, $that->entity_service, $that->user_service, $attachment_service, $that->configuration_service );
-			$that->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $that->entity_type_service, $that->entity_service, $that->user_service, $attachment_service, $property_getter, $schemaorg_property_service, $that->post_to_jsonld_converter );
+			$that->post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( Wordlift_Entity_Type_Service::get_instance(), $that->entity_service, $that->user_service, $attachment_service );
+			$that->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( Wordlift_Entity_Type_Service::get_instance(), $that->entity_service, $that->user_service, $attachment_service, $property_getter, $schemaorg_property_service, $that->post_to_jsonld_converter );
 			$that->postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $that->entity_service, $that->entity_post_to_jsonld_converter, $that->post_to_jsonld_converter );
-			$that->jsonld_website_converter        = new Wordlift_Website_Jsonld_Converter( $that->entity_type_service, $that->entity_service, $that->user_service, $attachment_service, $that->configuration_service );
+			$that->jsonld_website_converter        = new Wordlift_Website_Jsonld_Converter( Wordlift_Entity_Type_Service::get_instance(), $that->entity_service, $that->user_service, $attachment_service );
 
 			$jsonld_cache                            = new Ttl_Cache( 'jsonld', 86400 );
-			$that->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter( $that->postid_to_jsonld_converter, $that->configuration_service, $jsonld_cache );
+			$that->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter( $that->postid_to_jsonld_converter, $jsonld_cache );
 			/*
 			 * Load the `Wordlift_Term_JsonLd_Adapter`.
 			 *
@@ -1240,11 +1217,11 @@ class Wordlift {
 
 			new Jsonld_By_Id_Endpoint( $that->jsonld_service, $that->entity_uri_service );
 
-			$that->key_validation_service = new Wordlift_Key_Validation_Service( $that->configuration_service );
-			$that->content_filter_service = new Wordlift_Content_Filter_Service( $that->entity_service, $that->configuration_service, $that->entity_uri_service );
+			$that->key_validation_service = new Wordlift_Key_Validation_Service();
+			$that->content_filter_service = new Wordlift_Content_Filter_Service( $that->entity_service, $that->entity_uri_service );
 			// Creating Faq Content filter service.
 			$that->faq_content_filter_service = new Faq_Content_Filter();
-			$that->sample_data_service        = new Wordlift_Sample_Data_Service( $that->entity_type_service, $that->configuration_service, $that->user_service );
+			$that->sample_data_service        = new Wordlift_Sample_Data_Service( Wordlift_Entity_Type_Service::get_instance(), $that->user_service );
 			$that->sample_data_ajax_adapter   = new Wordlift_Sample_Data_Ajax_Adapter( $that->sample_data_service );
 
 			$that->loader->add_action( 'enqueue_block_editor_assets', $that, 'add_wl_enabled_blocks' );
@@ -1265,7 +1242,7 @@ class Wordlift {
 				new Wordlift_Geomap_Shortcode();
 				new Wordlift_Timeline_Shortcode();
 				new Wordlift_Related_Entities_Cloud_Shortcode( $that->relation_service, $that->entity_service );
-				new Wordlift_Vocabulary_Shortcode( $that->configuration_service );
+				new Wordlift_Vocabulary_Shortcode();
 				new Async_Template_Decorator( new Wordlift_Faceted_Search_Shortcode() );
 			}
 
@@ -1286,7 +1263,7 @@ class Wordlift {
 			new Wordlift_Image_Service();
 
 			/** Adapters. */
-			$that->entity_type_adapter    = new Wordlift_Entity_Type_Adapter( $that->entity_type_service );
+			$that->entity_type_adapter    = new Wordlift_Entity_Type_Adapter( Wordlift_Entity_Type_Service::get_instance() );
 			$that->publisher_ajax_adapter = new Wordlift_Publisher_Ajax_Adapter( $that->publisher_service );
 			$that->tinymce_adapter        = new Wordlift_Tinymce_Adapter( $that );
 
@@ -1308,13 +1285,13 @@ class Wordlift {
 			$that->language_select_element = new Wordlift_Admin_Language_Select_Element();
 			$that->country_select_element  = new Wordlift_Admin_Country_Select_Element();
 			$tabs_element                  = new Wordlift_Admin_Tabs_Element();
-			$that->publisher_element       = new Wordlift_Admin_Publisher_Element( $that->configuration_service, $that->publisher_service, $tabs_element, $that->select2_element );
+			$that->publisher_element       = new Wordlift_Admin_Publisher_Element( $that->publisher_service, $tabs_element, $that->select2_element );
 			$that->author_element          = new Wordlift_Admin_Author_Element( $that->publisher_service, $that->select2_element );
 
-			$that->settings_page             = new Wordlift_Admin_Settings_Page( $that->configuration_service, $that->entity_service, $that->input_element, $that->language_select_element, $that->country_select_element, $that->publisher_element, $that->radio_input_element );
+			$that->settings_page             = new Wordlift_Admin_Settings_Page( $that->entity_service, $that->input_element, $that->language_select_element, $that->country_select_element, $that->publisher_element, $that->radio_input_element );
 			$that->settings_page_action_link = new Wordlift_Admin_Settings_Page_Action_Link( $that->settings_page );
 
-			$that->analytics_settings_page             = new Wordlift_Admin_Settings_Analytics_Page( $that->configuration_service, $that->input_element, $that->radio_input_element );
+			$that->analytics_settings_page             = new Wordlift_Admin_Settings_Analytics_Page( $that->input_element, $that->radio_input_element );
 			$that->analytics_settings_page_action_link = new Wordlift_Admin_Settings_Analytics_Page_Action_Link( $that->analytics_settings_page );
 			$that->analytics_connect                   = new Wordlift_Analytics_Connect();
 
@@ -1336,7 +1313,7 @@ class Wordlift {
 			$that->related_entities_cloud_widget = new Wordlift_Related_Entities_Cloud_Widget();
 
 			// Create an instance of the install wizard.
-			$that->admin_setup = new Wordlift_Admin_Setup( $that->configuration_service, $that->key_validation_service, $that->entity_service, $that->language_select_element, $that->country_select_element );
+			$that->admin_setup = new Wordlift_Admin_Setup( $that->key_validation_service, $that->entity_service, $that->language_select_element, $that->country_select_element );
 
 			$that->category_taxonomy_service = new Wordlift_Category_Taxonomy_Service( $that->entity_post_type_service );
 
@@ -1431,7 +1408,7 @@ class Wordlift {
 			 * if the object is post {@link \Wordlift\Object_Type_Enum::POST}
 			 */
 			new Post_Entity_Provider( $that->entity_uri_service,
-				$that->entity_type_service, $that->storage_factory->post_images() );
+				Wordlift_Entity_Type_Service::get_instance(), $that->storage_factory->post_images() );
 			/**
 			 * @since 3.32.0
 			 * The term entity provider provides the entity
@@ -1448,7 +1425,7 @@ class Wordlift {
 			/** WL Autocomplete. */
 			$autocomplete_service       = new All_Autocomplete_Service( array(
 				new Local_Autocomplete_Service(),
-				new Linked_Data_Autocomplete_Service( $that->configuration_service, $entity_helper, $that->entity_uri_service, $that->entity_service ),
+				new Linked_Data_Autocomplete_Service( $entity_helper, $that->entity_uri_service, $that->entity_service ),
 			) );
 			$that->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $autocomplete_service );
 
@@ -1479,7 +1456,7 @@ class Wordlift {
 			 * @since 3.27.8
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/1248
 			 */
-			new Key_Validation_Notice( $that->key_validation_service, $that->configuration_service );
+			new Key_Validation_Notice( $that->key_validation_service );
 			/**
 			 * @since 3.28.0
 			 * @see https://github.com/insideout10/wordlift-plugin/issues?q=assignee%3Anaveen17797+is%3Aopen
@@ -1490,7 +1467,7 @@ class Wordlift {
 			 * @since 3.29.0
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/1304
 			 */
-			new Entity_Rest_Service( $that->entity_type_service );
+			new Entity_Rest_Service( Wordlift_Entity_Type_Service::get_instance() );
 
 			/**
 			 * Expand author in to references.
@@ -1534,7 +1511,7 @@ class Wordlift {
 			 * @since 3.31.5
 			 * Create configuration endpoint for webapp to configure.
 			 */
-			new Config( $that->admin_setup, $that->key_validation_service, $that->configuration_service );
+			new Config( $that->admin_setup, $that->key_validation_service );
 			/**
 			 * @since 3.31.7
 			 * Remove duplicate videoobject.
@@ -1546,12 +1523,12 @@ class Wordlift {
 			 * @since 3.32.0
 			 * Create loader for vocabulary terms.
 			 */
-			$vocabulary_terms_loader = new Vocabulary_Terms_Loader( $that->entity_type_service, $property_getter );
+			$vocabulary_terms_loader = new Vocabulary_Terms_Loader( Wordlift_Entity_Type_Service::get_instance(), $property_getter );
 			$vocabulary_terms_loader->init_feature();
 
 			new Entity_Type_Change_Handler(
 				$that->entity_service,
-				$that->entity_type_service
+				Wordlift_Entity_Type_Service::get_instance()
 			);
 
 		} );
@@ -1588,10 +1565,10 @@ class Wordlift {
 	 * @access   private
 	 */
 	private function define_admin_hooks( $that ) {
-		$plugin_admin = new Wordlift_Admin(
+		$plugin_admin = new
+		Wordlift_Admin(
 			$that->get_plugin_name(),
 			$that->get_version(),
-			$that->configuration_service,
 			$that->notice_service,
 			$that->user_service
 		);
@@ -1697,8 +1674,8 @@ class Wordlift {
 		}
 
 		// Hook key update.
-		$that->loader->add_action( 'pre_update_option_wl_general_settings', $that->configuration_service, 'maybe_update_dataset_uri', 10, 2 );
-		$that->loader->add_action( 'update_option_wl_general_settings', $that->configuration_service, 'update_key', 10, 2 );
+		$that->loader->add_action( 'pre_update_option_wl_general_settings', Wordlift_Configuration_Service::get_instance(), 'maybe_update_dataset_uri', 10, 2 );
+		$that->loader->add_action( 'update_option_wl_general_settings', Wordlift_Configuration_Service::get_instance(), 'update_key', 10, 2 );
 
 		// Add additional action links to the WordLift plugin in the plugins page.
 		$that->loader->add_filter( 'plugin_action_links_wordlift/wordlift.php', $that->settings_page_action_link, 'action_links', 10, 1 );
@@ -1764,7 +1741,7 @@ class Wordlift {
 			$that->loader->add_filter( 'map_meta_cap', $that->entity_type_admin_page, 'restrict_super_admin', 10, 4 );
 		}
 
-		$deactivator_feedback = new Wordlift_Deactivator_Feedback( $that->configuration_service );
+		$deactivator_feedback = new Wordlift_Deactivator_Feedback();
 
 		add_action( 'admin_footer', array( $deactivator_feedback, 'render_feedback_popup' ) );
 		add_action( 'admin_enqueue_scripts', array( $deactivator_feedback, 'enqueue_popup_scripts' ) );
@@ -1852,7 +1829,7 @@ class Wordlift {
 		$that->loader->add_action( 'save_post', $that->entity_type_adapter, 'save_post', 9, 3 );
 
 		// Analytics Script Frontend.
-		if ( apply_filters( 'wl_feature__enable__analytics', true ) && $that->configuration_service->is_analytics_enable() ) {
+		if ( apply_filters( 'wl_feature__enable__analytics', true ) && Wordlift_Configuration_Service::get_instance()->is_analytics_enable() ) {
 			$that->loader->add_action( 'wp_enqueue_scripts', $that->analytics_connect, 'enqueue_scripts', 10 );
 		}
 

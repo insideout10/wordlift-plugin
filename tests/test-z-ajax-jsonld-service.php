@@ -54,15 +54,6 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	private $jsonld_service;
 
 	/**
-	 * A {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.14.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
 	 * {@inheritdoc}
 	 */
 	public function setUp() {
@@ -70,11 +61,9 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		$wordlift = new Wordlift_Test();
 
-		$this->entity_type_service             = $wordlift->get_entity_type_service();
 		$this->entity_service                  = $wordlift->get_entity_service();
 		$this->entity_post_to_jsonld_converter = $wordlift->get_entity_post_to_jsonld_converter();
 		$this->jsonld_service                  = $wordlift->get_jsonld_service();
-		$this->configuration_service           = $wordlift->get_configuration_service();
 
 		add_filter( 'pre_http_request', array( $this, '_mock_api' ), 10, 3 );
 	}
@@ -158,7 +147,7 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	 */
 	public function test_jsonld() {
 
-		$dataset_uri = $this->configuration_service->get_dataset_uri();
+		$dataset_uri = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
 		$this->assertNotEmpty( $dataset_uri, 'Dataset URI can`t be empty.' );
 
 		$local_business_term = get_term_by( 'slug', 'local-business', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
@@ -171,8 +160,8 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 			'post_type'    => 'entity',
 			'post_content' => "Post $name",
 		) );
-		$this->entity_type_service->set( $local_business_id, 'http://schema.org/LocalBusiness' );
-		$local_business_type = $this->entity_type_service->get( $local_business_id );
+		Wordlift_Entity_Type_Service::get_instance()->set( $local_business_id, 'http://schema.org/LocalBusiness' );
+		$local_business_type = Wordlift_Entity_Type_Service::get_instance()->get( $local_business_id );
 
 		$this->assertEquals( 'http://schema.org/LocalBusiness', $local_business_type['uri'] );
 
@@ -214,9 +203,9 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 			'post_type'  => 'entity',
 			'post_title' => 'Test Ajax Json-Ld Service test_jsonld'
 		) );
-		$this->entity_type_service->set( $person_id, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $person_id, 'http://schema.org/Person' );
 
-		$person_type = $this->entity_type_service->get( $person_id );
+		$person_type = Wordlift_Entity_Type_Service::get_instance()->get( $person_id );
 		$this->assertEquals( 'http://schema.org/Person', $person_type['uri'] );
 
 		$person_uri = $this->entity_service->get_uri( $person_id );
@@ -342,9 +331,9 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$publisher = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Ajax Json-Ld Service test_jsonld_website'
 		) );
-		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $publisher->ID, 'http://schema.org/Person' );
 		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
-		$this->configuration_service->set_publisher_id( $publisher->ID );
+		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher->ID );
 
 		// Create homepage
 		$homepage_id = $this->factory()->post->create( array(
@@ -436,9 +425,9 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$publisher = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Ajax Json-Ld Service test_jsonld_website'
 		) );
-		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Organization' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $publisher->ID, 'http://schema.org/Organization' );
 		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
-		$this->configuration_service->set_publisher_id( $publisher->ID );
+		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher->ID );
 
 		// Set our page as homepage & update the site description
 		update_option( 'show_on_front', 'page' );
@@ -520,9 +509,9 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$publisher = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Ajax Json-Ld Service test_jsonld_website_without_homepage'
 		) );
-		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Organization' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $publisher->ID, 'http://schema.org/Organization' );
 		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
-		$this->configuration_service->set_publisher_id( $publisher->ID );
+		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher->ID );
 
 		// Get site info
 		$headline    = get_bloginfo( 'name' );
@@ -596,9 +585,9 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$publisher = $this->entity_factory->create_and_get( array(
 			'post_title' => 'Test Ajax Json-Ld Service test_change_jsonld_website_search_target'
 		) );
-		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $publisher->ID, 'http://schema.org/Person' );
 		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
-		$this->configuration_service->set_publisher_id( $publisher->ID );
+		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher->ID );
 
 		// Set our page as homepage & update the site description
 		update_option( 'show_on_front', 'page' );
@@ -757,7 +746,7 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 			'post_title'   => 'Test Ajax Json-Ld Service test_post_mentioning_a_recipe',
 			'post_content' => 'Post Test Ajax Json-Ld Service test_post_mentioning_a_recipe'
 		) );
-		$this->entity_type_service->set( $recipe_post_id, 'http://schema.org/Recipe' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $recipe_post_id, 'http://schema.org/Recipe' );
 
 		wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $recipe_post_id );
 
