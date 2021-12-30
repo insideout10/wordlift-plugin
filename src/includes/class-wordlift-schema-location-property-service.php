@@ -70,30 +70,13 @@ class Wordlift_Schema_Location_Property_Service extends Wordlift_Property_Servic
 	}
 
 	/**
-	 * @var
-	 */
-	private $sparql_service;
-
-	/**
-	 * Create a Wordlift_Schema_Location_Property_Service instance.
-	 * @since 3.7.0
-	 *
-	 * @param Wordlift_Sparql_Service $sparql_service
-	 */
-	public function __construct( $sparql_service ) {
-		parent::__construct();
-
-		$this->sparql_service = $sparql_service;
-	}
-
-	/**
 	 * Get the schema:url value for the specified post/entity.
-	 *
-	 * @since 3.7.0
 	 *
 	 * @param int $post_id The post id.
 	 *
 	 * @return array|NULL The schema:url value or NULL if not set.
+	 * @since 3.7.0
+	 *
 	 */
 	public function get( $post_id ) {
 

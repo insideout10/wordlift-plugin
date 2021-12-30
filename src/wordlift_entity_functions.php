@@ -44,95 +44,6 @@ function wl_get_entity_post_ids_by_uris( $uris ) {
 }
 
 /**
- * Build the entity URI given the entity's post.
- *
- * @param int $post_id The post ID
- *
- * @return string The URI of the entity
- * @uses wl_sanitize_uri_path() to sanitize the post title.
- * @uses wl_configuration_get_redlink_dataset_uri() to get the dataset base URI.
- *
- */
-function wl_build_entity_uri( $post_id ) {
-
-	// Get the post.
-	$post = get_post( $post_id );
-
-	if ( null === $post ) {
-		wl_write_log( "wl_build_entity_uri : error [ post ID :: $post_id ][ post :: null ]" );
-
-		return null;
-	}
-
-	// For installations not connected to the Cloud - i.e. add_filter( 'wl_features__enable__dataset', '__return_false')
-	// - we build the dataset URI base on the permalink.
-	if ( ! apply_filters( 'wl_features__enable__dataset', true ) ) {
-		return sprintf( '%s#%s', get_permalink( $post_id ), get_post_type( $post_id ) );
-	}
-
-	// Create an ID given the title.
-	$entity_slug = wl_sanitize_uri_path( $post->post_title );
-	// If the entity slug is empty, i.e. there's no title, use the post ID as path.
-	if ( empty( $entity_slug ) ) {
-		return sprintf( '%s/%s/%s',
-			wl_configuration_get_redlink_dataset_uri(),
-			$post->post_type,
-			"id/$post->ID"
-		);
-	}
-
-	return Wordlift_Uri_Service::get_instance()->build_uri(
-		$entity_slug,
-		$post->post_type );
-
-}
-
-
-/**
- * Build the entity URI given the term id.
- *
- * @param int $term_id The term ID
- *
- * @return string The URI of the term entity
- *
- */
-function wl_build_term_uri( $term_id ) {
-
-	// Get the term.
-	$term = get_term( $term_id );
-
-	if ( null === $term ) {
-		Wordlift_Log_Service::get_instance()->debug( "wl_build_entity_uri : error [ term ID :: $term_id ][ term :: null ]" );
-
-		return null;
-	}
-
-	// For installations not connected to the Cloud - i.e. add_filter( 'wl_features__enable__dataset', '__return_false')
-	// - we build the dataset URI base on the permalink.
-	if ( ! apply_filters( 'wl_features__enable__dataset', true ) ) {
-		return sprintf( '%s#%s', get_permalink( $term_id ), $term->taxonomy );
-	}
-
-	// Create an ID given the title.
-	$term_slug = Wordlift_Uri_Service::get_instance()->sanitize_path( $term->name );
-
-	// If the entity slug is empty, i.e. there's no title, use the term ID as path.
-	if ( empty( $term_slug ) ) {
-		return sprintf( '%s/%s/%s',
-			Wordlift_Configuration_Service::get_instance()->get_dataset_uri(),
-			$term->taxonomy,
-			"id/$term->ID"
-		);
-	}
-
-	return Wordlift_Uri_Service::get_instance()->build_term_uri(
-		$term_slug,
-		$term->taxonomy );
-
-}
-
-
-/**
  * Get the entity URI of the provided post.
  *
  * @param int $post_id The post ID.
@@ -141,8 +52,6 @@ function wl_build_term_uri( $term_id ) {
  * @uses       wl_set_entity_uri() to set a newly create URI.
  *
  * @deprecated use Wordlift_Entity_Service::get_instance()->get_uri( $post_id )
- *
- * @uses       wl_build_entity_uri() to create a new URI if the entity doesn't have an URI yet.
  */
 function wl_get_entity_uri( $post_id ) {
 

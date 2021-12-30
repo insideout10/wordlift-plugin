@@ -176,38 +176,6 @@ class Wordlift_Schema_Service_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 * Tests the `get_renditions` method.
-	 *
-	 * @return void
-	 * @since 3.18.0
-	 *
-	 */
-	public function test_get_renditions() {
-		// Get all renditions.
-		$renditions = $this->schema_service->get_renditions();
-
-		$this->assertInternalType( 'array', $renditions );
-		$this->assertNotEmpty( $renditions );
-
-		// The renditions classes.
-		$rendition_classes = array(
-			'Wordlift_Default_Sparql_Tuple_Rendition',
-			'Wordlift_Address_Sparql_Tuple_Rendition',
-		);
-
-		// Loop through all renditions and check their type and instance.
-		foreach ( $renditions as $rendition ) {
-			$this->assertInternalType( 'object', $rendition );
-
-			// Get the rendition class name.
-			$class_name = get_class( $rendition );
-
-			// Check that the class name exists in rendition classes.
-			$this->assertContains( $class_name, $rendition_classes );
-		}
-	}
-
-	/**
 	 * Tests the `get_schema_by_uri`.
 	 *
 	 * @return void

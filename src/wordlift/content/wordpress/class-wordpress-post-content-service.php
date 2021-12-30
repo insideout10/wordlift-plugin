@@ -151,10 +151,10 @@ class Wordpress_Post_Content_Service extends Abstract_Wordpress_Content_Service 
 
 		global $wpdb;
 		$wpdb->query( $wpdb->prepare( "
-			INSERT INTO {$wpdb->prefix}wl_entities( content_id, content_type, rel_uri )
-			VALUES( %d, %d, %s )
-			ON DUPLICATE KEY UPDATE rel_uri = VALUES( rel_uri )
-		", $content_id->get_id(), $content_id->get_type(), $rel_url ) );
+			INSERT INTO {$wpdb->prefix}wl_entities( content_id, content_type, rel_uri, rel_uri_hash )
+			VALUES( %d, %d, %s, SHA1( %s ) )
+			ON DUPLICATE KEY UPDATE rel_uri = VALUES( rel_uri ), rel_uri_hash = SHA1( VALUES( rel_uri ) );
+		", $content_id->get_id(), $content_id->get_type(), $rel_url, $rel_url ) );
 	}
 
 	/**

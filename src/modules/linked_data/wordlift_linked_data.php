@@ -260,9 +260,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		}
 	}
 
-	// Push the post to Redlink.
-	do_action( 'wl_legacy_linked_data__push', $post->ID );
-
 	add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
 }
 
@@ -477,60 +474,6 @@ function wl_save_entity( $entity_data ) {
 		set_post_thumbnail( $post_id, $attachment_id );
 	}
 
-	// The entity is pushed to Redlink on save by the function hooked to save_post.
-	// save the entity in the triple store.
-	do_action( 'wl_legacy_linked_data__push', $post_id );
-
 	// finally return the entity post.
 	return get_post( $post_id );
-}
-
-/**
- * Get an array of entities from the *itemid* attributes embedded in the provided content.
- *
- * @param string $content The content with itemid attributes.
- *
- * @return array An array of entity posts.
- * @since 3.0.0
- *
- */
-function wl_linked_data_content_get_embedded_entities( $content ) {
-
-	// Remove quote escapes.
-	$content = str_replace( '\\"', '"', $content );
-
-	// Match all itemid attributes.
-	$pattern = '/<\w+[^>]*\sitemid="([^"]+)"[^>]*>/im';
-
-	//	wl_write_log( "Getting entities embedded into content [ pattern :: $pattern ]" );
-
-	// Remove the pattern while it is found (match nested annotations).
-	$matches = array();
-
-	// In case of errors, return an empty array.
-	if ( false === preg_match_all( $pattern, $content, $matches ) ) {
-		wl_write_log( "Found no entities embedded in content" );
-
-		return array();
-	}
-
-//    wl_write_log("wl_update_related_entities [ content :: $content ][ data :: " . var_export($data, true). " ][ matches :: " . var_export($matches, true) . " ]");
-
-	$uris = $matches[1];
-	// Collect the entities.
-	$entities = array();
-	foreach ( $uris as $uri ) {
-		$uri_d = html_entity_decode( $uri );
-
-		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri_d );
-
-		if ( null !== $entity ) {
-			array_push( $entities, $entity->ID );
-		}
-	}
-
-	// $count = sizeof( $entities );
-	// wl_write_log( "Found $count entities embedded in content" );
-
-	return $entities;
 }

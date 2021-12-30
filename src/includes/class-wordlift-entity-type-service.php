@@ -108,9 +108,8 @@ class Wordlift_Entity_Type_Service {
 	 * @type string uri           The schema.org class URI, e.g. `http://schema.org/Thing`.
 	 * @type array  same_as       An array of same as attributes.
 	 * @type array  custom_fields An array of custom fields.
-	 * @type array  linked_data   An array of {@link Wordlift_Sparql_Tuple_Rendition}.
 	 * }
-	 * @since 3.7.0
+	 * @since 3.33.9 The `linked_data` key has been removed.
 	 *
 	 * @since 3.20.0 This function will **not** return entity types introduced with 3.20.0.
 	 *
@@ -345,7 +344,7 @@ class Wordlift_Entity_Type_Service {
 		// If an URI hasn't been specified just check whether we have at least
 		// one entity type.
 		if ( null === $uri ) {
-			return has_term('', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $post_id );
+			return has_term( '', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $post_id );
 		}
 
 		$has_entity_type = ( null !== $this->has_post_term_by_uri( $post_id, $uri ) );

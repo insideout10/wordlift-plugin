@@ -142,15 +142,6 @@ class Wordlift {
 	//protected $faq_tinymce_adapter;
 
 	/**
-	 * The Thumbnail service.
-	 *
-	 * @since  3.1.5
-	 * @access private
-	 * @var \Wordlift_Thumbnail_Service $thumbnail_service The Thumbnail service.
-	 */
-	private $thumbnail_service;
-
-	/**
 	 * The UI service.
 	 *
 	 * @since  3.2.0
@@ -268,15 +259,6 @@ class Wordlift {
 	private $primashop_adapter;
 
 	/**
-	 * The WordLift Dashboard adapter.
-	 *
-	 * @since  3.4.0
-	 * @access private
-	 * @var \Wordlift_Dashboard_Service $dashboard_service The WordLift Dashboard service;
-	 */
-	private $dashboard_service;
-
-	/**
 	 * The entity type service.
 	 *
 	 * @since  3.6.0
@@ -293,15 +275,6 @@ class Wordlift {
 	 * @var \Wordlift_Entity_Link_Service $entity_link_service The {@link Wordlift_Entity_Link_Service} instance.
 	 */
 	private $entity_link_service;
-
-	/**
-	 * A {@link Wordlift_Sparql_Service} instance.
-	 *
-	 * @since    3.6.0
-	 * @access   protected
-	 * @var \Wordlift_Sparql_Service $sparql_service A {@link Wordlift_Sparql_Service} instance.
-	 */
-	protected $sparql_service;
 
 	/**
 	 * A {@link Wordlift_Jsonld_Service} instance.
@@ -637,15 +610,6 @@ class Wordlift {
 	protected $storage_factory;
 
 	/**
-	 * The {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
-	 *
-	 * @since  3.15.0
-	 * @access protected
-	 * @var \Wordlift_Sparql_Tuple_Rendition_Factory $rendition_factory The {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
-	 */
-	protected $rendition_factory;
-
-	/**
 	 * The {@link Wordlift_Autocomplete_Adapter} instance.
 	 *
 	 * @since  3.15.0
@@ -826,11 +790,6 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-image-service.php';
 
 		/**
-		 * The Query builder.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-query-builder.php';
-
-		/**
 		 * The Schema service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-schema-service.php';
@@ -845,11 +804,6 @@ class Wordlift {
 		 * The UI service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-ui-service.php';
-
-		/**
-		 * The Thumbnail service.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-thumbnail-service.php';
 
 		/**
 		 * The Entity Types Taxonomy service.
@@ -879,11 +833,6 @@ class Wordlift {
 		 * The Topic Taxonomy service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-topic-taxonomy-service.php';
-
-		/**
-		 * The SPARQL service.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sparql-service.php';
 
 		/**
 		 * The WordLift URI service.
@@ -967,11 +916,6 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sample-data-ajax-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-wprocket-adapter.php';
-
-		/** Async Tasks. */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-async-task.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-sparql-query-async-task.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-push-references-async-task.php';
 
 		/** Autocomplete. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-adapter.php';
@@ -1202,11 +1146,7 @@ class Wordlift {
 			// Create an instance of the UI service.
 			$that->ui_service = new Wordlift_UI_Service();
 
-			// Create an instance of the Thumbnail service. Later it'll be hooked to post meta events.
-			$that->thumbnail_service = new Wordlift_Thumbnail_Service();
-
-			$that->sparql_service        = new Wordlift_Sparql_Service();
-			$schema_url_property_service = new Wordlift_Schema_Url_Property_Service( $that->sparql_service );
+			$schema_url_property_service = new Wordlift_Schema_Url_Property_Service();
 			$that->relation_service      = new Wordlift_Relation_Service();
 
 			if ( ! apply_filters( 'wl_feature__enable__rel-item-id', false ) ) {
@@ -1260,9 +1200,6 @@ class Wordlift {
 
 			// Create entity list customization (wp-admin/edit.php).
 			$that->entity_list_service = new Wordlift_Entity_List_Service( $that->rating_service );
-
-			// Create a new instance of the Redirect service.
-			$that->dashboard_service = new Wordlift_Dashboard_Service( $that->rating_service, $that->entity_service );
 
 			// Create an instance of the Publisher Service and the AJAX Adapter.
 			$that->publisher_service = new Wordlift_Publisher_Service( $that->configuration_service );
@@ -1674,15 +1611,6 @@ class Wordlift {
 		$that->loader->add_action( 'init', $that->topic_taxonomy_service, 'init', 0 );
 		$that->loader->add_action( 'init', $that->entity_types_taxonomy_service, 'init', 0 );
 
-		// Hook the deleted_post_meta action to the Thumbnail service.
-		$that->loader->add_action( 'deleted_post_meta', $that->thumbnail_service, 'deleted_post_meta', 10, 4 );
-
-		// Hook the added_post_meta action to the Thumbnail service.
-		$that->loader->add_action( 'added_post_meta', $that->thumbnail_service, 'added_or_updated_post_meta', 10, 4 );
-
-		// Hook the updated_post_meta action to the Thumbnail service.
-		$that->loader->add_action( 'updated_post_meta', $that->thumbnail_service, 'added_or_updated_post_meta', 10, 4 );
-
 		// Hook the AJAX wl_timeline action to the Timeline service.
 		$that->loader->add_action( 'wp_ajax_wl_timeline', $that->timeline_service, 'ajax_timeline' );
 
@@ -1690,20 +1618,6 @@ class Wordlift {
 		$that->loader->add_filter( 'allowed_redirect_hosts', $that->redirect_service, 'allowed_redirect_hosts' );
 		// Hook the AJAX wordlift_redirect action to the Redirect service.
 		$that->loader->add_action( 'wp_ajax_wordlift_redirect', $that->redirect_service, 'ajax_redirect' );
-
-		/*
-		 * The old dashboard is replaced with dashboard v2.
-		 *
-		 * The old dashboard service is still loaded because its functions are used.
-		 *
-		 * @see https://github.com/insideout10/wordlift-plugin/issues/879
-		 *
-		 * @since 3.20.0
-		 */
-		// Hook the AJAX wordlift_redirect action to the Redirect service.
-		// $that->loader->add_action( 'wp_ajax_wordlift_get_stats', $that->dashboard_service, 'ajax_get_stats' );
-		// Hook the AJAX wordlift_redirect action to the Redirect service.
-		// $that->loader->add_action( 'wp_dashboard_setup', $that->dashboard_service, 'add_dashboard_widgets' );
 
 		// Hook save_post to the entity service to update custom fields (such as alternate labels).
 		// We have a priority of 9 because we want to be executed before data is sent to Redlink.
@@ -1812,8 +1726,6 @@ class Wordlift {
 		if ( version_compare( $wp_version, '4.7', '<' ) ) {
 			$that->loader->add_filter( 'map_meta_cap', $that->entity_type_admin_page, 'enable_admin_access_pre_47', 10, 4 );
 		}
-
-		$that->loader->add_action( 'wl_async_wl_run_sparql_query', $that->sparql_service, 'run_sparql_query', 10, 1 );
 
 		/** Adapters. */
 		$that->loader->add_filter( 'mce_external_plugins', $that->tinymce_adapter, 'mce_external_plugins', 10, 1 );
@@ -1936,8 +1848,6 @@ class Wordlift {
 		 */
 		$that->loader->add_action( 'pre_get_posts', $that->entity_page_service, 'pre_get_posts', 10, 1 );
 
-		$that->loader->add_action( 'wl_async_wl_run_sparql_query', $that->sparql_service, 'run_sparql_query', 10, 1 );
-
 		// This hook have to run before the rating service, as otherwise the post might not be a proper entity when rating is done.
 		$that->loader->add_action( 'save_post', $that->entity_type_adapter, 'save_post', 9, 3 );
 
@@ -1996,23 +1906,6 @@ class Wordlift {
 	 */
 	private function load_cli_dependencies() {
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'cli/class-wordlift-push-reference-data-command.php';
-
-		$push_reference_data_command = new Wordlift_Push_Reference_Data_Command( $this->relation_service, $this->entity_service, $this->sparql_service, $this->configuration_service, $this->entity_type_service );
-
-		WP_CLI::add_command( 'wl references push', $push_reference_data_command );
-
-	}
-
-	/**
-	 * Get the {@link \Wordlift_Dashboard_Service} to allow others to use its functions.
-	 *
-	 * @return \Wordlift_Dashboard_Service The {@link \Wordlift_Dashboard_Service} instance.
-	 * @since 3.20.0
-	 */
-	public function get_dashboard_service() {
-
-		return $this->dashboard_service;
 	}
 
 	public function add_wl_enabled_blocks() {

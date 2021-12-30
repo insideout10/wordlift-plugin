@@ -228,18 +228,6 @@ class Wordlift_Test extends Wordlift {
 	}
 
 	/**
-	 * Get the {@link Wordlift_Sparql_Service} instance.
-	 *
-	 * @since 3.13.2
-	 *
-	 * @return \Wordlift_Sparql_Service The {@link Wordlift_Sparql_Service} instance.
-	 */
-	public function get_sparql_service() {
-
-		return $this->sparql_service;
-	}
-
-	/**
 	 * Get the {@link Wordlift_Schema_Service} instance.
 	 *
 	 * @since 3.15.0
@@ -317,28 +305,6 @@ class Wordlift_Test extends Wordlift {
 	public function get_entity_uri_service() {
 
 		return $this->entity_uri_service;
-	}
-
-	/**
-	 * Get the {@link Wordlift_Linked_Data_Service} instance.
-	 *
-	 * @since 3.18.0
-	 * @return \Wordlift_Linked_Data_Service The {@link Wordlift_Linked_Data_Service} instance.
-	 */
-	public function get_linked_data_service() {
-
-		return Wordlift_Linked_Data_Service::get_instance();
-	}
-
-	/**
-	 * Get the {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
-	 *
-	 * @since 3.18.0
-	 * @return \Wordlift_Sparql_Tuple_Rendition_Factory The {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
-	 */
-	public function get_rendition_factory() {
-
-		return $this->rendition_factory;
 	}
 
 	/**

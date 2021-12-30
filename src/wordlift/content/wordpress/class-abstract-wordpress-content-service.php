@@ -14,8 +14,6 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 	 * @throws Exception when the `dataset_uri` isn't a URL.
 	 */
 	public function __construct( $dataset_uri ) {
-		Assertions::matches( $dataset_uri, '@^https?://@', '`dataset_uri` must be a valid URL.' );
-
 		$this->dataset_uri = $dataset_uri;
 	}
 

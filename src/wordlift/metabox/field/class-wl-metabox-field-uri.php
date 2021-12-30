@@ -58,12 +58,6 @@ class Wl_Metabox_Field_uri extends Wl_Metabox_Field {
 
 			wl_set_entity_main_type( $new_entity_id, $type );
 
-//			// Build uri for this entity.
-//			$new_uri = wl_build_entity_uri( $new_entity_id );
-//			wl_set_entity_uri( $new_entity_id, $new_uri );
-
-//			do_action( 'wl_legacy_linked_data__push', $new_entity_id );
-
 			// Update the value that will be saved as meta.
 			$value = $new_entity_id;
 		}

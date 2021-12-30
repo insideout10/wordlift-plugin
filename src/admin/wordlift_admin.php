@@ -44,11 +44,11 @@ function wl_serialize_entity( $entity ) {
 /**
  * Removes empty text annotations from the post content.
  *
- * @since 1.0.0
- *
  * @param array $data The post data.
  *
  * @return array mixed The post data array.
+ * @since 1.0.0
+ *
  */
 function wl_remove_text_annotations( $data ) {
 
@@ -59,7 +59,7 @@ function wl_remove_text_annotations( $data ) {
 	$pattern = '/<span><\/span>/im';
 	// Remove the pattern while it is found (match nested annotations).
 	while ( 1 === preg_match( $pattern, $data['post_content'] ) ) {
-		$data['post_content'] = preg_replace( $pattern, '$2', $data['post_content'], -1, $count );
+		$data['post_content'] = preg_replace( $pattern, '$2', $data['post_content'], - 1, $count );
 	}
 	// Remove text annotations
 	// <span class="textannotation" id="urn:enhancement-777cbed4-b131-00fb-54a4-ed9b26ae57ea">.
@@ -71,8 +71,9 @@ function wl_remove_text_annotations( $data ) {
 	$pattern = '/<(\w+)[^>]*\sclass=\\\"textannotation(?![^\\"]*\sdisambiguated)[^\\"]*\\\"[^>]*>(.*?)<\/\1>/im';
 	// Remove the pattern while it is found (match nested annotations).
 	while ( 1 === preg_match( $pattern, $data['post_content'] ) ) {
-		$data['post_content'] = preg_replace( $pattern, '$2', $data['post_content'], -1, $count );
+		$data['post_content'] = preg_replace( $pattern, '$2', $data['post_content'], - 1, $count );
 	}
+
 	return $data;
 }
 
@@ -81,11 +82,11 @@ add_filter( 'wp_insert_post_data', 'wl_remove_text_annotations', '98', 1 );
 /**
  * Adds wl-metabox CSS class to a metabox.
  *
- * @since 3.2.0
- *
  * @param array $classes List of CSS classes already assigned to the metabox.
  *
  * @return array The updated list of CSS classes.
+ * @since 3.2.0
+ *
  */
 function wl_admin_metaboxes_add_css_class( $classes = array() ) {
 

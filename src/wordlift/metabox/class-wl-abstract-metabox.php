@@ -354,8 +354,6 @@ class Wl_Abstract_Metabox {
 		 */
 		do_action( 'wl_save_form_pre_push_entity', $id, $_POST );
 
-		do_action( 'wl_legacy_linked_data__push', $id );
-
 	}
 
 	/**
