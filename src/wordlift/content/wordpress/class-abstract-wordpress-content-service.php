@@ -2,23 +2,17 @@
 
 namespace Wordlift\Content\Wordpress;
 
-use Exception;
-use Wordlift\Assertions;
 use Wordlift\Content\Content_Service;
+use Wordlift_Configuration_Service;
 
 abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 
-	private $dataset_uri;
+	protected function __construct() {
 
-	/**
-	 * @throws Exception when the `dataset_uri` isn't a URL.
-	 */
-	public function __construct( $dataset_uri ) {
-		$this->dataset_uri = $dataset_uri;
 	}
 
 	protected function get_dataset_uri() {
-		return $this->dataset_uri;
+		return Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
 	}
 
 	protected function is_absolute( $uri ) {
@@ -26,20 +20,23 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 	}
 
 	protected function is_internal( $uri ) {
-		return 0 === strpos( $uri, $this->dataset_uri );
+		$dataset_uri = $this->get_dataset_uri();
+
+		return ! empty( $dataset_uri ) && 0 === strpos( $uri, $dataset_uri );
 	}
 
 	protected function make_absolute( $uri ) {
-		if ( 1 !== preg_match( $uri, '@^https?://@' ) ) {
-			return $this->dataset_uri . '/' . $uri;
+		if ( 1 !== preg_match( '@^https?://@', $uri ) ) {
+			return untrailingslashit( $this->get_dataset_uri() ) . '/' . $uri;
 		}
 
 		return $uri;
 	}
 
 	protected function make_relative( $uri ) {
-		if ( 0 === strpos( $uri, $this->get_dataset_uri() ) ) {
-			return substr( $uri, strlen( $this->get_dataset_uri() ) );
+		$dataset_uri = $this->get_dataset_uri();
+		if ( 0 === strpos( $uri, $dataset_uri ) ) {
+			return substr( $uri, strlen( $dataset_uri ) );
 		}
 
 		return $uri;

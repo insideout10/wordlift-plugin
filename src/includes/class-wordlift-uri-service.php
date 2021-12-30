@@ -144,7 +144,7 @@ class Wordlift_Uri_Service {
 
 		// Compose a candidate uri.
 		$new_entity_uri = sprintf( '%s/%s/%s',
-			wl_configuration_get_redlink_dataset_uri(),
+			untrailingslashit( wl_configuration_get_redlink_dataset_uri() ),
 			$post_type,
 			$entity_slug
 		);

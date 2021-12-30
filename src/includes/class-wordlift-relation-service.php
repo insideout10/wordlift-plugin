@@ -19,15 +19,6 @@
 class Wordlift_Relation_Service {
 
 	/**
-	 * The singleton instance.
-	 *
-	 * @since  3.15.0
-	 * @access private
-	 * @var \Wordlift_Relation_Service $instance The singleton instance.
-	 */
-	private static $instance;
-
-	/**
 	 * The relation table name in MySQL, set during instantiation.
 	 *
 	 * @since  3.15.0
@@ -50,28 +41,37 @@ class Wordlift_Relation_Service {
 	 *
 	 * @since 3.15.0
 	 */
-	public function __construct() {
+	protected function __construct() {
+		global $wpdb;
 
 		self::$log = Wordlift_Log_Service::get_logger( get_class() );
-
-		global $wpdb;
 
 		// The relations table.
 		$this->relation_table = "{$wpdb->prefix}wl_relation_instances";
 
-		self::$instance = $this;
-
 	}
+
+	/**
+	 * The singleton instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var Wordlift_Relation_Service $instance The singleton instance.
+	 */
+	private static $instance = null;
 
 	/**
 	 * Get the singleton instance.
 	 *
-	 * @return \Wordlift_Relation_Service The {@link Wordlift_Relation_Service}
-	 *                                    singleton instance.
+	 * @return Wordlift_Relation_Service The {@link Wordlift_Relation_Service} singleton instance.
 	 * @since  3.15.0
 	 * @access public
 	 */
 	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
 
 		return self::$instance;
 	}

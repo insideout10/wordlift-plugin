@@ -22,15 +22,6 @@ use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 class Wordlift_Entity_Uri_Service {
 
 	/**
-	 * Holds the {@link Wordlift_Entity_Uri_Service} instance.
-	 *
-	 * @since 3.21.5
-	 * @access private
-	 * @var Wordlift_Entity_Uri_Service $instance The {@link Wordlift_Entity_Uri_Service} singleton.
-	 */
-	private static $instance;
-
-	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
 	 * @since  3.16.3
@@ -61,18 +52,42 @@ class Wordlift_Entity_Uri_Service {
 	 * @since 3.16.3
 	 *
 	 */
-	public function __construct( $content_service ) {
+	protected function __construct() {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
-		$this->content_service       = $content_service;
+		$this->content_service = Wordpress_Content_Service::get_instance();
 
 		// Add a filter to the `rest_post_dispatch` filter to add the wl_entity_url meta as `wl:entity_url`.
 		add_filter( 'rest_post_dispatch', array( $this, 'rest_post_dispatch' ) );
 		add_filter( 'wl_content_service__post__not_found', array( $this, 'content_service__post__not_found' ), 10, 2 );
 
-		self::$instance = $this;
+	}
 
+	/**
+	 * Holds the {@link Wordlift_Entity_Uri_Service} instance.
+	 *
+	 * @since 3.21.5
+	 * @access private
+	 * @var Wordlift_Entity_Uri_Service $instance The {@link Wordlift_Entity_Uri_Service} singleton.
+	 */
+	private static $instance = null;
+
+	/**
+	 * Get the singleton.
+	 *
+	 * @return Wordlift_Entity_Uri_Service The singleton instance.
+	 * @since 3.21.5
+	 */
+	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			$entity_uri_cache_service = new Wordlift_File_Cache_Service( WL_TEMP_DIR . 'entity_uri/' );
+			self::$instance           = new Wordlift_Cached_Entity_Uri_Service( $entity_uri_cache_service );
+
+		}
+
+		return self::$instance;
 	}
 
 	/**
@@ -85,17 +100,6 @@ class Wordlift_Entity_Uri_Service {
 	 */
 	public function content_service__post__not_found( $post, $uri ) {
 		return $this->get_post_id_from_url( $uri );
-	}
-
-	/**
-	 * Get the singleton.
-	 *
-	 * @return Wordlift_Entity_Uri_Service The singleton instance.
-	 * @since 3.21.5
-	 */
-	public static function get_instance() {
-
-		return self::$instance;
 	}
 
 	/**
@@ -140,7 +144,7 @@ class Wordlift_Entity_Uri_Service {
 			$uris = get_post_meta( $item, Wordlift_Schema_Service::FIELD_SAME_AS );
 
 			$uri = Wordpress_Content_Service::get_instance()
-			                                     ->get_entity_id( Wordpress_Content_Id::create_post( $item ) );
+			                                ->get_entity_id( Wordpress_Content_Id::create_post( $item ) );
 
 			if ( isset( $uri ) ) {
 				$uris[] = $uri;

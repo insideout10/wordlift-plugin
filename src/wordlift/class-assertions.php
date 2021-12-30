@@ -42,7 +42,7 @@ class Assertions {
 	 * @throws Exception when the argument is not a string.
 	 */
 	public static function is_string( $arg, $message = 'Value must be a string' ) {
-		if ( ! is_string( $arg, $message ) ) {
+		if ( ! is_string( $arg ) ) {
 			throw new Exception( $message );
 		}
 	}

@@ -7,9 +7,9 @@
  * @subpackage Wordlift/includes
  */
 
-use Wordlift\Assertions;
 use Wordlift\Content\Content_Service;
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Object_Type_Enum;
 
 /**
@@ -29,15 +29,6 @@ class Wordlift_Entity_Service {
 	 * @var \Wordlift_Log_Service $log The Log service.
 	 */
 	private $log;
-
-	/**
-	 * The UI service.
-	 *
-	 * @since  3.2.0
-	 * @access private
-	 * @var \Wordlift_UI_Service $ui_service The UI service.
-	 */
-	private $ui_service;
 
 	/**
 	 * The {@link Wordlift_Relation_Service} instance.
@@ -87,46 +78,42 @@ class Wordlift_Entity_Service {
                 <input name="wl_alternative_label[]" size="30" value="%s" id="wl-alternative-label" type="text">
                 <button class="button wl-delete-button">%s</button>
                 </div>';
+
+	/**
+	 * Create a Wordlift_Entity_Service instance.
+	 *
+	 * @throws Exception if the `$content_service` is not of the `Content_Service` type.
+	 * @since 3.2.0
+	 */
+	protected function __construct() {
+		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Entity_Service' );
+
+		$this->entity_uri_service = Wordlift_Entity_Uri_Service::get_instance();
+		$this->relation_service   = Wordlift_Relation_Service::get_instance();
+		$this->content_service    = Wordpress_Content_Service::get_instance();
+
+	}
+
 	/**
 	 * A singleton instance of the Entity service.
 	 *
 	 * @since  3.2.0
 	 * @access private
-	 * @var \Wordlift_Entity_Service $instance A singleton instance of the Entity service.
+	 * @var Wordlift_Entity_Service $instance A singleton instance of the Entity service.
 	 */
-	private static $instance;
-
-	/**
-	 * Create a Wordlift_Entity_Service instance.
-	 *
-	 * @param \Wordlift_UI_Service $ui_service The UI service.
-	 * @param \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
-	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
-	 *
-	 * @since 3.2.0
-	 *
-	 */
-	public function __construct( $ui_service, $relation_service, $entity_uri_service, $content_service ) {
-		Assertions::is_a( $content_service, '\Wordlift\Content\Content_Service', '`content_service` must be of `\Wordlift\Content\Content_Service` type' );
-
-		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Entity_Service' );
-
-		$this->ui_service         = $ui_service;
-		$this->relation_service   = $relation_service;
-		$this->entity_uri_service = $entity_uri_service;
-		$this->content_service    = $content_service;
-
-		// Set the singleton instance.
-		self::$instance = $this;
-	}
+	private static $instance = null;
 
 	/**
 	 * Get the singleton instance of the Entity service.
 	 *
-	 * @return \Wordlift_Entity_Service The singleton instance of the Entity service.
+	 * @return Wordlift_Entity_Service The singleton instance of the Entity service.
 	 * @since 3.2.0
 	 */
 	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
 
 		return self::$instance;
 	}
@@ -411,7 +398,7 @@ class Wordlift_Entity_Service {
 		}
 
 		// Print the input template.
-		$this->ui_service->print_template( 'wl-tmpl-alternative-label-input', $this->get_alternative_label_input() );
+		Wordlift_UI_Service::print_template( 'wl-tmpl-alternative-label-input', $this->get_alternative_label_input() );
 
 		// Print all the currently set alternative labels.
 		foreach ( $this->get_alternative_labels( $post->ID ) as $alt_label ) {
@@ -421,7 +408,7 @@ class Wordlift_Entity_Service {
 		};
 
 		// Print the button.
-		$this->ui_service->print_button( 'wl-add-alternative-labels-button', __( 'Add more titles', 'wordlift' ) );
+		Wordlift_UI_Service::print_button( 'wl-add-alternative-labels-button', __( 'Add more titles', 'wordlift' ) );
 
 	}
 

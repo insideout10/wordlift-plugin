@@ -7,9 +7,10 @@
  * @since 3.32.0
  * @package Wordlift\Analysis\Entity_Provider
  */
+
 namespace Wordlift\Analysis\Entity_Provider;
 
-class Post_Entity_Provider extends Entity_Provider {
+class Post_Entity_Provider implements Entity_Provider {
 
 	/**
 	 * @var \Wordlift_Entity_Uri_Service
@@ -25,10 +26,9 @@ class Post_Entity_Provider extends Entity_Provider {
 	private $post_image_storage;
 
 	public function __construct( $entity_uri_service, $entity_type_service, $post_image_storage ) {
-		parent::__construct();
-		$this->entity_uri_service = $entity_uri_service;
+		$this->entity_uri_service  = $entity_uri_service;
 		$this->entity_type_service = $entity_type_service;
-		$this->post_image_storage = $post_image_storage;
+		$this->post_image_storage  = $post_image_storage;
 	}
 
 

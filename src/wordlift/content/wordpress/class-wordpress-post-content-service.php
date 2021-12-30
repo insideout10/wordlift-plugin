@@ -17,30 +17,21 @@ use Wordlift_Schema_Service;
 
 class Wordpress_Post_Content_Service extends Abstract_Wordpress_Content_Service {
 
+	private static $instance = null;
+
 	/**
 	 * The singleton instance. We use this only to provide this instance to those classes where we have no access to
 	 * the constructor.
 	 *
 	 * @return Wordpress_Post_Content_Service
-	 * @deprecated
 	 */
 	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
 		return self::$instance;
-	}
-
-	private static $instance;
-
-	/**
-	 * Create an instance of the {@link Content_Service}.
-	 *
-	 * @param string $dataset_uri The dataset URI.
-	 *
-	 * @throws Exception when the arguments are invalid.
-	 */
-	public function __construct( $dataset_uri ) {
-		parent::__construct( $dataset_uri );
-
-		self::$instance = $this;
 	}
 
 	/**
@@ -126,6 +117,9 @@ class Wordpress_Post_Content_Service extends Abstract_Wordpress_Content_Service 
 
 		if ( ! isset( $rel_uri ) ) {
 			$rel_uri = Entity_Uri_Generator::create_uri( $content_id->get_type(), $content_id->get_id() );
+			if ( ! isset( $rel_uri ) ) {
+				return null;
+			}
 			$this->set_entity_id( $content_id, $rel_uri );
 		}
 

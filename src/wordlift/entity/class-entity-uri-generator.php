@@ -15,7 +15,9 @@ class Entity_Uri_Generator {
 					return null;
 				}
 
-				return $post->post_type . '/' . $post->post_name;
+				$slug = $post->post_name ?: sanitize_title_with_dashes( $post->post_title ) . '-' . $post->ID;
+
+				return $post->post_type . '/' . $slug;
 
 			case Object_Type_Enum::TERM:
 				$term = get_term( $id );

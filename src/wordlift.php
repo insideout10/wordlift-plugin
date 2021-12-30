@@ -65,6 +65,14 @@ if ( ! apply_filters( 'wl_is_enabled', true ) ) {
 
 require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 
+/*
+	 * We introduce the WordLift autoloader, since we start using classes in namespaces, i.e. Wordlift\Http.
+	 *
+	 * @since 3.21.2
+	 */
+wordlift_plugin_autoload_register();
+
+
 // Include WordLift constants.
 require_once( 'wordlift_constants.php' );
 
@@ -73,6 +81,8 @@ require_once( 'modules/core/wordlift_core.php' );
 
 require_once( 'deprecations.php' );
 
+// Load early to enable/disable features.
+require_once plugin_dir_path( __FILE__ ) . 'wordlift/features/index.php';
 
 /**
  * The code that runs during plugin activation.
@@ -178,13 +188,6 @@ function run_wordlift() {
 		add_action( 'wp_ajax_wl_analyze', 'wl_ajax_analyze_disabled_action' );
 	}
 
-	/*
-	 * We introduce the WordLift autoloader, since we start using classes in namespaces, i.e. Wordlift\Http.
-	 *
-	 * @since 3.21.2
-	 */
-	wordlift_plugin_autoload_register();
-
 	$plugin = new Wordlift();
 	$plugin->run();
 
@@ -198,10 +201,6 @@ function run_wordlift() {
 	new Api_Data_Hooks();
 
 	add_action( 'plugins_loaded', function () {
-		// Load early. **PLEASE NOTE** that features are applied only to calls that happen **AFTER** the `plugins_loaded`
-		// action.
-		require_once plugin_dir_path( __FILE__ ) . 'wordlift/features/index.php';
-
 		// All features from registry should be initialized here.
 		$features_registry = Features_Registry::get_instance();
 		$features_registry->initialize_all_features();

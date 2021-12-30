@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Entity;
+namespace Wordlift\Content;
 
 interface Content {
 

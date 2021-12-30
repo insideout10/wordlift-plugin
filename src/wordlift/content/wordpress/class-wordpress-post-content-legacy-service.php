@@ -4,7 +4,6 @@ namespace Wordlift\Content\Wordpress;
 
 use Exception;
 use Wordlift\Assertions;
-use Wordlift\Content\Content_Service;
 use Wordlift\Entity\Entity_Uri_Generator;
 use Wordlift\Object_Type_Enum;
 use Wordlift_Entity_Service;
@@ -12,30 +11,21 @@ use Wordlift_Schema_Service;
 
 class Wordpress_Post_Content_Legacy_Service extends Abstract_Wordpress_Content_Service {
 
+	private static $instance = null;
+
 	/**
 	 * The singleton instance. We use this only to provide this instance to those classes where we have no access to
 	 * the constructor.
 	 *
 	 * @return Wordpress_Post_Content_Legacy_Service
-	 * @deprecated
 	 */
 	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
 		return self::$instance;
-	}
-
-	private static $instance;
-
-	/**
-	 * Create an instance of the {@link Content_Service}.
-	 *
-	 * @param string $dataset_uri The dataset URI.
-	 *
-	 * @throws Exception when the arguments are invalid.
-	 */
-	public function __construct( $dataset_uri ) {
-		parent::__construct( $dataset_uri );
-
-		self::$instance = $this;
 	}
 
 	/**
@@ -57,9 +47,11 @@ class Wordpress_Post_Content_Legacy_Service extends Abstract_Wordpress_Content_S
 			'post_status'         => 'any',
 			'post_type'           => Wordlift_Entity_Service::valid_entity_post_types(),
 			'meta_query'          => array(
-				'key'     => WL_ENTITY_URL_META_NAME,
-				'value'   => $uri,
-				'compare' => '=',
+				array(
+					'key'     => WL_ENTITY_URL_META_NAME,
+					'value'   => $uri,
+					'compare' => '=',
+				),
 			),
 		);
 
@@ -94,9 +86,11 @@ class Wordpress_Post_Content_Legacy_Service extends Abstract_Wordpress_Content_S
 			'post_status'         => 'any',
 			'post_type'           => Wordlift_Entity_Service::valid_entity_post_types(),
 			'meta_query'          => array(
-				'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
-				'value'   => $uri,
-				'compare' => '=',
+				array(
+					'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
+					'value'   => $uri,
+					'compare' => '=',
+				),
 			),
 		);
 
@@ -105,7 +99,7 @@ class Wordpress_Post_Content_Legacy_Service extends Abstract_Wordpress_Content_S
 		// Get the current post or allow 3rd parties to provide a replacement.
 		$post = current( $posts ) ?: apply_filters( 'wl_content_service__post__not_found', null, $uri );
 
-		if ( isset( $post ) ) {
+		if ( is_a( $post, '\WP_Post' ) ) {
 			return new Wordpress_Content( current( $posts ) );
 		}
 
@@ -141,7 +135,7 @@ class Wordpress_Post_Content_Legacy_Service extends Abstract_Wordpress_Content_S
 		}
 
 		$abs_url = $this->make_absolute( $uri );
-		
+
 		update_post_meta( $content_id->get_id(), WL_ENTITY_URL_META_NAME, $abs_url );
 	}
 

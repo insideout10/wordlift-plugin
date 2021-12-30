@@ -18,27 +18,6 @@
  * @group admin
  */
 class Wordlift_Admin_Country_Select_Element_Test extends Wordlift_Unit_Test_Case {
-
-	/**
-	 * The {@link Wordlift_Admin_Country_Select_Element} element renderer under
-	 * test.
-	 *
-	 * @since  3.18.0
-	 * @access private
-	 * @var \Wordlift_Admin_Country_Select_Element $country_select_element The {@link Wordlift_Admin_Country_Select_Element} element renderer.
-	 */
-	private $country_select_element;
-
-	/**
-	 * @inheritdoc
-	 */
-	function setUp() {
-		parent::setUp();
-
-		$this->country_select_element = $this->get_wordlift_test()->get_country_select_element();
-
-	}
-
 	/**
 	 * Test the default selected value (en) when no value is passed.
 	 *
@@ -47,7 +26,8 @@ class Wordlift_Admin_Country_Select_Element_Test extends Wordlift_Unit_Test_Case
 	public function test_default_value() {
 
 		ob_start();
-		$this->country_select_element->render( array() );
+		$country_select_element = new Wordlift_Admin_Country_Select_Element();
+		$country_select_element->render( array() );
 		$output = ob_get_clean();
 
 		$matches = array();
@@ -70,7 +50,8 @@ class Wordlift_Admin_Country_Select_Element_Test extends Wordlift_Unit_Test_Case
 	public function test_custom_value() {
 
 		ob_start();
-		$this->country_select_element->render( array( 'value' => 'it' ) );
+		$country_select_element = new Wordlift_Admin_Country_Select_Element();
+		$country_select_element->render( array( 'value' => 'it' ) );
 		$output = ob_get_clean();
 
 		$matches = array();
@@ -93,7 +74,8 @@ class Wordlift_Admin_Country_Select_Element_Test extends Wordlift_Unit_Test_Case
 	public function test_unknown_value() {
 
 		ob_start();
-		$this->country_select_element->render( array( 'value' => 'zzz' ) );
+		$country_select_element = new Wordlift_Admin_Country_Select_Element();
+		$country_select_element->render( array( 'value' => 'zzz' ) );
 		$output = ob_get_clean();
 
 		$matches = array();

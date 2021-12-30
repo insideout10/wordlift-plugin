@@ -2,7 +2,7 @@
 
 namespace Wordlift\Content\Wordpress;
 
-use Wordlift\Entity\Content;
+use Wordlift\Content\Content;
 use WP_Post;
 use WP_Term;
 use WP_User;

@@ -9,7 +9,6 @@
 
 namespace Wordlift\Analysis\Response;
 
-use Wordlift\Analysis\Entity_Provider\Entity_Provider_Registry;
 use Wordlift\Entity\Entity_Helper;
 
 class Analysis_Response_Ops_Factory {
@@ -35,10 +34,6 @@ class Analysis_Response_Ops_Factory {
 	private $entity_helper;
 
 	private static $instance;
-	/**
-	 * @var Entity_Provider_Registry
-	 */
-	private $entity_provider_registry;
 
 	/**
 	 * Analysis_Response_Ops constructor.
@@ -48,11 +43,10 @@ class Analysis_Response_Ops_Factory {
 	 *
 	 * @since 3.25.1
 	 */
-	public function __construct( $entity_uri_service, $entity_helper, $entity_provider_registry ) {
+	public function __construct( $entity_uri_service, $entity_helper ) {
 
 		$this->entity_uri_service       = $entity_uri_service;
 		$this->entity_helper            = $entity_helper;
-		$this->entity_provider_registry = $entity_provider_registry;
 		self::$instance                 = $this;
 
 	}
@@ -67,7 +61,6 @@ class Analysis_Response_Ops_Factory {
 		return new Analysis_Response_Ops(
 			$this->entity_uri_service,
 			$this->entity_helper,
-			$this->entity_provider_registry,
 			$json,
 			$post_id );
 	}

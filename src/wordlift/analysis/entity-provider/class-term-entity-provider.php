@@ -13,7 +13,7 @@ namespace Wordlift\Analysis\Entity_Provider;
 use Wordlift\Content\Wordpress\Wordpress_Term_Content_Service;
 use Wordlift\Term\Type_Service;
 
-class Term_Entity_Provider extends Entity_Provider {
+class Term_Entity_Provider implements Entity_Provider {
 
 	/**
 	 * @var Type_Service
@@ -21,7 +21,6 @@ class Term_Entity_Provider extends Entity_Provider {
 	private $term_type_service;
 
 	public function __construct() {
-		parent::__construct();
 		$this->term_type_service = Type_Service::get_instance();
 	}
 

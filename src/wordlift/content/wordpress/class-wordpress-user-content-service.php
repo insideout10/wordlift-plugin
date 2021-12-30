@@ -9,35 +9,44 @@ use Wordlift\Object_Type_Enum;
 
 class Wordpress_User_Content_Service extends Abstract_Wordpress_Content_Service {
 
+	private static $instance = null;
+
 	/**
 	 * The singleton instance. We use this only to provide this instance to those classes where we have no access to
 	 * the constructor.
 	 *
 	 * @return Wordpress_User_Content_Service
-	 * @deprecated
 	 */
 	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
 		return self::$instance;
 	}
 
-	private static $instance;
-
-	/**
-	 * Create an instance of the {@link Content_Service}.
-	 *
-	 * @param string $dataset_uri The dataset URI.
-	 *
-	 * @throws Exception when the arguments are invalid.
-	 */
-	public function __construct( $dataset_uri ) {
-		parent::__construct( $dataset_uri );
-
-		self::$instance = $this;
-	}
-
 	function get_by_entity_id( $uri ) {
-		// @@todo: implement
-		throw new Exception( 'Not implemented' );
+		$abs_uri = $this->make_absolute( $uri );
+
+		Assertions::starts_with( $abs_uri, $this->get_dataset_uri(), '`uri` must be within the dataset URI scope.' );
+
+		global $wpdb;
+
+		$user_id = $wpdb->get_var( $wpdb->prepare( "
+			SELECT u.ID 
+			FROM $wpdb->users AS u
+			INNER JOIN $wpdb->usermeta AS um
+			    ON u.ID = um.user_id
+			WHERE um.meta_key = 'entity_url' AND um.meta_value = %s
+			LIMIT 1
+		", $abs_uri ) );
+
+		if ( isset( $user_id ) ) {
+			return new Wordpress_Content( get_userdata( $user_id ) );
+		}
+
+		return null;
 	}
 
 	/**
@@ -51,8 +60,20 @@ class Wordpress_User_Content_Service extends Abstract_Wordpress_Content_Service 
 			return $this->get_by_entity_id( $uri );
 		}
 
-		// @@todo implement
-		throw new Exception( 'Not implemented.' );
+		global $wpdb;
+
+		$user_id = $wpdb->get_var( $wpdb->prepare( "
+			SELECT u.ID 
+			FROM $wpdb->users AS u
+			INNER JOIN $wpdb->usermeta AS um
+			    ON u.ID = um.user_id
+			WHERE um.meta_key IN ( 'entity_url', 'entity_same_as' ) AND um.meta_value = %s
+			LIMIT 1
+		", $uri ) );
+
+		if ( isset( $user_id ) ) {
+			return new Wordpress_Content( get_userdata( $user_id ) );
+		}
 
 		return null;
 	}

@@ -6,8 +6,6 @@
 
 namespace Wordlift\Content;
 
-use Wordlift\Entity\Content;
-
 interface Content_Service {
 
 	/**

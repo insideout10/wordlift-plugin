@@ -18,35 +18,6 @@
 class Wordlift_Admin_Publisher_Element_Test extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * The {@link Wordlift_Admin_Publisher_Element} class under testing.
-	 *
-	 * @since  3.11.0
-	 * @access private
-	 * @var \Wordlift_Admin_Publisher_Element $publisher_element The {@link Wordlift_Admin_Publisher_Element} class.
-	 */
-	private $publisher_element;
-
-	/**
-	 * The {@link Wordlift_Entity_Service} instance.
-	 *
-	 * @since  3.11.0
-	 * @access private
-	 * @var \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
-	 */
-	private $entity_service;
-
-	/**
-	 * @inheritdoc
-	 */
-	function setUp() {
-		parent::setUp();
-
-		$this->publisher_element     = $this->get_wordlift_test()->get_publisher_element();
-		$this->entity_service        = $this->get_wordlift_test()->get_entity_service();
-
-	}
-
-	/**
 	 * Test the Publisher element w/o any publisher configured or available in WP.
 	 *
 	 * @since 3.11.0
@@ -58,7 +29,8 @@ class Wordlift_Admin_Publisher_Element_Test extends Wordlift_Unit_Test_Case {
 
 		// Call the render and catch the output.
 		ob_start();
-		$this->publisher_element->render( array( 'name' => $name ) );
+		$publisher_element = new Wordlift_Admin_Publisher_Element( new Wordlift_Publisher_Service(), new Wordlift_Admin_Tabs_Element(), new Wordlift_Admin_Select2_Element() );
+		$publisher_element->render( array( 'name' => $name ) );
 		$output = ob_get_clean();
 
 		// Check that the name is there.
@@ -81,11 +53,12 @@ class Wordlift_Admin_Publisher_Element_Test extends Wordlift_Unit_Test_Case {
 	public function test_with_a_potential_publisher() {
 
 		// Create an entity for the publisher.
-		$post_id = $this->entity_service->create( 'John Smith', 'http://schema.org/Person', null, 'publish' );
+		$post_id = Wordlift_Entity_Service::get_instance()->create( 'John Smith', 'http://schema.org/Person', null, 'publish' );
 
 		// Call the render and catch the output.
 		ob_start();
-		$this->publisher_element->render( array() );
+		$publisher_element = new Wordlift_Admin_Publisher_Element( new Wordlift_Publisher_Service(), new Wordlift_Admin_Tabs_Element(), new Wordlift_Admin_Select2_Element() );
+		$publisher_element->render( array() );
 		$output = ob_get_clean();
 
 		// Check that the data-active flag is set to 0, since there's one potential
@@ -111,14 +84,15 @@ class Wordlift_Admin_Publisher_Element_Test extends Wordlift_Unit_Test_Case {
 	public function test_with_configured_publisher() {
 
 		// Create an entity for the publisher.
-		$post_id = $this->entity_service->create( 'Jane Doe', 'http://schema.org/Person', null, 'publish' );
+		$post_id = Wordlift_Entity_Service::get_instance()->create( 'Jane Doe', 'http://schema.org/Person', null, 'publish' );
 
 		// Set the publisher.
 		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $post_id );
 
 		// Call the render and catch the output.
 		ob_start();
-		$this->publisher_element->render( array() );
+		$publisher_element = new Wordlift_Admin_Publisher_Element( new Wordlift_Publisher_Service(), new Wordlift_Admin_Tabs_Element(), new Wordlift_Admin_Select2_Element() );
+		$publisher_element->render( array() );
 		$output = ob_get_clean();
 
 		// Check that the data-active flag is set to 0, since there's one potential

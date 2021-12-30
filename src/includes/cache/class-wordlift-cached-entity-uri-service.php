@@ -7,8 +7,6 @@
  * @subpackage Wordlift/includes/cache
  */
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
-
 /**
  * Define the {@link Wordlift_Cached_Entity_Uri_Service} instance.
  *
@@ -38,31 +36,21 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	 * Create a {@link Wordlift_Cached_Entity_Uri_Service} instance.
 	 *
 	 * @param \Wordlift_Cache_Service $cache_service
-	 * @param Wordpress_Content_Service $content_service
 	 *
 	 * @since 3.16.3
 	 *
 	 */
-	public function __construct( $cache_service, $content_service ) {
-		parent::__construct( $content_service );
+	public function __construct( $cache_service ) {
+		parent::__construct();
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
 		// Add hooks for meta being added/modified/deleted.
 		$this->cache_service = $cache_service;
 
-		add_action( 'add_post_meta', array(
-			$this,
-			'on_before_post_meta_add',
-		), 10, 3 );
-		add_action( 'update_post_meta', array(
-			$this,
-			'on_before_post_meta_change',
-		), 10, 4 );
-		add_action( 'delete_post_meta', array(
-			$this,
-			'on_before_post_meta_change',
-		), 10, 4 );
+		add_action( 'add_post_meta', array( $this, 'on_before_post_meta_add', ), 10, 3 );
+		add_action( 'update_post_meta', array( $this, 'on_before_post_meta_change', ), 10, 4 );
+		add_action( 'delete_post_meta', array( $this, 'on_before_post_meta_change', ), 10, 4 );
 
 	}
 
