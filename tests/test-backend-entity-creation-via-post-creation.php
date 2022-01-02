@@ -103,7 +103,7 @@ EOF;
 		$content = <<<EOF
     <span itemid="$original_entity_uri">Gran Sasso</span>
 EOF;
-		// Create a post referincing to the created entity
+		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 		// Here the entity should be created instead
 
@@ -154,33 +154,28 @@ EOF;
 	}
 
 	// In this case we are testing this workflow:
-	// 1 entities with the same label and type of an existing one
-	// is created trough the disambiguation workflow
+	// 1 entity with the same label and type of an existing one
+	// is created through the disambiguation workflow
 	function testEntitiesWithSameLabelAndTypeOverride() {
 
 		Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
-		// Create a post referincing to the created entity
-		$entity_id = wl_create_post( '', 'tex_willer', 'Tex Willer', 'draft', 'entity' );
+		// Create a post referencing to the created entity
+		$entity_id = wl_create_post( '', 'tex-willer', 'Tex Willer', 'draft', 'entity' );
 		wl_set_entity_main_type( $entity_id, 'wl-person' );
 
 		$terms = wp_get_post_terms( $entity_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$this->assertCount( 1, $terms );
 		$this->assertEquals( 'person', $terms[0]->slug );
 
+		$this->assertEquals( 'http://data.example.org/data/entity/tex-willer', wl_get_entity_uri( $entity_id ) );
+
 		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_tex_willer_as_who.json'
 		);
 		$_POST = $fake;
 
-		$content        = '<span itemid="local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt">Tex Willer</span>';
-		$new_entity_uri = sprintf( '%s/%s/%s',
-			wl_configuration_get_redlink_dataset_uri(),
-			Wordlift_Entity_Service::TYPE_NAME,
-			wl_sanitize_uri_path( 'Tex Willer' )
-		);
-
-		$this->assertEquals( $new_entity_uri, wl_get_entity_uri( $entity_id ) );
+		$content = '<span itemid="local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt">Tex Willer</span>';
 
 		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
@@ -227,9 +222,9 @@ EOF;
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 
 		$new_entity_uri = sprintf( '%s/%s/%s',
-			wl_configuration_get_redlink_dataset_uri(),
+			untrailingslashit( wl_configuration_get_redlink_dataset_uri() ),
 			Wordlift_Entity_Service::TYPE_NAME,
-			wl_sanitize_uri_path( 'Ryan Carson' )
+			sanitize_title_with_dashes( 'Ryan Carson' )
 		);
 
 		// And it should be related to the post as what predicate
@@ -251,13 +246,13 @@ EOF;
 		$this->assertContains( $entity_1->ID, $related_entity_ids );
 
 		$entity_2 = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri(
-			$new_entity_uri . '_2'
+			$new_entity_uri . '-2'
 		);
 		$this->assertNotNull( $entity_2 );
 		$this->assertContains( $entity_2->ID, $related_entity_ids );
 
 		$entity_3 = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri(
-			$new_entity_uri . '_3'
+			$new_entity_uri . '-3'
 		);
 		$this->assertNotNull( $entity_3 );
 		$this->assertContains( $entity_3->ID, $related_entity_ids );

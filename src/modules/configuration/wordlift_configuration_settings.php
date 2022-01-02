@@ -3,11 +3,11 @@
 /**
  * Get the configured WordLift key.
  *
- * @deprecated use Wordlift_Configuration_Service::get_instance()->get_key()
- *
+ * @return string The configured WordLift key or an empty string.
  * @since      3.0.0
  *
- * @return string The configured WordLift key or an empty string.
+ * @deprecated use Wordlift_Configuration_Service::get_instance()->get_key()
+ *
  */
 function wl_configuration_get_key() {
 
@@ -17,12 +17,12 @@ function wl_configuration_get_key() {
 /**
  * Get the Redlink dataset URI.
  *
- * @deprecated use Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
- *
+ * @return string The Redlink dataset URI.
  * @since      3.10.0 deprecated.
  * @since      3.0.0
  *
- * @return string The Redlink dataset URI.
+ * @deprecated use Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
+ *
  */
 function wl_configuration_get_redlink_dataset_uri() {
 
@@ -33,11 +33,11 @@ function wl_configuration_get_redlink_dataset_uri() {
  * Get the URL to use for running analyses. If a WordLift key is set, then a WordLift Server URL is returned, otherwise
  * a Redlink URL.
  *
- * @since 3.0.0
- *
+ * @return string The analysis URL.
  * @uses  wl_configuration_get_key() to get the WordLift key.
  *
- * @return string The analysis URL.
+ * @since 3.0.0
+ *
  */
 function wl_configuration_get_analyzer_url() {
 
@@ -57,9 +57,9 @@ function wl_configuration_get_analyzer_url() {
 /**
  * Get the URL to perform SELECT queries.
  *
+ * @return string The URL to call to perform the SELECT query.
  * @since 3.0.0
  *
- * @return string The URL to call to perform the SELECT query.
  */
 function wl_configuration_get_query_select_url() {
 
@@ -76,9 +76,9 @@ function wl_configuration_get_query_select_url() {
 /**
  * Get the URL to perform UPDATE queries.
  *
+ * @return string The URL to call to perform the UPDATE query.
  * @since 3.0.0
  *
- * @return string The URL to call to perform the UPDATE query.
  */
 function wl_configuration_get_query_update_url() {
 
@@ -95,9 +95,9 @@ function wl_configuration_get_query_update_url() {
 /**
  * Get the URL to perform indexing operations.
  *
+ * @return string The URL to call to perform the indexing operation.
  * @since 3.0.0
  *
- * @return string The URL to call to perform the indexing operation.
  */
 function wl_configuration_get_dataset_index_url() {
 

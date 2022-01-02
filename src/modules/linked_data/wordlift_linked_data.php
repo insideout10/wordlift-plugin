@@ -7,6 +7,8 @@
  * @subpackage Wordlift/modules/linked_data
  */
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Object_Relation_Factory;
 
@@ -109,11 +111,12 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	// wl_write_log( "[ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]" );
 
 	// Get the entity service instance.
-	$entity_service = Wordlift_Entity_Service::get_instance();
+	$entity_service  = Wordlift_Entity_Service::get_instance();
+	$uri_service     = Wordlift_Entity_Uri_Service::get_instance();
+	$content_service = Wordpress_Content_Service::get_instance();
 
 	// Store mapping between tmp new entities uris and real new entities uri
 	$entities_uri_mapping = array();
-
 
 	// Save all the selected internal entity uris to this variable.
 	$internal_entity_uris = array();
@@ -133,42 +136,66 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			$entity_type = ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) ?
 				$entity['main_type'] : null;
 
-			// Look if current entity uri matches an internal existing entity, meaning:
-			// 1. when $entity_uri is an internal uri
-			// 2. when $entity_uri is an external uri used as sameAs of an internal entity
-			$ie = $entity_service->get_entity_post_by_uri( $entity_uri );
+			if ( preg_match( '/^local-entity-.+/', $entity_uri ) ) {
+				$existing_entity = get_page_by_title( $entity['label'], OBJECT, Wordlift_Entity_Service::valid_entity_post_types() );
+				if ( isset( $existing_entity ) ) {
+					$existing_entity_type = Wordlift_Entity_Type_Service::get_instance()->get( $existing_entity->ID );
+					// Type doesn't match, continue to create a new entity.
+					if ( ! isset( $existing_entity_type ) || $existing_entity_type['css_class'] !== $entity['main_type'] ) {
+						$existing_entity = null;
+					}
+				}
+			} else {
+				// Look if current entity uri matches an internal existing entity, meaning:
+				// 1. when $entity_uri is an internal uri
+				// 2. when $entity_uri is an external uri used as sameAs of an internal entity
+				$existing_entity = $entity_service->get_entity_post_by_uri( $entity_uri );
+			}
 
-			// Dont save the entities which are not found, but also local.
-			if ( $ie === null && Wordlift_Entity_Uri_Service::get_instance()->is_internal( $entity_uri ) ) {
+			// Don't save the entities which are not found, but also local.
+			if ( ! isset( $existing_entity ) && $uri_service->is_internal( $entity_uri ) ) {
 				$internal_entity_uris[] = $entity_uri;
 				continue;
 			}
 
-			// Detect the uri depending if is an existing or a new entity
-			$uri                    = ( null === $ie ) ?
-				Wordlift_Uri_Service::get_instance()->build_uri(
-					$entity['label'],
-					Wordlift_Entity_Service::TYPE_NAME,
-					$entity_type
-				) : wl_get_entity_uri( $ie->ID );
-			$internal_entity_uris[] = $uri;
-			wl_write_log( "Map $entity_uri on $uri" );
-			$entities_uri_mapping[ $entity_uri ] = $uri;
+			if ( ! isset( $existing_entity ) ) {
+				$existing_entity = wl_save_entity( $entity );
+			}
+
+			$uri = $content_service->get_entity_id( Wordpress_Content_Id::create_post( $existing_entity->ID ) );
+
+			// Detect the uri whether is an existing or a new entity
+//			$uri = $existing_entity ? wl_get_entity_uri( $existing_entity->ID ) : null;
+//				// @@todo remove the bogus URI builder.
+//				Wordlift_Uri_Service::get_instance()->build_uri(
+//					$entity['label'],
+//					Wordlift_Entity_Service::TYPE_NAME,
+//					$entity_type
+//				) : ;
 
 			// Local entities have a tmp uri with 'local-entity-' prefix
 			// These uris need to be rewritten here and replaced in the content
-			if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
-				// Override the entity obj
-				$entity['uri'] = $uri;
-			}
+//			if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
+//				// Override the entity obj
+//				$entity['uri'] = $uri;
+//			}
 
 			// Update entity data with related post
 			$entity['related_post_id'] = $post_id;
 
 			// Save the entity if is a new entity
-			if ( null === $ie ) {
-				wl_save_entity( $entity );
-			}
+//			if ( null === $existing_entity ) {
+//				$related_entity_post = wl_save_entity( $entity );
+//
+//				// Ensure that the URI matches the one stored.
+//				$uri = Wordpress_Content_Service
+//					::get_instance()
+//					->get_entity_id( Wordpress_Content_Id::create_post( $related_entity_post->ID ) );
+//			}
+
+			$internal_entity_uris[] = $uri;
+			wl_write_log( "Map $entity_uri on $uri" );
+			$entities_uri_mapping[ $entity_uri ] = $uri;
 
 		}
 
@@ -248,6 +275,9 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			$uri = ( isset( $metadata_via_post[ $field ] ) ) ?
 				stripslashes( $metadata_via_post[ $field ] ) : '';
 
+			if ( empty( $uri ) ) {
+				continue;
+			}
 			$entity = $entity_service->get_entity_post_by_uri( $uri );
 
 			if ( $entity ) {
@@ -290,7 +320,6 @@ function wl_save_entity( $entity_data ) {
 
 	$log = Wordlift_Log_Service::get_logger( 'wl_save_entity' );
 
-	$uri = $entity_data['uri'];
 	/*
 	 * Data is coming from a $_POST, sanitize it.
 	 *
@@ -311,7 +340,8 @@ function wl_save_entity( $entity_data ) {
 	$synonyms = isset( $entity_data['synonym'] ) ? $entity_data['synonym'] : array();
 
 	// Check whether an entity already exists with the provided URI.
-	if ( null !== $post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri ) ) {
+	$uri = $entity_data['uri'];
+	if ( isset ( $uri ) && null !== $post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri ) ) {
 		$log->debug( "Post already exists for URI $uri." );
 
 		return $post;
@@ -408,7 +438,11 @@ function wl_save_entity( $entity_data ) {
 	$wl_uri = Wordlift_Entity_Service::get_instance()->get_uri( $post_id );
 
 	// Add the uri to the sameAs data if it's not a local URI.
-	if ( $wl_uri !== $uri ) {
+	if ( isset( $uri ) && preg_match( '@https?://.*@', $uri ) &&
+	     $wl_uri !== $uri &&
+	     // Only remote entities
+	     0 !== strpos( $uri, Wordlift_Configuration_Service::get_instance()->get_dataset_uri() )
+	) {
 		array_push( $same_as, $uri );
 	}
 

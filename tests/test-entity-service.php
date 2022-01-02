@@ -290,7 +290,7 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 		$entity_name = uniqid( 'entity', true );
 
 		$new_entity_uri = sprintf( '%s/%s/%s',
-			wl_configuration_get_redlink_dataset_uri(),
+			untrailingslashit( wl_configuration_get_redlink_dataset_uri() ),
 			Wordlift_Entity_Service::TYPE_NAME,
 			wl_sanitize_uri_path( $entity_name )
 		);
@@ -315,7 +315,7 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 		$entity_name = uniqid( 'entity', true );
 
 		$new_entity_uri = sprintf( '%s/%s/%s',
-			wl_configuration_get_redlink_dataset_uri(),
+			untrailingslashit( wl_configuration_get_redlink_dataset_uri() ),
 			Wordlift_Entity_Service::TYPE_NAME,
 			wl_sanitize_uri_path( $entity_name )
 		);
@@ -346,7 +346,7 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 		$entity_name = uniqid( 'entity', true );
 
 		$new_entity_uri = sprintf( '%s/%s/%s',
-			wl_configuration_get_redlink_dataset_uri(),
+			untrailingslashit( wl_configuration_get_redlink_dataset_uri() ),
 			Wordlift_Entity_Service::TYPE_NAME,
 			wl_sanitize_uri_path( $entity_name )
 		);

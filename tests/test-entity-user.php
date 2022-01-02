@@ -86,7 +86,7 @@ class UserTest extends Wordlift_Unit_Test_Case {
 	 */
 	function getURI( $id ) {
 
-		return wl_configuration_get_redlink_dataset_uri() . "/author/$id";
+		return untrailingslashit( wl_configuration_get_redlink_dataset_uri() ) . "/author/$id";
 
 	}
 

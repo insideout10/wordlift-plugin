@@ -27,6 +27,9 @@ class Wordpress_User_Content_Service extends Abstract_Wordpress_Content_Service 
 	}
 
 	function get_by_entity_id( $uri ) {
+		Assertions::is_string( $uri, '`uri` must be a string.' );
+		Assertions::not_empty( '`uri` cannot be empty.' );
+
 		$abs_uri = $this->make_absolute( $uri );
 
 		Assertions::starts_with( $abs_uri, $this->get_dataset_uri(), '`uri` must be within the dataset URI scope.' );
@@ -54,6 +57,7 @@ class Wordpress_User_Content_Service extends Abstract_Wordpress_Content_Service 
 	 */
 	function get_by_entity_id_or_same_as( $uri ) {
 		Assertions::is_string( $uri, '`uri` must be a string.' );
+		Assertions::not_empty( '`uri` cannot be empty.' );
 
 		// If it's a relative URI, or it's an internal URI, look in entity ID.
 		if ( ! $this->is_absolute( $uri ) || $this->is_internal( $uri ) ) {

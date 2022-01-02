@@ -35,6 +35,9 @@ class Wordpress_Post_Content_Legacy_Service extends Abstract_Wordpress_Content_S
 	 * @throws Exception when the URI is not within the dataset URI.
 	 */
 	function get_by_entity_id( $uri ) {
+		Assertions::is_string( $uri, '`uri` must be a string.' );
+		Assertions::not_empty( '`uri` cannot be empty.' );
+
 		$abs_uri = $this->make_absolute( $uri );
 
 		Assertions::starts_with( $abs_uri, $this->get_dataset_uri(), '`uri` must start with dataset URI.' );
@@ -49,7 +52,7 @@ class Wordpress_Post_Content_Legacy_Service extends Abstract_Wordpress_Content_S
 			'meta_query'          => array(
 				array(
 					'key'     => WL_ENTITY_URL_META_NAME,
-					'value'   => $uri,
+					'value'   => $abs_uri,
 					'compare' => '=',
 				),
 			),
@@ -60,7 +63,7 @@ class Wordpress_Post_Content_Legacy_Service extends Abstract_Wordpress_Content_S
 		// Get the current post or allow 3rd parties to provide a replacement.
 		$post = current( $posts ) ?: apply_filters( 'wl_content_service__post__not_found', null, $uri );
 
-		if ( isset( $post ) ) {
+		if ( is_a( $post, 'WP_Post' ) ) {
 			return new Wordpress_Content( current( $posts ) );
 		}
 
@@ -72,6 +75,7 @@ class Wordpress_Post_Content_Legacy_Service extends Abstract_Wordpress_Content_S
 	 */
 	function get_by_entity_id_or_same_as( $uri ) {
 		Assertions::is_string( $uri, '`uri` must be a string.' );
+		Assertions::not_empty( '`uri` cannot be empty.' );
 
 		// If it's a relative URI, or it's an internal URI, look in entity ID.
 		if ( ! $this->is_absolute( $uri ) || $this->is_internal( $uri ) ) {

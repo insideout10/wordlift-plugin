@@ -1,15 +1,15 @@
 {
-   "wl_entities":{
-      "local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt":{
-         "uri":"local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt",
-         "label":"Tex Willer",
-         "description":"Just a cowboy",
-         "main_type":"wl-person"
-      }
-   },
-   "wl_boxes":{
-      "who":[
-         "local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt"
-      ]
-   }
+  "wl_entities": {
+    "local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt": {
+      "uri": "local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt",
+      "label": "Tex Willer",
+      "description": "Just a cowboy",
+      "main_type": "wl-person"
+    }
+  },
+  "wl_boxes": {
+    "who": [
+      "local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt"
+    ]
+  }
 }

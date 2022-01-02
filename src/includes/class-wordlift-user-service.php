@@ -191,7 +191,7 @@ class Wordlift_User_Service {
 		 * @since 3.27.7 changed `user` to `author` to avoid potential clashes with CPTs ( `author` is reserved
 		 *  https://developer.wordpress.org/reference/functions/register_post_type/#reserved-post-types )
 		 */
-		return wl_configuration_get_redlink_dataset_uri() . "/author/$user->user_nicename";
+		return untrailingslashit( wl_configuration_get_redlink_dataset_uri() ) . "/author/$user->user_nicename";
 	}
 
 	/**

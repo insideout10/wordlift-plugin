@@ -2,6 +2,7 @@
 
 namespace Wordlift\Entity;
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Object_Type_Enum;
 
 class Entity_Uri_Generator {
@@ -17,7 +18,7 @@ class Entity_Uri_Generator {
 
 				$slug = $post->post_name ?: sanitize_title_with_dashes( $post->post_title ) . '-' . $post->ID;
 
-				return $post->post_type . '/' . $slug;
+				return self::ensure_unique( $post->post_type . '/' . $slug );
 
 			case Object_Type_Enum::TERM:
 				$term = get_term( $id );
@@ -25,7 +26,7 @@ class Entity_Uri_Generator {
 					return null;
 				}
 
-				return $term->taxonomy . '/' . $term->slug;
+				return self::ensure_unique( $term->taxonomy . '/' . $term->slug );
 
 			case Object_Type_Enum::USER:
 				$user = get_user_by( 'id', $id );
@@ -34,12 +35,26 @@ class Entity_Uri_Generator {
 					return null;
 				}
 
-				return 'user/' . $user->user_nicename;
+				return self::ensure_unique( 'user/' . $user->user_nicename );
 
 			default:
 		}
 
 		return null;
+	}
+
+	private static function ensure_unique( $rel_uri ) {
+		for ( $try_rel_uri = $rel_uri, $i = 2; $i < 100; $i ++ ) {
+			$content = Wordpress_Content_Service::get_instance()->get_by_entity_id( $try_rel_uri );
+			if ( ! isset( $content ) ) {
+				return $try_rel_uri;
+			}
+
+			$try_rel_uri = $rel_uri . '-' . $i;
+		}
+
+		// Giving up.
+		return $rel_uri . '-' . uniqid();
 	}
 
 }
