@@ -319,8 +319,7 @@ EOF;
 		// Retrieve the entity uri (the first key in wl_entities associative aray)
 		$entity_uri = current( array_keys( $fake['wl_entities'] ) );
 		// Retrieve the label
-		$raw_entity          = current( array_values( $fake['wl_entities'] ) );
-		$expected_entity_uri = $this->buildEntityUriForLabel( $raw_entity['label'] );
+		$expected_entity_uri = 'http://data.example.org/data/entity/loreal';
 		// Reference the entity to the post content
 		$content = <<<EOF
     <span itemid="$entity_uri">My entity</span>
@@ -565,6 +564,11 @@ EOF;
 		$original_label = uniqid( 'entity-original', true );
 		// Create an entity
 		$entity_id = wl_create_post( '', 'entity-1', $original_label, 'draft', 'entity' );
+
+		$expected_entity_uri = 'https://data.localdomain.localhost/dataset/entity/entity-1';
+		$entity_uri          = wl_get_entity_uri( $entity_id );
+		$this->assertEquals( $entity_uri, $expected_entity_uri );
+
 		// Check that there are no related posts for the entity
 		$related_post_ids = wl_core_get_related_post_ids( $entity_id, array( "predicate" => "what" ) );
 		$this->assertCount( 0, $related_post_ids );
@@ -585,7 +589,7 @@ EOF;
 		$fake = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_one_existing_entity_linked_as_what.json',
 			array(
-				'CURRENT_URI'   => $this->buildEntityUriForLabel( $original_label ),
+				'CURRENT_URI'   => 'https://data.localdomain.localhost/dataset/entity/entity-1',
 				'CURRENT_LABEL' => $alternative_label,
 			)
 		);
@@ -597,14 +601,10 @@ EOF;
 		$content = <<<EOF
     <span itemid="$original_entity_uri">$alternative_label</span>
 EOF;
-		// Create a post referincing to the created entity
+		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 		// Check that entity label is STILL properly mapped on entity post title
 		$this->assertEquals( $original_label, get_post( $entity_id )->post_title );
-
-		$expected_entity_uri = $this->buildEntityUriForLabel( $original_label );
-		$entity_uri          = wl_get_entity_uri( $entity_id );
-		$this->assertEquals( $entity_uri, $expected_entity_uri );
 
 		// And it should be related to the post as what predicate
 		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "what" ) );
@@ -637,7 +637,7 @@ EOF;
 	function buildEntityUriForLabel( $label ) {
 		return sprintf( '%s/%s/%s',
 			untrailingslashit( wl_configuration_get_redlink_dataset_uri() ),
-			'entity', wl_sanitize_uri_path( $label ) );
+			'entity', sanitize_title_with_dashes( $label ) );
 	}
 
 	function getThumbs( $post_id ) {

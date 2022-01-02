@@ -20,7 +20,7 @@ class Wordlift_Post_As_Recipe_Test extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		$this->post_to_jsonld_converter = $this->get_wordlift_test()->get_post_to_jsonld_converter();
+		$this->post_to_jsonld_converter = Wordlift_Post_To_Jsonld_Converter::get_instance();
 
 	}
 
@@ -60,7 +60,7 @@ class Wordlift_Post_As_Recipe_Test extends Wordlift_Unit_Test_Case {
 		) );
 
 		// JSON-LD.
-		$jsonld    = $this->post_to_jsonld_converter->convert( $post_id );
+		$jsonld    = Wordlift_Post_To_Jsonld_Converter::get_instance()->convert( $post_id );
 		$permalink = get_permalink( $post_id );
 
 		// Assertions.

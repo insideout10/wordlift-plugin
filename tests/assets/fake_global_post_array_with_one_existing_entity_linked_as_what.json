@@ -1,19 +1,19 @@
 {
-   "wl_entities":{
-      "{{CURRENT_URI}}":{
-         "uri":"{{CURRENT_URI}}",
-         "label":"{{CURRENT_LABEL}}",
-         "description":"Existing entity",
-         "main_type":"wl-thing",
-         "image":[
-         ],
-         "sameas":[
-         ]
-      }
-   },
-   "wl_boxes":{
-      "what":[
-         "{{CURRENT_URI}}"
+  "wl_entities": {
+    "{{CURRENT_URI}}": {
+      "uri": "{{CURRENT_URI}}",
+      "label": "{{CURRENT_LABEL}}",
+      "description": "Existing entity",
+      "main_type": "wl-thing",
+      "image": [
+      ],
+      "sameas": [
       ]
-   }
+    }
+  },
+  "wl_boxes": {
+    "what": [
+      "{{CURRENT_URI}}"
+    ]
+  }
 }

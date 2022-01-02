@@ -36,7 +36,7 @@ class Local_Autocomplete_Service_Test extends \Wordlift_Unit_Test_Case {
 		$autocomplete_service = new Local_Autocomplete_Service();
 		$results              = $autocomplete_service->query( 'Autocomplete Service', 'local', 'http://example.org/0' );
 
-		$this->assertCount( 50, $results, 'We don`t expect more than 50 results.' );
+		$this->assertCount( 49, $results, 'We don`t expect more than 50 results.' );
 
 	}
 
@@ -69,7 +69,7 @@ class Local_Autocomplete_Service_Test extends \Wordlift_Unit_Test_Case {
 		$autocomplete_service = new Local_Autocomplete_Service();
 		$results              = $autocomplete_service->query( 'Autocomplete Service', 'local', 'http://example.org/0' );
 
-		$this->assertCount( 25, $results, 'We expect 25 entities.' );
+		$this->assertCount( 24, $results, 'We expect 24 entities.' );
 
 	}
 
