@@ -1,5 +1,7 @@
 <?php
 
+use Wordlift\Entity\Entity_Rest_Service;
+
 /**
  * Define the Wordlift_Entity_Service_Test class.
  *
@@ -14,18 +16,19 @@ class Wordlift_Entity_Rest_Service_Test extends Wordlift_Unit_Test_Case {
 		global $wp_filter;
 		$wp_filter = array();
 		run_wordlift();
+
+		new Entity_Rest_Service( Wordlift_Entity_Type_Service::get_instance() );
 	}
 
 	public function test_when_entity_is_saved_with_wlEntityMainType_set_should_set_the_taxonomy_type() {
 		// We created an entity.
 		$entity_id = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 
-
 		$request = new \WP_REST_Request();
 
-		$request->set_param( 'wlEntityMainType', array('http://schema.org/LocalBusiness') );
+		$request->set_param( 'wlEntityMainType', array( 'http://schema.org/LocalBusiness' ) );
 
-		do_action( "rest_insert_entity", get_post( $entity_id ), $request, true );
+		do_action( 'rest_insert_entity', get_post( $entity_id ), $request, true );
 
 		// now check if we have the term http://schema.org/LocalBusiness in the entity.
 		$terms = wp_get_post_terms( $entity_id, 'wl_entity_type' );

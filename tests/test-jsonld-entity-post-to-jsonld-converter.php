@@ -55,7 +55,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 
 		$wordlift = new Wordlift_Test();
 
-		$this->entity_service                  = $wordlift->get_entity_service();
+		$this->entity_service                  = Wordlift_Entity_Service::get_instance();
 		$this->entity_post_to_jsonld_converter = $wordlift->get_entity_post_to_jsonld_converter();
 		$this->postid_to_jsonld_converter      = $wordlift->get_postid_to_jsonld_converter();
 

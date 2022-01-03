@@ -32,7 +32,7 @@ class Wordlift_Issue_711 extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		$this->entity_uri_service = $this->get_wordlift_test()->get_entity_uri_service();
+		$this->entity_uri_service = Wordlift_Entity_Uri_Service::get_instance();
 
 	}
 

@@ -61,7 +61,7 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		$wordlift = new Wordlift_Test();
 
-		$this->entity_service                  = $wordlift->get_entity_service();
+		$this->entity_service                  = Wordlift_Entity_Service::get_instance();
 		$this->entity_post_to_jsonld_converter = $wordlift->get_entity_post_to_jsonld_converter();
 		$this->jsonld_service                  = $wordlift->get_jsonld_service();
 

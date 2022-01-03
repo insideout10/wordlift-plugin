@@ -30,9 +30,7 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 		// We don't need to check the remote Linked Data store.
 		Wordlift_Unit_Test_Case::turn_off_entity_push();;
 
-		$wordlift = new Wordlift_Test();
-
-		$this->entity_service = $wordlift->get_entity_service();
+		$this->entity_service = Wordlift_Entity_Service::get_instance();
 	}
 
 	/**

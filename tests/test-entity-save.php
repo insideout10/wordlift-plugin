@@ -5,8 +5,6 @@
  */
 
 use Wordlift\Entity\Entity_No_Index_Flag;
-use Wordlift\Object_Type_Enum;
-use Wordlift\Relation\Object_Relation_Service;
 
 /**
  * Class Entity_Save_Test
@@ -81,6 +79,8 @@ class Entity_Save_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_when_entity_is_converted_to_article_should_remove_all_the_synonyms() {
 
+		$this->markTestSkipped( "As of 3.33.9, we don't delete the synonyms since it steals CPU time." );
+
 		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 
 		// now set the synonyms.
@@ -120,7 +120,7 @@ class Entity_Save_Test extends Wordlift_Unit_Test_Case {
 EOF;
 		$post_id      = $this->factory()->post->create( array( 'post_content' => $post_content ) );
 
-		$created_entities  = get_posts( array(
+		$created_entities = get_posts( array(
 			'post_type'   => 'entity',
 			'post_status' => 'any'
 		) );
