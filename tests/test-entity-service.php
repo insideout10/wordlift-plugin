@@ -10,6 +10,8 @@
  * @subpackage Wordlift/tests
  */
 
+require_once( dirname( __FILE__ ) . '/../src/includes/schemaorg/class-wordlift-schemaorg-sync-batch-operation.php' );
+
 /**
  * Define the Wordlift_Entity_Service_Test class.
  *
@@ -461,7 +463,7 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_996() {
 
-		$this->markTestSkipped('This test should be revised based on the new Content_Service.');
+		$this->markTestSkipped( 'This test should be revised based on the new Content_Service.' );
 
 		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 

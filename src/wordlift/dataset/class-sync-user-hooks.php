@@ -3,7 +3,7 @@
 namespace Wordlift\Dataset;
 
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_User_Content_Service;
+use Wordlift\Content\Wordpress\Wordpress_User_Content_Legacy_Service;
 use Wordlift\Object_Type_Enum;
 
 class Sync_User_Hooks extends Abstract_Sync_Hooks {
@@ -96,7 +96,7 @@ class Sync_User_Hooks extends Abstract_Sync_Hooks {
 	public function do_delete( $user_id ) {
 		try {
 			$this->sync_service->delete_one( Object_Type_Enum::USER, $user_id,
-				Wordpress_User_Content_Service::get_instance()->get_entity_id( Wordpress_Content_Id::create_user( $user_id ) ) );
+				Wordpress_User_Content_Legacy_Service::get_instance()->get_entity_id( Wordpress_Content_Id::create_user( $user_id ) ) );
 		} catch ( \Exception $e ) {
 			$this->log->error( "An error occurred while trying to delete user $user_id: " . $e->getMessage(), $e );
 		}

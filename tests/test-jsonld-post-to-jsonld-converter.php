@@ -73,10 +73,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		// Disable sending SPARQL queries, since we don't need it.
 		Wordlift_Unit_Test_Case::turn_off_entity_push();;
 
-		$wordlift                       = new Wordlift_Test();
-		$this->post_to_jsonld_converter = $wordlift->get_post_to_jsonld_converter();
+		$this->post_to_jsonld_converter = new Wordlift_Post_To_Jsonld_Converter(
+			Wordlift_Entity_Type_Service::get_instance(),
+			Wordlift_Entity_Service::get_instance(),
+			Wordlift_User_Service::get_instance(),
+			Wordlift_Attachment_Service::get_instance() );
 		$this->entity_service           = Wordlift_Entity_Service::get_instance();
-		$this->user_service             = $wordlift->get_user_service();
+		$this->user_service             = Wordlift_User_Service::get_instance();
 
 		// Check that we have services' instances.
 		$this->assertNotNull( $this->post_to_jsonld_converter );

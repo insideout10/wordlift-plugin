@@ -41,18 +41,22 @@ class Wordlift_Issue_711 extends Wordlift_Unit_Test_Case {
 	 */
 	public function test() {
 
-		$this->_test_meta_key( WL_ENTITY_URL_META_NAME, 'http://example.org/' . uniqid() );
-		$this->_test_meta_key( Wordlift_Schema_Service::FIELD_SAME_AS, 'http://example.org/' . uniqid() );
+		$uri     = Wordlift_Configuration_Service::get_instance()->get_dataset_uri()
+		           . 'dataset/entity_uri';
+		$same_as = 'https://data.example.org/dataset/entity_same_as';
+		$this->_test_meta_key( WL_ENTITY_URL_META_NAME, $uri );
+		$this->_test_meta_key( Wordlift_Schema_Service::FIELD_SAME_AS, $same_as );
 
 	}
 
 	/**
 	 * Test each meta key/uri.
 	 *
+	 * @param string $meta_key The meta key.
+	 * @param string $uri_1 The URI.
+	 *
 	 * @since 3.16.3
 	 *
-	 * @param string $meta_key The meta key.
-	 * @param string $uri_1    The URI.
 	 */
 	private function _test_meta_key( $meta_key, $uri_1 ) {
 		global $wpdb;

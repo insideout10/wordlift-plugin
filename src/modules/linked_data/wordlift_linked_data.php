@@ -131,11 +131,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 		foreach ( $entities_via_post as $entity_uri => $entity ) {
 
-			// Only if the current entity is created from scratch let's avoid to
-			// create more than one entity with same label & entity type.
-			$entity_type = ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) ?
-				$entity['main_type'] : null;
-
 			if ( preg_match( '/^local-entity-.+/', $entity_uri ) ) {
 				$existing_entity = get_page_by_title( $entity['label'], OBJECT, Wordlift_Entity_Service::valid_entity_post_types() );
 				if ( isset( $existing_entity ) ) {
@@ -226,6 +221,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			'post_content' => addslashes( $updated_post_content ),
 		) );
 	}
+
 	// Reset previously saved instances.
 	wl_core_delete_relation_instances( $post_id );
 
@@ -348,8 +344,13 @@ function wl_save_entity( $entity_data ) {
 	}
 
 	// Prepare properties of the new entity.
+	$post_status = apply_filters( 'wl_feature__enable__entity-auto-publish', true )
+		? ( is_numeric( $related_post_id ) ? get_post_status( $related_post_id ) : 'draft' )
+		: 'draft';
+
 	$params = array(
-		'post_status'  => ( is_numeric( $related_post_id ) ? get_post_status( $related_post_id ) : 'draft' ),
+		// @@todo: we don't want an entity to be automatically published.
+		'post_status'  => $post_status,
 		'post_type'    => Wordlift_Entity_Service::TYPE_NAME,
 		'post_title'   => $label,
 		'post_content' => $description,

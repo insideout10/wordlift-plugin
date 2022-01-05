@@ -29,7 +29,7 @@ class Wordlift_Admin_Publisher_Element_Test extends Wordlift_Unit_Test_Case {
 
 		// Call the render and catch the output.
 		ob_start();
-		$publisher_element = new Wordlift_Admin_Publisher_Element( new Wordlift_Publisher_Service(), new Wordlift_Admin_Tabs_Element(), new Wordlift_Admin_Select2_Element() );
+		$publisher_element = new Wordlift_Admin_Publisher_Element( Wordlift_Publisher_Service::get_instance(), new Wordlift_Admin_Tabs_Element(), new Wordlift_Admin_Select2_Element() );
 		$publisher_element->render( array( 'name' => $name ) );
 		$output = ob_get_clean();
 
@@ -57,7 +57,7 @@ class Wordlift_Admin_Publisher_Element_Test extends Wordlift_Unit_Test_Case {
 
 		// Call the render and catch the output.
 		ob_start();
-		$publisher_element = new Wordlift_Admin_Publisher_Element( new Wordlift_Publisher_Service(), new Wordlift_Admin_Tabs_Element(), new Wordlift_Admin_Select2_Element() );
+		$publisher_element = new Wordlift_Admin_Publisher_Element( Wordlift_Publisher_Service::get_instance(), new Wordlift_Admin_Tabs_Element(), new Wordlift_Admin_Select2_Element() );
 		$publisher_element->render( array() );
 		$output = ob_get_clean();
 
@@ -91,7 +91,7 @@ class Wordlift_Admin_Publisher_Element_Test extends Wordlift_Unit_Test_Case {
 
 		// Call the render and catch the output.
 		ob_start();
-		$publisher_element = new Wordlift_Admin_Publisher_Element( new Wordlift_Publisher_Service(), new Wordlift_Admin_Tabs_Element(), new Wordlift_Admin_Select2_Element() );
+		$publisher_element = new Wordlift_Admin_Publisher_Element( Wordlift_Publisher_Service::get_instance(), new Wordlift_Admin_Tabs_Element(), new Wordlift_Admin_Select2_Element() );
 		$publisher_element->render( array() );
 		$output = ob_get_clean();
 

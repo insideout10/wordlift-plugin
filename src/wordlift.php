@@ -204,7 +204,7 @@ function run_wordlift() {
 		// All features from registry should be initialized here.
 		$features_registry = Features_Registry::get_instance();
 		$features_registry->initialize_all_features();
-	}, 1 );
+	}, 5 );
 
 	add_action( 'plugins_loaded', function () use ( $plugin ) {
 		// Licenses Images.

@@ -7,6 +7,7 @@
  * @see https://github.com/insideout10/wordlift-plugin/issues/1241
  */
 
+use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Jsonld\Jsonld_Article_Wrapper;
 use Wordlift\Jsonld\Jsonld_Context_Enum;
 
@@ -26,6 +27,14 @@ class Wordlift_Jsonld_Article_Wrapper extends Wordlift_Unit_Test_Case {
 
 	private $post_to_jsonld_converter;
 	private $jsonld_service;
+	/**
+	 * @var Wordlift_Cached_Post_Converter
+	 */
+	private $cached_postid_to_jsonld_converter;
+	/**
+	 * @var Wordlift_Postid_To_Jsonld_Converter
+	 */
+	private $postid_to_jsonld_converter;
 
 	/**
 	 * {@inheritdoc}
@@ -50,6 +59,32 @@ class Wordlift_Jsonld_Article_Wrapper extends Wordlift_Unit_Test_Case {
 			$this->post_to_jsonld_converter,
 			null
 		);
+
+
+		$property_getter          = Wordlift_Property_Getter_Factory::create( Wordlift_Entity_Service::get_instance() );
+		$post_to_jsonld_converter = new Wordlift_Post_To_Jsonld_Converter(
+			Wordlift_Entity_Type_Service::get_instance(),
+			Wordlift_Entity_Service::get_instance(),
+			Wordlift_User_Service::get_instance(),
+			Wordlift_Attachment_Service::get_instance() );
+
+		$entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter(
+			Wordlift_Entity_Type_Service::get_instance(),
+			Wordlift_Entity_Service::get_instance(),
+			Wordlift_User_Service::get_instance(),
+			Wordlift_Attachment_Service::get_instance(),
+			$property_getter,
+			Wordlift_Schemaorg_Property_Service::get_instance(),
+			$post_to_jsonld_converter );
+
+		$this->postid_to_jsonld_converter = new Wordlift_Postid_To_Jsonld_Converter(
+			Wordlift_Entity_Service::get_instance(),
+			$entity_post_to_jsonld_converter,
+			$post_to_jsonld_converter );
+
+		$jsonld_cache                            = new Ttl_Cache( 'jsonld', 86400 );
+		$this->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter(
+			$this->postid_to_jsonld_converter, $jsonld_cache );
 	}
 
 	public function test_exit_early_when_context_isnt_page() {
@@ -250,7 +285,7 @@ class Wordlift_Jsonld_Article_Wrapper extends Wordlift_Unit_Test_Case {
 	private function setup_env_for_linked_entity_test( $linked_entity_type = 'http://schema.org/Thing' ) {
 
 		$wordlift_test  = $this->get_wordlift_test();
-		$jsonld_wrapper = new Jsonld_Article_Wrapper( Wordlift_Post_To_Jsonld_Converter::get_instance(), $wordlift_test->get_cached_postid_to_jsonld_converter() );
+		$jsonld_wrapper = new Jsonld_Article_Wrapper( Wordlift_Post_To_Jsonld_Converter::get_instance(), $this->cached_postid_to_jsonld_converter );
 
 		// create a user, link it to an entity
 		$current_user_id = $this->factory()->user->create( array(

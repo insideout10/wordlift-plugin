@@ -18,7 +18,7 @@ class Object_Type_Enum {
 			case 0:
 				return 'post';
 			case 1:
-				return 'type';
+				return 'term';
 			case 2:
 				return 'home';
 			case 3:

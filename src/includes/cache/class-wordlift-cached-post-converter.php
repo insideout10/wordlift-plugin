@@ -72,8 +72,8 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
-		$this->cache                 = $cache;
-		$this->converter             = $converter;
+		$this->cache               = $cache;
+		$this->converter           = $converter;
 		$this->reference_processor = Reference_Processor::get_instance();
 		$this->init_hooks();
 
@@ -219,7 +219,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		$this->log->trace( "Caching result for post $post_id..." );
 
 		$this->cache->put( $post_id, array(
-			'references' => $this->reference_processor->serialize_references(  $references ),
+			'references' => $this->reference_processor->serialize_references( $references ),
 			'jsonld'     => $jsonld,
 		) );
 

@@ -31,6 +31,14 @@ use Wordlift\Mappings\Taxonomy_Option;
 class Wordlift_Admin {
 
 	/**
+	 * The singleton instance.
+	 *
+	 * @since 3.19.4
+	 * @access private
+	 * @var Wordlift_Admin $instance The singleton instance.
+	 */
+	private static $instance;
+	/**
 	 * The ID of this plugin.
 	 *
 	 * @since    1.0.0
@@ -38,7 +46,6 @@ class Wordlift_Admin {
 	 * @var      string $plugin_name The ID of this plugin.
 	 */
 	private $plugin_name;
-
 	/**
 	 * The version of this plugin.
 	 *
@@ -47,41 +54,30 @@ class Wordlift_Admin {
 	 * @var      string $version The current version of this plugin.
 	 */
 	private $version;
-
 	/**
 	 * The {@link Wordlift_User_Service} instance.
 	 *
 	 * @since  3.14.0
 	 * @access private
-	 * @var \Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
+	 * @var Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
 	 */
 	private $user_service;
-
 	/**
 	 * The {@link Wordlift_Batch_Operation_Ajax_Adapter} instance.
 	 *
 	 * @since 3.20.0
 	 * @access private
-	 * @var \Wordlift_Batch_Operation_Ajax_Adapter $sync_batch_operation_ajax_adapter The {@link Wordlift_Batch_Operation_Ajax_Adapter} instance.
+	 * @var Wordlift_Batch_Operation_Ajax_Adapter $sync_batch_operation_ajax_adapter The {@link Wordlift_Batch_Operation_Ajax_Adapter} instance.
 	 */
 	private $sync_batch_operation_ajax_adapter;
-
-	/**
-	 * The singleton instance.
-	 *
-	 * @since 3.19.4
-	 * @access private
-	 * @var Wordlift_Admin $instance The singleton instance.
-	 */
-	private static $instance;
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @param string $plugin_name The name of this plugin.
 	 * @param string $version The version of this plugin.
-	 * @param \Wordlift_Notice_Service $notice_service The notice service.
-	 * @param \Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
+	 * @param Wordlift_Notice_Service $notice_service The notice service.
+	 * @param Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
 	 *
 	 * @since  1.0.0
 	 *
@@ -199,15 +195,46 @@ class Wordlift_Admin {
 	}
 
 	/**
+	 * Require files needed for the Admin UI.
+	 *
+	 * @since 3.20.0
+	 */
+	private static function require_files() {
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-latest-news.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-v2.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-not-enriched-filter.php';
+
+	}
+
+	/**
 	 * Get the singleton instance.
 	 *
-	 * @return \Wordlift_Admin The singleton instance.
+	 * @return Wordlift_Admin The singleton instance.
 	 * @since 3.19.4
 	 *
 	 */
 	public static function get_instance() {
 
 		return self::$instance;
+	}
+
+	public static function is_gutenberg() {
+		if ( function_exists( 'is_gutenberg_page' ) &&
+		     is_gutenberg_page()
+		) {
+			// The Gutenberg plugin is on.
+			return true;
+		}
+		$current_screen = get_current_screen();
+		if ( method_exists( $current_screen, 'is_block_editor' ) &&
+		     $current_screen->is_block_editor()
+		) {
+			// Gutenberg page on 5+.
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -264,37 +291,6 @@ class Wordlift_Admin {
 		// Finally output the params as `wlSettings` for JavaScript code.
 		wp_localize_script( $this->plugin_name, 'wlSettings', apply_filters( 'wl_admin_settings', $params ) );
 
-	}
-
-	/**
-	 * Require files needed for the Admin UI.
-	 *
-	 * @since 3.20.0
-	 */
-	private static function require_files() {
-
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-latest-news.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-v2.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-not-enriched-filter.php';
-
-	}
-
-	public static function is_gutenberg() {
-		if ( function_exists( 'is_gutenberg_page' ) &&
-		     is_gutenberg_page()
-		) {
-			// The Gutenberg plugin is on.
-			return true;
-		}
-		$current_screen = get_current_screen();
-		if ( method_exists( $current_screen, 'is_block_editor' ) &&
-		     $current_screen->is_block_editor()
-		) {
-			// Gutenberg page on 5+.
-			return true;
-		}
-
-		return false;
 	}
 
 	/**

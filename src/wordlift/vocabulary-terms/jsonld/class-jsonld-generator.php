@@ -69,7 +69,7 @@ class Jsonld_Generator {
 
 		$id = $this->entity_service->get_uri( $term_id, Object_Type_Enum::TERM );
 
-		// If we dont have a dataset  URI, then dont publish the term data
+		// If we don't have a dataset  URI, then don't publish the term data
 		// on this page.
 		if ( ! $id ) {
 			return false;

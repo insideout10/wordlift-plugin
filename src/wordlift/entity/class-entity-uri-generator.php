@@ -16,7 +16,7 @@ class Entity_Uri_Generator {
 					return null;
 				}
 
-				$slug = $post->post_name ?: sanitize_title_with_dashes( $post->post_title ) . '-' . $post->ID;
+				$slug = $post->post_name ?: sanitize_title( $post->post_title ) . '-' . $post->ID;
 
 				return self::ensure_unique( $post->post_type . '/' . $slug );
 

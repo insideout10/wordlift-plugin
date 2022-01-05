@@ -1,8 +1,8 @@
 <?php
 
 use Wordlift\Analysis\Occurrences\No_Annotation_Strategy;
-use Wordlift\Relation\Object_No_Annotation_Relation_Service;
-use Wordlift\Relation\Object_Relation_Service;
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 
 /**
  * @since 3.32.6
@@ -11,17 +11,16 @@ use Wordlift\Relation\Object_Relation_Service;
  */
 class Test_No_Editor_Analysis_Response extends Wordlift_No_Editor_Analysis_Unit_Test_Case {
 
-
 	public function test_when_no_editor_analysis_is_enabled_should_add_a_fake_occurrence() {
-
 
 		$post_id = $this->factory()->post->create( array( 'post_type' => 'no-editor-analysis' ) );
 
 		// Create a local entity with sameAs set to cloud entity uri.
-		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$entity_id = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+
 		// set sameAs to a cloud entity uri.
-		add_post_meta( $entity, 'entity_same_as', 'http://dbpedia.org/resource/Microsoft_Outlook' );
-		wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $entity );
+		add_post_meta( $entity_id, 'entity_same_as', 'http://dbpedia.org/resource/Microsoft_Outlook' );
+		wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $entity_id );
 
 		$request_body = file_get_contents( dirname( __FILE__ ) . '/assets/content-analysis-request-4.json' );
 		$request_body = json_decode( $request_body, true );
@@ -29,7 +28,8 @@ class Test_No_Editor_Analysis_Response extends Wordlift_No_Editor_Analysis_Unit_
 
 		$_REQUEST['postId'] = $post_id;
 
-		$local_entity_uri                                               = wl_get_entity_uri( $entity );
+		$local_entity_uri = Wordpress_Content_Service::get_instance()->get_entity_id( Wordpress_Content_Id::create_post( $entity_id ) );
+
 		$this->url_patterns_json_response_map['@analysis/v2/analyze$@'] = $this->get_response( $local_entity_uri );
 
 		$json = wl_analyze_content( json_encode( $request_body ), 'text/html' );
@@ -84,15 +84,15 @@ class Test_No_Editor_Analysis_Response extends Wordlift_No_Editor_Analysis_Unit_
 		                            ->set( $entity_1, 'http://schema.org/Article' );
 
 
-		$json = new StdClass;
+		$json           = new StdClass;
 		$json->entities = new StdClass;
 
 		// we should return two entities for no annotation relation service.
 		$json = No_Annotation_Strategy::get_instance()
-			->add_occurences_to_entities( array(), $json, $post );
+		                              ->add_occurences_to_entities( array(), $json, $post );
 
 		// convert json to array for easy assertions.
-		$json = json_decode( json_encode($json), true );
+		$json = json_decode( json_encode( $json ), true );
 		$this->assertCount( 2, $json['entities'], 'Article entity should also be returned by the analysis' );
 
 	}

@@ -18,12 +18,27 @@
  */
 class Wordlift_Publisher_Service {
 
+	protected function __construct() {
+
+	}
+
+	private static $instance = null;
+
+	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
 	/**
 	 * Counts the number of potential publishers.
 	 *
+	 * @return int The number of potential publishers.
 	 * @since 3.11.0
 	 *
-	 * @return int The number of potential publishers.
 	 */
 	public function count() {
 
@@ -56,8 +71,8 @@ class Wordlift_Publisher_Service {
 	 *
 	 * @since   3.15.0
 	 *
-	 * @param   string   $search   The search string.
-	 * @param   WP_Query $wp_query The {@link WP_Query} instance.
+	 * @param string $search The search string.
+	 * @param WP_Query $wp_query The {@link WP_Query} instance.
 	 *
 	 * @return array|string An array of results.
 	 */
@@ -91,11 +106,11 @@ class Wordlift_Publisher_Service {
 	 * Query WP for potential publishers, i.e. {@link WP_Post}s which are associated`
 	 * with `wl_entity_type` (taxonomy) terms of `Organization` or `Person`.
 	 *
-	 * @since 3.11.0
-	 *
 	 * @param string $filter The title filter.
 	 *
 	 * @return array An array of results in a select2 friendly format.
+	 * @since 3.11.0
+	 *
 	 */
 	public function query( $filter = '' ) {
 
@@ -151,12 +166,12 @@ class Wordlift_Publisher_Service {
 	/**
 	 * Get the thumbnail's URL.
 	 *
-	 * @since 3.11.0
-	 *
-	 * @param int    $attachment_id The attachment id.
-	 * @param string $size          The attachment size (default = 'thumbnail').
+	 * @param int $attachment_id The attachment id.
+	 * @param string $size The attachment size (default = 'thumbnail').
 	 *
 	 * @return string|bool The image URL or false if not found.
+	 * @since 3.11.0
+	 *
 	 */
 	public function get_attachment_image_url( $attachment_id, $size = 'thumbnail' ) {
 
@@ -169,11 +184,11 @@ class Wordlift_Publisher_Service {
 	 * Add additional instructions to featured image metabox
 	 * when the entity type is the publisher.
 	 *
-	 * @since  3.19.0
-	 *
-	 * @param  string $content Current metabox content.
+	 * @param string $content Current metabox content.
 	 *
 	 * @return string $content metabox content with additional instructions.
+	 * @since  3.19.0
+	 *
 	 */
 	public function add_featured_image_instruction( $content ) {
 		// Get the current post ID.
@@ -204,12 +219,12 @@ class Wordlift_Publisher_Service {
 		if ( in_array( 'organization', $terms, true ) ) {
 			// Add the featured image description when the type is "Organization".
 
-			$link = sprintf( '<a target="_blank" href="%s">%s</a>',
+			$link    = sprintf( '<a target="_blank" href="%s">%s</a>',
 				esc_attr__( 'https://developers.google.com/search/docs/data-types/article#logo-guidelines', 'wordlift' ),
 				esc_html__( 'AMP logo guidelines', 'wordlift' ) );
 			$content .= sprintf( '<p>'
-								 . esc_html_x( 'According to the %s, the logo should fit in a 60x600px rectangle, and either be exactly 60px high (preferred), or exactly 600px wide. For example, 450x45px would not be acceptable, even though it fits in the 600x60px rectangle. To comply with the guidelines, WordLift will automatically resize the Featured Image for structured data formats.', 'After "According to the" goes the link to the "AMP logo guidelines".', 'wordlift' )
-								 . '</p>', $link );
+			                     . esc_html_x( 'According to the %s, the logo should fit in a 60x600px rectangle, and either be exactly 60px high (preferred), or exactly 600px wide. For example, 450x45px would not be acceptable, even though it fits in the 600x60px rectangle. To comply with the guidelines, WordLift will automatically resize the Featured Image for structured data formats.', 'After "According to the" goes the link to the "AMP logo guidelines".', 'wordlift' )
+			                     . '</p>', $link );
 		}
 
 		// Finally return the content.

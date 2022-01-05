@@ -40,7 +40,7 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	function test_nopublishers() {
 
-		$publishers_service = new Wordlift_Publisher_Service();
+		$publishers_service = Wordlift_Publisher_Service::get_instance();
 
 		// with nothing in the DB
 		$this->assertEquals( 0, $publishers_service->count() );
@@ -69,7 +69,7 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	function test_publishers() {
 
-		$publishers_service = new Wordlift_Publisher_Service();
+		$publishers_service = Wordlift_Publisher_Service::get_instance();
 
 		// create a non publisher entity to make the test more real
 		$busines = $this->factory()->post->create( array(

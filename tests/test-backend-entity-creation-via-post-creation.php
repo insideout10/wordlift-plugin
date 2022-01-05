@@ -328,6 +328,7 @@ EOF;
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $expected_entity_uri );
 
 		$this->assertNull( $entity );
+
 		// Create a post referincing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 		// Here the entity should be created instead

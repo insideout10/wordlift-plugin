@@ -41,8 +41,8 @@ class Wordpress_Content_Service implements Content_Service {
 			}
 
 			self::$instance->register_delegate( $post_content_service );
-			self::$instance->register_delegate( Wordpress_Term_Content_Service::get_instance() );
-			self::$instance->register_delegate( Wordpress_User_Content_Service::get_instance() );
+			self::$instance->register_delegate( Wordpress_Term_Content_Legacy_Service::get_instance() );
+			self::$instance->register_delegate( Wordpress_User_Content_Legacy_Service::get_instance() );
 
 		}
 

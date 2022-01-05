@@ -28,6 +28,9 @@
  * @subpackage Wordlift/tests
  */
 
+use Wordlift\Cache\Ttl_Cache;
+use Wordlift\Cache\Ttl_Cache_Cleaner;
+
 /**
  * Define the {@link Wordlift_Issue_626} class.
  *
@@ -106,19 +109,42 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		$wordlift_test = $this->get_wordlift_test();
+		$this->jsonld_service      = Wordlift_Jsonld_Service::get_instance();
+		$this->sample_data_service = Wordlift_Sample_Data_Service::get_instance();
 
-		$this->jsonld_service                    = $wordlift_test->get_jsonld_service();
-		$this->sample_data_service               = $wordlift_test->get_sample_data_service();
-		$this->cached_postid_to_jsonld_converter = $wordlift_test->get_cached_postid_to_jsonld_converter();
-		$this->postid_to_jsonld_converter        = $wordlift_test->get_postid_to_jsonld_converter();
-		$this->relation_service                  = $wordlift_test->get_relation_service();
-		$this->entity_service                    = $wordlift_test->get_entity_service();
-		$this->user_service                      = $wordlift_test->get_user_service();
+		$property_getter          = Wordlift_Property_Getter_Factory::create( Wordlift_Entity_Service::get_instance() );
+		$post_to_jsonld_converter = new Wordlift_Post_To_Jsonld_Converter(
+			Wordlift_Entity_Type_Service::get_instance(),
+			Wordlift_Entity_Service::get_instance(),
+			Wordlift_User_Service::get_instance(),
+			Wordlift_Attachment_Service::get_instance() );
+
+		$entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter(
+			Wordlift_Entity_Type_Service::get_instance(),
+			Wordlift_Entity_Service::get_instance(),
+			Wordlift_User_Service::get_instance(),
+			Wordlift_Attachment_Service::get_instance(),
+			$property_getter,
+			Wordlift_Schemaorg_Property_Service::get_instance(),
+			$post_to_jsonld_converter );
+
+		$this->postid_to_jsonld_converter = new Wordlift_Postid_To_Jsonld_Converter(
+			Wordlift_Entity_Service::get_instance(),
+			$entity_post_to_jsonld_converter,
+			$post_to_jsonld_converter );
+
+		$jsonld_cache = new Ttl_Cache( 'jsonld', 86400 );
+
+		$this->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter(
+			$this->postid_to_jsonld_converter, $jsonld_cache );
+
+		$this->relation_service = Wordlift_Relation_Service::get_instance();
+		$this->entity_service   = Wordlift_Entity_Service::get_instance();
+		$this->user_service     = Wordlift_User_Service::get_instance();
 
 		// Clear the cache.
 //		do_action( 'wl_ttl_cache_cleaner__flush' );
-		$ttl_cache_cleaner = new \Wordlift\Cache\Ttl_Cache_Cleaner();
+		$ttl_cache_cleaner = new Ttl_Cache_Cleaner();
 		$ttl_cache_cleaner->flush();
 	}
 

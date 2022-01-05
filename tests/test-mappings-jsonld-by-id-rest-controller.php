@@ -154,7 +154,7 @@ class Jsonld_By_Id_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 		}
 
 		$this->assertEquals( 'http://schema.org', $data['@context'] );
-		$this->assertEquals( 'https://data.localdomain.localhost/dataset/entity/jsonld_by_id_rest_controller_test-_gt_test_one_item_title_1', $data['@id'] );
+		$this->assertEquals( 'https://data.localdomain.localhost/dataset/entity/jsonld_by_id_rest_controller_test-test_one_item-title-1', $data['@id'] );
 		$this->assertEquals( 'Jsonld_By_Id_REST_Controller_Test->test_one_item content 1', $data['description'] );
 		$this->assertEquals( 'http://example.org/?entity=jsonld_by_id_rest_controller_test-test_one_item-title-1', $data['mainEntityOfPage'] );
 		$this->assertEquals( 'Jsonld_By_Id_REST_Controller_Test->test_one_item title 1', $data['name'] );

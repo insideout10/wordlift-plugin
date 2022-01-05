@@ -53,6 +53,10 @@ class Entity_Helper {
 
 		$mappings = array();
 		foreach ( $external_uris as $external_uri ) {
+			if ( empty( $external_uri ) ) {
+				continue;
+			}
+
 			$entity = $entity_uri_service->get_entity( $external_uri );
 			if ( null !== $entity ) {
 

@@ -645,7 +645,7 @@ class Wordlift {
 		add_action( 'plugins_loaded', function () use ( $that ) {
 			$that->define_admin_hooks( $that );
 			$that->define_public_hooks( $that );
-		} );
+		}, 4 );
 
 		// If we're in `WP_CLI` load the related files.
 		if ( class_exists( 'WP_CLI' ) ) {
@@ -1032,7 +1032,7 @@ class Wordlift {
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-property-service.php';
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-class-service.php';
 			new Wordlift_Schemaorg_Sync_Service();
-			$schemaorg_property_service = new Wordlift_Schemaorg_Property_Service();
+			$schemaorg_property_service = Wordlift_Schemaorg_Property_Service::get_instance();
 			new Wordlift_Schemaorg_Class_Service();
 		} else {
 			$schemaorg_property_service = null;
@@ -1055,7 +1055,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-service.php';
 		$this->install_service = new Wordlift_Install_Service();
 		$this->notice_service  = new Wordlift_Notice_Service();
-		$this->user_service    = new Wordlift_User_Service();
+		$this->user_service    = Wordlift_User_Service::get_instance();
 		// create an instance of the entity type list admin page controller.
 		$this->entity_type_admin_page        = new Wordlift_Admin_Entity_Taxonomy_List_Page();
 		$this->topic_taxonomy_service        = new Wordlift_Topic_Taxonomy_Service();
@@ -1111,11 +1111,11 @@ class Wordlift {
 			$that->entity_list_service = new Wordlift_Entity_List_Service( $that->rating_service );
 
 			// Create an instance of the Publisher Service and the AJAX Adapter.
-			$that->publisher_service = new Wordlift_Publisher_Service();
+			$that->publisher_service = Wordlift_Publisher_Service::get_instance();
 			$that->property_factory  = new Wordlift_Property_Factory( $schema_url_property_service );
 			$that->property_factory->register( Wordlift_Schema_Url_Property_Service::META_KEY, $schema_url_property_service );
 
-			$attachment_service = new Wordlift_Attachment_Service();
+			$attachment_service = Wordlift_Attachment_Service::get_instance();
 
 			// Instantiate the JSON-LD service.
 			$property_getter                       = Wordlift_Property_Getter_Factory::create( Wordlift_Entity_Service::get_instance() );
@@ -1150,10 +1150,10 @@ class Wordlift {
 			new Jsonld_By_Id_Endpoint( $that->jsonld_service, $that->entity_uri_service );
 
 			$that->key_validation_service = new Wordlift_Key_Validation_Service();
-			$that->content_filter_service = new Wordlift_Content_Filter_Service( Wordlift_Entity_Service::get_instance(), $that->entity_uri_service );
+			$that->content_filter_service = Wordlift_Content_Filter_Service::get_instance();
 			// Creating Faq Content filter service.
 			$that->faq_content_filter_service = new Faq_Content_Filter();
-			$that->sample_data_service        = new Wordlift_Sample_Data_Service( Wordlift_Entity_Type_Service::get_instance(), $that->user_service );
+			$that->sample_data_service        = Wordlift_Sample_Data_Service::get_instance();
 			$that->sample_data_ajax_adapter   = new Wordlift_Sample_Data_Ajax_Adapter( $that->sample_data_service );
 
 			$that->loader->add_action( 'enqueue_block_editor_assets', $that, 'add_wl_enabled_blocks' );
@@ -1220,7 +1220,7 @@ class Wordlift {
 			$that->publisher_element       = new Wordlift_Admin_Publisher_Element( $that->publisher_service, $tabs_element, $that->select2_element );
 			$that->author_element          = new Wordlift_Admin_Author_Element( $that->publisher_service, $that->select2_element );
 
-			$that->settings_page             = new Wordlift_Admin_Settings_Page( Wordlift_Entity_Service::get_instance(), $that->input_element, $that->language_select_element, $that->country_select_element, $that->publisher_element, $that->radio_input_element );
+			$that->settings_page             = Wordlift_Admin_Settings_Page::get_instance();
 			$that->settings_page_action_link = new Wordlift_Admin_Settings_Page_Action_Link( $that->settings_page );
 
 			$that->analytics_settings_page             = new Wordlift_Admin_Settings_Analytics_Page( $that->input_element, $that->radio_input_element );
@@ -1442,7 +1442,7 @@ class Wordlift {
 				Wordlift_Entity_Type_Service::get_instance()
 			);
 
-		} );
+		}, 3 );
 
 
 		new Entity_Type_Setter();
@@ -1629,6 +1629,8 @@ class Wordlift {
 
 		$that->loader->add_action( 'wp_ajax_wl_sample_data_create', $that->sample_data_ajax_adapter, 'create' );
 		$that->loader->add_action( 'wp_ajax_wl_sample_data_delete', $that->sample_data_ajax_adapter, 'delete' );
+
+		$that->loader->add_action( 'init', '\Wordlift\Content\Wordpress\Wordpress_Content_Service_Hooks', 'register' );
 		/**
 		 * @since 3.26.0
 		 */

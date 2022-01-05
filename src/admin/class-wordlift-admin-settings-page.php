@@ -19,15 +19,6 @@
 class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 	/**
-	 * A singleton instance of the Notice service.
-	 *
-	 * @since  3.2.0
-	 * @access private
-	 * @var \Wordlift_Notice_Service $instance A singleton instance of the Notice service.
-	 */
-	private static $instance;
-
-	/**
 	 * A {@link Wordlift_Entity_Service} instance.
 	 *
 	 * @since  3.11.0
@@ -94,7 +85,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 * @since 3.11.0
 	 *
 	 */
-	function __construct( $entity_service, $input_element, $language_select_element, $country_select_element, $publisher_element, $radio_input_element ) {
+	public function __construct( $entity_service, $input_element, $language_select_element, $country_select_element, $publisher_element, $radio_input_element ) {
 
 		$this->entity_service = $entity_service;
 
@@ -105,9 +96,9 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		$this->country_select_element  = $country_select_element;
 		$this->publisher_element       = $publisher_element;
 
-		self::$instance = $this;
-
 	}
+
+	private static $instance;
 
 	/**
 	 * Get the singleton instance of the Notice service.
@@ -116,6 +107,21 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 * @since 3.14.0
 	 */
 	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			$publisher_element = new Wordlift_Admin_Publisher_Element(
+				Wordlift_Publisher_Service::get_instance(),
+				new Wordlift_Admin_Tabs_Element(),
+				new Wordlift_Admin_Select2_Element() );
+
+			self::$instance = new self(
+				Wordlift_Entity_Service::get_instance(),
+				new Wordlift_Admin_Input_Element(),
+				new Wordlift_Admin_Language_Select_Element(),
+				new Wordlift_Admin_Country_Select_Element(),
+				$publisher_element,
+				new Wordlift_Admin_Radio_Input_Element() );
+		}
 
 		return self::$instance;
 	}

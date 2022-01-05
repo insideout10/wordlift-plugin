@@ -3,8 +3,6 @@
 use Wordlift\Jsonld\Term_Reference;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Object_Relation_Service;
-use Wordlift\Relation\Term_Relation_Service;
-use Wordlift\Relation\Types\Term_Relation;
 
 
 /**

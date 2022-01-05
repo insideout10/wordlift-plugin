@@ -2,6 +2,7 @@
 
 namespace Wordlift\Content\Wordpress;
 
+use Wordlift\Assertions;
 use Wordlift\Content\Content_Service;
 use Wordlift_Configuration_Service;
 
@@ -26,6 +27,8 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 	}
 
 	protected function make_absolute( $uri ) {
+		Assertions::not_empty( $this->get_dataset_uri(), '`dataset_uri` cannot be empty.' );
+
 		if ( 1 !== preg_match( '@^https?://@', $uri ) ) {
 			return untrailingslashit( $this->get_dataset_uri() ) . '/' . $uri;
 		}

@@ -1,5 +1,5 @@
 {
-  "content": "<p><span id=\"urn:content-classification-test-1\" class=\"textannotation disambiguated\" itemid=\"http://example.org/content_analysis_test_2\">Content Analysis Test 1</span>. Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>",
+  "content": "<p><span id=\"urn:content-classification-test-1\" class=\"textannotation disambiguated\" itemid=\"https://data.localdomain.localhost/dataset/content_analysis_test_2\">Content Analysis Test 1</span>. Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>",
   "annotations": {},
   "contentType": "text/html",
   "version": "1.0.0",

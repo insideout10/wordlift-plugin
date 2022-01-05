@@ -50,28 +50,27 @@ class Wordlift_User_Service {
 	private $log_service;
 
 	/**
+	 * Create an instance of the User service.
+	 *
+	 * @since 3.1.7
+	 *
+	 */
+	protected function __construct() {
+
+		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_User_Service' );
+
+		add_filter( 'user_has_cap', array( $this, 'has_cap' ), 10, 3 );
+
+	}
+
+	/**
 	 * The singleton instance of the User service.
 	 *
 	 * @since  3.1.7
 	 * @access private
 	 * @var \Wordlift_User_Service $user_service The singleton instance of the User service.
 	 */
-	private static $instance;
-
-	/**
-	 * Create an instance of the User service.
-	 *
-	 * @since 3.1.7
-	 *
-	 */
-	public function __construct() {
-
-		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_User_Service' );
-
-		self::$instance = $this;
-
-		add_filter( 'user_has_cap', array( $this, 'has_cap' ), 10, 3 );
-	}
+	private static $instance = null;
 
 	/**
 	 * Get the singleton instance of the User service.
@@ -80,6 +79,10 @@ class Wordlift_User_Service {
 	 * @since 3.1.7
 	 */
 	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
 
 		return self::$instance;
 	}

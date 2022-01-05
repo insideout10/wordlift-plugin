@@ -25,33 +25,28 @@ class Wordlift_Schemaorg_Property_Service {
 	const PREFIX = "_wl_prop_";
 
 	/**
-	 * The singleton instance.
-	 *
-	 * @since 3.20.0
-	 * @access private
-	 * @var \Wordlift_Schemaorg_Property_Service $instance The singleton instance.
-	 */
-	private static $instance;
-
-	/**
 	 * Create a {@link Wordlift_Schemaorg_Property_Service} instance.
 	 *
 	 * @since 3.20.0
 	 */
-	public function __construct() {
-
-		self::$instance = $this;
+	protected function __construct() {
 
 	}
+
+	private static $instance = null;
 
 	/**
 	 * Get the singleton instance.
 	 *
+	 * @return \Wordlift_Schemaorg_Property_Service The singleton instance.
 	 * @since 3.20.0
 	 *
-	 * @return \Wordlift_Schemaorg_Property_Service The singleton instance.
 	 */
 	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
 
 		return self::$instance;
 	}
@@ -59,13 +54,13 @@ class Wordlift_Schemaorg_Property_Service {
 	/**
 	 * Get all the properties bound to the specified post.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param int $post_id The post id.
 	 *
 	 * @return array An array of properties instances keyed by the property name. Each property contains a
 	 *  `type` and a `value` and optionally a `language`.
 	 * }
+	 * @since 3.20.0
+	 *
 	 */
 	public function get_all( $post_id ) {
 
@@ -103,11 +98,11 @@ class Wordlift_Schemaorg_Property_Service {
 	/**
 	 * Get the meta keys for Schema.org properties associated with the specified post.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param int $post_id The post id.
 	 *
 	 * @return array An array of meta keys.
+	 * @since 3.20.0
+	 *
 	 */
 	public function get_keys( $post_id ) {
 

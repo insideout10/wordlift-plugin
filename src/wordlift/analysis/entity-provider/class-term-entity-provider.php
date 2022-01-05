@@ -10,7 +10,7 @@
 
 namespace Wordlift\Analysis\Entity_Provider;
 
-use Wordlift\Content\Wordpress\Wordpress_Term_Content_Service;
+use Wordlift\Content\Wordpress\Wordpress_Term_Content_Legacy_Service;
 use Wordlift\Term\Type_Service;
 
 class Term_Entity_Provider implements Entity_Provider {
@@ -27,7 +27,7 @@ class Term_Entity_Provider implements Entity_Provider {
 
 	public function get_entity( $uri ) {
 
-		$content = Wordpress_Term_Content_Service::get_instance()->get_by_entity_id( $uri );
+		$content = Wordpress_Term_Content_Legacy_Service::get_instance()->get_by_entity_id( $uri );
 
 		if ( ! isset( $content ) ) {
 			return false;

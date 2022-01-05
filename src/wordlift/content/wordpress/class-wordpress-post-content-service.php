@@ -9,8 +9,6 @@ namespace Wordlift\Content\Wordpress;
 
 use Exception;
 use Wordlift\Assertions;
-use Wordlift\Content\Content_Service;
-use Wordlift\Entity\Entity_Uri_Generator;
 use Wordlift\Object_Type_Enum;
 use Wordlift_Entity_Service;
 use Wordlift_Schema_Service;
@@ -42,7 +40,8 @@ class Wordpress_Post_Content_Service extends Abstract_Wordpress_Content_Service 
 	 */
 	function get_by_entity_id( $uri ) {
 		Assertions::is_string( $uri, '`uri` must be a string.' );
-		Assertions::not_empty( '`uri` cannot be empty.' );
+		Assertions::not_empty( $uri, '`uri` cannot be empty.' );
+		Assertions::not_empty( $this->get_dataset_uri(), '`dataset_uri` cannot be empty.' );
 
 		if ( $this->is_absolute( $uri ) && ! $this->is_internal( $uri ) ) {
 			throw new Exception( '`uri` must be within the dataset URI scope.' );
@@ -118,16 +117,7 @@ class Wordpress_Post_Content_Service extends Abstract_Wordpress_Content_Service 
 			WHERE content_id = %d AND content_type = %d
 		", $content_id->get_id(), $content_id->get_type() ) );
 
-
-		if ( ! isset( $rel_uri ) ) {
-			$rel_uri = Entity_Uri_Generator::create_uri( $content_id->get_type(), $content_id->get_id() );
-			if ( ! isset( $rel_uri ) ) {
-				return null;
-			}
-			$this->set_entity_id( $content_id, $rel_uri );
-		}
-
-		return $this->get_dataset_uri() . '/' . $rel_uri;
+		return $rel_uri ? $this->make_absolute( $rel_uri ) : null;
 	}
 
 	/**

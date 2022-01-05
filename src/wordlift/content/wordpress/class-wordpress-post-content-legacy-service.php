@@ -4,12 +4,11 @@ namespace Wordlift\Content\Wordpress;
 
 use Exception;
 use Wordlift\Assertions;
-use Wordlift\Entity\Entity_Uri_Generator;
 use Wordlift\Object_Type_Enum;
 use Wordlift_Entity_Service;
 use Wordlift_Schema_Service;
 
-class Wordpress_Post_Content_Legacy_Service extends Abstract_Wordpress_Content_Service {
+class Wordpress_Post_Content_Legacy_Service extends Abstract_Wordpress_Content_Legacy_Service {
 
 	private static $instance = null;
 
@@ -22,7 +21,7 @@ class Wordpress_Post_Content_Legacy_Service extends Abstract_Wordpress_Content_S
 	public static function get_instance() {
 
 		if ( ! isset( self::$instance ) ) {
-			self::$instance = new self();
+			self::$instance = new self( Object_Type_Enum::POST, 'get_post_meta' );
 		}
 
 		return self::$instance;
@@ -36,7 +35,8 @@ class Wordpress_Post_Content_Legacy_Service extends Abstract_Wordpress_Content_S
 	 */
 	function get_by_entity_id( $uri ) {
 		Assertions::is_string( $uri, '`uri` must be a string.' );
-		Assertions::not_empty( '`uri` cannot be empty.' );
+		Assertions::not_empty( $uri, '`uri` cannot be empty.' );
+		Assertions::not_empty( $this->get_dataset_uri(), '`dataset_uri` cannot be empty.' );
 
 		$abs_uri = $this->make_absolute( $uri );
 
@@ -108,26 +108,6 @@ class Wordpress_Post_Content_Legacy_Service extends Abstract_Wordpress_Content_S
 		}
 
 		return null;
-	}
-
-	/**
-	 * @param Wordpress_Content_Id $content_id
-	 *
-	 * @return string|null The entity ID.
-	 * @throws Exception
-	 */
-	function get_entity_id( $content_id ) {
-		Assertions::equals( $content_id->get_type(), Object_Type_Enum::POST, '`content_id` must be of type post.' );
-
-		$abs_uri = get_post_meta( $content_id->get_id(), 'entity_url', true ) ?: null;
-
-		if ( ! isset( $abs_uri ) ) {
-			$rel_uri = Entity_Uri_Generator::create_uri( $content_id->get_type(), $content_id->get_id() );
-			$this->set_entity_id( $content_id, $rel_uri );
-			$abs_uri = $this->make_absolute( $rel_uri );
-		}
-
-		return $abs_uri;
 	}
 
 	function set_entity_id( $content_id, $uri ) {

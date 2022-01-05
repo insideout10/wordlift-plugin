@@ -13,7 +13,7 @@
  * @since 3.19.4
  * @group sparql
  */
-class Wordlift_Linked_Data_Test extends WP_UnitTestCase {
+class Wordlift_Linked_Data_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Test the `wl_save_entity` function.
