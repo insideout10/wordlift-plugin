@@ -47,7 +47,7 @@ class Wordlift_Property_Getter_Test extends Wordlift_Unit_Test_Case {
 		Wordlift_Unit_Test_Case::turn_off_entity_push();;
 
 		$this->entity_service  = Wordlift_Entity_Service::get_instance();
-		$this->property_getter = Wordlift_Property_Getter_Factory::create( $this );
+		$this->property_getter = Wordlift_Property_Getter_Factory::create();
 
 		$this->post_id = $this->factory->post->create();
 

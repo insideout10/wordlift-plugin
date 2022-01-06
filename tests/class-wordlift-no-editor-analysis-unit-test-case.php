@@ -2,6 +2,8 @@
 /**
  * @since 3.32.6
  * @author Naveen Muthusamy <naveen@wordlift.io>
+ *
+ * @group no-editor
  */
 
 use Wordlift\Features\Features_Registry;

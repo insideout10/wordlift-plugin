@@ -2,9 +2,11 @@
 
 namespace Wordlift\Content\Wordpress;
 
+use Exception;
 use Wordlift\Assertions;
 use Wordlift\Content\Content_Service;
 use Wordlift_Configuration_Service;
+use Wordlift_Entity_Service;
 
 abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 

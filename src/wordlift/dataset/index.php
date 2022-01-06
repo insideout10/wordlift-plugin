@@ -1,5 +1,6 @@
 <?php
 
+use Wordlift\Api\Default_Api_Service;
 use Wordlift\Dataset\Background\Sync_Background_Process;
 use Wordlift\Dataset\Background\Sync_Background_Process_Wpjson_Endpoint;
 use Wordlift\Dataset\Sync_Hooks_Entity_Relation;
@@ -16,11 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Register the Dataset JSON Endpoint. The `$api_service` variable must be defined in the calling file (wordlift.php).
+// Register the Dataset JSON Endpoint.
 if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
 
 	$sync_object_adapter_factory = new Sync_Object_Adapter_Factory();
-	$sync_service                = new Sync_Service( $api_service, $sync_object_adapter_factory, Jsonld_Service::get_instance(), Wordlift_Entity_Service::get_instance() );
+	$sync_service                = new Sync_Service( Default_Api_Service::get_instance(), $sync_object_adapter_factory, Jsonld_Service::get_instance(), Wordlift_Entity_Service::get_instance() );
 	new Sync_Post_Hooks( $sync_service, $sync_object_adapter_factory );
 	new Sync_User_Hooks( $sync_service );
 

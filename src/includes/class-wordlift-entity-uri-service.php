@@ -10,7 +10,6 @@
  * @subpackage Wordlift/includes
  */
 
-use Wordlift\Content\Content_Service;
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 
@@ -40,13 +39,6 @@ class Wordlift_Entity_Uri_Service {
 	protected $uri_to_post;
 
 	/**
-	 * A {@link Content_Service} used to query for {@link Content} given entity IDs.
-	 *
-	 * @var Content_Service $content_service
-	 */
-	private $content_service;
-
-	/**
 	 * Create a {@link Wordlift_Entity_Uri_Service} instance.
 	 *
 	 * @since 3.16.3
@@ -55,8 +47,6 @@ class Wordlift_Entity_Uri_Service {
 	protected function __construct() {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
-
-		$this->content_service = Wordpress_Content_Service::get_instance();
 
 		// Add a filter to the `rest_post_dispatch` filter to add the wl_entity_url meta as `wl:entity_url`.
 		add_filter( 'rest_post_dispatch', array( $this, 'rest_post_dispatch' ) );
@@ -186,7 +176,7 @@ class Wordlift_Entity_Uri_Service {
 
 		$this->log->trace( "Getting an entity post for URI $uri..." );
 
-		$content = $this->content_service->get_by_entity_id_or_same_as( $uri );
+		$content = Wordpress_Content_Service::get_instance()->get_by_entity_id_or_same_as( $uri );
 
 		// Return null if the content isn't found or isn't a post.
 		if ( ! isset( $content ) || ! is_a( $content->get_bag(), '\WP_Post' ) ) {

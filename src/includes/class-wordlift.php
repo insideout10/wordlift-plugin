@@ -28,7 +28,6 @@ use Wordlift\Duplicate_Markup_Remover\Videoobject_Duplicate_Remover;
 use Wordlift\Entity\Entity_Helper;
 use Wordlift\Entity\Entity_No_Index_Flag;
 use Wordlift\Entity\Entity_Rest_Service;
-use Wordlift\Entity\Entity_Store;
 use Wordlift\Entity_Type\Entity_Type_Change_Handler;
 use Wordlift\Entity_Type\Entity_Type_Setter;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Hook;
@@ -1083,16 +1082,11 @@ class Wordlift {
 
 			$that->entity_uri_service = Wordlift_Entity_Uri_Service::get_instance();
 
-			$entity_store = new Entity_Store();
-
-			// Instantiate the JSON-LD service.
-			$property_getter = Wordlift_Property_Getter_Factory::create( Wordlift_Entity_Service::get_instance() );
-
 			// Create a new instance of the Redirect service.
 			$that->redirect_service = new Wordlift_Redirect_Service( $that->entity_uri_service );
 
 			// Create a new instance of the Timeline service and Timeline shortcode.
-			$that->timeline_service = new Wordlift_Timeline_Service( Wordlift_Entity_Service::get_instance(), Wordlift_Entity_Type_Service::get_instance() );
+			$that->timeline_service = new Wordlift_Timeline_Service();
 
 			$that->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
@@ -1105,7 +1099,7 @@ class Wordlift {
 			$uri_service = new Wordlift_Uri_Service( $GLOBALS['wpdb'] );
 
 			// Create the entity rating service.
-			$that->rating_service = new Wordlift_Rating_Service( Wordlift_Entity_Service::get_instance(), Wordlift_Entity_Type_Service::get_instance(), $that->notice_service );
+			$that->rating_service = new Wordlift_Rating_Service( Wordlift_Entity_Type_Service::get_instance(), $that->notice_service );
 
 			// Create entity list customization (wp-admin/edit.php).
 			$that->entity_list_service = new Wordlift_Entity_List_Service( $that->rating_service );
@@ -1118,11 +1112,11 @@ class Wordlift {
 			$attachment_service = Wordlift_Attachment_Service::get_instance();
 
 			// Instantiate the JSON-LD service.
-			$property_getter                       = Wordlift_Property_Getter_Factory::create( Wordlift_Entity_Service::get_instance() );
-			$that->post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( Wordlift_Entity_Type_Service::get_instance(), Wordlift_Entity_Service::get_instance(), $that->user_service, $attachment_service );
-			$that->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( Wordlift_Entity_Type_Service::get_instance(), Wordlift_Entity_Service::get_instance(), $that->user_service, $attachment_service, $property_getter, $schemaorg_property_service, $that->post_to_jsonld_converter );
-			$that->postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( Wordlift_Entity_Service::get_instance(), $that->entity_post_to_jsonld_converter, $that->post_to_jsonld_converter );
-			$that->jsonld_website_converter        = new Wordlift_Website_Jsonld_Converter( Wordlift_Entity_Type_Service::get_instance(), Wordlift_Entity_Service::get_instance(), $that->user_service, $attachment_service );
+			$property_getter                       = Wordlift_Property_Getter_Factory::create();
+			$that->post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( Wordlift_Entity_Type_Service::get_instance(), $that->user_service, $attachment_service );
+			$that->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( Wordlift_Entity_Type_Service::get_instance(), $that->user_service, $attachment_service, $property_getter, $schemaorg_property_service, $that->post_to_jsonld_converter );
+			$that->postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $that->entity_post_to_jsonld_converter, $that->post_to_jsonld_converter );
+			$that->jsonld_website_converter        = new Wordlift_Website_Jsonld_Converter( Wordlift_Entity_Type_Service::get_instance(), $that->user_service, $attachment_service );
 
 			$jsonld_cache                            = new Ttl_Cache( 'jsonld', 86400 );
 			$that->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter( $that->postid_to_jsonld_converter, $jsonld_cache );
@@ -1630,7 +1624,6 @@ class Wordlift {
 		$that->loader->add_action( 'wp_ajax_wl_sample_data_create', $that->sample_data_ajax_adapter, 'create' );
 		$that->loader->add_action( 'wp_ajax_wl_sample_data_delete', $that->sample_data_ajax_adapter, 'delete' );
 
-		$that->loader->add_action( 'init', '\Wordlift\Content\Wordpress\Wordpress_Content_Service_Hooks', 'register' );
 		/**
 		 * @since 3.26.0
 		 */

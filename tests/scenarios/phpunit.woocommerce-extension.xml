@@ -1,0 +1,55 @@
+<phpunit
+        bootstrap="../bootstrap.php"
+        backupGlobals="false"
+        colors="true"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        beStrictAboutTestsThatDoNotTestAnything="true"
+        stopOnError="false"
+        stopOnFailure="false"
+>
+    <testsuites>
+        <testsuite name="WooCommerce Extension">
+            <directory prefix="test-" suffix=".php">..</directory>
+        </testsuite>
+    </testsuites>
+    <groups>
+        <include>
+            <group>woocommerce-extension</group>
+        </include>
+    </groups>
+    <php>
+        <ini name="display_errors" value="true"/>
+        <ini name="display_startup_errors" value="true"/>
+
+        <!-- Enable logging to /tmp/wordpress/wp-content/debug.log so that,
+                in case of errors, the log can be inspected. -->
+        <const name="WL_DEBUG" value="true"/>
+        <const name="WP_DEBUG_DISPLAY" value="false"/>
+        <const name="WP_DEBUG_LOG" value="true"/>
+        <const name="WL_LOG_LEVEL" value="1"/>
+
+        <!-- This list should match the list at:
+               https://github.com/wordlift/plugin-wordlift-for-woocommerce/blob/master/wl-woo/class-admin-setup.php#L147 -->
+<!--        <env name="WL_FEATURES__ANALYSIS" value="__return_false"/>-->
+<!--        <env name="WL_FEATURES__MATCH-TERMS" value="__return_false"/>-->
+
+        <env name="WL_FEATURES__BLOCKS" value="__return_false"/>
+        <env name="WL_FEATURES__DATASET" value="__return_false"/>
+        <env name="WL_FEATURES__MAPPINGS" value="__return_false"/>
+        <env name="WL_FEATURES__NOTICES" value="__return_false"/>
+        <env name="WL_FEATURES__METABOX__SAMEAS" value="__return_false"/>
+        <env name="WL_FEATURES__METABOX-SAMEAS" value="__return_false"/>
+        <env name="WL_FEATURES__POST-EXCERPT" value="__return_false"/>
+        <env name="WL_FEATURES__POST_EXCERPT" value="__return_false"/>
+        <env name="WL_FEATURES__SCREENS" value="__return_false"/>
+        <env name="WL_FEATURES__SETTINGS-DOWNLOAD" value="__return_false"/>
+        <env name="WL_FEATURES__SETTINGS-SCREEN" value="__return_false"/>
+        <env name="WL_FEATURES__TAXONOMY_TERM_ENTITY_MAPPING" value="__return_false"/>
+        <env name="WL_FEATURES__TERM-ENTITY" value="__return_false"/>
+        <env name="WL_FEATURES__VOCABULARY" value="__return_false"/>
+        <env name="WL_FEATURES__WIDGETS" value="__return_false"/>
+
+    </php>
+</phpunit>

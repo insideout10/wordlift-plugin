@@ -31,7 +31,7 @@ class Wordlift_Install_3_33_9 extends Wordlift_Install {
 			id bigint(20) unsigned NOT NULL auto_increment,
 			content_id bigint(20) unsigned NOT NULL,
 			content_type tinyint(1) unsigned NOT NULL,
-			rel_uri varchar(100) NOT NULL,
+			rel_uri varchar(500) NOT NULL,
 			rel_uri_hash char(40) CHARACTER SET ascii NOT NULL,
 			jsonld_hash CHAR(40)  NULL,
 			synced_gmt CHAR(19) NULL,

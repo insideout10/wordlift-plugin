@@ -37,7 +37,6 @@ echo( "Successfully connected.\n" );
 
 require_once $_tests_dir . '/includes/functions.php';
 
-
 $wordpress_version = substr( getenv( 'WORDPRESS_VERSION' ), - 3 );
 
 echo version_compare( $wordpress_version, '5.2', '>=' ) ? "Loading polyfill library since WordPress >= 5.2\n"
@@ -82,6 +81,9 @@ tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
 // Required for woocommerce-shipping-data tests to work.
 tests_add_filter( 'wl_feature__enable__shipping-sd', '__return_true' );
+
+// Enable/disable features based on envs.
+require __DIR__ . '/bootstrap.features.php';
 
 require $_tests_dir . '/includes/bootstrap.php';
 

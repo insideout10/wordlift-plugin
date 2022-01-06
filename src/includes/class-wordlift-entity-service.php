@@ -7,7 +7,6 @@
  * @subpackage Wordlift/includes
  */
 
-use Wordlift\Content\Content_Service;
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Object_Type_Enum;
@@ -49,11 +48,6 @@ class Wordlift_Entity_Service {
 	private $entity_uri_service;
 
 	/**
-	 * @var Content_Service $content_service
-	 */
-	private $content_service;
-
-	/**
 	 * The entity post type name.
 	 *
 	 * @since 3.1.0
@@ -90,7 +84,6 @@ class Wordlift_Entity_Service {
 
 		$this->entity_uri_service = Wordlift_Entity_Uri_Service::get_instance();
 		$this->relation_service   = Wordlift_Relation_Service::get_instance();
-		$this->content_service    = Wordpress_Content_Service::get_instance();
 
 	}
 
@@ -413,7 +406,7 @@ class Wordlift_Entity_Service {
 	}
 
 	public function get_uri( $object_id, $type = Object_Type_Enum::POST ) {
-		return $this->content_service->get_entity_id( new Wordpress_Content_Id( $object_id, $type ) );
+		return Wordpress_Content_Service::get_instance()->get_entity_id( new Wordpress_Content_Id( $object_id, $type ) );
 	}
 
 	/**

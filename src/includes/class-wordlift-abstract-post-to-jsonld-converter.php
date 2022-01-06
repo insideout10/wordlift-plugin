@@ -11,10 +11,8 @@
 
 use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Jsonld\Reference;
-use Wordlift\Jsonld\Term_Reference;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Object_Relation_Service;
-use Wordlift\Relation\Term_Relation_Service;
 
 /**
  * Define the {@link Wordlift_Abstract_Post_To_Jsonld_Converter} class.
@@ -42,15 +40,6 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	protected $entity_type_service;
 
 	/**
-	 * A {@link Wordlift_Entity_Service} instance.
-	 *
-	 * @since  3.10.0
-	 * @access protected
-	 * @var \Wordlift_Entity_Service $entity_type_service A {@link Wordlift_Entity_Service} instance.
-	 */
-	protected $entity_service;
-
-	/**
 	 * A {@link Wordlift_User_Service} instance.
 	 *
 	 * @since  3.10.0
@@ -72,17 +61,15 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * Wordlift_Post_To_Jsonld_Converter constructor.
 	 *
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_User_Service $user_service A {@link Wordlift_User_Service} instance.
 	 * @param \Wordlift_Attachment_Service $attachment_service A {@link Wordlift_Attachment_Service} instance.
 	 *
 	 * @since 3.10.0
 	 *
 	 */
-	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service ) {
+	public function __construct( $entity_type_service, $user_service, $attachment_service ) {
 
 		$this->entity_type_service = $entity_type_service;
-		$this->entity_service      = $entity_service;
 		$this->user_service        = $user_service;
 		$this->attachment_service  = $attachment_service;
 	}
@@ -108,7 +95,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		}
 
 		// Get the post URI @id.
-		$id = $this->entity_service->get_uri( $post->ID );
+		$id = Wordlift_Entity_Service::get_instance()->get_uri( $post->ID );
 		if ( is_null( $id ) ) {
 			$id = 'get_uri returned null, dataset is ' . wl_configuration_get_redlink_dataset_uri();
 		}
@@ -200,7 +187,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 				return new Post_Reference( $post_id );
 			}, $post_location_ids );
 
-			return array_merge( $carry,  $post_location_references);
+			return array_merge( $carry, $post_location_references );
 		}, array() );
 
 		// Merge the references with the referenced locations if any.

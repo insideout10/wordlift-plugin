@@ -12,7 +12,7 @@ use Wordlift\Cache\Ttl_Cache;
  * Class Wordlift_Navigator_Test
  * Extend Wordlift_Ajax_Unit_Test_Case
  *
- * @group   ajax
+ * @group ajax
  *
  * @since   3.27.1.2
  * @package Wordlift
@@ -65,7 +65,7 @@ class Wordlift_Navigator_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$this->assertObjectHasAttribute( 'success', $response );
 		$this->assertFalse( $response->success );
 		$this->assertObjectHasAttribute( 'data', $response );
-		$this->assertEquals( 'No post_id given', $response->data);
+		$this->assertEquals( 'No post_id given', $response->data );
 	}
 
 	public function test_navigator_without_uniqid() {
@@ -86,7 +86,7 @@ class Wordlift_Navigator_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$this->assertObjectHasAttribute( 'success', $response );
 		$this->assertFalse( $response->success );
 		$this->assertObjectHasAttribute( 'data', $response );
-		$this->assertEquals( 'No uniqid given', $response->data);
+		$this->assertEquals( 'No uniqid given', $response->data );
 	}
 
 	public function test_data_for_post_with_no_entities() {
@@ -94,8 +94,8 @@ class Wordlift_Navigator_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$cache = new Ttl_Cache( 'navigator' );
 		$cache->flush();
 
-		$post_1_id       = wl_create_post( '', 'post1', 'A post 1', 'publish', 'post' );
-		$post_2_id       = wl_create_post( '', 'post2', 'A post 2', 'publish', 'post' );
+		$post_1_id      = wl_create_post( '', 'post1', 'A post 1', 'publish', 'post' );
+		$post_2_id      = wl_create_post( '', 'post2', 'A post 2', 'publish', 'post' );
 		$thumbnail_2_id = $this->createPostThumbnail( 'http://example.org/post_1.png', 'Post 2 Thumbnail', 'image/png', 'dummy/image_1.png', $post_2_id );
 
 		$_GET['post_id'] = $post_1_id;
@@ -110,7 +110,7 @@ class Wordlift_Navigator_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		$this->assertInternalType( 'array', $response );
 		$this->assertNotEmpty( $response );
-		$this->assertEquals( 'A post 2', $response[0]->post->title);
+		$this->assertEquals( 'A post 2', $response[0]->post->title );
 
 	}
 

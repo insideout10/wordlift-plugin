@@ -126,7 +126,6 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 	}
 
 	public function test_local_entity_brings_in_annotations() {
-
 		// Create an entity, by also setting its entity URL and type.
 		$post_id = $this->factory()->post->create( array(
 			'post_type'   => 'entity',
@@ -134,8 +133,10 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 			'post_status' => 'publish',
 		) );
 
-		$entity_url = Wordlift_Configuration_Service::get_instance()->get_dataset_uri() . "/content_analysis_test_1";
-		Wordpress_Content_Service::get_instance()->set_entity_id( Wordpress_Content_Id::create_post( $post_id ), $entity_url );
+		$entity_url = Wordpress_Content_Service::get_instance()->get_entity_id( Wordpress_Content_Id::create_post( $post_id ) );
+
+//		Wordlift_Configuration_Service::get_instance()->get_dataset_uri() . "/content_analysis_test_1";
+//		Wordpress_Content_Service::get_instance()->set_entity_id( , $entity_url );
 		wp_add_object_terms( $post_id, 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		// Get the mock request.

@@ -30,4 +30,19 @@ class Object_Type_Enum {
 		return null;
 	}
 
+	public static function from_string( $object_type_name ) {
+		switch ( $object_type_name ) {
+			case 'post':
+				return 0;
+			case 'term':
+				return 1;
+			case 'home':
+				return 2;
+			case 'user':
+				return 3;
+		}
+
+		return 4;
+	}
+
 }

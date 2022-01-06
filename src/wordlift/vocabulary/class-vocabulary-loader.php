@@ -3,7 +3,6 @@
 namespace Wordlift\Vocabulary;
 
 use Wordlift\Api\Default_Api_Service;
-use Wordlift\Api\User_Agent;
 use Wordlift\Vocabulary\Api\Background_Analysis_Endpoint;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Api\Reconcile_Progress_Endpoint;
@@ -25,17 +24,8 @@ class Vocabulary_Loader {
 
 	public function init_vocabulary() {
 
-		$configuration_service = \Wordlift_Configuration_Service::get_instance();
-
-		$api_service = new Default_Api_Service(
-			apply_filters( 'wl_api_base_url', WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE ),
-			60,
-			User_Agent::get_user_agent(),
-			$configuration_service->get_key()
-		);
-
-		$cache_service    = Cache_Service_Factory::get_cache_service();
-
+		$api_service   = Default_Api_Service::get_instance();
+		$cache_service = Cache_Service_Factory::get_cache_service();
 
 		$analysis_service = new Analysis_Service( $api_service, $cache_service );
 
@@ -48,7 +38,6 @@ class Vocabulary_Loader {
 
 		$entity_rest_endpoint = new Entity_Rest_Endpoint();
 		$entity_rest_endpoint->register_routes();
-
 
 
 		$post_jsonld = new Post_Jsonld();

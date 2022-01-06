@@ -2,6 +2,8 @@
 /**
  * @since 3.31.7
  * @author Naveen Muthusamy <naveen@wordlift.io>
+ *
+ * @group vocabulary-terms
  */
 
 use Wordlift\Features\Features_Registry;

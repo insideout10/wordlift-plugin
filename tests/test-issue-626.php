@@ -112,7 +112,7 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$this->jsonld_service      = Wordlift_Jsonld_Service::get_instance();
 		$this->sample_data_service = Wordlift_Sample_Data_Service::get_instance();
 
-		$property_getter          = Wordlift_Property_Getter_Factory::create( Wordlift_Entity_Service::get_instance() );
+		$property_getter          = Wordlift_Property_Getter_Factory::create();
 		$post_to_jsonld_converter = new Wordlift_Post_To_Jsonld_Converter(
 			Wordlift_Entity_Type_Service::get_instance(),
 			Wordlift_Entity_Service::get_instance(),

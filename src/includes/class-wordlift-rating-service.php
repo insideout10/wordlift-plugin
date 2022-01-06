@@ -85,15 +85,6 @@ class Wordlift_Rating_Service {
 	const RATING_WARNING_HAS_COMPLETED_METADATA = 'Schema.org metadata for this entity are not completed.';
 
 	/**
-	 * A {@link Wordlift_Entity_Service} instance.
-	 *
-	 * @since  3.10.0
-	 * @access private
-	 * @var Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
-	 */
-	private $entity_service;
-
-	/**
 	 *  A {@link Wordlift_Entity_Type_Service} instance.
 	 *
 	 * @since  3.10.0
@@ -123,16 +114,14 @@ class Wordlift_Rating_Service {
 	/**
 	 * Create a {@link Wordlift_Rating_Service} instance.
 	 *
-	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
 	 * @param \Wordlift_Notice_Service $notice_service A {@link Wordlift_Notice_Service} instance.
 	 *
 	 * @since 3.10.0
 	 *
 	 */
-	public function __construct( $entity_service, $entity_type_service, $notice_service ) {
+	public function __construct( $entity_type_service, $notice_service ) {
 
-		$this->entity_service      = $entity_service;
 		$this->entity_type_service = $entity_type_service;
 		$this->notice_service      = $notice_service;
 
@@ -155,7 +144,7 @@ class Wordlift_Rating_Service {
 			return;
 		}
 
-		if ( ! $this->entity_service->is_entity( $post_id ) ) {
+		if ( ! Wordlift_Entity_Service::get_instance()->is_entity( $post_id ) ) {
 			return;
 		}
 
@@ -239,7 +228,7 @@ class Wordlift_Rating_Service {
 	private function calculate_rating_for( $post_id ) {
 
 		// If it's not an entity, return.
-		if ( ! $this->entity_service->is_entity( $post_id ) ) {
+		if ( ! Wordlift_Entity_Service::get_instance()->is_entity( $post_id ) ) {
 			return array();
 		}
 		// Retrieve the post object.
@@ -375,7 +364,7 @@ class Wordlift_Rating_Service {
 		// Retrieve the current global post
 		global $post;
 		// If it's not an entity, return.
-		if ( ! $this->entity_service->is_entity( $post->ID ) ) {
+		if ( ! Wordlift_Entity_Service::get_instance()->is_entity( $post->ID ) ) {
 			return;
 		}
 		// Retrieve an updated rating for the current entity

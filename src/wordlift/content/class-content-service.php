@@ -6,6 +6,8 @@
 
 namespace Wordlift\Content;
 
+use Exception;
+
 interface Content_Service {
 
 	/**
@@ -14,7 +16,7 @@ interface Content_Service {
 	 * @param string $uri The URI.
 	 *
 	 * @return Content|null The found {@link Content} or null if not found.
-	 * @throws \Exception if the URI is absolute and not within the dataset URI scope or the dataset URI isn't set.
+	 * @throws Exception if the URI is absolute and not within the dataset URI scope or the dataset URI isn't set.
 	 *
 	 */
 	function get_by_entity_id( $uri );
@@ -44,7 +46,7 @@ interface Content_Service {
 	 * @param string $uri The URI.
 	 *
 	 * @return void
-	 * @throws \Exception if the URI is absolute and not within the dataset URI scope or the dataset URI isn't set.
+	 * @throws Exception if the URI is absolute and not within the dataset URI scope or the dataset URI isn't set.
 	 */
 	function set_entity_id( $content_id, $uri );
 

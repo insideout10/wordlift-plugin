@@ -7,28 +7,13 @@
  * @since 3.8.0
  */
 class Wordlift_Entity_Property_Service extends Wordlift_Simple_Property_Service {
-	/**
-	 * @var \Wordlift_Entity_Service $entity_service
-	 */
-	private $entity_service;
-
-	/**
-	 * Wordlift_Entity_Property_Service constructor.
-	 *
-	 * @param \Wordlift_Entity_Service $entity_service
-	 */
-	public function __construct( $entity_service ) {
-
-		$this->entity_service = $entity_service;
-
-	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get( $id, $meta_key, $type ) {
 
-		$entity_service = $this->entity_service;
+		$entity_service = Wordlift_Entity_Service::get_instance();
 
 		// Map each returned value to a Wordlift_Property_Entity_Reference.
 		return array_map( function ( $item ) use ( $entity_service ) {

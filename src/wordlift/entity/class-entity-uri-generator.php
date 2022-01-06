@@ -2,6 +2,7 @@
 
 namespace Wordlift\Entity;
 
+use Exception;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Object_Type_Enum;
 
@@ -43,6 +44,9 @@ class Entity_Uri_Generator {
 		return null;
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	private static function ensure_unique( $rel_uri ) {
 		for ( $try_rel_uri = $rel_uri, $i = 2; $i < 100; $i ++ ) {
 			$content = Wordpress_Content_Service::get_instance()->get_by_entity_id( $try_rel_uri );
