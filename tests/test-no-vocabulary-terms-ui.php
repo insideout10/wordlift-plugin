@@ -1,6 +1,5 @@
 <?php
 
-use Wordlift\Features\Features_Registry;
 use Wordlift\Vocabulary_Terms\Entity_Type;
 use Wordlift\Vocabulary_Terms\Term_Metabox;
 
@@ -13,7 +12,8 @@ use Wordlift\Vocabulary_Terms\Term_Metabox;
  * @group no-vocabulary-terms
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
-class No_Vocbulary_Terms_Ui_Test extends \Wordlift_Vocabulary_Terms_Unit_Test_Case {
+class No_Vocbulary_Terms_Ui_Test extends Wordlift_Vocabulary_Terms_Unit_Test_Case {
+
 	/**
 	 * @var string
 	 */

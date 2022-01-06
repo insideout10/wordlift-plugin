@@ -81,7 +81,7 @@ function wl_analyze_content( $data, $content_type ) {
 	$data                            = wp_json_encode( $request_body );
 
 	// If dataset is not enabled, return a locally prepared response without analysis API.
-	if ( ! apply_filters( 'wl_features__enable__dataset', true ) ) {
+	if ( ! apply_filters( 'wl_feature__enable__dataset', true ) ) {
 
 		return Analysis_Response_Ops_Factory::get_instance()
 		                                    ->create( $default_response, $post_id )

@@ -6,9 +6,7 @@ if ( ! function_exists( 'tests_add_filter' ) ) {
 
 foreach ( $_ENV as $key => $value ) {
 	if ( preg_match( '@^WL_FEATURES__(.*)@', $key, $matches ) ) {
-		foreach ( $matches as $match ) {
-			$feature = strtolower( $match );
-			tests_add_filter( "wl_feature__enable__$feature", $value );
-		}
+		$feature = strtolower( $matches[1] );
+		tests_add_filter( "wl_feature__enable__$feature", $value );
 	}
 }

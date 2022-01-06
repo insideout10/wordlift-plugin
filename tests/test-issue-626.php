@@ -115,13 +115,11 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$property_getter          = Wordlift_Property_Getter_Factory::create();
 		$post_to_jsonld_converter = new Wordlift_Post_To_Jsonld_Converter(
 			Wordlift_Entity_Type_Service::get_instance(),
-			Wordlift_Entity_Service::get_instance(),
 			Wordlift_User_Service::get_instance(),
 			Wordlift_Attachment_Service::get_instance() );
 
 		$entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter(
 			Wordlift_Entity_Type_Service::get_instance(),
-			Wordlift_Entity_Service::get_instance(),
 			Wordlift_User_Service::get_instance(),
 			Wordlift_Attachment_Service::get_instance(),
 			$property_getter,
@@ -129,7 +127,6 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 			$post_to_jsonld_converter );
 
 		$this->postid_to_jsonld_converter = new Wordlift_Postid_To_Jsonld_Converter(
-			Wordlift_Entity_Service::get_instance(),
 			$entity_post_to_jsonld_converter,
 			$post_to_jsonld_converter );
 

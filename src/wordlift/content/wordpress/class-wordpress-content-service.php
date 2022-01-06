@@ -21,7 +21,7 @@ class Wordpress_Content_Service {
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {
 
-			if ( apply_filters( 'wl_features__enable__dataset', true ) ) {
+			if ( apply_filters( 'wl_feature__enable__dataset', true ) ) {
 				self::$instance = Wordpress_Dataset_Content_Service::get_instance();
 			} else {
 				self::$instance = Wordpress_Permalink_Content_Service::get_instance();

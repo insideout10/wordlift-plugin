@@ -402,7 +402,7 @@ class Wordlift_Configuration_Service {
 	 */
 	public function get_dataset_uri() {
 
-		if ( apply_filters( 'wl_features__enable__dataset', true ) ) {
+		if ( apply_filters( 'wl_feature__enable__dataset', true ) ) {
 			return $this->get( 'wl_advanced_settings', self::DATASET_URI, null );
 		} else {
 			return null;

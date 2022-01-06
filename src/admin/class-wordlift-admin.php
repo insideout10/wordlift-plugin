@@ -320,7 +320,7 @@ class Wordlift_Admin {
 			//
 			// @see https://github.com/insideout10/wordlift-plugin/issues/561
 			// @see https://github.com/insideout10/wordlift-plugin/issues/1267
-			'can_create_entities'   => apply_filters( 'wl_features__enable__dataset', true ) ? ( $can_edit_wordlift_entities ? 'yes' : 'no' ) : 'no',
+			'can_create_entities'   => apply_filters( 'wl_feature__enable__dataset', true ) ? ( $can_edit_wordlift_entities ? 'yes' : 'no' ) : 'no',
 			'l10n'                  => array(
 				'You already published an entity with the same name'                 => __( 'You already published an entity with the same name: ', 'wordlift' ),
 				'logo_selection_title'                                               => __( 'WordLift Choose Logo', 'wordlift' ),

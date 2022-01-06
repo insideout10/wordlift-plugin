@@ -65,17 +65,17 @@ jobs:
   #            -v $GITHUB_WORKSPACE:"/github/workspace" \
   #              ziodave/node-chromium:node10-2 run test:js
 
-#  js_jest:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: checkout
-#        uses: actions/checkout@v2
-#      - name: install node
-#        uses: actions/setup-node@v1
-#        with:
-#          node-version: "10"
-#      - name: test
-#        run: npm run test:jest
+  #  js_jest:
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - name: checkout
+  #        uses: actions/checkout@v2
+  #      - name: install node
+  #        uses: actions/setup-node@v1
+  #        with:
+  #          node-version: "10"
+  #      - name: test
+  #        run: npm run test:jest
   wordpress:
     name: ${{ matrix.image }}_${{ matrix.phpunit-xml }}
     runs-on: ubuntu-latest
@@ -92,44 +92,47 @@ jobs:
           - "php7.3-phpunit7.5-wordpress5.6"
           - "php8.0-phpunit7.5woo-wordpress5.6"
         phpunit-xml:
-          - phpunit.xml
+          - tests/scenarios/phpunit.default.xml
+          - tests/scenarios/phpunit.no-editor.xml
+          - tests/scenarios/phpunit.no-vocabulary-terms.xml
+          - tests/scenarios/phpunit.woocommerce-extension.xml
           - phpunit-multisite.xml
         dataset-ng:
           - true
           - false
-#        include:
-#          - acf-pro-enabled: true
-#            image: "php5.6-phpunit4.8-wordpress4.7"
-#            phpunit-xml: phpunit.xml
-#            dataset-ng: true
-#          - acf-pro-enabled: true
-#            image: "php5.6-phpunit4.8-wordpress4.7"
-#            phpunit-xml: phpunit-multisite.xml
-#            dataset-ng: true
-#          - acf-pro-enabled: true
-#            image: "php5.6-phpunit4.8-wordpress4.7"
-#            phpunit-xml: phpunit.xml
-#            dataset-ng: false
-#          - acf-pro-enabled: true
-#            image: "php5.6-phpunit4.8-wordpress4.7"
-#            phpunit-xml: phpunit-multisite.xml
-#            dataset-ng: false
-#          - acf-pro-enabled: true
-#            image: "php7.3-phpunit7.5-wordpress5.5"
-#            phpunit-xml: phpunit.xml
-#            dataset-ng: true
-#          - acf-pro-enabled: true
-#            image: "php7.3-phpunit7.5-wordpress5.5"
-#            phpunit-xml: phpunit-multisite.xml
-#            dataset-ng: true
-#          - acf-pro-enabled: true
-#            image: "php7.3-phpunit7.5-wordpress5.5"
-#            phpunit-xml: phpunit.xml
-#            dataset-ng: false
-#          - acf-pro-enabled: true
-#            image: "php7.3-phpunit7.5-wordpress5.5"
-#            phpunit-xml: phpunit-multisite.xml
-#            dataset-ng: false
+    #        include:
+    #          - acf-pro-enabled: true
+    #            image: "php5.6-phpunit4.8-wordpress4.7"
+    #            phpunit-xml: phpunit.xml
+    #            dataset-ng: true
+    #          - acf-pro-enabled: true
+    #            image: "php5.6-phpunit4.8-wordpress4.7"
+    #            phpunit-xml: phpunit-multisite.xml
+    #            dataset-ng: true
+    #          - acf-pro-enabled: true
+    #            image: "php5.6-phpunit4.8-wordpress4.7"
+    #            phpunit-xml: phpunit.xml
+    #            dataset-ng: false
+    #          - acf-pro-enabled: true
+    #            image: "php5.6-phpunit4.8-wordpress4.7"
+    #            phpunit-xml: phpunit-multisite.xml
+    #            dataset-ng: false
+    #          - acf-pro-enabled: true
+    #            image: "php7.3-phpunit7.5-wordpress5.5"
+    #            phpunit-xml: phpunit.xml
+    #            dataset-ng: true
+    #          - acf-pro-enabled: true
+    #            image: "php7.3-phpunit7.5-wordpress5.5"
+    #            phpunit-xml: phpunit-multisite.xml
+    #            dataset-ng: true
+    #          - acf-pro-enabled: true
+    #            image: "php7.3-phpunit7.5-wordpress5.5"
+    #            phpunit-xml: phpunit.xml
+    #            dataset-ng: false
+    #          - acf-pro-enabled: true
+    #            image: "php7.3-phpunit7.5-wordpress5.5"
+    #            phpunit-xml: phpunit-multisite.xml
+    #            dataset-ng: false
     # If you want the following envs to be avail to docker, you need to add them to `docker run`.
     env:
       ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
@@ -137,7 +140,6 @@ jobs:
       WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
       YOUTUBE_DATA_API_KEY: ${{  secrets.YOUTUBE_DATA_API_KEY }}
       VIMEO_API_KEY: ${{  secrets.VIMEO_API_KEY }}
-      WORDLIFT_KEY: ${{ secrets.WORDLIFT_KEY }}
       WL_DATASET_NG: ${{ matrix.dataset-ng }}
       WORDPRESS_VERSION: ${{ matrix.image }}
 

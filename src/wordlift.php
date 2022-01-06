@@ -252,3 +252,8 @@ function wl_block_categories( $categories, $post ) {
 }
 
 add_filter( 'block_categories', 'wl_block_categories', 10, 2 );
+
+// Temporary fix for a typo in WooCommerce Extension.
+add_filter( 'wl_feature__enable__dataset', function ( $value ) {
+	return apply_filters( 'wl_features__enable__dataset', $value );
+} );

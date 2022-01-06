@@ -18,7 +18,6 @@ use Wordlift\Jsonld\Term_Reference;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Types\Term_Relation;
 use Wordlift\Term\Type_Service;
-use Wordlift\Term\Uri_Service;
 
 class Term_Relation_Service extends Singleton implements Relation_Service_Interface {
 

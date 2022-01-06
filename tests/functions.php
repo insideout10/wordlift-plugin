@@ -381,7 +381,6 @@ function wl_get_attachments( $post_id ) {
 
 function _wl_mock_http_request( $response, $request, $url ) {
 
-
 	if ( $response || preg_match( '@/wl-api$@', $url ) ) {
 		return $response;
 	}
@@ -408,9 +407,9 @@ function _wl_mock_http_request( $response, $request, $url ) {
 	}
 
 
-	$request_data = is_string($request['body']) ? json_decode( $request['body'], true ) : null;
+	$request_data = is_string( $request['body'] ) ? json_decode( $request['body'], true ) : null;
 
-	if ( is_string($request['body']) && 'POST' === $method && '430c6e5d6b51fa56c4e1a240ad4fdd8d' === md5( $request_data['content'] ) ) {
+	if ( is_string( $request['body'] ) && 'POST' === $method && '430c6e5d6b51fa56c4e1a240ad4fdd8d' === md5( $request_data['content'] ) ) {
 		return array(
 			'body'     => file_get_contents( __DIR__ . '/assets/content-analysis-response-3.json' ),
 			'headers'  => array( 'content-type' => 'application/json' ),
@@ -462,12 +461,6 @@ function wl_configure_wordpress_test() {
 
 	// Simulate WordLift activation.
 	activate_wordlift();
-
-	// If the WordLift key is set, then we'll configure it.
-	if ( false === getenv( 'WORDLIFT_KEY' ) ) {
-		echo( "WordLift's key is required, set the `WORDLIFT_KEY` environment." );
-		die( 1 );
-	}
 
 	// When setting the WordLift Key, the Redlink dataset URI is provisioned by WordLift Server.
 	$configuration_service->set_key( '' );
