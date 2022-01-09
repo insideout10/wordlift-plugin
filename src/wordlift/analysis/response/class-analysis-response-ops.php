@@ -56,7 +56,6 @@ class Analysis_Response_Ops {
 	 * @since 3.21.5
 	 */
 	public function __construct( $entity_uri_service, $entity_helper, $json, $post_id ) {
-
 		$this->json               = $json;
 		$this->entity_uri_service = $entity_uri_service;
 		$this->entity_helper      = $entity_helper;

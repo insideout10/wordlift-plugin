@@ -22,7 +22,7 @@ class Wordlift_Schemaorg_Property_Service {
 	 *
 	 * @since 3.20.0
 	 */
-	const PREFIX = "_wl_prop_";
+	const PREFIX = '_wl_prop_';
 
 	/**
 	 * Create a {@link Wordlift_Schemaorg_Property_Service} instance.

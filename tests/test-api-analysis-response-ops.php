@@ -134,17 +134,13 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 		) );
 
 		$entity_url = Wordpress_Content_Service::get_instance()->get_entity_id( Wordpress_Content_Id::create_post( $post_id ) );
+		$this->assertNotEmpty( $entity_url, 'The entity URL must exist.' );
 
-//		Wordlift_Configuration_Service::get_instance()->get_dataset_uri() . "/content_analysis_test_1";
-//		Wordpress_Content_Service::get_instance()->set_entity_id( , $entity_url );
 		wp_add_object_terms( $post_id, 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		// Get the mock request.
 		$request_body = file_get_contents( dirname( __FILE__ ) . '/assets/content-analysis-request-2.json' );
 		$request_json = json_decode( $request_body, true );
-
-		// Trigger plugins loaded action to register the providers.
-		do_action( 'plugins_loaded' );
 
 		$response_json = Analysis_Response_Ops_Factory
 			::get_instance()
@@ -156,9 +152,7 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 		$this->assertTrue( isset( $response_json->entities ), 'The entities property must exist.' );
 		$this->assertTrue( isset( $response_json->annotations ), 'The annotations property must exist.' );
 		$this->assertTrue( isset( $response_json->topics ), 'The topics property must exist.' );
-
-		$this->assertTrue( isset( $response_json->entities->{$entity_url} ),
-			'Our mock entity must be there.' );
+		$this->assertTrue( isset( $response_json->entities->{$entity_url} ), 'Our mock entity must be there.' );
 
 		$entity = $response_json->entities->{$entity_url};
 

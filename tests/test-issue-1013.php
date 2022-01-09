@@ -1,6 +1,8 @@
 <?php
 
 use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Entity\Entity_Helper;
 
 /**
@@ -21,12 +23,10 @@ class Wordlift_Issue_1013_Test extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		$entity_uri_service    = Wordlift_Cached_Entity_Uri_Service::get_instance();
-		$entity_service        = Wordlift_Entity_Service::get_instance();
-		$entity_helper         = new Entity_Helper( $entity_uri_service, $entity_service );
-
 		$this->linked_data_autocomplete_service = new Linked_Data_Autocomplete_Service(
-			$entity_helper, $entity_uri_service, $entity_service );
+			Entity_Helper::get_instance(),
+			Wordlift_Entity_Uri_Service::get_instance(),
+			Wordlift_Entity_Service::get_instance() );
 
 	}
 
@@ -63,8 +63,9 @@ class Wordlift_Issue_1013_Test extends Wordlift_Unit_Test_Case {
 		$results = $this->linked_data_autocomplete_service->query( 'Acme' );
 		remove_filter( 'pre_http_request', array( $this, 'pre_http_request' ) );
 
-		$entity_uri_0 = get_post_meta( $post_ids[0], WL_ENTITY_URL_META_NAME, true );
-		$entity_uri_1 = get_post_meta( $post_ids[1], WL_ENTITY_URL_META_NAME, true );
+		$content_service = Wordpress_Content_Service::get_instance();
+		$entity_uri_0    = $content_service->get_entity_id( Wordpress_Content_Id::create_post( $post_ids[0] ) );
+		$entity_uri_1    = $content_service->get_entity_id( Wordpress_Content_Id::create_post( $post_ids[1] ) );
 
 		$this->assertCount( 9, $results, 'We expect 9 results.' );
 		$this->assertEquals( $entity_uri_0, $results[0]['id'], 'This result has to be replaced with the local entity.' );

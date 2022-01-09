@@ -11,6 +11,9 @@
 namespace Wordlift\Autocomplete;
 
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift_Entity_Type_Taxonomy_Service;
 use WP_UnitTest_Generator_Sequence;
 
 class Local_Autocomplete_Service_Test extends \Wordlift_Unit_Test_Case {
@@ -26,15 +29,17 @@ class Local_Autocomplete_Service_Test extends \Wordlift_Unit_Test_Case {
 			'post_title' => new WP_UnitTest_Generator_Sequence( 'Local Autocomplete Service Test %s' ),
 		) );
 
+
 		for ( $i = 0; $i < count( $post_ids ); $i ++ ) {
 			$post_id = $post_ids[ $i ];
-			update_post_meta( $post_id, 'entity_url', "http://example.org/$i" );
 
-			wp_add_object_terms( $post_id, 'thing', \Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+			wp_add_object_terms( $post_id, 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		}
 
+		$exclude_id           = Wordpress_Content_Service::get_instance()
+		                                                 ->get_entity_id( Wordpress_Content_Id::create_post( current( $post_ids ) ) );
 		$autocomplete_service = new Local_Autocomplete_Service();
-		$results              = $autocomplete_service->query( 'Autocomplete Service', 'local', 'http://example.org/0' );
+		$results              = $autocomplete_service->query( 'Autocomplete Service', 'local', $exclude_id );
 
 		$this->assertCount( 49, $results, 'We don`t expect more than 50 results.' );
 
@@ -61,13 +66,13 @@ class Local_Autocomplete_Service_Test extends \Wordlift_Unit_Test_Case {
 
 		for ( $i = 0; $i < count( $post_ids ); $i ++ ) {
 			$post_id = $post_ids[ $i ];
-			update_post_meta( $post_id, 'entity_url', "http://example.org/$i" );
-
-			wp_add_object_terms( $post_id, 'thing', \Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+			wp_add_object_terms( $post_id, 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		}
 
+		$exclude_id           = Wordpress_Content_Service::get_instance()
+		                                                 ->get_entity_id( Wordpress_Content_Id::create_post( current( $post_ids ) ) );
 		$autocomplete_service = new Local_Autocomplete_Service();
-		$results              = $autocomplete_service->query( 'Autocomplete Service', 'local', 'http://example.org/0' );
+		$results              = $autocomplete_service->query( 'Autocomplete Service', 'local', $exclude_id );
 
 		$this->assertCount( 24, $results, 'We expect 24 entities.' );
 

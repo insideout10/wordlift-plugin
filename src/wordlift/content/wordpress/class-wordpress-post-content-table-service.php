@@ -56,7 +56,7 @@ class Wordpress_Post_Content_Table_Service extends Abstract_Wordpress_Content_Se
 			WHERE rel_uri = %s
 		", $rel_uri ) );
 
-		if ( ! isset( $row ) || Object_Type_Enum::POST !== $row->content_type ) {
+		if ( ! isset( $row ) || Object_Type_Enum::POST !== (int) $row->content_type ) {
 			return null;
 		}
 

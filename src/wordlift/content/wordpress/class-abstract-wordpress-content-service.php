@@ -2,11 +2,9 @@
 
 namespace Wordlift\Content\Wordpress;
 
-use Exception;
 use Wordlift\Assertions;
 use Wordlift\Content\Content_Service;
 use Wordlift_Configuration_Service;
-use Wordlift_Entity_Service;
 
 abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 
@@ -39,7 +37,7 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 	}
 
 	protected function make_relative( $uri ) {
-		$dataset_uri = $this->get_dataset_uri();
+		$dataset_uri = trailingslashit( $this->get_dataset_uri() );
 		if ( 0 === strpos( $uri, $dataset_uri ) ) {
 			return substr( $uri, strlen( $dataset_uri ) );
 		}

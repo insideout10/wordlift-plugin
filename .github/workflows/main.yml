@@ -95,6 +95,7 @@ jobs:
           - tests/scenarios/phpunit.default.xml
           - tests/scenarios/phpunit.no-editor.xml
           - tests/scenarios/phpunit.no-vocabulary-terms.xml
+          - tests/scenarios/phpunit.rel-item-id.xml
           - tests/scenarios/phpunit.woocommerce-extension.xml
           - phpunit-multisite.xml
         dataset-ng:

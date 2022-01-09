@@ -82,6 +82,9 @@ tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 // Required for woocommerce-shipping-data tests to work.
 tests_add_filter( 'wl_feature__enable__shipping-sd', '__return_true' );
 
+// Prevent WooCommerce to send ajax requests during tests.
+tests_add_filter( 'action_scheduler_allow_async_request_runner', '__return_false', PHP_INT_MAX );
+
 // Enable/disable features based on envs.
 require __DIR__ . '/bootstrap.features.php';
 

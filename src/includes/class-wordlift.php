@@ -15,7 +15,6 @@
 use Wordlift\Admin\Admin_User_Option;
 use Wordlift\Admin\Key_Validation_Notice;
 use Wordlift\Admin\Top_Entities;
-use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 use Wordlift\Assertions;
 use Wordlift\Autocomplete\All_Autocomplete_Service;
 use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
@@ -1315,22 +1314,12 @@ class Wordlift {
 			// Call this static method to register FAQ routes to rest api - disabled
 			//Faq_Rest_Controller::register_routes();
 
-			/*
-			 * Create a singleton for the Analysis_Response_Ops_Factory.
-			 */
-			$entity_helper = new Entity_Helper( $that->entity_uri_service, Wordlift_Entity_Service::get_instance() );
-
 			$that->storage_factory = new Wordlift_Storage_Factory( Wordlift_Entity_Service::get_instance(), $that->user_service, $property_getter );
-
-			new Analysis_Response_Ops_Factory(
-				$that->entity_uri_service,
-				$entity_helper
-			);
 
 			/** WL Autocomplete. */
 			$autocomplete_service       = new All_Autocomplete_Service( array(
 				new Local_Autocomplete_Service(),
-				new Linked_Data_Autocomplete_Service( $entity_helper, $that->entity_uri_service, Wordlift_Entity_Service::get_instance() ),
+				new Linked_Data_Autocomplete_Service( Entity_Helper::get_instance(), $that->entity_uri_service, Wordlift_Entity_Service::get_instance() ),
 			) );
 			$that->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $autocomplete_service );
 

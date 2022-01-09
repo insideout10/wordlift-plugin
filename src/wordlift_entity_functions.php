@@ -4,46 +4,6 @@
  */
 
 /**
- * Find entity posts by the entity URIs. Entity as searched by their entity URI or same as.
- *
- * @param array $uris A collection of entity URIs.
- *
- * @return array A WP_Post instance or null if not found.
- */
-function wl_get_entity_post_ids_by_uris( $uris ) {
-
-	if ( empty( $uris ) ) {
-		return array();
-	}
-
-	$query = new WP_Query( array(
-			'fields'      => 'ids',
-			'post_status' => 'any',
-			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
-			'meta_query'  => array(
-				'relation' => 'OR',
-				array(
-					'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
-					'value'   => $uris,
-					'compare' => 'IN',
-				),
-				array(
-					'key'     => 'entity_url',
-					'value'   => $uris,
-					'compare' => 'IN',
-				),
-			),
-		)
-	);
-
-	// Get the matching entity posts.
-	$posts = $query->get_posts();
-
-	// Return the array
-	return $posts;
-}
-
-/**
  * Get the entity URI of the provided post.
  *
  * @param int $post_id The post ID.
