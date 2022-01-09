@@ -51,7 +51,50 @@ class Wordpress_Permalink_Content_Service implements Content_Service {
 	 * @throws Exception
 	 */
 	function get_by_entity_id_or_same_as( $uri ) {
-		return $this->get_by_entity_id( $uri );
+		// If the URL is in the local site URL, then try to find a corresponding post.
+		if ( 0 === strpos( $uri, site_url() ) ) {
+			return $this->get_by_entity_id( $uri );
+		}
+
+		// Otherwise look in sameAs.
+		global $wpdb;
+
+		$row = $wpdb->get_row( $wpdb->prepare( "
+			SELECT content_type, content_id
+			FROM (
+			    SELECT %d AS content_type, post_id AS content_id
+			    FROM $wpdb->postmeta
+			    WHERE meta_key = 'entity_same_as' AND meta_value = %s
+			    UNION
+			    SELECT %d AS content_type, term_id AS content_id
+			    FROM $wpdb->termmeta
+			    WHERE meta_key = 'entity_same_as' AND meta_value = %s
+			    UNION
+			    SELECT %d AS content_type, user_id AS content_id
+			    FROM $wpdb->usermeta
+			    WHERE meta_key = 'entity_same_as' AND meta_value = %s
+			) _tmp_same_as 
+			LIMIT 1
+		",
+			Object_Type_Enum::POST, $uri,
+			Object_Type_Enum::TERM, $uri,
+			Object_Type_Enum::USER, $uri ) );
+
+		if ( ! isset( $row ) ) {
+			return null;
+		}
+
+		switch ( (int) $row->content_type ) {
+			case Object_Type_Enum::POST:
+				return new Wordpress_Content( get_post( $row->content_id ) );
+			case Object_Type_Enum::TERM:
+				return new Wordpress_Content( get_term( $row->content_id ) );
+			case Object_Type_Enum::USER:
+				return new Wordpress_Content( get_user_by( 'ID', $row->content_id ) );
+			default:
+				return null;
+		}
+
 	}
 
 	/**
