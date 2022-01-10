@@ -15,7 +15,7 @@ class Wordpress_Dataset_Content_Service implements Content_Service {
 
 	private static $instance = null;
 
-	protected function __constructor() {
+	protected function __construct() {
 
 	}
 
