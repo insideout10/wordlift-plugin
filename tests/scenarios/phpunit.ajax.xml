@@ -10,24 +10,19 @@
         stopOnFailure="false"
 >
     <testsuites>
-        <testsuite name="No Editor">
+        <testsuite name="WordLift Plugin">
             <directory prefix="test-" suffix=".php">..</directory>
         </testsuite>
     </testsuites>
     <groups>
-        <exclude>
+        <include>
             <group>ajax</group>
-            <group>no-editor</group>
-            <group>no-vocabulary-terms</group>
-            <group>woocommerce-extension</group>
-        </exclude>
+        </include>
     </groups>
     <php>
         <ini name="display_errors" value="true"/>
         <ini name="display_startup_errors" value="true"/>
 
-        <!-- Enable logging to /tmp/wordpress/wp-content/debug.log so that,
-                in case of errors, the log can be inspected. -->
         <const name="WP_DEBUG_LOG" value="true"/>
         <const name="WP_DEBUG_DISPLAY" value="false"/>
         <const name="WL_DEBUG" value="true"/>
@@ -36,8 +31,6 @@
         <const name="WL_ENABLE_TERM_LINKING" value="true"/>
 
         <env name="WORDLIFT_KEY" value="key123"/>
-
-        <env name="WL_FEATURES__REL-ITEM-ID" value="__return_true"/>
 
     </php>
 </phpunit>

@@ -16,6 +16,7 @@
     </testsuites>
     <groups>
         <exclude>
+            <group>ajax</group>
             <group>no-editor</group>
             <group>no-vocabulary-terms</group>
             <group>rel-item-id</group>

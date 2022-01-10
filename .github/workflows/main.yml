@@ -76,6 +76,7 @@ jobs:
   #          node-version: "10"
   #      - name: test
   #        run: npm run test:jest
+
   wordpress:
     name: ${{ matrix.image }}_${{ matrix.phpunit-xml }}
     runs-on: ubuntu-latest
@@ -92,6 +93,7 @@ jobs:
           - "php7.3-phpunit7.5-wordpress5.6"
           - "php8.0-phpunit7.5woo-wordpress5.6"
         phpunit-xml:
+          - tests/scenarios/phpunit.ajax.xml
           - tests/scenarios/phpunit.default.xml
           - tests/scenarios/phpunit.no-editor.xml
           - tests/scenarios/phpunit.no-vocabulary-terms.xml
