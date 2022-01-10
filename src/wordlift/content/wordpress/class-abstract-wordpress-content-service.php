@@ -13,7 +13,7 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 	}
 
 	protected function get_dataset_uri() {
-		return Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
+		return trailingslashit( Wordlift_Configuration_Service::get_instance()->get_dataset_uri() );
 	}
 
 	protected function is_absolute( $uri ) {
@@ -30,14 +30,14 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 		Assertions::not_empty( $this->get_dataset_uri(), '`dataset_uri` cannot be empty.' );
 
 		if ( 1 !== preg_match( '@^https?://@', $uri ) ) {
-			return untrailingslashit( $this->get_dataset_uri() ) . '/' . $uri;
+			return $this->get_dataset_uri() . $uri;
 		}
 
 		return $uri;
 	}
 
 	protected function make_relative( $uri ) {
-		$dataset_uri = trailingslashit( $this->get_dataset_uri() );
+		$dataset_uri = $this->get_dataset_uri();
 		if ( 0 === strpos( $uri, $dataset_uri ) ) {
 			return substr( $uri, strlen( $dataset_uri ) );
 		}

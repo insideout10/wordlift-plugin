@@ -4,7 +4,6 @@ namespace Wordlift\Content\Wordpress;
 
 use Exception;
 use Wordlift\Assertions;
-use Wordlift\Entity\Entity_Uri_Generator;
 use Wordlift\Object_Type_Enum;
 
 class Wordpress_Term_Content_Legacy_Service extends Abstract_Wordpress_Content_Legacy_Service {
@@ -76,10 +75,8 @@ class Wordpress_Term_Content_Legacy_Service extends Abstract_Wordpress_Content_L
 		global $wpdb;
 
 		$term_id = $wpdb->get_var( $wpdb->prepare( "
-			SELECT t.term_id 
-			FROM $wpdb->terms AS t 
-			INNER JOIN $wpdb->termmeta AS tm
-			    ON t.term_id = tm.term_id
+			SELECT tm.term_id
+			FROM $wpdb->termmeta tm
 			WHERE tm.meta_key IN ( 'entity_url', 'entity_same_as' ) AND tm.meta_value = %s
 			LIMIT 1
 		", $uri ) );

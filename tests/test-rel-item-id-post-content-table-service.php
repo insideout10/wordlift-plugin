@@ -1,0 +1,140 @@
+<?php
+
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Post_Content_Table_Service;
+
+/**
+ * Test the {@link Wordpress_Post_Content_Table_Service}.
+ *
+ * @author David Riccitelli
+ * @version 3.33.9
+ * @group rel-item-id
+ */
+class Wordpress_Post_Content_Table_Service_Test extends Wordlift_Unit_Test_Case {
+
+	public function test_set_entity_id_of_not_a_post_type_raises_exception() {
+
+		$term_id = $this->factory()->term->create();
+
+		$this->expectException( '\Exception' );
+		$this->expectExceptionMessage( '`content_id` must be of type post.' );
+
+		Wordpress_Post_Content_Table_Service::get_instance()
+		                                    ->set_entity_id(
+			                                    Wordpress_Content_Id::create_term( $term_id ),
+			                                    'https://data.example.org/dataset/entity/0' );
+
+	}
+
+	public function test_set_entity_id_with_empty_uri_raises_exception() {
+
+		$post_id = $this->factory()->post->create();
+
+		$this->expectException( '\Exception' );
+		$this->expectExceptionMessage( "`uri` can't be empty" );
+
+		Wordpress_Post_Content_Table_Service::get_instance()
+		                                    ->set_entity_id(
+			                                    Wordpress_Content_Id::create_post( $post_id ),
+			                                    '' );
+
+	}
+
+	public function test_set_entity_id_outside_dataset_scope_raises_exception() {
+
+		$post_id = $this->factory()->post->create();
+
+		$this->expectException( '\Exception' );
+		$this->expectExceptionMessage( '`uri` must be within the dataset URI scope.' );
+
+		Wordpress_Post_Content_Table_Service::get_instance()
+		                                    ->set_entity_id(
+			                                    Wordpress_Content_Id::create_post( $post_id ),
+			                                    'https://data.example.org/dataset/entity/0' );
+
+	}
+
+	public function test_set_entity_id_with_relative_uri() {
+
+		$post_id         = $this->factory()->post->create();
+		$content_id      = Wordpress_Content_Id::create_post( $post_id );
+		$content_service = Wordpress_Post_Content_Table_Service::get_instance();
+		$content_service->set_entity_id( $content_id, 'entity/0' );
+
+		$this->assertEquals(
+			'https://data.localdomain.localhost/dataset/entity/0',
+			$content_service->get_entity_id( $content_id ) );
+
+	}
+
+	public function test_set_entity_id_with_absolute_uri() {
+
+		$post_id         = $this->factory()->post->create();
+		$content_id      = Wordpress_Content_Id::create_post( $post_id );
+		$content_service = Wordpress_Post_Content_Table_Service::get_instance();
+		$content_service->set_entity_id( $content_id, 'https://data.localdomain.localhost/dataset/entity/0' );
+
+		$this->assertEquals(
+			'https://data.localdomain.localhost/dataset/entity/0',
+			$content_service->get_entity_id( $content_id ) );
+
+	}
+
+	public function test_get_entity_id() {
+
+		$post_id = $this->factory()->post->create( array( 'post_name' => 'post-name' ) );
+
+		$entity_id = Wordpress_Post_Content_Table_Service
+			::get_instance()
+			->get_entity_id( Wordpress_Content_Id::create_post( $post_id ) );
+
+		$this->assertEquals(
+			'https://data.localdomain.localhost/dataset/post/post-name', $entity_id,
+			"The provided entity ID `$entity_id` does not match the expected id, maybe the way the ID is
+			    generated has changed?" );
+
+	}
+
+	public function test_get_by_entity_id() {
+
+		$post_id = $this->factory()->post->create();
+
+		$content_service = Wordpress_Post_Content_Table_Service::get_instance();
+		$entity_id       = $content_service
+			->get_entity_id( Wordpress_Content_Id::create_post( $post_id ) );
+
+		$content = $content_service->get_by_entity_id( $entity_id );
+		$this->assertEquals( $post_id, $content->get_bag()->ID, 'The post ID is expected to match.' );
+
+	}
+
+	public function test_supports() {
+
+		$content_service = Wordpress_Post_Content_Table_Service::get_instance();
+
+		$this->assertTrue(
+			$content_service->supports( Wordpress_Content_Id::create_post( 1 ) ),
+			'Post should be supported.' );
+
+		$this->assertFalse(
+			$content_service->supports( Wordpress_Content_Id::create_term( 1 ) ),
+			'Term should not be supported.' );
+
+		$this->assertFalse(
+			$content_service->supports( Wordpress_Content_Id::create_user( 1 ) ),
+			'User should not be supported.' );
+
+	}
+
+	public function test_get_by_entity_id_or_same_as() {
+
+		$post_id = $this->factory()->post->create();
+		add_post_meta( $post_id, 'entity_same_as', 'http://cloud.example.org/data/entity/0' );
+
+		$content = Wordpress_Post_Content_Table_Service::get_instance()
+		                                               ->get_by_entity_id_or_same_as( 'http://cloud.example.org/data/entity/0' );
+		$this->assertEquals( $post_id, $content->get_bag()->ID, 'The post ID is expected to match.' );
+
+	}
+
+}
