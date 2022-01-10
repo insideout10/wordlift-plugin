@@ -17,6 +17,7 @@ use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift_Configuration_Service;
 use Wordlift_Entity_Service;
 use Wordlift_Entity_Type_Taxonomy_Service;
+use Wordlift_Schema_Service;
 
 /**
  * Define the {@link Analysis_Response_Ops_Test} class.
@@ -98,7 +99,7 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 		$remote_uri = "http://example.org/$post_id";
 
 		// Assign the remote URI as sameAs.
-		add_post_meta( $post_id, \Wordlift_Schema_Service::FIELD_SAME_AS, $remote_uri );
+		add_post_meta( $post_id, Wordlift_Schema_Service::FIELD_SAME_AS, $remote_uri );
 
 		// Build the response.
 		$analysis_response                                            = new StdClass();

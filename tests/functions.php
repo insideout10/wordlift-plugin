@@ -85,22 +85,6 @@ function wl_create_post( $content, $slug, $title, $status = 'draft', $type = 'po
 }
 
 /**
- * Delete the post and related attachments with the specified id (it's basically a proxy to wp_delete_post).
- *
- * @param int $post_id The post id.
- * @param bool $force_delete Whether to force delete.
- *
- * @return false|WP_Post False on failure and the post object for the deleted post success.
- */
-function wl_delete_post( $post_id, $force_delete = false ) {
-
-	// First delete the post attachments.
-	wl_delete_post_attachments( $post_id );
-
-	return wp_delete_post( $post_id, $force_delete );
-}
-
-/**
  * Delete the attachments related to the specified post.
  *
  * @param $post_id
@@ -116,96 +100,6 @@ function wl_delete_post_attachments( $post_id ) {
 			wl_write_log( "wl_delete_post_attachments : error [ post id :: $post_id ]" );
 		}
 	}
-}
-
-/**
- * Get the entity description from the available fields.
- *
- * @param object $entity An entity instance.
- *
- * @return string The entity description.
- */
-function wl_get_entity_description( $entity ) {
-
-	// Return the description from the rdfs:comment field.
-	if ( isset( $entity->{'http://www.w3.org/2000/01/rdf-schema#comment'} ) ) {
-		return $entity->{'http://www.w3.org/2000/01/rdf-schema#comment'}->{'@value'};
-	}
-
-	// Return the description from the Freebase common.topic.description field.
-	if ( isset( $entity->{'http://rdf.freebase.com/ns/common.topic.description'} ) ) {
-		return $entity->{'http://rdf.freebase.com/ns/common.topic.description'}->{'@value'};
-	}
-
-	return '';
-}
-
-/**
- * Get the entity thumbnails as an array of URLs.
- *
- * @param object $entity An entity instance.
- *
- * @return array An array of URLs.
- */
-function wl_get_entity_thumbnails( $entity ) {
-
-	$images = array();
-
-	// Add the images from the foaf:depiction attribute.
-	if ( isset( $entity->{'http://xmlns.com/foaf/0.1/depiction'} ) ) {
-		if ( is_array( $entity->{'http://xmlns.com/foaf/0.1/depiction'} ) ) {
-			foreach ( $entity->{'http://xmlns.com/foaf/0.1/depiction'} as $image ) {
-				array_push( $images, $image->{'http://xmlns.com/foaf/0.1/depiction'}->{'@id'} );
-			}
-		} else {
-			array_push( $images, $entity->{'http://xmlns.com/foaf/0.1/depiction'}->{'@id'} );
-		}
-	}
-
-	// Convert the URL provided by Freebase to image URLs:
-	// see https://developers.google.com/freebase/v1/topic-response#references-to-image-objects
-	if ( isset( $entity->{'http://rdf.freebase.com/ns/common.topic.image'} ) ) {
-		if ( is_array( $entity->{'http://rdf.freebase.com/ns/common.topic.image'} ) ) {
-			foreach ( $entity->{'http://rdf.freebase.com/ns/common.topic.image'} as $image ) {
-
-				$image_url = wl_freebase_image_url( $image->{'@id'} );
-
-				if ( ! empty( $image_url ) ) {
-					array_push( $images, $image_url );
-				}
-			}
-		} else {
-			$image_url = wl_freebase_image_url( $entity->{'http://rdf.freebase.com/ns/common.topic.image'}->{'@id'} );
-
-			if ( ! empty( $image_url ) ) {
-				array_push( $images, $image_url );
-			}
-		}
-	}
-
-	return $images;
-}
-
-/**
- * Get an image URL from a link (see https://developers.google.com/freebase/v1/topic-response#references-to-image-objects).
- *
- * @param string $image_link An image link.
- *
- * @return string|null The image URL or null in case of failure.
- */
-function wl_freebase_image_url( $image_link ) {
-
-	// http://rdf.freebase.com/ns/m.0kyblb5
-	// https://usercontent.googleapis.com/freebase/v1/image/m/0kyblb5
-
-	$matches = array();
-	if ( 1 === preg_match( '/m\.([\w\d]+)$/i', $image_link, $matches ) ) {
-		$id = $matches[1];
-
-		return "https://usercontent.googleapis.com/freebase/v1/image/m/$id?maxwidth=4096&maxheight=4096";
-	};
-
-	return null;
 }
 
 /**
@@ -321,45 +215,6 @@ function wl_parse_response( $json ) {
 		'entity_annotations' => $entity_annotations,
 		'entities'           => $entities,
 	);
-}
-
-/**
- * Parse the analysis result from a file.
- *
- * @param string $filename The file containing a JSON-LD analysis response.
- *
- * @return array|null An array with the analysis result, or null in case of failure.
- */
-function wl_parse_file( $filename ) {
-
-	$analysis = file_get_contents( $filename );
-
-	// Decode the string response to a JSON.
-	$json = json_decode( $analysis );
-
-	// Parse the JSON to get the analysis results.
-	return wl_parse_response( $json );
-}
-
-/**
- * Get the entity annotation with the best match from the provided entity annotations array.
- *
- * @param array $entity_annotations An array of entities.
- *
- * @return array An entity annotation array.
- */
-function wl_get_entity_annotation_best_match( $entity_annotations ) {
-
-	// Sort array by confidence.
-	usort( $entity_annotations, function ( $a, $b ) {
-		if ( $a['confidence'] == $b['confidence'] ) {
-			return 0;
-		}
-
-		return ( $a['confidence'] > $b['confidence'] ) ? - 1 : 1;
-	} );
-
-	return $entity_annotations[0];
 }
 
 /**

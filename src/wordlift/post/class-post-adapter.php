@@ -117,7 +117,11 @@ class Post_Adapter {
 					// Skip the entity
 					continue;
 				}
-				$this->create_or_update_entity( $entity, $data['post_status'] );
+
+				// If 'entity auto publish' is false, we set the status to `draft` by default.
+				$post_status = apply_filters( 'wl_feature__enable__entity-auto-publish', true )
+					? $data['post_status'] : 'draft';
+				$this->create_or_update_entity( $entity, $post_status );
 
 			}
 

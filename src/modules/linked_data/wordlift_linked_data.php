@@ -344,9 +344,8 @@ function wl_save_entity( $entity_data ) {
 	}
 
 	// Prepare properties of the new entity.
-	$post_status = apply_filters( 'wl_feature__enable__entity-auto-publish', true )
-		? ( is_numeric( $related_post_id ) ? get_post_status( $related_post_id ) : 'draft' )
-		: 'draft';
+	$post_status = apply_filters( 'wl_feature__enable__entity-auto-publish', true ) && is_numeric( $related_post_id )
+		? get_post_status( $related_post_id ) : 'draft';
 
 	$params = array(
 		// @@todo: we don't want an entity to be automatically published.

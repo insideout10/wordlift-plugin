@@ -13,17 +13,16 @@ class Wordpress_Dataset_Content_Service implements Content_Service {
 	 */
 	private $delegates = array();
 
-	private static $instance = null;
-
 	protected function __construct() {
 
 	}
+
+	private static $instance = null;
 
 	/**
 	 * The singleton instance.
 	 *
 	 * @return Content_Service
-	 * @throws Exception
 	 */
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {

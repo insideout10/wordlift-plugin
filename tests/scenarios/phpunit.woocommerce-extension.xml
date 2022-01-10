@@ -32,9 +32,6 @@
 
         <!-- This list should match the list at:
                https://github.com/wordlift/plugin-wordlift-for-woocommerce/blob/master/wl-woo/class-admin-setup.php#L147 -->
-<!--        <env name="WL_FEATURES__ANALYSIS" value="__return_false"/>-->
-<!--        <env name="WL_FEATURES__MATCH-TERMS" value="__return_false"/>-->
-
         <env name="WL_FEATURES__BLOCKS" value="__return_false"/>
         <env name="WL_FEATURES__DATASET" value="__return_false"/>
         <env name="WL_FEATURES__MAPPINGS" value="__return_false"/>

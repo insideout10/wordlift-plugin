@@ -17,7 +17,6 @@ class Wordpress_Permalink_Content_Service implements Content_Service {
 	 * The singleton instance.
 	 *
 	 * @return Content_Service
-	 * @throws Exception
 	 */
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {
@@ -27,6 +26,11 @@ class Wordpress_Permalink_Content_Service implements Content_Service {
 		return self::$instance;
 	}
 
+	/**
+	 * @param $uri string In the form https://example.org/path/post#post/1
+	 *
+	 * @return Wordpress_Content|null
+	 */
 	function get_by_entity_id( $uri ) {
 		if ( ! preg_match( '@.*#(\w+)/(\d+)@', $uri, $matches ) ) {
 			return null;

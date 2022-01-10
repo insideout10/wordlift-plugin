@@ -2,21 +2,19 @@
 
 namespace Wordlift\Content\Wordpress;
 
-use Exception;
 use Wordlift\Content\Content_Service;
 
 class Wordpress_Content_Service {
 
-	private static $instance = null;
-
 	protected function __construct() {
 	}
+
+	private static $instance = null;
 
 	/**
 	 * The singleton instance.
 	 *
 	 * @return Content_Service
-	 * @throws Exception
 	 */
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {

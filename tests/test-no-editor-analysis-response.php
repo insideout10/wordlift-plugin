@@ -53,6 +53,13 @@ class Test_No_Editor_Analysis_Response extends Wordlift_No_Editor_Analysis_Unit_
 		$entity_1 = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 		$entity_2 = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 
+		$content_service = Wordpress_Content_Service::get_instance();
+
+		$this->assertInstanceOf( '\Wordlift\Content\Wordpress\Wordpress_Dataset_Content_Service', $content_service );
+		$this->assertNotEmpty( $content_service->get_entity_id( Wordpress_Content_Id::create_post( $post_id ) ) );
+		$this->assertNotEmpty( $content_service->get_entity_id( Wordpress_Content_Id::create_post( $entity_1 ) ) );
+		$this->assertNotEmpty( $content_service->get_entity_id( Wordpress_Content_Id::create_post( $entity_2 ) ) );
+
 		wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $entity_1 );
 		wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $entity_2 );
 
@@ -71,10 +78,14 @@ class Test_No_Editor_Analysis_Response extends Wordlift_No_Editor_Analysis_Unit_
 	public function test_when_no_annotation_relation_service_should_return_also_article_entities() {
 
 		// create a no editor post type.
-		$post = $this->factory()->post->create( array( 'post_type' => self::NO_EDITOR_ANALYSIS_POST_TYPE ) );
-
+		$post     = $this->factory()->post->create( array( 'post_type' => self::NO_EDITOR_ANALYSIS_POST_TYPE ) );
 		$entity_1 = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 		$entity_2 = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+
+		$content_service = Wordpress_Content_Service::get_instance();
+		$this->assertNotEmpty( $content_service->get_entity_id( Wordpress_Content_Id::create_post( $post ) ) );
+		$this->assertNotEmpty( $content_service->get_entity_id( Wordpress_Content_Id::create_post( $entity_1 ) ) );
+		$this->assertNotEmpty( $content_service->get_entity_id( Wordpress_Content_Id::create_post( $entity_2 ) ) );
 
 		wl_core_add_relation_instance( $post, WL_WHAT_RELATION, $entity_1 );
 		wl_core_add_relation_instance( $post, WL_WHAT_RELATION, $entity_2 );

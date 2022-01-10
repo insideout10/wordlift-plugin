@@ -12,7 +12,6 @@ namespace Wordlift\Analysis\Response;
 use stdClass;
 use Wordlift\Analysis\Entity_Provider\Entity_Provider_Registry;
 use Wordlift\Analysis\Occurrences\Occurrences_Factory;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Entity\Entity_Helper;
 
 class Analysis_Response_Ops {
@@ -79,6 +78,7 @@ class Analysis_Response_Ops {
 		if ( ! isset( $this->json->entities ) ) {
 			return $this;
 		}
+
 		// Get the URIs.
 		$uris     = array_keys( get_object_vars( $this->json->entities ) );
 		$mappings = $this->entity_helper->map_many_to_local( $uris );
