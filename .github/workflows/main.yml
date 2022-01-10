@@ -99,7 +99,12 @@ jobs:
           - tests/scenarios/phpunit.no-vocabulary-terms.xml
           - tests/scenarios/phpunit.rel-item-id.xml
           - tests/scenarios/phpunit.woocommerce-extension.xml
-          - phpunit-multisite.xml
+          - tests/scenarios/phpunit.multisite.ajax.xml
+          - tests/scenarios/phpunit.multisite.default.xml
+          - tests/scenarios/phpunit.multisite.no-editor.xml
+          - tests/scenarios/phpunit.multisite.no-vocabulary-terms.xml
+          - tests/scenarios/phpunit.multisite.rel-item-id.xml
+          - tests/scenarios/phpunit.multisite.woocommerce-extension.xml
         dataset-ng:
           - true
           - false
