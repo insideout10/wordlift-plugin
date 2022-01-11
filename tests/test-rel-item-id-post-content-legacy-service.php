@@ -13,8 +13,8 @@ use Wordlift\Content\Wordpress\Wordpress_Post_Content_Legacy_Service;
 class Wordpress_Post_Content_Legacy_Service_Test extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * @expectedException '\Exception'
-	 * @expectedExceptionMessage '`content_id` must be of type post.
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage `content_id` must be of type post.
 	 * @return void
 	 * @throws Exception
 	 */
