@@ -57,17 +57,7 @@ class Content_Migration_Test extends Wordlift_Unit_Test_Case {
 
 		$this->assertTrue( get_option( '_wl_content_migration__migrated' ), 'The method should set that it migrated contents.' );
 
-	}
-
-	/**
-	 * Test that the data is not migrated if the method already ran. We don't want in fact to repeat the SQL execution
-	 * each time.
-	 */
-	public function test_migrate_second_run() {
-		global $wpdb;
-
-		$this->assertTrue( (bool) get_option( '_wl_content_migration__migrated' ), 'The method should set that it migrated contents.' );
-
+		// Test second run.
 		$post_id = $this->factory()->post->create();
 
 		$dataset_uri = trailingslashit( Wordlift_Configuration_Service::get_instance()->get_dataset_uri() );
