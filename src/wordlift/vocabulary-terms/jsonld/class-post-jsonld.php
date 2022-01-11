@@ -52,7 +52,8 @@ class Post_Jsonld {
 		$terms = array();
 
 		foreach ( $taxonomies_for_post as $taxonomy ) {
-			if ( ! $taxonomy->public || ! $taxonomy->publicly_queryable ) {
+			// Please note that `$taxonomy->publicly_queryable is only WP 4.7+
+			if ( 'wl_entity_type' === $taxonomy->name || ! $taxonomy->public ) {
 				continue;
 			}
 
