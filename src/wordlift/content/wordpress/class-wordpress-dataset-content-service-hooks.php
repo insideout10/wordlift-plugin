@@ -17,7 +17,9 @@ class Wordpress_Dataset_Content_Service_Hooks {
 	 * @throws Exception
 	 */
 	public static function insert_post( $post_id ) {
-		self::set_entity_id( Wordpress_Content_Id::create_post( $post_id ) );
+		if ( ! wp_is_post_revision( $post_id ) ) {
+			self::set_entity_id( Wordpress_Content_Id::create_post( $post_id ) );
+		}
 	}
 
 	/**
