@@ -12,12 +12,15 @@ use Wordlift\Content\Wordpress\Wordpress_Post_Content_Table_Service;
  */
 class Wordpress_Post_Content_Table_Service_Test extends Wordlift_Unit_Test_Case {
 
+	/**
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage `content_id` must be of type post.
+	 * @return void
+	 * @throws Exception
+	 */
 	public function test_set_entity_id_of_not_a_post_type_raises_exception() {
 
 		$term_id = $this->factory()->term->create();
-
-		$this->expectException( '\Exception' );
-		$this->expectExceptionMessage( '`content_id` must be of type post.' );
 
 		Wordpress_Post_Content_Table_Service::get_instance()
 		                                    ->set_entity_id(
@@ -26,12 +29,15 @@ class Wordpress_Post_Content_Table_Service_Test extends Wordlift_Unit_Test_Case 
 
 	}
 
+	/**
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage `uri` can't be empty
+	 * @return void
+	 * @throws Exception
+	 */
 	public function test_set_entity_id_with_empty_uri_raises_exception() {
 
 		$post_id = $this->factory()->post->create();
-
-		$this->expectException( '\Exception' );
-		$this->expectExceptionMessage( "`uri` can't be empty" );
 
 		Wordpress_Post_Content_Table_Service::get_instance()
 		                                    ->set_entity_id(
@@ -40,12 +46,15 @@ class Wordpress_Post_Content_Table_Service_Test extends Wordlift_Unit_Test_Case 
 
 	}
 
+	/**
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage `uri` must be within the dataset URI scope.
+	 * @return void
+	 * @throws Exception
+	 */
 	public function test_set_entity_id_outside_dataset_scope_raises_exception() {
 
 		$post_id = $this->factory()->post->create();
-
-		$this->expectException( '\Exception' );
-		$this->expectExceptionMessage( '`uri` must be within the dataset URI scope.' );
 
 		Wordpress_Post_Content_Table_Service::get_instance()
 		                                    ->set_entity_id(

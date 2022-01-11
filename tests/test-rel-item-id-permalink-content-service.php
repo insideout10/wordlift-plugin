@@ -5,11 +5,14 @@ use Wordlift\Content\Wordpress\Wordpress_Permalink_Content_Service;
 
 class Wordpress_Permalink_Content_Service_Test extends Wordlift_Unit_Test_Case {
 
+	/**
+	 *
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage Not supported
+	 * @return void
+	 * @throws Exception
+	 */
 	public function test_set_entity_id() {
-
-		// We don't expect the Permalink Content Service to be able to set entity IDs.
-		$this->expectException( '\Exception' );
-		$this->expectExceptionMessage( 'Not supported' );
 
 		Wordpress_Permalink_Content_Service::get_instance()
 		                                   ->set_entity_id(

@@ -55,7 +55,7 @@ class Content_Migration_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'entity/0', $row->rel_uri );
 		$this->assertEquals( sha1( 'entity/0' ), $row->rel_uri_hash );
 
-		$this->assertTrue( get_option( '_wl_content_migration__migrated', 'The method should set that it migrated contents.' ) );
+		$this->assertTrue( get_option( '_wl_content_migration__migrated' ), 'The method should set that it migrated contents.' );
 
 	}
 
@@ -66,7 +66,7 @@ class Content_Migration_Test extends Wordlift_Unit_Test_Case {
 	public function test_migrate_second_run() {
 		global $wpdb;
 
-		$this->assertTrue( (bool) get_option( '_wl_content_migration__migrated', 'The method should set that it migrated contents.' ) );
+		$this->assertTrue( (bool) get_option( '_wl_content_migration__migrated' ), 'The method should set that it migrated contents.' );
 
 		$post_id = $this->factory()->post->create();
 
