@@ -43,11 +43,10 @@ class Wordlift_Issue_711 extends Wordlift_Unit_Test_Case {
 
 		// This test applies only to legacy URLs.
 		if ( apply_filters( 'wl_feature__enable__rel-item-id', false ) ) {
-			$this->markTestSkipped( 'This test should be revised based on the new Content_Service.' );
+			$this->markTestSkipped( 'This test makes sense only when `rel-item-id` is disabled.' );
 		}
 
-		$uri     = Wordlift_Configuration_Service::get_instance()->get_dataset_uri()
-		           . 'dataset/entity_uri';
+		$uri     = 'https://data.localdomain.localhost/dataset/entity_uri';
 		$same_as = 'https://data.example.org/dataset/entity_same_as';
 		$this->_test_meta_key( WL_ENTITY_URL_META_NAME, $uri );
 		$this->_test_meta_key( Wordlift_Schema_Service::FIELD_SAME_AS, $same_as );
