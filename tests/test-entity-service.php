@@ -468,8 +468,6 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 			$this->markTestSkipped( 'This test should be revised based on the new Content_Service.' );
 		}
 
-		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
-
 		$post_id = $this->factory()->post->create( array(
 			'post_title' => 'Test 996'
 		) );
@@ -478,13 +476,13 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$uri_1 = $this->entity_service->get_uri( $post_id );
 
-		$this->assertEquals( 1, preg_match( '|^https?://.*/test-996$|', $uri_1 ), "$uri_1 doesn't match expected value." );
+		$this->assertEquals( 'https://data.localdomain.localhost/dataset/post/test-996', $uri_1, "$uri_1 doesn't match expected value." );
 
 		update_post_meta( $post_id, WL_ENTITY_URL_META_NAME, '/test-post' );
 
 		$uri_2 = $this->entity_service->get_uri( $post_id );
 
-		$this->assertEquals( 1, preg_match( '|^https?://.*/test_996$|', $uri_2 ), "$uri_2 doesn't match expected value." );
+		$this->assertEquals( 'https://data.localdomain.localhost/dataset/post/test-996', $uri_2, "$uri_2 doesn't match expected value." );
 
 	}
 

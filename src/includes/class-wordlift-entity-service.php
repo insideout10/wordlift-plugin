@@ -9,6 +9,7 @@
 
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Entity\Entity_Uri_Generator;
 use Wordlift\Object_Type_Enum;
 
 /**
@@ -406,7 +407,21 @@ class Wordlift_Entity_Service {
 	}
 
 	public function get_uri( $object_id, $type = Object_Type_Enum::POST ) {
-		return Wordpress_Content_Service::get_instance()->get_entity_id( new Wordpress_Content_Id( $object_id, $type ) );
+		$content_service = Wordpress_Content_Service::get_instance();
+		$entity_id       = $content_service->get_entity_id( new Wordpress_Content_Id( $object_id, $type ) );
+		$dataset_uri     = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
+
+		if ( ! isset( $entity_id ) || 0 !== strpos( $entity_id, $dataset_uri ) ) {
+			$rel_uri = Entity_Uri_Generator::create_uri( $type, $object_id );
+			try {
+				$content_service->set_entity_id( new Wordpress_Content_Id( $object_id, $type ), $rel_uri );
+				$entity_id = $content_service->get_entity_id( new Wordpress_Content_Id( $object_id, $type ) );
+			} catch ( Exception $e ) {
+				return null;
+			}
+		}
+
+		return $entity_id;
 	}
 
 	/**
