@@ -61,7 +61,9 @@ class Wordlift_Postid_To_Jsonld_Converter implements Wordlift_Post_Converter {
 
 		$this->log->trace( "Converting post $id..." );
 
-		return Wordlift_Entity_Service::get_instance()->is_entity( $id )
+		$entity_service = Wordlift_Entity_Service::get_instance();
+
+		return $entity_service->is_entity( $id )
 			// Entity.
 			? $this->entity_post_to_jsonld_converter->convert( $id, $references, $references_infos )
 			// Post/Page.

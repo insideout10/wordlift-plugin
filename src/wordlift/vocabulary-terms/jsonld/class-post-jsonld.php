@@ -10,6 +10,8 @@ namespace Wordlift\Vocabulary_Terms\Jsonld;
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Term_Content_Legacy_Service;
 use Wordlift\Jsonld\Term_Reference;
+use WP_Taxonomy;
+use WP_Term;
 
 class Post_Jsonld {
 
@@ -43,13 +45,18 @@ class Post_Jsonld {
 	 */
 	private function get_term_references( $post_id ) {
 
-		$taxonomies_for_post = get_object_taxonomies( get_post_type( $post_id ) );
+		/** @var WP_Taxonomy[] $taxonomies_for_post */
+		$taxonomies_for_post = get_object_taxonomies( get_post_type( $post_id ), 'objects' );
 
 		// now we need to collect all terms attached to this post.
 		$terms = array();
 
 		foreach ( $taxonomies_for_post as $taxonomy ) {
-			$taxonomy_terms = get_the_terms( $post_id, $taxonomy );
+			if ( ! $taxonomy->public || ! $taxonomy->publicly_queryable ) {
+				continue;
+			}
+
+			$taxonomy_terms = get_the_terms( $post_id, $taxonomy->name );
 			if ( is_array( $taxonomy_terms ) ) {
 				$terms = array_merge( $terms, $taxonomy_terms );
 			}
@@ -58,7 +65,7 @@ class Post_Jsonld {
 		// Convert everything to the Term Reference.
 		return array_filter( array_map( function ( $term ) {
 			/**
-			 * @var \WP_Term $term
+			 * @var WP_Term $term
 			 */
 			if ( Wordpress_Term_Content_Legacy_Service::get_instance()
 			                                          ->get_entity_id( Wordpress_Content_Id::create_term( $term->term_id ) )

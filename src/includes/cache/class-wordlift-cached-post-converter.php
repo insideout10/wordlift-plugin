@@ -153,7 +153,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		$cache = false;
 		$this->add_http_header( $post_id, false );
 
-		// Convert the the post.
+		// Convert the post.
 		$jsonld = $this->converter->convert( $post_id, $references, $references_infos );
 
 		/**
