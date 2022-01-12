@@ -1,9 +1,7 @@
 <?php
 
-namespace Wordlift\Dataset\Background\Stages;
-
+use Wordlift\Dataset\Background\Stages\Sync_Background_Process_Users_Stage;
 use Wordlift\Object_Type_Enum;
-use Wordlift_Unit_Test_Case;
 
 /**
  * Class Sync_Background_Process_Users_Stage_Test
@@ -35,26 +33,28 @@ class Sync_Background_Process_Users_Stage_Test extends Wordlift_Unit_Test_Case {
 		$this->sync_background_process_users_stage =
 			new Sync_Background_Process_Users_Stage( $this->mock_sync_object_adapter_factory );
 
+		global $wpdb;
+		// Reset users.
+		$wpdb->query( "DELETE FROM $wpdb->users" );
+		// Reset posts.
+		$wpdb->query( "DELETE FROM $wpdb->posts" );
+
 	}
 
 	public function test_get_sync_object_adapters() {
 
-		$this->reset_db();
-
-		$author_user = $this->factory->user->create();
+		$author_user = $this->factory()->user->create();
 		$this->factory()->post->create( array( 'post_author' => $author_user ) );
 
-		// Duplicate user id shouldnt be returned.
+		// Duplicate user id shouldn't be returned.
 		$this->factory()->post->create( array( 'post_author' => $author_user ) );
 
 		$this->create_invalid_post_type_and_status_users();
 
 		// Create users without posts.
-		$this->create_users_without_posts();
+		$this->factory()->user->create_many( 4 );
 
-		$expected = array(
-			$author_user,
-		);
+		$expected = array( $author_user, );
 
 		$this->mock_sync_object_adapter_factory->expects( $this->once() )
 		                                       ->method( 'create_many' )
@@ -69,53 +69,32 @@ class Sync_Background_Process_Users_Stage_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	public function test_count() {
-		$this->reset_db();
 
-		$author_user = $this->factory->user->create();
+		$author_user = $this->factory()->user->create();
 
 		$this->factory()->post->create( array( 'post_author' => $author_user ) );
 		$this->factory()->post->create( array( 'post_author' => $author_user ) );
 		$this->create_invalid_post_type_and_status_users();
-		$this->create_users_without_posts();
+		$this->factory()->user->create_many( 4 );
 
 		$this->assertEquals( 1, $this->sync_background_process_users_stage->count(), 'There should be 1 user .' );
 
-	}
-
-
-	protected function reset_db() {
-		global $wpdb;
-		// Reset users.
-		$wpdb->query( "DELETE FROM $wpdb->users" );
-		// Reset posts.
-		$wpdb->query( "DELETE FROM $wpdb->posts" );
-	}
-
-	/**
-	 * @return void
-	 */
-	protected function create_users_without_posts() {
-		// Create users who are not authors.
-		$this->factory->user->create();
-		$this->factory->user->create();
-		$this->factory->user->create();
-		$this->factory->user->create();
 	}
 
 	/**
 	 * @return void
 	 */
 	protected function create_invalid_post_type_and_status_users() {
-// Invalid post type shouldnt be returned
-		$invalid_post_type_user = $this->factory->user->create();
+		// Invalid post type shouldn't be returned
+		$invalid_post_type_user = $this->factory()->user->create();
 		$this->factory()->post->create( array(
 			'post_author' => $invalid_post_type_user,
 			'post_type'   => 'invalid_post_type'
 		) );
 
 
-		// Invalid post status shouldnt be returned
-		$invalid_post_status_user = $this->factory->user->create();
+		// Invalid post status shouldn't be returned
+		$invalid_post_status_user = $this->factory()->user->create();
 		$this->factory()->post->create( array(
 			'post_author' => $invalid_post_status_user,
 			'post_status' => 'invalid_post_status'
