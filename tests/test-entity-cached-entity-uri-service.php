@@ -28,13 +28,13 @@ class Test_Entity_Cached_Entity_Uri_Service extends Wordlift_Unit_Test_Case {
 		global $wp_filter;
 		$wp_filter = array();
 
-		$this->configuration_service_mock = $this->getMockBuilder( 'Wordlift_Configuration_Service' )
-		                                         ->disableOriginalConstructor()
-		                                         ->getMock();
-		$this->cache_service_mock         = $this->getMockBuilder( 'Wordlift_Cache_Service' )
-		                                         ->disableOriginalConstructor()
-		                                         ->getMock();
-		$this->cached_entity_uri_service  = new Wordlift_Cached_Entity_Uri_Service( $this->configuration_service_mock, $this->cache_service_mock );
+		$configuration_service_mock      = $this->getMockBuilder( 'Wordlift_Configuration_Service' )
+		                                        ->disableOriginalConstructor()
+		                                        ->getMock();
+		$this->cache_service_mock        = $this->getMockBuilder( 'Wordlift_Cache_Service' )
+		                                        ->disableOriginalConstructor()
+		                                        ->getMock();
+		$this->cached_entity_uri_service = new Wordlift_Cached_Entity_Uri_Service( $this->cache_service_mock );
 
 	}
 

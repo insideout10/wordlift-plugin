@@ -7,6 +7,8 @@
  * @subpackage Wordlift/includes/properties
  */
 
+use Wordlift\Object_Type_Enum;
+
 /**
  * Define the Wordlift_Url_Property_Service class.
  *
@@ -41,7 +43,7 @@ class Wordlift_Url_Property_Service extends Wordlift_Simple_Property_Service {
 		$urls = parent::get( $id, $meta_key, $type ) ?: array( '<permalink>' );
 
 		// Convert <permalink> in actual permalink values.
-		return array_map( function ( $item ) use ( $id ) {
+		return array_map( function ( $item ) use ( $id, $type ) {
 			/*
 			 * If `<permalink>` get the production permalink.
 			 *
@@ -49,7 +51,20 @@ class Wordlift_Url_Property_Service extends Wordlift_Simple_Property_Service {
 			 *
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/850.
 			 */
-			return '<permalink>' === $item ? Wordlift_Post_Adapter::get_production_permalink( $id ) : $item;
+
+			if ( '<permalink>' !== $item ) {
+				return $item;
+			}
+
+			// Permalinks.
+			switch ( $type ) {
+				case Object_Type_Enum::POST:
+					return Wordlift_Post_Adapter::get_production_permalink( $id );
+				case Object_Type_Enum::TERM:
+					return get_term_link( $id );
+				default:
+					return $item;
+			}
 		}, array_unique( $urls ) );
 	}
 

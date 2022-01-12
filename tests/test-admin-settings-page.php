@@ -18,25 +18,6 @@
 class Wordlift_Admin_Settings_Page_Test extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * The {@link Wordlift_Admin_Settings_Page} under testing.
-	 *
-	 * @since  3.11.0
-	 * @access private
-	 * @var \Wordlift_Admin_Settings_Page $settings_page The {@link Wordlift_Admin_Settings_Page} instance.
-	 */
-	private $settings_page;
-
-	/**
-	 * @inheritdoc
-	 */
-	function setUp() {
-		parent::setUp();
-
-		$this->settings_page = $this->get_wordlift_test()->get_settings_page();
-
-	}
-
-	/**
 	 * Test without a publisher in `$_POST`.
 	 *
 	 * @since 3.11.0
@@ -44,14 +25,30 @@ class Wordlift_Admin_Settings_Page_Test extends Wordlift_Unit_Test_Case {
 	public function test_no_publisher_in_post() {
 
 		// Create a random id.
-		$publisher_id = rand( 1, 100 );
+		$publisher_id = 123;
+
+		$entity_service_mock = $this->getMockBuilder( 'Wordlift_Entity_Service' )
+		                            ->disableOriginalConstructor()
+		                            ->setMethods( array( 'create' ) )
+		                            ->getMock();
+		$entity_service_mock->expects( $this->never() )->method( 'create' );
+
+		$admin_settings_page = new Wordlift_Admin_Settings_Page(
+			$entity_service_mock,
+			$this->getMockBuilder( 'Wordlift_Admin_Input_Element' )->disableOriginalConstructor()->getMock(),
+			$this->getMockBuilder( 'Wordlift_Admin_Language_Select_Element' )->disableOriginalConstructor()->getMock(),
+			$this->getMockBuilder( 'Wordlift_Admin_Country_Select_Element' )->disableOriginalConstructor()->getMock(),
+			$this->getMockBuilder( 'Wordlift_Admin_Publisher_Element' )->disableOriginalConstructor()->getMock(),
+			$this->getMockBuilder( 'Wordlift_Admin_Radio_Input_Element' )->disableOriginalConstructor()->getMock()
+		);
 
 		// Call `sanitize_callback`.
-		$input = $this->settings_page->sanitize_callback( array( 'publisher_id' => $publisher_id ) );
+		$input = $admin_settings_page->sanitize_callback( array( 'publisher_id' => $publisher_id ) );
 
 		// Check that the value is returned.
 		$this->assertCount( 1, $input );
 		$this->assertEquals( $publisher_id, $input['publisher_id'] );
+		$this->assertEquals( 123, $publisher_id );
 
 	}
 
@@ -69,8 +66,25 @@ class Wordlift_Admin_Settings_Page_Test extends Wordlift_Unit_Test_Case {
 			'thumbnail_id' => '',
 		);
 
-		// Call the `sanitize_callback`.
-		$input = $this->settings_page->sanitize_callback( array( 'publisher_id' => null ) );
+		$entity_service_mock = $this->getMockBuilder( 'Wordlift_Entity_Service' )
+		                            ->disableOriginalConstructor()
+		                            ->setMethods( array( 'create' ) )
+		                            ->getMock();
+		$entity_service_mock->expects( $this->once() )
+		                    ->method( 'create' )
+		                    ->with( $this->equalTo( 'John Smith' ), $this->equalTo( 'http://schema.org/Person' ), $this->equalTo( '' ), $this->equalTo( 'publish' ) )
+		                    ->willReturn( 123 );
+
+		$admin_settings_page = new Wordlift_Admin_Settings_Page(
+			$entity_service_mock,
+			$this->getMockBuilder( 'Wordlift_Admin_Input_Element' )->disableOriginalConstructor()->getMock(),
+			$this->getMockBuilder( 'Wordlift_Admin_Language_Select_Element' )->disableOriginalConstructor()->getMock(),
+			$this->getMockBuilder( 'Wordlift_Admin_Country_Select_Element' )->disableOriginalConstructor()->getMock(),
+			$this->getMockBuilder( 'Wordlift_Admin_Publisher_Element' )->disableOriginalConstructor()->getMock(),
+			$this->getMockBuilder( 'Wordlift_Admin_Radio_Input_Element' )->disableOriginalConstructor()->getMock()
+		);
+
+		$input = $admin_settings_page->sanitize_callback( array( 'publisher_id' => null ) );
 
 		// Check that we have only one setting.
 		$this->assertCount( 1, $input );
@@ -80,27 +94,7 @@ class Wordlift_Admin_Settings_Page_Test extends Wordlift_Unit_Test_Case {
 
 		// Check that it's numeric.
 		$this->assertTrue( is_numeric( $publisher_id ) );
-
-		// Check that there's the corresponding post.
-		$post = get_post( $publisher_id );
-
-		$this->assertNotNull( $post );
-
-		// Check that data match.
-		$this->assertEquals( 'John Smith', $post->post_title );
-		$this->assertEquals( Wordlift_Entity_Service::TYPE_NAME, $post->post_type );
-
-		// Check the schema.org type.
-		$type = $this->entity_type_service->get( $publisher_id );
-		$this->assertEquals( 'http://schema.org/Person', $type['uri'] );
-
-		// Check that there's no thumbnail.
-		global $wp_version;
-		if ( version_compare( $wp_version, '5.4', '>=' ) ) {
-			$this->assertEquals( 0, get_post_thumbnail_id( $publisher_id ) );
-		} else {
-			$this->assertEquals( '', get_post_thumbnail_id( $publisher_id ) );
-		}
+		$this->assertEquals( 123, $publisher_id );
 
 	}
 
@@ -111,21 +105,33 @@ class Wordlift_Admin_Settings_Page_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_organization_publisher_in_post() {
 
-		// Create a mock attachment.
-		$attachment_id = $this->factory->attachment->create_object( "image.jpg", 0, array(
-			'post_mime_type' => 'image/jpeg',
-			'post_type'      => 'attachment',
-		) );
-
 		// Simulate posting Organization data.
 		$_POST['wl_publisher'] = array(
 			'name'         => 'Acme Inc',
 			'type'         => 'organization',
-			'thumbnail_id' => $attachment_id,
+			'thumbnail_id' => 456,
+		);
+
+		$entity_service_mock = $this->getMockBuilder( 'Wordlift_Entity_Service' )
+		                            ->disableOriginalConstructor()
+		                            ->setMethods( array( 'create' ) )
+		                            ->getMock();
+		$entity_service_mock->expects( $this->once() )
+		                    ->method( 'create' )
+		                    ->with( $this->equalTo( 'Acme Inc' ), $this->equalTo( 'http://schema.org/Organization' ), $this->equalTo( 456 ), $this->equalTo( 'publish' ) )
+		                    ->willReturn( 123 );
+
+		$admin_settings_page = new Wordlift_Admin_Settings_Page(
+			$entity_service_mock,
+			$this->getMockBuilder( 'Wordlift_Admin_Input_Element' )->disableOriginalConstructor()->getMock(),
+			$this->getMockBuilder( 'Wordlift_Admin_Language_Select_Element' )->disableOriginalConstructor()->getMock(),
+			$this->getMockBuilder( 'Wordlift_Admin_Country_Select_Element' )->disableOriginalConstructor()->getMock(),
+			$this->getMockBuilder( 'Wordlift_Admin_Publisher_Element' )->disableOriginalConstructor()->getMock(),
+			$this->getMockBuilder( 'Wordlift_Admin_Radio_Input_Element' )->disableOriginalConstructor()->getMock()
 		);
 
 		// Call the sanitize callback.
-		$input = $this->settings_page->sanitize_callback( array( 'publisher_id' => null ) );
+		$input = $admin_settings_page->sanitize_callback( array( 'publisher_id' => null ) );
 
 		// Check that we only have on value.
 		$this->assertCount( 1, $input );
@@ -135,22 +141,7 @@ class Wordlift_Admin_Settings_Page_Test extends Wordlift_Unit_Test_Case {
 
 		// Check that the value is numeric.
 		$this->assertTrue( is_numeric( $publisher_id ) );
-
-		// Check that there's a corresponding post.
-		$post = get_post( $publisher_id );
-
-		$this->assertNotNull( $post );
-
-		// Check that the data matches.
-		$this->assertEquals( 'Acme Inc', $post->post_title );
-		$this->assertEquals( Wordlift_Entity_Service::TYPE_NAME, $post->post_type );
-
-		// Check that the schema.org type matches.
-		$type = $this->entity_type_service->get( $publisher_id );
-		$this->assertEquals( 'http://schema.org/Organization', $type['uri'] );
-
-		// Check that the thumbnail id matches.
-		$this->assertEquals( $attachment_id, get_post_thumbnail_id( $publisher_id ) );
+		$this->assertEquals( 123, $publisher_id );
 
 	}
 

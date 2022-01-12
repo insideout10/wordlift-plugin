@@ -142,33 +142,55 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.34.0 (2022-01-12) =
+
+* Enhancement [#1521](https://github.com/insideout10/wordlift-plugin/issues/1521): We improved performance by moving several fields (entity URI, JSON-LD hash and last sync) away from the crowded post-meta table.
+* Enhancement [#1517](https://github.com/insideout10/wordlift-plugin/issues/1517): You can now prevent entities from being automatically published using a WordPress filter.
+* Enhancement [#1496](https://github.com/insideout10/wordlift-plugin/issues/1496): You can now add Webhooks to send 3rd parties structured data updates.
+
+* Fix [#1515](https://github.com/insideout10/wordlift-plugin/issues/1515): Add support for sticky posts to WordPress ontology.
+
+= 3.33.8 (2021-12-21) =
+
+* Feature [#1519](https://github.com/insideout10/wordlift-plugin/issues/1519): Added filters `wl_jsonld_term_html_output` and `wl_jsonld_post_html_output` to filter jsonld html.
+
 = 3.33.7 (2021-12-13) =
-* Fix [#1512](https://github.com/insideout10/wordlift-plugin/issues/1512): Fix match terms background process.
+
 * Enhancement [#1510](https://github.com/insideout10/wordlift-plugin/issues/1510): Add post_id attribute to navigator filter.
 
+* Fix [#1512](https://github.com/insideout10/wordlift-plugin/issues/1512): Fix match terms background process.
+
 = 3.33.6 (2021-12-06) =
-* Enhancement [#1496](https://github.com/insideout10/wordlift-plugin/issues/1496): Add Webhooks support to send 3rd parties structured data updates.
+
 * Enhancement [#1506](https://github.com/insideout10/wordlift-plugin/issues/1506): Autocomplete feature for match terms.
+* Enhancement [#1496](https://github.com/insideout10/wordlift-plugin/issues/1496): Add Webhooks support to send 3rd parties structured data updates.
+
 * Fix [#1493](https://github.com/insideout10/wordlift-plugin/issues/1493): Synonyms filter to strip html code from synonym.
 
+
 = 3.33.5 (2021-11-15) =
+
 * Fix [#1499](https://github.com/insideout10/wordlift-plugin/issues/1499): Fix shippingRate.name property on jsonld to use custom title set by user.
 * Fix [#1501](https://github.com/insideout10/wordlift-plugin/issues/1501): Added a filter for post content for post excerpt feature.
 
 = 3.33.4 (2021-11-02) =
+
 * Fix [#1493](https://github.com/insideout10/wordlift-plugin/issues/1493): Synonyms filter to strip html code from synonym.
 * Fix [#689](https://github.com/insideout10/wordlift-plugin/issues/689): Embedded image attachment support.
 
 = 3.33.3 (2021-10-19) =
+
 * Fix [#1488](https://github.com/insideout10/wordlift-plugin/issues/1488): Fix duplicate entities should not be created when entity id is invalid.
 
 = 3.33.2 (2021-10-13) =
+
 * Fix [#1476](https://github.com/insideout10/wordlift-plugin/issues/1476): Fix for Overlapping tiles on VideoObject modal window
 * Fix [#1482](https://github.com/insideout10/wordlift-plugin/issues/1482): Fix for Link Service factory Should use inverted condition.
 * Fix [#1483](https://github.com/insideout10/wordlift-plugin/issues/1483): WordLift setup, skip language input.
 * Fix [#1486](https://github.com/insideout10/wordlift-plugin/issues/1486): Entity duplication in vocabulary.
 
 = 3.33.1 (2021-09-21) =
+
 * Fix [#1473](https://github.com/insideout10/wordlift-plugin/pull/1473): Allow `Wl_Abstract_Metabox` field class to use global instances
 * Fix [#1472](https://github.com/insideout10/wordlift-plugin/issues/1472): Remove duplicated HowTo markup from jsonld.
 

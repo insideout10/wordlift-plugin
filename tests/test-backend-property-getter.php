@@ -3,6 +3,8 @@
  * Define tests for the {@link Wordlift_Property_Getter}.
  */
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Object_Type_Enum;
 
 /**
@@ -13,7 +15,7 @@ use Wordlift\Object_Type_Enum;
  */
 class Wordlift_Property_Getter_Test extends Wordlift_Unit_Test_Case {
 
-	const ENTITY_URI = 'http://data.example.org/entity';
+	const ENTITY_URI = 'http://data.example.org/data/entity';
 
 	private $entity_service;
 
@@ -45,10 +47,15 @@ class Wordlift_Property_Getter_Test extends Wordlift_Unit_Test_Case {
 		Wordlift_Unit_Test_Case::turn_off_entity_push();;
 
 		$this->entity_service  = Wordlift_Entity_Service::get_instance();
-		$this->property_getter = Wordlift_Property_Getter_Factory::create( $this );
+		$this->property_getter = Wordlift_Property_Getter_Factory::create();
 
 		$this->post_id = $this->factory->post->create();
-		wl_set_entity_uri( $this->post_id, self::ENTITY_URI );
+
+		Wordlift_Configuration_Service::get_instance()
+		                              ->set_dataset_uri( 'http://data.example.org/data/' );
+
+		Wordpress_Content_Service::get_instance()
+		                         ->set_entity_id( Wordpress_Content_Id::create_post( $this->post_id ), self::ENTITY_URI );
 
 	}
 
@@ -173,11 +180,11 @@ class Wordlift_Property_Getter_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Mock the {@link Wordlift_Entity_Service} get_uri function.
 	 *
-	 * @since 3.8.0
-	 *
 	 * @param int $post_id The post id.
 	 *
 	 * @return string The entity URI.
+	 * @since 3.8.0
+	 *
 	 */
 	public function get_uri( $post_id ) {
 

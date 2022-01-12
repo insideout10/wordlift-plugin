@@ -6,14 +6,7 @@ class Response_Adapter {
 	const WL_FEATURES = '_wl_features';
 	const WL_1 = 'wl1';
 
-	/**
-	 * @var \Wordlift_Log_Service
-	 */
-	private $log;
-
 	function __construct() {
-
-		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
 		// Filter responses from the API calls to update the enabled features.
 		add_filter( 'wl_api_service__response', array( $this, 'response' ), 10, 1 );
@@ -25,7 +18,7 @@ class Response_Adapter {
 		// Register the `wl_features__enable__{feature-name}` filters.
 		$this->register_filters();
 
-		// Hook to updates to the features setting to refresh the features' filters.
+		// Hook to the updates to the features setting to refresh the features' filters.
 		add_action( 'update_option_' . self::WL_FEATURES, array( $this, 'register_filters' ), 10, 0 );
 
 	}
@@ -40,9 +33,6 @@ class Response_Adapter {
 		}
 		$wl1_as_base64_string = $headers[ self::WL_1 ];
 		$wl1                  = json_decode( base64_decode( $wl1_as_base64_string ), true );
-
-		$this->log->debug( "WL1 [ encoded :: $wl1_as_base64_string ] " . var_export( $wl1, true ) );
-
 
 		$updated_features = $wl1['features'];
 
@@ -86,8 +76,6 @@ class Response_Adapter {
 	 */
 	function register_filters() {
 
-		$this->log->debug( 'Registering feature filters...' );
-
 		foreach ( (array) get_option( self::WL_FEATURES, array() ) as $name => $enabled ) {
 			// Remove previous filters.
 			remove_filter( "wl_feature__enable__${name}", '__return_true' );
@@ -111,7 +99,6 @@ class Response_Adapter {
 		}, array() );
 
 		update_option( self::WL_FEATURES, (array) $features, true );
-
 	}
 
 }

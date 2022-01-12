@@ -17,15 +17,6 @@ use Wordlift\Api\User_Agent;
 class Wordlift_Api_Service {
 
 	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since 3.20.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
 	 * The {@link Wordlift_Api_Service} singleton instance.
 	 *
 	 * @since 3.20.0
@@ -37,15 +28,10 @@ class Wordlift_Api_Service {
 	/**
 	 * Create a {@link Wordlift_Api_Service} instance.
 	 *
-	 * @param $configuration_service \Wordlift_Configuration_Service The {@link Wordlift_Configuration_Service} instance.
-	 *
 	 * @since 3.20.0
 	 *
 	 */
-	public function __construct( $configuration_service ) {
-
-		$this->configuration_service = $configuration_service;
-
+	public function __construct() {
 		self::$instance = $this;
 	}
 
@@ -73,13 +59,13 @@ class Wordlift_Api_Service {
 	public function get( $path ) {
 
 		// Prepare the target URL.
-		$url = $this->configuration_service->get_api_url() . $path;
+		$url = Wordlift_Configuration_Service::get_instance()->get_api_url() . $path;
 
 		// Get the response value.
 		$response = wp_remote_get( $url, array(
 			'user-agent' => User_Agent::get_user_agent(),
 			'headers'    => array(
-				'X-Authorization' => $this->configuration_service->get_key(),
+				'X-Authorization' => Wordlift_Configuration_Service::get_instance()->get_key(),
 			),
 			/*
 			 * Increase the timeout from the default of 5 to 30 secs.
@@ -114,7 +100,7 @@ class Wordlift_Api_Service {
 	public function post_custom_content_type( $path, $body, $content_type ) {
 
 		// Prepare the target URL.
-		$url = apply_filters( 'wl_api_service_api_url_path', $this->configuration_service->get_api_url() . $path );
+		$url = apply_filters( 'wl_api_service_api_url_path', Wordlift_Configuration_Service::get_instance()->get_api_url() . $path );
 
 		// Give some time for the operation to complete, more than the time we give to the HTTP operation to complete.
 		@set_time_limit( 90 );
@@ -125,8 +111,8 @@ class Wordlift_Api_Service {
 			'user-agent' => User_Agent::get_user_agent(),
 			'headers'    => array(
 				'Content-Type'    => $content_type,
-				'X-Authorization' => $this->configuration_service->get_key(),
-				'Authorization'   => "Key {$this->configuration_service->get_key()}",
+				'X-Authorization' => Wordlift_Configuration_Service::get_instance()->get_key(),
+				'Authorization'   => "Key {Wordlift_Configuration_Service::get_instance()->get_key()}",
 				/*
 				 * This is required to avoid CURL receiving 502 Bad Gateway errors.
 				 *
@@ -143,14 +129,14 @@ class Wordlift_Api_Service {
 	public function delete( $path ) {
 
 		// Prepare the target URL.
-		$url = $this->configuration_service->get_api_url() . $path;
+		$url = Wordlift_Configuration_Service::get_instance()->get_api_url() . $path;
 
 		// Get the response value.
 		$response = wp_remote_request( $url, array(
 			'method'     => 'DELETE',
 			'user-agent' => User_Agent::get_user_agent(),
 			'headers'    => array(
-				'X-Authorization' => $this->configuration_service->get_key(),
+				'X-Authorization' => Wordlift_Configuration_Service::get_instance()->get_key(),
 			),
 		) );
 

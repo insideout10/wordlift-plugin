@@ -24,10 +24,10 @@ abstract class Wordlift_Shortcode_REST {
 		// Register rest route with callback
 		add_action( 'rest_api_init', function () use ( $scope ) {
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, $scope->endpoint, array(
-				'methods'  => WP_REST_Server::READABLE,
+				'methods'             => WP_REST_Server::READABLE,
 				'permission_callback' => '__return_true',
-				'callback' => array( $scope, 'rest_callback' ),
-				'args'     => $scope->args
+				'callback'            => array( $scope, 'rest_callback' ),
+				'args'                => $scope->args
 			) );
 		} );
 

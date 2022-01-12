@@ -5,10 +5,11 @@ namespace Wordlift\Dataset;
 use Exception;
 use Wordlift\Api\Api_Service;
 use Wordlift\Jsonld\Jsonld_Service;
+use Wordlift\Object_Type_Enum;
 
 class Sync_Service {
-	const JSONLD_HASH = '_wl_jsonld_hash';
-	const SYNCED_GMT = '_wl_synced_gmt';
+	const JSONLD_HASH = 'jsonld_hash';
+	const SYNCED_GMT = 'synced_gmt';
 
 	/**
 	 * @var \Wordlift_Log_Service
@@ -140,6 +141,7 @@ class Sync_Service {
 
 		$hashes   = array();
 		$payloads = array();
+		/** @var Sync_Object_Adapter $object */
 		foreach ( $objects as $object ) {
 			// Bail out if no payload.
 			$payload_as_string = $this->get_payload_as_string( $object );
@@ -147,10 +149,11 @@ class Sync_Service {
 				continue;
 			}
 			$new_hash = sha1( $payload_as_string );
-			$old_hash = $object->get_meta( self::JSONLD_HASH, true );
+			$old_hash = $object->get_value( self::JSONLD_HASH );
 
 			// JSON-LD hasn't changed, bail out.
-			if ( ! $force && $new_hash === $old_hash ) {
+			$should_sync = $force || $new_hash !== $old_hash;
+			if ( ! apply_filters( 'wl_dataset__sync_service__sync_item', $should_sync, $object, $payload_as_string ) ) {
 				continue;
 			}
 
@@ -179,8 +182,11 @@ class Sync_Service {
 		foreach ( $hashes as $hash ) {
 			$object   = $hash[0];
 			$new_hash = $hash[1];
-			$object->update_meta( self::JSONLD_HASH, $new_hash );
-			$object->update_meta( self::SYNCED_GMT, current_time( 'mysql', true ) );
+
+			$object->set_values( array(
+				self::JSONLD_HASH => $new_hash,
+				self::SYNCED_GMT  => current_time( 'mysql', true ),
+			) );
 		}
 
 
@@ -223,7 +229,12 @@ class Sync_Service {
 	 * @todo Complete the delete item.
 	 */
 	public function delete_item( $post_id ) {
-		$uri = get_post_meta( $post_id, 'entity_url', true );
+		$uri = $this->entity_service->get_uri( $post_id, Object_Type_Enum::POST );
+
+		if ( ! isset( $uri ) ) {
+			return;
+		}
+
 		// Make a request to the remote endpoint.
 		$response = $this->api_service->request(
 			'DELETE', '/middleware/dataset?uri=' . rawurlencode( $uri ),

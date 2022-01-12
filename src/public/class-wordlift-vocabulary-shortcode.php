@@ -26,15 +26,6 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	const SHORTCODE = 'wl_vocabulary';
 
 	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.11.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
 	 * @since  3.17.0
@@ -56,15 +47,11 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	 * Create a {@link Wordlift_Glossary_Shortcode} instance.
 	 *
 	 * @since 3.16.0
-	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 */
-	public function __construct( $configuration_service ) {
+	public function __construct( ) {
 		parent::__construct();
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
-
-		$this->configuration_service = $configuration_service;
 
 		$this->register_block_type();
 
@@ -127,7 +114,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 		$posts = $this->get_posts( $atts );
 
 		// Get the alphabet.
-		$language_code = $this->configuration_service->get_language_code();
+		$language_code = Wordlift_Configuration_Service::get_instance()->get_language_code();
 		$alphabet      = Wordlift_Alphabet_Service::get( $language_code );
 
 		// Add posts to the alphabet.
@@ -310,7 +297,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 			'orderby'                => $atts['orderby'],
 			'order'                  => $atts['order'],
 			// Exclude the publisher.
-			'post__not_in'           => array( $this->configuration_service->get_publisher_id() ),
+			'post__not_in'           => array( Wordlift_Configuration_Service::get_instance()->get_publisher_id() ),
 		);
 
 		// Limit the based entity type if needed.

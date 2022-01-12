@@ -12,9 +12,7 @@
  */
 
 use Wordlift\Cache\Ttl_Cache;
-use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Jsonld\Reference_Processor;
-use Wordlift\Jsonld\Term_Reference;
 
 /**
  * Define the {@link Wordlift_Cached_Post_Converter} class.
@@ -40,15 +38,6 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * @var Wordlift_Log_Service \$log A {@link Wordlift_Log_Service} instance.
 	 */
 	private $log;
-
-	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.16.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
 
 	/**
 	 * A list of meta keys that do not cause the cache to update.
@@ -77,16 +66,14 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * Wordlift_Cached_Post_Converter constructor.
 	 *
 	 * @param \Wordlift_Post_Converter $converter The {@link Wordlift_Post_Converter} implementation.
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 * @param Ttl_Cache $cache The {@link Ttl_Cache} cache instance.
 	 */
-	public function __construct( $converter, $configuration_service, $cache ) {
+	public function __construct( $converter, $cache ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
-		$this->cache                 = $cache;
-		$this->converter             = $converter;
-		$this->configuration_service = $configuration_service;
+		$this->cache               = $cache;
+		$this->converter           = $converter;
 		$this->reference_processor = Reference_Processor::get_instance();
 		$this->init_hooks();
 
@@ -166,7 +153,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		$cache = false;
 		$this->add_http_header( $post_id, false );
 
-		// Convert the the post.
+		// Convert the post.
 		$jsonld = $this->converter->convert( $post_id, $references, $references_infos );
 
 		/**
@@ -232,7 +219,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		$this->log->trace( "Caching result for post $post_id..." );
 
 		$this->cache->put( $post_id, array(
-			'references' => $this->reference_processor->serialize_references(  $references ),
+			'references' => $this->reference_processor->serialize_references( $references ),
 			'jsonld'     => $jsonld,
 		) );
 
@@ -353,7 +340,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	private function flush_cache_if_publisher( $post_id ) {
 
 		// Bail out if it's not the publisher.
-		if ( $post_id !== $this->configuration_service->get_publisher_id() ) {
+		if ( $post_id !== Wordlift_Configuration_Service::get_instance()->get_publisher_id() ) {
 			return;
 		}
 

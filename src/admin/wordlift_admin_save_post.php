@@ -24,8 +24,6 @@
  */
 function wl_transition_post_status( $new_status, $old_status, $post ) {
 
-	// wl_write_log( "wl_transition_post_status [ new status :: $new_status ][ old status :: $old_status ][ post ID :: $post->ID ]" );
-
 	// transition from *published* to any other status: delete the post.
 	if ( 'publish' === $old_status && 'publish' !== $new_status ) {
 		// Delete the post from the triple store.
@@ -36,7 +34,9 @@ function wl_transition_post_status( $new_status, $old_status, $post ) {
 	}
 
 	// when a post is published, then all the referenced entities must be published.
-	if ( 'publish' !== $old_status && 'publish' === $new_status ) {
+	if ( 'publish' !== $old_status && 'publish' === $new_status
+	     && apply_filters( 'wl_feature__enable__entity-auto-publish', true ) ) {
+
 		foreach ( wl_core_get_related_entity_ids( $post->ID ) as $entity_id ) {
 			wl_update_post_status( $entity_id, 'publish' );
 		}

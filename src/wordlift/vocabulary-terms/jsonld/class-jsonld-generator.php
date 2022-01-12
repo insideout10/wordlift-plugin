@@ -67,9 +67,9 @@ class Jsonld_Generator {
 
 	private function get_jsonld_data_for_term( $term_id ) {
 
-		$id = wl_get_term_entity_uri( $term_id );
+		$id = $this->entity_service->get_uri( $term_id, Object_Type_Enum::TERM );
 
-		// If we dont have a dataset  URI, then dont publish the term data
+		// If we don't have a dataset  URI, then don't publish the term data
 		// on this page.
 		if ( ! $id ) {
 			return false;
@@ -115,7 +115,6 @@ class Jsonld_Generator {
 			'references' => $references
 		), $term_id );
 
-
 	}
 
 	private function add_url( &$jsonld, $term_id ) {
@@ -129,6 +128,7 @@ class Jsonld_Generator {
 			return str_replace( '<permalink>', $permalink, $item );
 		}, $urls );
 	}
+
 
 	private function relative_to_schema_context( $predicate ) {
 		return str_replace( 'http://schema.org/', '', $predicate );

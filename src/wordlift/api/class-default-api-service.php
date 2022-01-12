@@ -6,11 +6,9 @@
 
 namespace Wordlift\Api;
 
+use Wordlift_Configuration_Service;
+
 class Default_Api_Service implements Api_Service {
-	/**
-	 * @var Default_Api_Service
-	 */
-	private static $instance;
 
 	/**
 	 * @var string
@@ -48,7 +46,7 @@ class Default_Api_Service implements Api_Service {
 	 * @param string $user_agent
 	 * @param string $wordlift_key
 	 */
-	public function __construct( $base_url, $timeout, $user_agent, $wordlift_key ) {
+	protected function __construct( $base_url, $timeout, $user_agent, $wordlift_key ) {
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
@@ -66,7 +64,18 @@ class Default_Api_Service implements Api_Service {
 		self::$instance = $this;
 	}
 
+	private static $instance;
+
 	public static function get_instance() {
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self(
+				apply_filters( 'wl_api_base_url', WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE ),
+				60,
+				User_Agent::get_user_agent(),
+				Wordlift_Configuration_Service::get_instance()->get_key()
+			);
+		}
+
 		return self::$instance;
 	}
 
@@ -77,7 +86,9 @@ class Default_Api_Service implements Api_Service {
 
 		// Set the time limit if lesser than our request timeout.
 		$max_execution_time = ini_get( 'max_execution_time' );
-		if ( $max_execution_time < $request_timeout ) {
+		if ( ! ( defined( 'WP_CLI' ) && WP_CLI )
+		     && ( 0 != $max_execution_time )
+		     && ( $max_execution_time < $request_timeout ) ) {
 			@set_time_limit( $request_timeout );
 		}
 

@@ -154,7 +154,12 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		$jsonld_string = wp_json_encode( $jsonld );
 
-		echo "<script type=\"application/ld+json\" id=\"wl-jsonld-term\">$jsonld_string</script>";
+		$jsonld_term_html_output = <<<EOF
+<script type="application/ld+json" id="wl-jsonld-term">$jsonld_string</script>
+EOF;
+		$jsonld_term_html_output = apply_filters( 'wl_jsonld_term_html_output', $jsonld_term_html_output, $term_id );
+
+		echo $jsonld_term_html_output;
 
 	}
 
@@ -241,12 +246,12 @@ class Wordlift_Term_JsonLd_Adapter {
 			return array();
 		}
 
-		$post   = $this->entity_uri_service->get_entity( array_shift( $local_entity_ids ) );
+		$post            = $this->entity_uri_service->get_entity( array_shift( $local_entity_ids ) );
 		$entities_jsonld = $wordlift_jsonld_service->get_jsonld( false, $post->ID );
 		// Reset the `url` to the term page.
 		$entities_jsonld[0]['url'] = get_term_link( $term_id );
 
-		return  $entities_jsonld;
+		return $entities_jsonld;
 	}
 
 

@@ -9,65 +9,49 @@
 
 namespace Wordlift\Analysis\Response;
 
-use Wordlift\Analysis\Entity_Provider\Entity_Provider_Registry;
 use Wordlift\Entity\Entity_Helper;
+use Wordlift_Entity_Uri_Service;
 
 class Analysis_Response_Ops_Factory {
 	/**
-	 * @var \Wordlift_Entity_Uri_Service
+	 * @var Wordlift_Entity_Uri_Service
 	 */
 	private $entity_uri_service;
-	/**
-	 * @var \Wordlift_Entity_Service
-	 */
-	private $entity_service;
-	/**
-	 * @var \Wordlift_Entity_Type_Service
-	 */
-	private $entity_type_service;
-	/**
-	 * @var \Wordlift_Post_Image_Storage
-	 */
-	private $post_image_storage;
+
 	/**
 	 * @var Entity_Helper
 	 */
 	private $entity_helper;
 
-	private static $instance;
-	/**
-	 * @var Entity_Provider_Registry
-	 */
-	private $entity_provider_registry;
-
 	/**
 	 * Analysis_Response_Ops constructor.
 	 *
-	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service}.
+	 * @param Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service}.
 	 * @param Entity_Helper $entity_helper The {@link Entity_Helper}.
 	 *
 	 * @since 3.25.1
 	 */
-	public function __construct( $entity_uri_service, $entity_helper, $entity_provider_registry ) {
+	protected function __construct( $entity_uri_service, $entity_helper ) {
 
-		$this->entity_uri_service       = $entity_uri_service;
-		$this->entity_helper            = $entity_helper;
-		$this->entity_provider_registry = $entity_provider_registry;
-		self::$instance                 = $this;
+		$this->entity_uri_service = $entity_uri_service;
+		$this->entity_helper      = $entity_helper;
 
 	}
 
+	private static $instance;
+
 	public static function get_instance() {
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self( Wordlift_Entity_Uri_Service::get_instance(), Entity_Helper::get_instance() );
+		}
 
 		return self::$instance;
 	}
 
 	public function create( $json, $post_id ) {
-
 		return new Analysis_Response_Ops(
 			$this->entity_uri_service,
 			$this->entity_helper,
-			$this->entity_provider_registry,
 			$json,
 			$post_id );
 	}

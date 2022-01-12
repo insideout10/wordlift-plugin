@@ -53,12 +53,25 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 		// Disable sending SPARQL queries, since we don't need it.
 		Wordlift_Unit_Test_Case::turn_off_entity_push();;
 
-		$wordlift = new Wordlift_Test();
+		$this->entity_service = Wordlift_Entity_Service::get_instance();
 
-		$this->entity_service                  = $wordlift->get_entity_service();
-		$this->entity_post_to_jsonld_converter = $wordlift->get_entity_post_to_jsonld_converter();
-		$this->postid_to_jsonld_converter      = $wordlift->get_postid_to_jsonld_converter();
+		$property_getter          = Wordlift_Property_Getter_Factory::create();
+		$post_to_jsonld_converter = new Wordlift_Post_To_Jsonld_Converter(
+			Wordlift_Entity_Type_Service::get_instance(),
+			Wordlift_User_Service::get_instance(),
+			Wordlift_Attachment_Service::get_instance() );
 
+		$this->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter(
+			Wordlift_Entity_Type_Service::get_instance(),
+			Wordlift_User_Service::get_instance(),
+			Wordlift_Attachment_Service::get_instance(),
+			$property_getter,
+			Wordlift_Schemaorg_Property_Service::get_instance(),
+			$post_to_jsonld_converter );
+
+		$this->postid_to_jsonld_converter = new Wordlift_Postid_To_Jsonld_Converter(
+			$this->entity_post_to_jsonld_converter,
+			$post_to_jsonld_converter );
 	}
 
 	/**
@@ -68,7 +81,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 	 */
 	public function test_event_conversion() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create an entity post and assign it the Event type.
 		$name     = 'Test Entity Post to Json-Ld conversion test_event_conversion ' . rand_str();
@@ -76,7 +89,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 			'post_title' => $name,
 			'post_type'  => 'entity',
 		) );
-		$this->entity_type_service->set( $event_id, 'http://schema.org/Event' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $event_id, 'http://schema.org/Event' );
 		$event_uri = $this->entity_service->get_uri( $event_id );
 
 		// Set the start date.
@@ -93,7 +106,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 
 		// Create a location entity post and bind it to the location property.
 		$place_id = $this->factory->post->create( array( 'post_type' => 'entity' ) );
-		$this->entity_type_service->set( $place_id, 'http://schema.org/Place' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $place_id, 'http://schema.org/Place' );
 		$place_uri = $this->entity_service->get_uri( $place_id );
 
 		// Bind the place to the location property.
@@ -101,7 +114,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 
 		// Create a person entity post and bind it to the performer property.
 		$performer_id = $this->factory->post->create( array( 'post_type' => 'entity' ) );
-		$this->entity_type_service->set( $performer_id, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $performer_id, 'http://schema.org/Person' );
 		$performer_uri = $this->entity_service->get_uri( $performer_id );
 
 		// Bind the person to the performer property.
@@ -109,7 +122,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 
 		// Create a offer entity post and bind it to the offers property.
 		$offer_id = $this->factory->post->create( array( 'post_type' => 'entity' ) );
-		$this->entity_type_service->set( $offer_id, 'http://schema.org/Offer' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $offer_id, 'http://schema.org/Offer' );
 		$offer_uri = $this->entity_service->get_uri( $offer_id );
 
 		// Bind the offer to the offers property.
@@ -173,7 +186,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 	 */
 	public function test_place_conversion() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create a location entity post and bind it to the location property.
 		$name     = rand_str();
@@ -181,7 +194,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 			'post_title' => $name,
 			'post_type'  => 'entity',
 		) );
-		$this->entity_type_service->set( $place_id, 'http://schema.org/Place' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $place_id, 'http://schema.org/Place' );
 		$place_uri = $this->entity_service->get_uri( $place_id );
 
 		// Set a random sameAs.
@@ -275,7 +288,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 	 */
 	public function test_create_work_conversion() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create a location entity post and bind it to the location property.
 		$name           = rand_str();
@@ -283,7 +296,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 			'post_title' => $name,
 			'post_type'  => 'entity',
 		) );
-		$this->entity_type_service->set( $create_work_id, 'http://schema.org/CreativeWork' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $create_work_id, 'http://schema.org/CreativeWork' );
 		$create_work_uri = $this->entity_service->get_uri( $create_work_id );
 
 		// Set a random sameAs.
@@ -291,7 +304,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 		add_post_meta( $create_work_id, Wordlift_Schema_Service::FIELD_SAME_AS, $same_as );
 
 		$person_id = $this->factory->post->create( array( 'post_type' => 'entity' ) );
-		$this->entity_type_service->set( $person_id, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $person_id, 'http://schema.org/Person' );
 		$person_uri = $this->entity_service->get_uri( $person_id );
 
 		// Bind the person as author of the creative work.
@@ -340,7 +353,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 	 */
 	public function test_organization_conversion() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create a location entity post and bind it to the location property.
 		$name            = rand_str();
@@ -348,7 +361,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 			'post_title' => $name,
 			'post_type'  => 'entity',
 		) );
-		$this->entity_type_service->set( $organization_id, 'http://schema.org/Organization' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $organization_id, 'http://schema.org/Organization' );
 		$organization_uri = $this->entity_service->get_uri( $organization_id );
 
 		$email = rand_str();
@@ -380,7 +393,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 		add_post_meta( $organization_id, Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY, $country );
 
 		$person_id = $this->factory->post->create( array( 'post_type' => 'entity' ) );
-		$this->entity_type_service->set( $person_id, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $person_id, 'http://schema.org/Person' );
 		$person_uri = $this->entity_service->get_uri( $person_id );
 
 		// Bind the person as author of the creative work.
@@ -447,7 +460,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 	 */
 	public function test_person_conversion() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create an entity post and assign it the Event type.
 		$name      = rand_str();
@@ -455,7 +468,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 			'post_title' => $name,
 			'post_type'  => 'entity',
 		) );
-		$this->entity_type_service->set( $person_id, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $person_id, 'http://schema.org/Person' );
 		$person_uri = $this->entity_service->get_uri( $person_id );
 
 		$email = rand_str();
@@ -471,7 +484,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 
 		// Create a location entity post and bind it to the location property.
 		$place_id = $this->factory->post->create( array( 'post_type' => 'entity' ) );
-		$this->entity_type_service->set( $place_id, 'http://schema.org/Place' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $place_id, 'http://schema.org/Place' );
 		$place_uri = $this->entity_service->get_uri( $place_id );
 
 		// Bind the place to the birth place property.
@@ -479,7 +492,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 
 		// Create a knows connection.
 		$knows_id_1 = $this->factory->post->create( array( 'post_type' => 'entity' ) );
-		$this->entity_type_service->set( $knows_id_1, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $knows_id_1, 'http://schema.org/Person' );
 		$knows_uri_1 = $this->entity_service->get_uri( $knows_id_1 );
 
 		// Bind the knows to the person.
@@ -487,7 +500,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 
 		// Create a knows connection.
 		$knows_id_2 = $this->factory->post->create( array( 'post_type' => 'entity' ) );
-		$this->entity_type_service->set( $knows_id_2, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $knows_id_2, 'http://schema.org/Person' );
 		$knows_uri_2 = $this->entity_service->get_uri( $knows_id_2 );
 
 		// Bind the knows to the person.
@@ -495,7 +508,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 
 		// Create a knows connection.
 		$organization_id = $this->factory->post->create( array( 'post_type' => 'entity' ) );
-		$this->entity_type_service->set( $organization_id, 'http://schema.org/Organization' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $organization_id, 'http://schema.org/Organization' );
 		$organization_id = $this->entity_service->get_uri( $organization_id );
 
 		// Bind the knows to the person.
@@ -555,7 +568,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 	 */
 	public function test_local_business_conversion() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create a location entity post and bind it to the location property.
 		$name              = rand_str();
@@ -563,8 +576,8 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 			'post_title' => $name,
 			'post_type'  => 'entity',
 		) );
-		$this->entity_type_service->set( $local_business_id, 'http://schema.org/LocalBusiness' );
-		$local_business_type = $this->entity_type_service->get( $local_business_id );
+		Wordlift_Entity_Type_Service::get_instance()->set( $local_business_id, 'http://schema.org/LocalBusiness' );
+		$local_business_type = Wordlift_Entity_Type_Service::get_instance()->get( $local_business_id );
 		$this->assertEquals( 'http://schema.org/LocalBusiness', $local_business_type['uri'], 'Entity type must be http://schema.org/Person.' );
 
 		$local_business_uri = $this->entity_service->get_uri( $local_business_id );
@@ -602,9 +615,9 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY, $country );
 
 		$person_id = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
-		$this->entity_type_service->set( $person_id, 'http://schema.org/Person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $person_id, 'http://schema.org/Person' );
 		$person_uri  = $this->entity_service->get_uri( $person_id );
-		$person_type = $this->entity_type_service->get( $person_id );
+		$person_type = Wordlift_Entity_Type_Service::get_instance()->get( $person_id );
 		$this->assertEquals( 'http://schema.org/Person', $person_type['uri'], 'Entity type must be http://schema.org/Person.' );
 
 		// Bind the person as author of the creative work.
@@ -684,7 +697,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 	 */
 	public function test_offer_conversion() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		// Create an entity post and assign it the Offer type.
 		$name     = rand_str();
@@ -692,11 +705,11 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 			'post_title' => $name,
 			'post_type'  => 'entity',
 		) );
-		$this->entity_type_service->set( $offer_id, 'http://schema.org/Offer' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $offer_id, 'http://schema.org/Offer' );
 		$offer_uri = $this->entity_service->get_uri( $offer_id );
 
 		$thing_id = $this->factory->post->create( array( 'post_type' => 'entity' ) );
-		$this->entity_type_service->set( $thing_id, 'http://schema.org/Thing' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $thing_id, 'http://schema.org/Thing' );
 
 		// Create the property values.
 		$availability_start_date = date( 'Y/m/d', 1576800000 );
@@ -785,7 +798,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 	 */
 	public function test_convert_835() {
 
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$post_id = $this->factory()->post->create( array(
 			'post_type' => 'entity',

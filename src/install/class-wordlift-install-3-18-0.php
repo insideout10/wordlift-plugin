@@ -65,8 +65,6 @@ class Wordlift_Install_3_18_0 extends Wordlift_Install {
 				continue;
 			}
 
-			// Push the references.
-			do_action( 'wl_legacy_linked_data__push', $post->ID );
 		}
 
 	}

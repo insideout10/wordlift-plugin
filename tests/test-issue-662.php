@@ -63,7 +63,10 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 		// List Service that we're in admin.
 		$GLOBALS['current_screen'] = $this;
 
-		$this->entity_list_service = $this->get_wordlift_test()->get_entity_list_service();
+		$this->entity_list_service = new Wordlift_Entity_List_Service(
+			$this->getMockBuilder( 'Wordlift_Rating_Service' )
+			     ->disableOriginalConstructor()
+			     ->getMock() );
 
 	}
 

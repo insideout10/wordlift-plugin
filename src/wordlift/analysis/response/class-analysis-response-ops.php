@@ -39,10 +39,6 @@ class Analysis_Response_Ops {
 	 * @var Entity_Helper
 	 */
 	private $entity_helper;
-	/**
-	 * @var Entity_Provider_Registry
-	 */
-	private $entity_provider_registry;
 
 	/**
 	 * @var int $post_id
@@ -54,18 +50,15 @@ class Analysis_Response_Ops {
 	 *
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service}.
 	 * @param Entity_Helper $entity_helper The {@link Entity_Helper}.
-	 * @param Entity_Provider_Registry $entity_provider_registry Entity Provider registry.
 	 * @param mixed $json The analysis response json.
 	 *
 	 * @since 3.21.5
 	 */
-	public function __construct( $entity_uri_service, $entity_helper, $entity_provider_registry, $json, $post_id ) {
-
-		$this->json                     = $json;
-		$this->entity_uri_service       = $entity_uri_service;
-		$this->entity_helper            = $entity_helper;
-		$this->entity_provider_registry = $entity_provider_registry;
-		$this->post_id = $post_id;
+	public function __construct( $entity_uri_service, $entity_helper, $json, $post_id ) {
+		$this->json               = $json;
+		$this->entity_uri_service = $entity_uri_service;
+		$this->entity_helper      = $entity_helper;
+		$this->post_id            = $post_id;
 	}
 
 	/**
@@ -85,6 +78,7 @@ class Analysis_Response_Ops {
 		if ( ! isset( $this->json->entities ) ) {
 			return $this;
 		}
+
 		// Get the URIs.
 		$uris     = array_keys( get_object_vars( $this->json->entities ) );
 		$mappings = $this->entity_helper->map_many_to_local( $uris );
@@ -184,11 +178,13 @@ class Analysis_Response_Ops {
 		$annotations = $parse_data['annotations'];
 		$occurrences = $parse_data['occurrences'];
 
+		$entity_provider_registry = Entity_Provider_Registry::get_instance();
+
 		foreach ( array_keys( $occurrences ) as $item_id ) {
 
 			// If the entity isn't there, add it.
 			if ( ! is_bool( $this->json ) && ! isset( $this->json->entities->{$item_id} ) ) {
-				$entity = $this->entity_provider_registry->get_local_entity( $item_id );
+				$entity = $entity_provider_registry->get_local_entity( $item_id );
 
 				// Entity not found in the local vocabulary, continue to the next one.
 				if ( false === $entity ) {
@@ -211,7 +207,7 @@ class Analysis_Response_Ops {
 
 		if ( ! is_bool( $this->json ) && isset( $this->json->entities ) ) {
 			$occurrences_processor = Occurrences_Factory::get_instance( $this->post_id );
-			$this->json = $occurrences_processor->add_occurences_to_entities( $occurrences, $this->json, $this->post_id );
+			$this->json            = $occurrences_processor->add_occurences_to_entities( $occurrences, $this->json, $this->post_id );
 		}
 
 		// Add the missing annotations. This allows the analysis response to work also if we didn't receive results
@@ -327,6 +323,7 @@ class Analysis_Response_Ops {
 
 	/**
 	 * Remove all the entities with the excluded URIs.
+	 *
 	 * @param array $excluded_uris The array of URIs to be excluded.
 	 */
 	private function remove_entities_with_excluded_uris( array $excluded_uris ) {
@@ -345,6 +342,7 @@ class Analysis_Response_Ops {
 
 	/**
 	 * Remove all the annotations with the excluded entity URIs.
+	 *
 	 * @param array $excluded_uris The array of URIs to be excluded.
 	 *
 	 * @return void

@@ -20,26 +20,6 @@
 class Wordlift_Admin_Language_Select_Element_Test extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * The {@link Wordlift_Admin_Language_Select_Element} element renderer under
-	 * test.
-	 *
-	 * @since  3.11.0
-	 * @access private
-	 * @var \Wordlift_Admin_Language_Select_Element $language_select_element The {@link Wordlift_Admin_Language_Select_Element} element renderer.
-	 */
-	private $language_select_element;
-
-	/**
-	 * @inheritdoc
-	 */
-	function setUp() {
-		parent::setUp();
-
-		$this->language_select_element = $this->get_wordlift_test()->get_language_select_element();
-
-	}
-
-	/**
 	 * Test the default selected value (en) when no value is passed.
 	 *
 	 * @since 3.11.0
@@ -47,7 +27,8 @@ class Wordlift_Admin_Language_Select_Element_Test extends Wordlift_Unit_Test_Cas
 	public function test_default_value() {
 
 		ob_start();
-		$this->language_select_element->render( array() );
+		$language_select_element = new Wordlift_Admin_Language_Select_Element();
+		$language_select_element->render( array() );
 		$output = ob_get_clean();
 
 		$matches = array();
@@ -70,7 +51,8 @@ class Wordlift_Admin_Language_Select_Element_Test extends Wordlift_Unit_Test_Cas
 	public function test_custom_value() {
 
 		ob_start();
-		$this->language_select_element->render( array( 'value' => 'it' ) );
+		$language_select_element = new Wordlift_Admin_Language_Select_Element();
+		$language_select_element->render( array( 'value' => 'it' ) );
 		$output = ob_get_clean();
 
 		$matches = array();
@@ -93,7 +75,8 @@ class Wordlift_Admin_Language_Select_Element_Test extends Wordlift_Unit_Test_Cas
 	public function test_unknown_value() {
 
 		ob_start();
-		$this->language_select_element->render( array( 'value' => 'zzz' ) );
+		$language_select_element = new Wordlift_Admin_Language_Select_Element();
+		$language_select_element->render( array( 'value' => 'zzz' ) );
 		$output = ob_get_clean();
 
 		$matches = array();

@@ -14,7 +14,9 @@
 
 namespace Wordlift\Post;
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Entity\Entity_Store;
+use Wordlift_Entity_Uri_Service;
 
 class Post_Adapter {
 
@@ -26,26 +28,6 @@ class Post_Adapter {
 	 */
 	private $log;
 
-	/**
-	 * A {@link Wordlift_Entity_Service} instance.
-	 *
-	 * @access private
-	 * @var \Wordlift_Entity_Service A {@link Wordlift_Entity_Service} instance.
-	 */
-	private $entity_service;
-
-	/**
-	 * A {@link Entity_Store} instance.
-	 *
-	 * @access private
-	 * @var Entity_Store $entity_store A {@link Entity_Store} instance.
-	 */
-	private $entity_store;
-	/**
-	 * @var \Wordlift_Entity_Uri_Service
-	 */
-	private $entity_uri_service;
-
 	public function __construct() {
 
 		// Bail out if block editor's functions aren't available.
@@ -55,9 +37,6 @@ class Post_Adapter {
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
-		$this->entity_service     = \Wordlift_Entity_Service::get_instance();
-		$this->entity_store       = Entity_Store::get_instance();
-		$this->entity_uri_service = \Wordlift_Entity_Uri_Service::get_instance();
 		add_action( 'init', array( $this, 'init' ) );
 		add_filter( 'wp_insert_post_data', array( $this, 'wp_insert_post_data' ), 10, 2 );
 
@@ -134,11 +113,15 @@ class Post_Adapter {
 				$entity_uris = $this->get_entity_uris( $entity );
 
 				if ( $this->get_first_matching_entity_by_uri( $entity_uris ) === null &&
-				     Post_Entities_Validator::is_local_entity_uri_exist( $this->entity_uri_service, $entity_uris ) ) {
+				     Post_Entities_Validator::is_local_entity_uri_exist( Wordlift_Entity_Uri_Service::get_instance(), $entity_uris ) ) {
 					// Skip the entity
 					continue;
 				}
-				$this->create_or_update_entity( $entity, $data['post_status'] );
+
+				// If 'entity auto publish' is false, we set the status to `draft` by default.
+				$post_status = apply_filters( 'wl_feature__enable__entity-auto-publish', true )
+					? $data['post_status'] : 'draft';
+				$this->create_or_update_entity( $entity, $post_status );
 
 			}
 
@@ -292,7 +275,7 @@ class Post_Adapter {
 
 		if ( empty( $post ) ) {
 			// Create the entity if it doesn't exist.
-			$post_id = $this->entity_store->create( array(
+			$post_id = Entity_Store::get_instance()->create( array(
 				'labels'      => $labels,
 				'description' => $entity['description'],
 				'same_as'     => $uris,
@@ -314,7 +297,7 @@ class Post_Adapter {
 			}
 		} else {
 			// Update the entity otherwise.
-			$post_id = $this->entity_store->update( array(
+			$post_id = Entity_Store::get_instance()->update( array(
 				'ID'      => $post->ID,
 				'labels'  => $labels,
 				'same_as' => $uris,
@@ -353,8 +336,8 @@ class Post_Adapter {
 	private function get_first_matching_entity_by_uri( $uris ) {
 
 		foreach ( $uris as $uri ) {
-			$existing_entity = $this->entity_service->get_entity_post_by_uri( $uri );
-			if ( isset( $existing_entity ) ) {
+			$existing_entity = Wordpress_Content_Service::get_instance()->get_by_entity_id( $uri );
+			if ( is_a( $existing_entity, 'WP_Post' ) ) {
 				return $existing_entity;
 			}
 		}

@@ -29,16 +29,14 @@ class Wordlift_Property_Getter_Factory {
 	/**
 	 * Create a {@link Wordlift_Property_Getter} instance.
 	 *
+	 * @return \Wordlift_Property_Getter A {@link Wordlift_Property_Getter} instance.
 	 * @since 3.8.0
 	 *
-	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
-	 *
-	 * @return \Wordlift_Property_Getter A {@link Wordlift_Property_Getter} instance.
 	 */
-	public static function create( $entity_service ) {
+	public static function create() {
 
 		$property_getter = new Wordlift_Property_Getter( new Wordlift_Simple_Property_Service() );
-		$property_getter->register( new Wordlift_Entity_Property_Service( $entity_service ), array(
+		$property_getter->register( new Wordlift_Entity_Property_Service(), array(
 			Wordlift_Schema_Service::FIELD_FOUNDER,
 			Wordlift_Schema_Service::FIELD_AUTHOR,
 			Wordlift_Schema_Service::FIELD_KNOWS,
@@ -48,7 +46,7 @@ class Wordlift_Property_Getter_Factory {
 			Wordlift_Schema_Service::FIELD_OFFERS,
 			Wordlift_Schema_Service::FIELD_ITEM_OFFERED,
 		) );
-		$property_getter->register( new Wordlift_Location_Property_Service( $entity_service ), array(
+		$property_getter->register( new Wordlift_Location_Property_Service(), array(
 			Wordlift_Schema_Service::FIELD_LOCATION,
 		) );
 		$property_getter->register( new Wordlift_Url_Property_Service(), array( Wordlift_Url_Property_Service::META_KEY ) );
@@ -63,8 +61,8 @@ class Wordlift_Property_Getter_Factory {
 			Wordlift_Schema_Service::FIELD_TOTAL_TIME,
 		) );
 
-		add_action( 'after_setup_theme', function () use ( $property_getter, $entity_service ) {
-			$property_getter->register( new Wordlift_Required_Property_Service( $entity_service ), apply_filters( 'wl_required_property', array() ) );
+		add_action( 'after_setup_theme', function () use ( $property_getter ) {
+			$property_getter->register( new Wordlift_Required_Property_Service(), apply_filters( 'wl_required_property', array() ) );
 		} );
 
 		return $property_getter;

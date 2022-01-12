@@ -31,6 +31,14 @@ use Wordlift\Mappings\Taxonomy_Option;
 class Wordlift_Admin {
 
 	/**
+	 * The singleton instance.
+	 *
+	 * @since 3.19.4
+	 * @access private
+	 * @var Wordlift_Admin $instance The singleton instance.
+	 */
+	private static $instance;
+	/**
 	 * The ID of this plugin.
 	 *
 	 * @since    1.0.0
@@ -38,7 +46,6 @@ class Wordlift_Admin {
 	 * @var      string $plugin_name The ID of this plugin.
 	 */
 	private $plugin_name;
-
 	/**
 	 * The version of this plugin.
 	 *
@@ -47,66 +54,45 @@ class Wordlift_Admin {
 	 * @var      string $version The current version of this plugin.
 	 */
 	private $version;
-
-	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.14.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
 	/**
 	 * The {@link Wordlift_User_Service} instance.
 	 *
 	 * @since  3.14.0
 	 * @access private
-	 * @var \Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
+	 * @var Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
 	 */
 	private $user_service;
-
 	/**
 	 * The {@link Wordlift_Batch_Operation_Ajax_Adapter} instance.
 	 *
 	 * @since 3.20.0
 	 * @access private
-	 * @var \Wordlift_Batch_Operation_Ajax_Adapter $sync_batch_operation_ajax_adapter The {@link Wordlift_Batch_Operation_Ajax_Adapter} instance.
+	 * @var Wordlift_Batch_Operation_Ajax_Adapter $sync_batch_operation_ajax_adapter The {@link Wordlift_Batch_Operation_Ajax_Adapter} instance.
 	 */
 	private $sync_batch_operation_ajax_adapter;
-
-	/**
-	 * The singleton instance.
-	 *
-	 * @since 3.19.4
-	 * @access private
-	 * @var Wordlift_Admin $instance The singleton instance.
-	 */
-	private static $instance;
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @param string $plugin_name The name of this plugin.
 	 * @param string $version The version of this plugin.
-	 * @param \Wordlift_Configuration_Service $configuration_service The configuration service.
-	 * @param \Wordlift_Notice_Service $notice_service The notice service.
-	 * @param \Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
+	 * @param Wordlift_Notice_Service $notice_service The notice service.
+	 * @param Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
 	 *
 	 * @since  1.0.0
 	 *
 	 */
-	public function __construct( $plugin_name, $version, $configuration_service, $notice_service, $user_service ) {
+	public function __construct( $plugin_name, $version, $notice_service, $user_service ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 
-		$this->configuration_service = $configuration_service;
-		$this->user_service          = $user_service;
+		$this->user_service = $user_service;
 
-		$dataset_uri       = $configuration_service->get_dataset_uri();
-		$key               = $configuration_service->get_key();
-		$features_registry = Features_Registry::get_instance();
+		$configuration_service = Wordlift_Configuration_Service::get_instance();
+		$dataset_uri           = $configuration_service->get_dataset_uri();
+		$key                   = $configuration_service->get_key();
+		$features_registry     = Features_Registry::get_instance();
 		if ( empty( $dataset_uri ) ) {
 			$settings_page = Wordlift_Admin_Settings_Page::get_instance();
 			if ( empty( $key ) ) {
@@ -183,7 +169,6 @@ class Wordlift_Admin {
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/879
 			 */
 			new Wordlift_Admin_Dashboard_V2(
-				Wordlift::get_instance()->get_dashboard_service(),
 				Wordlift_Entity_Service::get_instance()
 			);
 			new Wordlift_Admin_Not_Enriched_Filter();
@@ -210,15 +195,46 @@ class Wordlift_Admin {
 	}
 
 	/**
+	 * Require files needed for the Admin UI.
+	 *
+	 * @since 3.20.0
+	 */
+	private static function require_files() {
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-latest-news.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-v2.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-not-enriched-filter.php';
+
+	}
+
+	/**
 	 * Get the singleton instance.
 	 *
-	 * @return \Wordlift_Admin The singleton instance.
+	 * @return Wordlift_Admin The singleton instance.
 	 * @since 3.19.4
 	 *
 	 */
 	public static function get_instance() {
 
 		return self::$instance;
+	}
+
+	public static function is_gutenberg() {
+		if ( function_exists( 'is_gutenberg_page' ) &&
+		     is_gutenberg_page()
+		) {
+			// The Gutenberg plugin is on.
+			return true;
+		}
+		$current_screen = get_current_screen();
+		if ( method_exists( $current_screen, 'is_block_editor' ) &&
+		     $current_screen->is_block_editor()
+		) {
+			// Gutenberg page on 5+.
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -278,37 +294,6 @@ class Wordlift_Admin {
 	}
 
 	/**
-	 * Require files needed for the Admin UI.
-	 *
-	 * @since 3.20.0
-	 */
-	private static function require_files() {
-
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-latest-news.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-v2.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-not-enriched-filter.php';
-
-	}
-
-	public static function is_gutenberg() {
-		if ( function_exists( 'is_gutenberg_page' ) &&
-		     is_gutenberg_page()
-		) {
-			// The Gutenberg plugin is on.
-			return true;
-		}
-		$current_screen = get_current_screen();
-		if ( method_exists( $current_screen, 'is_block_editor' ) &&
-		     $current_screen->is_block_editor()
-		) {
-			// Gutenberg page on 5+.
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
 	 * Return the settings array by applying filters.
 	 * @return array
 	 */
@@ -325,18 +310,18 @@ class Wordlift_Admin {
 		// Set the basic params.
 		$params = array(
 			// @todo scripts in admin should use wp.post.
-			'ajax_url'                   => admin_url( 'admin-ajax.php' ),
+			'ajax_url'              => admin_url( 'admin-ajax.php' ),
 			// @todo remove specific actions from settings.
-			'action'                     => 'entity_by_title',
-			'datasetUri'                 => $this->configuration_service->get_dataset_uri(),
-			'language'                   => $this->configuration_service->get_language_code(),
-			'link_by_default'            => $this->configuration_service->is_link_by_default(),
+			'action'                => 'entity_by_title',
+			'datasetUri'            => Wordlift_Configuration_Service::get_instance()->get_dataset_uri(),
+			'language'              => Wordlift_Configuration_Service::get_instance()->get_language_code(),
+			'link_by_default'       => Wordlift_Configuration_Service::get_instance()->is_link_by_default(),
 			// Whether the current user is allowed to create new entities.
 			//
 			// @see https://github.com/insideout10/wordlift-plugin/issues/561
 			// @see https://github.com/insideout10/wordlift-plugin/issues/1267
-			'can_create_entities'        => apply_filters( 'wl_features__enable__dataset', true ) ? ( $can_edit_wordlift_entities ? 'yes' : 'no' ) : 'no',
-			'l10n'                       => array(
+			'can_create_entities'   => apply_filters( 'wl_feature__enable__dataset', true ) ? ( $can_edit_wordlift_entities ? 'yes' : 'no' ) : 'no',
+			'l10n'                  => array(
 				'You already published an entity with the same name'                 => __( 'You already published an entity with the same name: ', 'wordlift' ),
 				'logo_selection_title'                                               => __( 'WordLift Choose Logo', 'wordlift' ),
 				'logo_selection_button'                                              => array( 'text' => __( 'Choose Logo', 'wordlift' ) ),
@@ -345,8 +330,8 @@ class Wordlift_Admin {
 				'Please wait while we look for entities in the linked data cloud...' => _x( 'Please wait while we look for entities in the linked data cloud...', 'Autocomplete Select', 'wordlift' ),
 				'Add keywords to track'                                              => __( 'Add Keywords to track', 'wordlift' ),
 			),
-			'wl_autocomplete_nonce'      => wp_create_nonce( 'wl_autocomplete' ),
-			'autocomplete_scope'         => $autocomplete_scope,
+			'wl_autocomplete_nonce' => wp_create_nonce( 'wl_autocomplete' ),
+			'autocomplete_scope'    => $autocomplete_scope,
 			/**
 			 * Allow 3rd parties to define the default editor id. This turns useful if 3rd parties load
 			 * or change the TinyMCE id.
@@ -360,7 +345,7 @@ class Wordlift_Admin {
 			 * @since 3.19.4
 			 *
 			 */
-			'default_editor_id'          => apply_filters( 'wl_default_editor_id', 'content' ),
+			'default_editor_id'     => apply_filters( 'wl_default_editor_id', 'content' ),
 
 			'analysis'                     => array( '_wpnonce' => wp_create_nonce( 'wl_analyze' ) ),
 			/**

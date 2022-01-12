@@ -10,8 +10,6 @@
 namespace Wordlift\No_Editor_Analysis;
 
 
-use Wordlift\Features\Feature_Utils;
-
 class No_Editor_Analysis_Feature {
 
 	public static function can_no_editor_analysis_be_used( $post_id ) {
@@ -21,7 +19,7 @@ class No_Editor_Analysis_Feature {
 			return false;
 		}
 
-		return Feature_Utils::is_feature_on( 'no-editor-analysis', false )
+		return apply_filters( 'wl_feature__enable__no-editor-analysis', false )
 		       && (
 			       // If the post doesnt have `editor` attribute
 			       Post_Type::is_no_editor_analysis_enabled_for_post_type( get_post_type( $post_id ) )
@@ -47,7 +45,7 @@ class No_Editor_Analysis_Feature {
 	}
 
 	private static function is_elementor_enabled( $post_id ) {
-		return defined('ELEMENTOR_VERSION') &&
+		return defined( 'ELEMENTOR_VERSION' ) &&
 		       get_post_meta( $post_id, '_elementor_edit_mode', true ) === 'builder';
 	}
 

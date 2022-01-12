@@ -13,7 +13,7 @@ use Wordlift\Cache\Ttl_Cache;
  * Extend WP_Ajax_UnitTestCase
  * See https://codesymphony.co/wp-ajax-plugin-unit-testing/
  *
- * @group   ajax
+ * @group ajax
  *
  * @since   3.0.0
  * @package Wordlift

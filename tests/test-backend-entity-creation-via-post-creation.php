@@ -7,21 +7,10 @@
 class EntityCreationViaPostCreationTest extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * The {@link Wordlift_Entity_Service} instance.
-	 *
-	 * @since  1.11.0
-	 * @access private
-	 * @var \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
-	 */
-	private $entity_service;
-
-	/**
 	 * Set up the test.
 	 */
 	function setUp() {
 		parent::setUp();
-
-		$this->entity_service = $this->get_wordlift_test()->get_entity_service();
 
 		add_filter( 'pre_http_request', array( $this, '_mock_api' ), 10, 3 );
 	}
@@ -50,7 +39,7 @@ class EntityCreationViaPostCreationTest extends Wordlift_Unit_Test_Case {
 	// Please notice here the entity is properly referenced by post content
 	function testEntityIsCreatedAndLinkedToThePost() {
 
-		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+		Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
@@ -61,6 +50,7 @@ class EntityCreationViaPostCreationTest extends Wordlift_Unit_Test_Case {
 
 		// Retrieve the entity uri (the first key in wl_entities associative aray)
 		$original_entity_uri = current( array_keys( $fake['wl_entities'] ) );
+
 		// Reference the entity to the post content
 		$content = <<<EOF
     <span itemid="$original_entity_uri">My entity</span>
@@ -113,11 +103,11 @@ EOF;
 		$content = <<<EOF
     <span itemid="$original_entity_uri">Gran Sasso</span>
 EOF;
-		// Create a post referincing to the created entity
+		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 		// Here the entity should be created instead
 
-		$entity = $this->entity_service->get_entity_post_by_uri( $original_entity_uri );
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
 
 		// And it should be related to the post as where predicate
 		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "where" ) );
@@ -164,33 +154,28 @@ EOF;
 	}
 
 	// In this case we are testing this workflow:
-	// 1 entities with the same label and type of an existing one
-	// is created trough the disambiguation workflow
+	// 1 entity with the same label and type of an existing one
+	// is created through the disambiguation workflow
 	function testEntitiesWithSameLabelAndTypeOverride() {
 
-		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+		Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
-		// Create a post referincing to the created entity
-		$entity_id = wl_create_post( '', 'tex_willer', 'Tex Willer', 'draft', 'entity' );
+		// Create a post referencing to the created entity
+		$entity_id = wl_create_post( '', 'tex-willer', 'Tex Willer', 'draft', 'entity' );
 		wl_set_entity_main_type( $entity_id, 'wl-person' );
 
 		$terms = wp_get_post_terms( $entity_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$this->assertCount( 1, $terms );
 		$this->assertEquals( 'person', $terms[0]->slug );
 
+		$this->assertEquals( 'http://data.example.org/data/entity/tex-willer', wl_get_entity_uri( $entity_id ) );
+
 		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_tex_willer_as_who.json'
 		);
 		$_POST = $fake;
 
-		$content        = '<span itemid="local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt">Tex Willer</span>';
-		$new_entity_uri = sprintf( '%s/%s/%s',
-			wl_configuration_get_redlink_dataset_uri(),
-			Wordlift_Entity_Service::TYPE_NAME,
-			wl_sanitize_uri_path( 'Tex Willer' )
-		);
-
-		$this->assertEquals( $new_entity_uri, wl_get_entity_uri( $entity_id ) );
+		$content = '<span itemid="local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt">Tex Willer</span>';
 
 		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
@@ -220,7 +205,7 @@ EOF;
 	// We expect they are properly created and linked to the post
 	function testThreeEntitiesWithTheSameLabelsAreProperlyCreatedAndLinkedToThePost() {
 
-		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+		Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_two_entities_with_same_label_and_different_types.json'
@@ -237,9 +222,9 @@ EOF;
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 
 		$new_entity_uri = sprintf( '%s/%s/%s',
-			wl_configuration_get_redlink_dataset_uri(),
+			untrailingslashit( wl_configuration_get_redlink_dataset_uri() ),
 			Wordlift_Entity_Service::TYPE_NAME,
-			wl_sanitize_uri_path( 'Ryan Carson' )
+			sanitize_title_with_dashes( 'Ryan Carson' )
 		);
 
 		// And it should be related to the post as what predicate
@@ -261,13 +246,13 @@ EOF;
 		$this->assertContains( $entity_1->ID, $related_entity_ids );
 
 		$entity_2 = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri(
-			$new_entity_uri . '_2'
+			$new_entity_uri . '-2'
 		);
 		$this->assertNotNull( $entity_2 );
 		$this->assertContains( $entity_2->ID, $related_entity_ids );
 
 		$entity_3 = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri(
-			$new_entity_uri . '_3'
+			$new_entity_uri . '-3'
 		);
 		$this->assertNotNull( $entity_3 );
 		$this->assertContains( $entity_3->ID, $related_entity_ids );
@@ -281,7 +266,7 @@ EOF;
 	// Same test of the previous one but with escaped chars in the entity label
 	function testNewEntityWithEscapedCharsIsCreatedAndLinkedToThePost() {
 
-		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+		Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_a_new_entity_linked_with_escaped_chars.json'
@@ -325,7 +310,7 @@ EOF;
 	// Same test of the previous one but with utf8 chars in the entity label
 	function testNewEntityWithUtf8CharsIsCreatedAndLinkedToThePost() {
 
-		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+		Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_a_new_entity_linked_with_utf8_chars.json'
@@ -334,8 +319,7 @@ EOF;
 		// Retrieve the entity uri (the first key in wl_entities associative aray)
 		$entity_uri = current( array_keys( $fake['wl_entities'] ) );
 		// Retrieve the label
-		$raw_entity          = current( array_values( $fake['wl_entities'] ) );
-		$expected_entity_uri = $this->buildEntityUriForLabel( $raw_entity['label'] );
+		$expected_entity_uri = 'http://data.example.org/data/entity/loreal';
 		// Reference the entity to the post content
 		$content = <<<EOF
     <span itemid="$entity_uri">My entity</span>
@@ -344,6 +328,7 @@ EOF;
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $expected_entity_uri );
 
 		$this->assertNull( $entity );
+
 		// Create a post referincing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 		// Here the entity should be created instead
@@ -373,7 +358,7 @@ EOF;
 	// Ea: local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt
 	function testNewEntityIsCreatedAndLinkedToThePost() {
 
-		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+		Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_a_new_entity_linked_as_who.json'
@@ -482,7 +467,7 @@ EOF;
 	// I expect that the 'public' status is properly preserved
 	function testPublicEntityStatusIsPreservedWhenLinkedToDraftPost() {
 
-		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+		Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_one_entity_linked_as_what.json'
@@ -580,6 +565,11 @@ EOF;
 		$original_label = uniqid( 'entity-original', true );
 		// Create an entity
 		$entity_id = wl_create_post( '', 'entity-1', $original_label, 'draft', 'entity' );
+
+		$expected_entity_uri = 'https://data.localdomain.localhost/dataset/entity/entity-1';
+		$entity_uri          = wl_get_entity_uri( $entity_id );
+		$this->assertEquals( $entity_uri, $expected_entity_uri );
+
 		// Check that there are no related posts for the entity
 		$related_post_ids = wl_core_get_related_post_ids( $entity_id, array( "predicate" => "what" ) );
 		$this->assertCount( 0, $related_post_ids );
@@ -600,7 +590,7 @@ EOF;
 		$fake = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_one_existing_entity_linked_as_what.json',
 			array(
-				'CURRENT_URI'   => $this->buildEntityUriForLabel( $original_label ),
+				'CURRENT_URI'   => 'https://data.localdomain.localhost/dataset/entity/entity-1',
 				'CURRENT_LABEL' => $alternative_label,
 			)
 		);
@@ -612,14 +602,10 @@ EOF;
 		$content = <<<EOF
     <span itemid="$original_entity_uri">$alternative_label</span>
 EOF;
-		// Create a post referincing to the created entity
+		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 		// Check that entity label is STILL properly mapped on entity post title
 		$this->assertEquals( $original_label, get_post( $entity_id )->post_title );
-
-		$expected_entity_uri = $this->buildEntityUriForLabel( $original_label );
-		$entity_uri          = wl_get_entity_uri( $entity_id );
-		$this->assertEquals( $entity_uri, $expected_entity_uri );
 
 		// And it should be related to the post as what predicate
 		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "what" ) );
@@ -651,8 +637,8 @@ EOF;
 
 	function buildEntityUriForLabel( $label ) {
 		return sprintf( '%s/%s/%s',
-			wl_configuration_get_redlink_dataset_uri(),
-			'entity', wl_sanitize_uri_path( $label ) );
+			untrailingslashit( wl_configuration_get_redlink_dataset_uri() ),
+			'entity', sanitize_title_with_dashes( $label ) );
 	}
 
 	function getThumbs( $post_id ) {

@@ -1,0 +1,36 @@
+<phpunit
+        bootstrap="../bootstrap.php"
+        backupGlobals="false"
+        colors="true"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        beStrictAboutTestsThatDoNotTestAnything="true"
+        stopOnError="false"
+        stopOnFailure="false"
+>
+    <testsuites>
+        <testsuite name="WordLift Plugin">
+            <directory prefix="test-" suffix=".php">..</directory>
+        </testsuite>
+    </testsuites>
+    <groups>
+        <include>
+            <group>ajax</group>
+        </include>
+    </groups>
+    <php>
+        <ini name="display_errors" value="true"/>
+        <ini name="display_startup_errors" value="true"/>
+
+        <const name="WP_DEBUG_LOG" value="true"/>
+        <const name="WP_DEBUG_DISPLAY" value="false"/>
+        <const name="WL_DEBUG" value="true"/>
+        <const name="WL_LOG_LEVEL" value="1"/>
+        <const name="WL_ALL_ENTITY_TYPES" value="true"/>
+        <const name="WL_ENABLE_TERM_LINKING" value="true"/>
+
+        <env name="WORDLIFT_KEY" value="key123"/>
+
+    </php>
+</phpunit>

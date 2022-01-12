@@ -67,7 +67,7 @@ class Sameas_Metabox_Validation_Test extends Wordlift_Unit_Test_Case {
 		$post_id          = $this->factory()->post->create();
 		$instance         = new Wl_Metabox_Field_sameas( $this->config, $post_id, Object_Type_Enum::POST );
 		$_POST['post_ID'] = $post_id;
-		$dataset_uri      = $this->configuration_service->get_dataset_uri();
+		$dataset_uri      = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
 		$test_data        = array(
 			0 => $dataset_uri . '/aaaa',
 			2 => $dataset_uri . '/dsadasda',

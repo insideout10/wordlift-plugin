@@ -25,15 +25,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	private static $instance;
 
 	/**
-	 * A {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.10.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
 	 * @since  3.10.0
@@ -55,18 +46,14 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * Wordlift_Post_To_Jsonld_Converter constructor.
 	 *
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_User_Service $user_service A {@link Wordlift_User_Service} instance.
 	 * @param \Wordlift_Attachment_Service $attachment_service A {@link Wordlift_Attachment_Service} instance.
-	 * @param \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
 	 *
 	 * @since 3.10.0
 	 *
 	 */
-	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service, $configuration_service, $disable_convert_filters = false ) {
-		parent::__construct( $entity_type_service, $entity_service, $user_service, $attachment_service );
-
-		$this->configuration_service   = $configuration_service;
+	public function __construct( $entity_type_service, $user_service, $attachment_service, $disable_convert_filters = false ) {
+		parent::__construct( $entity_type_service, $user_service, $attachment_service );
 		$this->disable_convert_filters = $disable_convert_filters;
 		$this->object_relation_service = Object_Relation_Service::get_instance();
 		// Set a reference to the logger.
@@ -82,7 +69,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	}
 
 	public function new_instance_with_filters_disabled() {
-		return new static( $this->entity_type_service, $this->entity_service, $this->user_service, $this->attachment_service, $this->configuration_service, true );
+		return new static( $this->entity_type_service, $this->user_service, $this->attachment_service, true );
 	}
 
 	/**
@@ -267,7 +254,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		}
 
 		// Add the author to the references.
-		$author_uri   = $this->entity_service->get_uri( $entity_id );
+		$author_uri   = Wordlift_Entity_Service::get_instance()->get_uri( $entity_id );
 		$references[] = $entity_id;
 
 		// Return the JSON-LD for the referenced entity.
@@ -287,7 +274,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	protected function set_publisher( &$params ) {
 
 		// If the publisher id isn't set don't do anything.
-		if ( null === $publisher_id = $this->configuration_service->get_publisher_id() ) {
+		if ( null === $publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id() ) {
 			return;
 		}
 
@@ -298,7 +285,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		}
 
 		// Get the item id.
-		$id = $this->entity_service->get_uri( $publisher_id );
+		$id = Wordlift_Entity_Service::get_instance()->get_uri( $publisher_id );
 
 		// Get the type.
 		$type = $this->entity_type_service->get( $publisher_id );
@@ -476,10 +463,10 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			}
 
 			// Get the entity labels.
-			$labels = $this->entity_service->get_labels( $reference->get_id(), $reference->get_type() );
+			$labels = Wordlift_Entity_Service::get_instance()->get_labels( $reference->get_id(), $reference->get_type() );
 			// Get the entity URI.
 			$item = array(
-				'@id' => $this->entity_service->get_uri( $reference->get_id(), $reference->get_type() ),
+				'@id' => Wordlift_Entity_Service::get_instance()->get_uri( $reference->get_id(), $reference->get_type() ),
 			);
 
 			$escaped_labels = array_map( function ( $value ) {

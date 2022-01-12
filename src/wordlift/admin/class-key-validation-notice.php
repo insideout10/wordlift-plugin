@@ -3,6 +3,7 @@
 namespace Wordlift\Admin;
 
 use Wordlift\Cache\Ttl_Cache;
+use Wordlift_Configuration_Service;
 
 /**
  * @since 3.28.0
@@ -26,25 +27,25 @@ class Key_Validation_Notice {
 	private $key_validation_service;
 
 	/**
-	 * @var \Wordlift_Configuration_Service
-	 */
-	private $configuration_service;
-	/**
 	 * @var Ttl_Cache
 	 */
 	private $ttl_cache_service;
 
 	/**
+	 * @var Wordlift_Configuration_Service
+	 */
+	private $configuration_service;
+
+	/**
 	 * Key_Validation_Notice constructor.
 	 *
 	 * @param \Wordlift_Key_Validation_Service $key_validation_service
-	 * @param \Wordlift_Configuration_Service $configuration_service
+	 * @param Wordlift_Configuration_Service $configuration_service
 	 */
 	public function __construct( $key_validation_service, $configuration_service ) {
 
 		$this->key_validation_service = $key_validation_service;
-
-		$this->configuration_service = $configuration_service;
+		$this->configuration_service  = $configuration_service;
 
 		$this->ttl_cache_service = new Ttl_Cache( 'key-validation-notification', 60 * 60 * 8 );
 
@@ -66,7 +67,8 @@ class Key_Validation_Notice {
             <p>
 				<?php echo __( "Your WordLift key is not valid, please update the key in <a href='$settings_url'>WordLift Settings</a> or contact our support at hello@wordlift.io.", 'wordlift' ); ?>
             </p>
-            <button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button>
+            <button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span>
+            </button>
         </div>
 		<?php
 	}

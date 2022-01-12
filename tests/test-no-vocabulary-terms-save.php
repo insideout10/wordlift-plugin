@@ -8,7 +8,7 @@ use Wordlift\Term\Type_Service;
  * @group no-vocabulary-terms
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
-class No_Vocabulary_Terms_Save extends \Wordlift_Vocabulary_Terms_Unit_Test_Case {
+class No_Vocabulary_Terms_Save extends Wordlift_Vocabulary_Terms_Unit_Test_Case {
 
 	public function test_when_entity_url_already_present_shouldnt_change() {
 

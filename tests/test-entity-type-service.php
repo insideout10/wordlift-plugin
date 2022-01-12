@@ -307,7 +307,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 			'hospital',
 		), Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
-		$type_1 = $this->entity_type_service->get( $post_1_id );
+		$type_1 = Wordlift_Entity_Type_Service::get_instance()->get( $post_1_id );
 
 		$this->assertArrayHasKey( 'uri', $type_1, 'The type must have the `uri` key.' );
 		$this->assertEquals( 'http://schema.org/Organization', $type_1['uri'], "The type's uri must be `Organization`." );
@@ -322,7 +322,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 			'medical-condition',
 		), Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
-		$type_2 = $this->entity_type_service->get( $post_2_id );
+		$type_2 = Wordlift_Entity_Type_Service::get_instance()->get( $post_2_id );
 
 		$this->assertArrayHasKey( 'uri', $type_2, 'The type must have the `uri` key.' );
 		$this->assertEquals( 'http://schema.org/Thing', $type_2['uri'], "The type's label must be `Thing`." );
@@ -344,7 +344,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 			'hospital',
 		), Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
-		$ids = $this->entity_type_service->get_ids( $post_id );
+		$ids = Wordlift_Entity_Type_Service::get_instance()->get_ids( $post_id );
 
 		$this->assertCount( 2, $ids, 'There must be 2 ids.' );
 
@@ -359,7 +359,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 		$hospital_term_name = get_term_meta( $hospital_term->term_id, Wordlift_Schemaorg_Class_Service::NAME_META_KEY, true );
 		$this->assertEquals( 'Hospital', $hospital_term_name, 'Expect `hospital` name to be `Hospital`.' );
 
-		$names = $this->entity_type_service->get_names( $post_id );
+		$names = Wordlift_Entity_Type_Service::get_instance()->get_names( $post_id );
 		$this->assertCount( 2, $names, 'There must be 2 names.' );
 		$this->assertContains( 'Organization', $names, '`Organization` must be present, got ' . var_export( $names, true ) );
 		$this->assertContains( 'Hospital', $names, '`Hospital` must be present, got ' . var_export( $names, true ) );
@@ -378,7 +378,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 		) );
 
 		// Set via URI.
-		$this->entity_type_service->set( $post_id, 'http://schema.org/Hospital' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $post_id, 'http://schema.org/Hospital' );
 
 		$terms_1 = wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'slugs' ) );
 
@@ -386,7 +386,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->assertContains( 'hospital', $terms_1, 'Terms must contain `hospital`, got ' . var_export( $terms_1, true ) );
 
 		// Set via css class.
-		$this->entity_type_service->set( $post_id, 'wl-person' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $post_id, 'wl-person' );
 
 		$terms_2 = wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'slugs' ) );
 
@@ -394,7 +394,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->assertContains( 'person', $terms_2, 'Terms must contain `person`.' );
 
 		// Add via URI.
-		$this->entity_type_service->set( $post_id, 'http://schema.org/Hospital', false );
+		Wordlift_Entity_Type_Service::get_instance()->set( $post_id, 'http://schema.org/Hospital', false );
 
 		$terms_3 = wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'slugs' ) );
 

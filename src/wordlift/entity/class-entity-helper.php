@@ -9,6 +9,9 @@
 
 namespace Wordlift\Entity;
 
+use Wordlift_Entity_Service;
+use Wordlift_Entity_Uri_Service;
+
 class Entity_Helper {
 
 	private $entity_uri_service;
@@ -18,14 +21,24 @@ class Entity_Helper {
 	/**
 	 * Entity_Helper constructor.
 	 *
-	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service
-	 * @param \Wordlift_Entity_Service $entity_service
+	 * @param Wordlift_Entity_Uri_Service $entity_uri_service
+	 * @param Wordlift_Entity_Service $entity_service
 	 */
-	public function __construct( $entity_uri_service, $entity_service ) {
+	protected function __construct( $entity_uri_service, $entity_service ) {
 
 		$this->entity_uri_service = $entity_uri_service;
 		$this->entity_service     = $entity_service;
 
+	}
+
+	private static $instance;
+
+	public static function get_instance() {
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self( Wordlift_Entity_Uri_Service::get_instance(), Wordlift_Entity_Service::get_instance() );
+		}
+
+		return self::$instance;
 	}
 
 	/**
@@ -53,6 +66,10 @@ class Entity_Helper {
 
 		$mappings = array();
 		foreach ( $external_uris as $external_uri ) {
+			if ( empty( $external_uri ) ) {
+				continue;
+			}
+
 			$entity = $entity_uri_service->get_entity( $external_uri );
 			if ( null !== $entity ) {
 

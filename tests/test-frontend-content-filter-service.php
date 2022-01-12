@@ -9,6 +9,9 @@
  * @subpackage Wordlift/tests
  */
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+
 /**
  * Test the {@link Wordlift_Content_Filter_Service} class.
  *
@@ -73,10 +76,9 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 		// We don't need to check the remote Linked Data store.
 		Wordlift_Unit_Test_Case::turn_off_entity_push();
 
-		$wordlift_test                = $this->get_wordlift_test();
-		$this->entity_service         = $wordlift_test->get_entity_service();
-		$this->entity_uri_service     = $wordlift_test->get_entity_uri_service();
-		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this, $this->configuration_service, $this->entity_uri_service );
+		$this->entity_service         = Wordlift_Entity_Service::get_instance();
+		$this->entity_uri_service     = Wordlift_Entity_Uri_Service::get_instance();
+		$this->content_filter_service = Wordlift_Content_Filter_Service::get_instance();
 
 	}
 
@@ -95,7 +97,8 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 		$post_id = $this->factory()->post->create( array(
 			'post_type' => 'entity'
 		) );
-		wl_set_entity_uri( $post_id, $url );
+		Wordpress_Content_Service::get_instance()
+		                         ->set_entity_id( Wordpress_Content_Id::create_post( $post_id ), $url );
 
 		return $post_id;
 	}
@@ -107,7 +110,7 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_content_with_entity() {
 
-		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+		Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'https://data.localdomain.localhost/dataset/' );
 
 		$this->setup_link_options( $entity_url, $entity_link, $entity_title, $entity_id );
 
@@ -158,7 +161,7 @@ EOF;
 		add_filter( 'post_link', array( $this, 'post_link' ), 10, 3 );
 
 		// The content.
-		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation wl-no-link disambiguated wl-person" itemid="http://data.example.org/entity">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
+		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation wl-no-link disambiguated wl-person" itemid="https://data.localdomain.localhost/dataset/entity">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
 
 		// The expected content without a link.
 		$expected = 'Matt Mullenweg would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
@@ -259,14 +262,13 @@ EOF;
 	 */
 	public function test_entity_default_no_link_entity_no_link() {
 
-		$this->configuration_service->set_link_by_default( false );
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		Wordlift_Configuration_Service::get_instance()->set_link_by_default( false );
 
 		// Add a filter to set the permalink to a fixed value we can test.
 		add_filter( 'post_link', array( $this, 'post_link' ), 10, 3 );
 
 		// The content.
-		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation wl-no-link disambiguated wl-person" itemid="http://data.example.org/entity">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
+		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation wl-no-link disambiguated wl-person" itemid="https://data.localdomain.localhost/dataset/entity">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
 
 		// The expected content without a link.
 		$expected = 'Matt Mullenweg would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
@@ -284,16 +286,15 @@ EOF;
 	 */
 	public function test_entity_default_no_link_entity_not_specified() {
 
-		$this->configuration_service->set_link_by_default( false );
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data/' );
+		Wordlift_Configuration_Service::get_instance()->set_link_by_default( false );
 
-		$this->assertFalse( $this->configuration_service->is_link_by_default() );
+		$this->assertFalse( Wordlift_Configuration_Service::get_instance()->is_link_by_default() );
 
 		// Add a filter to set the permalink to a fixed value we can test.
 		add_filter( 'post_link', array( $this, 'post_link' ), 10, 3 );
 
 		// The content.
-		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation disambiguated wl-person" itemid="http://data.example.org/entity">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
+		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation disambiguated wl-person" itemid="https://data.localdomain.localhost/dataset/entity">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
 
 		// The expected content without a link.
 		$expected = 'Matt Mullenweg would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
@@ -311,10 +312,9 @@ EOF;
 	public function test_entity_default_no_link_entity_link() {
 
 
-		$this->configuration_service->set_link_by_default( false );
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
+		Wordlift_Configuration_Service::get_instance()->set_link_by_default( false );
 
-		$entity_url  = $this->configuration_service->get_dataset_uri() . "/entity";
+		$entity_url  = Wordlift_Configuration_Service::get_instance()->get_dataset_uri() . "/entity";
 		$entity_id   = $this->create_entity_with_uri( $entity_url );
 		$entity_link = get_permalink( $entity_id );
 		$post_tile   = get_the_title( $entity_id );
@@ -340,8 +340,7 @@ EOF;
 	 */
 	public function test_entity_default_link_entity_link() {
 
-		$this->configuration_service->set_link_by_default( true );
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
+		Wordlift_Configuration_Service::get_instance()->set_link_by_default( true );
 
 		$this->setup_link_options( $entity_url, $entity_link, $entity_title, $entity_id );
 
@@ -365,8 +364,7 @@ EOF;
 	 */
 	public function test_entity_default_link_entity_not_specified() {
 
-		$this->configuration_service->set_link_by_default( true );
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
+		Wordlift_Configuration_Service::get_instance()->set_link_by_default( true );
 
 		$this->setup_link_options( $entity_url, $entity_link, $entity_title, $entity_id );
 		// Add a filter to set the permalink to a fixed value we can test.
@@ -392,14 +390,13 @@ EOF;
 	 */
 	public function test_entity_default_link_entity_no_link() {
 
-		$this->configuration_service->set_link_by_default( true );
-		# $this->configuration_service->set_dataset_uri( 'http://data.example.org/data' );
+		Wordlift_Configuration_Service::get_instance()->set_link_by_default( true );
 
 		// Add a filter to set the permalink to a fixed value we can test.
 		add_filter( 'post_link', array( $this, 'post_link' ), 10, 3 );
 
 		// The content.
-		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation wl-no-link disambiguated wl-person" itemid="http://data.example.org/entity">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
+		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation wl-no-link disambiguated wl-person" itemid="https://data.localdomain.localhost/dataset/entity">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
 
 		// The expected content without a link.
 		$expected = 'Matt Mullenweg would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
@@ -449,7 +446,7 @@ EOF;
 	 * @param $entity_title
 	 */
 	private function setup_link_options( &$entity_url, &$entity_link, &$entity_title, &$entity_id ) {
-		$entity_url   = $this->configuration_service->get_dataset_uri() . "/entity";
+		$entity_url   = untrailingslashit( Wordlift_Configuration_Service::get_instance()->get_dataset_uri() ) . "/entity";
 		$entity_id    = $this->create_entity_with_uri( $entity_url );
 		$entity_link  = get_permalink( $entity_id );
 		$entity_title = get_the_title( $entity_id );

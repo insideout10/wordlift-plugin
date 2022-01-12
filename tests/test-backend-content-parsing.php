@@ -1,5 +1,8 @@
 <?php
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+
 /**
  * Class Wordlift_Content_Parsing_Test
  * @backend
@@ -23,10 +26,12 @@ class Wordlift_Content_Parsing_Test extends Wordlift_Unit_Test_Case {
 			foreach ( $matches as $match ) {
 				$item_id = $match[1];
 
-				$post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $item_id );
-				$this->assertNotNull( $post );
+				$content_service = Wordpress_Content_Service::get_instance();
+				$content         = $content_service->get_by_entity_id_or_same_as( $item_id );
+				$this->assertInstanceOf( '\WP_Post', $content->get_bag() );
 
-				$uri = wl_get_entity_uri( $post->ID );
+				$post = $content->get_bag();
+				$uri  = $content_service->get_entity_id( Wordpress_Content_Id::create_post( $post->ID ) );
 				$this->assertNotNull( $uri );
 				$this->assertNotEquals( $item_id, $uri );
 

@@ -27,9 +27,6 @@ abstract class Wordlift_Ajax_Unit_Test_Case extends WP_Ajax_UnitTestCase {
 	protected $server;
 
 	function setUp() {
-		// Default behaviour: push entities to the remote Linked Data store.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();
-
 		parent::setUp();
 
 		delete_transient( '_wl_installing' );
@@ -49,6 +46,9 @@ abstract class Wordlift_Ajax_Unit_Test_Case extends WP_Ajax_UnitTestCase {
 		remove_action( 'admin_init', '_maybe_update_core' );
 		remove_action( 'admin_init', '_maybe_update_plugins' );
 		remove_action( 'admin_init', '_maybe_update_themes' );
+
+		// Ensure WLP's hooks are saved.
+		$this->_backup_hooks();
 	}
 
 	/**
@@ -98,7 +98,7 @@ abstract class Wordlift_Ajax_Unit_Test_Case extends WP_Ajax_UnitTestCase {
 	 * Capture the output via output buffering, and if there is any, store
 	 * it in $this->_last_message.
 	 *
-	 * @param string      $action
+	 * @param string $action
 	 * @param string|null $body The http request body.
 	 */
 	protected function _handleAjax( $action, $body = null ) {
@@ -128,8 +128,8 @@ abstract class Wordlift_Ajax_Unit_Test_Case extends WP_Ajax_UnitTestCase {
 	 * Capture the output and if there is any, store
 	 * it in $this->_last_message.
 	 *
-	 * @param string      $endpoint
-	 * @param string      $action
+	 * @param string $endpoint
+	 * @param string $action
 	 */
 	protected function _handleRest( $endpoint, $action = 'GET' ) {
 
@@ -137,9 +137,9 @@ abstract class Wordlift_Ajax_Unit_Test_Case extends WP_Ajax_UnitTestCase {
 		$this->server = $wp_rest_server = new \WP_REST_Server;
 		do_action( 'rest_api_init' );
 
-		$request  = new WP_REST_Request( $action, $endpoint );
-		$response = $this->server->dispatch( $request );
-		$data = $response->get_data();
+		$request              = new WP_REST_Request( $action, $endpoint );
+		$response             = $this->server->dispatch( $request );
+		$data                 = $response->get_data();
 		$this->_last_response = $data;
 
 	}

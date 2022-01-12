@@ -22,23 +22,23 @@ class Wordlift_Install_Package_Type_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_must_install_true() {
 
-		if ( wl_is_empty( $this->configuration_service->get_key() ) ) {
+		if ( wl_is_empty( Wordlift_Configuration_Service::get_instance()->get_key() ) ) {
 			$this->markTestSkipped( 'The env WORDLIFT_KEY must be set for this test to work.' );
 		}
 
 		$this->set_current_screen( 'dashboard-user' );
 
-		$package_type = $this->configuration_service->get_package_type();
-		$this->configuration_service->set_package_type( null );
+		$package_type = Wordlift_Configuration_Service::get_instance()->get_package_type();
+		Wordlift_Configuration_Service::get_instance()->set_package_type( null );
 
 		// 3 conditions: `in_admin`, `key` and empty `package_type`.
-		$this->assertNotEmpty( $this->configuration_service->get_key(), 'A `key` is required for the test.' );
-		$this->assertEmpty( $this->configuration_service->get_package_type(), 'An empty `package_type` is required for the test.' );
+		$this->assertNotEmpty( Wordlift_Configuration_Service::get_instance()->get_key(), 'A `key` is required for the test.' );
+		$this->assertEmpty( Wordlift_Configuration_Service::get_instance()->get_package_type(), 'An empty `package_type` is required for the test.' );
 
 		$install_package_type = new Wordlift_Install_Package_Type();
 		$this->assertTrue( $install_package_type->must_install(), 'Expect `must_install` to be truthy.' );
 
-		$this->configuration_service->set_package_type( $package_type );
+		Wordlift_Configuration_Service::get_instance()->set_package_type( $package_type );
 		$this->restore_current_screen();
 
 	}
@@ -50,21 +50,21 @@ class Wordlift_Install_Package_Type_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_must_install_not_in_admin() {
 
-		if ( wl_is_empty( $this->configuration_service->get_key() ) ) {
+		if ( wl_is_empty( Wordlift_Configuration_Service::get_instance()->get_key() ) ) {
 			$this->markTestSkipped( 'The env WORDLIFT_KEY must be set for this test to work.' );
 		}
 
-		$package_type = $this->configuration_service->get_package_type();
-		$this->configuration_service->set_package_type( null );
+		$package_type = Wordlift_Configuration_Service::get_instance()->get_package_type();
+		Wordlift_Configuration_Service::get_instance()->set_package_type( null );
 
 		// 3 conditions: not `in_admin`, `key` and empty `package_type`.
-		$this->assertNotEmpty( $this->configuration_service->get_key(), 'A `key` is required for the test.' );
-		$this->assertEmpty( $this->configuration_service->get_package_type(), 'An empty `package_type` is required for the test.' );
+		$this->assertNotEmpty( Wordlift_Configuration_Service::get_instance()->get_key(), 'A `key` is required for the test.' );
+		$this->assertEmpty( Wordlift_Configuration_Service::get_instance()->get_package_type(), 'An empty `package_type` is required for the test.' );
 
 		$install_package_type = new Wordlift_Install_Package_Type();
 		$this->assertFalse( $install_package_type->must_install(), 'Expect `must_install` to be false.' );
 
-		$this->configuration_service->set_package_type( $package_type );
+		Wordlift_Configuration_Service::get_instance()->set_package_type( $package_type );
 
 	}
 
@@ -77,20 +77,20 @@ class Wordlift_Install_Package_Type_Test extends Wordlift_Unit_Test_Case {
 
 		$this->set_current_screen( 'dashboard-user' );
 
-		$package_type = $this->configuration_service->get_package_type();
-		$this->configuration_service->set_package_type( null );
+		$package_type = Wordlift_Configuration_Service::get_instance()->get_package_type();
+		Wordlift_Configuration_Service::get_instance()->set_package_type( null );
 
 		// 3 conditions: `in_admin`, `key` and empty `package_type`.
-		$key = $this->configuration_service->get_key();
-		$this->configuration_service->set_key( null );
-		$this->assertEmpty( $this->configuration_service->get_key(), 'An empty `key` is required for the test.' );
-		$this->assertEmpty( $this->configuration_service->get_package_type(), 'An empty `package_type` is required for the test.' );
+		$key = Wordlift_Configuration_Service::get_instance()->get_key();
+		Wordlift_Configuration_Service::get_instance()->set_key( null );
+		$this->assertEmpty( Wordlift_Configuration_Service::get_instance()->get_key(), 'An empty `key` is required for the test.' );
+		$this->assertEmpty( Wordlift_Configuration_Service::get_instance()->get_package_type(), 'An empty `package_type` is required for the test.' );
 
 		$install_package_type = new Wordlift_Install_Package_Type();
 		$this->assertFalse( $install_package_type->must_install(), 'Expect `must_install` to be false.' );
 
-		$this->configuration_service->set_key( $key );
-		$this->configuration_service->set_package_type( $package_type );
+		Wordlift_Configuration_Service::get_instance()->set_key( $key );
+		Wordlift_Configuration_Service::get_instance()->set_package_type( $package_type );
 		$this->restore_current_screen();
 
 	}
@@ -102,56 +102,56 @@ class Wordlift_Install_Package_Type_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_must_install_package_type_not_empty() {
 
-		if ( wl_is_empty( $this->configuration_service->get_key() ) ) {
+		if ( wl_is_empty( Wordlift_Configuration_Service::get_instance()->get_key() ) ) {
 			$this->markTestSkipped( 'The env WORDLIFT_KEY must be set for this test to work.' );
 		}
 
 		$this->set_current_screen( 'dashboard-user' );
 
-		$package_type = $this->configuration_service->get_package_type();
-		$this->configuration_service->set_package_type( 'blogger' );
+		$package_type = Wordlift_Configuration_Service::get_instance()->get_package_type();
+		Wordlift_Configuration_Service::get_instance()->set_package_type( 'blogger' );
 
 		// 3 conditions: `in_admin`, `key` and empty `package_type`.
-		$this->assertNotEmpty( $this->configuration_service->get_key(), 'A `key` is required for the test.' );
-		$this->assertNotEmpty( $this->configuration_service->get_package_type(), 'A `package_type` is required for the test.' );
+		$this->assertNotEmpty( Wordlift_Configuration_Service::get_instance()->get_key(), 'A `key` is required for the test.' );
+		$this->assertNotEmpty( Wordlift_Configuration_Service::get_instance()->get_package_type(), 'A `package_type` is required for the test.' );
 
 		$install_package_type = new Wordlift_Install_Package_Type();
 		$this->assertFalse( $install_package_type->must_install(), 'Expect `must_install` to be false.' );
 
-		$this->configuration_service->set_package_type( null );
+		Wordlift_Configuration_Service::get_instance()->set_package_type( null );
 
-		$this->configuration_service->set_package_type( $package_type );
+		Wordlift_Configuration_Service::get_instance()->set_package_type( $package_type );
 		$this->restore_current_screen();
 
 	}
 
 	public function test_install_empty_key() {
 
-		$key = $this->configuration_service->get_key();
-		$this->configuration_service->set_key( null );
+		$key = Wordlift_Configuration_Service::get_instance()->get_key();
+		Wordlift_Configuration_Service::get_instance()->set_key( null );
 
-		$package_type = $this->configuration_service->get_package_type();
-		$this->configuration_service->set_package_type( null );
+		$package_type = Wordlift_Configuration_Service::get_instance()->get_package_type();
+		Wordlift_Configuration_Service::get_instance()->set_package_type( null );
 
 		$install_package_type = new Wordlift_Install_Package_Type();
 		$install_package_type->install();
 
-		$this->assertEmpty( $this->configuration_service->get_package_type(), '`package_type` should be empty.' );
+		$this->assertEmpty( Wordlift_Configuration_Service::get_instance()->get_package_type(), '`package_type` should be empty.' );
 
 		// Restore.
-		$this->configuration_service->set_key( $key );
-		$this->configuration_service->set_package_type( $package_type );
+		Wordlift_Configuration_Service::get_instance()->set_key( $key );
+		Wordlift_Configuration_Service::get_instance()->set_package_type( $package_type );
 
 	}
 
 	public function test_install() {
 
-		if ( wl_is_empty( $this->configuration_service->get_key() ) ) {
+		if ( wl_is_empty( Wordlift_Configuration_Service::get_instance()->get_key() ) ) {
 			$this->markTestSkipped( 'The env WORDLIFT_KEY must be set for this test to work.' );
 		}
 
-		$package_type = $this->configuration_service->get_package_type();
-		$this->configuration_service->set_package_type( null );
+		$package_type = Wordlift_Configuration_Service::get_instance()->get_package_type();
+		Wordlift_Configuration_Service::get_instance()->set_package_type( null );
 
 		add_filter( 'pre_http_request', array( $this, 'pre_http_request' ), 10, 3 );
 
@@ -160,10 +160,10 @@ class Wordlift_Install_Package_Type_Test extends Wordlift_Unit_Test_Case {
 
 		remove_filter( 'pre_http_request', array( $this, 'pre_http_request' ) );
 
-		$this->assertEquals( 'mock_package_type', $this->configuration_service->get_package_type(), '`package_type` should match.' );
+		$this->assertEquals( 'mock_package_type', Wordlift_Configuration_Service::get_instance()->get_package_type(), '`package_type` should match.' );
 
 		// Restore.
-		$this->configuration_service->set_package_type( $package_type );
+		Wordlift_Configuration_Service::get_instance()->set_package_type( $package_type );
 
 	}
 
@@ -183,7 +183,7 @@ class Wordlift_Install_Package_Type_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 1, preg_match( '/\/accounts\?key=\w+\&url=[\w%\.]+\&country=\w{2}\&language=\w{2}$/', $url ), "URL pattern must match, this is the URL call WLS expects. Got $url." );
 		$this->assertArraySubset( array( 'method' => 'PUT' ), $r, 'Expect method to be `PUT`.' );
 
-		$dataset_uri = $this->configuration_service->get_dataset_uri();
+		$dataset_uri = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
 
 		return array(
 			'response' => array( 'code' => 200 ),

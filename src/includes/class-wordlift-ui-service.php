@@ -24,14 +24,14 @@ class Wordlift_UI_Service {
 	/**
 	 * Get the button HTML.
 	 *
-	 * @since 3.2.0
-	 *
 	 * @param string $element_id The button element id.
 	 * @param string $label The button (translated) label.
 	 *
 	 * @return string The button HTML code.
+	 * @since 3.2.0
+	 *
 	 */
-	public function get_button_html( $element_id, $label ) {
+	public static function get_button_html( $element_id, $label ) {
 
 		return sprintf( self::BUTTON_HTML, $element_id, esc_html( $label ) );
 	}
@@ -39,30 +39,30 @@ class Wordlift_UI_Service {
 	/**
 	 * Echo the button HTML.
 	 *
-	 * @since 3.2.0
-	 *
 	 * @param string $element_id The button element id.
 	 * @param string $label The button (translated) label.
 	 *
 	 * @return string The button HTML code.
+	 * @since 3.2.0
+	 *
 	 */
-	public function print_button( $element_id, $label ) {
+	public static function print_button( $element_id, $label ) {
 
-		echo( $this->get_button_html( $element_id, $label ) );
+		echo( self::get_button_html( $element_id, $label ) );
 
 	}
 
 	/**
 	 * Get the HTML code for a template tag.
 	 *
-	 * @since 3.2.0
-	 *
 	 * @param string $element_id The element id.
 	 * @param string $body The element content.
 	 *
 	 * @return string The HTML code.
+	 * @since 3.2.0
+	 *
 	 */
-	public function get_template_html( $element_id, $body ) {
+	public static function get_template_html( $element_id, $body ) {
 
 		return sprintf( self::TEMPLATE_HTML, $element_id, $body );
 	}
@@ -70,16 +70,16 @@ class Wordlift_UI_Service {
 	/**
 	 * Echo the HTML code for a template tag.
 	 *
-	 * @since 3.2.0
-	 *
 	 * @param string $element_id The element id.
 	 * @param string $body The element content.
 	 *
-	 * @return string The HTML code.
+	 * @return string øThe HTML code.
+	 * @since 3.2.0
+	 *
 	 */
-	public function print_template( $element_id, $body ) {
+	public static function print_template( $element_id, $body ) {
 
-		echo( $this->get_template_html( $element_id, $body ) );
+		echo( self::get_template_html( $element_id, $body ) );
 
 	}
 

@@ -32,7 +32,7 @@ class WL_Metabox_Recipe_Test extends Wordlift_Unit_Test_Case {
 		$entity_post_id = $this->entity_factory->create( array(
 			'post_title' => 'Test Metabox Recipe test_instantiate_fields'
 		) );
-		$this->entity_type_service->set( $entity_post_id, 'http://schema.org/Recipe' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_post_id, 'http://schema.org/Recipe' );
 
 		// Create a Metabox instance and load the fields.
 		$metabox = new WL_Metabox();

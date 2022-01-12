@@ -16,15 +16,13 @@
  */
 class Wordlift_Schemaorg_Sync_Batch_Operation implements Wordlift_Batch_Operation_Interface {
 
-	private static $instance;
-
-	public function __construct() {
-
-		self::$instance = $this;
-
-	}
+	private static $instance = null;
 
 	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
 
 		return self::$instance;
 	}
@@ -32,18 +30,18 @@ class Wordlift_Schemaorg_Sync_Batch_Operation implements Wordlift_Batch_Operatio
 	/**
 	 * Process the batch operation starting from the specified offset.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param int $offset Start from the specified offset (or 0 if not specified).
 	 * @param int $limit Process the specified amount of items per call (or 10 if not specified).
 	 *
 	 * @return array {
 	 * The operation result.
 	 *
-	 * @type int  $next The next offset.
-	 * @type int  $limit The amount of items to process per call.
-	 * @type int  $remaining The remaining number of elements to process.
+	 * @type int $next The next offset.
+	 * @type int $limit The amount of items to process per call.
+	 * @type int $remaining The remaining number of elements to process.
 	 * }
+	 * @since 3.20.0
+	 *
 	 */
 	public function process( $offset = 0, $limit = 10 ) {
 
@@ -100,9 +98,9 @@ class Wordlift_Schemaorg_Sync_Batch_Operation implements Wordlift_Batch_Operatio
 	/**
 	 * Count the number of elements that would be affected by the operation.
 	 *
+	 * @return int The number of elements that would be affected.
 	 * @since 3.20.0
 	 *
-	 * @return int The number of elements that would be affected.
 	 */
 	public function count() {
 
@@ -119,9 +117,9 @@ class Wordlift_Schemaorg_Sync_Batch_Operation implements Wordlift_Batch_Operatio
 	/**
 	 * Get the schema.org classes from the JSON file.
 	 *
+	 * @return array An array of schema classes.
 	 * @since 3.20.0
 	 *
-	 * @return array An array of schema classes.
 	 */
 	private function get_schema_classes() {
 

@@ -7,12 +7,15 @@
  * @package Wordlift/admin
  */
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+
 /**
  * Get the related posts.
  *
+ * @param null $http_raw_data
+ *
  * @since 3.0.0
  *
- * @param null $http_raw_data
  */
 function wordlift_ajax_related_posts( $http_raw_data = null ) {
 
@@ -33,8 +36,17 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 	$filtering_entity_uris = ( null == $http_raw_data ) ? file_get_contents( "php://input" ) : $http_raw_data;
 	$filtering_entity_uris = json_decode( $filtering_entity_uris );
 
-	$filtering_entity_ids = wl_get_entity_post_ids_by_uris( $filtering_entity_uris );
-	$related_posts        = array();
+	$content_service      = Wordpress_Content_Service::get_instance();
+	$filtering_entity_ids = array_filter( array_map( function ( $uri ) use ( $content_service ) {
+		$content = $content_service->get_by_entity_id( $uri );
+		if ( is_a( $content->get_bag(), '\WP_Post' ) ) {
+			return $content->get_bag()->ID;
+		} else {
+			return null;
+		}
+	}, $filtering_entity_uris ) );
+
+	$related_posts = array();
 
 	// If the current post is an entity, related posts to the current entity are
 	// returned.

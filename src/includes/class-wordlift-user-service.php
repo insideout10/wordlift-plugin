@@ -50,52 +50,27 @@ class Wordlift_User_Service {
 	private $log_service;
 
 	/**
+	 * Create an instance of the User service.
+	 *
+	 * @since 3.1.7
+	 *
+	 */
+	protected function __construct() {
+
+		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_User_Service' );
+
+		add_filter( 'user_has_cap', array( $this, 'has_cap' ), 10, 3 );
+
+	}
+
+	/**
 	 * The singleton instance of the User service.
 	 *
 	 * @since  3.1.7
 	 * @access private
 	 * @var \Wordlift_User_Service $user_service The singleton instance of the User service.
 	 */
-	private static $instance;
-
-	/**
-	 * The {@link Wordlift_Sparql_Service} instance.
-	 *
-	 * @since  3.18.0
-	 * @access private
-	 * @var \Wordlift_Sparql_Service $sparql_service The {@link Wordlift_Sparql_Service} instance.
-	 */
-	private $sparql_service;
-
-	/**
-	 * The Entity service.
-	 *
-	 * @since  3.18.0
-	 * @access private
-	 * @var \Wordlift_Entity_Service $entity_service The Entity service.
-	 */
-	private $entity_service;
-
-	/**
-	 * Create an instance of the User service.
-	 *
-	 * @param \Wordlift_Sparql_Service $sparql_service The {@link Wordlift_Sparql_Service} instance.
-	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
-	 *
-	 * @since 3.1.7
-	 *
-	 */
-	public function __construct( $sparql_service, $entity_service ) {
-
-		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_User_Service' );
-
-		self::$instance = $this;
-
-		$this->sparql_service = $sparql_service;
-		$this->entity_service = $entity_service;
-
-		add_filter( 'user_has_cap', array( $this, 'has_cap' ), 10, 3 );
-	}
+	private static $instance = null;
 
 	/**
 	 * Get the singleton instance of the User service.
@@ -104,6 +79,10 @@ class Wordlift_User_Service {
 	 * @since 3.1.7
 	 */
 	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
 
 		return self::$instance;
 	}
@@ -215,7 +194,7 @@ class Wordlift_User_Service {
 		 * @since 3.27.7 changed `user` to `author` to avoid potential clashes with CPTs ( `author` is reserved
 		 *  https://developer.wordpress.org/reference/functions/register_post_type/#reserved-post-types )
 		 */
-		return wl_configuration_get_redlink_dataset_uri() . "/author/$user->user_nicename";
+		return untrailingslashit( wl_configuration_get_redlink_dataset_uri() ) . "/author/$user->user_nicename";
 	}
 
 	/**
@@ -378,128 +357,6 @@ class Wordlift_User_Service {
 		}
 
 		return $allcaps;
-	}
-
-	/**
-	 * Hook on update user meta to check if the user author has changed.
-	 * If so we need to execute sparql query that will update all user posts author triple.
-	 *
-	 * @param null $null
-	 * @param int $object_id The user ID.
-	 * @param string $meta_key The meta key name.
-	 * @param mixed $meta_value Meta value.
-	 * @param mixed $prev_value The previous metadata value.
-	 *
-	 * @return  null Null if the `meta_key` is not `Wordlift_User_Service::ENTITY_META_KEY`
-	 *                or if the author has not changed.
-	 * @since   3.18.0
-	 *
-	 */
-	public function update_user_metadata( $null, $object_id, $meta_key, $meta_value, $prev_value ) {
-		// Bail if the meta key is not the author meta.
-		if ( $meta_key !== Wordlift_User_Service::ENTITY_META_KEY ) {
-			return null;
-		}
-
-		// Check whether the user is associated with any of the existing publishers/
-		$entity_id = $this->get_entity( $object_id );
-
-		if ( false === $entity_id ) {
-			// An error occurred.
-			$this->log_service->error( "An error occurred: entity_id can't be false." );
-
-			return;
-		}
-
-		// Get the old uri if the entity is set..
-		$old_uri = ! empty( $entity_id )
-			? $this->entity_service->get_uri( $entity_id )
-			: $this->get_uri( $object_id );
-
-		// Get the new user uri's.
-		$new_uri = $this->entity_service->get_uri( $meta_value );
-
-		// Bail if the uri is the same.
-		if ( $old_uri === $new_uri ) {
-			return null;
-		}
-
-		$this->update_author( $old_uri, $new_uri );
-	}
-
-	/**
-	 * Hook on delete user meta to execute sparql query
-	 * that will update all user posts author triple.
-	 *
-	 * @param null $null
-	 * @param int $object_id The user ID.
-	 * @param string $meta_key The meta key name.
-	 * @param mixed $meta_value Meta value.
-	 * @param bool $delete_all Whether to delete the matching metadata entries
-	 *                              for all objects.
-	 *
-	 * @return  null Null if the `meta_key` is not `Wordlift_User_Service::ENTITY_META_KEY`
-	 *               or if the author has not changed.
-	 * @since   3.18.0
-	 *
-	 */
-	public function delete_user_metadata( $null, $object_id, $meta_key, $meta_value, $delete_all ) {
-		// Bail if the meta key is not the author meta.
-		if ( $meta_key !== Wordlift_User_Service::ENTITY_META_KEY ) {
-			return null;
-		}
-
-		// Check whether the user is associated with any of the existing publishers/
-		$entity_id = $this->get_entity( $object_id );
-
-		if ( false === $entity_id ) {
-			// An error occurred.
-			$this->log_service->error( "An error occurred: entity_id can't be false." );
-
-			return;
-		}
-
-		// Get the old uri if the entity is set.
-		$old_uri = $this->entity_service->get_uri( $entity_id );
-
-		$new_uri = $this->get_uri( $object_id );
-
-		$this->update_author( $old_uri, $new_uri );
-
-	}
-
-	/**
-	 * Update the schema:author when the user author is changed.
-	 *
-	 * @param string $old_uri The old uri to remove.
-	 * @param string $new_uri The new uri to add.
-	 *
-	 * @since   3.18.0
-	 *
-	 */
-	private function update_author( $old_uri, $new_uri ) {
-		// Bail in case one of the uris is empty.
-		if ( empty( $old_uri ) || empty( $new_uri ) ) {
-			// An error occurred.
-			$this->log_service->error( "An error occurred: old_uri and/or new_uri can't be null." );
-
-			return;
-		}
-
-		// Build the update query.
-		$query = sprintf(
-			'DELETE { ?s <%1$s> <%2$s> } INSERT { ?s <%1$s> <%3$s> } WHERE { ?s <%1$s> <%2$s> }',
-			// Schema:author triple.
-			$this->sparql_service->escape_uri( Wordlift_Query_Builder::SCHEMA_AUTHOR_URI ),
-			// Old author uri to remove,
-			$this->sparql_service->escape_uri( $old_uri ),
-			// New author uri to add,
-			$this->sparql_service->escape_uri( $new_uri )
-		);
-
-		// Execute the query and update the author.
-		$this->sparql_service->execute( $query );
-
 	}
 
 }

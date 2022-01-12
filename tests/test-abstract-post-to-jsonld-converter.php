@@ -33,7 +33,6 @@ class Wordlift_Abstract_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test
 
 		$this->converter = new Post_To_Jsonld_Converter_Test(
 			Wordlift_Entity_Type_Service::get_instance(),
-			Wordlift_Entity_Service::get_instance(),
 			Wordlift_User_Service::get_instance(),
 			Wordlift_Attachment_Service::get_instance()
 		);

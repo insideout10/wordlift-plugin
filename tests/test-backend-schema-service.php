@@ -41,8 +41,8 @@ class Wordlift_Schema_Service_Test extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		$this->schema_service = $this->get_wordlift_test()->get_schema_service();
-		$this->entity_service = $this->get_wordlift_test()->get_entity_service();
+		$this->schema_service = Wordlift_Schema_Service::get_instance();
+		$this->entity_service = Wordlift_Entity_Service::get_instance();
 
 	}
 
@@ -157,54 +157,14 @@ class Wordlift_Schema_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $thing_schema['css_class'], 'wl-thing' );
 		$this->assertEquals( $thing_schema['uri'], 'http://schema.org/Thing' );
 		$this->assertArrayHasKey( 'custom_fields', $thing_schema );
-		$this->assertArrayHasKey( 'linked_data', $thing_schema );
 		$this->assertArrayHasKey( 'entity_same_as', $thing_schema['custom_fields'] );
-
-		// This value may change if we add/remove properties from `linked_data`.
-		$this->assertCount( 13, $thing_schema['linked_data'] );
 
 		// Test event schema.
 		$this->assertEquals( $event_schema['css_class'], 'wl-event' );
 		$this->assertEquals( $event_schema['uri'], 'http://schema.org/Event' );
 		$this->assertArrayHasKey( 'custom_fields', $event_schema );
-		$this->assertArrayHasKey( 'linked_data', $event_schema );
 		$this->assertArrayHasKey( 'entity_same_as', $event_schema['custom_fields'] );
 
-		// This value may change if we add/remove properties from `linked_data`.
-		$this->assertCount( 18, $event_schema['linked_data'] );
-
-	}
-
-	/**
-	 * Tests the `get_renditions` method.
-	 *
-	 * @return void
-	 * @since 3.18.0
-	 *
-	 */
-	public function test_get_renditions() {
-		// Get all renditions.
-		$renditions = $this->schema_service->get_renditions();
-
-		$this->assertInternalType( 'array', $renditions );
-		$this->assertNotEmpty( $renditions );
-
-		// The renditions classes.
-		$rendition_classes = array(
-			'Wordlift_Default_Sparql_Tuple_Rendition',
-			'Wordlift_Address_Sparql_Tuple_Rendition',
-		);
-
-		// Loop through all renditions and check their type and instance.
-		foreach ( $renditions as $rendition ) {
-			$this->assertInternalType( 'object', $rendition );
-
-			// Get the rendition class name.
-			$class_name = get_class( $rendition );
-
-			// Check that the class name exists in rendition classes.
-			$this->assertContains( $class_name, $rendition_classes );
-		}
 	}
 
 	/**
@@ -226,7 +186,6 @@ class Wordlift_Schema_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $place_schema['css_class'], 'wl-place' );
 		$this->assertEquals( $place_schema['uri'], $schema_uri );
 		$this->assertArrayHasKey( 'custom_fields', $place_schema );
-		$this->assertArrayHasKey( 'linked_data', $place_schema );
 		$this->assertArrayHasKey( 'entity_same_as', $place_schema['custom_fields'] );
 
 	}

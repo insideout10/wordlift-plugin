@@ -9,6 +9,8 @@
  * @subpackage Wordlift/tests
  */
 
+require_once( dirname( __FILE__ ) . '/../src/admin/class-wordlift-admin-schemaorg-property-metabox.php' );
+
 /**
  * Define the Wordlift_Admin_Schemaorg_Property_Metabox_Test class.
  *
@@ -110,11 +112,11 @@ class Wordlift_Backend_Schemaorg_Property_Metabox_Test extends Wordlift_Unit_Tes
 	/**
 	 * Hook to `wl_valid_entity_post_types` to add custom post type to the entity types.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param array $types An array of custom post types.
 	 *
 	 * @return array The extended array of custom post types.
+	 * @since 3.20.0
+	 *
 	 */
 	public function add_entity_post_types( $types ) {
 

@@ -11,19 +11,12 @@ namespace Wordlift\Autocomplete;
 
 use Wordlift\Api\Default_Api_Service;
 use Wordlift\Entity\Entity_Helper;
+use Wordlift_Configuration_Service;
 use Wordlift_Log_Service;
 use Wordlift_Post_Excerpt_Helper;
+use Wordlift_Schema_Service;
 
 class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
-
-	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.15.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
 
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
@@ -43,21 +36,19 @@ class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
 	/**
 	 * The {@link Class_Wordlift_Autocomplete_Service} instance.
 	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 * @param Entity_Helper $entity_helper
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service
 	 * @param \Wordlift_Entity_Service $entity_service
 	 *
 	 * @since 3.15.0
 	 */
-	public function __construct( $configuration_service, $entity_helper, $entity_uri_service, $entity_service ) {
+	public function __construct( $entity_helper, $entity_uri_service, $entity_service ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Autocomplete_Service' );
 
-		$this->configuration_service = $configuration_service;
-		$this->entity_helper         = $entity_helper;
-		$this->entity_uri_service    = $entity_uri_service;
-		$this->entity_service        = $entity_service;
+		$this->entity_helper      = $entity_helper;
+		$this->entity_uri_service = $entity_uri_service;
+		$this->entity_service     = $entity_service;
 
 	}
 
@@ -147,19 +138,18 @@ class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
 	 *
 	 */
 	private function build_request_url( $query, $exclude, $scope ) {
+		$configuration_service = Wordlift_Configuration_Service::get_instance();
+
 		$args = array(
-			'key'      => $this->configuration_service->get_key(),
-			'language' => $this->configuration_service->get_language_code(),
+			'key'      => $configuration_service->get_key(),
+			'language' => $configuration_service->get_language_code(),
 			'query'    => $query,
 			'scope'    => $scope,
 			'limit'    => 10,
 		);
 
 		// Add args to URL.
-		$request_url = add_query_arg(
-			urlencode_deep( $args ),
-			'/autocomplete'
-		);
+		$request_url = add_query_arg( urlencode_deep( $args ), '/autocomplete' );
 
 		// Add the exclude parameter.
 		if ( ! empty( $exclude ) ) {
@@ -178,7 +168,7 @@ class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
 			'labels'       => $this->entity_service->get_alternative_labels( $post->ID ),
 			'descriptions' => array( Wordlift_Post_Excerpt_Helper::get_text_excerpt( $post ) ),
 			'scope'        => 'local',
-			'sameAss'      => get_post_meta( $post->ID, \Wordlift_Schema_Service::FIELD_SAME_AS ),
+			'sameAss'      => get_post_meta( $post->ID, Wordlift_Schema_Service::FIELD_SAME_AS ),
 			// The following properties are less relevant because we're linking entities that exist already in the
 			// vocabulary. That's why we don't make an effort to load the real data.
 			'types'        => array( 'http://schema.org/Thing' ),

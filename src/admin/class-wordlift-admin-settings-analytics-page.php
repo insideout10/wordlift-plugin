@@ -28,15 +28,6 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	private static $instance;
 
 	/**
-	 * A {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.21.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
 	 * A {@link Wordlift_Admin_Input_Element} element renderer.
 	 *
 	 * @since  3.21.0
@@ -57,16 +48,13 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	/**
 	 * Create a {@link Wordlift_Admin_Settings_Page} instance.
 	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service The wordlift configuration service.
 	 * @param \Wordlift_Admin_Input_Element $input_element An input element class to output input boxes in a settings form.
 	 * @param \Wordlift_Admin_Radio_Input_Element $radio_input_element A radio element input class for use in a settings form.
 	 *
 	 * @since 3.21.0
 	 *
 	 */
-	public function __construct( $configuration_service, $input_element, $radio_input_element ) {
-
-		$this->configuration_service = $configuration_service;
+	public function __construct( $input_element, $radio_input_element ) {
 
 		// Set a reference to the UI elements.
 		$this->input_element       = $input_element;
@@ -202,7 +190,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 			array(
 				'id'          => 'wl-analytics-enable',
 				'name'        => 'wl_analytics_settings[' . Wordlift_Configuration_Service::ANALYTICS_ENABLE . ']',
-				'value'       => $this->configuration_service->is_analytics_enable() ? 'yes' : 'no',
+				'value'       => Wordlift_Configuration_Service::get_instance()->is_analytics_enable() ? 'yes' : 'no',
 				'description' => __( 'Toggle on/off the default values.', 'wordlift' ),
 			)
 		);
@@ -222,7 +210,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 				'id'          => 'wl-analytics-entity-uri-dimension',
 				'name'        => 'wl_analytics_settings[' . Wordlift_Configuration_Service::ANALYTICS_ENTITY_URI_DIMENSION . ']',
 				'type'        => 'number',
-				'value'       => $this->configuration_service->get_analytics_entity_uri_dimension(),
+				'value'       => Wordlift_Configuration_Service::get_instance()->get_analytics_entity_uri_dimension(),
 				'description' => __( 'Entity URI dimesion', 'wordlift' ),
 			)
 		);
@@ -242,7 +230,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 				'id'          => 'wl-analytics-entity-type-dimension',
 				'name'        => 'wl_analytics_settings[' . Wordlift_Configuration_Service::ANALYTICS_ENTITY_TYPE_DIMENSION . ']',
 				'type'        => 'number',
-				'value'       => $this->configuration_service->get_analytics_entity_type_dimension(),
+				'value'       => Wordlift_Configuration_Service::get_instance()->get_analytics_entity_type_dimension(),
 				'description' => __( 'Entity Type dimension', 'wordlift' ),
 			)
 		);
@@ -266,7 +254,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 		// as 200 are allowed.
 		if ( (int) $uri < 1 || (int) $uri > 20 ) {
 			// if we are out of range then pass the default value.
-			$uri = $this->configuration_service->get_analytics_entity_uri_dimension();
+			$uri = Wordlift_Configuration_Service::get_instance()->get_analytics_entity_uri_dimension();
 		}
 
 		return absint( $uri );
@@ -289,7 +277,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 		// as 200 are allowed.
 		if ( (int) $type < 1 || (int) $type > 20 ) {
 			// if we are out of range then pass the default value.
-			$type = $this->configuration_service->get_analytics_entity_type_dimension();
+			$type = Wordlift_Configuration_Service::get_instance()->get_analytics_entity_type_dimension();
 		}
 
 		return absint( $type );

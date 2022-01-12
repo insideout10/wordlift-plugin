@@ -26,15 +26,6 @@ class Wordlift_Timeline_Service {
 	private $log;
 
 	/**
-	 * The Entity service.
-	 *
-	 * @since  3.1.0
-	 * @access private
-	 * @var \Wordlift_Entity_Service $entity_service The Entity service.
-	 */
-	private $entity_service;
-
-	/**
 	 * The number of words to use for the excerpt, set in the `to_json` function
 	 * and used by a filter.
 	 *
@@ -43,15 +34,6 @@ class Wordlift_Timeline_Service {
 	 * @var int $excerpt_length The number of words to use for the excerpt.
 	 */
 	private $excerpt_length;
-
-	/**
-	 * The {@link Wordlift_Entity_Type_Service} instance.
-	 *
-	 * @since  3.15.0
-	 * @access private
-	 * @var \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
-	 */
-	private $entity_type_service;
 
 	/**
 	 * A singleton instance of the Timeline service (useful for unit tests).
@@ -65,18 +47,12 @@ class Wordlift_Timeline_Service {
 	/**
 	 * Create a Wordlift_Timeline_Service instance.
 	 *
-	 * @param \Wordlift_Entity_Service $entity_service The Entity service.
-	 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
-	 *
 	 * @since 3.1.0
 	 *
 	 */
-	public function __construct( $entity_service, $entity_type_service ) {
+	public function __construct() {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Timeline_Service' );
-
-		$this->entity_service      = $entity_service;
-		$this->entity_type_service = $entity_type_service;
 
 		self::$instance = $this;
 
@@ -129,7 +105,7 @@ class Wordlift_Timeline_Service {
 			: $this->get_all_related_to_last_50_published_posts() );
 
 		// Add the post itself if it's an entity.
-		if ( is_numeric( $post_id ) && $this->entity_service->is_entity( $post_id ) ) {
+		if ( is_numeric( $post_id ) && Wordlift_Entity_Service::get_instance()->is_entity( $post_id ) ) {
 			$ids[] = $post_id;
 		}
 

@@ -11,7 +11,7 @@ use Wordlift\Cache\Ttl_Cache;
 /**
  * Define the ProductsNavigatorShortcodeTest class.
  *
- * @group   ajax
+ * @group ajax
  *
  * @since   3.27.0
  * @package Wordlift
@@ -56,7 +56,7 @@ class ProductsNavigatorShortcodeTest extends WP_UnitTestCase {
 
 		$request  = new WP_REST_Request( 'GET', $this->route );
 		$response = $this->server->dispatch( $request );
-		$data = $response->get_data();
+		$data     = $response->get_data();
 
 		$this->assertEquals( 400, $response->get_status(), 'We expect status 400' );
 		$this->assertEquals( 'rest_missing_callback_param', $data['code'], 'We expect an `rest_missing_callback_param` code.' );
@@ -68,11 +68,11 @@ class ProductsNavigatorShortcodeTest extends WP_UnitTestCase {
 		$cache = new Ttl_Cache( $this->cache_namespace );
 		$cache->flush();
 
-		$request  = new WP_REST_Request( 'GET', $this->route );
+		$request = new WP_REST_Request( 'GET', $this->route );
 		$request->set_param( 'post_id', 10000 );
 		$request->set_param( 'uniqid', 'unique' );
 		$response = $this->server->dispatch( $request );
-		$data = $response->get_data();
+		$data     = $response->get_data();
 
 		$this->assertEquals( 404, $response->get_status(), 'We expect status 404' );
 		$this->assertEquals( 'rest_invalid_post_id', $data['code'], 'We expect an `rest_invalid_post_id` code.' );

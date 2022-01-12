@@ -7,30 +7,6 @@
 class Wordlift_Entity_Functions_Test extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * Check entity URI building.
-	 */
-	function test_entity_uri_for_a_post() {
-
-		$post_id = wl_create_post( '', 'test', 'This is a test' );
-
-		$expected_uri = wl_configuration_get_redlink_dataset_uri() . '/post/this_is_a_test';
-		$this->assertEquals( $expected_uri, wl_build_entity_uri( $post_id ) );
-
-	}
-
-	/**
-	 * Check entity URI building.
-	 */
-	function test_entity_uri_for_an_entity() {
-
-		$post_id = wl_create_post( '', 'test', 'This is a test', 'draft', 'entity' );
-
-		$expected_uri = wl_configuration_get_redlink_dataset_uri() . '/entity/this_is_a_test';
-		$this->assertEquals( $expected_uri, wl_build_entity_uri( $post_id ) );
-
-	}
-
-	/**
 	 * Tests the *wl_get_meta_type* function
 	 */
 	function test_entity_get_meta_type() {

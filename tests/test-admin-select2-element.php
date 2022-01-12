@@ -34,7 +34,8 @@ class Wordlift_Admin_Select2_Element_Test extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		$this->select2_element = $this->get_wordlift_test()->get_select2_element();
+		$select2_element = new Wordlift_Admin_Select2_Element();
+		$select2_element = $this->get_wordlift_test()->get_select2_element();
 
 	}
 
@@ -54,7 +55,8 @@ class Wordlift_Admin_Select2_Element_Test extends Wordlift_Unit_Test_Case {
 
 		// Render Select2.
 		ob_start();
-		$this->select2_element->render( array(
+		$select2_element = new Wordlift_Admin_Select2_Element();
+		$select2_element->render( array(
 			'value'   => 0,
 			'options' => $options,
 		) );
@@ -67,7 +69,7 @@ class Wordlift_Admin_Select2_Element_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( $count, $matches[0] );
 
 		// Check that the first option is selected.
- 		$this->assertEquals( 1, preg_match( '/<option\s+value="0"\s+selected=\'selected\'\s+>/', $output ) );
+		$this->assertEquals( 1, preg_match( '/<option\s+value="0"\s+selected=\'selected\'\s+>/', $output ) );
 
 	}
 
@@ -87,7 +89,8 @@ class Wordlift_Admin_Select2_Element_Test extends Wordlift_Unit_Test_Case {
 
 		// Render Select2.
 		ob_start();
-		$this->select2_element->render( array(
+		$select2_element = new Wordlift_Admin_Select2_Element();
+		$select2_element->render( array(
 			'data' => array(
 				'wl-select2-data' => json_encode( $data ),
 			),
@@ -116,7 +119,8 @@ class Wordlift_Admin_Select2_Element_Test extends Wordlift_Unit_Test_Case {
 
 		// Render Select2.
 		ob_start();
-		$this->select2_element->render( array(
+		$select2_element = new Wordlift_Admin_Select2_Element();
+		$select2_element->render( array(
 			'data' => array(
 				'wl-select2-template-result'    => $template_result,
 				'wl-select2-template-selection' => $template_selection,

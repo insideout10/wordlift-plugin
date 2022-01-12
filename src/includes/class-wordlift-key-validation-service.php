@@ -30,15 +30,6 @@ class Wordlift_Key_Validation_Service {
 	private $log;
 
 	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.14.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
 	 * @var Ttl_Cache
 	 */
 	private $ttl_cache_service;
@@ -46,15 +37,11 @@ class Wordlift_Key_Validation_Service {
 	/**
 	 * Create a {@link Wordlift_Key_Validation_Service} instance.
 	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 *
 	 * @since 3.14.0
 	 */
-	public function __construct( $configuration_service ) {
+	public function __construct() {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Key_Validation_Service' );
-
-		$this->configuration_service = $configuration_service;
 
 		add_action( 'admin_init', array( $this, 'wl_load_plugin' ) );
 		/**

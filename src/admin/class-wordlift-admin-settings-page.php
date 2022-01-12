@@ -19,15 +19,6 @@
 class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 	/**
-	 * A singleton instance of the Notice service.
-	 *
-	 * @since  3.2.0
-	 * @access private
-	 * @var \Wordlift_Notice_Service $instance A singleton instance of the Notice service.
-	 */
-	private static $instance;
-
-	/**
 	 * A {@link Wordlift_Entity_Service} instance.
 	 *
 	 * @since  3.11.0
@@ -35,15 +26,6 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 * @var \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
 	 */
 	private $entity_service;
-
-	/**
-	 * A {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.11.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
 
 	/**
 	 * A {@link Wordlift_Admin_Input_Element} element renderer.
@@ -93,7 +75,6 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	/**
 	 * Create a {@link Wordlift_Admin_Settings_Page} instance.
 	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
 	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_Admin_Input_Element $input_element A {@link Wordlift_Admin_Input_Element} element renderer.
 	 * @param \Wordlift_Admin_Language_Select_Element $language_select_element A {@link Wordlift_Admin_Language_Select_Element} element renderer.
@@ -104,10 +85,9 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 * @since 3.11.0
 	 *
 	 */
-	function __construct( $configuration_service, $entity_service, $input_element, $language_select_element, $country_select_element, $publisher_element, $radio_input_element ) {
+	public function __construct( $entity_service, $input_element, $language_select_element, $country_select_element, $publisher_element, $radio_input_element ) {
 
-		$this->configuration_service = $configuration_service;
-		$this->entity_service        = $entity_service;
+		$this->entity_service = $entity_service;
 
 		// Set a reference to the UI elements.
 		$this->input_element           = $input_element;
@@ -116,9 +96,9 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		$this->country_select_element  = $country_select_element;
 		$this->publisher_element       = $publisher_element;
 
-		self::$instance = $this;
-
 	}
+
+	private static $instance;
 
 	/**
 	 * Get the singleton instance of the Notice service.
@@ -127,6 +107,21 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 * @since 3.14.0
 	 */
 	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			$publisher_element = new Wordlift_Admin_Publisher_Element(
+				Wordlift_Publisher_Service::get_instance(),
+				new Wordlift_Admin_Tabs_Element(),
+				new Wordlift_Admin_Select2_Element() );
+
+			self::$instance = new self(
+				Wordlift_Entity_Service::get_instance(),
+				new Wordlift_Admin_Input_Element(),
+				new Wordlift_Admin_Language_Select_Element(),
+				new Wordlift_Admin_Country_Select_Element(),
+				$publisher_element,
+				new Wordlift_Admin_Radio_Input_Element() );
+		}
 
 		return self::$instance;
 	}
@@ -221,7 +216,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		$key_args = array(
 			'id'          => 'wl-key',
 			'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::KEY . ']',
-			'value'       => $this->configuration_service->get_key(),
+			'value'       => Wordlift_Configuration_Service::get_instance()->get_key(),
 			'description' => __( 'Insert the <a href="https://www.wordlift.io/blogger">WordLift Key</a> you received via email.', 'wordlift' )
 			                 . ' [' . get_option( 'home' ) . ']',
 		);
@@ -250,7 +245,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			// The array of arguments to pass to the callback. In this case, just a description.
 			'id'          => 'wl-entity-base-path',
 			'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY . ']',
-			'value'       => $this->configuration_service->get_entity_base_path(),
+			'value'       => Wordlift_Configuration_Service::get_instance()->get_entity_base_path(),
 			/* translators: Placeholders: %s - a link to FAQ's page. */
 			'description' => sprintf( __( 'All new pages created with WordLift, will be stored inside your internal vocabulary. You can customize the url pattern of these pages in the field above. Check our <a href="%s">FAQs</a> if you need more info.', 'wordlift' ), 'https://wordlift.io/wordlift-user-faqs/#10-why-and-how-should-i-customize-the-url-of-the-entity-pages-created-in-my-vocabulary' ),
 		);
@@ -279,7 +274,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 
 		$language_name = Wordlift_Languages::get_language_name(
-			$this->configuration_service->get_language_code()
+			Wordlift_Configuration_Service::get_instance()->get_language_code()
 		);
 
 		// Add the `language_name` field.
@@ -287,9 +282,9 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			'wl-site-language',
 			__( 'Site Language', 'wordlift' ),
 			function () use ( $language_name ) {
-				echo sprintf( '<p><label>%s</label></p>', esc_html( $language_name ));
-				echo  sprintf( __( '<br/><p>WordLift uses the site language, You can change the language from <a href="%s">settings.</a></p>', 'wordlift' ),
-					admin_url('options-general.php#WPLANG')
+				echo sprintf( '<p><label>%s</label></p>', esc_html( $language_name ) );
+				echo sprintf( __( '<br/><p>WordLift uses the site language, You can change the language from <a href="%s">settings.</a></p>', 'wordlift' ),
+					admin_url( 'options-general.php#WPLANG' )
 				);
 			},
 			'wl_general_settings',
@@ -306,7 +301,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			array(
 				'id'          => 'wl-country-code',
 				'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::COUNTRY_CODE . ']',
-				'value'       => $this->configuration_service->get_country_code(),
+				'value'       => Wordlift_Configuration_Service::get_instance()->get_country_code(),
 				'description' => __( 'Please select a country.', 'wordlift' ),
 				'notice'      => __( 'The selected language is not supported in this country.</br>Please choose another country or language.', 'wordlift' ),
 			)
@@ -335,7 +330,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			array(
 				'id'          => 'wl-link-by-default',
 				'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::LINK_BY_DEFAULT . ']',
-				'value'       => $this->configuration_service->is_link_by_default() ? 'yes' : 'no',
+				'value'       => Wordlift_Configuration_Service::get_instance()->is_link_by_default() ? 'yes' : 'no',
 				'description' => __( 'Whether to link entities by default or not. This setting applies to all the entities.', 'wordlift' ),
 			)
 		);
@@ -350,7 +345,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			array(
 				'id'          => 'wl-send-diagnostic',
 				'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::SEND_DIAGNOSTIC . ']',
-				'value'       => 'yes' === $this->configuration_service->get_diagnostic_preferences() ? 'yes' : 'no',
+				'value'       => 'yes' === Wordlift_Configuration_Service::get_instance()->get_diagnostic_preferences() ? 'yes' : 'no',
 				'description' => __( 'Whether to send diagnostic data or not.', 'wordlift' ),
 			)
 		);

@@ -173,9 +173,9 @@ class Wordlift_Admin_Test extends Wordlift_Unit_Test_Case {
 		$this->assertTrue( is_numeric( get_the_ID() ), 'ID is not numeric.' );
 
 		// Add Schema.org props.
-		add_post_meta( $post->ID, Wordlift_Schemaorg_Property_Service::PREFIX . 'testProp_1_type', 'Text' );
-		add_post_meta( $post->ID, Wordlift_Schemaorg_Property_Service::PREFIX . 'testProp_1_language', 'en' );
-		add_post_meta( $post->ID, Wordlift_Schemaorg_Property_Service::PREFIX . 'testProp_1_value', 'Value' );
+		add_post_meta( $post->ID, '_wl_prop_testProp_1_type', 'Text' );
+		add_post_meta( $post->ID, '_wl_prop_testProp_1_language', 'en' );
+		add_post_meta( $post->ID, '_wl_prop_testProp_1_value', 'Value' );
 
 		Wordlift_Admin::get_instance()->enqueue_scripts();
 

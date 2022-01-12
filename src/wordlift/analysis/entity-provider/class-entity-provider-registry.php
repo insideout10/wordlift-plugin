@@ -10,19 +10,47 @@
 
 namespace Wordlift\Analysis\Entity_Provider;
 
+use Wordlift\Assertions;
+use Wordlift_Entity_Type_Service;
+use Wordlift_Entity_Uri_Service;
+use Wordlift_Post_Image_Storage;
+
 class Entity_Provider_Registry {
 
 	/**
-	 * @var array<Entity_Provider>
+	 * @var Entity_Provider[]
 	 */
 	private $entity_providers = array();
 
-	public function __construct() {
-		add_action( 'plugins_loaded', array( $this, 'initialize_registry' ) );
+	protected function __construct() {
 	}
 
-	public function initialize_registry() {
-		$this->entity_providers = apply_filters( 'wl_analysis_entity_providers', array() );
+	private static $instance = null;
+
+	public static function get_instance() {
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+
+			$providers = array(
+				new Post_Entity_Provider(
+					Wordlift_Entity_Uri_Service::get_instance(),
+					Wordlift_Entity_Type_Service::get_instance(),
+					new Wordlift_Post_Image_Storage() ),
+				new Term_Entity_Provider(),
+			);
+
+			foreach ( apply_filters( 'wl_analysis_entity_providers', $providers ) as $provider ) {
+				self::$instance->register_provider( $provider );
+			}
+		}
+
+		return self::$instance;
+	}
+
+	public function register_provider( $provider ) {
+		Assertions::is_a( $provider, 'Wordlift\Analysis\Entity_Provider\Entity_Provider', '`provider` must implement the `Wordlift\Analysis\Entity_Provider` interface.' );
+
+		$this->entity_providers[] = $provider;
 	}
 
 
@@ -37,9 +65,7 @@ class Entity_Provider_Registry {
 			return false;
 		}
 
-		$entity_providers = $this->entity_providers;
-
-		foreach ( $entity_providers as $entity_provider ) {
+		foreach ( $this->entity_providers as $entity_provider ) {
 			$entity_data = $entity_provider->get_entity( $uri );
 			if ( $entity_data ) {
 				return $entity_data;

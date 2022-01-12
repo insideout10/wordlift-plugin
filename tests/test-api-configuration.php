@@ -65,9 +65,9 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 	function test_wl_configuration_key() {
 
 		$value = 'test_wl_configuration_key';
-		$this->configuration_service->set_key( $value );
+		Wordlift_Configuration_Service::get_instance()->set_key( $value );
 
-		$this->assertEquals( $value, $this->configuration_service->get_key() );
+		$this->assertEquals( $value, Wordlift_Configuration_Service::get_instance()->get_key() );
 
 	}
 
@@ -80,19 +80,19 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 	public function test_is_link_by_default() {
 
 		// Check that the default setting is `true`.
-		$this->assertTrue( $this->configuration_service->is_link_by_default() );
+		$this->assertTrue( Wordlift_Configuration_Service::get_instance()->is_link_by_default() );
 
-		$this->configuration_service->set_link_by_default( true );
+		Wordlift_Configuration_Service::get_instance()->set_link_by_default( true );
 
-		$this->assertTrue( $this->configuration_service->is_link_by_default() );
+		$this->assertTrue( Wordlift_Configuration_Service::get_instance()->is_link_by_default() );
 
-		$this->configuration_service->set_link_by_default( false );
+		Wordlift_Configuration_Service::get_instance()->set_link_by_default( false );
 
-		$this->assertFalse( $this->configuration_service->is_link_by_default() );
+		$this->assertFalse( Wordlift_Configuration_Service::get_instance()->is_link_by_default() );
 
-		$this->configuration_service->set_link_by_default( 1 );
+		Wordlift_Configuration_Service::get_instance()->set_link_by_default( 1 );
 
-		$this->assertFalse( $this->configuration_service->is_link_by_default() );
+		$this->assertFalse( Wordlift_Configuration_Service::get_instance()->is_link_by_default() );
 
 	}
 
@@ -105,7 +105,7 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 			'pre_http_request',
 		), 10, 3 );
 
-		$this->configuration_service->maybe_update_dataset_uri(
+		Wordlift_Configuration_Service::get_instance()->maybe_update_dataset_uri(
 			array( 'key' => uniqid() ),
 			array( 'key' => '' )
 		);
@@ -126,7 +126,7 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 		$old_key = uniqid( true );
 		$new_key = uniqid( true );
 
-		$this->configuration_service->maybe_update_dataset_uri(
+		Wordlift_Configuration_Service::get_instance()->maybe_update_dataset_uri(
 			array( 'key' => $old_key ),
 			array( 'key' => $new_key )
 		);
@@ -145,12 +145,12 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 
 		$old_key = $new_key = uniqid( true );
 
-		$this->configuration_service->maybe_update_dataset_uri(
+		Wordlift_Configuration_Service::get_instance()->maybe_update_dataset_uri(
 			array( 'key' => $old_key ),
 			array( 'key' => $new_key )
 		);
 
-		$this->assertNotEmpty( $this->configuration_service->get_dataset_uri() );
+		$this->assertNotEmpty( Wordlift_Configuration_Service::get_instance()->get_dataset_uri() );
 
 		$this->assertEquals( 0, $this->http_request_count );
 
@@ -165,19 +165,19 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 			'pre_http_request',
 		), 10, 3 );
 
-		$old_dataset_uri = $this->configuration_service->get_dataset_uri();
-		$this->configuration_service->set_dataset_uri( '' );
+		$old_dataset_uri = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
+		Wordlift_Configuration_Service::get_instance()->set_dataset_uri( '' );
 
 		$old_key = $new_key = 'test_wl_configuration_key';
 
-		$this->configuration_service->maybe_update_dataset_uri(
+		Wordlift_Configuration_Service::get_instance()->maybe_update_dataset_uri(
 			array( 'key' => $old_key ),
 			array( 'key' => $new_key )
 		);
 
 		$this->assertEquals( 1, $this->http_request_count );
 
-		$this->configuration_service->set_dataset_uri( $old_dataset_uri );
+		Wordlift_Configuration_Service::get_instance()->set_dataset_uri( $old_dataset_uri );
 
 	}
 
@@ -188,12 +188,12 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_country_code() {
 
-		$country_code = $this->configuration_service->get_country_code();
+		$country_code = Wordlift_Configuration_Service::get_instance()->get_country_code();
 
-		$this->configuration_service->set_country_code( 'test' );
-		$this->assertEquals( 'test', $this->configuration_service->get_country_code(), 'Value must match.' );
+		Wordlift_Configuration_Service::get_instance()->set_country_code( 'test' );
+		$this->assertEquals( 'test', Wordlift_Configuration_Service::get_instance()->get_country_code(), 'Value must match.' );
 
-		$this->configuration_service->set_country_code( $country_code );
+		Wordlift_Configuration_Service::get_instance()->set_country_code( $country_code );
 
 	}
 
@@ -204,12 +204,12 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_package_type() {
 
-		$package_type = $this->configuration_service->get_package_type();
+		$package_type = Wordlift_Configuration_Service::get_instance()->get_package_type();
 
-		$this->configuration_service->set_package_type( 'test' );
-		$this->assertEquals( 'test', $this->configuration_service->get_package_type(), 'Value must match.' );
+		Wordlift_Configuration_Service::get_instance()->set_package_type( 'test' );
+		$this->assertEquals( 'test', Wordlift_Configuration_Service::get_instance()->get_package_type(), 'Value must match.' );
 
-		$this->configuration_service->set_package_type( $package_type );
+		Wordlift_Configuration_Service::get_instance()->set_package_type( $package_type );
 
 	}
 
@@ -221,13 +221,13 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 		$wp_filter      = array();
 
 		// we set a custom language code in configuration, but we should not get this value.
-		$this->configuration_service->set_language_code( 'ta' );
+		Wordlift_Configuration_Service::get_instance()->set_language_code( 'ta' );
 
 		// set the filters back.
 		$wp_filter = $wp_filter_copy;
 
 		//substr( get_bloginfo('language'), 0, 2)
-		$this->assertSame( 'en', $this->configuration_service->get_language_code(), 'Language code should not be from wordlift settings.' );
+		$this->assertSame( 'en', Wordlift_Configuration_Service::get_instance()->get_language_code(), 'Language code should not be from wordlift settings.' );
 	}
 
 	/**

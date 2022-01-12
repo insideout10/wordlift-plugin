@@ -43,7 +43,14 @@ class Wordlift_Admin_Settings_Page_Action_Link_Test extends Wordlift_Unit_Test_C
 	 */
 	public function test() {
 
-		$links = $this->settings_page_action_link->action_links( array() );
+		$admin_settings_page = $this->getMockBuilder( 'Wordlift_Admin_Settings_Page' )
+		                            ->disableOriginalConstructor()
+		                            ->setMethods( array( 'get_menu_slug' ) )
+		                            ->getMock();
+		$admin_settings_page->method( 'get_menu_slug' )->willReturn( 'menu_slug' );
+
+		$settings_page_action_link = new Wordlift_Admin_Settings_Page_Action_Link( $admin_settings_page );
+		$links                     = $settings_page_action_link->action_links( array() );
 
 		$this->assertCount( 1, $links );
 

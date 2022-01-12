@@ -13,18 +13,14 @@ namespace Wordlift\Relation;
 
 
 use Wordlift\Common\Singleton;
+use Wordlift\Content\Wordpress\Wordpress_Term_Content_Legacy_Service;
 use Wordlift\Jsonld\Term_Reference;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Types\Term_Relation;
 use Wordlift\Term\Type_Service;
-use Wordlift\Term\Uri_Service;
 
 class Term_Relation_Service extends Singleton implements Relation_Service_Interface {
 
-	/**
-	 * @var Uri_Service
-	 */
-	private $term_uri_service;
 	/**
 	 * @var Type_Service
 	 */
@@ -33,7 +29,6 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 
 	public function __construct() {
 		parent::__construct();
-		$this->term_uri_service         = Uri_Service::get_instance();
 		$this->term_entity_type_service = Type_Service::get_instance();
 	}
 
@@ -97,12 +92,16 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 		$that = $this;
 
 		return array_map( function ( $entity_uri ) use ( $subject_type, $that ) {
-			$term = $that->term_uri_service->get_term( $entity_uri );
-			if ( ! $term ) {
+			$content = Wordpress_Term_Content_Legacy_Service::get_instance()
+			                                                ->get_by_entity_id( $entity_uri );
+
+			if ( ! isset( $content ) ) {
 				return false;
 			}
 
-			return new Term_Relation( $term->term_id, $that->get_relation_type( $term->term_id ), $subject_type );
+			$term_id = $content->get_bag()->term_id;
+
+			return new Term_Relation( $term_id, $that->get_relation_type( $term_id ), $subject_type );
 		}, $entity_uris );
 	}
 

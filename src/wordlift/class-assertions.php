@@ -38,4 +38,62 @@ class Assertions {
 
 	}
 
+	/**
+	 * @throws Exception when the argument is not a string.
+	 */
+	public static function is_string( $arg, $message = 'Value must be a string' ) {
+		if ( ! is_string( $arg ) ) {
+			throw new Exception( $message );
+		}
+	}
+
+	/**
+	 * @throws Exception when actual doesn't match expected.
+	 */
+	public static function equals( $actual, $expected, $message = 'Values do not match' ) {
+		if ( $actual !== $expected ) {
+			throw new Exception( $message );
+		}
+	}
+
+	/**
+	 * @throws Exception when the value doesn't match the pattern.
+	 */
+	public static function matches( $value, $pattern, $message = "Value doesn't match" ) {
+		if ( 1 !== preg_match( $pattern, $value ) ) {
+			throw new Exception( $message );
+		}
+
+	}
+
+	/**
+	 * @throws Exception when the value doesn't start with the provided scope.
+	 */
+	public static function starts_with( $value, $scope, $message = "Value doesn't start with provided scope" ) {
+		if ( 0 !== strpos( $value, $scope ) ) {
+			throw new Exception( $message );
+		}
+	}
+
+	/**
+	 * @throws Exception when the value is not of the specified type.
+	 */
+	public static function is_a( $value, $type, $message = 'Value is not of the required type' ) {
+		if ( ! is_a( $value, $type ) ) {
+			throw new Exception( $message );
+		}
+	}
+
+	public static function is_set( $value, $message = 'Value is not set' ) {
+		if ( ! isset( $value ) ) {
+			throw new Exception( $message );
+		}
+	}
+
+	public static function not_empty( $value, $message = "Value can't be empty" ) {
+		if ( empty( $value ) ) {
+			throw new Exception( $message );
+		}
+	}
+
 }

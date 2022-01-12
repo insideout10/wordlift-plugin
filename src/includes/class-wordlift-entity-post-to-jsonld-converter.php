@@ -47,7 +47,6 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	 * Wordlift_Entity_To_Jsonld_Converter constructor.
 	 *
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_User_Service $user_service A {@link Wordlift_User_Service} instance.
 	 * @param \Wordlift_Attachment_Service $attachment_service A {@link Wordlift_Attachment_Service} instance.
 	 * @param \Wordlift_Property_Getter $property_getter A {@link Wordlift_Property_Getter} instance.
@@ -56,8 +55,8 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	 *
 	 * @since 3.8.0
 	 */
-	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service, $property_getter, $schemaorg_property_service, $post_to_jsonld_converter ) {
-		parent::__construct( $entity_type_service, $entity_service, $user_service, $attachment_service );
+	public function __construct( $entity_type_service, $user_service, $attachment_service, $property_getter, $schemaorg_property_service, $post_to_jsonld_converter ) {
+		parent::__construct( $entity_type_service, $user_service, $attachment_service );
 
 		$this->property_getter            = $property_getter;
 		$this->schemaorg_property_service = $schemaorg_property_service;
@@ -96,7 +95,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 		$jsonld['name'] = html_entity_decode( $post->post_title );
 
 		// 3.13.0, add alternate names.
-		$alternative_labels = $this->entity_service->get_alternative_labels( $post_id );
+		$alternative_labels = Wordlift_Entity_Service::get_instance()->get_alternative_labels( $post_id );
 		if ( 0 < count( $alternative_labels ) ) {
 			$jsonld['alternateName'] = $alternative_labels;
 		}

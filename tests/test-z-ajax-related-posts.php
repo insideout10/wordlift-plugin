@@ -18,17 +18,17 @@
  */
 class Wordlift_Ajax_Related_Posts extends Wordlift_Ajax_Unit_Test_Case {
 
-	function setUp() {
-		parent::setUp();
-
-		add_filter( 'pre_http_request', array( $this, '_mock_api' ), 10, 3 );
-	}
-
-	function tearDown() {
-		remove_filter( 'pre_http_request', array( $this, '_mock_api' ) );
-
-		parent::tearDown();
-	}
+//	function setUp() {
+//		parent::setUp();
+//
+//		add_filter( 'pre_http_request', array( $this, '_mock_api' ), 10, 3 );
+//	}
+//
+//	function tearDown() {
+//		remove_filter( 'pre_http_request', array( $this, '_mock_api' ) );
+//
+//		parent::tearDown();
+//	}
 
 	function _mock_api( $response, $request, $url ) {
 

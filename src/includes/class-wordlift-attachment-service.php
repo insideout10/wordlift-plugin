@@ -17,24 +17,15 @@
 class Wordlift_Attachment_Service {
 
 	/**
-	 * The singleton instance.
-	 *
-	 * @since 3.20.0
-	 * @access private
-	 * @var \Wordlift_Attachment_Service The singleton instance.
-	 */
-	private static $instance;
-
-	/**
 	 * Create a {@link Wordlift_Attachment_Service} instance.
 	 *
 	 * @since 3.20.0
 	 */
-	public function __construct() {
-
-		self::$instance = $this;
+	protected function __construct() {
 
 	}
+
+	private static $instance = null;
 
 	/**
 	 * Get the singleton instance.
@@ -44,6 +35,10 @@ class Wordlift_Attachment_Service {
 	 *
 	 */
 	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
 
 		return self::$instance;
 	}

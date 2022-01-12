@@ -57,6 +57,7 @@ function wl_core_get_relation_instances_table_name() {
  * @param int $object_id The entity post ID.
  * @param int $subject_type Subject type ( post or comment or user or term ), defaults to {@link Object_Type_Enum::POST}
  * @param int $object_type Object type ( post or comment or user or term ), defaults to {@link Object_Type_Enum::POST}
+ *
  * @return integer|boolean Return then relation instance ID or false.
  * @uses   $wpdb->replace() to perform the query
  */
@@ -86,11 +87,11 @@ function wl_core_add_relation_instance( $subject_id, $predicate, $object_id, $su
 	$wpdb->replace(
 		wl_core_get_relation_instances_table_name(),
 		array(
-			'subject_id' => $subject_id,
-			'predicate'  => $predicate,
-			'object_id'  => $object_id,
+			'subject_id'   => $subject_id,
+			'predicate'    => $predicate,
+			'object_id'    => $object_id,
 			'subject_type' => $subject_type,
-			'object_type' => $object_type,
+			'object_type'  => $object_type,
 		),
 		array( '%d', '%s', '%d', '%d', '%d' )
 	);

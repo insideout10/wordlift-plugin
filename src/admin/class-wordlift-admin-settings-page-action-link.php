@@ -23,16 +23,17 @@ class Wordlift_Admin_Settings_Page_Action_Link {
 	 *
 	 * @since  3.11.0
 	 * @access private
-	 * @var \Wordlift_Admin_Settings_Page $settings_page The {@link Wordlift_Admin_Settings_Page} instance.
+	 * @var Wordlift_Admin_Settings_Page $settings_page The {@link Wordlift_Admin_Settings_Page} instance.
 	 */
 	private $settings_page;
 
 	/**
 	 * Create a {@link Wordlift_Admin_Settings_Page_Action_Link} instance.
 	 *
+	 * @param Wordlift_Admin_Settings_Page $settings_page The {@link Wordlift_Admin_Settings_Page} instance.
+	 *
 	 * @since  3.11.0
 	 *
-	 * @param \Wordlift_Admin_Settings_Page $settings_page The {@link Wordlift_Admin_Settings_Page} instance.
 	 */
 	function __construct( $settings_page ) {
 
@@ -43,11 +44,11 @@ class Wordlift_Admin_Settings_Page_Action_Link {
 	/**
 	 * Create a link to the WordLift settings page.
 	 *
-	 * @since 3.11.0
-	 *
 	 * @param array $links An array of links.
 	 *
 	 * @return array An array of links including those added by the plugin.
+	 * @since 3.11.0
+	 *
 	 */
 	function action_links( $links ) {
 

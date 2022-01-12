@@ -43,19 +43,19 @@ class Wordlift_Install_1_0_0_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_install() {
 
-		if ( wl_is_empty( $this->configuration_service->get_key() ) ) {
+		if ( wl_is_empty( Wordlift_Configuration_Service::get_instance()->get_key() ) ) {
 			$this->markTestSkipped( 'The env WORDLIFT_KEY must be set for this test to work.' );
 		}
 
-		$this->assertNotEmpty( $this->configuration_service->get_key(), '`key` must be set.' );
+		$this->assertNotEmpty( Wordlift_Configuration_Service::get_instance()->get_key(), '`key` must be set.' );
 
 		// Expect the dataset URI to be set to the existing value.
-		$expected_dataset_uri = $this->configuration_service->get_dataset_uri();
-		$this->configuration_service->set_dataset_uri( '' );
+		$expected_dataset_uri = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
+		Wordlift_Configuration_Service::get_instance()->set_dataset_uri( '' );
 
 		$this->install->install();
 
-		$this->assertEquals( $expected_dataset_uri, $this->configuration_service->get_dataset_uri(), '`dataset_uri` must match existing value.' );
+		$this->assertEquals( $expected_dataset_uri, Wordlift_Configuration_Service::get_instance()->get_dataset_uri(), '`dataset_uri` must match existing value.' );
 
 	}
 

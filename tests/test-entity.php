@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class EntityTest
  * @group entity
@@ -20,7 +21,7 @@ class EntityTest extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		$this->entity_service = $this->get_wordlift_test()->get_entity_service();
+		$this->entity_service = Wordlift_Entity_Service::get_instance();
 
 	}
 

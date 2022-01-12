@@ -30,7 +30,7 @@ class Install_3_28_0_Test extends Wordlift_Unit_Test_Case {
 		) );
 
 		// we pick a post id and add an invalid same as.
-		$dataset_uri = $this->configuration_service->get_dataset_uri();
+		$dataset_uri = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
 
 		$invalid_dataset_uris = array(
 			$dataset_uri . "/aaa",
@@ -88,7 +88,7 @@ class Install_3_28_0_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function is_invalid_dataset_uris_present() {
 
-		$local_dataset_uri = $this->configuration_service->get_dataset_uri();
+		$local_dataset_uri = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
 
 		$posts = get_posts( array(
 			'post_type'   => \Wordlift_Entity_Service::valid_entity_post_types(),

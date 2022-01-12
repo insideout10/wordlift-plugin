@@ -19,7 +19,7 @@ use Wordlift\Mappings\Validators\Taxonomy_Rule_Validator;
  *
  * @group mappings
  */
-class Wordlift_Mappings_Test extends WP_UnitTestCase {
+class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 
 	private $jsonld_service;
 
@@ -238,7 +238,7 @@ class Wordlift_Mappings_Test extends WP_UnitTestCase {
 		 * Create many post items to make the term_id and post_id
 		 * equal.
 		 */
-		$this->factory()->post->create_many(9);
+		$this->factory()->post->create_many( 9 );
 		/**
 		 * step 1: create a post.
 		 */

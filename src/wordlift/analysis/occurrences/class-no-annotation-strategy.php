@@ -8,9 +8,10 @@
 namespace Wordlift\Analysis\Occurrences;
 
 use Wordlift\Common\Singleton;
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Object_Relation_Factory;
-use Wordlift\Relation\Object_Relation_Service;
 
 class No_Annotation_Strategy extends Singleton implements Occurrences {
 	/**
@@ -29,10 +30,11 @@ class No_Annotation_Strategy extends Singleton implements Occurrences {
 			Object_Type_Enum::POST
 		);
 
-		$entity_service = \Wordlift_Entity_Service::get_instance();
+		$content_service = Wordpress_Content_Service::get_instance();
 
 		foreach ( $references as $reference ) {
-			$entity_uri                    = $entity_service->get_uri( $reference->get_id(), $reference->get_type() );
+			$entity_uri                    = $content_service
+				->get_entity_id( new Wordpress_Content_Id( $reference->get_id(), $reference->get_type() ) );
 			$entity_data                   = wl_serialize_entity( $reference->get_id() );
 			$entity_data['occurrences']    = array( 'placeholder-occurrence' );
 			$json->entities->{$entity_uri} = $entity_data;
@@ -40,4 +42,5 @@ class No_Annotation_Strategy extends Singleton implements Occurrences {
 
 		return $json;
 	}
+
 }

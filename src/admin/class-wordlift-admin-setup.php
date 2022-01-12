@@ -29,15 +29,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Wordlift_Admin_Setup {
 
 	/**
-	 * A {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.9.0
-	 * @access private
-	 * @var Wordlift_Configuration_Service A {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
 	 * A {@link Wordlift_Key_Validation_Service} instance.
 	 *
 	 * @since  3.9.0
@@ -76,7 +67,6 @@ class Wordlift_Admin_Setup {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
 	 * @param \Wordlift_Key_Validation_Service $key_validation_service A {@link Wordlift_Key_Validation_Service} instance.
 	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_Admin_Language_Select_Element $language_select_element A {@link Wordlift_Admin_Language_Select_Element} element renderer.
@@ -85,10 +75,7 @@ class Wordlift_Admin_Setup {
 	 * @since    3.9.0
 	 *
 	 */
-	public function __construct( $configuration_service, $key_validation_service, $entity_service, $language_select_element, $country_select_element ) {
-
-		// Set a reference to the configuration service.
-		$this->configuration_service = $configuration_service;
+	public function __construct( $key_validation_service, $entity_service, $language_select_element, $country_select_element ) {
 
 		// Set a reference to the key validation service.
 		$this->key_validation_service = $key_validation_service;
@@ -136,7 +123,7 @@ class Wordlift_Admin_Setup {
 			delete_transient( '_wl_activation_redirect' );
 
 			// If the user asked to skip the wizard then comply.
-			if ( $this->configuration_service->is_skip_wizard() ) {
+			if ( Wordlift_Configuration_Service::get_instance()->is_skip_wizard() ) {
 				return;
 			}
 
@@ -161,7 +148,7 @@ class Wordlift_Admin_Setup {
 	public function admin_notices() {
 
 		// Use `wl_configuration_get_key` to check whether WL's key is set and that the user didn't disable the wizard.
-		if ( '' === $this->configuration_service->get_key() && ! $this->configuration_service->is_skip_wizard() ) { ?>
+		if ( '' === Wordlift_Configuration_Service::get_instance()->get_key() && ! Wordlift_Configuration_Service::get_instance()->is_skip_wizard() ) { ?>
             <div id="wl-message" class="updated">
                 <p><?php esc_html_e( 'Welcome to WordLift &#8211; You&lsquo;re almost ready to start', 'wordlift' ); ?></p>
                 <p class="submit">
@@ -198,7 +185,7 @@ class Wordlift_Admin_Setup {
 		}
 
 		// Store a flag telling to skip the wizard.
-		$this->configuration_service->set_skip_wizard( true );
+		Wordlift_Configuration_Service::get_instance()->set_skip_wizard( true );
 
 	}
 
@@ -278,23 +265,23 @@ class Wordlift_Admin_Setup {
 		// `logo`, the attachment id for the `personal` or `company` entity.
 
 		// Store the key:
-		$this->configuration_service->set_key( $params['key'] );
+		Wordlift_Configuration_Service::get_instance()->set_key( $params['key'] );
 
 		// Store the vocabulary path:
-		$this->configuration_service->set_entity_base_path( $params['vocabulary'] );
+		Wordlift_Configuration_Service::get_instance()->set_entity_base_path( $params['vocabulary'] );
 
 		// Store the site's language:
-		$this->configuration_service->set_language_code( $params['wl-site-language'] );
+		Wordlift_Configuration_Service::get_instance()->set_language_code( $params['wl-site-language'] );
 
 		// Store the site's country:
-		$this->configuration_service->set_country_code( $params['wl-country-code'] );
+		Wordlift_Configuration_Service::get_instance()->set_country_code( $params['wl-country-code'] );
 
 		// Store the preferences in variable, because if the checkbox is not checked
 		// the `share-diagnostic` will not exists in `$params` array.
 		$share_diagnostic_preferences = empty( $params['share-diagnostic'] ) ? 'no' : 'yes';
 
 		// Store the diagnostic preferences:
-		$this->configuration_service->set_diagnostic_preferences( $share_diagnostic_preferences );
+		Wordlift_Configuration_Service::get_instance()->set_diagnostic_preferences( $share_diagnostic_preferences );
 
 		// Set the type URI, either http://schema.org/Person or http://schema.org/Organization.
 		$type_uri = sprintf( 'http://schema.org/%s', 'organization' === $params['user_type'] ? 'Organization' : 'Person' );
@@ -303,7 +290,7 @@ class Wordlift_Admin_Setup {
 		$publisher_post_id = $this->entity_service->create( $params['name'], $type_uri, $params['logo'], 'publish' );
 
 		// Store the publisher entity post id in the configuration.
-		$this->configuration_service->set_publisher_id( $publisher_post_id );
+		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher_post_id );
 
 		flush_rewrite_rules(); // Needed because of possible change to the entity base path.
 

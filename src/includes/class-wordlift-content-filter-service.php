@@ -39,15 +39,6 @@ class Wordlift_Content_Filter_Service {
 	private $entity_service;
 
 	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.13.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
 	 * The `link by default` setting.
 	 *
 	 * @since  3.13.0
@@ -75,15 +66,6 @@ class Wordlift_Content_Filter_Service {
 	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
 	 */
 	private $log;
-
-	/**
-	 * The {@link Wordlift_Content_Filter_Service} singleton instance.
-	 *
-	 * @since  3.14.2
-	 * @access private
-	 * @var \Wordlift_Content_Filter_Service $instance The {@link Wordlift_Content_Filter_Service} singleton instance.
-	 */
-	private static $instance;
 	/**
 	 * @var Object_Link_Provider
 	 */
@@ -93,23 +75,22 @@ class Wordlift_Content_Filter_Service {
 	 * Create a {@link Wordlift_Content_Filter_Service} instance.
 	 *
 	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
 	 *
 	 * @since 3.8.0
 	 *
 	 */
-	public function __construct( $entity_service, $configuration_service, $entity_uri_service ) {
+	protected function __construct( $entity_service, $entity_uri_service ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
-		$this->entity_service        = $entity_service;
-		$this->configuration_service = $configuration_service;
-		$this->entity_uri_service    = $entity_uri_service;
-		$this->object_link_provider  = Object_Link_Provider::get_instance();
-		self::$instance              = $this;
+		$this->entity_service       = $entity_service;
+		$this->entity_uri_service   = $entity_uri_service;
+		$this->object_link_provider = Object_Link_Provider::get_instance();
 
 	}
+
+	private static $instance = null;
 
 	/**
 	 * Get the {@link Wordlift_Content_Filter_Service} singleton instance.
@@ -118,6 +99,10 @@ class Wordlift_Content_Filter_Service {
 	 * @since 3.14.2
 	 */
 	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self( Wordlift_Entity_Service::get_instance(), Wordlift_Entity_Uri_Service::get_instance() );
+		}
 
 		return self::$instance;
 	}
@@ -141,7 +126,7 @@ class Wordlift_Content_Filter_Service {
 		}
 
 		// Preload the `link by default` setting.
-		$this->is_link_by_default = $this->configuration_service->is_link_by_default();
+		$this->is_link_by_default = Wordlift_Configuration_Service::get_instance()->is_link_by_default();
 
 		// Reset the array of of entity post ids linked from the post content.
 		// This is used to avoid linking more the once the same post.
@@ -195,14 +180,14 @@ class Wordlift_Content_Filter_Service {
 		 */
 		$supported_object_types = array( Object_Type_Enum::POST, Object_Type_Enum::TERM );
 
-		if  ( ! in_array( $object_type, $supported_object_types ) ) {
+		if ( ! in_array( $object_type, $supported_object_types ) ) {
 			// Since we cant find the object type for the entity uri
 			// it doesnt seem to exist on the local dataset, so return
 			// the label without linking.
 			return $label;
 		}
 
-		$object_id  = $this->object_link_provider->get_object_id_by_type( $uri, $object_type );
+		$object_id = $this->object_link_provider->get_object_id_by_type( $uri, $object_type );
 
 		$object_id_unique_identifier = $object_type . "_" . $object_id;
 
@@ -240,7 +225,6 @@ class Wordlift_Content_Filter_Service {
 		                   ->href( $href )
 		                   ->generate_link();
 	}
-
 
 
 	/**

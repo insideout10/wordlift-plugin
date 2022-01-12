@@ -10,6 +10,8 @@
  * @subpackage Wordlift/tests
  */
 
+require_once( dirname( __FILE__ ) . '/../src/includes/schemaorg/class-wordlift-schemaorg-sync-batch-operation.php' );
+
 /**
  * Define the Wordlift_Entity_Service_Test class.
  *
@@ -43,7 +45,7 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 		parent::setUp();
 
 		$this->entity_service     = Wordlift_Entity_Service::get_instance();
-		$this->entity_uri_service = $this->get_wordlift_test()->get_entity_uri_service();
+		$this->entity_uri_service = Wordlift_Entity_Uri_Service::get_instance();
 
 	}
 
@@ -290,7 +292,7 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 		$entity_name = uniqid( 'entity', true );
 
 		$new_entity_uri = sprintf( '%s/%s/%s',
-			wl_configuration_get_redlink_dataset_uri(),
+			untrailingslashit( wl_configuration_get_redlink_dataset_uri() ),
 			Wordlift_Entity_Service::TYPE_NAME,
 			wl_sanitize_uri_path( $entity_name )
 		);
@@ -310,25 +312,15 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 
 		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
-		$entity_service = Wordlift_Entity_Service::get_instance();
-
 		$entity_name = uniqid( 'entity', true );
 
-		$new_entity_uri = sprintf( '%s/%s/%s',
-			wl_configuration_get_redlink_dataset_uri(),
-			Wordlift_Entity_Service::TYPE_NAME,
-			wl_sanitize_uri_path( $entity_name )
-		);
+		$new_entity_uri = 'http://data.example.org/data/entity/entity-1';
 
 		// Create the first entity
 		$entity_id = wl_create_post( '', 'entity-1', $entity_name, 'draft', 'entity' );
+
 		// Check the new entity uri
 		$this->assertEquals( $new_entity_uri, wl_get_entity_uri( $entity_id ) );
-		// Check that the uri for a new entity contains a numeric suffix
-		$this->assertEquals(
-			$new_entity_uri . '_2',
-			Wordlift_Uri_Service::get_instance()->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME )
-		);
 
 	}
 
@@ -345,11 +337,7 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$entity_name = uniqid( 'entity', true );
 
-		$new_entity_uri = sprintf( '%s/%s/%s',
-			wl_configuration_get_redlink_dataset_uri(),
-			Wordlift_Entity_Service::TYPE_NAME,
-			wl_sanitize_uri_path( $entity_name )
-		);
+		$new_entity_uri = 'http://data.example.org/data/entity/entity-1';
 
 		// Create the first entity
 		$entity_id   = wl_create_post( '', 'entity-1', $entity_name, 'draft', 'entity' );
@@ -359,11 +347,6 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 
 		// Check the new entity uri
 		$this->assertEquals( $new_entity_uri, wl_get_entity_uri( $entity_id ) );
-		// Check that the uri for a new entity contains a numeric suffix
-		$this->assertEquals(
-			$new_entity_uri,
-			Wordlift_Uri_Service::get_instance()->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME, 'wl-thing' )
-		);
 
 	}
 
@@ -480,7 +463,10 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_996() {
 
-		\Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
+		// This test applies only to legacy URLs.
+		if ( apply_filters( 'wl_feature__enable__rel-item-id', false ) ) {
+			$this->markTestSkipped( 'This test should be revised based on the new Content_Service.' );
+		}
 
 		$post_id = $this->factory()->post->create( array(
 			'post_title' => 'Test 996'
@@ -490,13 +476,13 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$uri_1 = $this->entity_service->get_uri( $post_id );
 
-		$this->assertEquals( 1, preg_match( '|^https?://.*/test_996$|', $uri_1 ), "$uri_1 doesn't match expected value." );
+		$this->assertEquals( 'https://data.localdomain.localhost/dataset/post/test-996', $uri_1, "$uri_1 doesn't match expected value." );
 
 		update_post_meta( $post_id, WL_ENTITY_URL_META_NAME, '/test-post' );
 
 		$uri_2 = $this->entity_service->get_uri( $post_id );
 
-		$this->assertEquals( 1, preg_match( '|^https?://.*/test_996$|', $uri_2 ), "$uri_2 doesn't match expected value." );
+		$this->assertEquals( 'https://data.localdomain.localhost/dataset/post/test-996', $uri_2, "$uri_2 doesn't match expected value." );
 
 	}
 

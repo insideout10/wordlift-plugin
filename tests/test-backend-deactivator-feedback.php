@@ -28,24 +28,12 @@ class Wordlift_Deactivator_Feedback_Test extends Wordlift_Unit_Test_Case {
 	 */
 	private $deactivator_feedback;
 
-
-	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.19.0
-	 * @access protected
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	protected $configuration_service;
-
 	/**
 	 * {@inheritdoc}
 	 */
 	public function setUp() {
 		parent::setUp();
-
-		$this->configuration_service = $this->get_wordlift_test()->get_configuration_service();
-		$this->deactivator_feedback  = new Wordlift_Deactivator_Feedback( $this->configuration_service );
+		$this->deactivator_feedback  = new Wordlift_Deactivator_Feedback();
 
 	}
 
@@ -96,7 +84,7 @@ class Wordlift_Deactivator_Feedback_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_default_popup_markup_with_added_user_preferences() {
 		// Set the preference to yes, so we can test.
-		$this->configuration_service->set_diagnostic_preferences( 'yes' );
+		Wordlift_Configuration_Service::get_instance()->set_diagnostic_preferences( 'yes' );
 
 		// Reset the pagenow.
 		global $pagenow;
@@ -154,6 +142,6 @@ class Wordlift_Deactivator_Feedback_Test extends Wordlift_Unit_Test_Case {
 		$pagenow = 'plugins.php';
 
 		// Set the preference to yes, so we can test.
-		$this->configuration_service->set_diagnostic_preferences( 'yes' );
+		Wordlift_Configuration_Service::get_instance()->set_diagnostic_preferences( 'yes' );
 	}
 }

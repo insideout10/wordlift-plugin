@@ -12,23 +12,17 @@ class Config {
 	 * @var \Wordlift_Key_Validation_Service
 	 */
 	private $key_validation_service;
-	/**
-	 * @var \Wordlift_Configuration_Service
-	 */
-	private $configuration_service;
 
 	/**
 	 * Config constructor.
 	 *
 	 * @param $admin_setup \Wordlift_Admin_Setup
 	 * @param $key_validation_service \Wordlift_Key_Validation_Service
-	 * @param $configuration_service \Wordlift_Configuration_Service
 	 */
-	public function __construct( $admin_setup, $key_validation_service, $configuration_service ) {
+	public function __construct( $admin_setup, $key_validation_service ) {
 
 		$this->admin_setup            = $admin_setup;
 		$this->key_validation_service = $key_validation_service;
-		$this->configuration_service  = $configuration_service;
 		add_action( 'wp_ajax_nopriv_wl_config_plugin', array( $this, 'config' ) );
 
 	}
@@ -115,7 +109,7 @@ class Config {
 
 
 		// check if key is already configured, if yes then dont save settings.
-		if ( $this->configuration_service->get_key() ) {
+		if ( Wordlift_Configuration_Service::get_instance()->get_key() ) {
 			wp_send_json_error( __( 'Key already configured.', 'wordlift' ), 403 );
 
 			// key already configured

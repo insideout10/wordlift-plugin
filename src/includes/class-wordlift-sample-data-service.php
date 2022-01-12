@@ -139,15 +139,6 @@ class Wordlift_Sample_Data_Service {
 	private $entity_type_service;
 
 	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.12.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
 	 * The {@link Wordlift_User_Service} instance.
 	 *
 	 * @since  3.16.0
@@ -159,17 +150,28 @@ class Wordlift_Sample_Data_Service {
 	/**
 	 * Create a {@link Wordlift_Sample_Data_Service} instance.
 	 *
+	 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
+	 * @param \Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
+	 *
 	 * @since 3.12.0
 	 *
-	 * @param \Wordlift_Entity_Type_Service   $entity_type_service   The {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 * @param \Wordlift_User_Service          $user_service          The {@link Wordlift_User_Service} instance.
 	 */
-	function __construct( $entity_type_service, $configuration_service, $user_service ) {
+	protected function __construct( $entity_type_service, $user_service ) {
 
-		$this->entity_type_service   = $entity_type_service;
-		$this->configuration_service = $configuration_service;
-		$this->user_service          = $user_service;
+		$this->entity_type_service = $entity_type_service;
+		$this->user_service        = $user_service;
+
+	}
+
+	private static $instance = null;
+
+	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self( Wordlift_Entity_Type_Service::get_instance(), Wordlift_User_Service::get_instance() );
+		}
+
+		return self::$instance;
 	}
 
 	/**
@@ -190,7 +192,7 @@ class Wordlift_Sample_Data_Service {
 		add_post_meta( $attachment_id, '_wl_sample_data', 1, true );
 
 		// Get the dataset URI, used for replacements in the `post_content`.
-		$dataset_uri = $this->configuration_service->get_dataset_uri();
+		$dataset_uri = untrailingslashit( Wordlift_Configuration_Service::get_instance()->get_dataset_uri() );
 
 		// Create the author and get its id.
 		$author_id = $this->create_author();
@@ -231,13 +233,13 @@ class Wordlift_Sample_Data_Service {
 	/**
 	 * Create an author to bind to posts.
 	 *
+	 * @return int The {@link WP_User}'s id.
 	 * @since 3.16.0
 	 *
-	 * @return int The {@link WP_User}'s id.
 	 */
 	private function create_author() {
 
-		$user_id   = wp_create_user( 'wl-sample-data', wp_generate_password() );
+		$user_id        = wp_create_user( 'wl-sample-data', wp_generate_password() );
 		$author_post_id = wp_insert_post( array(
 			'post_type'  => 'entity',
 			'post_title' => 'WordLift Sample Data Person',
@@ -273,9 +275,10 @@ class Wordlift_Sample_Data_Service {
 	 * Remove the sample data of the specified type (e.g. `post`, `entity`, `attachment`)
 	 * from the local WordPress instance.
 	 *
+	 * @param string $type WordPress {@link WP_Post}'s type, e.g. `post`, `entity`, `attachment`.
+	 *
 	 * @since 3.12.0
 	 *
-	 * @param string $type WordPress {@link WP_Post}'s type, e.g. `post`, `entity`, `attachment`.
 	 */
 	private function delete_by_type( $type ) {
 
@@ -295,11 +298,11 @@ class Wordlift_Sample_Data_Service {
 	/**
 	 * Create a WordPress' attachment using the specified file.
 	 *
-	 * @since 3.12.0
-	 *
 	 * @param string $source The source file path.
 	 *
 	 * @return int WordPress' attachment's id.
+	 * @since 3.12.0
+	 *
 	 */
 	private function create_attachment_from_local_file( $source ) {
 

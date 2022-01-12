@@ -8,7 +8,7 @@ version: "3.7"
 
 services:
   db:
-    image: mysql:5.7
+    image: mysql:5.6
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_USER: wordpress
@@ -22,9 +22,9 @@ services:
     volumes:
       - ..:/app
     environment:
-      WORDLIFT_KEY: $WORDLIFT_KEY
       ACF_PRO_KEY: $ACF_PRO_KEY
       YOUTUBE_DATA_API_KEY: $YOUTUBE_DATA_API_KEY
       VIMEO_API_KEY: $VIMEO_API_KEY
       WORDPRESS_VERSION: $WORDPRESS_VERSION
+      PHP_IDE_CONFIG: serverName=phpunit
     tty: true

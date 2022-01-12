@@ -34,7 +34,8 @@ class Entity_Type_Change_Handler {
 
 		$this->entity_type_service = $entity_type_service;
 
-		add_action( 'set_object_terms', array( $this, 'set_object_terms' ), 10, 4 );
+		// Takes a performance toll, do we really need it?
+		//	add_action( 'set_object_terms', array( $this, 'set_object_terms' ), 10, 4 );
 
 	}
 

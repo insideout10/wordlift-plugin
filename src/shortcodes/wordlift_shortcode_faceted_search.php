@@ -139,20 +139,8 @@ function wl_shortcode_faceted_search_origin( $request ) {
 
 	// Populate $post_results
 
-	$filtered_posts = ( empty( $filtering_entity_uris ) ) ?
-		$referencing_posts :
-		Wordlift_Relation_Service::get_instance()->get_article_subjects(
-			wl_get_entity_post_ids_by_uris( $filtering_entity_uris ),
-			'*',
-			null,
-			null,
-			array(),
-			null,
-			$referencing_post_ids
-		);
-
-	if ( $filtered_posts ) {
-		foreach ( $filtered_posts as $post_obj ) {
+	if ( $referencing_posts ) {
+		foreach ( $referencing_posts as $post_obj ) {
 
 			/**
 			 * Use the thumbnail.
