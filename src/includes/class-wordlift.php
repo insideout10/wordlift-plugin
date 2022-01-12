@@ -635,7 +635,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.33.8';
+		$this->version     = '3.34.0';
 		$this->load_dependencies();
 		$this->set_locale();
 
