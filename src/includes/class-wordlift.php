@@ -620,7 +620,6 @@ class Wordlift {
 	private $webhook_loader;
 	// Experimental code ents here
 
-
 	/**
 	 * Define the core functionality of the plugin.
 	 *
