@@ -196,6 +196,14 @@ function run_wordlift() {
 		require_once plugin_dir_path( __FILE__ ) . 'wordlift/dataset/index.php';
 		require_once plugin_dir_path( __FILE__ ) . 'wordlift/shipping-data/index.php';
 
+		/*
+		 * Require the Entity annotation cleanup module.
+		 *
+		 * @since 3.34.1
+		 *
+		 */
+		require_once plugin_dir_path( __FILE__ ) . 'wordlift/cleanup/index.php';
+
 	} );
 
 }
