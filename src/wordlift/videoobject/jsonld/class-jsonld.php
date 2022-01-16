@@ -35,7 +35,7 @@ class Jsonld {
 		}
 		$current_item = $jsonld[0];
 
-		if ( ! array_key_exists( '@type', $current_item ) ) {
+		if ( ! is_array( $current_item ) || ! array_key_exists( '@type', $current_item ) ) {
 			// Cant determine type return early.
 			return $jsonld;
 		}
