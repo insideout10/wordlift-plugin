@@ -48,6 +48,9 @@ class Wordlift_Admin_Country_Select_Element_Ajax_Test extends Wordlift_Ajax_Unit
 	 * @since 3.18.0
 	 */
 	public function test_get_options_html_unknown_lang() {
+
+		$this->markTestSkipped( 'We include all countries as of 3.34.0' );
+
 		$_POST['lang']  = 'zzz';
 		$_POST['value'] = 'uk';
 
@@ -56,6 +59,7 @@ class Wordlift_Admin_Country_Select_Element_Ajax_Test extends Wordlift_Ajax_Unit
 		} catch ( WPAjaxDieContinueException $e ) {
 		}
 		$response = json_decode( $this->_last_response, true );
+
 		// Since an unknown language is posted, there would be no countries returned.
 		$this->assertEquals( '', $response['data'] );
 
