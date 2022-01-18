@@ -9,14 +9,18 @@
 
 namespace WordLift\Cleanup;
 
-use Wordlift\Cleanup\Post_Db_Handler;
-
 class Post_Handler {
 
 	/**
 	 * @var Post_Handler
 	 */
 	private static $instance = null;
+
+	/**
+	 * @var Post_Content_Helper
+	 */
+	private $post_content_helper;
+
 	/**
 	 * @var Post_Db_Handler
 	 */
@@ -25,8 +29,9 @@ class Post_Handler {
 	/**
 	 * Entity_Annotation_Cleanup_Post_Handler constructor.
 	 */
-	private function __construct( $post_db_handler) {
-		$this->post_db_handler = $post_db_handler;
+	private function __construct( $post_content_helper, $post_db_handler ) {
+		$this->post_content_helper = $post_content_helper;
+		$this->post_db_handler     = $post_db_handler;
 	}
 
 	/**
@@ -35,6 +40,7 @@ class Post_Handler {
 	public static function get_instance() {
 		if ( self::$instance === null ) {
 			self::$instance = new Post_Handler(
+				new Post_Content_Helper(),
 				new Post_Db_Handler()
 			);
 		}
@@ -50,6 +56,11 @@ class Post_Handler {
 	 */
 	public function process_post( $post_id ) {
 		$post_content = get_post( $post_id )->post_content;
+
+		// Check if local entity exists, and perform replacement.
+		$post_content = $this->post_content_helper->search_replace_relative_url( $post_content );
+
+		// If local entity doesn't exist, remove annotations.
 		$pattern = '|<span\s+id="([^"]+)"\s+class="textannotation(?=[\s"])[^"]*">(.*?)</span>|';
 
 		// Match pattern against post content.
@@ -59,15 +70,13 @@ class Post_Handler {
 		foreach ( $matches as $match ) {
 			// Perform the replacement;
 			$post_content = preg_replace( $pattern, '$2', $post_content );
-		}
 
+		}
+		var_dump( $post_content );
 		// Finally update db.
 		$this->post_db_handler->update_post_content(
 			$post_content,
 			$post_id
 		);
-
 	}
-
 }
-
