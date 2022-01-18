@@ -324,7 +324,7 @@ class Wordlift_Countries {
 	/**
 	 * Parse_country_code_json_file_to_array.
 	 *
-	 * @param  string $file_name The json file name where the supported country
+	 * @param string $file_name The json file name where the supported country
 	 * and languages are present.
 	 *
 	 * @return array An Array having two maps, country_code_language_map and country_code_name_map.
@@ -351,21 +351,24 @@ class Wordlift_Countries {
 		}
 		$result['country_code_language_map'] = $country_code_language_map;
 		$result['country_code_name_map']     = $country_code_name_map;
+
 		return $result;
 	}
+
 	/**
 	 * Get the list of WordLift's supported country codes from json file mapping country_code => languages.
-	 *
-	 * @since 3.22.5.1
 	 *
 	 * @param string $file_name The json file where the supported country codes and language_codes are stored.
 	 *
 	 * @return array An Array having two maps, country_code_language_map and country_code_name_map.
+	 * @since 3.22.5.1
+	 *
 	 */
 	public static function get_codes_from_json_file( $file_name ) {
 		if ( file_exists( $file_name ) ) {
 			return self::parse_country_code_json_file_to_array( $file_name );
 		}
+
 		return array(
 			'country_code_name_map'     => array(),
 			'country_code_language_map' => array(),
@@ -375,21 +378,22 @@ class Wordlift_Countries {
 	/**
 	 * Returns the country language pairs.
 	 *
+	 * @return array The country language pairs.
 	 * @since 3.18.0
 	 *
-	 * @return array The country language pairs.
 	 */
 	public static function get_codes() {
 		return self::$codes;
 	}
+
 	/**
 	 * Populate self::codes and self::country_codes if not done before.
-	 *
-	 * @since 3.22.5.1
 	 *
 	 * @param string $file_name The json file where the supported country codes and language_codes are stored.
 	 *
 	 * @return void
+	 * @since 3.22.5.1
+	 *
 	 */
 	private static function lazy_populate_codes_and_country_codes_array( $file_name ) {
 		if ( null === $file_name ) {
@@ -407,9 +411,9 @@ class Wordlift_Countries {
 	/**
 	 * Reset codes_and_country_codes static variable, used for testing
 	 *
+	 * @return void
 	 * @since 3.22.5.1
 	 *
-	 * @return void
 	 */
 	public static function reset_codes_and_country_codes() {
 		self::$codes         = array();
@@ -420,20 +424,25 @@ class Wordlift_Countries {
 	/**
 	 * Get the list of WordLift's supported countries in an array with country code => country name pairs.
 	 *
-	 * @since 3.18.0
-	 *
 	 * @param string|false $lang Optional. The language code we are looking for. Default `any`.
 	 *
-	 * @param string|null  $file_name Optional. The json file containing country codes
+	 * @param string|null $file_name Optional. The json file containing country codes
 	 *  and language data.
 	 *
 	 * @return array An array with country code => country name pairs.
+	 * @since 3.18.0
+	 *
 	 */
 	public static function get_countries( $lang = false, $file_name = null ) {
+
 		// populate the codes and countries array if it is not done before.
 		self::lazy_populate_codes_and_country_codes_array( $file_name );
+
 		// Lazily load the countries.
-		$lang_key = false === $lang ? 'any' : $lang;
+//		$lang_key = false === $lang ? 'any' : $lang;
+		$lang_key = 'any';
+		$lang     = '';
+
 		if ( isset( self::$countries[ $lang_key ] ) ) {
 			return self::$countries[ $lang_key ];
 		}
@@ -467,12 +476,12 @@ class Wordlift_Countries {
 	/**
 	 * Returns the country for a country code. This function is a clone of WP's function provided in `ms.php`.
 	 *
-	 * @since 3.18.0
-	 *
 	 * @param string $code Optional. The two-letter country code. Default empty.
 	 *
 	 * @return string The country corresponding to $code if it exists. If it does not exist,
 	 *                then the first two letters of $code is returned.
+	 * @since 3.18.0
+	 *
 	 */
 	private static function format_country_code( $code = '' ) {
 
@@ -480,10 +489,11 @@ class Wordlift_Countries {
 		/**
 		 * Filters the country codes.
 		 *
+		 * @param array $country_codes Key/value pair of country codes where key is the short version.
+		 * @param string $code A two-letter designation of the country.
+		 *
 		 * @since 3.18.0
 		 *
-		 * @param array  $country_codes Key/value pair of country codes where key is the short version.
-		 * @param string $code A two-letter designation of the country.
 		 */
 		$country_codes = apply_filters( 'country_code', self::$country_codes, $code );
 
@@ -493,34 +503,34 @@ class Wordlift_Countries {
 	/**
 	 * Get a flag URL.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param string $country_code The country code.
 	 *
 	 * @return string|null The flag url or null if not available.
+	 * @since 3.20.0
+	 *
 	 */
 	public static function get_flag_url( $country_code ) {
 
 		// Bail out if we don't have the flag.
 		if ( ! isset( self::$country_flags[ $country_code ] )
-			|| is_null( self::$country_flags[ $country_code ] ) ) {
+		     || is_null( self::$country_flags[ $country_code ] ) ) {
 			return null;
 		}
 
 		return plugin_dir_url( dirname( __FILE__ ) )
-			. 'images/flags/16/'
-			. self::$country_flags[ $country_code ]
-			. '.png';
+		       . 'images/flags/16/'
+		       . self::$country_flags[ $country_code ]
+		       . '.png';
 	}
 
 	/**
 	 * Get a country name given a country code.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param string $country_code The 2-letters country code.
 	 *
 	 * @return null|string The country name (in English) or null if not found.
+	 * @since 3.20.0
+	 *
 	 */
 	public static function get_country_name( $country_code ) {
 

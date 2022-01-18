@@ -9,6 +9,8 @@
 
 namespace Wordlift\Api_Data;
 
+use Wordlift_Configuration_Service;
+
 class Api_Data_Hooks {
 
 	const META_KEY = 'wl_schema_url';

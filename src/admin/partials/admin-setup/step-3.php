@@ -8,7 +8,7 @@
 		<?php
 		$grab_a_key_link_html = sprintf(
 			'<a target="_blank" href="%s">%s</a>',
-			esc_attr__( 'https://wordlift.io/pricing', 'wordlift' ),
+			esc_attr__( 'https://wordlift.io/pricing/?utm_campaign=wl_activation_grab_the_key', 'wordlift' ),
 			esc_html__( 'grab a key', 'wordlift' )
 		);
 

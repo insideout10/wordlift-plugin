@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   db:
-    image: mysql:5.6
+    image: mariadb:10.2
     volumes:
       - db-data-${WORDPRESS_VERSION:-5.5.0}:/var/lib/mysql
     environment:
@@ -13,7 +13,7 @@ services:
 
   wordpress:
 #    image: wordpress:${WORDPRESS_VERSION:-5.5.0}
-    image: ziodave/wordpress-xdebug:5.6-1
+    image: ziodave/wordpress-xdebug:5.8.3-php8.0
     depends_on:
       - db
     volumes:
@@ -22,7 +22,7 @@ services:
       - ../advanced-custom-fields-for-schema-org:/var/www/html/wp-content/plugins/advanced-custom-fields-for-schema-org
       - ../woocommerce:/var/www/html/wp-content/plugins/woocommerce
     environment:
-      WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING: "true"
+      XDEBUG_CONFIG: ide_key=wordpress
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: password
@@ -56,13 +56,10 @@ services:
         # Enable WordLift debug.
         define( 'WL_DEBUG', WP_DEBUG );
         define( 'WL_LOG_LEVEL', 0 );
-
-        # Enable Dev API
-        define( 'WORDLIFT_API_URL', 'https://api-dev.wordlift.io' );
     entrypoint: /var/www/html/wp-content/plugins/wordlift/.docker-custom-entrypoint.sh
 
   nginx:
-    image: nginx:1.17
+    image: nginx:1.21.5
     depends_on:
       - wordpress
     ports:
@@ -85,6 +82,11 @@ services:
 #      - ../wordlift-batch-analysis:/var/www/html/wp-content/plugins/wordlift-batch-analysis
 #      - ../advanced-custom-fields-for-schema-org:/var/www/html/wp-content/plugins/advanced-custom-fields-for-schema-org
 #      - ../wordlift-entity-redirect:/var/www/html/wp-content/plugins/wordlift-entity-redirect
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: password
+      WORDPRESS_DB_NAME: wordpress
     tty: true
 
 volumes:

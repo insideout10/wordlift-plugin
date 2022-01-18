@@ -106,13 +106,14 @@ class Wordlift_Api_Service {
 		@set_time_limit( 90 );
 
 		// Get the response value.
+		$key      = Wordlift_Configuration_Service::get_instance()->get_key();
 		$response = wp_remote_post( $url, array(
 			'timeout'    => 60,
 			'user-agent' => User_Agent::get_user_agent(),
 			'headers'    => array(
 				'Content-Type'    => $content_type,
-				'X-Authorization' => Wordlift_Configuration_Service::get_instance()->get_key(),
-				'Authorization'   => "Key {Wordlift_Configuration_Service::get_instance()->get_key()}",
+				'X-Authorization' => $key,
+				'Authorization'   => "Key $key",
 				/*
 				 * This is required to avoid CURL receiving 502 Bad Gateway errors.
 				 *
