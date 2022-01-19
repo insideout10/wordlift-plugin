@@ -53,17 +53,24 @@ class Wordlift_Dashboard_Service {
 	/**
 	 * Create a Wordlift_Entity_List_Service.
 	 *
-	 * @param \Wordlift_Rating_Service $rating_service A {@link Wordlift_Rating_Service} instance.
-	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
-	 *
 	 * @since 3.4.0
 	 *
 	 */
-	public function __construct( $rating_service, $entity_service ) {
+	protected function __construct() {
 
-		$this->rating_service = $rating_service;
-		$this->entity_service = $entity_service;
+		$this->rating_service = Wordlift_Rating_Service::get_instance();
+		$this->entity_service = Wordlift_Entity_Service::get_instance();
 
+	}
+
+	private static $instance;
+
+	public static function get_instance() {
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
 	}
 
 	/**

@@ -61,6 +61,8 @@ class Shipping_Method {
 		$option = get_option( 'wpsso_options' );
 
 		if ( empty( $option["{$prefix}_unit_code"] )
+		     || ! isset( $option["{$prefix}_minimum"] )
+		     || ! isset( $option["{$prefix}_maximum"] )
 		     || ! is_numeric( $option["{$prefix}_minimum"] )
 		     || ! is_numeric( $option["{$prefix}_maximum"] ) ) {
 			return;

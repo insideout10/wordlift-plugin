@@ -634,7 +634,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.34.1';
+		$this->version     = '3.34.2';
 		$this->load_dependencies();
 		$this->set_locale();
 
@@ -1097,7 +1097,7 @@ class Wordlift {
 			$uri_service = new Wordlift_Uri_Service( $GLOBALS['wpdb'] );
 
 			// Create the entity rating service.
-			$that->rating_service = new Wordlift_Rating_Service( Wordlift_Entity_Type_Service::get_instance(), $that->notice_service );
+			$that->rating_service = Wordlift_Rating_Service::get_instance();
 
 			// Create entity list customization (wp-admin/edit.php).
 			$that->entity_list_service = new Wordlift_Entity_List_Service( $that->rating_service );

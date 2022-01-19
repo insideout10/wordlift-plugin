@@ -114,19 +114,26 @@ class Wordlift_Rating_Service {
 	/**
 	 * Create a {@link Wordlift_Rating_Service} instance.
 	 *
-	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_Notice_Service $notice_service A {@link Wordlift_Notice_Service} instance.
-	 *
 	 * @since 3.10.0
 	 *
 	 */
-	public function __construct( $entity_type_service, $notice_service ) {
+	protected function __construct() {
 
-		$this->entity_type_service = $entity_type_service;
-		$this->notice_service      = $notice_service;
+		$this->entity_type_service = Wordlift_Entity_Type_Service::get_instance();
+		$this->notice_service      = Wordlift_Notice_Service::get_instance();
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Rating_Service' );
 
+	}
+
+	private static $instance;
+
+	public static function get_instance() {
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
 	}
 
 	/**
