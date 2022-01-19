@@ -3,6 +3,7 @@
 namespace Wordlift\Content\Wordpress;
 
 use Wordlift\Content\Content;
+use Wordlift\Object_Type_Enum;
 use WP_Post;
 use WP_Term;
 use WP_User;
@@ -32,6 +33,22 @@ class Wordpress_Content implements Content {
 	 */
 	function get_bag() {
 		return $this->bag;
+	}
+
+	function get_id() {
+		switch ( get_class( $this->bag ) ) {
+			case 'WP_Post':
+			case 'WP_User':
+				return $this->bag->ID;
+			case 'WP_Term':
+				return $this->bag->term_id;
+		}
+
+		return null;
+	}
+
+	function get_object_type_enum() {
+		return Object_Type_Enum::from_wordpress_instance( $this->bag );
 	}
 
 }

@@ -27,7 +27,7 @@ class Term_Entity_Provider implements Entity_Provider {
 
 	public function get_entity( $uri ) {
 
-		$content = Wordpress_Term_Content_Legacy_Service::get_instance()->get_by_entity_id( $uri );
+		$content = Wordpress_Term_Content_Legacy_Service::get_instance()->get_by_entity_id_or_same_as( $uri );
 
 		if ( ! isset( $content ) ) {
 			return false;

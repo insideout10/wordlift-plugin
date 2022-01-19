@@ -98,6 +98,7 @@ class Wordlift_Post_Adapter {
 
 		$object_link_service = Object_Link_Provider::get_instance();
 		$permalink           = $object_link_service->get_permalink( $post_id, $object_type );
+
 		/**
 		 * WordPress 4.4 doesn't support meta queries for terms, therefore we only support post permalinks here.
 		 *

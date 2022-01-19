@@ -10,6 +10,9 @@
 
 namespace Wordlift\Analysis\Entity_Provider;
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\Wordpress\Wordpress_Term_Content_Legacy_Service;
+
 class Post_Entity_Provider implements Entity_Provider {
 
 	/**
@@ -33,12 +36,13 @@ class Post_Entity_Provider implements Entity_Provider {
 
 
 	public function get_entity( $uri ) {
-		$entity = $this->entity_uri_service->get_entity( $uri );
+		$content = Wordpress_Content_Service::get_instance()->get_by_entity_id_or_same_as( $uri );
 
-		if ( null === $entity ) {
+		if ( ! isset( $content ) || ! is_a( $content->get_bag(), '\WP_Post' ) ) {
 			return false;
 		}
 
+		$entity = $content->get_bag();
 		$type   = $this->entity_type_service->get( $entity->ID );
 		$images = $this->post_image_storage->get( $entity->ID );
 

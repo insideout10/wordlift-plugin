@@ -45,4 +45,18 @@ class Object_Type_Enum {
 		return 4;
 	}
 
+	public static function from_wordpress_instance( $instance ) {
+
+		switch ( get_class( $instance ) ) {
+			case 'WP_Post':
+				return self::POST;
+			case 'WP_Term':
+				return self::TERM;
+			case 'WP_User':
+				return self::USER;
+		}
+
+		return null;
+	}
+
 }
