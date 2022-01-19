@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.34.1 (2022-01-19) =
+
+* Fix: Do not break if when looking for an entity outside of the site scope.
+
 = 3.34.0 (2022-01-12) =
 
 * Enhancement [#1521](https://github.com/insideout10/wordlift-plugin/issues/1521): We improved performance by moving several fields (entity URI, JSON-LD hash and last sync) away from the crowded post-meta table.
