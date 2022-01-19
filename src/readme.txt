@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.34.2 (2022-01-19) =
+
+* Fix: Error in dashboard and warnings in logs.
+
 = 3.34.1 (2022-01-19) =
 
 * Fix: Do not break if when looking for an entity outside of the site scope.

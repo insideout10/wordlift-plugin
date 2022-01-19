@@ -51,7 +51,7 @@ class Wordlift_Tinymce_Adapter {
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/1122
 		 */
-		if ( get_current_screen()->base === 'upload' ) {
+		if ( isset( get_current_screen()->base ) && get_current_screen()->base === 'upload' ) {
 			return $plugins;
 		}
 
