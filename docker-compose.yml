@@ -72,7 +72,7 @@ services:
     command: /bin/bash -c "envsubst '$$NGINX_HOST $$NGINX_SERVER_NAME' < /etc/nginx/conf.d/wordpress.template > /etc/nginx/conf.d/wordpress.conf && nginx -g 'daemon off;'"
 
   cli:
-    image: wordpress:cli-2.2
+    image: wordpress:cli-2.5-php8.0
     depends_on:
       - db
     user: xfs

@@ -8,6 +8,8 @@
 namespace Wordlift\Link;
 
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\Wordpress\Wordpress_Term_Content_Legacy_Service;
 use Wordlift_Entity_Service;
 use Wordlift_Schema_Service;
 
@@ -17,16 +19,10 @@ class Post_Link extends Default_Link {
 	 * @var \Wordlift_Entity_Service
 	 */
 	private $entity_service;
-	/**
-	 * @var \Wordlift_Entity_Uri_Service
-	 */
-	private $entity_uri_service;
-
 
 	public function __construct() {
 		parent::__construct();
 		$this->entity_service     = Wordlift_Entity_Service::get_instance();
-		$this->entity_uri_service = \Wordlift_Entity_Uri_Service::get_instance();
 	}
 
 
@@ -40,12 +36,14 @@ class Post_Link extends Default_Link {
 	}
 
 	public function get_id( $uri ) {
-		$entity = $this->entity_uri_service->get_entity( $uri );
-		if ( ! $entity ) {
+		$content = Wordpress_Content_Service::get_instance()
+		                                    ->get_by_entity_id_or_same_as( $uri );
+
+		if ( ! isset( $content ) || ! is_a( $content->get_bag(), '\WP_Post' ) ) {
 			return false;
 		}
 
-		return $entity->ID;
+		return $content->get_bag()->ID;
 	}
 
 	public function get_synonyms( $id ) {

@@ -9,6 +9,7 @@
  * @package Wordlift
  */
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Link\Link_Builder;
 use Wordlift\Link\Object_Link_Provider;
 use Wordlift\Object_Type_Enum;
@@ -172,23 +173,16 @@ class Wordlift_Content_Filter_Service {
 		$uri       = $matches[3];
 		$label     = $matches[4];
 
+		$content_service = Wordpress_Content_Service::get_instance();
+		$content         = $content_service->get_by_entity_id_or_same_as( $uri );
 
-		$object_type = $this->object_link_provider->get_object_type( $uri );
-		/**
-		 * Enabled support for terms.
-		 * @since 3.31.2
-		 */
-		$supported_object_types = array( Object_Type_Enum::POST, Object_Type_Enum::TERM );
-
-		if ( ! in_array( $object_type, $supported_object_types ) ) {
-			// Since we cant find the object type for the entity uri
-			// it doesnt seem to exist on the local dataset, so return
-			// the label without linking.
+		// If no content is found, return the label, that is _remove the annotation_.
+		if ( ! isset( $content ) ) {
 			return $label;
 		}
 
-		$object_id = $this->object_link_provider->get_object_id_by_type( $uri, $object_type );
-
+		$object_id                   = $content->get_id();
+		$object_type                 = $content->get_object_type_enum();
 		$object_id_unique_identifier = $object_type . "_" . $object_id;
 
 
