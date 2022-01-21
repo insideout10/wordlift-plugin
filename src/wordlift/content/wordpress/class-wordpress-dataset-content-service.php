@@ -13,6 +13,8 @@ class Wordpress_Dataset_Content_Service implements Content_Service {
 	 */
 	private $delegates = array();
 
+	private $cache = array();
+
 	protected function __construct() {
 
 	}
@@ -45,12 +47,20 @@ class Wordpress_Dataset_Content_Service implements Content_Service {
 	}
 
 	function get_by_entity_id( $uri ) {
+
+		if ( array_key_exists( $uri, $this->cache ) ) {
+			return $this->cache[ $uri ];
+		}
+
 		foreach ( $this->delegates as $delegate ) {
 			$content = $delegate->get_by_entity_id_or_same_as( $uri );
 			if ( isset( $content ) ) {
+				$this->cache[ $uri ] = $content;
+
 				return $content;
 			}
 		}
+		$this->cache[ $uri ] = null;
 
 		return null;
 	}
@@ -60,12 +70,17 @@ class Wordpress_Dataset_Content_Service implements Content_Service {
 	 * @throws Exception
 	 */
 	function get_by_entity_id_or_same_as( $uri ) {
+		if ( array_key_exists( $uri, $this->cache ) ) {
+			return $this->cache[ $uri ];
+		}
 		foreach ( $this->delegates as $delegate ) {
 			$content = $delegate->get_by_entity_id_or_same_as( $uri );
 			if ( isset( $content ) ) {
+				$this->cache[ $uri ] = $content;
 				return $content;
 			}
 		}
+		$this->cache[ $uri ] = null;
 
 		return null;
 	}
