@@ -173,8 +173,16 @@ class Wordlift_Content_Filter_Service {
 		$uri       = $matches[3];
 		$label     = $matches[4];
 
+		$link = - 1 < strpos( $css_class, 'wl-link' );
+
+		// If the entity should not be linked and link by default is also disabled.
+		if ( ! $this->is_link_by_default && ! $link ) {
+			return $label;
+		}
+
 		$content_service = Wordpress_Content_Service::get_instance();
 		$content         = $content_service->get_by_entity_id_or_same_as( $uri );
+
 
 		// If no content is found, return the label, that is _remove the annotation_.
 		if ( ! isset( $content ) ) {
@@ -189,7 +197,7 @@ class Wordlift_Content_Filter_Service {
 		$no_link = - 1 < strpos( $css_class, 'wl-no-link' )
 		           // Do not link if already linked.
 		           || $this->is_already_linked( $object_id_unique_identifier );
-		$link    = - 1 < strpos( $css_class, 'wl-link' );
+
 
 		// Don't link if links are disabled and the entity is not link or the
 		// entity is do not link.
