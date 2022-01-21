@@ -17,6 +17,8 @@ class Wordpress_Post_Content_Table_Service extends Abstract_Wordpress_Content_Se
 
 	private static $instance = null;
 
+	private $cache = array();
+
 	/**
 	 * The singleton instance. We use this only to provide this instance to those classes where we have no access to
 	 * the constructor.
@@ -49,6 +51,10 @@ class Wordpress_Post_Content_Table_Service extends Abstract_Wordpress_Content_Se
 
 		$rel_uri = $this->make_relative( $uri );
 
+		if ( array_key_exists( $rel_uri, $this->cache ) ) {
+			return $this->cache[ $rel_uri ];
+		}
+
 		global $wpdb;
 		$row = $wpdb->get_row( $wpdb->prepare( "
 			SELECT content_type, content_id
@@ -56,11 +62,16 @@ class Wordpress_Post_Content_Table_Service extends Abstract_Wordpress_Content_Se
 			WHERE rel_uri = %s
 		", $rel_uri ) );
 
-		if ( ! isset( $row ) || Object_Type_Enum::POST !== (int) $row->content_type ) {
-			return null;
-		}
 
-		return new Wordpress_Content( get_post( $row->content_id ) );
+		if ( ! isset( $row ) || Object_Type_Enum::POST !== (int) $row->content_type ) {
+			$result = null;
+		}
+		else {
+			$result = new Wordpress_Content( get_post( $row->content_id ) );
+		}
+		$this->cache[ $rel_uri ] = $result;
+
+		return $result;
 	}
 
 	/**
