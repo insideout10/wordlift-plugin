@@ -81,6 +81,7 @@ class Analysis_Response_Ops {
 
 		// Get the URIs.
 		$uris     = array_keys( get_object_vars( $this->json->entities ) );
+
 		$mappings = $this->entity_helper->map_many_to_local( $uris );
 
 		foreach ( $mappings as $external_uri => $internal_uri ) {

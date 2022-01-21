@@ -85,13 +85,23 @@ class Wordpress_Post_Content_Table_Service extends Abstract_Wordpress_Content_Se
 		if ( ! $this->is_absolute( $uri ) || $this->is_internal( $uri ) ) {
 			return $this->get_by_entity_id( $uri );
 		}
-		$cached_uri_service = \Wordlift_Entity_Uri_Service::get_instance();
-		$target_entity      = $cached_uri_service->get_entity( $uri );
-		$posts              = array();
+		// Look in sameAs.
+		$query_args = array(
+			// See https://github.com/insideout10/wordlift-plugin/issues/654.
+			'ignore_sticky_posts' => 1,
+			'posts_per_page'      => 1,
+			'post_status'         => 'any',
+			'post_type'           => Wordlift_Entity_Service::valid_entity_post_types(),
+			'meta_query'          => array(
+				array(
+					'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
+					'value'   => $uri,
+					'compare' => '=',
+				)
+			),
+		);
 
-		if ( $target_entity ) {
-			$posts[] = $target_entity;
-		}
+		$posts = get_posts( $query_args );
 
 		// Get the current post or allow 3rd parties to provide a replacement.
 		$post = current( $posts ) ?: apply_filters( 'wl_content_service__post__not_found', null, $uri );
