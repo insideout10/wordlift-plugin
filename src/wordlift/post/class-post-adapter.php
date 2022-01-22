@@ -335,7 +335,15 @@ class Post_Adapter {
 	private function get_first_matching_entity_by_uri( $uris ) {
 
 		foreach ( $uris as $uri ) {
-			$existing_entity = Wordpress_Content_Service::get_instance()->get_by_entity_id_or_same_as( $uri )->get_bag();
+
+			$content = Wordpress_Content_Service::get_instance()->get_by_entity_id_or_same_as( $uri );
+
+			if ( ! $content ) {
+				continue;
+			}
+
+			$existing_entity = $content->get_bag();
+
 			if ( is_a( $existing_entity, 'WP_Post' ) ) {
 				return $existing_entity;
 			}
