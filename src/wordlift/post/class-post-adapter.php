@@ -27,6 +27,10 @@ class Post_Adapter {
 	 * @var \Wordlift_Log_Service A {@link Wordlift_Log_Service} logging instance.
 	 */
 	private $log;
+	/**
+	 * @var \Wordlift_Cached_Entity_Uri_Service|Wordlift_Entity_Uri_Service|null
+	 */
+	private $entity_uri_service;
 
 	public function __construct() {
 
@@ -36,7 +40,7 @@ class Post_Adapter {
 		}
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
-
+		$this->entity_uri_service = \Wordlift_Entity_Uri_Service::get_instance();
 		add_action( 'init', array( $this, 'init' ) );
 		add_filter( 'wp_insert_post_data', array( $this, 'wp_insert_post_data' ), 10, 2 );
 
@@ -336,7 +340,7 @@ class Post_Adapter {
 	private function get_first_matching_entity_by_uri( $uris ) {
 
 		foreach ( $uris as $uri ) {
-			$existing_entity = Wordpress_Content_Service::get_instance()->get_by_entity_id( $uri );
+			$existing_entity = $this->entity_uri_service->get_entity( $uri );
 			if ( is_a( $existing_entity, 'WP_Post' ) ) {
 				return $existing_entity;
 			}
