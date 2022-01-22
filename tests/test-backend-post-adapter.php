@@ -9,6 +9,8 @@
  * @subpackage Wordlift/tests
  */
 
+use Wordlift\Post\Post_Adapter;
+
 /**
  * Define the Post_Adapter_Test.
  *
@@ -161,6 +163,47 @@ class Post_Adapter_Test extends Wordlift_Unit_Test_Case {
 			'Annotation 1',
 		), $result, 'Expect an array with 2 labels.' );
 
+	}
+
+	public function test_should_not_duplicate_the_entities() {
+
+		$post_content = <<<EOF
+<!-- wp:wordlift/classification {"entities":[{"annotations":{"urn:enhancement-19959e42-cda5-4d75-bcd5-e4267010be53":{"start":1267,"end":1277,"text":"en passant"},"urn:enhancement-c874e21b-d69e-4aca-a4b4-3a856db4427e":{"start":148,"end":158,"text":"in passing"},"urn:enhancement-95e04613-9daf-4045-a1ae-50440c9d6ff1":{"start":797,"end":807,"text":"in passing"},"urn:enhancement-22308ee5-e96f-461e-9529-16ec003906c5":{"start":1131,"end":1141,"text":"En passant"},"urn:enhancement-18b49ecf-f6d2-4581-9492-6cd1da49f79f":{"start":956,"end":966,"text":"en passant"},"urn:enhancement-067a2a85-58aa-4c52-b0eb-84e294bcf445":{"start":12,"end":22,"text":"En passant"}},"description":"En passant (from ) is a move in chess. It is a special pawn capture, that can only occur immediately after a pawn moves two ranks forward from its starting position, and an enemy pawn could have captured it had the pawn moved only one square forward. The opponent captures the just-moved pawn \u0022as it passes\u0022 through the first square. The resulting position is the same as if the pawn had moved only one square forward and the enemy pawn had captured it normally. The en passant capture must be made at the very next turn, or the right to do so is lost. It is the only occasion in chess in which a piece is captured but is not replaced on its square by the capturing piece. Like any other move, if an en passant capture is the only legal move available, it must be made.  En passant capture is a common theme in chess compositions. The en passant capture rule was added in the 15th century when the rule that gave pawns an initial double-step move was introduced. It prevents a pawn from using the two-square advance to pass an adjacent enemy pawn without the risk of being captured.","id":"http://dbpedia.org/resource/En_passant","label":"En passant","mainType":"thing","occurrences":["urn:enhancement-067a2a85-58aa-4c52-b0eb-84e294bcf445","urn:enhancement-c874e21b-d69e-4aca-a4b4-3a856db4427e","urn:enhancement-95e04613-9daf-4045-a1ae-50440c9d6ff1","urn:enhancement-18b49ecf-f6d2-4581-9492-6cd1da49f79f","urn:enhancement-22308ee5-e96f-461e-9529-16ec003906c5","urn:enhancement-19959e42-cda5-4d75-bcd5-e4267010be53"],"sameAs":["http://de.dbpedia.org/resource/En_passant"],"types":["thing"]}]} /-->
+
+<!-- wp:paragraph -->
+<p><em><strong><span id="urn:enhancement-067a2a85-58aa-4c52-b0eb-84e294bcf445" class="textannotation disambiguated wl-thing" itemid="http://dbpedia.org/resource/En_passant">En passant</span></strong></em> (<small>F</small></p>
+<!-- /wp:paragraph -->
+EOF;
+		$post_adapter = new Post_Adapter();
+
+		// Save once.
+		$data = array(
+			'post_content' => $post_content,
+			'post_status'  => 'publish'
+		);
+
+		$post_adapter->wp_insert_post_data(
+			$data,
+			array()
+		);
+
+		// we should have 1 entity in table.
+		$posts = get_posts( array( 'post_type' => 'entity' ) );
+
+
+		$this->assertCount( 1, $posts
+			, 'One entity should be present on the table' );
+
+
+		// Save again.
+		$post_adapter->wp_insert_post_data(
+			$data,
+			array()
+		);
+
+		// we should have 1 entity in table, there should be no duplication.
+		$this->assertCount( 1, get_posts( array( 'post_type' => 'entity' ) )
+			, 'One entity should be present on the table' );
 	}
 
 }
