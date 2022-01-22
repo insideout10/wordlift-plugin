@@ -144,8 +144,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.34.3 (2022-01-22) =
 
-* Fix: Fix content filter service.
+* Fix: Improve performance of content filter service.
 * Fix: Fix entity duplication.
+* Fix: Error in post save.
 
 
 = 3.34.2 (2022-01-19) =
