@@ -11,8 +11,6 @@
 
 namespace Wordlift\Relation;
 
-
-use PHPUnit\Exception;
 use Wordlift\Common\Singleton;
 use Wordlift\Content\Wordpress\Wordpress_Term_Content_Legacy_Service;
 use Wordlift\Jsonld\Term_Reference;
@@ -105,7 +103,7 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 				$term_id = $content->get_bag()->term_id;
 
 				return new Term_Relation( $term_id, $that->get_relation_type( $term_id ), $subject_type );
-			} catch ( Exception $e ) {
+			} catch ( \Exception $e ) {
 				return false;
 			}
 

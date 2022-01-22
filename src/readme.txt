@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.34.5 (2022-01-22) =
+* Fix: Remove phpunit exception.
+
 = 3.34.4 (2022-01-22) =
 * Fix: Error in post save.
 
