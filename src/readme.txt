@@ -142,12 +142,12 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.34.3 (2022-01-22) =
-
-* Fix: Improve performance of content filter service.
-* Fix: Fix entity duplication.
+= 3.34.4 (2022-01-22) =
 * Fix: Error in post save.
 
+= 3.34.3 (2022-01-22) =
+* Fix: Improve performance of content filter service.
+* Fix: Fix entity duplication.
 
 = 3.34.2 (2022-01-19) =
 
