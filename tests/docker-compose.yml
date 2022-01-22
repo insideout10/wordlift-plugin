@@ -16,7 +16,7 @@ services:
       MYSQL_DATABASE: wordpress
 
   phpunit:
-    image: "ziodave/wordpress-tests:php${PHP_VERSION:-5.6}-phpunit${PHPUNIT_VERSION:-4.8}-wordpress${WORDPRESS_VERSION:-4.4}"
+    image: "ziodave/wordpress-tests:php${PHP_VERSION:-5.4}-phpunit${PHPUNIT_VERSION:-4.8}-wordpress${WORDPRESS_VERSION:-4.4}"
     depends_on:
       - db
     volumes:
@@ -25,6 +25,6 @@ services:
       ACF_PRO_KEY: $ACF_PRO_KEY
       YOUTUBE_DATA_API_KEY: $YOUTUBE_DATA_API_KEY
       VIMEO_API_KEY: $VIMEO_API_KEY
-      WORDPRESS_VERSION: $WORDPRESS_VERSION
+      WORDPRESS_VERSION: ${WORDPRESS_VERSION:-5.8}
       PHP_IDE_CONFIG: serverName=phpunit
     tty: true
