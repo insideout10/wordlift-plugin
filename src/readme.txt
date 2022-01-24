@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.34.6 (2022-01-24) =
+* Fix: Improve frontend performance.
+
 = 3.34.5 (2022-01-22) =
 * Fix: Remove phpunit exception.
 
