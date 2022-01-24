@@ -407,6 +407,26 @@ EOF;
 	}
 
 
+	public function test_should_filter_non_unique_matches_before_replacing() {
+
+		$this->setup_link_options( $entity_url, $entity_link, $entity_title, $entity_id );
+
+		// The content.
+		$single_entity_link_content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation wl-link disambiguated wl-person" itemid="' . $entity_url . '">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
+
+		// lets duplicate this content.
+		$content = $single_entity_link_content . $single_entity_link_content;
+
+		$content_filter_service = Wordlift_Content_Filter_Service::get_instance();
+
+		$matches = $content_filter_service->get_matches( $content );
+
+		$this->assertCount( 1, $matches, 'Should return only a single match since the entity links are duplicated.' );
+
+
+	}
+
+
 	/**
 	 * Override the {@link Wordlift_Entity_Service} method.
 	 *
