@@ -48,7 +48,7 @@ class Wordlift_Content_Filter_Service {
 	 */
 	private $is_link_by_default;
 
-	private $linked_object_ids = array();
+	private $linked_entity_uris = array();
 
 	/**
 	 * The {@link Wordlift_Entity_Uri_Service} instance.
@@ -131,7 +131,7 @@ class Wordlift_Content_Filter_Service {
 
 		// Reset the array of of entity post ids linked from the post content.
 		// This is used to avoid linking more the once the same post.
-		$this->linked_object_ids = array();
+		$this->linked_entity_uris = array();
 
 		// Preload URIs.
 		$matches = array();
@@ -142,19 +142,12 @@ class Wordlift_Content_Filter_Service {
 			return $content;
 		}
 
-		// Preload the URIs.
-		$this->entity_uri_service->preload_uris( $matches[3] );
-
 		// Replace each match of the entity tag with the entity link. If an error
 		// occurs fail silently returning the original content.
-		$result = preg_replace_callback( self::PATTERN, array(
+		return preg_replace_callback( self::PATTERN, array(
 			$this,
 			'link',
 		), $content ) ?: $content;
-
-		$this->entity_uri_service->reset_uris();
-
-		return $result;
 	}
 
 	/**
@@ -213,7 +206,7 @@ class Wordlift_Content_Filter_Service {
 		 * @since 3.32.0
 		 * Object_ids are prefixed with object_type to prevent conflicts.
 		 */
-		$this->linked_object_ids[] = $object_id_unique_identifier;
+		$this->linked_entity_uris[] = $uri;
 
 		// Get the link.
 		$href = Wordlift_Post_Adapter::get_production_permalink( $object_id, $object_type );
@@ -275,12 +268,12 @@ class Wordlift_Content_Filter_Service {
 
 
 	/**
-	 * @param $post_id
+	 * @param $entity_uri
 	 *
 	 * @return bool
 	 */
-	private function is_already_linked( $post_id ) {
-		return in_array( $post_id, $this->linked_object_ids );
+	private function is_already_linked( $entity_uri ) {
+		return in_array( $entity_uri, $this->linked_entity_uris );
 	}
 
 }
