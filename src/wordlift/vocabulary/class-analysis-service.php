@@ -143,8 +143,8 @@ class Analysis_Service {
 		foreach ( $entities as $entity ) {
 			$entity['meta'] = array();
 			$meta           = $this->get_meta( $entity['entityId'] );
-			$meta           = Default_Entity_List::compact_jsonld( $meta );
 			if ( $meta ) {
+				$meta                = Default_Entity_List::compact_jsonld( $meta );
 				$entity['meta']      = $meta;
 				$filtered_entities[] = $entity;
 			}
