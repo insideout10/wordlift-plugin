@@ -167,6 +167,13 @@ class Wordlift_Content_Filter_Service {
 		$label     = $matches[4];
 
 
+		/**
+		 * If the entity is already linked, dont send query to the db.
+		 */
+		if ( $this->is_already_linked( $uri ) ) {
+			return $label;
+		}
+
 
 		$link = - 1 < strpos( $css_class, 'wl-link' );
 
@@ -184,14 +191,11 @@ class Wordlift_Content_Filter_Service {
 			return $label;
 		}
 
-		$object_id                   = $content->get_id();
-		$object_type                 = $content->get_object_type_enum();
-		$object_id_unique_identifier = $object_type . "_" . $object_id;
+		$object_id   = $content->get_id();
+		$object_type = $content->get_object_type_enum();
 
 
-		$no_link = - 1 < strpos( $css_class, 'wl-no-link' )
-		           // Do not link if already linked.
-		           || $this->is_already_linked( $object_id_unique_identifier );
+		$no_link = - 1 < strpos( $css_class, 'wl-no-link' );
 
 		// Don't link if links are disabled and the entity is not link or the
 		// entity is do not link.
