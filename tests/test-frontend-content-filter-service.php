@@ -406,7 +406,6 @@ EOF;
 
 	}
 
-
 	/**
 	 * Override the {@link Wordlift_Entity_Service} method.
 	 *
