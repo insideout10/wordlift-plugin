@@ -390,9 +390,6 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 */
 	function sanitize_callback( $input ) {
 
-		// Validate the selected country.
-		$this->validate_country();
-
 		// Check whether a publisher name has been set.
 		if ( isset( $_POST['wl_publisher'] ) && ! empty( $_POST['wl_publisher']['name'] ) ) { // WPCS: CSRF, input var, sanitization ok.
 			$name         = isset( $_POST['wl_publisher']['name'] ) ? (string) $_POST['wl_publisher']['name'] : '';
@@ -408,41 +405,6 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		}
 
 		return $input;
-	}
-
-	/**
-	 * Check whether the currently selected country supports the site language.
-	 *
-	 * @since 3.18.0
-	 */
-	private function validate_country() {
-
-		// Bail out if for some reason the country and language are not set.
-		if (
-			empty( $_POST['wl_general_settings']['site_language'] ) && // WPCS: CSRF, input var, sanitization ok.
-			empty( $_POST['wl_general_settings']['country_code'] ) // WPCS: CSRF, input var, sanitization ok.
-		) {
-			return;
-		}
-
-		// Get the values.
-		$language = $_POST['wl_general_settings']['site_language']; // WPCS: CSRF, input var, sanitization ok.
-		$country  = $_POST['wl_general_settings']['country_code']; // WPCS: CSRF, input var, sanitization ok.
-		$codes    = Wordlift_Countries::get_codes();
-
-		// Check whether the chosen country has language limitations
-		// and whether the chosen language is supported for that country.
-		if (
-			! empty( $codes[ $country ] ) &&
-			! in_array( $language, $codes[ $country ] )
-		) {
-			// Otherwise add an error.
-			add_settings_error(
-				'wl-country-code',
-				esc_attr( 'settings_updated' ),
-				_x( 'The selected language is not supported for the currently chosen country. Please choose another country or language.', 'wordlift' )
-			);
-		}
 	}
 
 }

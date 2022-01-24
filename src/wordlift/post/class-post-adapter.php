@@ -273,10 +273,11 @@ class Post_Adapter {
 		$labels = $this->get_labels( $entity );
 
 		if ( empty( $post ) ) {
+			$entity_description = array_key_exists( 'description', $entity ) ? $entity['description'] : '';
 			// Create the entity if it doesn't exist.
 			$post_id = Entity_Store::get_instance()->create( array(
 				'labels'      => $labels,
-				'description' => $entity['description'],
+				'description' => $entity_description,
 				'same_as'     => $uris,
 			), $post_status );
 
@@ -371,11 +372,12 @@ class Post_Adapter {
 	 * @return array
 	 */
 	private function get_entity_uris( $entity ) {
-		$ids = $this->filter_valid_entity_ids( $entity );
+		$ids     = $this->filter_valid_entity_ids( $entity );
+		$same_as = array_key_exists( 'sameAs', $entity ) ? $entity['sameAs'] : array();
 
 		return array_merge(
 			(array) $ids,
-			(array) $entity['sameAs']
+			(array) $same_as
 		);
 	}
 
