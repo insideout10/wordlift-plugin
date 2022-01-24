@@ -273,10 +273,11 @@ class Post_Adapter {
 		$labels = $this->get_labels( $entity );
 
 		if ( empty( $post ) ) {
+			$entity_description = array_key_exists( 'description', $entity ) ? $entity['description'] : '';
 			// Create the entity if it doesn't exist.
 			$post_id = Entity_Store::get_instance()->create( array(
 				'labels'      => $labels,
-				'description' => $entity['description'],
+				'description' => $entity_description,
 				'same_as'     => $uris,
 			), $post_status );
 
