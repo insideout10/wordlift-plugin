@@ -23,7 +23,7 @@ class Entity_Uri_Generator {
 
 			case Object_Type_Enum::TERM:
 				$term = get_term( $id );
-				if ( ! isset( $term ) ) {
+				if ( ! is_a( $term, 'WP_Term' ) ) {
 					return null;
 				}
 
@@ -32,7 +32,7 @@ class Entity_Uri_Generator {
 			case Object_Type_Enum::USER:
 				$user = get_user_by( 'id', $id );
 
-				if ( ! isset( $user ) ) {
+				if ( ! is_a( $user, 'WP_User' ) ) {
 					return null;
 				}
 
