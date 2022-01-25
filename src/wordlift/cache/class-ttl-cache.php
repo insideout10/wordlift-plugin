@@ -120,7 +120,7 @@ class Ttl_Cache {
 			return json_decode( file_get_contents( $filename ), true );
 		}
 
-		$this->log->trace( "Cache MISS, filename $filename.\n" );
+		$this->log->trace( "Cache MISS, filename $filename." );
 
 		return null;
 	}

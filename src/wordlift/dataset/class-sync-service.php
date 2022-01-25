@@ -167,18 +167,22 @@ class Sync_Service {
 			return false;
 		}
 
+		$blocking = apply_filters( 'wl_feature__enable__sync-blocking', false );
 		$response = $this->api_service->request(
 			'POST', '/middleware/dataset/batch',
 			array( 'Content-Type' => 'application/json', ),
 			// Put the payload in a JSON array w/o decoding/encoding again.
-			'[ ' . implode( ', ', $payloads ) . ' ]' );
+			'[ ' . implode( ', ', $payloads ) . ' ]',
+			$blocking ? 60 : 0.001,
+			null,
+			array( 'blocking' => $blocking ) );
 
 		// Update the sync date in case of success, otherwise log an error.
-		if ( ! $response->is_success() ) {
+		if ( $blocking && ! $response->is_success() ) {
 			return false;
 		}
 
-		// If successful update the hashes and sync'ed datetime.
+		// If successful update the hashes and sync datetime.
 		foreach ( $hashes as $hash ) {
 			$object   = $hash[0];
 			$new_hash = $hash[1];
@@ -208,7 +212,7 @@ class Sync_Service {
 		$type             = $object->get_type();
 		$object_id        = $object->get_object_id();
 		$jsonld_as_string = wp_json_encode( apply_filters( 'wl_dataset__sync_service__sync_item__jsonld',
-			$this->jsonld_service->get( $type, $object_id ), $type, $object_id ) );
+			$this->jsonld_service->get( $type, $object_id ), $type, $object_id ), 64 ); // JSON_UNESCAPED_SLASHES
 		$uri              = $this->entity_service->get_uri( $object_id, $type );
 
 		// Entity URL isn't set, bail out.
@@ -220,7 +224,7 @@ class Sync_Service {
 			'uri'     => $uri,
 			'model'   => $jsonld_as_string,
 			'private' => ! $object->is_public(),
-		) );
+		), 64 ); // JSON_UNESCAPED_SLASHES
 	}
 
 	/**
