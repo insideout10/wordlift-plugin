@@ -102,4 +102,12 @@ class Wordpress_Dataset_Content_Service implements Content_Service {
 		return false;
 	}
 
+	function delete( $content_id ) {
+		foreach ( $this->delegates as $delegate ) {
+			if ( $delegate->supports( $content_id ) ) {
+				$delegate->delete( $content_id );
+				break;
+			}
+		}
+	}
 }

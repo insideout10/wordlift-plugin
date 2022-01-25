@@ -146,4 +146,7 @@ class Wordpress_Permalink_Content_Service implements Content_Service {
 		) );
 	}
 
+	function delete( $content_id ) {
+		// Ignore, we don't store any data.
+	}
 }

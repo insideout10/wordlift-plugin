@@ -9,8 +9,11 @@ class Wordpress_Dataset_Content_Service_Hooks {
 
 	public static function register() {
 		add_action( 'wp_insert_post', array( get_called_class(), 'insert_post' ) );
+		add_action( 'after_delete_post', array( get_called_class(), 'after_delete_post' ) );
 		add_action( 'created_term', array( get_called_class(), 'created_term' ) );
+		add_action( 'delete_term', array( get_called_class(), 'delete_term' ) );
 		add_action( 'user_register', array( get_called_class(), 'user_register' ) );
+		add_action( 'deleted_user', array( get_called_class(), 'deleted_user' ) );
 	}
 
 	/**
