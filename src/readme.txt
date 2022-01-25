@@ -142,18 +142,26 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.34.7 (2022-01-25) =
+
+* Fix: middleware requests are now async, so that you don't have to wait while saving.
+
 = 3.34.6 (2022-01-24) =
+
 * Fix: Improve frontend performance.
 * Fix: Fix editor performance issue.
 * Fix: Remove warnings in plugin.
 
 = 3.34.5 (2022-01-22) =
+
 * Fix: Remove phpunit exception.
 
 = 3.34.4 (2022-01-22) =
+
 * Fix: Error in post save.
 
 = 3.34.3 (2022-01-22) =
+
 * Fix: Improve performance of content filter service.
 * Fix: Fix entity duplication.
 
