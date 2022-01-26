@@ -70,3 +70,12 @@ RUN chmod +x /usr/local/bin/wp
 RUN chown www-data:www-data /var/www/html -R
 WORKDIR /var/www/html/5.8/
 
+FROM wordpress:beta-5.9-apache as wlp-wp-5.8
+COPY --chown=www-data src/ /var/www/html/5.9/wp-content/plugins/wordlift/
+COPY manifests/wp-cli.phar /usr/local/bin/wp
+COPY manifests/entrypoint_5.9.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/wp
+RUN chown www-data:www-data /var/www/html -R
+WORKDIR /var/www/html/5.9/
+

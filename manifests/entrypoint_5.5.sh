@@ -303,6 +303,8 @@ wp --allow-root plugin install wp-recipe-maker
 
 # see https://brandoncc.dev/blog/woocommerce-compatibility-table/, install woocommerce.
 wp --allow-root plugin install woocommerce --version=3.6.0
+wp --allow-root plugin install https://wordlift.io/wp-content/uploads/acf4so/acf4so.zip
+wp --allow-root plugin install https://wordlift.io/wp-content/uploads/acf4so/wordlift-for-woocommerce.zip
 wp --allow-root rewrite structure '/%postname%/'
 
 chown www-data:www-data -R /var/www/html/
