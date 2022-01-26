@@ -407,7 +407,7 @@ spec:
     spec:
       containers:
       - image: ghcr.io/wordlift/wlp-wp-5.8:latest
-        name: wordpress-57
+        name: wordpress-58
         workingDir: /var/www/html/5.8/
         resources:
           requests:
@@ -429,3 +429,62 @@ spec:
         - containerPort: 80
       imagePullSecrets:
       - name: dockerconfigjson-tifa-io
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qa-wordpress-59
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-5.9
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+  selector:
+    app: wordpress-5.9
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qa-wordpress-59
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-5.9
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-5.9
+  template:
+    metadata:
+      labels:
+        app: wordpress-5.9
+    spec:
+      containers:
+      - image: ghcr.io/wordlift/wlp-wp-5.9:latest
+        name: wordpress-59
+        workingDir: /var/www/html/5.9/
+        resources:
+          requests:
+            cpu: "650m"
+            memory: "650Mi"
+          limits:
+            cpu: "850m"
+            memory: "850Mi"
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: wordpress-59-mysql
+        - name: WORDPRESS_DB_PASSWORD
+          value: password
+        - name: WORDPRESS_DB_NAME
+          value: wordpress
+        - name: WORDPRESS_DB_USER
+          value: root
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: dockerconfigjson-tifa-io
+

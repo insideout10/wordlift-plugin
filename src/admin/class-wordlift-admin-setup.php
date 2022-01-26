@@ -257,7 +257,6 @@ class Wordlift_Admin_Setup {
 		// We have the following parameters:
 		// `key`, holding WL's key,
 		// `vocabulary`, holding the vocabulary path,
-		// `wl-site-language`, with the language code (e.g. `en`),
 		// `wl-country-code` with the country code (e.g. `us`),
 		// `share-diagnostic`, the user preferences about sharing data with us.
 		// `user_type`, the user type either `personal` or `company`,
@@ -269,9 +268,6 @@ class Wordlift_Admin_Setup {
 
 		// Store the vocabulary path:
 		Wordlift_Configuration_Service::get_instance()->set_entity_base_path( $params['vocabulary'] );
-
-		// Store the site's language:
-		Wordlift_Configuration_Service::get_instance()->set_language_code( $params['wl-site-language'] );
 
 		// Store the site's country:
 		Wordlift_Configuration_Service::get_instance()->set_country_code( $params['wl-country-code'] );
