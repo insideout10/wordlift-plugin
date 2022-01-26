@@ -1,4 +1,4 @@
-#!/bin/bash
+v#!/bin/bash
 set -euo pipefail
 
 # usage: file_env VAR [DEFAULT]
@@ -306,6 +306,9 @@ wp --allow-root plugin install woocommerce --version=3.6.0
 wp --allow-root plugin install https://wordlift.io/wp-content/uploads/acf4so/acf4so.zip
 wp --allow-root plugin install https://wordlift.io/wp-content/uploads/acf4so/wordlift-for-woocommerce.zip
 wp --allow-root rewrite structure '/%postname%/'
+wp --allow-root config set WP_DEBUG true --path=/var/www/html/5.5/ --anchor='?php' --placement=after
+wp --allow-root config set WP_DEBUG_LOG false --path=/var/www/html/5.5/ --anchor='?php' --placement=after
+wp --allow-root config set WP_DEBUG_DISPLAY true --path=/var/www/html/5.5/ --anchor='?php' --placement=after
 
 chown www-data:www-data -R /var/www/html/
 exec "$@"

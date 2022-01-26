@@ -177,6 +177,8 @@ wp --allow-root plugin install wp-recipe-maker
 wp --allow-root plugin install https://wordlift.io/wp-content/uploads/acf4so/acf4so.zip
 wp --allow-root plugin install https://wordlift.io/wp-content/uploads/acf4so/wordlift-for-woocommerce.zip
 wp --allow-root rewrite structure '/%postname%/'
-
+wp --allow-root config set WP_DEBUG true --path=/var/www/html/4.4/ --anchor='?php' --placement=after
+wp --allow-root config set WP_DEBUG_LOG false --path=/var/www/html/4.4/ --anchor='?php' --placement=after
+wp --allow-root config set WP_DEBUG_DISPLAY true --path=/var/www/html/4.4/ --anchor='?php' --placement=after
 chown www-data:www-data -R /var/www/html/
 exec "$@"
