@@ -133,7 +133,6 @@ class Config {
 		$params = array(
 			'key'              => isset( $_POST['license'] ) ? (string) $_POST['license'] : '',
 			'vocabulary'       => isset( $_POST['vocabulary'] ) ? (string) $_POST['vocabulary'] : '',
-			'wl-site-language' => isset( $_POST['language'] ) ? (string) $_POST['language'] : '',
 			'wl-country-code'  => isset( $_POST['country'] ) ? (string) $_POST['country'] : '',
 			'name'             => isset( $_POST['publisherName'] ) ? (string) $_POST['publisherName'] : '',
 			'user_type'        => isset( $_POST['publisher'] ) ? (string) $_POST['publisher'] : '',
