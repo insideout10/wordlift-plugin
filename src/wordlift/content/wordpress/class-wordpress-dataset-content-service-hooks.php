@@ -9,8 +9,11 @@ class Wordpress_Dataset_Content_Service_Hooks {
 
 	public static function register() {
 		add_action( 'wp_insert_post', array( get_called_class(), 'insert_post' ) );
+		add_action( 'after_delete_post', array( get_called_class(), 'after_delete_post' ) );
 		add_action( 'created_term', array( get_called_class(), 'created_term' ) );
+		add_action( 'delete_term', array( get_called_class(), 'delete_term' ) );
 		add_action( 'user_register', array( get_called_class(), 'user_register' ) );
+		add_action( 'deleted_user', array( get_called_class(), 'deleted_user' ) );
 	}
 
 	/**
@@ -22,6 +25,10 @@ class Wordpress_Dataset_Content_Service_Hooks {
 		}
 	}
 
+	public static function after_delete_post( $post_id ) {
+		self::delete( Wordpress_Content_Id::create_post( $post_id ) );
+	}
+
 	/**
 	 * @throws Exception
 	 */
@@ -29,11 +36,20 @@ class Wordpress_Dataset_Content_Service_Hooks {
 		self::set_entity_id( Wordpress_Content_Id::create_term( $term_id ) );
 	}
 
+
+	public static function delete_term( $term_id ) {
+		self::delete( Wordpress_Content_Id::create_term( $term_id ) );
+	}
+
 	/**
 	 * @throws Exception
 	 */
 	public static function user_register( $user_id ) {
 		self::set_entity_id( Wordpress_Content_Id::create_user( $user_id ) );
+	}
+
+	public static function deleted_user( $user_id ) {
+		self::delete( Wordpress_Content_Id::create_user( $user_id ) );
 	}
 
 	/**
@@ -53,6 +69,11 @@ class Wordpress_Dataset_Content_Service_Hooks {
 		} catch ( Exception $e ) {
 			//
 		}
+	}
+
+	private static function delete( $content_id ) {
+		$content_service = Wordpress_Content_Service::get_instance();
+		$content_service->delete( $content_id );
 	}
 
 }
