@@ -13,7 +13,7 @@ services:
 
   wordpress:
     #    image: wordpress:${WORDPRESS_VERSION:-5.5.0}
-    image: ziodave/wordpress-xdebug:5.6-1
+    image: ziodave/wordpress-xdebug:5.8.3-php8.0
     depends_on:
       - db
     volumes:
@@ -62,7 +62,7 @@ services:
     entrypoint: /var/www/html/wp-content/plugins/wordlift/.docker-custom-entrypoint.sh
 
   nginx:
-    image: nginx:1.17
+    image: nginx:1.21.5
     depends_on:
       - wordpress
     ports:
