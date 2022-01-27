@@ -156,4 +156,17 @@ class Wordpress_Post_Content_Table_Service extends Abstract_Wordpress_Content_Se
 		return $content_id->get_type() === Object_Type_Enum::POST;
 	}
 
+	/**
+	 * @param Wordpress_Content_Id $content_id
+	 *
+	 * @return void
+	 */
+	function delete( $content_id ) {
+		global $wpdb;
+
+		$wpdb->query( $wpdb->prepare( "
+			DELETE FROM {$wpdb->prefix}wl_entities
+			WHERE content_id = %d AND content_type = %d
+		", $content_id->get_id(), $content_id->get_type() ) );
+	}
 }

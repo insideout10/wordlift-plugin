@@ -25,4 +25,7 @@ abstract class Abstract_Wordpress_Content_Legacy_Service extends Abstract_Wordpr
 		return call_user_func( $this->get_meta_fn, $content_id->get_id(), 'entity_url', true ) ?: null;
 	}
 
+	public function delete( $content_id ) {
+		// do nothing, WP deletes the post meta for us.
+	}
 }
