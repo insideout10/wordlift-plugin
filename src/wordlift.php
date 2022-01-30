@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.34.7
+ * Version:           3.34.8
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -195,6 +195,13 @@ function run_wordlift() {
 		// Register the Dataset module, requires `$api_service`.
 		require_once plugin_dir_path( __FILE__ ) . 'wordlift/dataset/index.php';
 		require_once plugin_dir_path( __FILE__ ) . 'wordlift/shipping-data/index.php';
+
+		/*
+		 * Require the Entity annotation cleanup module.
+		 *
+		 * @since 3.34.6
+		 */
+		require_once plugin_dir_path( __FILE__ ) . 'wordlift/cleanup/index.php';
 
 	} );
 

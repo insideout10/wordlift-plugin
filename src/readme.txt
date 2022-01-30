@@ -142,6 +142,12 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.34.8 (2022-01-30) =
+
+* Enhancement: add cleanup tasks to fix annotations coming from a db backup or another site, ask us if you're interested.
+
+* Fix: handle post/term/user delete for relative item ids.
+
 = 3.34.7 (2022-01-25) =
 
 * Fix: middleware requests are now async, so that you don't have to wait while saving.

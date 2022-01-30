@@ -59,4 +59,10 @@ interface Content_Service {
 	 */
 	function supports( $content_id );
 
+	/**
+	 * Delete the content with the specified ID.
+	 *
+	 * @param Content_Id $content_id
+	 */
+	function delete( $content_id );
 }

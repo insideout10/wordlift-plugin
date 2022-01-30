@@ -93,6 +93,7 @@ jobs:
           - "php7.3-phpunit7.5-wordpress5.6"
           - "php7.3-phpunit7.5-wordpress5.7"
           - "php7.3-phpunit7.5-wordpress5.8"
+          - "php7.4-phpunit7.5-wordpress5.9"
           - "php8.0-phpunit7.5woo-wordpress5.6"
         phpunit-xml:
           - tests/scenarios/phpunit.ajax.xml
