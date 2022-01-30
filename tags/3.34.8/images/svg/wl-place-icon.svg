@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="494 4431 19 21">
+  <defs>
+    <style>
+      .a {
+        clip-path: url("#b");
+      }
+      .b {
+        fill: #fff;
+      }
+      .b {
+        stroke: #007AFF;
+        stroke-width: 1px;
+      }
+    </style>
+    <clipPath id="b">
+      <rect x="494" y="4431" width="19" height="21"/>
+    </clipPath>
+  </defs>
+  <g id="a" class="a">
+    <path class="b" d="M-1067-3494.682h0c-3-4.187-5-7.544-5-10.317a5.006,5.006,0,0,1,5-5,5.006,5.006,0,0,1,5,5c0,2.654-1.913,5.915-5,10.317Zm0-12.319a2,2,0,0,0-2,2,2,2,0,0,0,2,2,2,2,0,0,0,2-2A2,2,0,0,0-1067-3507Z" transform="translate(1570.5 7943.5)"/>
+  </g>
+</svg>
