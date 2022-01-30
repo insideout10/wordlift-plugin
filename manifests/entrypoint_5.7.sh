@@ -104,6 +104,11 @@ wp --allow-root plugin install woocommerce --version=3.6.0
 wp --allow-root plugin install https://wordlift.io/wp-content/uploads/acf4so/acf4so.zip
 wp --allow-root plugin install https://wordlift.io/wp-content/uploads/acf4so/wordlift-for-woocommerce.zip
 wp --allow-root rewrite structure '/%postname%/'
+wp --allow-root config set WP_DEBUG true
+wp --allow-root config set WP_DEBUG_LOG false
+wp --allow-root config set WP_DEBUG_DISPLAY true
+wp --allow-root core update --minor
+sed -i "/\\* That's/ i ini_set(\'error_reporting\', E_ALL ^ E_DEPRECATED );" wp-config.php
 
 chown www-data:www-data -R /var/www/html/
 exec "$@"
