@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.34.9 (2022-02-01) =
+
+* Fix: handle entity uri if the dataset is not present.
+
 = 3.34.8 (2022-01-30) =
 
 * Enhancement: add cleanup tasks to fix annotations coming from a db backup or another site, ask us if you're interested.
