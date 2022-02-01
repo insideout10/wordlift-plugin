@@ -158,4 +158,11 @@ class Test_Wl_For_Wc_Hooks extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $uri, "http://example.org/?p=$post_id#post/$post_id" );
 	}
 
+
+	public function test_should_return_valid_entity_uri_when_dataset_is_not_active() {
+		$post_id = $this->factory()->post->create();
+		$entity_uri = Wordlift_Entity_Service::get_instance()->get_uri( $post_id );
+		$this->assertNotNull( $entity_uri, 'The entity uri should not be null' );
+	}
+
 }
