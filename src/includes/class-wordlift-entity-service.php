@@ -411,6 +411,11 @@ class Wordlift_Entity_Service {
 		$entity_id       = $content_service->get_entity_id( new Wordpress_Content_Id( $object_id, $type ) );
 		$dataset_uri     = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
 
+		// To fix deprecated warning for strpos(): Non-string needles will be interpreted as strings in the future
+		if ( ! $dataset_uri ) {
+			$dataset_uri = '';
+		}
+
 		if ( ! isset( $entity_id ) || 0 !== strpos( $entity_id, $dataset_uri ) ) {
 			$rel_uri = Entity_Uri_Generator::create_uri( $type, $object_id );
 			try {
