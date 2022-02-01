@@ -5,22 +5,6 @@ use Wordlift\Content\Wordpress\Wordpress_Permalink_Content_Service;
 
 class Wordpress_Permalink_Content_Service_Test extends Wordlift_Unit_Test_Case {
 
-	/**
-	 *
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage Not supported
-	 * @return void
-	 * @throws Exception
-	 */
-	public function test_set_entity_id() {
-
-		Wordpress_Permalink_Content_Service::get_instance()
-		                                   ->set_entity_id(
-			                                   Wordpress_Content_Id::create_post( 1 ),
-			                                   'https://data.example.org/data/entity/0' );
-
-	}
-
 	public function test_get_entity_id() {
 
 		$post_id = $this->factory()->post->create();
