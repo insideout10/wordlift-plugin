@@ -130,7 +130,7 @@ class Wordpress_Permalink_Content_Service implements Content_Service {
 	}
 
 	function set_entity_id( $content_id, $uri ) {
-		throw new Exception( 'Not supported' );
+		// do nothing.
 	}
 
 	/**
