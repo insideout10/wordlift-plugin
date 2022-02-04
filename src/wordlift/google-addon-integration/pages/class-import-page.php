@@ -1,5 +1,5 @@
 <?php
-namespace Wordlift\Google_Addon_Integration;
+namespace Wordlift\Google_Addon_Integration\Pages;
 
 use Wordlift_Admin_Page;
 
@@ -24,6 +24,16 @@ class Import_Page extends Wordlift_Admin_Page {
 
 	protected function get_parent_slug() {
 		return null;
+	}
+
+	public function render() {
+
+		wp_localize_script( 'wl-gaddon-import-page', '_wlGaddonImportSettings', array(
+			'restUrl' => get_rest_url(),
+			'nonce'   => wp_create_nonce( 'wp_rest' )
+		) );
+
+		parent::render();
 	}
 
 
