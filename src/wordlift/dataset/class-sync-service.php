@@ -223,7 +223,7 @@ class Sync_Service {
 		return wp_json_encode( array(
 			'uri'     => $uri,
 			'model'   => $jsonld_as_string,
-			'private' => ! $object->is_public(),
+			'private' => ! ( $object->is_public() && $object->is_published() ),
 		), 64 ); // JSON_UNESCAPED_SLASHES
 	}
 

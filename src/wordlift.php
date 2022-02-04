@@ -203,6 +203,13 @@ function run_wordlift() {
 		 */
 		require_once plugin_dir_path( __FILE__ ) . 'wordlift/cleanup/index.php';
 
+		/*
+		 * Import LOD entities.
+		 *
+		 * @since 3.35.0
+		 */
+		require_once plugin_dir_path( __FILE__ ) . 'wordlift/lod-import/index.php';
+
 	} );
 
 }
