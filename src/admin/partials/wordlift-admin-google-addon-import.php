@@ -5,13 +5,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-    html {
+    html,body {
         background-color: #E5F1FF;
         font-family: 'Montserrat', sans-serif;
     }
 
+    #adminmenumain, #wpadminbar { display: none;}
+
     .wl-bold {
         font-weight: 700;
+    }
+
+    #wpwrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
 
