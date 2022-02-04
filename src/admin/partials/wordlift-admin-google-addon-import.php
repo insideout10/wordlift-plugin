@@ -52,7 +52,6 @@
         height: 100%;
         border-radius: 10px;
         transition:600ms linear;
-        width: 40%;
     }
 </style>
 
@@ -95,34 +94,3 @@
 		</div>
 	</div>
 </div>
-
-<script>
-
-    function startImport(entities) {
-        console.log(entities)
-
-
-    }
-
-    window.addEventListener("load", () => {
-        console.log("page loaded")
-        // send message to parent window to retrieve the
-        window.opener.postMessage({type: "GET_ENTITIES"}, "*")
-
-    })
-
-    window.addEventListener("message", (messageEvent) => {
-        const type = event.data.type
-
-        alert("received message")
-        console.log("message event received")
-        console.log(messageEvent)
-
-        if ( type === 'ENTITIES_TO_BE_IMPORTED' ) {
-            const payload = event.data.payload
-            startImport(payload)
-        }
-
-    })
-
-</script>
