@@ -4,6 +4,14 @@ namespace Wordlift\Entity\Remote_Entity;
 
 class Valid_Remote_Entity  implements Remote_Entity {
 
+	/**
+	 * @var array<string>
+	 */
+	private $types;
+
+	public function __construct( $types ) {
+		$this->types = $types;
+	}
 
 
 	function getName() {
@@ -19,6 +27,6 @@ class Valid_Remote_Entity  implements Remote_Entity {
 	}
 
 	function getTypes() {
-		// TODO: Implement getTypes() method.
+		return $this->types;
 	}
 }

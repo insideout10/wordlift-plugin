@@ -15,14 +15,28 @@ class Remote_Entity_Factory {
 			return new Invalid_Remote_Entity();
 		}
 
-		$json = json_decode( $response->get_body() );
+		$entity_data = json_decode( $response->get_body(), true );
 
-		if ( ! $json ) {
+		if ( ! $entity_data ) {
 			return new Invalid_Remote_Entity();
 		}
 
-		return new Valid_Remote_Entity();
+		if ( ! array_key_exists( '@type', $entity_data ) ) {
+			return new Invalid_Remote_Entity();
+		}
 
+		return new Valid_Remote_Entity(
+			self::may_be_wrap_array( $entity_data['@type'] )
+		);
+
+	}
+
+	private static function may_be_wrap_array( $el ) {
+		if ( is_array( $el ) ) {
+			return $el;
+		}
+
+		return array( $el );
 	}
 
 
