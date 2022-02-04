@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   db:
-    image: mysql:5.7
+    image: mariadb:10.2
     volumes:
       - db-data-${WORDPRESS_VERSION:-5.5.0}:/var/lib/mysql
     environment:
@@ -58,7 +58,7 @@ services:
         define( 'WL_LOG_LEVEL', 0 );
 
         # Enable Dev API
-        define( 'WORDLIFT_API_URL', 'https://api-dev.wordlift.io' );
+        # define( 'WORDLIFT_API_URL', 'https://api-dev.wordlift.io' );
     entrypoint: /var/www/html/wp-content/plugins/wordlift/.docker-custom-entrypoint.sh
 
   nginx:
