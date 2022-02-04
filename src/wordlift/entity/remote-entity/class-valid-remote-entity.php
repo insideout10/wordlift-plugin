@@ -4,6 +4,8 @@ namespace Wordlift\Entity\Remote_Entity;
 
 class Valid_Remote_Entity  implements Remote_Entity {
 
+
+
 	function getName() {
 		// TODO: Implement getName() method.
 	}

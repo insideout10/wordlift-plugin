@@ -17,6 +17,12 @@ class Remote_Entity_Factory {
 
 		$json = json_decode( $response->get_body() );
 
+		if ( ! $json ) {
+			return new Invalid_Remote_Entity();
+		}
+
+		return new Valid_Remote_Entity();
+
 	}
 
 
