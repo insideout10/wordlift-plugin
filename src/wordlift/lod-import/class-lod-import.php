@@ -71,6 +71,19 @@ class Lod_Import {
 			return;
 		}
 
+		$post_id = $this->import_entity( $item_id, $entity_type_service );
+
+		edit_post_link( $item_id, $post_id );
+
+	}
+
+	/**
+	 * @param $item_id
+	 * @param Wordlift_Entity_Type_Service $entity_type_service
+	 *
+	 * @return int|\WP_Error
+	 */
+	private function import_entity( $item_id, $entity_type_service ) {
 		$target_path = '/id/' . preg_replace( '@^(https?)://@', '$1/', $item_id );
 		$response    = Default_Api_Service::get_instance()->get( $target_path );
 		$json        = json_decode( $response->get_body() );
@@ -93,8 +106,7 @@ class Lod_Import {
 			}
 		}
 
-		edit_post_link( $item_id, $post_id );
-
+		return $post_id;
 	}
 
 }
