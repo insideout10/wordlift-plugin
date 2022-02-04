@@ -78,9 +78,8 @@ class Lod_Import {
 		$remote_entity = Url_To_Remote_Entity_Converter::convert( $item_id );
 		$importer      = Remote_Entity_Importer_Factory::from_entity( $remote_entity );
 		$content_id    = $importer->import();
-
 		if ( $content_id instanceof Content_Id && $content_id->get_type() === Object_Type_Enum::POST ) {
-			edit_post_link( $item_id, $content_id->get_id() );
+			edit_post_link( null, null, null,  $content_id->get_id() );
 		}
 
 	}
