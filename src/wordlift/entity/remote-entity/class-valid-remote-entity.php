@@ -14,10 +14,16 @@ class Valid_Remote_Entity implements Remote_Entity {
 	 * @var string
 	 */
 	private $name;
+	/**
+	 * The entity description.
+	 * @var string
+	 */
+	private $description;
 
-	public function __construct( $types, $name ) {
+	public function __construct( $types, $name, $description ) {
 		$this->types = $types;
 		$this->name  = $name;
+		$this->description = $description;
 	}
 
 
@@ -26,7 +32,7 @@ class Valid_Remote_Entity implements Remote_Entity {
 	}
 
 	function getDescription() {
-		// TODO: Implement getDescription() method.
+		return $this->description;
 	}
 
 	function getSameAs() {
