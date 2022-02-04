@@ -42,6 +42,7 @@ class Url_To_Entity_Converter_Test extends Wordlift_Unit_Test_Case {
 		$valid_remote_entity_data = self::get_valid_remote_entity_data();
 
 		$this->assertEquals( $entity->getTypes(), array( $valid_remote_entity_data['@type'] ) );
+		$this->assertEquals( $entity->getName(), $valid_remote_entity_data['name'] );
 
 	}
 
