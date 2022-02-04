@@ -7,23 +7,17 @@
 <style>
     html,body {
         background-color: #E5F1FF;
-        font-family: 'Montserrat', sans-serif;
+
     }
 
-    #adminmenumain, #wpadminbar { display: none;}
 
     .wl-bold {
         font-weight: 700;
     }
 
-    #wpwrap {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
 
     .container {
+        font-family: 'Montserrat', sans-serif;
         height: 100%;
         width: 100%;
         display: flex;
