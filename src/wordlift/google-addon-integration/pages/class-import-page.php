@@ -37,8 +37,8 @@ class Import_Page extends Wordlift_Admin_Page {
 		);
 
 		wp_localize_script( 'wl-gaddon-import-page', '_wlGaddonImportSettings', array(
-			'restUrl'     => get_rest_url(),
-			'nonce'       => wp_create_nonce( 'wp_rest' ),
+			'restUrl'    => get_rest_url(),
+			'nonce'      => wp_create_nonce( 'wp_rest' ),
 			'entityUrls' => $this->get_entity_urls()
 		) );
 
@@ -67,13 +67,11 @@ class Import_Page extends Wordlift_Admin_Page {
 		if ( empty( $entities ) ) {
 			return array();
 		}
-		if ( ! is_array( $entities ) ) {
+		if ( ! is_string( $entities ) ) {
 			return array();
 		}
 
-		return array_map( function ( $item ) {
-			return (string) $item;
-		}, $entities );
+		return explode( ",", $entities );
 	}
 
 }
