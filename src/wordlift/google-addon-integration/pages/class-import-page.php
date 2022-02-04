@@ -39,7 +39,7 @@ class Import_Page extends Wordlift_Admin_Page {
 		wp_localize_script( 'wl-gaddon-import-page', '_wlGaddonImportSettings', array(
 			'restUrl'     => get_rest_url(),
 			'nonce'       => wp_create_nonce( 'wp_rest' ),
-			'entity_urls' => $this->get_entity_urls()
+			'entityUrls' => $this->get_entity_urls()
 		) );
 
 		parent::render();
