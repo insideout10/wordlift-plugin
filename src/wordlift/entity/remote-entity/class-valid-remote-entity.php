@@ -19,27 +19,33 @@ class Valid_Remote_Entity implements Remote_Entity {
 	 * @var string
 	 */
 	private $description;
+	/**
+	 * An array of sameAs urls.
+	 * @var array<string>
+	 */
+	private $same_as;
 
-	public function __construct( $types, $name, $description ) {
+	public function __construct( $types, $name, $description, $same_as ) {
 		$this->types = $types;
 		$this->name  = $name;
 		$this->description = $description;
+		$this->same_as = $same_as;
 	}
 
 
-	function getName() {
+	function get_name() {
 		return $this->name;
 	}
 
-	function getDescription() {
+	function get_description() {
 		return $this->description;
 	}
 
-	function getSameAs() {
-		// TODO: Implement getSameAs() method.
+	function get_same_as() {
+		return $this->same_as;
 	}
 
-	function getTypes() {
+	function get_types() {
 		return $this->types;
 	}
 }

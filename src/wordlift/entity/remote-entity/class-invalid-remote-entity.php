@@ -4,19 +4,19 @@ namespace Wordlift\Entity\Remote_Entity;
 
 class Invalid_Remote_Entity implements Remote_Entity {
 
-	function getName() {
+	function get_name() {
 		// TODO: Implement getName() method.
 	}
 
-	function getDescription() {
+	function get_description() {
 		// TODO: Implement getDescription() method.
 	}
 
-	function getSameAs() {
+	function get_same_as() {
 		// TODO: Implement getSameAs() method.
 	}
 
-	function getTypes() {
+	function get_types() {
 		// TODO: Implement getTypes() method.
 	}
 }

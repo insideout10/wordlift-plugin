@@ -7,21 +7,21 @@ interface Remote_Entity {
 	/**
 	 * @return string
 	 */
-	function getName();
+	function get_name();
 
 	/**
 	 * @return string
 	 */
-	function getDescription();
+	function get_description();
 
 	/**
 	 * @return array<string>
 	 */
-	function getSameAs();
+	function get_same_as();
 
 	/**
 	 * @return array<string>
 	 */
-	function getTypes();
+	function get_types();
 
 }
