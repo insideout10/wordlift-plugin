@@ -15,7 +15,8 @@ class Url_To_Remote_Entity_Converter {
 	public function convert( $url ) {
 		$target_path = '/id/' . preg_replace( '@^(https?)://@', '$1/', $url );
 		$response    = Default_Api_Service::get_instance()->get( $target_path );
-		return Remote_Entity_Factory::from_response( $response );
+
+		return Remote_Entity_Factory::from_response( $url, $response );
 	}
 
 

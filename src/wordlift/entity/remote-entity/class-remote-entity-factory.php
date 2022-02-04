@@ -5,11 +5,13 @@ namespace Wordlift\Entity\Remote_Entity;
 class Remote_Entity_Factory {
 
 	/**
+	 *
+	 * @param $entity_url string
 	 * @param $response \Wordlift\Api\Response
 	 *
 	 * @return Remote_Entity
 	 */
-	static function from_response( $response ) {
+	static function from_response( $entity_url, $response ) {
 
 		if ( ! $response->is_success() ) {
 			return new Invalid_Remote_Entity();
@@ -27,11 +29,12 @@ class Remote_Entity_Factory {
 			return new Invalid_Remote_Entity();
 		}
 
+
 		return new Valid_Remote_Entity(
 			self::may_be_wrap_array( $entity_data['@type'] ),
 			$entity_data['name'],
 			$entity_data['description'],
-			$entity_data['sameAs']
+			array_merge( array( $entity_url ), self::may_be_wrap_array( $entity_data['sameAs'] ) )
 		);
 
 	}

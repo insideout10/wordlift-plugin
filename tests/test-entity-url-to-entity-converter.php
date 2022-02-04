@@ -44,7 +44,8 @@ class Url_To_Entity_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $entity->get_types(), array( $valid_remote_entity_data['@type'] ) );
 		$this->assertEquals( $entity->get_name(), $valid_remote_entity_data['name'] );
 		$this->assertEquals( $entity->get_description(), $valid_remote_entity_data['description'] );
-		$this->assertEquals( $entity->get_same_as(), $valid_remote_entity_data['sameAs'] );
+		$this->assertEquals( $entity->get_same_as(), array_merge( array( 'http://dbpedia.org/resource/WordLift' ),
+			$valid_remote_entity_data['sameAs'] ) );
 	}
 
 
@@ -112,9 +113,6 @@ class Url_To_Entity_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		return $response;
 	}
-
-
-
 
 
 }

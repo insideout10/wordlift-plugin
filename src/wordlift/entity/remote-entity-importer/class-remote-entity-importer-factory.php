@@ -2,8 +2,8 @@
 
 namespace Wordlift\Entity\Remote_Entity_Importer;
 
-use Wordlift\Entity\Remote_Entity\Invalid_Remote_Entity;
 use Wordlift\Entity\Remote_Entity\Remote_Entity;
+use Wordlift\Entity\Remote_Entity\Valid_Remote_Entity;
 
 class Remote_Entity_Importer_Factory {
 
@@ -12,11 +12,12 @@ class Remote_Entity_Importer_Factory {
 	 *
 	 * @return Remote_Entity_Importer
 	 */
-	public static function from_entity( $entity) {
+	public static function from_entity( $entity ) {
 
-		if ( $entity instanceof Invalid_Remote_Entity ) {
-			return new Invalid_Remote_Entity_Importer();
+		if ( $entity instanceof Valid_Remote_Entity ) {
+			return new Valid_Remote_Entity_Importer( $entity );
 		}
 
+		return new Invalid_Remote_Entity_Importer();
 	}
 }
