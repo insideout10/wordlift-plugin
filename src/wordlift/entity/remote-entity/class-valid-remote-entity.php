@@ -2,20 +2,27 @@
 
 namespace Wordlift\Entity\Remote_Entity;
 
-class Valid_Remote_Entity  implements Remote_Entity {
+class Valid_Remote_Entity implements Remote_Entity {
 
 	/**
 	 * @var array<string>
 	 */
 	private $types;
 
-	public function __construct( $types ) {
+	/**
+	 * Title or name of the entity.
+	 * @var string
+	 */
+	private $name;
+
+	public function __construct( $types, $name ) {
 		$this->types = $types;
+		$this->name  = $name;
 	}
 
 
 	function getName() {
-		// TODO: Implement getName() method.
+		return $this->name;
 	}
 
 	function getDescription() {

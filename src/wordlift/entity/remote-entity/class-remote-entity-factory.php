@@ -21,12 +21,14 @@ class Remote_Entity_Factory {
 			return new Invalid_Remote_Entity();
 		}
 
-		if ( ! array_key_exists( '@type', $entity_data ) ) {
+		if ( ! array_key_exists( '@type', $entity_data )
+		     || ! array_key_exists('name', $entity_data ) ) {
 			return new Invalid_Remote_Entity();
 		}
 
 		return new Valid_Remote_Entity(
-			self::may_be_wrap_array( $entity_data['@type'] )
+			self::may_be_wrap_array( $entity_data['@type'] ),
+			$entity_data['name']
 		);
 
 	}
