@@ -26,6 +26,7 @@ class Remote_Entity_Factory {
 		if ( ! array_key_exists( '@type', $entity_data )
 		     || ! array_key_exists( 'name', $entity_data )
 		     || ! array_key_exists( 'description', $entity_data ) ) {
+
 			return new Invalid_Remote_Entity();
 		}
 

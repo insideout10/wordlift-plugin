@@ -3,7 +3,12 @@
 namespace Wordlift\Lod_Import;
 
 use Wordlift\Api\Default_Api_Service;
+use Wordlift\Content\Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Entity\Remote_Entity\Remote_Entity_Factory;
+use Wordlift\Entity\Remote_Entity\Url_To_Remote_Entity_Converter;
+use Wordlift\Entity\Remote_Entity_Importer\Remote_Entity_Importer_Factory;
+use Wordlift\Object_Type_Enum;
 use Wordlift_Entity_Type_Service;
 
 class Lod_Import {
@@ -64,49 +69,20 @@ class Lod_Import {
 	private function import_single( $item_id ) {
 
 		$content_service     = Wordpress_Content_Service::get_instance();
-		$entity_type_service = Wordlift_Entity_Type_Service::get_instance();
 
 		// Do not create/update an existing entity.
 		if ( $content_service->get_by_entity_id_or_same_as( $item_id ) ) {
 			return;
 		}
 
-		$post_id = $this->import_entity( $item_id, $entity_type_service );
+		$remote_entity = Url_To_Remote_Entity_Converter::convert( $item_id );
+		$importer      = Remote_Entity_Importer_Factory::from_entity( $remote_entity );
+		$content_id    = $importer->import();
 
-		edit_post_link( $item_id, $post_id );
-
-	}
-
-	/**
-	 * @param $item_id
-	 * @param Wordlift_Entity_Type_Service $entity_type_service
-	 *
-	 * @return int|\WP_Error
-	 */
-	private function import_entity( $item_id, $entity_type_service ) {
-		$target_path = '/id/' . preg_replace( '@^(https?)://@', '$1/', $item_id );
-		$response    = Default_Api_Service::get_instance()->get( $target_path );
-		$json        = json_decode( $response->get_body() );
-		$post_id     = wp_insert_post( array(
-			'post_title'   => $json->name,
-			'post_content' => isset( $json->description ) ? $json->description : '',
-			'post_status'  => 'draft',
-			'post_type'    => 'entity',
-		) );
-
-		foreach ( $json->{'@type'} as $type ) {
-			$entity_type_service->set( $post_id, "http://schema.org/$type", false );
+		if ( $content_id instanceof Content_Id && $content_id->get_type() === Object_Type_Enum::POST ) {
+			edit_post_link( $item_id, $content_id->get_id() );
 		}
 
-		add_post_meta( $post_id, 'entity_same_as', $item_id );
-
-		if ( isset( $json->sameAs ) ) {
-			foreach ( $json->sameAs as $same_as ) {
-				add_post_meta( $post_id, 'entity_same_as', $same_as );
-			}
-		}
-
-		return $post_id;
 	}
 
 }

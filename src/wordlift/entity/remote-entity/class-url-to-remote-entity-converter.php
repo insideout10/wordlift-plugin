@@ -12,7 +12,7 @@ class Url_To_Remote_Entity_Converter {
 	 *
 	 * @return Remote_Entity
 	 */
-	public function convert( $url ) {
+	public static function convert( $url ) {
 		$target_path = '/id/' . preg_replace( '@^(https?)://@', '$1/', $url );
 		$response    = Default_Api_Service::get_instance()->get( $target_path );
 
