@@ -52,6 +52,7 @@
         height: 100%;
         border-radius: 10px;
         transition:600ms linear;
+        width: 40%;
     }
 </style>
 
@@ -60,7 +61,7 @@
 
 	<div>
 		<div class="progress-bar">
-			<div id="progress" style="width: 0%;"></div>
+			<div id="progress"></div>
 		</div>
 
 		<div class="wl-import-area">
