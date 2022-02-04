@@ -4,6 +4,9 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
+use Wordlift\Entity\Remote_Entity;
+use Wordlift\Entity\Url_To_Entity_Converter;
+
 /**
  * Class Url_To_Entity_Converter_Test
  * @group entity
