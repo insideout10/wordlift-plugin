@@ -1400,6 +1400,13 @@ class Wordlift {
 			 */
 			$videoobject_loader = new Loader();
 			$videoobject_loader->init_feature();
+
+			/**
+			 * @since 3.35.0
+			 */
+			$google_addon_integration_loader = new \Wordlift\Google_Addon_Integration\Loader();
+			$google_addon_integration_loader->init_feature();
+
 			/**
 			 * @since 3.31.5
 			 * Create configuration endpoint for webapp to configure.
