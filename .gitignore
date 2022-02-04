@@ -54,4 +54,4 @@ wordlift-*.zip
 
 # Ignore Docker Sync files.
 .docker-sync/
-.docker-compose-custom.yml
+docker-compose-custom.yml
