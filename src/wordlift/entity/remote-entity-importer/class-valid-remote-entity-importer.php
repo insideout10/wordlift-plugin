@@ -2,6 +2,7 @@
 
 namespace Wordlift\Entity\Remote_Entity_Importer;
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Entity\Remote_Entity\Valid_Remote_Entity;
 use Wordlift_Entity_Type_Service;
 
@@ -39,6 +40,6 @@ class Valid_Remote_Entity_Importer implements Remote_Entity_Importer {
 			add_post_meta( $post_id, 'entity_same_as', $same_as );
 		}
 
-		return true;
+		return Wordpress_Content_Id::create_post( $post_id );
 	}
 }

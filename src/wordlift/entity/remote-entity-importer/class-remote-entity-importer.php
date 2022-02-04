@@ -2,12 +2,14 @@
 
 namespace Wordlift\Entity\Remote_Entity_Importer;
 
-use Wordlift\Entity\Remote_Entity\Remote_Entity;
+use Wordlift\Content\Wordpress\Wordpress_Content;
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 
 interface Remote_Entity_Importer {
 
 	/**
-	 * @return boolean status of the import, true or false.
+	 * @return Wordpress_Content_Id|boolean
+	 * Returns content id or false.
 	 */
 	public function import();
 
