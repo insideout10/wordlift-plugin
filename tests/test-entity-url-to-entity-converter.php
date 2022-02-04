@@ -4,8 +4,10 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
-use Wordlift\Entity\Remote_Entity;
-use Wordlift\Entity\Url_To_Entity_Converter;
+use Wordlift\Entity\Remote_Entity\Invalid_Remote_Entity;
+use Wordlift\Entity\Remote_Entity\Remote_Entity;
+use Wordlift\Entity\Remote_Entity\Url_To_Remote_Entity_Converter;
+
 
 /**
  * Class Url_To_Entity_Converter_Test
@@ -71,11 +73,11 @@ class Url_To_Entity_Converter_Test extends Wordlift_Unit_Test_Case {
 	}
 
 
-	public function test_given_a_dbpedia_url_should_convert_to_entity() {
-		$converter = new Url_To_Entity_Converter();
-		$entity    = $converter->convert( 'https://dbpedia.org/test' );
+	public function test_given_a_invalid_url_should_return_invalid_remote_entity() {
+		$converter = new Url_To_Remote_Entity_Converter();
+		$entity    = $converter->convert( 'http://www.wikidata.org/entity/invalid' );
 		$this->assertTrue(
-			$entity instanceof Remote_Entity
+			$entity instanceof Invalid_Remote_Entity
 		);
 	}
 

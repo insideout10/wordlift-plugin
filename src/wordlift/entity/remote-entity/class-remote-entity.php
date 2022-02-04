@@ -1,8 +1,8 @@
 <?php
 
-namespace Wordlift\Entity;
+namespace Wordlift\Entity\Remote_Entity;
 
-interface Entity {
+interface Remote_Entity {
 
 	/**
 	 * @return string
