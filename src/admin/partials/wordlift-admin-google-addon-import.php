@@ -97,21 +97,31 @@
 </div>
 
 <script>
+
+    function startImport(entities) {
+        console.log(entities)
+
+
+    }
+
     window.addEventListener("load", () => {
+        console.log("page loaded")
+        // send message to parent window to retrieve the
+        window.opener.postMessage({type: "GET_ENTITIES"}, "*")
 
-        //window.opener.postMessage({type: "GET_ENTITIES"})
-
-        // setInterval(() => {
-        //     let el = document.getElementById('progress').style;
-        //     const width = el.width.replace("%", "")
-        //
-        //     el.width  = (parseInt(width) + 10) + "%"
-        // }, 1000)
     })
 
     window.addEventListener("message", (messageEvent) => {
+        const type = event.data.type
 
+        alert("received message")
+        console.log("message event received")
+        console.log(messageEvent)
 
+        if ( type === 'ENTITIES_TO_BE_IMPORTED' ) {
+            const payload = event.data.payload
+            startImport(payload)
+        }
 
     })
 
