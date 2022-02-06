@@ -11,7 +11,7 @@ function startImport(entityUrls) {
     })
     Promise.all(promises).then((values) => {
         if (window.opener) {
-            window.opener.postMessage({type: "IMPORT_COMPLETE"}, "*")
+            window.opener.postMessage({type: "IMPORT_SUCCESS"}, "*")
         }
     });
 
