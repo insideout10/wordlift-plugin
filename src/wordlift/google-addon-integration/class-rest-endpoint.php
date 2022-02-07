@@ -36,7 +36,11 @@ class Rest_Endpoint {
 	 * @return bool[]
 	 */
 	public function import_entity( $request ) {
-		$entity_id = $request['entity_id'];
+
+
+		$body      = $request->get_body();
+		$data      = json_decode( $body, true );
+		$entity_id = $data['entity_id'];
 
 		$remote_entity = Url_To_Remote_Entity_Converter::convert( $entity_id );
 		$importer      = Remote_Entity_Importer_Factory::from_entity( $remote_entity );

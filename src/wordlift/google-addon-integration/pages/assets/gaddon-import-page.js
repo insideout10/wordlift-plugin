@@ -11,7 +11,7 @@ function startImport(entityUrls) {
     })
     Promise.all(promises).then((values) => {
         if (window.opener) {
-            window.opener.postMessage({type: "IMPORT_SUCCESS"}, "*")
+            //window.opener.postMessage({type: "IMPORT_SUCCESS"}, "*")
         }
     });
 
@@ -29,7 +29,10 @@ function getEmportEntityPromise(entityUrl, state) {
 
     return fetch(restUrl + "wordlift/v1/gaddon/import-entity", {
         method: "POST",
-        headers: {"X-WP-Nonce": nonce}
+        headers: {"X-WP-Nonce": nonce},
+        body: JSON.stringify({
+            "entity_id": entityUrl
+        })
     })
         .then(response => response.json())
         .catch(() => {
