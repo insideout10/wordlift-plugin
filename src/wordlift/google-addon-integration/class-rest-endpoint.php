@@ -2,6 +2,7 @@
 
 namespace Wordlift\Google_Addon_Integration;
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Entity\Remote_Entity\Url_To_Remote_Entity_Converter;
 use Wordlift\Entity\Remote_Entity_Importer\Remote_Entity_Importer_Factory;
 
@@ -41,6 +42,14 @@ class Rest_Endpoint {
 		$body      = $request->get_body();
 		$data      = json_decode( $body, true );
 		$entity_id = $data['entity_id'];
+
+		$content_service = Wordpress_Content_Service::get_instance();
+
+		// Do not create/update an existing entity.
+		if ( $content_service->get_by_entity_id_or_same_as( $entity_id ) ) {
+			return array( 'import_status' => false );
+		}
+
 
 		$remote_entity = Url_To_Remote_Entity_Converter::convert( $entity_id );
 		$importer      = Remote_Entity_Importer_Factory::from_entity( $remote_entity );
