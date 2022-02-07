@@ -50,13 +50,13 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		delete_transient( '_wl_installing' );
-		delete_option( 'wl_db_version' );
-		delete_option( '_wl_blog_url' );
-
-		$this->assertFalse( get_option( 'wl_db_version' ), '`wl_db_version` should be false.' );
-
-		Wordlift_Install_Service::get_instance()->install();
+//		delete_transient( '_wl_installing' );
+//		delete_option( 'wl_db_version' );
+//		delete_option( '_wl_blog_url' );
+//
+//		$this->assertFalse( get_option( 'wl_db_version' ), '`wl_db_version` should be false.' );
+//
+//		Wordlift_Install_Service::get_instance()->install();
 
 		// Configure WordPress with the test settings.
 		wl_configure_wordpress_test();
