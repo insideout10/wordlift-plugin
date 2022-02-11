@@ -341,9 +341,10 @@ class Wordlift_Entity_Service {
 
 	public function append_alternative_labels( $post_id, $labels_to_append ) {
 
-		// get existing labels.
-		$merged_labels = $this->get_alternative_labels( $post_id );
 
+		$merged_labels = $this->get_alternative_labels( $post_id );
+		
+		// Append new synonyms to the end.
 		$merged_labels = array_merge( $merged_labels, $labels_to_append );
 
 		$this->set_alternative_labels( $post_id, $merged_labels );
