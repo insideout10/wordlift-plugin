@@ -123,7 +123,7 @@ class Entity_Store {
 
 		// Save synonyms except title.
 		Wordlift_Entity_Service::get_instance()
-		                       ->set_alternative_labels( $post_id, array_diff( (array) $args['labels'], array( get_the_title( $post_id ) ) ) );
+		                       ->append_alternative_labels( $post_id, array_diff( (array) $args['labels'], array( get_the_title( $post_id ) ) ) );
 
 		$this->merge_post_meta( $post_id, \Wordlift_Schema_Service::FIELD_SAME_AS, (array) $args['same_as'],
 			(array) Wordpress_Content_Service::get_instance()->get_entity_id( Wordpress_Content_Id::create_post( $post_id ) ) );
