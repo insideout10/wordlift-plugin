@@ -1,4 +1,4 @@
-v#!/bin/bash
+#!/bin/bash
 set -euo pipefail
 
 # usage: file_env VAR [DEFAULT]

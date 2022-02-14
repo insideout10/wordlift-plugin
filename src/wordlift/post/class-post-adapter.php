@@ -88,7 +88,6 @@ class Post_Adapter {
 	 * @return array The data array.
 	 */
 	public function wp_insert_post_data( $data, $postarr ) {
-
 		$post_status = $data['post_status'];
 		if ( 'auto-draft' === $post_status || 'inherit' === $post_status ) {
 			return $data;
