@@ -68,31 +68,6 @@ class Object_Link_Provider extends Singleton {
 		return Object_Type_Enum::UNKNOWN;
 	}
 
-	public function get_id_by_uri( $uri ) {
-		$link_providers = $this->link_providers;
-		foreach ( $link_providers as $provider ) {
-			/**
-			 * @var $provider Link
-			 */
-			$id = $provider->get_id( $uri );
-			if ( $id ) {
-				return $id;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * @param $uri
-	 * @param $object_type
-	 *
-	 * @return int
-	 */
-	public function get_object_id_by_type( $uri, $object_type ) {
-		return $this->link_providers[ $object_type ]->get_id( $uri );
-	}
-
 	public function get_same_as_uris( $id, $object_type ) {
 
 		$provider = $this->get_provider( $object_type );
