@@ -76,10 +76,12 @@ class Url_To_Entity_Converter_Test extends Wordlift_Unit_Test_Case {
 			'response' => array( 'code' => 500 )
 		);
 
+		$base_url = apply_filters( 'wl_api_base_url', WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE );
+
 		return array(
-			'https://api.wordlift.io/id/http/dbpedia.org/resource/WordLift'            => $valid_entity_response,
-			'https://api.wordlift.io/id/http/www.wikidata.org/entity/invalid'          => $invalid_entity_response,
-			'https://api.wordlift.io/id/http/www.wikidata.org/entity/invalid_response' => array(
+			"$base_url/id/http/dbpedia.org/resource/WordLift"            => $valid_entity_response,
+			"$base_url/id/http/www.wikidata.org/entity/invalid"          => $invalid_entity_response,
+			"$base_url/id/http/www.wikidata.org/entity/invalid_response" => array(
 				'body'     => '',
 				'response' => array( 'code' => 200 )
 			)
