@@ -91,6 +91,7 @@ class Url_To_Entity_Converter_Test extends Wordlift_Unit_Test_Case {
 
 	function setUp() {
 		parent::setUp();
+		remove_all_filters( 'pre_http_request' )
 		add_filter( 'pre_http_request', array( $this, 'mock_api' ), 10, 3 );
 	}
 
