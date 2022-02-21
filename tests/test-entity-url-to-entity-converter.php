@@ -76,7 +76,7 @@ class Url_To_Entity_Converter_Test extends Wordlift_Unit_Test_Case {
 			'response' => array( 'code' => 500 )
 		);
 
-		$base_url = apply_filters( 'wl_api_base_url', WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE );
+		$base_url = untrailingslashit( apply_filters( 'wl_api_base_url', WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE ) );
 
 		return array(
 			"$base_url/id/http/dbpedia.org/resource/WordLift"            => $valid_entity_response,
