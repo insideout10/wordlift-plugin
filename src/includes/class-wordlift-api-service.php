@@ -7,6 +7,7 @@
  * @since 3.20.0
  */
 
+use Wordlift\Api\Api_Headers_Service;
 use Wordlift\Api\User_Agent;
 
 /**
@@ -26,6 +27,11 @@ class Wordlift_Api_Service {
 	private static $instance;
 
 	/**
+	 * @var Api_Headers_Service|null
+	 */
+	private $headers_service;
+
+	/**
 	 * Create a {@link Wordlift_Api_Service} instance.
 	 *
 	 * @since 3.20.0
@@ -33,6 +39,7 @@ class Wordlift_Api_Service {
 	 */
 	public function __construct() {
 		self::$instance = $this;
+		$this->headers_service = Api_Headers_Service::get_instance();
 	}
 
 	/**
@@ -68,7 +75,7 @@ class Wordlift_Api_Service {
 			'user-agent' => User_Agent::get_user_agent(),
 			'headers'    => array(
 				'X-Authorization' => Wordlift_Configuration_Service::get_instance()->get_key(),
-			) + $this->get_wp_headers(),
+			) + $this->headers_service->get_wp_headers(),
 			/*
 			 * Increase the timeout from the default of 5 to 30 secs.
 			 *
@@ -122,7 +129,7 @@ class Wordlift_Api_Service {
 				 * @see https://stackoverflow.com/questions/30601075/curl-to-google-compute-load-balancer-gets-error-502
 				 */
 				'Expect'          => '',
-			) + $this->get_wp_headers(),
+			) + $this->headers_service->get_wp_headers(),
 			'body'       => $body,
 		) );
 
@@ -140,7 +147,7 @@ class Wordlift_Api_Service {
 			'user-agent' => User_Agent::get_user_agent(),
 			'headers'    => array(
 				'X-Authorization' => Wordlift_Configuration_Service::get_instance()->get_key(),
-			) + $this->get_wp_headers(),
+			) + $this->headers_service->get_wp_headers(),
 		) );
 
 		return self::get_message_or_error( $response );

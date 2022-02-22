@@ -26,6 +26,7 @@ class Wordlift_Default_Api_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$response = Default_Api_Service::get_instance()
 		                                ->request( 'PUT', 'random_path', array() );
+		$response = json_decode( $response->get_body() );
 		$this->assertTrue( isset( $response->example ), 'Response must have an `example` property.' );
 		$this->assertEquals( 'json', $response->example, 'The `example` property must be `json`.' );
 
@@ -36,7 +37,6 @@ class Wordlift_Default_Api_Service_Test extends Wordlift_Unit_Test_Case {
 
 		// Return this value only if header has wp json and wp admin urls.
 		$headers = $r['headers'];
-
 		if ( ! array_key_exists( 'X-Wordlift-Plugin-Wp-Admin', $headers ) ||
 		     ! array_key_exists( 'X-Wordlift-Plugin-Wp-Json', $headers ) ) {
 			return array(

@@ -93,7 +93,6 @@ class Default_Api_Service implements Api_Service {
 		}
 
 		$request_url = $this->base_url . $path;
-
 		// Create the request args in the following order:
 		//  1. use `$args` as base if provided.
 		//  2. set the custom timeout if provided.
