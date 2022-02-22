@@ -59,7 +59,7 @@ class Default_Api_Service implements Api_Service {
 			'Content-Type'  => 'application/json',
 			'Authorization' => "Key $wordlift_key",
 			'Expect'        => '',
-		);
+		) + Api_Headers_Service::get_instance()->get_wp_headers();
 
 		self::$instance = $this;
 	}

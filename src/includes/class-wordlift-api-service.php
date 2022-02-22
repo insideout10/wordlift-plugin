@@ -47,16 +47,7 @@ class Wordlift_Api_Service {
 		return self::$instance;
 	}
 
-	/**
-	 * This function is used to append WordPress endpoint data to every request made.
-	 * @return array
-	 */
-	private function get_wp_headers() {
-		return array(
-			'X-Wordlift-Plugin-Wp-Admin' => untrailingslashit( get_admin_url() ),
-			'X-Wordlift-Plugin-Wp-Json'  => untrailingslashit( get_rest_url() )
-		);
-	}
+
 
 	/**
 	 * Perform a `GET` request towards the requested path.
