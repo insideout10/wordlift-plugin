@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.35.1 (2022-02-22) =
+
+* Fix [#1532](https://github.com/insideout10/wordlift-plugin/issues/1532): Added ui for linked data import.
+
 = 3.35.0 (2022-02-14) =
 
 * Fix [#1536](https://github.com/insideout10/wordlift-plugin/issues/1536): Fix synonyms getting removed when the referenced post is updated.
