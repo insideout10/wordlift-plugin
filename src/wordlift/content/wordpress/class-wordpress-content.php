@@ -51,4 +51,29 @@ class Wordpress_Content implements Content {
 		return Object_Type_Enum::from_wordpress_instance( $this->bag );
 	}
 
+	function get_permalink() {
+		switch ( get_class( $this->bag ) ) {
+			case 'WP_Post':
+				return get_permalink( $this->get_bag()->ID );
+			case 'WP_User':
+				return get_author_posts_url( $this->get_bag()->ID );
+			case 'WP_Term':
+				return get_term_link( $this->bag->term_id );
+		}
+
+		return null;
+	}
+
+	function get_edit_link() {
+		switch ( get_class( $this->bag ) ) {
+			case 'WP_Post':
+				return get_edit_post_link( $this->get_bag()->ID );
+			case 'WP_User':
+				return get_edit_user_link( $this->get_bag()->ID );
+			case 'WP_Term':
+				return get_edit_term_link( $this->bag->term_id );
+		}
+
+		return null;
+	}
 }
