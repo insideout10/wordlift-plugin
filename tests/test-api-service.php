@@ -57,6 +57,21 @@ class Wordlift_Api_Service_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
+	public function test_should_post_wp_admin_and_wp_json_headers_for_delete_request() {
+
+		$callback = array( $this, 'pre_http_request__test_get_data' );
+
+		add_filter( 'pre_http_request', $callback, 10, 3 );
+
+		$response = Wordlift_Api_Service::get_instance()
+		                                ->delete( 'random_url' );
+		$this->assertTrue( isset( $response->example ), 'Response must have an `example` property.' );
+		$this->assertEquals( 'json', $response->example, 'The `example` property must be `json`.' );
+
+		remove_filter( 'pre_http_request', $callback );
+
+	}
+
 	/**
 	 * Test getting a JSON reply.
 	 *

@@ -131,7 +131,7 @@ class Wordlift_Api_Service {
 				 * @see https://stackoverflow.com/questions/30601075/curl-to-google-compute-load-balancer-gets-error-502
 				 */
 				'Expect'          => '',
-			),
+			) + $this->get_wp_headers(),
 			'body'       => $body,
 		) );
 
