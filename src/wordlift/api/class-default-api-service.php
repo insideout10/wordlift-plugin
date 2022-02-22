@@ -59,7 +59,7 @@ class Default_Api_Service implements Api_Service {
 			'Content-Type'  => 'application/json',
 			'Authorization' => "Key $wordlift_key",
 			'Expect'        => '',
-		) + Api_Headers_Service::get_instance()->get_wp_headers();
+		);
 
 		self::$instance = $this;
 	}
@@ -105,7 +105,7 @@ class Default_Api_Service implements Api_Service {
 				'method'     => $method,
 				'timeout'    => $request_timeout,
 				'user-agent' => isset( $user_agent ) ? $user_agent : $this->user_agent,
-				'headers'    => $headers + $this->headers,
+				'headers'    => $headers + $this->headers + Api_Headers_Service::get_instance()->get_wp_headers(),
 				'body'       => $body,
 			) );
 
