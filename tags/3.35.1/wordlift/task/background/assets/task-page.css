@@ -1,0 +1,26 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+#wl-progressbar {
+  width: auto;
+  max-width: 600px;
+  display: none;
+  border: 1px solid black;
+  margin: 10px 0;
+}
+
+#wl-progressbar .bar {
+  min-height: 20px;
+  background: #6dbe41;
+  color: #fff;
+  font-weight: 600;
+}
+
+#wl-progressbar .progress {
+  text-align: center;
+}
+
+#wl-progressinfo {
+  display: none;
+}
