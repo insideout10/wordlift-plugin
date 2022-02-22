@@ -48,6 +48,17 @@ class Wordlift_Api_Service {
 	}
 
 	/**
+	 * This function is used to append WordPress endpoint data to every request made.
+	 * @return array
+	 */
+	private function get_wp_headers() {
+		return array(
+			'X-Wordlift-Plugin-Wp-Admin' => untrailingslashit( get_admin_url() ),
+			'X-Wordlift-Plugin-Wp-Json'  => untrailingslashit( get_rest_url() )
+		);
+	}
+
+	/**
 	 * Perform a `GET` request towards the requested path.
 	 *
 	 * @param string $path The relative path.
@@ -66,7 +77,7 @@ class Wordlift_Api_Service {
 			'user-agent' => User_Agent::get_user_agent(),
 			'headers'    => array(
 				'X-Authorization' => Wordlift_Configuration_Service::get_instance()->get_key(),
-			),
+			) + $this->get_wp_headers(),
 			/*
 			 * Increase the timeout from the default of 5 to 30 secs.
 			 *
