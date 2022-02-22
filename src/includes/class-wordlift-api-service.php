@@ -149,7 +149,7 @@ class Wordlift_Api_Service {
 			'user-agent' => User_Agent::get_user_agent(),
 			'headers'    => array(
 				'X-Authorization' => Wordlift_Configuration_Service::get_instance()->get_key(),
-			),
+			) + $this->get_wp_headers(),
 		) );
 
 		return self::get_message_or_error( $response );
