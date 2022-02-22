@@ -59,7 +59,7 @@ class Default_Api_Service implements Api_Service {
 			'Content-Type'  => 'application/json',
 			'Authorization' => "Key $wordlift_key",
 			'Expect'        => '',
-		);
+		) + Api_Headers_Service::get_instance()->get_wp_headers();
 
 		self::$instance = $this;
 	}
@@ -93,7 +93,6 @@ class Default_Api_Service implements Api_Service {
 		}
 
 		$request_url = $this->base_url . $path;
-
 		// Create the request args in the following order:
 		//  1. use `$args` as base if provided.
 		//  2. set the custom timeout if provided.

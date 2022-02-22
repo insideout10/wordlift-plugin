@@ -27,6 +27,51 @@ class Wordlift_Api_Service_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
+	public function test_should_post_wp_admin_and_wp_json_headers_for_get_request() {
+
+		$callback = array( $this, 'pre_http_request__test_get_data' );
+
+		add_filter( 'pre_http_request', $callback, 10, 3 );
+
+		$response = Wordlift_Api_Service::get_instance()
+		                                ->get( 'random_url' );
+		$this->assertTrue( isset( $response->example ), 'Response must have an `example` property.' );
+		$this->assertEquals( 'json', $response->example, 'The `example` property must be `json`.' );
+
+		remove_filter( 'pre_http_request', $callback );
+
+	}
+
+	public function test_should_post_wp_admin_and_wp_json_headers_for_post_request() {
+
+		$callback = array( $this, 'pre_http_request__test_get_data' );
+
+		add_filter( 'pre_http_request', $callback, 10, 3 );
+
+		$response = Wordlift_Api_Service::get_instance()
+		                                ->post( 'random_url', array() );
+		$this->assertTrue( isset( $response->example ), 'Response must have an `example` property.' );
+		$this->assertEquals( 'json', $response->example, 'The `example` property must be `json`.' );
+
+		remove_filter( 'pre_http_request', $callback );
+
+	}
+
+	public function test_should_post_wp_admin_and_wp_json_headers_for_delete_request() {
+
+		$callback = array( $this, 'pre_http_request__test_get_data' );
+
+		add_filter( 'pre_http_request', $callback, 10, 3 );
+
+		$response = Wordlift_Api_Service::get_instance()
+		                                ->delete( 'random_url' );
+		$this->assertTrue( isset( $response->example ), 'Response must have an `example` property.' );
+		$this->assertEquals( 'json', $response->example, 'The `example` property must be `json`.' );
+
+		remove_filter( 'pre_http_request', $callback );
+
+	}
+
 	/**
 	 * Test getting a JSON reply.
 	 *
@@ -101,13 +146,13 @@ class Wordlift_Api_Service_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Mock the response for the `install` call.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param false|array|WP_Error $preempt Whether to preempt an HTTP request's return value. Default false.
-	 * @param array                $r HTTP request arguments.
-	 * @param string               $url The request URL.
+	 * @param array $r HTTP request arguments.
+	 * @param string $url The request URL.
 	 *
 	 * @return array The response array.
+	 * @since 3.20.0
+	 *
 	 */
 	public function pre_http_request__test_get_json( $preempt, $r, $url ) {
 
@@ -120,16 +165,37 @@ class Wordlift_Api_Service_Test extends Wordlift_Unit_Test_Case {
 		);
 	}
 
+	public function pre_http_request__test_get_data( $preempt, $r, $url ) {
+
+		// Return this value only if header has wp json and wp admin urls.
+		$headers = $r['headers'];
+
+		if ( ! array_key_exists( 'X-Wordlift-Plugin-Wp-Admin', $headers ) ||
+		     ! array_key_exists( 'X-Wordlift-Plugin-Wp-Json', $headers ) ) {
+			return array(
+				'response' => array( 'code' => 200 ),
+				'headers'  => array( 'content-type' => 'application/json' ),
+				'body'     => '{}',
+			);
+		}
+
+		return array(
+			'response' => array( 'code' => 200 ),
+			'headers'  => array( 'content-type' => 'application/json' ),
+			'body'     => '{ "example": "json" }',
+		);
+	}
+
 	/**
 	 * Mock the response for the `install` call.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param false|array|WP_Error $preempt Whether to preempt an HTTP request's return value. Default false.
-	 * @param array                $r HTTP request arguments.
-	 * @param string               $url The request URL.
+	 * @param array $r HTTP request arguments.
+	 * @param string $url The request URL.
 	 *
 	 * @return array The response array.
+	 * @since 3.20.0
+	 *
 	 */
 	public function pre_http_request__test_get_text( $preempt, $r, $url ) {
 
@@ -145,13 +211,13 @@ class Wordlift_Api_Service_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Mock the response for the `install` call.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param false|array|WP_Error $preempt Whether to preempt an HTTP request's return value. Default false.
-	 * @param array                $r HTTP request arguments.
-	 * @param string               $url The request URL.
+	 * @param array $r HTTP request arguments.
+	 * @param string $url The request URL.
 	 *
 	 * @return array The response array.
+	 * @since 3.20.0
+	 *
 	 */
 	public function pre_http_request__test_get_invalid_http_status_code( $preempt, $r, $url ) {
 
@@ -167,13 +233,13 @@ class Wordlift_Api_Service_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Mock the response for the `install` call.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param false|array|WP_Error $preempt Whether to preempt an HTTP request's return value. Default false.
-	 * @param array                $r HTTP request arguments.
-	 * @param string               $url The request URL.
+	 * @param array $r HTTP request arguments.
+	 * @param string $url The request URL.
 	 *
 	 * @return WP_Error A WP_Error instance.
+	 * @since 3.20.0
+	 *
 	 */
 	public function pre_http_request__test_get_error_response( $preempt, $r, $url ) {
 
@@ -185,11 +251,12 @@ class Wordlift_Api_Service_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Common assertions.
 	 *
+	 * @param string $method The HTTP method.
+	 * @param array $r HTTP request arguments.
+	 * @param string $url The request URL.
+	 *
 	 * @since 3.20.0
 	 *
-	 * @param string $method The HTTP method.
-	 * @param array  $r HTTP request arguments.
-	 * @param string $url The request URL.
 	 */
 	private function common_assertions( $method, $url, $r ) {
 
