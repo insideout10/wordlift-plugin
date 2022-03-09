@@ -142,6 +142,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= ????? (?????) =
+
+* Fix [#1539](https://github.com/insideout10/wordlift-plugin/issues/1539): Navigator and Faceted Search are loaded right
+    away when Googlebot requests the page, in order to enable indexing of related articles.
+
 = 3.35.1 (2022-02-22) =
 
 * Fix [#1532](https://github.com/insideout10/wordlift-plugin/issues/1532): Added ui for linked data import.
