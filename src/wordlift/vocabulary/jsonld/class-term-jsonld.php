@@ -9,7 +9,7 @@ namespace Wordlift\Vocabulary\Jsonld;
 class Term_Jsonld {
 
 	public function init() {
-		add_action( 'wl_term_jsonld_array', array( $this, 'wl_term_jsonld_array' ), 10, 2 );
+		add_filter( 'wl_term_jsonld_array', array( $this, 'wl_term_jsonld_array' ), 10, 2 );
 	}
 
 	public function wl_term_jsonld_array( $jsonld_array, $term_id ) {
@@ -22,7 +22,7 @@ class Term_Jsonld {
 			$entity['@id']              = get_term_link( $term_id ) . "/#id";
 			$entity['url']              = get_term_link( $term_id );
 			$entity['mainEntityOfPage'] = get_term_link( $term_id );
-			$jsonld_array['jsonld'][] = $entity;
+			$jsonld_array['jsonld'][]   = $entity;
 		}
 
 		return $jsonld_array;

@@ -1,5 +1,7 @@
 <?php
+
 namespace Wordlift\Metabox\Field;
+
 use Wordlift_Configuration_Service;
 use Wordlift_Sanitizer;
 
@@ -96,13 +98,13 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 		$placeholder = esc_attr_x( 'Type here the URL of an equivalent entity from another dataset.', 'sameAs metabox input', 'wordlift' );
 
 		return
-  		'<button type="button" class="wl-add-input wl-add-input--link">'.esc_html__( 'Click here to manually add URLs', 'wordlift' ).'</button>'
-        .'<div style="display: none;"><div class="wl-input-wrapper">'
-        ."<input type='text' id='$this->meta_name' name='wl_metaboxes[$this->meta_name][]' placeholder='$placeholder' />"
-        .'<button type="button" class="wl-remove-input wl-remove-input--sameas"></button>'
-        .'</div></div>'
-        . '<fieldset id="wl-input-container">'.$this->get_stored_values_html( $count ).'</fieldset>'
-        .parent::get_add_custom_button_html( $count, 'Add Another URL', 'hide' );
+			'<button type="button" class="wl-add-input wl-add-input--link">' . esc_html__( 'Click here to manually add URLs', 'wordlift' ) . '</button>'
+			. '<div style="display: none;"><div class="wl-input-wrapper">'
+			. "<input type='text' id='$this->meta_name' name='wl_metaboxes[$this->meta_name][]' placeholder='$placeholder' />"
+			. '<button type="button" class="wl-remove-input wl-remove-input--sameas"></button>'
+			. '</div></div>'
+			. '<fieldset id="wl-input-container">' . $this->get_stored_values_html( $count ) . '</fieldset>'
+			. parent::get_add_custom_button_html( $count, 'Add Another URL', 'hide' );
 	}
 
 	/**
@@ -110,7 +112,7 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 	 */
 	protected function get_stored_values_html( &$count ) {
 
-		return  parent::get_stored_values_html( $count );
+		return parent::get_stored_values_html( $count );
 	}
 
 	/**
@@ -190,7 +192,7 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 			}
 
 			// URLs should not start with local dataset uri.
-			return $url_validation && ( strpos( $url, $dataset_uri, 0 ) === false );
+			return $url_validation && ( empty( $dataset_uri ) || 0 !== strpos( $url, $dataset_uri ) );
 		} );
 	}
 

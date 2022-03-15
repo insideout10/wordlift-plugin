@@ -97,7 +97,9 @@ class Jsonld_Generator {
 			$name  = $this->relative_to_schema_context( $value['predicate'] );
 			$value = $this->property_getter->get( $term_id, $key, Object_Type_Enum::TERM );
 			$value = $this->process_value( $value, $references );
-			if ( ! $value ) {
+			if ( ! isset( $value ) ||
+			     is_array( $value ) && empty( $value ) ||
+			     is_string( $value ) && empty( $value ) ) {
 				continue;
 			}
 			$jsonld[ $name ] = $value;
@@ -108,8 +110,6 @@ class Jsonld_Generator {
 			$jsonld['mainEntityOfPage'] = $permalink;
 		}
 
-		$this->add_url( $jsonld, $term_id );
-
 		return apply_filters( 'wl_no_vocabulary_term_jsonld_array', array(
 			'jsonld'     => $jsonld,
 			'references' => $references
@@ -117,28 +117,11 @@ class Jsonld_Generator {
 
 	}
 
-	private function add_url( &$jsonld, $term_id ) {
-		$urls = get_term_meta( $term_id, 'wl_schema_url' );
-		if ( empty( $urls ) ) {
-			return;
-		}
-
-		$permalink     = get_term_link( $term_id );
-		$jsonld['url'] = array_map( function ( $item ) use ( $permalink ) {
-			return str_replace( '<permalink>', $permalink, $item );
-		}, $urls );
-	}
-
-
 	private function relative_to_schema_context( $predicate ) {
 		return str_replace( 'http://schema.org/', '', $predicate );
 	}
 
 	private function process_value( $value, &$references ) {
-
-		if ( ! $value ) {
-			return false;
-		}
 
 		if ( is_array( $value )
 		     && count( $value ) > 0

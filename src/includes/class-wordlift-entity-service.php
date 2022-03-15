@@ -341,9 +341,8 @@ class Wordlift_Entity_Service {
 
 	public function append_alternative_labels( $post_id, $labels_to_append ) {
 
-
 		$merged_labels = $this->get_alternative_labels( $post_id );
-		
+
 		// Append new synonyms to the end.
 		$merged_labels = array_merge( $merged_labels, $labels_to_append );
 
@@ -423,7 +422,8 @@ class Wordlift_Entity_Service {
 		$entity_id       = $content_service->get_entity_id( new Wordpress_Content_Id( $object_id, $type ) );
 		$dataset_uri     = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
 
-		if ( ! isset( $entity_id ) || ( $dataset_uri && 0 !== strpos( $entity_id, $dataset_uri ) ) ) {
+		if ( ! isset( $entity_id ) ||
+		     ( ! empty( $dataset_uri ) && 0 !== strpos( $entity_id, $dataset_uri ) ) ) {
 			$rel_uri = Entity_Uri_Generator::create_uri( $type, $object_id );
 			try {
 				$content_service->set_entity_id( new Wordpress_Content_Id( $object_id, $type ), $rel_uri );
