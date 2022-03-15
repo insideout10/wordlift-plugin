@@ -154,39 +154,26 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			}
 
 			if ( ! isset( $existing_entity ) ) {
+				// New entity, save it.
 				$existing_entity = wl_save_entity( $entity );
+			} else {
+				// Existing entity, update post status.
+				if ( $existing_entity instanceof WP_Post && $existing_entity->post_status !== 'publish' ) {
+					$parent_post_status = $post->post_status;
+					$post_status        = apply_filters( 'wl_feature__enable__entity-auto-publish', true )
+						? $parent_post_status : 'draft';
+					wp_update_post( array(
+						'ID'          => $existing_entity->ID,
+						'post_status' => $post_status
+					) );
+				}
 			}
 
 			$uri = $content_service->get_entity_id( Wordpress_Content_Id::create_post( $existing_entity->ID ) );
 
-			// Detect the uri whether is an existing or a new entity
-//			$uri = $existing_entity ? wl_get_entity_uri( $existing_entity->ID ) : null;
-//				// @@todo remove the bogus URI builder.
-//				Wordlift_Uri_Service::get_instance()->build_uri(
-//					$entity['label'],
-//					Wordlift_Entity_Service::TYPE_NAME,
-//					$entity_type
-//				) : ;
-
-			// Local entities have a tmp uri with 'local-entity-' prefix
-			// These uris need to be rewritten here and replaced in the content
-//			if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
-//				// Override the entity obj
-//				$entity['uri'] = $uri;
-//			}
 
 			// Update entity data with related post
 			$entity['related_post_id'] = $post_id;
-
-			// Save the entity if is a new entity
-//			if ( null === $existing_entity ) {
-//				$related_entity_post = wl_save_entity( $entity );
-//
-//				// Ensure that the URI matches the one stored.
-//				$uri = Wordpress_Content_Service
-//					::get_instance()
-//					->get_entity_id( Wordpress_Content_Id::create_post( $related_entity_post->ID ) );
-//			}
 
 			$internal_entity_uris[] = $uri;
 			wl_write_log( "Map $entity_uri on $uri" );
