@@ -142,10 +142,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= ????? (?????) =
+= 3.35.2 (2022-03-15) =
 
-* Fix [#1539](https://github.com/insideout10/wordlift-plugin/issues/1539): Navigator and Faceted Search are loaded right
-    away when Googlebot requests the page, in order to enable indexing of related articles.
+* Fix: do not set the `url` property when the values are empty.
+* Fix [#1539](https://github.com/insideout10/wordlift-plugin/issues/1539): Improve the indexing of Navigator and
+    Faceted Search when Googlebot visits the page.
 
 = 3.35.1 (2022-02-22) =
 
