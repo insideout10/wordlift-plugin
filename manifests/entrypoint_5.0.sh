@@ -280,7 +280,7 @@ EOPHP
 		unset "$e"
 	done
 fi
-wp --allow-root core install --url=https://qa-dev.wordlift.io/5.0/ --title="5.0" --admin_name=wordlift --admin_password=8xSnT65T4KM2jWgX --admin_email=you@example.com
+wp --allow-root core install --url=https://qa-dev.wordlift.it/5.0/ --title="5.0" --admin_name=wordlift --admin_password=8xSnT65T4KM2jWgX --admin_email=you@example.com
 #wp --allow-root config set WORDLIFT_API_URL https://api-dev.wordlift.io --path=/var/www/html/5.0/ --anchor='?php' --placement=after
 wp --allow-root plugin install wp-recipe-maker
 

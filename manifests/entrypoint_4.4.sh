@@ -171,7 +171,7 @@ if (!$mysql->query('CREATE DATABASE IF NOT EXISTS `' . $mysql->real_escape_strin
 $mysql->close();
 EOPHP
 fi
-wp --allow-root core install --url=https://qa-dev.wordlift.io/4.4/ --title="4.4" --admin_name=wordlift --admin_password=8xSnT65T4KM2jWgX --admin_email=you@example.com
+wp --allow-root core install --url=https://qa-dev.wordlift.it/4.4/ --title="4.4" --admin_name=wordlift --admin_password=8xSnT65T4KM2jWgX --admin_email=you@example.com
 #wp --allow-root config set WORDLIFT_API_URL https://api-dev.wordlift.io --path=/var/www/html/4.4/ --anchor='?php' --placement=after
 wp --allow-root plugin install wp-recipe-maker
 wp --allow-root plugin install http://wordlift.io/wp-content/uploads/advanced-custom-fields-for-schema-org.zip
