@@ -54,14 +54,13 @@ jobs:
         name: Checkout
         uses: actions/checkout@v2
       -
-        name: connect to wordlift dev k8s
-        id: dev_k8s
-        uses: Azure/aks-set-context@v1
+      - name: AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}'
-          cluster-name: dev-aks-cluster
-          resource-group: wordlift-dev-east-us-2
-
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1  # change as needed
+          
       - name: delete old deployment
         continue-on-error: true
         uses: steebchen/kubectl@master
@@ -69,7 +68,7 @@ jobs:
           config: ${{ secrets.KUBE_CONFIG_DATA }}
           command: delete -f manifests/wordpress-deployment.yml -f manifests/wordpress-mysql-deployment.yml
 
-      - name: delete old deployment
+      - name: deploy new package
         continue-on-error: true
         uses: steebchen/kubectl@master
         with:
