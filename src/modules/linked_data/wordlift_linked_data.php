@@ -159,13 +159,9 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			} else {
 				// Existing entity, update post status.
 				if ( $existing_entity instanceof WP_Post && $existing_entity->post_status !== 'publish' ) {
-					$parent_post_status = $post->post_status;
-					$post_status        = apply_filters( 'wl_feature__enable__entity-auto-publish', true )
-						? $parent_post_status : 'draft';
-					wp_update_post( array(
-						'ID'          => $existing_entity->ID,
-						'post_status' => $post_status
-					) );
+					$post_status = apply_filters( 'wl_feature__enable__entity-auto-publish', true )
+						? $post->post_status : 'draft';
+					wl_update_post_status( $existing_entity->ID, $post_status );
 				}
 			}
 
