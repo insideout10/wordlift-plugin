@@ -69,14 +69,12 @@ jobs:
           config: ${{ secrets.KUBE_CONFIG_DATA }}
           command: delete -f manifests/wordpress-deployment.yml -f manifests/wordpress-mysql-deployment.yml
 
-      - name: deploy new package
-        uses: Azure/k8s-deploy@v1.4
+      - name: delete old deployment
+        continue-on-error: true
+        uses: steebchen/kubectl@master
         with:
-          Namespace: qa-wordpress
-          manifests: |
-            manifests/wordpress-deployment.yml
-            manifests/wordpress-mysql-deployment.yml
-            manifests/wordpress-ingress.yml
+          config: ${{ secrets.KUBE_CONFIG_DATA }}
+          command: apply -f manifests/wordpress-deployment.yml,manifests/wordpress-mysql-deployment.yml,manifests/wordpress-ingress.yml
 
       - name: install WP and add dev line
         continue-on-error: true
