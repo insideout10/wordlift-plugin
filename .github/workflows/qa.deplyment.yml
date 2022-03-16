@@ -44,6 +44,7 @@ jobs:
           tags: latest
 
   deploy:
+    needs: [build]
     runs-on: ubuntu-latest
       # Set the target AKS cluster.
     environment:
