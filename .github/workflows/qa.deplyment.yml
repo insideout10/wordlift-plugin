@@ -13,38 +13,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        WP-ver: [wlp-wp-4.4, wlp-wp-4.7, wlp-wp-5.0, wlp-wp-5.4, wlp-wp-5.5, wlp-wp-5.6, wlp-wp-5.7, wlp-wp-5.8, wlp-wp-5.9]
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v2
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      -
-        name: Build and push wp-4.4
-        id: docker_build
-        uses: docker/build-push-action@v1
-        with:
-          registry: ghcr.io
-          context: .
-          file: ./Dockerfile
-          push: true
-          target: ${{ matrix.WP-ver }}
-          username: ${{ secrets.username }}
-          password: ${{ secrets.PAT }}
-          repository: wordlift/${{ matrix.WP-ver }}
-          tags: latest
-
   deploy:
-    needs: [build]
     runs-on: ubuntu-latest
       # Set the target AKS cluster.
     environment:
@@ -62,18 +31,11 @@ jobs:
           aws-region: us-east-1  # change as needed
           
       - name: delete old deployment
-        continue-on-error: true
-        uses: steebchen/kubectl@master
+        uses: kodermax/kubectl-aws-eks@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
-          config: ${{ secrets.KUBE_CONFIG_DATA }}
-          command: delete -f manifests/wordpress-deployment.yml -f manifests/wordpress-mysql-deployment.yml
-
-      - name: deploy new package
-        continue-on-error: true
-        uses: steebchen/kubectl@master
-        with:
-          config: ${{ secrets.KUBE_CONFIG_DATA }}
-          command: apply -f manifests/wordpress-deployment.yml,manifests/wordpress-mysql-deployment.yml,manifests/wordpress-ingress.yml
+          args: delete -f manifests/wordpress-deployment.yml,manifests/wordpress-mysql-deployment.yml
 
       - name: install WP and add dev line
         continue-on-error: true
