@@ -37,10 +37,17 @@ jobs:
         with:
           args: delete -f manifests/wordpress-deployment.yml,manifests/wordpress-mysql-deployment.yml
 
-      - name: install WP and add dev line
-        continue-on-error: true
-        uses: steebchen/kubectl@master
+      - name: Deploy new package
+        uses: kodermax/kubectl-aws-eks@master
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
-          args: exec 
+          args: apply -f manifests/wordpress-deployment.yml,manifests/wordpress-mysql-deployment.yml,manifests/wordpress-ingress.yml
+
+      - name: Deploy new package
+        uses: kodermax/kubectl-aws-eks@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        with:
+          args: rollout status deployment/qa-qa-wordpress-44,deployment/qa-qa-wordpress-47,deployment/qa-qa-wordpress-50,deployment/qa-qa-wordpress-54,deployment/qa-qa-wordpress-55,deployment/qa-qa-wordpress-56,deployment/qa-qa-wordpress-57,deployment/qa-qa-wordpress-58,deployment/qa-qa-wordpress-59
+
