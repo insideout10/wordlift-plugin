@@ -13,6 +13,36 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        WP-ver: [wlp-wp-4.4, wlp-wp-4.7, wlp-wp-5.0, wlp-wp-5.4, wlp-wp-5.5, wlp-wp-5.6, wlp-wp-5.7, wlp-wp-5.8, wlp-wp-5.9]
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Build and push wp-4.4
+        id: docker_build
+        uses: docker/build-push-action@v1
+        with:
+          registry: ghcr.io
+          context: .
+          file: ./Dockerfile
+          push: true
+          target: ${{ matrix.WP-ver }}
+          username: ${{ secrets.username }}
+          password: ${{ secrets.PAT }}
+          repository: wordlift/${{ matrix.WP-ver }}
+          tags: latest
+
   deploy:
     runs-on: ubuntu-latest
       # Set the target AKS cluster.
@@ -43,11 +73,3 @@ jobs:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
           args: apply -f manifests/wordpress-deployment.yml,manifests/wordpress-mysql-deployment.yml,manifests/wordpress-ingress.yml
-
-      - name: Deploy new package
-        uses: kodermax/kubectl-aws-eks@master
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-        with:
-          args: rollout status deployment/qa-qa-wordpress-44,deployment/qa-qa-wordpress-47,deployment/qa-qa-wordpress-50,deployment/qa-qa-wordpress-54,deployment/qa-qa-wordpress-55,deployment/qa-qa-wordpress-56,deployment/qa-qa-wordpress-57,deployment/qa-qa-wordpress-58,deployment/qa-qa-wordpress-59
-

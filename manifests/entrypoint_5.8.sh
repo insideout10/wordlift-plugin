@@ -101,7 +101,7 @@ wp --allow-root config set WP_AUTO_UPDATE_CORE false --path=/var/www/html/5.8/ -
 wp --allow-root plugin install wp-recipe-maker
 
 # see https://brandoncc.dev/blog/woocommerce-compatibility-table/, install woocommerce.
-wp --allow-root plugin install woocommerce --version=3.6.0
+wp --allow-root plugin install woocommerce --version=6.3.1
 wp --allow-root plugin install http://wordlift.io/wp-content/uploads/advanced-custom-fields-for-schema-org.zip
 wp --allow-root plugin install http://wordlift.io/wp-content/uploads/plugin-wordlift-for-woocommerce.zip
 wp --allow-root rewrite structure '/%postname%/'
