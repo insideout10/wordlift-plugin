@@ -33,8 +33,14 @@ function wl_transition_post_status( $new_status, $old_status, $post ) {
 		wl_core_delete_relation_instances( $post->ID );
 	}
 
-	// when a post is published, then all the referenced entities must be published.
-	if ( 'publish' !== $old_status && 'publish' === $new_status
+	/**
+	 * Everytime when post is published, even when post status changed from publish to publish
+	 * we have to publish the linked entities, this is needed because when you have p1 post linked to
+	 * e1 and saved as draft, p1 and e1 will be saved as draft. Then you create p2, add some content and publish it.
+	 * After publishing, it if you link e1 to the post p2 and save, the entity e1 won't be published. To prevent this
+	 * upon every save we need to publish the entities which are linked.
+	 */
+	if ( 'publish' === $new_status
 	     && apply_filters( 'wl_feature__enable__entity-auto-publish', true ) ) {
 
 		foreach ( wl_core_get_related_entity_ids( $post->ID ) as $entity_id ) {
