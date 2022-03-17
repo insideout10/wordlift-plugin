@@ -53,35 +53,24 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v2
-      -
-        name: connect to wordlift dev k8s
-        id: dev_k8s
-        uses: Azure/aks-set-context@v1
-        with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}'
-          cluster-name: dev-aks-cluster
-          resource-group: wordlift-dev-east-us-2
 
+      - name: AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1  # change as needed
+          
       - name: delete old deployment
-        continue-on-error: true
-        uses: steebchen/kubectl@master
-        with:
-          config: ${{ secrets.KUBE_CONFIG_DATA }}
-          command: delete -f manifests/wordpress-deployment.yml -f manifests/wordpress-mysql-deployment.yml
-
-      - name: deploy new package
-        uses: Azure/k8s-deploy@v1.4
-        with:
-          Namespace: qa-wordpress
-          manifests: |
-            manifests/wordpress-deployment.yml
-            manifests/wordpress-mysql-deployment.yml
-            manifests/wordpress-ingress.yml
-
-      - name: install WP and add dev line
-        continue-on-error: true
-        uses: steebchen/kubectl@master
+        uses: kodermax/kubectl-aws-eks@master
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
-          args: exec 
+          args: delete -f manifests/wordpress-deployment.yml,manifests/wordpress-mysql-deployment.yml
+
+      - name: Deploy new package
+        uses: kodermax/kubectl-aws-eks@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        with:
+          args: apply -f manifests/wordpress-deployment.yml,manifests/wordpress-mysql-deployment.yml,manifests/wordpress-ingress.yml

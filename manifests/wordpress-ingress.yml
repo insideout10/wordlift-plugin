@@ -15,10 +15,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - qa-dev.wordlift.io
+        - qa-dev.wordlift.it
       secretName: wordpress-server-tls-secret
   rules:
-    - host: qa-dev.wordlift.io
+    - host: qa-dev.wordlift.it
       http:
         paths:
           - path: /4.4/
