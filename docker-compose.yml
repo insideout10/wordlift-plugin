@@ -55,6 +55,7 @@ services:
         # Enable WordLift debug.
         define( 'WL_DEBUG', WP_DEBUG );
         define( 'WL_LOG_LEVEL', 0 );
+        define( 'WP_AUTO_UPDATE_CORE', false );
     entrypoint: /var/www/html/wp-content/plugins/wordlift/.docker-custom-entrypoint.sh
 
   nginx:
