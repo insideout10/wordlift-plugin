@@ -147,6 +147,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Fix: do not set the `url` property when the values are empty.
 * Fix [#1539](https://github.com/insideout10/wordlift-plugin/issues/1539): Improve the indexing of Navigator and
     Faceted Search when Googlebot visits the page.
+* Fix [#1541](https://github.com/insideout10/wordlift-plugin/issues/1541): Fix draft entity not published in classic editor.
 
 = 3.35.1 (2022-02-22) =
 
