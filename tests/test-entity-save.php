@@ -131,27 +131,4 @@ EOF;
 		$this->assertCount( 0, $filtered_entities, 'No entity should be created for invalid id' );
 	}
 
-
-	public function test_when_post_with_entities_set_to_draft_and_another_post_is_published_should_publish_the_entities() {
-		$first_post                                                                    = $this->factory()->post->create( array( 'post_status' => 'draft' ) );
-		$wl_entity                                                                     = array();
-		$wl_entity['https://data.wordlift.io/wl111434/entity/mckinsey']['uri']         = "https://data.wordlift.io/wl111434/entity/mckinsey";
-		$wl_entity["https://data.wordlift.io/wl111434/entity/mckinsey"]['label']       = "McKinsey";
-		$wl_entity["https://data.wordlift.io/wl111434/entity/mckinsey"]['description'] = "";
-		$wl_entity["https://data.wordlift.io/wl111434/entity/mckinsey"]['main_type']   = "wl-organization";
-		$wl_entity["https://data.wordlift.io/wl111434/entity/mckinsey"]['type']        = array( "organization" );
-		$wl_entity["https://data.wordlift.io/wl111434/entity/mckinsey"]['sameas']      = array( "http://www.wikidata.org/entity/Q310207" );
-		$_POST['wl_entities']                                                          = $wl_entity;
-		wl_linked_data_save_post_and_related_entities( $first_post );
-
-
-		$second_post = $this->factory()->post->create( array( 'post_status' => 'publish' ) );
-		wl_linked_data_save_post_and_related_entities( $second_post );
-
-		$target_entity = Wordlift_Entity_Uri_Service::get_instance()->get_entity( "http://www.wikidata.org/entity/Q310207" );
-		$this->assertTrue( $target_entity instanceof WP_Post, 'The entity should be saved' );
-		$this->assertEquals( 'publish', $target_entity->post_status, 'The entity should be published since the second post is published' );
-	}
-
-
 }
