@@ -1484,6 +1484,10 @@ class Wordlift {
 		Assertions::is_set( $that->settings_page, '`setting_page` must be set' );
 		$that->loader->add_action( 'admin_init', $that->settings_page, 'admin_init' );
 
+		// Hook the admin_init to the analytics settings page.
+		Assertions::is_set( $that->analytics_settings_page, '`analytics_setting_page` must be set' );
+		$that->loader->add_action( 'admin_init', $that->analytics_settings_page, 'admin_init' );
+
 		// Hook the init action to taxonomy services.
 		$that->loader->add_action( 'init', $that->topic_taxonomy_service, 'init', 0 );
 		$that->loader->add_action( 'init', $that->entity_types_taxonomy_service, 'init', 0 );
