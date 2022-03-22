@@ -14,13 +14,15 @@
  */
 class Wordlift_Analytics_Connect {
 
+	const HANDLE = 'wordlift-analytics';
+
 	/**
 	 * Gets an array of related entities with their post IDs and titles.
 	 *
 	 * @method get_analytics_event_data
 	 * @since  3.21.0
 	 *
-	 * @param  int $post_id post id we want related data for.
+	 * @param int $post_id post id we want related data for.
 	 *
 	 * @return array
 	 */
@@ -91,12 +93,9 @@ class Wordlift_Analytics_Connect {
 			return;
 		}
 		$data = self::get_analytics_config_data();
-		/**
-		 * TODO: Look into using a constant for defining pase plugin url.
-		 */
-		$plugin_name = Wordlift::get_instance()->get_plugin_name();
-		wp_enqueue_script( $plugin_name, plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'js/wordlift-analytics.js', array(), '1.0.0', true );
-		wp_localize_script( $plugin_name, 'wordliftAnalyticsConfigData', $data );
-		wp_localize_script( $plugin_name, 'wordliftAnalyticsEntityData', $entity_data );
+
+		wp_enqueue_script( self::HANDLE, plugin_dir_url( dirname( __FILE__, 2 ) ) . 'js/wordlift-analytics.js', array(), '1.0.0', true );
+		wp_localize_script( self::HANDLE, 'wordliftAnalyticsConfigData', $data );
+		wp_localize_script( self::HANDLE, 'wordliftAnalyticsEntityData', $entity_data );
 	}
 }
