@@ -153,7 +153,7 @@ EOF;
 	}
 
 
-	public function test_when_post_is_already_published_and_cloud_entity_is_annotated() {
+	public function test_when_post_is_already_published_and_cloud_entity_is_annotated_it_should_publish_cloud_entity() {
 		$first_post                                                                    = $this->factory()->post->create( array( 'post_status' => 'publish' ) );
 		$wl_entity                                                                     = array();
 		$wl_entity['https://data.wordlift.io/wl111434/entity/mckinsey']['uri']         = "https://data.wordlift.io/wl111434/entity/mckinsey";
