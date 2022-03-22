@@ -142,7 +142,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.35.2 (2022-03-15) =
+= 3.35.3 (2022-03-22) =
+
+* Fix [#1544](https://github.com/insideout10/wordlift-plugin/issues/1544): Fix cloud entity is annotated on published post doesnt get published on classic editor.
+
+= 3.35.2 (2022-03-21) =
 
 * Fix: do not set the `url` property when the values are empty.
 * Fix [#1539](https://github.com/insideout10/wordlift-plugin/issues/1539): Improve the indexing of Navigator and
