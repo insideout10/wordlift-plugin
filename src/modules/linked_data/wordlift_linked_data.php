@@ -154,6 +154,8 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			}
 
 			if ( ! isset( $existing_entity ) ) {
+				// Update entity data with related post
+				$entity['related_post_id'] = $post_id;
 				// New entity, save it.
 				$existing_entity = wl_save_entity( $entity );
 			} else {
@@ -166,10 +168,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			}
 
 			$uri = $content_service->get_entity_id( Wordpress_Content_Id::create_post( $existing_entity->ID ) );
-
-
-			// Update entity data with related post
-			$entity['related_post_id'] = $post_id;
 
 			$internal_entity_uris[] = $uri;
 			wl_write_log( "Map $entity_uri on $uri" );
@@ -314,7 +312,6 @@ function wl_save_entity( $entity_data ) {
 	$same_as          = isset( $entity_data['sameas'] ) ? (array) $entity_data['sameas'] : array();
 	$related_post_id  = isset( $entity_data['related_post_id'] ) ? $entity_data['related_post_id'] : null;
 	$other_properties = isset( $entity_data['properties'] ) ? $entity_data['properties'] : array();
-
 	// Get the synonyms.
 	$synonyms = isset( $entity_data['synonym'] ) ? $entity_data['synonym'] : array();
 
