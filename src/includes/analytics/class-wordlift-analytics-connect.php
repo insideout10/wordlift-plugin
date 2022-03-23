@@ -14,7 +14,7 @@
  */
 class Wordlift_Analytics_Connect {
 
-	const HANDLE = 'wordlift-analytics';
+	const HANDLE = 'wordlift';
 
 	/**
 	 * Gets an array of related entities with their post IDs and titles.
@@ -94,7 +94,7 @@ class Wordlift_Analytics_Connect {
 		}
 		$data = self::get_analytics_config_data();
 
-		wp_enqueue_script( self::HANDLE, plugin_dir_url( dirname( __FILE__, 2 ) ) . 'js/wordlift-analytics.js', array(), '1.0.0', true );
+		// Uses the analytics code in the main WordLift plugin.
 		wp_localize_script( self::HANDLE, 'wordliftAnalyticsConfigData', $data );
 		wp_localize_script( self::HANDLE, 'wordliftAnalyticsEntityData', $entity_data );
 	}
