@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.35.3 (2022-03-22) =
+= 3.35.3 (2022-03-23) =
 
 * Fix [#1546](https://github.com/insideout10/wordlift-plugin/issues/1546): The WL Analytics settings screen is back.
 * Fix [#1544](https://github.com/insideout10/wordlift-plugin/issues/1544): Fix cloud entity is annotated on published post doesnt get published on classic editor.
