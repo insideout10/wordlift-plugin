@@ -34,11 +34,11 @@ class Generator_Factory {
 
 	private static function is_recipe_maker_yoast_integration_on() {
 
-		if ( ! class_exists( 'WPRM_Settings' ) ) {
+		if ( ! class_exists( '\WPRM_Settings' ) ) {
 			return false;
 		}
 
-		return WPRM_Settings::get( 'yoast_seo_integration' ) && interface_exists( 'WPSEO_Graph_Piece' );
+		return \WPRM_Settings::get( 'yoast_seo_integration' ) && interface_exists( 'WPSEO_Graph_Piece' );
 	}
 
 	private static function is_atleast_one_recipe_embedded_in_post( $post_id ) {
