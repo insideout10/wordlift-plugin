@@ -101,6 +101,10 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 		// Get the entity name.
 		$jsonld['headline'] = $post->post_title;
+		$urls               = Wordlift_Schema_Url_Property_Service::get_instance()->get( $post->ID );
+		if ( ! empty( $urls ) ) {
+			$jsonld['url'] = self::make_one( $urls );
+		}
 
 		// Set the published and modified dates.
 		/*
