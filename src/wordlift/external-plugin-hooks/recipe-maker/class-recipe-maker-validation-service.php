@@ -34,14 +34,4 @@ class Recipe_Maker_Validation_Service {
 		return true;
 	}
 
-	public function is_recipe_maker_yoast_integration_on() {
-
-		if ( ! class_exists( '\WPRM_Settings' ) ) {
-			return false;
-		}
-
-		return \WPRM_Settings::get( 'yoast_seo_integration' ) && interface_exists( 'WPSEO_Graph_Piece' );
-	}
-
-
 }

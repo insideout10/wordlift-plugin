@@ -46,16 +46,6 @@ class Recipe_Maker_Jsonld_Hook {
 		add_filter( 'wl_entity_jsonld', array( $this, 'wl_entity_jsonld' ), 10, 3 );
 	}
 
-	private function is_recipe_maker_yoast_integration_on() {
-
-		if ( ! class_exists( '\WPRM_Settings' ) ) {
-			return false;
-		}
-
-		return \WPRM_Settings::get( 'yoast_seo_integration' ) && interface_exists( 'WPSEO_Graph_Piece' );
-	}
-
-
 
 	public function wl_entity_jsonld_array( $arr, $post_id ) {
 
