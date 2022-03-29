@@ -33,18 +33,9 @@ class Recipe_Maker_Jsonld_Hook {
 
 		$this->attachment_service              = $attachment_service;
 		$this->recipe_maker_validation_service = $recipe_maker_validation_service;
-		// Configure jsonld using filters.
-		$this->remove_recipe_maker_jsonld();
 		$this->merge_recipe_jsonld();
 	}
 
-	private function remove_recipe_maker_jsonld() {
-		/**
-		 * see issue #1121: Integrate the jsonld of wp recipe maker in to
-		 * wordlift jsonld.
-		 */
-		add_filter( 'wprm_recipe_metadata', array( $this, 'swap_jsonld' ), 10, 2 );
-	}
 
 	private function merge_recipe_jsonld() {
 		// First we push all the linked recipes to references.
@@ -55,20 +46,6 @@ class Recipe_Maker_Jsonld_Hook {
 		add_filter( 'wl_entity_jsonld', array( $this, 'wl_entity_jsonld' ), 10, 3 );
 	}
 
-
-	/**
-	 * Swap the valid jsonld with empty array so that recipe maker
-	 * wont output the jsonld.
-	 *
-	 * @param $metadata
-	 * @param $recipe
-	 *
-	 * @return array
-	 */
-	public function swap_jsonld( $metadata, $recipe ) {
-		// Return empty jsonld array.
-		return array();
-	}
 
 	public function wl_entity_jsonld_array( $arr, $post_id ) {
 
@@ -102,13 +79,6 @@ class Recipe_Maker_Jsonld_Hook {
 			return $jsonld;
 		}
 
-		// Set image via wordlift.
-		\Wordlift_Abstract_Post_To_Jsonld_Converter::set_images(
-			$this->attachment_service,
-			get_post( $post_id ),
-			$recipe_data
-		);
-
 		if ( ! $jsonld ) {
 			return $recipe_data;
 		}
@@ -133,4 +103,5 @@ class Recipe_Maker_Jsonld_Hook {
 
 		return array();
 	}
+
 }
