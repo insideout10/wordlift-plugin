@@ -28,19 +28,18 @@ class Recipe_Maker_Jsonld_Swap {
 		$this->validation_service = $validation_service;
 		$this->jsonld_service     = $jsonld_service;
 
-		add_filter( 'wprm_recipe_metadata', array( $this, 'swap_jsonld' ), 10, 2 );
+		add_filter( 'wprm_recipe_metadata', array( $this, 'alter_jsonld' ), 10, 2 );
 	}
 
 	/**
-	 * Swap the valid jsonld with empty array so that recipe maker
-	 * wont output the jsonld.
+	 * Remove recipe maker jsonld or add mentions based on the integration.
 	 *
 	 * @param $metadata
 	 * @param $recipe
 	 *
 	 * @return array
 	 */
-	public function swap_jsonld( $metadata, $recipe ) {
+	public function alter_jsonld( $metadata, $recipe ) {
 
 		$post_id = get_the_ID();
 
