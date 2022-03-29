@@ -20,41 +20,9 @@ class Recipe_Maker_Yoast_Generator implements Generator {
 	}
 
 	function generate() {
-
-		// Dont generate jsonld here, we just need to add mentions to the yoast jsonld.
-		add_filter( 'wprm_recipe_metadata', array( $this, 'add_mentions' ), 10, 2 );
+		// we should not print our jsonld when yoast + recipe maker is active
+		// and recipe maker integration is turned on.
 	}
 
-	public function add_mentions( $metadata, $recipe ) {
 
-		if ( ! class_exists( '\WPRM_Recipe' ) ) {
-			return $metadata;
-		}
-
-		/**
-		 * we dont check for is_singular here, the validations are done inside the generator
-		 * factory.
-		 */
-
-		$jsonld = $this->jsonld_service->get_jsonld(
-			false,
-			get_the_ID(),
-			Jsonld_Context_Enum::PAGE
-		);
-
-		if ( 0 === count( $jsonld )
-		     || ! array_key_exists( 'mentions', $jsonld[0] )
-		     || 0 === count( $jsonld[0]['mentions'] ) ) {
-			return $metadata;
-		}
-
-
-		$metadata['mentions'] = $jsonld[0]['mentions'];
-
-		return $metadata;
-	}
-
-	public function get_mentions() {
-
-	}
 }
