@@ -1690,9 +1690,6 @@ class Wordlift {
 
 		$plugin_public = new Wordlift_Public( $that->get_plugin_name(), $that->get_version() );
 
-		$recipe_maker = new Wordlift\Recipe_Maker\Recipe_Maker();
-		$recipe_maker->register_hooks();
-
 		// Register the entity post type.
 		$that->loader->add_action( 'init', $that->entity_post_type_service, 'register' );
 

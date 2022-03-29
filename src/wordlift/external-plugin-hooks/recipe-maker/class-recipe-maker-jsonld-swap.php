@@ -48,10 +48,7 @@ class Recipe_Maker_Jsonld_Swap {
 
 		$post_id = get_the_ID();
 
-		// if yoast + recipe maker integration is on, then we should add mentions to jsonld.
-		if ( ! $this->validation_service->can_integrate_with_yoast_jsonld( $post_id ) ) {
-			return array();
-		}
+		add_filter( 'wl_jsonld_enabled', '__return_false' );
 
 		$post_jsonld = $this->jsonld_service->get_jsonld( false, $post_id, Jsonld_Context_Enum::PAGE );
 
