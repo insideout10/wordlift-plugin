@@ -49,7 +49,7 @@ class Recipe_Maker_Jsonld_Swap {
 		}
 
 		// if yoast + recipe maker integration is on, then we should add mentions to jsonld.
-		if ( $this->validation_service->can_integrate_with_yoast_jsonld( $post_id ) ) {
+		if ( ! $this->validation_service->can_integrate_with_yoast_jsonld( $post_id ) ) {
 			return array();
 		}
 
