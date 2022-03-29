@@ -13,6 +13,15 @@ use Wordlift\Object_Type_Enum;
 /**
  * Define the {@link Wordlift_Post_To_Jsonld_Converter_Test} class.
  *
+ * List of properties for the post [
+ * "@context","@id","@type",
+ * "description","mainEntityOfPage","headline",
+ * "url","datePublished","dateModified",
+ * "wordCount","articleSection","commentCount",
+ * "inLanguage","publisher","about",
+ * "mentions","author"
+ * ]
+ *
  * @since   3.10.0
  * @package Wordlift
  * @group jsonld
@@ -116,7 +125,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		// Check that we have ... properties, not one more than that.
 		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 14, $jsonld );
+		$this->assertCount( 15, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -159,7 +168,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		// Check that we have ... properties, not one more than that.
 		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 13, $jsonld );
+		$this->assertCount( 14, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -217,7 +226,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 0, $references );
 
 		// Check that we have ... properties, not one more than that.
-		$this->assertCount( 14, $jsonld );
+		$this->assertCount( 16, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -270,7 +279,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 0, $references );
 
 		// Check that we have ... properties, not one more than that.
-		$this->assertCount( 14, $jsonld );
+		$this->assertCount( 15, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -371,7 +380,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 0, $references );
 
 		// Check that we have ... properties, not one more than that.
-		$this->assertCount( 14, $jsonld );
+		$this->assertCount( 15, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -523,7 +532,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		// Check that we have ... properties, not one more than that.
 		//
 		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 16, $jsonld, "The number of properties doesn`t match:\n" . var_export( array_keys( $jsonld ), true ) );
+		$this->assertCount( 17, $jsonld, "The number of properties doesn`t match:\n" . var_export( array_keys( $jsonld ), true ) );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -595,7 +604,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		// Check that we have ... properties, not one more than that.
 		//
 		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 16, $jsonld );
+		$this->assertCount( 17, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -671,7 +680,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		// Check that we have ... properties, not one more than that.
 		//
 		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 16, $jsonld );
+		$this->assertCount( 17, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -760,7 +769,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		// Check that we have ... properties, not one more than that.
 		//
 		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 16, $jsonld );
+		$this->assertCount( 17, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -853,7 +862,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		// Check that we have ... properties, not one more than that.
 		//
 		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 16, $jsonld );
+		$this->assertCount( 17, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -959,7 +968,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		// Check that we have ... properties, not one more than that.
 		//
 		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 16, $jsonld );
+		$this->assertCount( 17, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -1066,7 +1075,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		// Check that we have ... properties, not one more than that.
 		//
 		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 16, $jsonld );
+		$this->assertCount( 17, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
