@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.35.4 (2022-03-29) =
+
+* Fix [#1542](https://github.com/insideout10/wordlift-plugin/issues/1542): Recipe maker integration improvement.
+
 = 3.35.3 (2022-03-23) =
 
 * Fix [#1546](https://github.com/insideout10/wordlift-plugin/issues/1546): The WL Analytics settings screen is back.
