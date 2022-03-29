@@ -7,6 +7,24 @@ namespace Wordlift\External_Plugin_Hooks\Recipe_Maker;
  */
 class Recipe_Maker_Validation_Service {
 
+	private function __construct() {
+
+	}
+
+	/**
+	 * @var Recipe_Maker_Validation_Service
+	 */
+	private static $instance;
+
+	public static function get_instance() {
+
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
 	public function is_atleast_once_recipe_present_in_the_post( $post_id ) {
 
 		if ( ! $this->is_wp_recipe_maker_available() ) {
@@ -33,5 +51,21 @@ class Recipe_Maker_Validation_Service {
 
 		return true;
 	}
+
+
+	public function is_yoast_active() {
+		return defined( 'WPSEO_VERSION' );
+	}
+
+
+	public function is_recipe_maker_yoast_integration_on() {
+
+		if ( ! class_exists( '\WPRM_Settings' ) ) {
+			return false;
+		}
+
+		return \WPRM_Settings::get( 'yoast_seo_integration' ) && interface_exists( 'WPSEO_Graph_Piece' );
+	}
+
 
 }

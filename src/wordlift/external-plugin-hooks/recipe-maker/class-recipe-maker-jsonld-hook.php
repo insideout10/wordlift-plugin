@@ -33,18 +33,9 @@ class Recipe_Maker_Jsonld_Hook {
 
 		$this->attachment_service              = $attachment_service;
 		$this->recipe_maker_validation_service = $recipe_maker_validation_service;
-		// Configure jsonld using filters.
-		$this->remove_recipe_maker_jsonld();
 		$this->merge_recipe_jsonld();
 	}
 
-	private function remove_recipe_maker_jsonld() {
-		/**
-		 * see issue #1121: Integrate the jsonld of wp recipe maker in to
-		 * wordlift jsonld.
-		 */
-		add_filter( 'wprm_recipe_metadata', array( $this, 'swap_jsonld' ), 10, 2 );
-	}
 
 	private function merge_recipe_jsonld() {
 		// First we push all the linked recipes to references.
@@ -64,28 +55,7 @@ class Recipe_Maker_Jsonld_Hook {
 		return \WPRM_Settings::get( 'yoast_seo_integration' ) && interface_exists( 'WPSEO_Graph_Piece' );
 	}
 
-	/**
-	 * Swap the valid jsonld with empty array so that recipe maker
-	 * wont output the jsonld.
-	 *
-	 * @param $metadata
-	 * @param $recipe
-	 *
-	 * @return array
-	 */
-	public function swap_jsonld( $metadata, $recipe ) {
 
-		// if yoast + recipe maker integration is on, then we should add mentions to jsonld.
-
-		if ( $this->is_recipe_maker_yoast_integration_on()
-		     && is_singular() && ! is_home()
-		) {
-			$mentions = $this->get_mentions( get_the_ID() );
-		}
-
-		// Return empty jsonld array.
-		return array();
-	}
 
 	public function wl_entity_jsonld_array( $arr, $post_id ) {
 

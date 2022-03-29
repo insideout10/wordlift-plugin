@@ -28,7 +28,8 @@ class Yoast_Jsonld {
 		}
 		$post_id = get_the_ID();
 		if ( $this->recipe_maker_validation_service
-			->is_atleast_once_recipe_present_in_the_post( $post_id ) ) {
+			     ->is_atleast_once_recipe_present_in_the_post( $post_id )
+		     && ! $this->recipe_maker_validation_service->is_recipe_maker_yoast_integration_on() ) {
 			add_filter( 'wpseo_schema_needs_website', '__return_false' );
 			add_filter( 'wpseo_schema_needs_webpage', '__return_false' );
 			add_filter( 'wpseo_schema_needs_article', '__return_false' );
