@@ -41,11 +41,12 @@ class Recipe_Maker_Jsonld_Swap {
 	 */
 	public function alter_jsonld( $metadata, $recipe ) {
 
-		$post_id = get_the_ID();
-
-		if ( ! $post_id ) {
-			return array();
+		// If this filter is invoked on any other page except post, then we should not modify the jsonld.
+		if ( ! get_post() instanceof \WP_Post ) {
+			return $metadata;
 		}
+
+		$post_id = get_the_ID();
 
 		// if yoast + recipe maker integration is on, then we should add mentions to jsonld.
 		if ( ! $this->validation_service->can_integrate_with_yoast_jsonld( $post_id ) ) {
@@ -56,7 +57,8 @@ class Recipe_Maker_Jsonld_Swap {
 
 		if ( 0 === count( $post_jsonld ) || ! array_key_exists( 'mentions', $post_jsonld[0] )
 		     || 0 === count( $post_jsonld[0]['mentions'] ) ) {
-			return array();
+			// Even if we don't have mentions return the metadata.
+			return $metadata;
 		}
 
 		$metadata['mentions'] = $post_jsonld[0]['mentions'];
