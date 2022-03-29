@@ -121,7 +121,4 @@ class Recipe_Maker_Jsonld_Hook {
 		return array();
 	}
 
-	private function get_mentions( $post_id ) {
-
-	}
 }
