@@ -68,9 +68,12 @@ class Recipe_Maker_Validation_Service {
 	}
 
 	public function can_integrate_with_yoast_jsonld( $post_id ) {
+
+		$is_homepage = is_home() || is_front_page();
+
 		return is_singular()
 		       // No Mentions on home page.
-		       && ! is_home()
+		       && ! $is_homepage
 		       && $this->is_yoast_active()
 		       && $this->is_wp_recipe_maker_available()
 		       && $this->is_recipe_maker_yoast_integration_on()
