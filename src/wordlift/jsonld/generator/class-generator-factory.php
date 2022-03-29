@@ -12,13 +12,15 @@ class Generator_Factory {
 	 */
 	public static function get_instance( $jsonld_service, $post_id ) {
 
-		if (
-			self::is_yoast_active()
-			&& self::is_recipe_maker_active()
-			&& self::is_recipe_maker_yoast_integration_on()
-			&& self::is_atleast_one_recipe_embedded_in_post( $post_id )
+		if ( is_singular()
+		     // No Mentions on home page.
+		     && ! is_home()
+		     && self::is_yoast_active()
+		     && self::is_recipe_maker_active()
+		     && self::is_recipe_maker_yoast_integration_on()
+		     && self::is_atleast_one_recipe_embedded_in_post( $post_id )
 		) {
-			return new Recipe_Maker_Generator();
+			return new Recipe_Maker_Yoast_Generator( $jsonld_service );
 		}
 
 		return new Default_Generator( $jsonld_service );
