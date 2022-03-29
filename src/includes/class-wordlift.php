@@ -31,10 +31,10 @@ use Wordlift\Entity_Type\Entity_Type_Change_Handler;
 use Wordlift\Entity_Type\Entity_Type_Setter;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Swap;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Post_Type_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Validation_Service;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Warning;
-use Wordlift\External_Plugin_Hooks\Yoast\Yoast_Jsonld;
 use Wordlift\Faq\Faq_Content_Filter;
 use Wordlift\Features\Features_Registry;
 use Wordlift\Jsonld\Jsonld_Adapter;
@@ -1331,8 +1331,9 @@ class Wordlift {
 			$recipe_maker_validation_service = new Recipe_Maker_Validation_Service();
 			new Recipe_Maker_Jsonld_Hook( $attachment_service, $recipe_maker_validation_service );
 			new Recipe_Maker_After_Get_Jsonld_Hook( $recipe_maker_validation_service );
+			new Recipe_Maker_Jsonld_Swap( $recipe_maker_validation_service, $that->jsonld_service );
 			new Recipe_Maker_Warning( $recipe_maker_validation_service );
-			new Yoast_Jsonld( $recipe_maker_validation_service );
+
 
 			/**
 			 * @since 3.27.4
