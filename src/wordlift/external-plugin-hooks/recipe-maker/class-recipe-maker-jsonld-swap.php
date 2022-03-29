@@ -44,13 +44,12 @@ class Recipe_Maker_Jsonld_Swap {
 
 		$post_id = get_the_ID();
 
-		if ( ! $post_id || ! is_singular() || is_home() ) {
+		if ( ! $post_id ) {
 			return array();
 		}
 
 		// if yoast + recipe maker integration is on, then we should add mentions to jsonld.
-		if ( ! $this->validation_service->is_recipe_maker_yoast_integration_on() ||
-		     ! $this->validation_service->is_atleast_once_recipe_present_in_the_post( $post_id ) ) {
+		if ( $this->validation_service->can_integrate_with_yoast_jsonld( $post_id ) ) {
 			return array();
 		}
 

@@ -67,5 +67,15 @@ class Recipe_Maker_Validation_Service {
 		return \WPRM_Settings::get( 'yoast_seo_integration' ) && interface_exists( 'WPSEO_Graph_Piece' );
 	}
 
+	public function can_integrate_with_yoast_jsonld( $post_id ) {
+		return is_singular()
+		       // No Mentions on home page.
+		       && ! is_home()
+		       && $this->is_yoast_active()
+		       && $this->is_wp_recipe_maker_available()
+		       && $this->is_recipe_maker_yoast_integration_on()
+		       && $this->is_atleast_once_recipe_present_in_the_post( $post_id );
+	}
+
 
 }
