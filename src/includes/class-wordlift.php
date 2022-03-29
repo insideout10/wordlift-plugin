@@ -1329,7 +1329,7 @@ class Wordlift {
 			 * as default entity type to the wprm_recipe CPT.
 			 */
 			new Recipe_Maker_Post_Type_Hook();
-			$recipe_maker_validation_service = Recipe_Maker_Validation_Service::get_instance();
+			$recipe_maker_validation_service = new Recipe_Maker_Validation_Service();
 			new Recipe_Maker_Jsonld_Hook( $attachment_service, $recipe_maker_validation_service );
 			new Recipe_Maker_After_Get_Jsonld_Hook( $recipe_maker_validation_service );
 			new Recipe_Maker_Jsonld_Swap( $recipe_maker_validation_service, $that->jsonld_service );
