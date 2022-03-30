@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.35.4 (2022-03-29) =
+= 3.35.4 (2022-03-30) =
 
 * Fix [#1542](https://github.com/insideout10/wordlift-plugin/issues/1542): Recipe maker integration improvement.
 
