@@ -190,20 +190,14 @@ class Wordlift_Post_Adapter {
 	/**
 	 * Get comma separated categories to be used as article section
 	 *
-	 * @return string|void Comma separated categories
+	 * @return string[] Comma separated categories
 	 *
 	 * @since 3.27.2
 	 */
 	public function article_section() {
 		$categories = get_the_category( $this->post_id );
 
-		if ( empty( $categories ) ) {
-			return;
-		}
-
-		return implode( ',', array_map( function ( $tag ) {
-			return $tag->cat_name;
-		}, $categories ) );
+		return array_column( $categories, 'cat_name' );
 	}
 
 	/**
