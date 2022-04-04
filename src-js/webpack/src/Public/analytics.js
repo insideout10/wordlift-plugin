@@ -9,7 +9,7 @@
 
 (function() {
   // Only run after page has loaded.
-  document.addEventListener("DOMContentLoaded", function(event) {
+  window.addEventListener("load", function(event) {
     // We should have an entity object by here but if not short circuit.
     if (typeof wordliftAnalyticsEntityData === "undefined") {
       return;
