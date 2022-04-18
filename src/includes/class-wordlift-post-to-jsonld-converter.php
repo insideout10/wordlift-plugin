@@ -161,7 +161,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			if ( isset( $keywords ) ) {
 				$jsonld['keywords'] = $keywords;
 			}
-			if ( isset( $article_section ) ) {
+			if ( ! empty( $article_section ) ) {
 				$jsonld['articleSection'] = $article_section;
 			}
 			$jsonld['commentCount'] = $comment_count;
