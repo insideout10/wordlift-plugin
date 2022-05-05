@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.35.6 (2022-05-05) =
+
+* Fix [#1549](https://github.com/insideout10/wordlift-plugin/issues/1549): Fix recipe maker error.
+
 = 3.35.5 (2022-04-25) =
 
 * Fix [#1548](https://github.com/insideout10/wordlift-plugin/issues/1548): Fix configuration endpoint.
