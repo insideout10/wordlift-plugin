@@ -61,6 +61,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1  # change as needed
           
+      - uses: azure/setup-kubectl@v2.0
+        with:
+          version: 'v1.23.6'
+        id: install
+
       - name: delete old deployment
         uses: kodermax/kubectl-aws-eks@master
         env:
