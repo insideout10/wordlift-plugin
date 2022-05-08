@@ -73,5 +73,6 @@ jobs:
         uses: kodermax/kubectl-aws-eks@master
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+          KUBECTL_VERSION: "v1.23.6"
         with:
           args: apply -f manifests/wordpress-deployment.yml,manifests/wordpress-mysql-deployment.yml,manifests/wordpress-ingress.yml
