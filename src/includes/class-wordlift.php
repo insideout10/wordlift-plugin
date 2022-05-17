@@ -1706,7 +1706,8 @@ class Wordlift {
 		$that->loader->add_filter( 'the_content', $that->faq_content_filter_service, 'remove_all_faq_question_and_answer_tags' );
 		// Hook the content filter service to add entity links.
 		if ( ! defined( 'WL_DISABLE_CONTENT_FILTER' ) || ! WL_DISABLE_CONTENT_FILTER ) {
-			$that->loader->add_filter( 'the_content', $that->content_filter_service, 'the_content' );
+			// We run before other filters.
+			$that->loader->add_filter( 'the_content', $that->content_filter_service, 'the_content', 9 );
 		}
 
 		// Hook the AJAX wl_timeline action to the Timeline service.
