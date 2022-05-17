@@ -95,9 +95,9 @@ if [[ "$1" == apache2* ]] || [ "$1" = 'php-fpm' ]; then
 		done
 	fi
 fi
-wp --allow-root core install --url=https://qa-dev.wordlift.it/5.9/ --title="5.9" --admin_name=wordlift --admin_password=8xSnT65T4KM2jWgX --admin_email=you@example.com
-#wp --allow-root config set WORDLIFT_API_URL https://api-dev.wordlift.io --path=/var/www/html/5.9/ --anchor='?php' --placement=after
-wp --allow-root config set WP_AUTO_UPDATE_CORE false --path=/var/www/html/5.9/ --anchor='?php' --raw --placement=after
+wp --allow-root core install --url=https://qa-dev.wordlift.it/6.0/ --title="6.0" --admin_name=wordlift --admin_password=8xSnT65T4KM2jWgX --admin_email=you@example.com
+#wp --allow-root config set WORDLIFT_API_URL https://api-dev.wordlift.io --path=/var/www/html/6.0/ --anchor='?php' --placement=after
+wp --allow-root config set WP_AUTO_UPDATE_CORE false --path=/var/www/html/6.0/ --anchor='?php' --raw --placement=after
 wp --allow-root plugin install wp-recipe-maker
 
 # see https://brandoncc.dev/blog/woocommerce-compatibility-table/, install woocommerce.

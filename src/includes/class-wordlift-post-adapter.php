@@ -197,7 +197,7 @@ class Wordlift_Post_Adapter {
 	public function article_section() {
 		$categories = get_the_category( $this->post_id );
 
-		return array_column( $categories, 'cat_name' );
+		return wp_list_pluck( $categories, 'cat_name' );
 	}
 
 	/**

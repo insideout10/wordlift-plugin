@@ -85,6 +85,9 @@ class Recipe_Maker_Warning {
 
 		foreach ( $recipe_ids as $recipe_id ) {
 			$recipe     = \WPRM_Recipe_Manager::get_recipe( $recipe_id );
+            if (  ! $recipe ) {
+                continue;
+            }
 			$image_id   = $recipe->image_id();
 			$image_data = wp_get_attachment_image_src( $image_id, array( 1200, 1200 ) );
 			if ( ! is_array( $image_data ) ) {

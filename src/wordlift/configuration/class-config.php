@@ -109,7 +109,7 @@ class Config {
 
 
 		// check if key is already configured, if yes then dont save settings.
-		if ( Wordlift_Configuration_Service::get_instance()->get_key() ) {
+		if ( \Wordlift_Configuration_Service::get_instance()->get_key() ) {
 			wp_send_json_error( __( 'Key already configured.', 'wordlift' ), 403 );
 
 			// key already configured

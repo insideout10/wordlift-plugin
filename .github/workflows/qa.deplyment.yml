@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        WP-ver: [wlp-wp-4.4, wlp-wp-4.7, wlp-wp-5.0, wlp-wp-5.4, wlp-wp-5.5, wlp-wp-5.6, wlp-wp-5.7, wlp-wp-5.8, wlp-wp-5.9]
+        WP-ver: [wlp-wp-4.4, wlp-wp-4.7, wlp-wp-5.0, wlp-wp-5.4, wlp-wp-5.5, wlp-wp-5.6, wlp-wp-5.7, wlp-wp-5.8, wlp-wp-5.9, wlp-wp-6.0]
     steps:
       -
         name: Checkout
@@ -65,6 +65,7 @@ jobs:
         uses: kodermax/kubectl-aws-eks@master
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+          KUBECTL_VERSION: "v1.23.6"
         with:
           args: delete -f manifests/wordpress-deployment.yml,manifests/wordpress-mysql-deployment.yml
 
@@ -72,5 +73,6 @@ jobs:
         uses: kodermax/kubectl-aws-eks@master
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+          KUBECTL_VERSION: "v1.23.6"
         with:
           args: apply -f manifests/wordpress-deployment.yml,manifests/wordpress-mysql-deployment.yml,manifests/wordpress-ingress.yml

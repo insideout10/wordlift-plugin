@@ -488,3 +488,60 @@ spec:
       imagePullSecrets:
       - name: dockerconfigjson-tifa-io
 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qa-wordpress-60
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-6.0
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+  selector:
+    app: wordpress-6.0
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qa-wordpress-60
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-6.0
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-6.0
+  template:
+    metadata:
+      labels:
+        app: wordpress-6.0
+    spec:
+      containers:
+      - image: ghcr.io/wordlift/wlp-wp-6.0:latest
+        name: wordpress-60
+        workingDir: /var/www/html/6.0/
+        resources:
+          requests:
+            cpu: "650m"
+            memory: "650Mi"
+          limits:
+            cpu: "850m"
+            memory: "850Mi"
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: wordpress-60-mysql
+        - name: WORDPRESS_DB_PASSWORD
+          value: password
+        - name: WORDPRESS_DB_NAME
+          value: wordpress
+        - name: WORDPRESS_DB_USER
+          value: root
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: dockerconfigjson-tifa-io
