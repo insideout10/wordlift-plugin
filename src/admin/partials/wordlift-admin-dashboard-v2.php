@@ -307,15 +307,14 @@ $dashboard_service = Wordlift_Dashboard_Service::get_instance();
         </div>
     </div>
 
-<?php $boost_url = admin_url( 'admin.php?page=wl_search_rankings' ); ?>
     <div class="wl-dashboard__block wl-dashboard__block--average-entity-rating">
         <header>
             <span class="dashicons dashicons-editor-help"></span>
             <h3><?php echo esc_html__( 'Average entity rating', 'wordlift' ); ?></h3>
         </header>
         <div class="wl-dashboard__block__body">
-            <a href="<?php echo esc_url( $boost_url ); ?>"><?php echo esc_html( $dashboard_service->average_entities_rating() ); ?></a>
-            <a href="<?php echo esc_url( $boost_url ); ?>"><?php echo esc_html( _x( 'Boost', 'Dashboard', 'wordlift' ) ); ?></a>
+			<?php echo esc_html( $dashboard_service->average_entities_rating() ); ?>
+			<?php echo esc_html( _x( 'Boost', 'Dashboard', 'wordlift' ) ); ?>
         </div>
     </div>
 <?php
