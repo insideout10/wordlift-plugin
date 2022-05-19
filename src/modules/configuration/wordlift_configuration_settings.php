@@ -1,20 +1,6 @@
 <?php
 
 /**
- * Get the configured WordLift key.
- *
- * @return string The configured WordLift key or an empty string.
- * @since      3.0.0
- *
- * @deprecated use Wordlift_Configuration_Service::get_instance()->get_key()
- *
- */
-function wl_configuration_get_key() {
-
-	return Wordlift_Configuration_Service::get_instance()->get_key();
-}
-
-/**
  * Get the Redlink dataset URI.
  *
  * @return string The Redlink dataset URI.
@@ -27,50 +13,6 @@ function wl_configuration_get_key() {
 function wl_configuration_get_redlink_dataset_uri() {
 
 	return Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
-}
-
-/**
- * Get the URL to use for running analyses. If a WordLift key is set, then a WordLift Server URL is returned, otherwise
- * a Redlink URL.
- *
- * @return string The analysis URL.
- * @uses  wl_configuration_get_key() to get the WordLift key.
- *
- * @since 3.0.0
- *
- */
-function wl_configuration_get_analyzer_url() {
-
-	// If the WordLift Key is set, we use WordLift.
-	$key = Wordlift_Configuration_Service::get_instance()->get_key();
-
-	// Return a NULL URL if the key isn't set.
-	if ( empty( $key ) ) {
-		return null;
-	}
-
-	return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "analyses?key=$key"
-	       . ( defined( 'WL_EXCLUDE_IMAGES_REGEX' ) ? '&exclimage=' . urlencode( WL_EXCLUDE_IMAGES_REGEX ) : '' );
-
-}
-
-/**
- * Get the URL to perform SELECT queries.
- *
- * @return string The URL to call to perform the SELECT query.
- * @since 3.0.0
- *
- */
-function wl_configuration_get_query_select_url() {
-
-	// If the WordLift Key is set, we use WordLift.
-	$key = Wordlift_Configuration_Service::get_instance()->get_key();
-
-	if ( empty( $key ) ) {
-		return null;
-	}
-
-	return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "datasets/key=$key/queries?q=";
 }
 
 /**
