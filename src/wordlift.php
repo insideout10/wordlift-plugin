@@ -271,3 +271,5 @@ add_filter( 'block_categories', 'wl_block_categories', 10, 2 );
 add_filter( 'wl_feature__enable__dataset', function ( $value ) {
 	return apply_filters( 'wl_features__enable__dataset', $value );
 } );
+
+require_once dirname(__FILE__) . '/modules/food-kg/load.php';

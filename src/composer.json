@@ -6,7 +6,8 @@
   },
   "require-dev": {
     "coenjacobs/mozart": "^0.5.1",
-    "cweagans/composer-patches": "^1.6"
+    "cweagans/composer-patches": "^1.6",
+    "phpstan/phpstan": "^1.6"
   },
   "extra": {
     "patches": {
