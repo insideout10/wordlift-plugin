@@ -14,20 +14,20 @@ interface Api_Service_Ext {
  * @property int $account_id;
  * @property int $dataset_id;
  * @property string $dataset_uri;
- * @property array<string, bool> features;
- * @property string language;
- * @property Network[] networks;
- * @property int subscription_id;
- * @property string url;
+ * @property array<string, bool> $features;
+ * @property string $language;
+ * @property Network[] $networks;
+ * @property int $subscription_id;
+ * @property string $url;
  */
 interface Me_Response {
 }
 
 /**
- * @property int account_id
- * @property int dataset_id
- * @property string dataset_uri
- * @property string url
+ * @property int $account_id
+ * @property int $dataset_id
+ * @property string $dataset_uri
+ * @property string $url
  */
 interface Network {
 }

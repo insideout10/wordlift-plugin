@@ -1,0 +1,8 @@
+services:
+  Wordlift\Modules\Food_Kg\Module:
+    class: Wordlift\Modules\Food_Kg\Module
+    arguments: [ '@Wordlift\Api\Api_Service_Ext' ]
+
+  Wordlift\Api\Api_Service_Ext:
+    factory: [ 'Wordlift\Api\Default_Api_Service', 'get_instance' ]
+    class: Wordlift\Api\Default_Api_Service

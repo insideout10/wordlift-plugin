@@ -11,7 +11,10 @@
 use Wordlift\Api\Api_Service_Ext;
 use Wordlift\Api\Default_Api_Service;
 use Wordlift\Api\Network;
-use Wordlift\Food_Kg\Symfony\Component\DependencyInjection\ContainerBuilder;
+use Wordlift\Modules\Food_Kg\Module;
+use Wordlift\Modules\Food_Kg_Dependencies\Symfony\Component\Config\FileLocator;
+use Wordlift\Modules\Food_Kg_Dependencies\Symfony\Component\DependencyInjection\ContainerBuilder;
+use Wordlift\Modules\Food_Kg_Dependencies\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -32,6 +35,21 @@ if ( file_exists( WL_FOOD_KG_DIR_PATH . '/includes/vendor/autoload.php' ) ) {
 }
 
 $container_builder = new ContainerBuilder();
+$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
+$loader->load( 'services.yml' );
+
+/**
+ * @var Module $module
+ */
+$module = $container_builder->get( 'Wordlift\Modules\Food_Kg\Module' );
+$module->register_hooks();
+
+
+/**
+ * Hooks:
+ *
+ */
+
 //$plugin = new Plugin();
 
 /**

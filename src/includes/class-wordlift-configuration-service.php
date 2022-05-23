@@ -479,6 +479,8 @@ class Wordlift_Configuration_Service {
 		// make the request to the remote server.
 		$this->get_remote_dataset_uri( $new_key );
 
+		do_action( 'wl_key_updated' );
+
 	}
 
 	/**

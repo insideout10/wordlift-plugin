@@ -1,10 +1,10 @@
 services:
   -
-    class: Wordlift\Food_Kg\PHPStan\ServiceContainerDynamicReturnTypeExtension
+    class: PHPStan\ServiceContainerDynamicReturnTypeExtension
     tags:
       - phpstan.broker.dynamicMethodReturnTypeExtension
   -
-    class: Wordlift\Food_Kg\PHPStan\ServicesDynamicReturnTypeExtension
+    class: PHPStan\ServicesDynamicReturnTypeExtension
     tags:
       - phpstan.broker.dynamicStaticMethodReturnTypeExtension
 

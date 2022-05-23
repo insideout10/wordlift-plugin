@@ -1,0 +1,6 @@
+parameters:
+    scanDirectories:
+        - src/wordlift
+    bootstrapFiles:
+        - src/modules/food-kg/third-party/vendor/scoper-autoload.php
+        - src/modules/food-kg/includes/vendor/autoload.php
