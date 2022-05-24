@@ -132,10 +132,6 @@ class Wordlift_Admin {
 				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-schemaorg-property-metabox.php';
 
 				// new Wordlift_Admin_Schemaorg_Property_Metabox( Wordlift_Schemaorg_Property_Service::get_instance() );
-				/*
-				 * The `Mappings` admin page.
-				 */
-				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-mappings-page.php';
 
 				$features_registry->register_feature_from_slug( 'all-entity-types', true, array(
 					$this,
@@ -415,6 +411,11 @@ class Wordlift_Admin {
 	}
 
 	public function load_schema_org_types_page() {
+		/*
+		 * The `Mappings` admin page.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-mappings-page.php';
+
 		new Wordlift_Admin_Mappings_Page();
 	}
 

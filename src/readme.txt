@@ -142,6 +142,12 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.35.8 (2022-05-24) =
+
+* Fix: Fix Sync entity types menu.
+
+* Fix: Update WP compatibility to 4.9 and PHP compatibility to 5.6
+
 = 3.35.7 (2022-05-11) =
 
 * Fix: Update wp compatibility to 6.0.
