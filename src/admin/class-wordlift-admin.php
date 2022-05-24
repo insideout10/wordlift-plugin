@@ -127,12 +127,19 @@ class Wordlift_Admin {
 			 *
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 			 */
-			if ( WL_ALL_ENTITY_TYPES ) {
+			if ( apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES ) ) {
+
 				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-schemaorg-taxonomy-metabox.php';
 				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-schemaorg-property-metabox.php';
 
 				// new Wordlift_Admin_Schemaorg_Property_Metabox( Wordlift_Schemaorg_Property_Service::get_instance() );
 
+				/*
+				 * The `Mappings` admin page.
+				 */
+				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-mappings-page.php';
+
+				new Wordlift_Admin_Mappings_Page();
 
 				/*
 				 * Allow sync'ing the schema.org taxonomy with the schema.org json file.
@@ -145,10 +152,7 @@ class Wordlift_Admin {
 
 			}
 
-			$features_registry->register_feature_from_slug( 'all-entity-types', WL_ALL_ENTITY_TYPES, array(
-				$this,
-				'load_schema_org_types_page'
-			) );
+
 
 			/*
 			 * Add the {@link Wordlift_Admin_Term_Adapter}.
@@ -387,7 +391,7 @@ class Wordlift_Admin {
 			 *
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 			 */
-			if ( WL_ALL_ENTITY_TYPES ) {
+			if ( apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES ) ) {
 				$params['properties'] = Wordlift_Schemaorg_Property_Service::get_instance()->get_all( $post->ID );
 			}
 
@@ -411,13 +415,6 @@ class Wordlift_Admin {
 		new Edit_Mappings_Page( new Mappings_Transform_Functions_Registry() );
 	}
 
-	public function load_schema_org_types_page() {
-		/*
-		 * The `Mappings` admin page.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-mappings-page.php';
 
-		new Wordlift_Admin_Mappings_Page();
-	}
 
 }

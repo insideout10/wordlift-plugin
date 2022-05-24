@@ -72,7 +72,7 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 		 * @since 3.20.0
 		 */
-		if ( WL_ALL_ENTITY_TYPES ) {
+		if ( apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES ) ) {
 			$args['meta_box_cb'] = apply_filters( 'wl_feature__enable__entity-types-taxonomy', true ) ? array(
 				'Wordlift_Admin_Schemaorg_Taxonomy_Metabox',
 				'render'
