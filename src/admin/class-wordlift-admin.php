@@ -137,10 +137,6 @@ class Wordlift_Admin {
 				 */
 				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-mappings-page.php';
 
-				$features_registry->register_feature_from_slug( 'all-entity-types', true, array(
-					$this,
-					'load_schema_org_types_page'
-				) );
 
 				/*
 				 * Allow sync'ing the schema.org taxonomy with the schema.org json file.
@@ -152,6 +148,11 @@ class Wordlift_Admin {
 				$this->sync_batch_operation_ajax_adapter = new Wordlift_Batch_Operation_Ajax_Adapter( new Wordlift_Schemaorg_Sync_Batch_Operation(), 'wl_schemaorg_sync' );
 
 			}
+
+			$features_registry->register_feature_from_slug( 'all-entity-types', WL_ALL_ENTITY_TYPES, array(
+				$this,
+				'load_schema_org_types_page'
+			) );
 
 			/*
 			 * Add the {@link Wordlift_Admin_Term_Adapter}.
