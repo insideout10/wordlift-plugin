@@ -44,6 +44,8 @@ $loader->load( 'services.yml' );
 $module = $container_builder->get( 'Wordlift\Modules\Food_Kg\Module' );
 $module->register_hooks();
 
+$jsonld = $container_builder->get( 'Wordlift\Modules\Food_Kg\Jsonld' );
+$jsonld->register_hooks();
 
 /**
  * Hooks:

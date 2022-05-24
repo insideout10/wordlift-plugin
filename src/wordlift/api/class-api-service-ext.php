@@ -16,7 +16,7 @@ interface Api_Service_Ext {
  * @property string $dataset_uri;
  * @property array<string, bool> $features;
  * @property string $language;
- * @property Network[] $networks;
+ * @property null|Network[] $networks;
  * @property int $subscription_id;
  * @property string $url;
  */
