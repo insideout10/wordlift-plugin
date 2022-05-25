@@ -24,8 +24,10 @@ class Jsonld {
 			return $metadata;
 		}
 
-		$metadata['mentions'] = $metadata['mentions'] ?: [];
-		$metadata['mentions'] = array_merge( $metadata['mentions'], array_map( [ $this, '__make_id' ], $jsonlds ) );
+		// We're embedding the full json-ld here because WL doesn't output its own markup, so it makes no sense
+		// to hook to wl_after_json_ld.
+		$metadata['mentions'] = isset( $metadata['mentions'] ) ? $metadata['mentions'] : [];
+		$metadata['mentions'] = array_merge( $metadata['mentions'], $jsonlds );
 
 		return $metadata;
 	}
@@ -33,19 +35,10 @@ class Jsonld {
 	/**
 	 * @param array{'id': int} $ingredient
 	 *
-	 * @return string void
+	 * @return array void
 	 */
 	private function __term_id_to_jsonld( $ingredient ) {
-		return json_decode( get_term_meta( $ingredient['id'], '_wl_jsonld', true ) );
-	}
-
-	/**
-	 * @param object{'@id': string} $jsonld
-	 *
-	 * @return array{'@id': string}
-	 */
-	private function __make_id( $jsonld ) {
-		return [ '@id' => $jsonld->{'@id'} ];
+		return json_decode( get_term_meta( $ingredient['id'], '_wl_jsonld', true ), true );
 	}
 
 }

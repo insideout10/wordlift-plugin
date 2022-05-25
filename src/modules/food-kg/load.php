@@ -12,10 +12,10 @@ use Wordlift\Api\Api_Service_Ext;
 use Wordlift\Api\Default_Api_Service;
 use Wordlift\Api\Network;
 use Wordlift\Modules\Food_Kg\Module;
+use Wordlift\Modules\Food_Kg\Preconditions;
 use Wordlift\Modules\Food_Kg_Dependencies\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Food_Kg_Dependencies\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Food_Kg_Dependencies\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -34,18 +34,33 @@ if ( file_exists( WL_FOOD_KG_DIR_PATH . '/includes/vendor/autoload.php' ) ) {
 	require WL_FOOD_KG_DIR_PATH . '/includes/vendor/autoload.php';
 }
 
-$container_builder = new ContainerBuilder();
-$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
-$loader->load( 'services.yml' );
+add_action( 'plugin_loaded', '__wlp__food_kg__plugin_loaded' );
 
-/**
- * @var Module $module
- */
-$module = $container_builder->get( 'Wordlift\Modules\Food_Kg\Module' );
-$module->register_hooks();
+function __wlp__food_kg__plugin_loaded() {
+	$container_builder = new ContainerBuilder();
+	$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
+	$loader->load( 'services.yml' );
 
-$jsonld = $container_builder->get( 'Wordlift\Modules\Food_Kg\Jsonld' );
-$jsonld->register_hooks();
+	/**
+	 * @var Preconditions $preconditions
+	 */
+	$preconditions = $container_builder->get( 'Wordlift\Modules\Food_Kg\Preconditions' );
+	if ( ! $preconditions->pass() ) {
+		return;
+	}
+
+	/**
+	 * @var Module $module
+	 */
+	$module = $container_builder->get( 'Wordlift\Modules\Food_Kg\Module' );
+	$module->register_hooks();
+
+	$jsonld = $container_builder->get( 'Wordlift\Modules\Food_Kg\Jsonld' );
+	$jsonld->register_hooks();
+
+	$notices = $container_builder->get( 'Wordlift\Modules\Food_Kg\Notices' );
+	$notices->register_hooks();
+}
 
 /**
  * Hooks:

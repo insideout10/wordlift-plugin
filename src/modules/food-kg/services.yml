@@ -1,7 +1,7 @@
 services:
   Wordlift\Modules\Food_Kg\Module:
     class: Wordlift\Modules\Food_Kg\Module
-    arguments: [ '@Wordlift\Api\Api_Service_Ext', '@Wordlift\Modules\Food_Kg\Ingredients_Client' ]
+    arguments: [ '@Wordlift\Api\Api_Service_Ext', '@Wordlift\Modules\Food_Kg\Ingredients_Client', '@Wordlift\Modules\Food_Kg\Notices' ]
 
   Wordlift\Modules\Food_Kg\Ingredients_Client:
     class: Wordlift\Modules\Food_Kg\Ingredients_Client
@@ -9,6 +9,13 @@ services:
 
   Wordlift\Modules\Food_Kg\Jsonld:
     class: Wordlift\Modules\Food_Kg\Jsonld
+
+  Wordlift\Modules\Food_Kg\Notices:
+    class: Wordlift\Modules\Food_Kg\Notices
+
+  Wordlift\Modules\Food_Kg\Preconditions:
+    class: Wordlift\Modules\Food_Kg\Preconditions
+    arguments: [ '@Wordlift\Modules\Food_Kg\Notices' ]
 
   Wordlift\Api\Api_Service:
     factory: [ 'Wordlift\Api\Default_Api_Service', 'get_instance' ]

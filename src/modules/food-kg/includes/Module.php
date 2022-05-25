@@ -19,12 +19,19 @@ class Module {
 	private $ingredients_client;
 
 	/**
+	 * @var Notices
+	 */
+	private $notices;
+
+	/**
 	 * @param Api_Service_Ext $api_service
 	 * @param Ingredients_Client $ingredients_client
+	 * @param Notices $notices
 	 */
-	public function __construct( Api_Service_Ext $api_service, Ingredients_Client $ingredients_client ) {
+	public function __construct( Api_Service_Ext $api_service, Ingredients_Client $ingredients_client, Notices $notices ) {
 		$this->api_service        = $api_service;
 		$this->ingredients_client = $ingredients_client;
+		$this->notices            = $notices;
 	}
 
 	public function register_hooks() {
@@ -56,19 +63,14 @@ class Module {
 	}
 
 	public function __run() {
-		/**
-		 * @@todo add notification that procedure is running, requesting data...
-		 */
+
+		$this->notices->queue( 'info', __( 'WordLift detected WP Recipe Maker and, it is lifting the ingredients...', 'wordlift' ) );
 
 		/**
 		 * @var string[] $terms
 		 */
 		$terms       = get_terms( [ 'taxonomy' => 'wprm_ingredient', 'fields' => 'names', 'hide_empty' => false ] );
 		$ingredients = $this->ingredients_client->ingredients( $terms );
-
-		/**
-		 * @@todo update notification that procedure is running, processing data...
-		 */
 
 		foreach ( $ingredients as $key => $value ) {
 			$term = get_term_by( 'name', $key, 'wprm_ingredient' );
@@ -86,6 +88,10 @@ class Module {
 		 * @@todo add notification that procedure is complete, with information about the number of processed items vs
 		 *   total items
 		 */
+		$count_terms        = count( $terms );
+		$count_lifted_terms = count( $ingredients );
+		$this->notices->queue( 'info', sprintf( __( 'WordLift detected WP Recipe Maker and, it lifted %d of %d ingredient(s).', 'wordlift' ), $count_lifted_terms, $count_terms ) );
+
 	}
 
 	private function __has_food_kg( $carry, $item ) {

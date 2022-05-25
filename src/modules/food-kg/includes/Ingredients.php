@@ -2,9 +2,10 @@
 
 namespace Wordlift\Modules\Food_Kg;
 
+use Countable;
 use Iterator;
 
-class Ingredients implements Iterator {
+class Ingredients implements Iterator, Countable {
 
 	/**
 	 * @var string[]
@@ -78,4 +79,12 @@ class Ingredients implements Iterator {
 	public function rewind() {
 		$this->i = 0;
 	}
+
+	/**
+	 * @return int
+	 */
+	public function count() {
+		return count( $this->data );
+	}
+
 }
