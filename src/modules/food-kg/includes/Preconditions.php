@@ -19,13 +19,13 @@ class Preconditions {
 
 	private function has_prerequisites() {
 		return defined( 'WPRM_VERSION' )
-		       && class_exists( 'WPRM_Recipe_Maker' )
+		       && class_exists( 'WP_Recipe_Maker' )
 		       && apply_filters( 'wl_feature__enable__food-kg', false );
 	}
 
 	private function check_version() {
 		$check = version_compare( WPRM_VERSION, '8.1.0', '>=' )
-		         && version_compare( WPRM_VERSION, '8.2.0', '<' );
+		         && version_compare( WPRM_VERSION, '8.3.0', '<' );
 
 		if ( ! $check ) {
 			$this->notices->queue( 'warning',

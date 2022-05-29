@@ -20,42 +20,43 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'WL_FOOD_KG_FILE', __FILE__ );
 define( 'WL_FOOD_KG_DIR_PATH', dirname( WL_FOOD_KG_FILE ) );
 
-// Autoloader for dependencies.
-if ( file_exists( WL_FOOD_KG_DIR_PATH . '/third-party/vendor/scoper-autoload.php' ) ) {
-	require WL_FOOD_KG_DIR_PATH . '/third-party/vendor/scoper-autoload.php';
+function __wl_foodkg__load() {
+	// Autoloader for dependencies.
+	if ( file_exists( WL_FOOD_KG_DIR_PATH . '/third-party/vendor/scoper-autoload.php' ) ) {
+		require WL_FOOD_KG_DIR_PATH . '/third-party/vendor/scoper-autoload.php';
+	}
+
+	// Autoloader for plugin itself.
+	if ( file_exists( WL_FOOD_KG_DIR_PATH . '/includes/vendor/autoload.php' ) ) {
+		require WL_FOOD_KG_DIR_PATH . '/includes/vendor/autoload.php';
+	}
+
+	$container_builder = new ContainerBuilder();
+	$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
+	$loader->load( 'services.yml' );
+
+	$notices = $container_builder->get( 'Wordlift\Modules\Food_Kg\Notices' );
+	$notices->register_hooks();
+
+	/**
+	 * @var Preconditions $preconditions
+	 */
+	$preconditions = $container_builder->get( 'Wordlift\Modules\Food_Kg\Preconditions' );
+	if ( ! $preconditions->pass() ) {
+		return;
+	}
+
+	$module = $container_builder->get( 'Wordlift\Modules\Food_Kg\Module' );
+	$module->register_hooks();
+
+	$jsonld = $container_builder->get( 'Wordlift\Modules\Food_Kg\Jsonld' );
+	$jsonld->register_hooks();
+
+	if ( is_admin() ) {
+		$page = $container_builder->get( 'Wordlift\Modules\Food_Kg\Admin\Page' );
+		$page->register_hooks();
+	}
 }
 
-// Autoloader for plugin itself.
-if ( file_exists( WL_FOOD_KG_DIR_PATH . '/includes/vendor/autoload.php' ) ) {
-	require WL_FOOD_KG_DIR_PATH . '/includes/vendor/autoload.php';
-}
+add_action( 'plugins_loaded', '__wl_foodkg__load' );
 
-$container_builder = new ContainerBuilder();
-$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
-$loader->load( 'services.yml' );
-
-/**
- * @var Preconditions $preconditions
- */
-$preconditions = $container_builder->get( 'Wordlift\Modules\Food_Kg\Preconditions' );
-if ( ! $preconditions->pass() ) {
-	return;
-}
-
-$module = $container_builder->get( 'Wordlift\Modules\Food_Kg\Module' );
-$module->register_hooks();
-
-$jsonld = $container_builder->get( 'Wordlift\Modules\Food_Kg\Jsonld' );
-$jsonld->register_hooks();
-
-$notices = $container_builder->get( 'Wordlift\Modules\Food_Kg\Notices' );
-$notices->register_hooks();
-
-
-/**
- * ######## ADMIN ########
- */
-if ( is_admin() ) {
-	$page = $container_builder->get( 'Wordlift\Modules\Food_Kg\Page' );
-	$page->register_hooks();
-}

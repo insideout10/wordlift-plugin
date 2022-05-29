@@ -17,8 +17,21 @@ services:
     class: Wordlift\Modules\Food_Kg\Preconditions
     arguments: [ '@Wordlift\Modules\Food_Kg\Notices' ]
 
-  Wordlift\Modules\Food_Kg\Page:
-    class: Wordlift\Modules\Food_Kg\Page
+  Wordlift\Modules\Food_Kg\Admin\Page:
+    class: Wordlift\Modules\Food_Kg\Admin\Page
+    arguments: [ '@Wordlift\Modules\Food_Kg\Admin\Full_Page_Delegate', '@Wordlift\Modules\Food_Kg\Admin\Modal_Page_Delegate' ]
+
+  Wordlift\Modules\Food_Kg\Admin\Page_Delegate:
+    class: Wordlift\Modules\Food_Kg\Admin\Page_Delegate
+
+  Wordlift\Modules\Food_Kg\Admin\Full_Page_Delegate:
+    class: Wordlift\Modules\Food_Kg\Admin\Full_Page_Delegate
+
+  Wordlift\Modules\Food_Kg\Admin\Modal_Page_Delegate:
+    class: Wordlift\Modules\Food_Kg\Admin\Modal_Page_Delegate
+
+  Wordlift\Modules\Food_Kg\Admin\Ingredients_List_Table:
+    class: Wordlift\Modules\Food_Kg\Admin\Ingredients_List_Table
 
   Wordlift\Api\Api_Service:
     factory: [ 'Wordlift\Api\Default_Api_Service', 'get_instance' ]
