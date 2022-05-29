@@ -17,6 +17,9 @@ services:
     class: Wordlift\Modules\Food_Kg\Preconditions
     arguments: [ '@Wordlift\Modules\Food_Kg\Notices' ]
 
+  Wordlift\Modules\Food_Kg\Page:
+    class: Wordlift\Modules\Food_Kg\Page
+
   Wordlift\Api\Api_Service:
     factory: [ 'Wordlift\Api\Default_Api_Service', 'get_instance' ]
     class: Wordlift\Api\Default_Api_Service
