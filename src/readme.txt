@@ -3,9 +3,9 @@ Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave
 Tags: SEO, SERP, FAQ Markup, Schema Markup, structured data, schema.org, schema org, semantic seo, JSON-LD, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map, classicpress
-Requires at least: 4.4
+Requires at least: 4.9
 Tested up to: 6.0
-Requires PHP: 5.3
+Requires PHP: 5.6
 Stable tag: {version}
 License: GPLv2 or later
 
@@ -141,6 +141,12 @@ You can open your datasets to the public, attaching to it a free or a commercial
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.35.8 (2022-05-24) =
+
+* Fix: Fix Sync entity types menu.
+
+* Fix: Update WP compatibility to 4.9 and PHP compatibility to 5.6
 
 = 3.35.7 (2022-05-11) =
 

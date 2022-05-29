@@ -42,7 +42,7 @@ services:
         define( 'WP_HOME', WP_SITEURL );
 
         # Allow all entity types.
-        define( 'WL_ALL_ENTITY_TYPES', true );
+        # define( 'WL_ALL_ENTITY_TYPES', true );
 
         # Enable Debug logging to the /wp-content/debug.log file
         define( 'WP_DEBUG_LOG', true );

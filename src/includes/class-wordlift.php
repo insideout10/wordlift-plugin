@@ -634,7 +634,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.35.7';
+		$this->version     = '3.35.8';
 		$this->load_dependencies();
 		$this->set_locale();
 
@@ -1024,7 +1024,7 @@ class Wordlift {
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 		 */
-		if ( WL_ALL_ENTITY_TYPES ) {
+		if ( apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES ) ) {
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-sync-service.php';
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-property-service.php';
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-class-service.php';
@@ -1525,7 +1525,7 @@ class Wordlift {
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 		 */
-		if ( ! WL_ALL_ENTITY_TYPES ) {
+		if ( ! apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES ) ) {
 			$that->loader->add_filter( 'wp_terms_checklist_args', $that->entity_types_taxonomy_walker, 'terms_checklist_args' );
 		}
 
