@@ -75,7 +75,5 @@
 
 </div>
 
-<?php do_action( 'admin_footer' ); ?>
-
 </body>
 </html>
