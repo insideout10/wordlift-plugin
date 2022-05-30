@@ -23,6 +23,7 @@ use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Configuration\Config;
 use Wordlift\Duplicate_Markup_Remover\Faq_Duplicate_Markup_Remover;
 use Wordlift\Duplicate_Markup_Remover\How_To_Duplicate_Markup_Remover;
+use Wordlift\Duplicate_Markup_Remover\Recipe_Duplicate_Markup_Remover;
 use Wordlift\Duplicate_Markup_Remover\Videoobject_Duplicate_Remover;
 use Wordlift\Entity\Entity_Helper;
 use Wordlift\Entity\Entity_No_Index_Flag;
@@ -1345,6 +1346,12 @@ class Wordlift {
 			 * Remove the duplicate HowTo Markup.
 			 */
 			new How_To_Duplicate_Markup_Remover();
+
+			/**
+			 * @since 3.35.9
+			 * Remove the duplicate Recipe Markup
+			 */
+			new Recipe_Duplicate_Markup_Remover();
 
 			/**
 			 * @since 3.27.8
