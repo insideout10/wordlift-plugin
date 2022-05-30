@@ -273,3 +273,4 @@ add_filter( 'wl_feature__enable__dataset', function ( $value ) {
 } );
 
 require_once dirname( __FILE__ ) . '/modules/food-kg/load.php';
+require_once dirname( __FILE__ ) . '/modules/acf4so/load.php';
