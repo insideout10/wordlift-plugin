@@ -78,19 +78,19 @@ class Wl_Metabox_Field_Date extends Wl_Metabox_Field {
 
 		ob_start();
 		?>
-		<div class="wl-input-wrapper">
-			<input
-					type="text"
-					class="<?php echo esc_attr( $this->meta_name ); ?>"
-					name="wl_metaboxes[<?php echo esc_attr( $this->meta_name ); ?>][]"
-					value="<?php echo esc_attr( $date ); ?>"
-					style="width:88%"
-			/>
+        <div class="wl-input-wrapper">
+            <input
+                    type="text"
+                    class="<?php echo esc_attr( $this->meta_name ); ?>"
+                    name="wl_metaboxes[<?php echo esc_attr( $this->meta_name ); ?>][]"
+                    value="<?php echo esc_attr( $date ); ?>"
+                    style="width:88%"
+            />
 
-			<button class="button wl-remove-input wl-button" type="button">
+            <button class="button wl-remove-input wl-button" type="button">
 				<?php esc_html_e( 'Remove', 'wordlift' ); ?>
-			</button>
-		</div>
+            </button>
+        </div>
 		<?php
 		$html = ob_get_clean();
 
@@ -108,22 +108,23 @@ class Wl_Metabox_Field_Date extends Wl_Metabox_Field {
 		//
 		// See https://github.com/trentrichardson/jQuery-Timepicker-Addon
 		// See in http://trentrichardson.com/examples/timepicker.
+
+		$js = wp_json_encode( array(
+			'enableTime' => $timepicker,
+			'noCalendar' => $no_calendar,
+			'time_24hr'  => true,
+			'dateFormat' => $date_format,
+		) );
+
 		@ob_start();
 		?>
-		<script type='text/javascript'>
-			(function ($) {
-
-				$(function () {
-
-					$('.<?php echo esc_js( $this->meta_name ); ?>[type=text]').flatpickr({
-						enableTime: <?php echo esc_js( $timepicker ); ?>,
-						noCalendar: <?php echo esc_js( $no_calendar ); ?>,
-						time_24hr: true,
-						dateFormat: <?php echo esc_js( $date_format ); ?>
-					});
-				});
-			})(jQuery);
-		</script>
+        <script type='text/javascript'>
+            (function ($) {
+                $(function () {
+                    $('.<?php echo esc_js( $this->meta_name ); ?>[type=text]').flatpickr(<?php echo $js; ?>);
+                });
+            })(jQuery);
+        </script>
 		<?php
 		$html = ob_get_clean();
 
