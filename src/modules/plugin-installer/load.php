@@ -9,6 +9,7 @@
  */
 
 
+use Wordlift\Modules\Plugin_Installer\Quiet_Skin;
 use Wordlift\Modules\Plugin_Installer_Dependencies\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Plugin_Installer_Dependencies\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Plugin_Installer_Dependencies\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -45,6 +46,17 @@ function __wl_plugin_installer_load() {
 //	if ( ! $preconditions->pass() ) {
 //		return;
 //	}
+
+	if (  ! file_exists(ABSPATH . 'wp-admin/includes/plugin-install.php') ||
+	! file_exists( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' ) ) {
+		return;
+	}
+
+	require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+	require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+
+
+	$upgrader = new Plugin_Upgrader( new Quiet_Skin() );
 
 
 }
