@@ -32,7 +32,7 @@ class Installer {
 	}
 
 	function activate() {
-		var_dump( activate_plugin( $this->plugin->get_slug() ) );
+		 activate_plugin( $this->plugin->get_slug() );
 	}
 
 

@@ -1,0 +1,31 @@
+<?php
+
+namespace Wordlift\Modules\Plugin_Installer;
+
+class Module {
+
+	/**
+	 * @var Installer
+	 */
+	private $installer;
+
+	public function __construct( Installer $installer ) {
+		$this->installer = $installer;
+	}
+
+	public function install_and_activate( $new_value, $old_value ) {
+		if ( ! $new_value ) {
+			return;
+		}
+		$this->installer->install();
+		$this->installer->activate();
+
+	}
+
+
+	public function register_hooks() {
+		add_action( "wl_feature__change__entity-types-professional", array( $this, 'install_and_activate' ), 10, 2 );
+		add_action( "wl_feature__change__entity-types-business", array( $this, 'install_and_activate' ), 10, 2 );
+	}
+
+}
