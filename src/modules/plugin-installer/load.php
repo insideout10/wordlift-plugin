@@ -10,7 +10,6 @@
 
 
 use Wordlift\Modules\Plugin_Installer\Installer;
-use Wordlift\Modules\Plugin_Installer\Quiet_Skin;
 use Wordlift\Modules\Plugin_Installer_Dependencies\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Plugin_Installer_Dependencies\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Plugin_Installer_Dependencies\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -46,12 +45,24 @@ function __wl_plugin_installer_load() {
 	$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
 	$loader->load( 'services.yml' );
 
+	$container_builder->compile();
 
 
 	/**
-	 * @var Installer $installer
+	 * @var $installer Installer
 	 */
-	$installer = $container_builder->get( '\Wordlift\Modules\Plugin_Installer\Installer' );
+	$installer = $container_builder->get( Installer::class );
+	$install_and_activate = function ($new_value, $old_value)  use ($installer) {
+
+		if ( ! $new_value ) {
+			return;
+		}
+		$installer->install();
+		$installer->activate();
+	};
+
+	add_action( "wl_feature__change__entity-types-professional", $install_and_activate, 10, 2 );
+	add_action( "wl_feature__change__entity-types-business", $install_and_activate, 10, 2 );
 	
 }
 

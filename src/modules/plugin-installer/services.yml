@@ -1,12 +1,13 @@
 services:
+  Wordlift\Modules\Plugin_Installer\Quiet_Skin:
+    class: \Wordlift\Modules\Plugin_Installer\Quiet_Skin
   Plugin_Upgrader:
     class: \Plugin_Upgrader
-    arguments: [ '\Wordlift\Modules\Plugin_Installer\Quiet_Skin' ]
-  \Wordlift\Modules\Plugin_Installer\Quiet_Skin:
-    class: \Wordlift\Modules\Plugin_Installer\Quiet_Skin
-  \Wordlift\Modules\Plugin_Installer\Remote_Plugin:
+    arguments: [ '@Wordlift\Modules\Plugin_Installer\Quiet_Skin' ]
+
+  Wordlift\Modules\Plugin_Installer\Remote_Plugin:
     class: \Wordlift\Modules\Plugin_Installer\Remote_Plugin
     arguments: [ 'advanced-custom-fields-for-schema-org', 'https://wordlift.io/wp-content/uploads/advanced-custom-fields-for-schema-org/package.json' ]
-  \Wordlift\Modules\Plugin_Installer\Installer:
-    arguments: ['\Plugin_Upgrader', '\Wordlift\Modules\Plugin_Installer\Remote_Plugin']
+  Wordlift\Modules\Plugin_Installer\Installer:
+    arguments: ['@Plugin_Upgrader', '@Wordlift\Modules\Plugin_Installer\Remote_Plugin']
     class: \Wordlift\Modules\Plugin_Installer\Installer

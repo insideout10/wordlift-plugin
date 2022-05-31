@@ -27,7 +27,7 @@ class Installer {
 		try {
 			$this->upgrader->install( $this->plugin->get_zip_url() );
 		} catch ( \Exception $e ) {
-
+			error_log( "Error caught when installing plugin " . $this->plugin->get_slug() . " error: " . $e->getMessage() );
 		}
 	}
 
