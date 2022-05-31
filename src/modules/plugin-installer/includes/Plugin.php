@@ -13,4 +13,9 @@ interface Plugin {
 	 */
 	function get_zip_url();
 
+
+	function is_plugin_installed();
+
+	function is_plugin_activated();
+
 }

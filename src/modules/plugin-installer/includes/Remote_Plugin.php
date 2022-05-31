@@ -31,4 +31,17 @@ class Remote_Plugin implements Plugin {
 		}
 		return $data['package'];
 	}
+
+	function is_plugin_installed() {
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		$all_plugins = get_plugins();
+
+		return array_key_exists( $this->slug, $all_plugins );
+	}
+
+	function is_plugin_activated() {
+		return is_plugin_active( $this->slug );
+	}
 }

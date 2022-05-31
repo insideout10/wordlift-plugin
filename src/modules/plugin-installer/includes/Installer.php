@@ -24,6 +24,11 @@ class Installer {
 	}
 
 	function install() {
+
+		if (  $this->plugin->is_plugin_installed() ) {
+			return;
+		}
+
 		try {
 			$this->upgrader->install( $this->plugin->get_zip_url() );
 		} catch ( \Exception $e ) {
@@ -32,6 +37,9 @@ class Installer {
 	}
 
 	function activate() {
+		if (  $this->plugin->is_plugin_activated() ) {
+			return;
+		}
 		 activate_plugin( $this->plugin->get_slug() );
 	}
 
