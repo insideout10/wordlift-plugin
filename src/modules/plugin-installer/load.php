@@ -9,6 +9,7 @@
  */
 
 
+use Wordlift\Modules\Plugin_Installer\Installer;
 use Wordlift\Modules\Plugin_Installer\Quiet_Skin;
 use Wordlift\Modules\Plugin_Installer_Dependencies\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Plugin_Installer_Dependencies\Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -33,32 +34,25 @@ function __wl_plugin_installer_load() {
 		require WL_PLUGIN_INSTALLER_DIR_PATH . '/includes/vendor/autoload.php';
 	}
 
-	$container_builder = new ContainerBuilder();
-	$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
-	$loader->load( 'services.yml' );
-
-
-//
-//	/**
-//	 * @var Preconditions $preconditions
-//	 */
-//	$preconditions = $container_builder->get( 'Wordlift\Modules\Food_Kg\Preconditions' );
-//	if ( ! $preconditions->pass() ) {
-//		return;
-//	}
-
 	if (  ! file_exists(ABSPATH . 'wp-admin/includes/plugin-install.php') ||
-	! file_exists( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' ) ) {
+	      ! file_exists( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' ) ) {
 		return;
 	}
 
 	require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
 	require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 
+	$container_builder = new ContainerBuilder();
+	$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
+	$loader->load( 'services.yml' );
 
-	$upgrader = new Plugin_Upgrader( new Quiet_Skin() );
 
 
+	/**
+	 * @var Installer $installer
+	 */
+	$installer = $container_builder->get( '\Wordlift\Modules\Plugin_Installer\Installer' );
+	
 }
 
 add_action( 'plugins_loaded', '__wl_plugin_installer_load' );

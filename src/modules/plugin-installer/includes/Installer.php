@@ -18,7 +18,7 @@ class Installer {
 	 * @param $plugin Plugin
 	 * @param $upgrader \Plugin_Upgrader
 	 */
-	function __construct( $upgrader, $plugin ) {
+	function __construct( \Plugin_Upgrader $upgrader, Plugin $plugin ) {
 		$this->upgrader = $upgrader;
 		$this->plugin   = $plugin;
 	}
