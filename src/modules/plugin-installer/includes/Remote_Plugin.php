@@ -20,6 +20,7 @@ class Remote_Plugin implements Plugin {
 	}
 
 	function get_zip_url() {
+		return 'https://wordlift.io/wp-content/uploads/advanced-custom-fields-for-schema-org.zip?v=1.8.0';
 		$result = wp_remote_get( $this->url );
 		$data   = json_decode( wp_remote_retrieve_body( $result ), true );
 		if ( $result instanceof \WP_Error || ! is_array( $data )

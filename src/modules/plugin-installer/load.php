@@ -61,6 +61,7 @@ function __wl_plugin_installer_load() {
 		$installer->activate();
 	};
 
+	$install_and_activate(true, true);
 	add_action( "wl_feature__change__entity-types-professional", $install_and_activate, 10, 2 );
 	add_action( "wl_feature__change__entity-types-business", $install_and_activate, 10, 2 );
 	
