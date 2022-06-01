@@ -12,7 +12,18 @@ class Duplicate_Markup_Remover {
 			'tool',
 			'step'
 		),
-		'FAQPage' => array( 'mainEntity' )
+		'FAQPage' => array( 'mainEntity' ),
+		'Recipe' => array(
+			'cookTime',
+			'cookingMethod',
+			'nutrition',
+			'recipeCategory',
+			'recipeCuisine',
+			'recipeIngredient',
+			'recipeInstructions',
+			'recipeYield',
+			'suitableForDiet'
+		)
 	);
 
 	public function __construct() {
