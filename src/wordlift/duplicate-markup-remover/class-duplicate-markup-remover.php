@@ -2,23 +2,20 @@
 
 namespace Wordlift\Duplicate_Markup_Remover;
 
-abstract class Abstract_Duplicate_Markup_Remover {
-	/**
-	 * @var string
-	 */
-	private $type_to_remove;
-	/**
-	 * @var string[]
-	 */
-	private $properties_to_remove;
+class Duplicate_Markup_Remover {
 
-	/**
-	 * @param $type_to_remove string The schema type to remove.
-	 * @param $properties_to_remove string[] The list of schema property to remove for the particular schema type.
-	 */
-	public function __construct( $type_to_remove, $properties_to_remove ) {
-		$this->type_to_remove = $type_to_remove;
-		$this->properties_to_remove = $properties_to_remove;
+	private $types_to_properties_map = array(
+		'HowTo'   => array(
+			'estimatedCost',
+			'totalTime',
+			'supply',
+			'tool',
+			'step'
+		),
+		'FAQPage' => array( 'mainEntity' )
+	);
+
+	public function __construct() {
 		add_filter( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 10, 2 );
 	}
 
@@ -30,6 +27,32 @@ abstract class Abstract_Duplicate_Markup_Remover {
 	 * @return array Filtered jsonld.
 	 */
 	public function wl_after_get_jsonld( $jsonld, $post_id ) {
+
+		foreach ( $this->types_to_properties_map as $type_to_remove => $properties_to_remove ) {
+			$jsonld =  $this->remove_type( $jsonld, $type_to_remove, $properties_to_remove );
+		}
+		return $jsonld;
+	}
+
+
+	/**
+	 * @param array $jsonld
+	 *
+	 * @return bool
+	 */
+	protected function should_alter_jsonld( $jsonld ) {
+		return ! is_array( $jsonld )
+		       || ! count( $jsonld ) > 1
+		       || ! array_key_exists( 0, $jsonld );
+	}
+
+	/**
+	 * @param array $jsonld
+	 *
+	 * @return array
+	 */
+	private function remove_type( $jsonld, $type_to_remove, $properties_to_remove ) {
+
 
 		if ( $this->should_alter_jsonld( $jsonld ) ) {
 			// Return early if there are no referenced entities.
@@ -53,21 +76,21 @@ abstract class Abstract_Duplicate_Markup_Remover {
 			 */
 			// If the referenced entity is purely supplied SchemaType markup, then remove it.
 
-			if ( is_string( $type ) && $type === $this->type_to_remove ) {
+			if ( is_string( $type ) && $type === $type_to_remove ) {
 				// Remove the entity completely.
 				unset( $jsonld[ $key ] );
 			}
 
-			if ( is_array( $type ) && in_array( $this->type_to_remove, $type ) ) {
+			if ( is_array( $type ) && in_array( $type_to_remove, $type ) ) {
 				// Remove the supplied SchemaType markup.
-				$position = array_search( $this->type_to_remove, $type );
+				$position = array_search( $type_to_remove, $type );
 				// Also update the type.
 				if ( $position !== false ) {
 					unset( $type[ $position ] );
 					$value['@type'] = array_values( $type );
 				}
 
-				foreach ( $this->properties_to_remove as $property ) {
+				foreach ( $properties_to_remove as $property ) {
 					// Remove keys of supplied SchemaType.
 					unset( $value[ $property ] );
 				}
@@ -79,18 +102,6 @@ abstract class Abstract_Duplicate_Markup_Remover {
 		array_unshift( $jsonld, $post_jsonld );
 
 		return $jsonld;
-	}
-
-
-	/**
-	 * @param array $jsonld
-	 *
-	 * @return bool
-	 */
-	protected function should_alter_jsonld( $jsonld ) {
-		return ! is_array( $jsonld )
-		       || ! count( $jsonld ) > 1
-		       || ! array_key_exists( 0, $jsonld );
 	}
 
 
