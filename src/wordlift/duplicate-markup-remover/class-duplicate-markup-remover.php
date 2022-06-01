@@ -13,7 +13,7 @@ class Duplicate_Markup_Remover {
 			'step'
 		),
 		'FAQPage' => array( 'mainEntity' ),
-		'Recipe' => array(
+		'Recipe'  => array(
 			'cookTime',
 			'cookingMethod',
 			'nutrition',
@@ -23,6 +23,57 @@ class Duplicate_Markup_Remover {
 			'recipeInstructions',
 			'recipeYield',
 			'suitableForDiet'
+		),
+		'Product' => array(
+			'additionalProperty',
+			'aggregateRating',
+			'audience',
+			'award',
+			'brand',
+			'category',
+			'color',
+			'countryOfAssembly',
+			'countryOfLastProcessing',
+			'countryOfOrigin',
+			'depth',
+			'funding',
+			'gtin',
+			'gtin12',
+			'gtin13',
+			'gtin14',
+			'gtin8',
+			'hasAdultConsideration',
+			'hasEnergyConsumptionDetails',
+			'hasMeasurement',
+			'hasMerchantReturnPolicy',
+			'height',
+			'inProductGroupWithID',
+			'isAccessoryOrSparePartFor',
+			'isConsumableFor',
+			'isFamilyFriendly',
+			'isRelatedTo',
+			'isSimilarTo',
+			'isVariantOf',
+			'itemCondition',
+			'keywords',
+			'logo',
+			'manufacturer',
+			'material',
+			'model',
+			'mpn',
+			'nsn',
+			'offers',
+			'pattern',
+			'productID',
+			'productionDate',
+			'purchaseDate',
+			'releaseDate',
+			'review',
+			'size',
+			'sku',
+			'slogan',
+			'weight',
+			'width'
 		)
 	);
 
@@ -40,8 +91,9 @@ class Duplicate_Markup_Remover {
 	public function wl_after_get_jsonld( $jsonld, $post_id ) {
 
 		foreach ( $this->types_to_properties_map as $type_to_remove => $properties_to_remove ) {
-			$jsonld =  $this->remove_type( $jsonld, $type_to_remove, $properties_to_remove );
+			$jsonld = $this->remove_type( $jsonld, $type_to_remove, $properties_to_remove );
 		}
+
 		return $jsonld;
 	}
 
