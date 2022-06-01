@@ -9,7 +9,6 @@
  */
 
 
-use Wordlift\Modules\Plugin_Installer\Installer;
 use Wordlift\Modules\Plugin_Installer\Module;
 use Wordlift\Modules\Plugin_Installer_Dependencies\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Plugin_Installer_Dependencies\Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -19,8 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WL_PLUGIN_INSTALLER_FILE', __FILE__ );
-define( 'WL_PLUGIN_INSTALLER_DIR_PATH', dirname( WL_PLUGIN_INSTALLER_FILE ) );
+define( 'WL_PLUGIN_INSTALLER_DIR_PATH', dirname( __FILE__ ) );
 
 function __wl_plugin_installer_load() {
 
