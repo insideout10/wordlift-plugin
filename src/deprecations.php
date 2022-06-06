@@ -233,6 +233,7 @@ require_once( 'wordlift_editor.php' );
 // add the WordLift entity custom type.
 require_once( 'wordlift_entity_type.php' );
 
+require_once( 'modules/common/load.php' );
 require_once( 'modules/configuration/wordlift_configuration_settings.php' );
 
 // Load modules

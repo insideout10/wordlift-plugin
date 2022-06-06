@@ -9,10 +9,9 @@
  */
 
 
+use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Plugin_Installer\Module;
-use Wordlift\Modules\Plugin_Installer_Dependencies\Symfony\Component\Config\FileLocator;
-use Wordlift\Modules\Plugin_Installer_Dependencies\Symfony\Component\DependencyInjection\ContainerBuilder;
-use Wordlift\Modules\Plugin_Installer_Dependencies\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -21,12 +20,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'WL_PLUGIN_INSTALLER_DIR_PATH', dirname( __FILE__ ) );
 
 function __wl_plugin_installer_load() {
-
-	// Autoloader for dependencies.
-	if ( file_exists( WL_PLUGIN_INSTALLER_DIR_PATH . '/third-party/vendor/scoper-autoload.php' ) ) {
-		require WL_PLUGIN_INSTALLER_DIR_PATH . '/third-party/vendor/scoper-autoload.php';
-	}
-
 	// Autoloader for plugin itself.
 	if ( file_exists( WL_PLUGIN_INSTALLER_DIR_PATH . '/includes/vendor/autoload.php' ) ) {
 		require WL_PLUGIN_INSTALLER_DIR_PATH . '/includes/vendor/autoload.php';
