@@ -9,7 +9,7 @@ services:
     arguments: [ '@Wordlift\Modules\Plugin_Installer\Installer' ]
   Wordlift\Modules\Plugin_Installer\Remote_Plugin:
     class: \Wordlift\Modules\Plugin_Installer\Remote_Plugin
-    arguments: [ 'advanced-custom-fields-for-schema-org/advanced-custom-fields-for-schema-org.php', 'https://wordlift.io/wp-content/uploads/advanced-custom-fields-for-schema-org.zip' ]
+    arguments: [ 'advanced-custom-fields-for-schema-org/advanced-custom-fields-for-schema-org.php', 'https://wordlift.io/wp-content/uploads/advanced-custom-fields-for-schema-org/advanced-custom-fields-for-schema-org.zip' ]
   Wordlift\Modules\Plugin_Installer\Installer:
     arguments: ['@Plugin_Upgrader', '@Wordlift\Modules\Plugin_Installer\Remote_Plugin']
     class: \Wordlift\Modules\Plugin_Installer\Installer

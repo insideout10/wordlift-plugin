@@ -3,6 +3,8 @@
 namespace Wordlift\Modules\Plugin_Installer;
 
 
+use Plugin_Upgrader;
+
 class Installer {
 
 	/**
@@ -10,22 +12,22 @@ class Installer {
 	 */
 	private $plugin;
 	/**
-	 * @var \Plugin_Upgrader
+	 * @var Plugin_Upgrader
 	 */
 	private $upgrader;
 
 	/**
 	 * @param $plugin Plugin
-	 * @param $upgrader \Plugin_Upgrader
+	 * @param $upgrader Plugin_Upgrader
 	 */
-	function __construct( \Plugin_Upgrader $upgrader, Plugin $plugin ) {
+	function __construct( Plugin_Upgrader $upgrader, Plugin $plugin ) {
 		$this->upgrader = $upgrader;
 		$this->plugin   = $plugin;
 	}
 
 	function install() {
 
-		if (  $this->plugin->is_plugin_installed() ) {
+		if ( $this->plugin->is_plugin_installed() ) {
 			return;
 		}
 
@@ -37,11 +39,10 @@ class Installer {
 	}
 
 	function activate() {
-		if (  $this->plugin->is_plugin_activated() ) {
+		if ( $this->plugin->is_plugin_activated() ) {
 			return;
 		}
-		 activate_plugin( $this->plugin->get_slug() );
+		activate_plugin( $this->plugin->get_slug() );
 	}
-
 
 }

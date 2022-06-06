@@ -8,8 +8,8 @@ interface Plugin {
 	function get_slug();
 
 	/**
-	 * @throws \Exception
 	 * @return string
+	 * @throws \Exception
 	 */
 	function get_zip_url();
 

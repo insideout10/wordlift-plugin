@@ -24,8 +24,8 @@ class Module {
 
 
 	public function register_hooks() {
-		add_action( "wl_feature__change__entity-types-professional", array( $this, 'install_and_activate' ), 10, 2 );
-		add_action( "wl_feature__change__entity-types-business", array( $this, 'install_and_activate' ), 10, 2 );
+		add_action( 'wl_feature__change__entity-types-professional', [ $this, 'install_and_activate' ], 10, 2 );
+		add_action( 'wl_feature__change__entity-types-business', [ $this, 'install_and_activate' ], 10, 2 );
 	}
 
 }
