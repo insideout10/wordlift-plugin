@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Modules\Plugin_Installer;
+namespace Wordlift\Modules\Acf4so;
 
 
 use Plugin_Upgrader;

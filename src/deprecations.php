@@ -239,7 +239,7 @@ require_once( 'modules/configuration/wordlift_configuration_settings.php' );
 // Load modules
 require_once( 'modules/analyzer/wordlift_analyzer.php' );
 require_once( 'modules/linked_data/wordlift_linked_data.php' );
-require_once( 'modules/plugin-installer/load.php' );
+require_once( 'modules/acf4so/load.php' );
 
 // Shortcodes
 

@@ -12,7 +12,7 @@
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Wordlift\Modules\Plugin_Installer\Module;
+use Wordlift\Modules\Acf4so\Module;
 
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -23,8 +23,8 @@ define( 'WL_PLUGIN_INSTALLER_DIR_PATH', dirname( __FILE__ ) );
 
 function __wl_plugin_installer_load() {
 	// Autoloader for plugin itself.
-	if ( file_exists( WL_PLUGIN_INSTALLER_DIR_PATH . '/includes/vendor/autoload.php' ) ) {
-		require WL_PLUGIN_INSTALLER_DIR_PATH . '/includes/vendor/autoload.php';
+	if ( file_exists( WL_PLUGIN_INSTALLER_DIR_PATH . '/vendor/autoload.php' ) ) {
+		require WL_PLUGIN_INSTALLER_DIR_PATH . '/vendor/autoload.php';
 	}
 
 	if (  ! file_exists(ABSPATH . 'wp-admin/includes/plugin-install.php') ||

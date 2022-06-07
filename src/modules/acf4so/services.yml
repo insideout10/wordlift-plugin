@@ -1,15 +1,15 @@
 services:
-  Wordlift\Modules\Plugin_Installer\Quiet_Skin:
-    class: \Wordlift\Modules\Plugin_Installer\Quiet_Skin
+  Wordlift\Modules\Acf4so\Quiet_Skin:
+    class: \Wordlift\Modules\Acf4so\Quiet_Skin
   Plugin_Upgrader:
     class: \Plugin_Upgrader
-    arguments: [ '@Wordlift\Modules\Plugin_Installer\Quiet_Skin' ]
-  Wordlift\Modules\Plugin_Installer\Module:
-    class: \Wordlift\Modules\Plugin_Installer\Module
-    arguments: [ '@Wordlift\Modules\Plugin_Installer\Installer' ]
-  Wordlift\Modules\Plugin_Installer\Remote_Plugin:
-    class: \Wordlift\Modules\Plugin_Installer\Remote_Plugin
+    arguments: [ '@Wordlift\Modules\Acf4so\Quiet_Skin' ]
+  Wordlift\Modules\Acf4so\Module:
+    class: \Wordlift\Modules\Acf4so\Module
+    arguments: [ '@Wordlift\Modules\Acf4so\Installer' ]
+  Wordlift\Modules\Acf4so\Remote_Plugin:
+    class: \Wordlift\Modules\Acf4so\Remote_Plugin
     arguments: [ 'advanced-custom-fields-for-schema-org/advanced-custom-fields-for-schema-org.php', 'https://wordlift.io/wp-content/uploads/advanced-custom-fields-for-schema-org/advanced-custom-fields-for-schema-org.zip' ]
-  Wordlift\Modules\Plugin_Installer\Installer:
-    arguments: ['@Plugin_Upgrader', '@Wordlift\Modules\Plugin_Installer\Remote_Plugin']
-    class: \Wordlift\Modules\Plugin_Installer\Installer
+  Wordlift\Modules\Acf4so\Installer:
+    arguments: ['@Plugin_Upgrader', '@Wordlift\Modules\Acf4so\Remote_Plugin']
+    class: \Wordlift\Modules\Acf4so\Installer
