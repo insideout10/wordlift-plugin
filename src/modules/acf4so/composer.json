@@ -1,6 +1,6 @@
 {
-  "name": "wordlift/plugin-installer",
-  "description": "Plugin Installer For WordLift",
+  "name": "wordlift/acf4so",
+  "description": "Install ACF4SO plugin",
   "license": "GPL-2.0-or-later",
   "type": "wordpress-plugin",
   "homepage": "https://wordlift.io",

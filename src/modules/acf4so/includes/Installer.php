@@ -49,8 +49,8 @@ class Installer {
 		if ( ! $new_value ) {
 			return;
 		}
-		$this->installer->install();
-		$this->installer->activate();
+		$this->install();
+		$this->activate();
 
 	}
 
@@ -58,6 +58,7 @@ class Installer {
 	public function register_hooks() {
 		add_action( 'wl_feature__change__entity-types-professional', [ $this, 'install_and_activate' ], 10, 2 );
 		add_action( 'wl_feature__change__entity-types-business', [ $this, 'install_and_activate' ], 10, 2 );
+		add_action( 'wl_acf4so_install_and_activate', [ $this, 'install_and_activate'] );
 	}
 
 
