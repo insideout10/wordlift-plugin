@@ -9,6 +9,7 @@
  */
 
 
+use Wordlift\Modules\Acf4so\Installer;
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -43,10 +44,10 @@ function __wl_plugin_installer_load() {
 
 
 	/**
-	 * @var $module Module
+	 * @var $installer \Wordlift\Modules\Acf4so\Installer
 	 */
-	$module = $container_builder->get( Module::class );
-	$module->register_hooks();
+	$installer = $container_builder->get( Installer::class );
+	$installer->register_hooks();
 	
 }
 

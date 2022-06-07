@@ -45,4 +45,20 @@ class Installer {
 		activate_plugin( $this->plugin->get_slug() );
 	}
 
+	public function install_and_activate( $new_value, $old_value ) {
+		if ( ! $new_value ) {
+			return;
+		}
+		$this->installer->install();
+		$this->installer->activate();
+
+	}
+
+
+	public function register_hooks() {
+		add_action( 'wl_feature__change__entity-types-professional', [ $this, 'install_and_activate' ], 10, 2 );
+		add_action( 'wl_feature__change__entity-types-business', [ $this, 'install_and_activate' ], 10, 2 );
+	}
+
+
 }

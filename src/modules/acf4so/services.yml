@@ -4,9 +4,6 @@ services:
   Plugin_Upgrader:
     class: \Plugin_Upgrader
     arguments: [ '@Wordlift\Modules\Acf4so\Quiet_Skin' ]
-  Wordlift\Modules\Acf4so\Module:
-    class: \Wordlift\Modules\Acf4so\Module
-    arguments: [ '@Wordlift\Modules\Acf4so\Installer' ]
   Wordlift\Modules\Acf4so\Remote_Plugin:
     class: \Wordlift\Modules\Acf4so\Remote_Plugin
     arguments: [ 'advanced-custom-fields-for-schema-org/advanced-custom-fields-for-schema-org.php', 'https://wordlift.io/wp-content/uploads/advanced-custom-fields-for-schema-org/advanced-custom-fields-for-schema-org.zip' ]
