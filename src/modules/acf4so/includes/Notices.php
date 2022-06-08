@@ -28,8 +28,6 @@ class Notices {
 			return;
 		}
 
-
-
 		/**
 		 * 1. When package type is supported and acf4so not installed or activated then the notice should appear.
 		 * 2. When woocommerce plugin installed and acf4so not installed or activated then the notice should appear.
@@ -58,31 +56,20 @@ class Notices {
 		?>
 
         <script>
-
             window.addEventListener("load", function() {
                 const pluginInstallationNotice = document.getElementById("wordlift_acf4so_plugin_installation_notice")
-                const installPlugin = (pluginName, ajaxUrl) => {
-                    return fetch(`${ajaxUrl}?action=wl_install_and_activate_advanced-custom-fields-for-schema-org`)
-                        .then(response =>  {
-                            if ( response.ok ) {
-                                return response.json()
-                            }
-                            return Promise.reject(pluginName)
-                        })
-                }
+                const installPlugin = (ajaxUrl) => fetch(`${ajaxUrl}?action=wl_install_and_activate_advanced-custom-fields-for-schema-org`)
+                        .then(response => response.ok ?  response.json() :   Promise.reject())
                 const ajaxUrl = "<?php echo esc_html( parse_url( admin_url( 'admin-ajax.php' ), PHP_URL_PATH ) ); ?>"
                 window.wordliftInstallAcf4so = function(installBtn) {
-
                     installBtn.innerHTML = 'Installing <span class="spinner is-active"></span>'
-                    Promise.all([
-                        installPlugin('advanced-custom-fields-for-schema-org', ajaxUrl)
-                    ])
+                        installPlugin(ajaxUrl)
                         .catch(e => {
                             pluginInstallationNotice.innerHTML = '<p>Wordlift: Advanced Custom Fields for Schema.org</b> Installation failed, please retry or contact support@wordlift.io</p>' +
-                                '<button class="button action" id="wordlift_for_woocommerce_install_plugins" onclick="wordliftInstallAcf4so(this)">Retry</button>'
+                                '<button class="button action" onclick="wordliftInstallAcf4so(this)">Retry</button>'
                         })
                         .then(() => {
-                            pluginInstallationNotice.innerHTML = '<p>Wordlift: Advanced Custom Fields for Schema.org</b> plugin installed and activated.</p>'
+                            pluginInstallationNotice.innerHTML = '<p>Wordlift: <b>Advanced Custom Fields for Schema.org</b> plugin installed and activated.</p>'
                             pluginInstallationNotice.classList.remove('notice-error')
                             pluginInstallationNotice.classList.add('notice-success')
                         })
