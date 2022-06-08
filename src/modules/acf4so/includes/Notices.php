@@ -34,9 +34,10 @@ class Notices {
 		 */
 		if ( ! $this->acf4so_plugin->is_plugin_installed() ) {
 			$this->display_notice(
-				__( "WordLift detected that <b>Advanced Custom Fields for Schema.org</b> is not installed and, you're loosing out on full Schema.org support.",'wordlift' ),
+				__( "WordLift detected that <b>Advanced Custom Fields for Schema.org</b> is not installed and, you're loosing out on full Schema.org support.", 'wordlift' ),
 				__( 'Reinstall & Activate', 'wordlift' )
 			);
+
 			// Dont display notice.
 			return;
 		}
@@ -46,30 +47,40 @@ class Notices {
 				__( "WordLift detected that <b>Advanced Custom Fields for Schema.org</b> is deactivated and, you're loosing out on full Schema.org support.", 'wordlift' ),
 				__( 'Reactivate', 'wordlift' )
 			);
-            return;
+
+			return;
 		}
 
 	}
 
 
 	private function display_notice( $message, $button_text ) {
+
+		$installation_success_message = __(
+			'</p>Wordlift: <b>Advanced Custom Fields for Schema.org</b> plugin installed and activated.</p>',
+			'wordlift'
+		);
+
+		$installing_message          = __( 'Installing <span class="spinner is-active"></span>', 'wordlift' );
+		$installation_failed_message = __( '<p>Wordlift: Advanced Custom Fields for Schema.org</b> Installation failed, please retry or contact support@wordlift.io</p>' .
+		                                   '<button class="button action" onclick="wordliftInstallAcf4so(this)">Retry</button>', 'wordlift' );
+
 		?>
 
         <script>
-            window.addEventListener("load", function() {
+            window.addEventListener("load", function () {
                 const pluginInstallationNotice = document.getElementById("wordlift_acf4so_plugin_installation_notice")
                 const installPlugin = (ajaxUrl) => fetch(`${ajaxUrl}?action=wl_install_and_activate_advanced-custom-fields-for-schema-org`)
-                        .then(response => response.ok ?  response.json() :   Promise.reject())
+                    .then(response => response.ok ? response.json() : Promise.reject())
                 const ajaxUrl = "<?php echo esc_html( parse_url( admin_url( 'admin-ajax.php' ), PHP_URL_PATH ) ); ?>"
-                window.wordliftInstallAcf4so = function(installBtn) {
-                    installBtn.innerHTML = 'Installing <span class="spinner is-active"></span>'
-                        installPlugin(ajaxUrl)
+                window.wordliftInstallAcf4so = function (installBtn) {
+                    installBtn.innerHTML = `<?php echo $installing_message ?>`
+                    installPlugin(ajaxUrl)
                         .catch(e => {
-                            pluginInstallationNotice.innerHTML = '<p>Wordlift: Advanced Custom Fields for Schema.org</b> Installation failed, please retry or contact support@wordlift.io</p>' +
-                                '<button class="button action" onclick="wordliftInstallAcf4so(this)">Retry</button>'
+                            pluginInstallationNotice.innerHTML = `<?php echo $installation_failed_message ?>`
                         })
                         .then(() => {
-                            pluginInstallationNotice.innerHTML = '<p>Wordlift: <b>Advanced Custom Fields for Schema.org</b> plugin installed and activated.</p>'
+                            pluginInstallationNotice.innerHTML = `<?php echo $installation_success_message ?>`
                             pluginInstallationNotice.classList.remove('notice-error')
                             pluginInstallationNotice.classList.add('notice-success')
                         })
@@ -81,9 +92,9 @@ class Notices {
 
         <div class="notice notice-error" id="wordlift_acf4so_plugin_installation_notice">
             <p>
-                <?php echo $message; ?>
+				<?php echo $message; ?>
                 <button class="button action right" onclick="wordliftInstallAcf4so(this)">
-		            <?php esc_html_e( $button_text ); ?>
+					<?php esc_html_e( $button_text ); ?>
 
                 </button>
             </p>
