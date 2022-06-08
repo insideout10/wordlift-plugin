@@ -8,9 +8,12 @@ class Remote_Plugin implements Plugin {
 
 	private $url;
 
-	public function __construct( $slug, $url ) {
+	private $name;
+
+	public function __construct( $slug, $name, $url ) {
 		$this->slug = $slug;
 		$this->url  = $url;
+		$this->name = $name;
 	}
 
 	function get_slug() {
@@ -32,5 +35,9 @@ class Remote_Plugin implements Plugin {
 
 	function is_plugin_activated() {
 		return is_plugin_active( $this->slug );
+	}
+
+	function get_name() {
+		return $this->name;
 	}
 }

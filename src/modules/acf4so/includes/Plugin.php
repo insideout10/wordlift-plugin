@@ -7,6 +7,8 @@ interface Plugin {
 
 	function get_slug();
 
+	function get_name();
+
 	/**
 	 * @return string
 	 * @throws \Exception

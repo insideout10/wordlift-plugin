@@ -56,11 +56,48 @@ class Notices {
 
 	private function display_notice( $message, $button_text ) {
 		?>
-        <div class="notice notice-error ">
+
+        <script>
+
+            window.addEventListener("load", function() {
+                const pluginInstallationNotice = document.getElementById("wordlift_acf4so_plugin_installation_notice")
+                const installPlugin = (pluginName, ajaxUrl) => {
+                    return fetch(`${ajaxUrl}?action=wl_install_and_activate_advanced-custom-fields-for-schema-org`)
+                        .then(response =>  {
+                            if ( response.ok ) {
+                                return response.json()
+                            }
+                            return Promise.reject(pluginName)
+                        })
+                }
+                const ajaxUrl = "<?php echo esc_html( parse_url( admin_url( 'admin-ajax.php' ), PHP_URL_PATH ) ); ?>"
+                window.wordliftInstallAcf4so = function(installBtn) {
+
+                    installBtn.innerHTML = 'Installing <span class="spinner is-active"></span>'
+                    Promise.all([
+                        installPlugin('advanced-custom-fields-for-schema-org', ajaxUrl)
+                    ])
+                        .catch(e => {
+                            pluginInstallationNotice.innerHTML = '<p>Wordlift: Advanced Custom Fields for Schema.org</b> Installation failed, please retry or contact support@wordlift.io</p>' +
+                                '<button class="button action" id="wordlift_for_woocommerce_install_plugins" onclick="wordliftInstallAcf4so(this)">Retry</button>'
+                        })
+                        .then(() => {
+                            pluginInstallationNotice.innerHTML = '<p>Wordlift: Advanced Custom Fields for Schema.org</b> plugin installed and activated.</p>'
+                            pluginInstallationNotice.classList.remove('notice-error')
+                            pluginInstallationNotice.classList.add('notice-success')
+                        })
+
+                };
+            })
+        </script>
+
+
+        <div class="notice notice-error" id="wordlift_acf4so_plugin_installation_notice">
             <p>
                 <?php echo $message; ?>
-                <button class="button action right" id="wordlift_install_acf4so" onclick="wordliftInstallAcf4so(this)">
+                <button class="button action right" onclick="wordliftInstallAcf4so(this)">
 		            <?php esc_html_e( $button_text ); ?>
+
                 </button>
             </p>
             <br/>
