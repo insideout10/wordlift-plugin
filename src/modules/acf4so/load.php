@@ -21,12 +21,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WL_PLUGIN_INSTALLER_DIR_PATH', dirname( __FILE__ ) );
+define( 'WL_ACF4SO_DIR_NAME', dirname( __FILE__ ) );
 
-function __wl_plugin_installer_load() {
+function __wl_acf4so_load() {
 	// Autoloader for plugin itself.
-	if ( file_exists( WL_PLUGIN_INSTALLER_DIR_PATH . '/vendor/autoload.php' ) ) {
-		require WL_PLUGIN_INSTALLER_DIR_PATH . '/vendor/autoload.php';
+	if ( file_exists( WL_ACF4SO_DIR_NAME . '/vendor/autoload.php' ) ) {
+		require WL_ACF4SO_DIR_NAME . '/vendor/autoload.php';
 	}
 
 	if (  ! file_exists(ABSPATH . 'wp-admin/includes/plugin-install.php') ||
@@ -58,5 +58,13 @@ function __wl_plugin_installer_load() {
 	
 }
 
-add_action( 'plugins_loaded', '__wl_plugin_installer_load' );
+add_action( 'plugins_loaded', '__wl_acf4so_load' );
 
+//add_filter( 'plugins_api_result', function ($res, $action, $args) {
+//	var_dump($res);
+//	var_dump($action);
+//	var_dump($args);
+//	wp_die("");
+//	return $res;
+//
+//}, 10, 3);

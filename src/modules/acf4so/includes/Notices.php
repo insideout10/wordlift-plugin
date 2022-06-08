@@ -28,32 +28,44 @@ class Notices {
 			return;
 		}
 
-		if ( ! $this->acf4so_plugin->is_plugin_installed() ) {
-			?>
-            <div class="notice notice-error is-dismissible">
-                <p><?php esc_html_e( "WordLift detected that Advanced Custom Fields for Schema.org is not installed and, you're loosing out on full Schema.org support. Click here to install and reactivate.", 'wordlift' ); ?></p>
-            </div>
-			<?php
-			// Dont display notice.
-			return;
-		}
 
-		if ( ! $this->acf4so_plugin->is_plugin_activated() ) {
-			?>
-            <div class="notice notice-error is-dismissible">
-                <p><?php esc_html_e( "WordLift detected that Advanced Custom Fields for Schema.org is deactivated and, you're loosing out on full Schema.org support. Click here to reactivate.", 'wordlift' ); ?></p>
-            </div>
-			<?php
-			// Dont display notice.
-			return;
-		}
 
 		/**
 		 * 1. When package type is supported and acf4so not installed or activated then the notice should appear.
 		 * 2. When woocommerce plugin installed and acf4so not installed or activated then the notice should appear.
 		 */
+		if ( ! $this->acf4so_plugin->is_plugin_installed() ) {
+			$this->display_notice(
+				__( "WordLift detected that <b>Advanced Custom Fields for Schema.org</b> is not installed and, you're loosing out on full Schema.org support.",'wordlift' ),
+				__( 'Reinstall & Activate', 'wordlift' )
+			);
+			// Dont display notice.
+			return;
+		}
+
+		if ( ! $this->acf4so_plugin->is_plugin_activated() ) {
+			$this->display_notice(
+				__( "WordLift detected that <b>Advanced Custom Fields for Schema.org</b> is deactivated and, you're loosing out on full Schema.org support.", 'wordlift' ),
+				__( 'Reactivate', 'wordlift' )
+			);
+            return;
+		}
+
+	}
 
 
+	private function display_notice( $message, $button_text ) {
+		?>
+        <div class="notice notice-error ">
+            <p>
+                <?php echo $message; ?>
+                <button class="button action right" id="wordlift_install_acf4so" onclick="wordliftInstallAcf4so(this)">
+		            <?php esc_html_e( $button_text ); ?>
+                </button>
+            </p>
+            <br/>
+        </div>
+		<?php
 	}
 
 	/**
