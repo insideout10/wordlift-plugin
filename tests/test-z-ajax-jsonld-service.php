@@ -761,14 +761,9 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 			unset( $e );
 		}
 
-		$response = json_decode( $this->_last_response );
+		$response = json_decode( $this->_last_response, true );
 
-		// Check that the recipe is there.
-		$instances = array_filter( $response, function ( $item ) {
-			return 'Recipe' === $item->{'@type'};
-		} );
-
-		$this->assertCount( 1, $instances );
+		$this->assertCount( 1, $response[0]['mentions'] );
 
 	}
 
