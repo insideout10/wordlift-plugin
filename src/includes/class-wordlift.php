@@ -21,8 +21,7 @@ use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
 use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Configuration\Config;
-use Wordlift\Duplicate_Markup_Remover\Faq_Duplicate_Markup_Remover;
-use Wordlift\Duplicate_Markup_Remover\How_To_Duplicate_Markup_Remover;
+use Wordlift\Duplicate_Markup_Remover\Duplicate_Markup_Remover;
 use Wordlift\Duplicate_Markup_Remover\Videoobject_Duplicate_Remover;
 use Wordlift\Entity\Entity_Helper;
 use Wordlift\Entity\Entity_No_Index_Flag;
@@ -1335,16 +1334,7 @@ class Wordlift {
 			new Recipe_Maker_Warning( $recipe_maker_validation_service );
 
 
-			/**
-			 * @since 3.27.4
-			 * Add the faq duplicate markup hook.
-			 */
-			new Faq_Duplicate_Markup_Remover();
-			/**
-			 * @since 3.33.1
-			 * Remove the duplicate HowTo Markup.
-			 */
-			new How_To_Duplicate_Markup_Remover();
+			new Duplicate_Markup_Remover();
 
 			/**
 			 * @since 3.27.8
