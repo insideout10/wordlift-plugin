@@ -286,7 +286,7 @@ wp --allow-root plugin install wp-recipe-maker
 
 # see https://brandoncc.dev/blog/woocommerce-compatibility-table/, install woocommerce.
 wp --allow-root plugin install woocommerce --version=4.1.1
-wp --allow-root plugin install http://wordlift.io/wp-content/uploads/advanced-custom-fields-for-schema-org.zip
+
 wp --allow-root plugin install http://wordlift.io/wp-content/uploads/plugin-wordlift-for-woocommerce.zip
 wp --allow-root rewrite structure '/%postname%/'
 wp --allow-root config set WP_DEBUG true

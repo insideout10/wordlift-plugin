@@ -30,6 +30,14 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 	);
 
 
+	public function setUp() {
+
+		parent::setUp();
+		$this->mock_acf4so_installation_and_activation();
+
+	}
+
+
 	public function test_when_package_type_changed_to_starter_should_have_only_starter_entity_types() {
 
 		$this->set_feature_and_trigger_config_save( 'entity-types-starter' );
@@ -152,7 +160,7 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 
 	private function set_feature_and_trigger_config_save( $feature_slug ) {
 		// This action hook is fired to indicate the feature was changed.
-		do_action("wl_feature__change__${feature_slug}", true, null, $feature_slug );
+		do_action( "wl_feature__change__${feature_slug}", true, null, $feature_slug );
 	}
 
 	/**
@@ -165,6 +173,19 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 			$this->assertSame( $name, get_term_meta( $term->term_id, '_wl_name', true ), 'We should have term _wl_name for the item' );
 
 		}
+	}
+
+	/**
+	 * @return void
+	 */
+	private function mock_acf4so_installation_and_activation() {
+		$slug                 = 'advanced-custom-fields-for-schema-org/advanced-custom-fields-for-schema-org.php';
+		$plugin_data          = get_plugins();
+		$plugin_data[ $slug ] = array();
+		wp_cache_replace( 'plugins', array( '' => $plugin_data ), 'plugins' );
+		update_option( 'active_plugins', array_merge( (array) get_option( 'active_plugins', array() ), array(
+			$slug
+		) ) );
 	}
 
 

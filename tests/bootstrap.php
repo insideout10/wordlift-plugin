@@ -139,3 +139,4 @@ function unzip( $what, $to ) {
 	$zip->close();
 
 }
+define( 'FS_METHOD', 'direct' );
