@@ -16,7 +16,8 @@
     "symfony/config": "^3.4",
     "symfony/dependency-injection": "^3.4",
     "symfony/polyfill-mbstring": "^1.19",
-    "symfony/yaml": "^3.4"
+    "symfony/yaml": "^3.4",
+    "psr/container": "1.0.0"
   },
   "require-dev": {
     "automattic/vipwpcs": "^2.3",

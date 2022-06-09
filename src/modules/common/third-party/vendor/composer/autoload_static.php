@@ -4,9 +4,10 @@
 
 namespace Wordlift_Modules_Common_Composer\Autoload;
 
-class ComposerStaticInit2689d58e81c15de8abcd7dd374c56be7
+class ComposerStaticInita9542621240fd0fdea04452b6198c2ec
 {
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Wordlift\\Modules\\Common\\Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Wordlift\\Modules\\Common\\JsonException' => __DIR__ . '/..' . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
         'Wordlift\\Modules\\Common\\McAskill\\Composer\\ExcludeFilePlugin' => __DIR__ . '/..' . '/mcaskill/composer-exclude-files/src/ExcludeFilePlugin.php',
@@ -276,7 +277,7 @@ class ComposerStaticInit2689d58e81c15de8abcd7dd374c56be7
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit2689d58e81c15de8abcd7dd374c56be7::$classMap;
+            $loader->classMap = ComposerStaticInita9542621240fd0fdea04452b6198c2ec::$classMap;
 
         }, null, ClassLoader::class);
     }
