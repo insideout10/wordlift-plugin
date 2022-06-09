@@ -5,7 +5,7 @@
   "type": "wordpress-plugin",
   "homepage": "https://wordlift.io",
   "require": {
-    "php": "^5.6 || ^7.2 || ^8.0",
+    "php": ">=5.6.0",
     "ext-dom": "*",
     "ext-iconv": "*",
     "ext-json": "*",

@@ -6,7 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Wordlift\\Modules\\Common\\Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
     'Wordlift\\Modules\\Common\\JsonException' => $vendorDir . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
     'Wordlift\\Modules\\Common\\McAskill\\Composer\\ExcludeFilePlugin' => $vendorDir . '/mcaskill/composer-exclude-files/src/ExcludeFilePlugin.php',

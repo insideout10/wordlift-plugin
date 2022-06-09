@@ -16,11 +16,16 @@ services:
       MYSQL_DATABASE: wordpress
 
   phpunit:
-    image: "ziodave/wordpress-tests:php${PHP_VERSION:-5.4}-phpunit${PHPUNIT_VERSION:-4.8}-wordpress${WORDPRESS_VERSION:-4.4}"
+    image: "ziodave/wordpress-tests:php${PHP_VERSION:-7.0}-phpunit${PHPUNIT_VERSION:-4.8}-wordpress${WORDPRESS_VERSION:-5.2}"
     depends_on:
       - db
     volumes:
       - ..:/app
+      # ini_set would not work when the file has parse error, so phpunit would exit with code 255
+      # this custom ini file would set the error reporting to on.
+      - type: bind
+        source: ./php.ini
+        target: /usr/local/etc/php/php.ini
     environment:
       ACF_PRO_KEY: $ACF_PRO_KEY
       YOUTUBE_DATA_API_KEY: $YOUTUBE_DATA_API_KEY

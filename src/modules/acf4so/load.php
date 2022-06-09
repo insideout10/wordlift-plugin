@@ -59,12 +59,3 @@ function __wl_acf4so_load() {
 }
 
 add_action( 'plugins_loaded', '__wl_acf4so_load' );
-
-//add_filter( 'plugins_api_result', function ($res, $action, $args) {
-//	var_dump($res);
-//	var_dump($action);
-//	var_dump($args);
-//	wp_die("");
-//	return $res;
-//
-//}, 10, 3);
