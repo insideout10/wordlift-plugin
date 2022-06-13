@@ -49,17 +49,19 @@ class Installer {
 		if ( ! $new_value ) {
 			return;
 		}
-		$this->install();
-		$this->activate();
-
+		$this->install_and_activate();
 	}
 
-	public function admin_ajax_install_and_activate() {
-
+	public function install_and_activate() {
 		ob_start();
 		$this->install();
 		$this->activate();
 		ob_end_clean();
+	}
+
+	public function admin_ajax_install_and_activate() {
+
+		$this->install_and_activate();
 
 		if ( $this->plugin->is_plugin_installed() && $this->plugin->is_plugin_activated() ) {
 			wp_send_json_success(null, 200);
@@ -73,6 +75,7 @@ class Installer {
 		add_action( 'wl_feature__change__entity-types-professional', [ $this, 'install_and_activate_on_entity_type_change' ], 10, 2 );
 		add_action( 'wl_feature__change__entity-types-business', [ $this, 'install_and_activate_on_entity_type_change' ], 10, 2 );
 		add_action( "wp_ajax_wl_install_and_activate_{$this->plugin->get_name()}", [ $this, 'admin_ajax_install_and_activate' ] );
+		add_action("wl_install_and_activate_{$this->plugin->get_name()}", [ $this, 'install_and_activate'] );
 	}
 
 
