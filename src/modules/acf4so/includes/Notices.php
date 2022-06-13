@@ -57,7 +57,7 @@ class Notices {
 	private function display_notice( $message, $button_text ) {
 
 		$installation_success_message = __(
-			'</p>Wordlift: <b>Advanced Custom Fields for Schema.org</b> plugin installed and activated.</p>',
+			'</p>WordLift: <b>Advanced Custom Fields for Schema.org</b> plugin installed and activated.</p>',
 			'wordlift'
 		);
 
