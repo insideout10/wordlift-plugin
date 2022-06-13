@@ -67,7 +67,7 @@ jobs:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
           KUBECTL_VERSION: "v1.23.6"
         with:
-          args: delete -f manifests/wordpress-deployment.yml,manifests/wordpress-mysql-deployment.yml
+          args: delete -f manifests/wordpress-deployment.yml,manifests/wordpress-mysql-deployment.yml --ignore-not-found=true
 
       - name: Deploy new package
         uses: kodermax/kubectl-aws-eks@master
