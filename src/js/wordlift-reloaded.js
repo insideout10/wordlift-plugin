@@ -30188,7 +30188,6 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
       service._updateStatus(true);
       content = content.replaceAll(/<span.+?class="mce_SELRES_start.+?><\/span>/gm, '');
       content = content.replaceAll(/<span.+?class="mce_SELRES_end.+?><\/span>/gm, '');
-      console.log(content);
       $log.debug('Requesting analysis...');
       promise = this._innerPerform(content, {});
       promise.then(function(response) {
