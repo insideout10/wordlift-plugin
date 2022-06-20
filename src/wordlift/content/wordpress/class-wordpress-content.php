@@ -67,7 +67,10 @@ class Wordpress_Content implements Content {
 	function get_edit_link() {
 		switch ( get_class( $this->bag ) ) {
 			case 'WP_Post':
-				return get_edit_post_link( $this->get_bag()->ID );
+				// We need to return & character as &, by default context is set to display.
+				// so &  will be returned as &amp; breaking header location redirects.
+				// By setting context to none we prevent this issue.
+				return get_edit_post_link( $this->get_bag()->ID, 'none' );
 			case 'WP_User':
 				return get_edit_user_link( $this->get_bag()->ID );
 			case 'WP_Term':

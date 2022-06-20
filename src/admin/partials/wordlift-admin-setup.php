@@ -16,7 +16,7 @@
 
 	<?php
 
-    // Enqueue wp.media functions.
+	// Enqueue wp.media functions.
 	wp_enqueue_media();
 
 	// Enqueue styles and scripts.
@@ -63,7 +63,7 @@
                  src="<?php echo esc_attr( plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/logo-wl-transparent-240x90.png' ); ?>"/>
         </h1>
         <img class="shapes"
-             src="<?php echo esc_attr( plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/shapes.png'); ?>"/>
+             src="<?php echo esc_attr( plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/shapes.png' ); ?>"/>
     </header>
 
 
@@ -72,10 +72,12 @@
         <input type="hidden" name="action" value="wl-save-configuration"/>
         <div class="viewport"></div>
     </form>
-
+	<?php
+	if ( function_exists( 'wp_print_media_templates' ) ) {
+		wp_print_media_templates();
+	}
+	?>
 </div>
-
-<?php do_action( 'admin_footer' ); ?>
 
 </body>
 </html>

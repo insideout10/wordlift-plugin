@@ -27,11 +27,12 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-      - name: test
-        run: |
-          composer install
-          ./vendor/bin/phpcs src/ --extensions=php --ignore=class-wordlift-entity-types-taxonomy-walker-5-3.php,autoload_static.php \
-              --standard=PHPCompatibilityWP --runtime-set testVersion 5.3
+# Minimum PHP version is now set to 5.6.
+#      - name: test
+#        run: |
+#          composer install
+#          ./vendor/bin/phpcs src/ --extensions=php --ignore=class-wordlift-entity-types-taxonomy-walker-5-3.php,autoload_static.php \
+#              --standard=PHPCompatibilityWP --runtime-set testVersion 5.3
 
   # These tests need updating.
   #  js_karma:
@@ -83,9 +84,6 @@ jobs:
     strategy:
       matrix:
         image:
-          - "php5.4-phpunit4.8-wordpress4.4"
-          - "php5.5-phpunit4.8-wordpress4.4"
-          - "php5.6-phpunit4.8-wordpress4.7"
           - "php7.0-phpunit4.8-wordpress5.2"
           - "php7.1-phpunit4.8-wordpress5.3"
           - "php7.2-phpunit4.8-wordpress5.4"

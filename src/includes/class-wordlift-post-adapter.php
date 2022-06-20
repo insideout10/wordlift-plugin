@@ -82,7 +82,9 @@ class Wordlift_Post_Adapter {
 	 */
 	private static function str_word_count_utf8( $str ) {
 
-		return count( preg_split( '~[^\p{L}\p{N}\']+~u', $str ) );
+		$words = preg_split( '~[^\p{L}\p{N}\']+~u', $str );
+
+		return $words ? count( $words ) : 0;
 	}
 
 	/**

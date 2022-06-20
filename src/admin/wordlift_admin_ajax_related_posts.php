@@ -39,7 +39,7 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 	$content_service      = Wordpress_Content_Service::get_instance();
 	$filtering_entity_ids = array_filter( array_map( function ( $uri ) use ( $content_service ) {
 		$content = $content_service->get_by_entity_id( $uri );
-		if ( is_a( $content->get_bag(), '\WP_Post' ) ) {
+		if ( isset( $content ) && is_a( $content->get_bag(), '\WP_Post' ) ) {
 			return $content->get_bag()->ID;
 		} else {
 			return null;

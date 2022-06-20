@@ -21,20 +21,6 @@ spec:
     - host: qa-dev.wordlift.it
       http:
         paths:
-          - path: /4.4/
-            pathType: Prefix
-            backend:
-              service:
-                name: qa-wordpress-44
-                port:
-                  number: 80
-          - path: /4.7/
-            pathType: Prefix
-            backend:
-              service:
-                name: qa-wordpress-47
-                port:
-                  number: 80
           - path: /5.0/
             pathType: Prefix
             backend:

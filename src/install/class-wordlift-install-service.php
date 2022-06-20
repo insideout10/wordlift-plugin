@@ -69,7 +69,7 @@ class Wordlift_Install_Service {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-28-0.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-32-0.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-33-9.php';
-
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-36-0.php';
 		// Get the install services.
 		$this->installs = array(
 			new Wordlift_Install_1_0_0(),
@@ -96,6 +96,8 @@ class Wordlift_Install_Service {
 			new Wordlift_Install_3_32_0(),
 			// Add the entities table.
 			new Wordlift_Install_3_33_9(),
+			// When woocommerce extension installed, acf4so should be installed automatically.
+			new Wordlift_Install_3_36_0()
 		);
 		self::$instance = $this;
 
