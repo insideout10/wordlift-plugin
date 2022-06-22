@@ -11,7 +11,7 @@ class Wordlift_Install_3_36_0 extends Wordlift_Install {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected static $version = '3.36.0';
+	protected static $version = '3.36.1';
 
 	public function install() {
 
