@@ -22,3 +22,6 @@ dist/
 *.iml
 
 node_modules/
+
+tags/
+trunk/
