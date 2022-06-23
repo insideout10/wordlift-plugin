@@ -8,6 +8,7 @@
  * @package wordlift
  */
 
+use Wordlift\Modules\Food_Kg\Jsonld;
 use Wordlift\Modules\Food_Kg\Preconditions;
 use Wordlift\Modules\Food_Kg_Dependencies\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Food_Kg_Dependencies\Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -34,6 +35,7 @@ function __wl_foodkg__load() {
 	$container_builder = new ContainerBuilder();
 	$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
 	$loader->load( 'services.yml' );
+	$container_builder->compile();
 
 	$notices = $container_builder->get( 'Wordlift\Modules\Food_Kg\Notices' );
 	$notices->register_hooks();
@@ -49,8 +51,13 @@ function __wl_foodkg__load() {
 	$module = $container_builder->get( 'Wordlift\Modules\Food_Kg\Module' );
 	$module->register_hooks();
 
+	/** @var Jsonld $jsonld */
 	$jsonld = $container_builder->get( 'Wordlift\Modules\Food_Kg\Jsonld' );
 	$jsonld->register_hooks();
+
+	/** @var Main_Ingredient_Jsonld $jsonld */
+	$main_ingredient_jsonld = $container_builder->get( 'Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld' );
+	$main_ingredient_jsonld->register_hooks();
 
 	if ( is_admin() ) {
 		$page = $container_builder->get( 'Wordlift\Modules\Food_Kg\Admin\Page' );

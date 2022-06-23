@@ -1,7 +1,15 @@
 services:
   Wordlift\Modules\Food_Kg\Module:
     class: Wordlift\Modules\Food_Kg\Module
-    arguments: [ '@Wordlift\Api\Api_Service_Ext', '@Wordlift\Modules\Food_Kg\Ingredients_Client', '@Wordlift\Modules\Food_Kg\Notices' ]
+    arguments: [ '@Wordlift\Api\Api_Service_Ext', '@Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy' ]
+
+  Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy:
+    class: Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy
+    arguments: [ '@Wordlift\Modules\Food_Kg\Ingredients_Client', '@Wordlift\Modules\Food_Kg\Notices' ]
+
+  Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy:
+    class: Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy
+    arguments: [ '@Wordlift\Modules\Food_Kg\Ingredients_Client', '@Wordlift\Modules\Food_Kg\Notices' ]
 
   Wordlift\Modules\Food_Kg\Ingredients_Client:
     class: Wordlift\Modules\Food_Kg\Ingredients_Client
@@ -9,6 +17,9 @@ services:
 
   Wordlift\Modules\Food_Kg\Jsonld:
     class: Wordlift\Modules\Food_Kg\Jsonld
+
+  Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld:
+    class: Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld
 
   Wordlift\Modules\Food_Kg\Notices:
     class: Wordlift\Modules\Food_Kg\Notices

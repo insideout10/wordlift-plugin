@@ -28,4 +28,21 @@ class Ingredients_Client {
 		return Ingredients::create_from_string( $response->get_body() );
 	}
 
+	/**
+	 * Get the JSON-LD as string for the main ingredient or an empty string if not found.
+	 *
+	 * @param string $input
+	 *
+	 * @return string
+	 */
+	public function main_ingredient( $input ) {
+
+		$response = $this->api_service->request( 'POST', '/thirdparty/cafemedia/food-kg/ingredients/main', [
+			'accept'       => 'application/ld+json',
+			'content-type' => 'text/plain'
+		], $input );
+
+		return $response->get_body();
+	}
+
 }
