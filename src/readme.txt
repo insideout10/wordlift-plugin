@@ -142,18 +142,19 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.36.1 (2022-06-22) =
+
+* Fix: <permalink> not being expanded in Articles.
+
 = 3.36.0 (2022-06-15) =
 
 * Feature: Add support for ACF4SO installation.
-
 * Fix: Fix Entity Edit link in widget.
-
 * Fix: Fix add logo button in setup wizard.
 
 = 3.35.8 (2022-05-24) =
 
 * Fix: Fix Sync entity types menu.
-
 * Fix: Update WP compatibility to 4.9 and PHP compatibility to 5.6
 
 = 3.35.7 (2022-05-11) =
@@ -199,7 +200,6 @@ You can open your datasets to the public, attaching to it a free or a commercial
 = 3.34.8 (2022-01-30) =
 
 * Enhancement: add cleanup tasks to fix annotations coming from a db backup or another site, ask us if you're interested.
-
 * Fix: handle post/term/user delete for relative item ids.
 
 = 3.34.7 (2022-01-25) =

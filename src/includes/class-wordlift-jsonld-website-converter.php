@@ -18,9 +18,9 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 	/**
 	 * Convert the home/blog page to a JSON-LD array.
 	 *
+	 * @return array A JSON-LD array.
 	 * @since 3.14.0
 	 *
-	 * @return array A JSON-LD array.
 	 */
 	public function create_schema() {
 
@@ -45,11 +45,12 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 		/**
 		 * Call the `wl_website_jsonld` filter.
 		 *
-		 * @api
+		 * @param array $jsonld The JSON-LD structure.
 		 *
 		 * @since 3.14.0
 		 *
-		 * @param array $jsonld The JSON-LD structure.
+		 * @api
+		 *
 		 */
 		return apply_filters( 'wl_website_jsonld', $jsonld );
 	}
@@ -57,9 +58,10 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 	/**
 	 * Add SearchAction part to the schema
 	 *
+	 * @param array $params The parameters array.
+	 *
 	 * @since 3.14.0
 	 *
-	 * @param array $params The parameters array.
 	 */
 	private function set_search_action( &$params ) {
 		/**

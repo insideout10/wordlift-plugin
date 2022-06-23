@@ -53,7 +53,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 *
 	 */
 	public function __construct( $entity_type_service, $user_service, $attachment_service, $disable_convert_filters = false ) {
-		parent::__construct( $entity_type_service, $user_service, $attachment_service );
+		parent::__construct( $entity_type_service, $user_service, $attachment_service, Wordlift_Property_Getter_Factory::create() );
 		$this->disable_convert_filters = $disable_convert_filters;
 		$this->object_relation_service = Object_Relation_Service::get_instance();
 		// Set a reference to the logger.
@@ -101,9 +101,11 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 		// Get the entity name.
 		$jsonld['headline'] = $post->post_title;
-		$urls               = Wordlift_Schema_Url_Property_Service::get_instance()->get( $post->ID );
-		if ( ! empty( $urls ) ) {
-			$jsonld['url'] = self::make_one( $urls );
+
+		$custom_fields = $this->entity_type_service->get_custom_fields_for_post( $post_id );
+
+		if ( isset( $custom_fields ) ) {
+			$this->process_type_custom_fields( $jsonld, $custom_fields, $post, $references, $references_infos );
 		}
 
 		// Set the published and modified dates.

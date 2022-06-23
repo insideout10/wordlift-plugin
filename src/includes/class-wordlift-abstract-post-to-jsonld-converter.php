@@ -58,20 +58,26 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	protected $attachment_service;
 
 	/**
+	 * @var Wordlift_Property_Getter
+	 */
+	private $property_getter;
+
+	/**
 	 * Wordlift_Post_To_Jsonld_Converter constructor.
 	 *
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
 	 * @param \Wordlift_User_Service $user_service A {@link Wordlift_User_Service} instance.
 	 * @param \Wordlift_Attachment_Service $attachment_service A {@link Wordlift_Attachment_Service} instance.
+	 * @param \Wordlift_Property_Getter $property_getter
 	 *
 	 * @since 3.10.0
 	 *
 	 */
-	public function __construct( $entity_type_service, $user_service, $attachment_service ) {
-
+	public function __construct( $entity_type_service, $user_service, $attachment_service, $property_getter ) {
 		$this->entity_type_service = $entity_type_service;
 		$this->user_service        = $user_service;
 		$this->attachment_service  = $attachment_service;
+		$this->property_getter     = $property_getter;
 	}
 
 	/**
@@ -353,4 +359,64 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 
 		return $image;
 	}
+
+
+	/**
+	 * Add data to the JSON-LD using the `custom_fields` array which contains the definitions of property
+	 * for the post entity type.
+	 *
+	 * @param array $jsonld The JSON-LD array.
+	 * @param array $fields The entity types field array.
+	 * @param WP_Post $post The target {@link WP_Post} instance.
+	 * @param array $references The references array.
+	 *
+	 * @since 3.20.0 This code moved from the above function `convert`, used for entity types defined in
+	 *  the {@link Wordlift_Schema_Service} class.
+	 *
+	 */
+	protected function process_type_custom_fields( &$jsonld, $fields, $post, &$references, &$references_infos ) {
+
+		// Set a reference to use in closures.
+		$converter = $this;
+
+		// Try each field on the entity.
+		foreach ( $fields as $key => $value ) {
+
+			// Get the predicate.
+			$name = $this->relative_to_context( $value['predicate'] );
+
+			// Get the value, the property service will get the right extractor
+			// for that property.
+			$value = $this->property_getter->get( $post->ID, $key, Object_Type_Enum::POST );
+
+			if ( empty( $value ) ) {
+				continue;
+			}
+
+			// Map the value to the property name.
+			// If we got an array with just one value, we return that one value.
+			// If we got a Wordlift_Property_Entity_Reference we get the URL.
+			$jsonld[ $name ] = self::make_one( array_map( function ( $item ) use ( $converter, &$references, &$references_infos ) {
+
+				if ( $item instanceof Wordlift_Property_Entity_Reference ) {
+
+					$url = $item->get_url();
+
+					// The refactored converters require the entity id.
+					$references[] = $item->get_id();
+
+					$references_infos[] = array( 'reference' => $item );
+
+					return array(
+						'@id' => $url,
+					);
+				}
+
+				return $converter->relative_to_context( $item );
+			}, $value ) );
+
+		}
+
+	}
+
 }

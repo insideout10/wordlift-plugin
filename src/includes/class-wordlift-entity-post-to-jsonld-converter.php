@@ -6,23 +6,12 @@
  * @package Wordlift
  */
 
-use Wordlift\Object_Type_Enum;
-
 /**
  * Define the {@link Wordlift_Entity_Post_To_Jsonld_Converter} class.
  *
  * @since 3.8.0
  */
 class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld_Converter {
-
-	/**
-	 * A {@link Wordlift_Property_Getter} instance.
-	 *
-	 * @since  3.8.0
-	 * @access private
-	 * @var \Wordlift_Property_Getter $property_getter A {@link Wordlift_Property_Getter} instance.
-	 */
-	private $property_getter;
 
 	/**
 	 * The {@link Wordlift_Schemaorg_Property_Service} or null if not provided.
@@ -41,8 +30,6 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	 */
 	private $post_to_jsonld_converter;
 
-	private $references_infos;
-
 	/**
 	 * Wordlift_Entity_To_Jsonld_Converter constructor.
 	 *
@@ -56,12 +43,9 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	 * @since 3.8.0
 	 */
 	public function __construct( $entity_type_service, $user_service, $attachment_service, $property_getter, $schemaorg_property_service, $post_to_jsonld_converter ) {
-		parent::__construct( $entity_type_service, $user_service, $attachment_service );
-
-		$this->property_getter            = $property_getter;
+		parent::__construct( $entity_type_service, $user_service, $attachment_service, $property_getter );
 		$this->schemaorg_property_service = $schemaorg_property_service;
 		$this->post_to_jsonld_converter   = $post_to_jsonld_converter;
-
 	}
 
 	/**
@@ -154,64 +138,6 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 		 * @api
 		 */
 		return apply_filters( 'wl_entity_jsonld', $this->post_process( $jsonld ), $post_id, $references );
-	}
-
-	/**
-	 * Add data to the JSON-LD using the `custom_fields` array which contains the definitions of property
-	 * for the post entity type.
-	 *
-	 * @param array $jsonld The JSON-LD array.
-	 * @param array $fields The entity types field array.
-	 * @param WP_Post $post The target {@link WP_Post} instance.
-	 * @param array $references The references array.
-	 *
-	 * @since 3.20.0 This code moved from the above function `convert`, used for entity types defined in
-	 *  the {@link Wordlift_Schema_Service} class.
-	 *
-	 */
-	private function process_type_custom_fields( &$jsonld, $fields, $post, &$references, &$references_infos ) {
-
-		// Set a reference to use in closures.
-		$converter = $this;
-
-		// Try each field on the entity.
-		foreach ( $fields as $key => $value ) {
-
-			// Get the predicate.
-			$name = $this->relative_to_context( $value['predicate'] );
-
-			// Get the value, the property service will get the right extractor
-			// for that property.
-			$value = $this->property_getter->get( $post->ID, $key, Object_Type_Enum::POST );
-
-			if ( empty( $value ) ) {
-				continue;
-			}
-
-			// Map the value to the property name.
-			// If we got an array with just one value, we return that one value.
-			// If we got a Wordlift_Property_Entity_Reference we get the URL.
-			$jsonld[ $name ] = self::make_one( array_map( function ( $item ) use ( $converter, &$references, &$references_infos ) {
-
-				if ( $item instanceof Wordlift_Property_Entity_Reference ) {
-
-					$url = $item->get_url();
-
-					// The refactored converters require the entity id.
-					$references[] = $item->get_id();
-
-					$references_infos[] = array( 'reference' => $item );
-
-					return array(
-						'@id' => $url,
-					);
-				}
-
-				return $converter->relative_to_context( $item );
-			}, $value ) );
-
-		}
-
 	}
 
 	/**
