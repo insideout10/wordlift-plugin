@@ -36,6 +36,10 @@ class Wordpress_Content implements Content {
 	}
 
 	function get_id() {
+		if ( ! is_object( $this->bag ) ) {
+			return null;
+		}
+
 		switch ( get_class( $this->bag ) ) {
 			case 'WP_Post':
 			case 'WP_User':
