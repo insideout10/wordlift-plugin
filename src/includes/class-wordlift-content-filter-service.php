@@ -187,7 +187,7 @@ class Wordlift_Content_Filter_Service {
 		$content         = $content_service->get_by_entity_id_or_same_as( $uri );
 
 		// If no content is found, return the label, that is _remove the annotation_.
-		if ( ! isset( $content ) ) {
+		if ( ! is_object( $content ) ) {
 			return $label;
 		}
 

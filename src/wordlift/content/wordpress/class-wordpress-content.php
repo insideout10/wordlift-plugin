@@ -52,10 +52,18 @@ class Wordpress_Content implements Content {
 	}
 
 	function get_object_type_enum() {
+		if ( ! is_object( $this->bag ) ) {
+			return null;
+		}
+
 		return Object_Type_Enum::from_wordpress_instance( $this->bag );
 	}
 
 	function get_permalink() {
+		if ( ! is_object( $this->bag ) ) {
+			return null;
+		}
+
 		switch ( get_class( $this->bag ) ) {
 			case 'WP_Post':
 				return get_permalink( $this->get_bag()->ID );
@@ -69,6 +77,10 @@ class Wordpress_Content implements Content {
 	}
 
 	function get_edit_link() {
+		if ( ! is_object( $this->bag ) ) {
+			return null;
+		}
+
 		switch ( get_class( $this->bag ) ) {
 			case 'WP_Post':
 				// We need to return & character as &, by default context is set to display.
