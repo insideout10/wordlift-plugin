@@ -122,7 +122,7 @@ class Wordlift_Content_Filter_Service {
 		$this->log->trace( "Filtering content [ " . ( is_singular() ? 'yes' : 'no' ) . " ]..." );
 
 		// Links should be added only on the front end and not for RSS.
-		if ( is_feed() || is_admin() ) {
+		if ( is_feed() || is_admin() || is_search() ) {
 			return $content;
 		}
 
