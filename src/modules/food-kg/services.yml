@@ -30,7 +30,7 @@ services:
 
   Wordlift\Modules\Food_Kg\Admin\Page:
     class: Wordlift\Modules\Food_Kg\Admin\Page
-    arguments: [ '@Wordlift\Modules\Food_Kg\Admin\Full_Page_Delegate', '@Wordlift\Modules\Food_Kg\Admin\Modal_Page_Delegate' ]
+    arguments: [ '@Wordlift\Modules\Food_Kg\Admin\Full_Page_Delegate', '@Wordlift\Modules\Food_Kg\Admin\Main_Ingredient_Modal_Page_Delegate' ]
 
   Wordlift\Modules\Food_Kg\Admin\Page_Delegate:
     class: Wordlift\Modules\Food_Kg\Admin\Page_Delegate
@@ -38,11 +38,17 @@ services:
   Wordlift\Modules\Food_Kg\Admin\Full_Page_Delegate:
     class: Wordlift\Modules\Food_Kg\Admin\Full_Page_Delegate
 
-  Wordlift\Modules\Food_Kg\Admin\Modal_Page_Delegate:
-    class: Wordlift\Modules\Food_Kg\Admin\Modal_Page_Delegate
-
   Wordlift\Modules\Food_Kg\Admin\Ingredients_List_Table:
     class: Wordlift\Modules\Food_Kg\Admin\Ingredients_List_Table
+
+  Wordlift\Modules\Food_Kg\Admin\Ingredients_Modal_Page_Delegate:
+    class: Wordlift\Modules\Food_Kg\Admin\Ingredients_Modal_Page_Delegate
+
+  Wordlift\Modules\Food_Kg\Admin\Main_Ingredient_List_Table:
+    class: Wordlift\Modules\Food_Kg\Admin\Main_Ingredient_List_Table
+
+  Wordlift\Modules\Food_Kg\Admin\Main_Ingredient_Modal_Page_Delegate:
+    class: Wordlift\Modules\Food_Kg\Admin\Main_Ingredient_Modal_Page_Delegate
 
   Wordlift\Api\Api_Service:
     factory: [ 'Wordlift\Api\Default_Api_Service', 'get_instance' ]

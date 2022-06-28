@@ -5,7 +5,7 @@ namespace Wordlift\Modules\Food_Kg\Admin;
 class Full_Page_Delegate implements Page_Delegate {
 
 	function render() {
-		include WL_FOOD_KG_DIR_PATH . '/includes/admin/partials/ingredients.php';
+		include WL_FOOD_KG_DIR_PATH . '/includes/admin/partials/main_ingredient.php';
 	}
 
 	function admin_enqueue_scripts() {

@@ -2,10 +2,10 @@
 
 namespace Wordlift\Modules\Food_Kg\Admin;
 
-class Modal_Page_Delegate implements Page_Delegate {
+class Main_Ingredient_Modal_Page_Delegate implements Page_Delegate {
 	function render() {
-		$term_id = filter_input( INPUT_GET, 'term_id', FILTER_SANITIZE_NUMBER_INT );
-		$value   = get_term_meta( $term_id, '_wl_jsonld', true );
+		$post_id = filter_input( INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT );
+		$value   = get_post_meta( $post_id, '_wl_main_ingredient_jsonld', true );
 
 		include WL_FOOD_KG_DIR_PATH . '/includes/admin/partials/jsonld.php';
 	}
