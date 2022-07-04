@@ -74,6 +74,10 @@ class Wordpress_Post_Content_Legacy_Service extends Abstract_Wordpress_Content_L
 	 * @throws Exception when `$uri` is not a string.
 	 */
 	function get_by_entity_id_or_same_as( $uri ) {
+		if ( ! is_string( $uri ) || empty( $uri ) ) {
+			return null;
+		}
+
 		Assertions::is_string( $uri, '`uri` must be a string.' );
 		Assertions::not_empty( '`uri` cannot be empty.' );
 
