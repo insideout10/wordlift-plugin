@@ -6,9 +6,10 @@
 
 namespace Wordlift\Api;
 
+use Exception;
 use Wordlift_Configuration_Service;
 
-class Default_Api_Service implements Api_Service {
+class Default_Api_Service implements Api_Service, Api_Service_Ext {
 
 	/**
 	 * @var string
@@ -66,6 +67,9 @@ class Default_Api_Service implements Api_Service {
 
 	private static $instance;
 
+	/**
+	 * @return Default_Api_Service
+	 */
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {
 			self::$instance = new self(
@@ -134,6 +138,14 @@ class Default_Api_Service implements Api_Service {
 
 	public function get_base_url() {
 		return $this->base_url;
+	}
+
+	/**
+	 * @return Me_Response
+	 * @throws Exception
+	 */
+	public function me() {
+		return json_decode( $this->get( '/me' )->get_body() );
 	}
 
 }
