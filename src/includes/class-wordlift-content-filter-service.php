@@ -122,7 +122,7 @@ class Wordlift_Content_Filter_Service {
 		$this->log->trace( "Filtering content [ " . ( is_singular() ? 'yes' : 'no' ) . " ]..." );
 
 		// Links should be added only on the front end and not for RSS.
-		if ( is_feed() || is_admin() ) {
+		if ( is_feed() || is_admin() || is_search() ) {
 			return $content;
 		}
 
@@ -187,7 +187,7 @@ class Wordlift_Content_Filter_Service {
 		$content         = $content_service->get_by_entity_id_or_same_as( $uri );
 
 		// If no content is found, return the label, that is _remove the annotation_.
-		if ( ! isset( $content ) ) {
+		if ( ! is_object( $content ) ) {
 			return $label;
 		}
 

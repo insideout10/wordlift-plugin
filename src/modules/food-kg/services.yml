@@ -1,0 +1,59 @@
+services:
+  Wordlift\Modules\Food_Kg\Module:
+    class: Wordlift\Modules\Food_Kg\Module
+    arguments: [ '@Wordlift\Api\Api_Service_Ext', '@Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy' ]
+
+  Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy:
+    class: Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy
+    arguments: [ '@Wordlift\Modules\Food_Kg\Ingredients_Client', '@Wordlift\Modules\Food_Kg\Notices' ]
+
+  Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy:
+    class: Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy
+    arguments: [ '@Wordlift\Modules\Food_Kg\Ingredients_Client', '@Wordlift\Modules\Food_Kg\Notices' ]
+
+  Wordlift\Modules\Food_Kg\Ingredients_Client:
+    class: Wordlift\Modules\Food_Kg\Ingredients_Client
+    arguments: [ '@Wordlift\Api\Api_Service' ]
+
+  Wordlift\Modules\Food_Kg\Jsonld:
+    class: Wordlift\Modules\Food_Kg\Jsonld
+
+  Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld:
+    class: Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld
+
+  Wordlift\Modules\Food_Kg\Notices:
+    class: Wordlift\Modules\Food_Kg\Notices
+
+  Wordlift\Modules\Food_Kg\Preconditions:
+    class: Wordlift\Modules\Food_Kg\Preconditions
+    arguments: [ '@Wordlift\Modules\Food_Kg\Notices' ]
+
+  Wordlift\Modules\Food_Kg\Admin\Page:
+    class: Wordlift\Modules\Food_Kg\Admin\Page
+    arguments: [ '@Wordlift\Modules\Food_Kg\Admin\Full_Page_Delegate', '@Wordlift\Modules\Food_Kg\Admin\Main_Ingredient_Modal_Page_Delegate' ]
+
+  Wordlift\Modules\Food_Kg\Admin\Page_Delegate:
+    class: Wordlift\Modules\Food_Kg\Admin\Page_Delegate
+
+  Wordlift\Modules\Food_Kg\Admin\Full_Page_Delegate:
+    class: Wordlift\Modules\Food_Kg\Admin\Full_Page_Delegate
+
+  Wordlift\Modules\Food_Kg\Admin\Ingredients_List_Table:
+    class: Wordlift\Modules\Food_Kg\Admin\Ingredients_List_Table
+
+  Wordlift\Modules\Food_Kg\Admin\Ingredients_Modal_Page_Delegate:
+    class: Wordlift\Modules\Food_Kg\Admin\Ingredients_Modal_Page_Delegate
+
+  Wordlift\Modules\Food_Kg\Admin\Main_Ingredient_List_Table:
+    class: Wordlift\Modules\Food_Kg\Admin\Main_Ingredient_List_Table
+
+  Wordlift\Modules\Food_Kg\Admin\Main_Ingredient_Modal_Page_Delegate:
+    class: Wordlift\Modules\Food_Kg\Admin\Main_Ingredient_Modal_Page_Delegate
+
+  Wordlift\Api\Api_Service:
+    factory: [ 'Wordlift\Api\Default_Api_Service', 'get_instance' ]
+    class: Wordlift\Api\Default_Api_Service
+
+  Wordlift\Api\Api_Service_Ext:
+    factory: [ 'Wordlift\Api\Default_Api_Service', 'get_instance' ]
+    class: Wordlift\Api\Default_Api_Service

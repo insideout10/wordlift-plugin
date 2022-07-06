@@ -142,6 +142,12 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.37.0 (2022-07-04) =
+
+* Enhancements: lift recipes with main ingredients, contact us to know more.
+
+* Fix: uri validation errors
+
 = 3.36.1 (2022-06-22) =
 
 * Fix: <permalink> not being expanded in Articles.

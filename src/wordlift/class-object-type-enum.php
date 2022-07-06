@@ -46,6 +46,9 @@ class Object_Type_Enum {
 	}
 
 	public static function from_wordpress_instance( $instance ) {
+		if ( ! is_object( $instance ) ) {
+			return null;
+		}
 
 		switch ( get_class( $instance ) ) {
 			case 'WP_Post':
