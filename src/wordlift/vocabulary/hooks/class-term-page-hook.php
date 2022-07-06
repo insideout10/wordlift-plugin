@@ -46,7 +46,7 @@ class Term_Page_Hook {
 		Scripts_Helper::enqueue_based_on_wordpress_version(
 			self::HANDLE,
 			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/vocabulary-term-page',
-			array( 'react', 'react-dom', 'wp-polyfill' ),
+			array( 'react', 'react-dom', 'wp-polyfill', 'wp-i18n' ),
 			true
 		);
 
