@@ -51,7 +51,7 @@ class Match_Terms {
 		Scripts_Helper::enqueue_based_on_wordpress_version(
 			'wl-vocabulary-reconcile-script',
 			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/vocabulary',
-			array( 'react', 'react-dom', 'wp-polyfill' ),
+			array( 'react', 'react-dom', 'wp-i18n', 'wp-polyfill' ),
 			true
 		);
 
