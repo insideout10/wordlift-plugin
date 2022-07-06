@@ -55,7 +55,6 @@ class Match_Terms {
 			true
 		);
 
-
 		wp_enqueue_style( 'wl-vocabulary-reconcile-script',
 			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . "js/dist/vocabulary.full.css" );
 		wp_localize_script( 'wl-vocabulary-reconcile-script', '_wlVocabularyMatchTermsConfig', Api_Config::get_api_config() );
