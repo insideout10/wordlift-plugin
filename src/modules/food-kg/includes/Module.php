@@ -3,7 +3,7 @@
 namespace Wordlift\Modules\Food_Kg;
 
 use Wordlift\Api\Api_Service_Ext;
-use Wordlift\Modules\Food_Kg_Dependencies\Symfony\Component\Config\Definition\Exception\Exception;
+
 
 class Module {
 
@@ -51,7 +51,7 @@ class Module {
 				wp_unschedule_event( $next_scheduled, self::RUN_EVENT );
 			}
 
-		} catch ( Exception $e ) {
+		} catch ( \Exception $e ) {
 
 		}
 	}
