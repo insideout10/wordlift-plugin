@@ -8,12 +8,13 @@
  * @package wordlift
  */
 
+use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
+use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
+use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Wordlift\Modules\Food_Kg\Jsonld;
 use Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld;
 use Wordlift\Modules\Food_Kg\Preconditions;
-use Wordlift\Modules\Food_Kg_Dependencies\Symfony\Component\Config\FileLocator;
-use Wordlift\Modules\Food_Kg_Dependencies\Symfony\Component\DependencyInjection\ContainerBuilder;
-use Wordlift\Modules\Food_Kg_Dependencies\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
