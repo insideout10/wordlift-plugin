@@ -29,7 +29,18 @@ class Mentions {
 			return $arr;
 		}
 
-		$jsonld['mentions'] = array(1);
+		$related_entity_ids = \Wordlift_Entity_Service::get_instance()->get_related_entities( $post_id );
+
+
+		$jsonld['mentions'] = array_filter( array_map( function ( $item ) {
+			$id = \Wordlift_Entity_Service::get_instance()->get_uri( $item );
+			if ( ! $id ) {
+				return false;
+			}
+
+			return array( '@id' => $id );
+
+		}, $related_entity_ids ) );
 
 
 		return array(
@@ -54,7 +65,7 @@ class Mentions {
 			return false;
 		}
 
-		$descendants = get_term_meta( $creative_work_term->term_id,  '_wl_parent_of' );
+		$descendants = get_term_meta( $creative_work_term->term_id, '_wl_parent_of' );
 
 		$slugs_to_schema_name = array_map( function ( $item ) {
 			return implode( '', array_map( 'ucfirst', explode( '-', $item ) ) );
