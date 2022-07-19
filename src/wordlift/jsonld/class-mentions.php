@@ -17,5 +17,14 @@ class Mentions {
 		add_filter( 'wl_entity_jsonld_array', array( $this, 'wl_entity_jsonld_array' ) );
 	}
 
+	public function wl_entity_jsonld_array( $arr ) {
+		$jsonld     = $arr['jsonld'];
+		$references = $arr['references'];
+
+		return array(
+			'jsonld'     => $jsonld,
+			'references' => $references
+		);
+	}
 
 }
