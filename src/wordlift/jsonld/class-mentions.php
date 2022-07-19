@@ -16,10 +16,10 @@ use Wordlift_Schemaorg_Class_Service;
 class Mentions {
 
 	public function __construct() {
-		add_filter( 'wl_entity_jsonld_array', array( $this, 'wl_entity_jsonld_array' ) );
+		add_filter( 'wl_entity_jsonld_array', array( $this, 'wl_entity_jsonld_array' ), 10, 2 );
 	}
 
-	public function wl_entity_jsonld_array( $arr ) {
+	public function wl_entity_jsonld_array( $arr, $post_id ) {
 		$jsonld     = $arr['jsonld'];
 		$references = $arr['references'];
 
@@ -29,10 +29,17 @@ class Mentions {
 			return $arr;
 		}
 
+		$jsonld['mentions'] = array(1);
+
+
 		return array(
 			'jsonld'     => $jsonld,
 			'references' => $references
 		);
+	}
+
+	public function get_mentions() {
+
 	}
 
 	private function entity_is_descendant_of_creative_work( $type ) {
@@ -50,10 +57,10 @@ class Mentions {
 		$descendants = get_term_meta( $creative_work_term->term_id,  '_wl_parent_of' );
 
 		$slugs_to_schema_name = array_map( function ( $item ) {
-			return implode( '-', array_map( 'ucfirst', explode( '-', $item ) ) );
+			return implode( '', array_map( 'ucfirst', explode( '-', $item ) ) );
 		}, $descendants );
 
-		var_dump( $slugs_to_schema_name );
+		return count( array_intersect( $type, $slugs_to_schema_name ) ) > 0;
 
 	}
 
