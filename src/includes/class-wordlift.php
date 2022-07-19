@@ -42,6 +42,7 @@ use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
 use Wordlift\Jsonld\Jsonld_Endpoint;
 use Wordlift\Jsonld\Jsonld_Service;
 use Wordlift\Jsonld\Jsonld_User_Service;
+use Wordlift\Jsonld\Mentions;
 use Wordlift\Mappings\Formatters\Acf_Group_Formatter;
 use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
@@ -1139,6 +1140,12 @@ class Wordlift {
 			new Jsonld_Adapter( $that->jsonld_service );
 
 			new Jsonld_By_Id_Endpoint( $that->jsonld_service, $that->entity_uri_service );
+
+			/**
+			 * @since 3.37.1
+			 * Add mentions property to the entity.
+			 */
+			new Mentions();
 
 			$that->key_validation_service = new Wordlift_Key_Validation_Service();
 			$that->content_filter_service = Wordlift_Content_Filter_Service::get_instance();

@@ -21,6 +21,12 @@ class Mentions {
 		$jsonld     = $arr['jsonld'];
 		$references = $arr['references'];
 
+		$type = $jsonld['@type'];
+
+		if ( !  $this->entity_is_descendant_of_creative_work( $type ) && ! $this->entity_is_creative_work( $type ) ) {
+			return $arr;
+		}
+
 		return array(
 			'jsonld'     => $jsonld,
 			'references' => $references
