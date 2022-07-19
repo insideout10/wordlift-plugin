@@ -11,6 +11,8 @@
 
 namespace Wordlift\Jsonld;
 
+use Wordlift\Object_Type_Enum;
+use Wordlift\Relation\Object_Relation_Service;
 use Wordlift_Schemaorg_Class_Service;
 
 class Mentions {
@@ -29,18 +31,26 @@ class Mentions {
 			return $arr;
 		}
 
-		$related_entity_ids = \Wordlift_Entity_Service::get_instance()->get_related_entities( $post_id );
+		$entity_references = Object_Relation_Service::get_instance()
+		                                             ->get_references( $post_id, Object_Type_Enum::POST );
+
+		$references = array_unique( array_merge( $references, $entity_references ) );
+
+
+		if ( count( $references ) === 0 ) {
+			return $arr;
+		}
 
 
 		$jsonld['mentions'] = array_filter( array_map( function ( $item ) {
-			$id = \Wordlift_Entity_Service::get_instance()->get_uri( $item );
+			$id = \Wordlift_Entity_Service::get_instance()->get_uri( $item->get_id() );
 			if ( ! $id ) {
 				return false;
 			}
 
 			return array( '@id' => $id );
 
-		}, $related_entity_ids ) );
+		}, $entity_references ) );
 
 
 		return array(
@@ -49,9 +59,6 @@ class Mentions {
 		);
 	}
 
-	public function get_mentions() {
-
-	}
 
 	private function entity_is_descendant_of_creative_work( $type ) {
 
