@@ -142,6 +142,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.37.1 (2022-07-20) =
+
+* Fix [#1557](https://github.com/insideout10/wordlift-plugin/issues/1557): Fix entities connected via mentions.
+
+
 = 3.37.0 (2022-07-04) =
 
 * Enhancements: lift recipes with main ingredients, contact us to know more.
