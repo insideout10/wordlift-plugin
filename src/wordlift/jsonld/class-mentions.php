@@ -40,7 +40,7 @@ class Mentions {
 
 
 
-		$jsonld[0]['mentions'] = array_filter( array_map( function ( $item ) {
+		$jsonld[0]['mentions'] = array_values( array_filter( array_map( function ( $item ) {
 			$id = \Wordlift_Entity_Service::get_instance()->get_uri( $item->get_id() );
 			if ( ! $id ) {
 				return false;
@@ -48,7 +48,7 @@ class Mentions {
 
 			return array( '@id' => $id );
 
-		}, $entity_references ) );
+		}, $entity_references ) ) );
 
 
 		return $jsonld;
