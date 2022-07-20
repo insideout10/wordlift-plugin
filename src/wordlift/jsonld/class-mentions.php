@@ -13,36 +13,34 @@ namespace Wordlift\Jsonld;
 
 use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Object_Relation_Service;
-use Wordlift_Schemaorg_Class_Service;
 
 class Mentions {
 
 	public function __construct() {
-		add_filter( 'wl_entity_jsonld_array', array( $this, 'wl_entity_jsonld_array' ), 10, 2 );
+		add_filter( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 10, 2 );
 	}
 
-	public function wl_entity_jsonld_array( $arr, $post_id ) {
-		$jsonld     = $arr['jsonld'];
-		$references = $arr['references'];
+	public function wl_after_get_jsonld( $jsonld, $post_id ) {
 
-		$type = $jsonld['@type'];
+		if ( count( $jsonld ) === 0 || ! array_key_exists( '@type', $jsonld[0] ) || array_key_exists( 'mentions', $jsonld[0] ) ) {
+			return $jsonld;
+		}
+
+
+		$type = $jsonld[0]['@type'];
+
+
 
 		if ( ! $this->entity_is_descendant_of_creative_work( $type ) && ! $this->entity_is_creative_work( $type ) ) {
-			return $arr;
+			return $jsonld;
 		}
 
 		$entity_references = Object_Relation_Service::get_instance()
-		                                             ->get_references( $post_id, Object_Type_Enum::POST );
-
-		$references = array_unique( array_merge( $references, $entity_references ) );
+		                                            ->get_references( $post_id, Object_Type_Enum::POST );
 
 
-		if ( count( $references ) === 0 ) {
-			return $arr;
-		}
 
-
-		$jsonld['mentions'] = array_filter( array_map( function ( $item ) {
+		$jsonld[0]['mentions'] = array_filter( array_map( function ( $item ) {
 			$id = \Wordlift_Entity_Service::get_instance()->get_uri( $item->get_id() );
 			if ( ! $id ) {
 				return false;
@@ -53,10 +51,7 @@ class Mentions {
 		}, $entity_references ) );
 
 
-		return array(
-			'jsonld'     => $jsonld,
-			'references' => $references
-		);
+		return $jsonld;
 	}
 
 
