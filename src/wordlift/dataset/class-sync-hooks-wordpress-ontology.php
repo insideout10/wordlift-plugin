@@ -45,6 +45,20 @@ class Sync_Hooks_Wordpress_Ontology {
 				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'content' ]    = $content;
 				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'permalink' ]  = get_permalink( $post );
 				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'sticky' ]     = is_sticky( $post->ID );
+
+				$taxonomies = get_post_taxonomies( $post );
+				$_tmp_terms = [];
+				foreach ( $taxonomies as $taxonomy ) {
+					$terms = wp_get_post_terms( $post->ID, $taxonomy );
+					/** @var \WP_Term $term */
+					foreach ( $terms as $term ) {
+						$_tmp_terms[] = "$taxonomy:$term->name";
+					}
+				}
+				if ( ! empty( $_tmp_terms ) ) {
+					$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'terms' ] = $_tmp_terms;
+				}
+
 				break;
 
 			default:
