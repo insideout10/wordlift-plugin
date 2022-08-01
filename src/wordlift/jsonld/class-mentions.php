@@ -50,6 +50,11 @@ class Mentions {
 
 		}, $entity_references ) ) );
 
+		// Remove mentions if the count is zero.
+		if ( count( $jsonld[0]['mentions'] ) === 0 ) {
+			unset( $jsonld[0]['mentions'] );
+		}
+
 
 		return $jsonld;
 	}
