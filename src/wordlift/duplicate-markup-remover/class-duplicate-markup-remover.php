@@ -103,10 +103,11 @@ class Duplicate_Markup_Remover {
 	 *
 	 * @return bool
 	 */
-	protected function should_alter_jsonld( $jsonld ) {
+	protected function should_alter_jsonld( $jsonld, $type_to_remove ) {
 		return ! is_array( $jsonld )
 		       || ! count( $jsonld ) > 1
-		       || ! array_key_exists( 0, $jsonld );
+		       || ! array_key_exists( 0, $jsonld )
+		       || ! $this->schema_type_matches_post( $jsonld, $type_to_remove );
 	}
 
 	/**
@@ -117,7 +118,7 @@ class Duplicate_Markup_Remover {
 	private function remove_type( $jsonld, $type_to_remove, $properties_to_remove ) {
 
 
-		if ( $this->should_alter_jsonld( $jsonld ) ) {
+		if ( $this->should_alter_jsonld( $jsonld, $type_to_remove ) ) {
 			// Return early if there are no referenced entities.
 			return $jsonld;
 		}
@@ -165,6 +166,14 @@ class Duplicate_Markup_Remover {
 		array_unshift( $jsonld, $post_jsonld );
 
 		return $jsonld;
+	}
+
+	private function schema_type_matches_post( $jsonld, $type_to_remove ) {
+		$type = isset( $jsonld[0]['@type'] ) ? $jsonld[0]['@type'] : array();
+		if ( is_string( $type ) ) {
+			$type = array( $type );
+		}
+		return in_array( $type_to_remove, $type );
 	}
 
 
