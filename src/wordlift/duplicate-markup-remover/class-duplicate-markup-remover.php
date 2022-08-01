@@ -24,57 +24,6 @@ class Duplicate_Markup_Remover {
 			'recipeYield',
 			'suitableForDiet'
 		),
-		'Product' => array(
-			'additionalProperty',
-			'aggregateRating',
-			'audience',
-			'award',
-			'brand',
-			'category',
-			'color',
-			'countryOfAssembly',
-			'countryOfLastProcessing',
-			'countryOfOrigin',
-			'depth',
-			'funding',
-			'gtin',
-			'gtin12',
-			'gtin13',
-			'gtin14',
-			'gtin8',
-			'hasAdultConsideration',
-			'hasEnergyConsumptionDetails',
-			'hasMeasurement',
-			'hasMerchantReturnPolicy',
-			'height',
-			'inProductGroupWithID',
-			'isAccessoryOrSparePartFor',
-			'isConsumableFor',
-			'isFamilyFriendly',
-			'isRelatedTo',
-			'isSimilarTo',
-			'isVariantOf',
-			'itemCondition',
-			'keywords',
-			'logo',
-			'manufacturer',
-			'material',
-			'model',
-			'mpn',
-			'nsn',
-			'offers',
-			'pattern',
-			'productID',
-			'productionDate',
-			'purchaseDate',
-			'releaseDate',
-			'review',
-			'size',
-			'sku',
-			'slogan',
-			'weight',
-			'width'
-		)
 	);
 
 	public function __construct() {
@@ -103,11 +52,10 @@ class Duplicate_Markup_Remover {
 	 *
 	 * @return bool
 	 */
-	protected function should_alter_jsonld( $jsonld, $type_to_remove ) {
+	protected function should_alter_jsonld( $jsonld ) {
 		return ! is_array( $jsonld )
 		       || ! count( $jsonld ) > 1
-		       || ! array_key_exists( 0, $jsonld )
-		       || ! $this->schema_type_matches_post( $jsonld, $type_to_remove );
+		       || ! array_key_exists( 0, $jsonld );
 	}
 
 	/**
@@ -118,7 +66,7 @@ class Duplicate_Markup_Remover {
 	private function remove_type( $jsonld, $type_to_remove, $properties_to_remove ) {
 
 
-		if ( $this->should_alter_jsonld( $jsonld, $type_to_remove ) ) {
+		if ( $this->should_alter_jsonld( $jsonld ) ) {
 			// Return early if there are no referenced entities.
 			return $jsonld;
 		}
@@ -168,13 +116,6 @@ class Duplicate_Markup_Remover {
 		return $jsonld;
 	}
 
-	private function schema_type_matches_post( $jsonld, $type_to_remove ) {
-		$type = isset( $jsonld[0]['@type'] ) ? $jsonld[0]['@type'] : array();
-		if ( is_string( $type ) ) {
-			$type = array( $type );
-		}
-		return in_array( $type_to_remove, $type );
-	}
 
 
 }
