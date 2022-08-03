@@ -9,6 +9,7 @@
 namespace Wordlift\Vocabulary_Terms;
 
 use Wordlift\Common\Term_Checklist\Term_Checklist;
+use Wordlift\Scripts\Scripts_Helper;
 use Wordlift\Vocabulary\Terms_Compat;
 use Wordlift_Entity_Type_Taxonomy_Service;
 
@@ -64,6 +65,8 @@ class Entity_Type {
         </tr>
 EOF;
 		echo sprintf( $template, esc_html( $entity_types_text ), $terms_html );
+
+		$this->enqueue_script_and_style();
 	}
 
 	public function save_field( $term_id ) {
@@ -87,6 +90,16 @@ EOF;
 			add_action( "${taxonomy}_edit_form_fields", array( $this, 'render_ui' ), 1 );
 			add_action( "edited_${taxonomy}", array( $this, 'save_field' ) );
 		}
+	}
+
+	private function enqueue_script_and_style() {
+
+		Scripts_Helper::enqueue_based_on_wordpress_version( 'wl-vocabulary-term',
+			plugin_dir_url( dirname(  __DIR__ ) ) . '/js/dist/vocabulary-term',
+			array('wp-polyfill')
+		);
+		wp_enqueue_style( 'wl-vocabulary-term',
+			plugin_dir_url( dirname( __DIR__ ) ) . '/js/dist/vocabulary-term.css' );
 	}
 
 }
