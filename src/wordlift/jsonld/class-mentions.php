@@ -16,6 +16,80 @@ use Wordlift\Relation\Object_Relation_Service;
 
 class Mentions {
 
+	private $schema_descendants = array(
+		'Drawing',
+		'MusicPlaylist',
+		'Quotation',
+		'ShortStory',
+		'DigitalDocument',
+		'DataCatalog',
+		'SoftwareApplication',
+		'CreativeWorkSeason',
+		'VisualArtwork',
+		'PublicationIssue',
+		'SoftwareSourceCode',
+		'Message',
+		'Collection',
+		'WebPage',
+		'WebSite',
+		'HyperTocEntry',
+		'Guide',
+		'Course',
+		'MusicComposition',
+		'AmpStory',
+		'SpecialAnnouncement',
+		'HowToTip',
+		'Season',
+		'HowTo',
+		'ExercisePlan',
+		'HowToStep',
+		'Review',
+		'HowToDirection',
+		'Sculpture',
+		'Thesis',
+		'Book',
+		'Diet',
+		'Manuscript',
+		'Legislation',
+		'Clip',
+		'Atlas',
+		'Article',
+		'MathSolver',
+		'Game',
+		'Blog',
+		'LearningResource',
+		'Code',
+		'MusicRecording',
+		'WebContent',
+		'TvSeries',
+		'Menu',
+		'MenuSection',
+		'HowToSection',
+		'Dataset',
+		'PublicationVolume',
+		'EducationalOccupationalCredential',
+		'TvSeason',
+		'Poster',
+		'Play',
+		'ComicStory',
+		'MediaObject',
+		'Movie',
+		'ArchiveComponent',
+		'Comment',
+		'SheetMusic',
+		'Conversation',
+		'Map',
+		'Photograph',
+		'HyperToc',
+		'Episode',
+		'Chapter',
+		'Painting',
+		'WebPageElement',
+		'CreativeWorkSeries',
+		'Claim',
+		'DefinedTermSet',
+	);
+
 	public function __construct() {
 		add_filter( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 10, 2 );
 	}
@@ -30,14 +104,12 @@ class Mentions {
 		$type = $jsonld[0]['@type'];
 
 
-
 		if ( ! $this->entity_is_descendant_of_creative_work( $type ) && ! $this->entity_is_creative_work( $type ) ) {
 			return $jsonld;
 		}
 
 		$entity_references = Object_Relation_Service::get_instance()
 		                                            ->get_references( $post_id, Object_Type_Enum::POST );
-
 
 
 		$jsonld[0]['mentions'] = array_values( array_filter( array_map( function ( $item ) {
@@ -61,25 +133,11 @@ class Mentions {
 
 
 	private function entity_is_descendant_of_creative_work( $type ) {
-
-		if ( ! is_array( $type ) ) {
+		if ( is_string( $type ) ) {
 			$type = array( $type );
 		}
 
-		$creative_work_term = get_term_by( 'name', 'CreativeWork', \Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
-
-		if ( ! $creative_work_term ) {
-			return false;
-		}
-
-		$descendants = get_term_meta( $creative_work_term->term_id, '_wl_parent_of' );
-
-		$slugs_to_schema_name = array_map( function ( $item ) {
-			return implode( '', array_map( 'ucfirst', explode( '-', $item ) ) );
-		}, $descendants );
-
-		return count( array_intersect( $type, $slugs_to_schema_name ) ) > 0;
-
+		return count( array_intersect( $type, $this->schema_descendants ) ) > 0;
 	}
 
 	private function entity_is_creative_work( $type ) {
