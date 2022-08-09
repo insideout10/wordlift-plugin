@@ -16,6 +16,181 @@ use Wordlift\Relation\Object_Relation_Service;
 
 class Mentions {
 
+	private static $schema_descendants = array(
+		'AmpStory',
+		'ArchiveComponent',
+		'Article',
+		'Atlas',
+		'Blog',
+		'Book',
+		'Chapter',
+		'Claim',
+		'Clip',
+		'Code',
+		'Collection',
+		'ComicStory',
+		'Comment',
+		'Conversation',
+		'Course',
+		'CreativeWorkSeason',
+		'CreativeWorkSeries',
+		'DataCatalog',
+		'Dataset',
+		'DefinedTermSet',
+		'Diet',
+		'DigitalDocument',
+		'Drawing',
+		'EducationalOccupationalCredential',
+		'Episode',
+		'ExercisePlan',
+		'Game',
+		'Guide',
+		'HowTo',
+		'HowToDirection',
+		'HowToSection',
+		'HowToStep',
+		'HowToTip',
+		'HyperToc',
+		'HyperTocEntry',
+		'LearningResource',
+		'Legislation',
+		'Manuscript',
+		'Map',
+		'MathSolver',
+		'MediaObject',
+		'Menu',
+		'MenuSection',
+		'Message',
+		'Movie',
+		'MusicComposition',
+		'MusicPlaylist',
+		'MusicRecording',
+		'Painting',
+		'Photograph',
+		'Play',
+		'Poster',
+		'PublicationIssue',
+		'PublicationVolume',
+		'Quotation',
+		'Review',
+		'Sculpture',
+		'Season',
+		'SheetMusic',
+		'ShortStory',
+		'SoftwareApplication',
+		'SoftwareSourceCode',
+		'SpecialAnnouncement',
+		'Thesis',
+		'TvSeason',
+		'TvSeries',
+		'VisualArtwork',
+		'WebContent',
+		'WebPage',
+		'WebPageElement',
+		'WebSite',
+		'AdvertiserContentArticle',
+		'NewsArticle',
+		'Report',
+		'SatiricalArticle',
+		'ScholarlyArticle',
+		'SocialMediaPosting',
+		'TechArticle',
+		'AnalysisNewsArticle',
+		'AskPublicNewsArticle',
+		'BackgroundNewsArticle',
+		'OpinionNewsArticle',
+		'ReportageNewsArticle',
+		'ReviewNewsArticle',
+		'MedicalScholarlyArticle',
+		'BlogPosting',
+		'DiscussionForumPosting',
+		'LiveBlogPosting',
+		'ApiReference',
+		'Audiobook',
+		'MovieClip',
+		'RadioClip',
+		'TvClip',
+		'VideoGameClip',
+		'ProductCollection',
+		'ComicCoverArt',
+		'Answer',
+		'CorrectionComment',
+		'Question',
+		'PodcastSeason',
+		'RadioSeason',
+		'TvSeason',
+		'BookSeries',
+		'MovieSeries',
+		'Periodical',
+		'PodcastSeries',
+		'RadioSeries',
+		'TvSeries',
+		'VideoGameSeries',
+		'ComicSeries',
+		'Newspaper',
+		'DataFeed',
+		'CompleteDataFeed',
+		'CategoryCodeSet',
+		'NoteDigitalDocument',
+		'PresentationDigitalDocument',
+		'SpreadsheetDigitalDocument',
+		'TextDigitalDocument',
+		'PodcastEpisode',
+		'RadioEpisode',
+		'TvEpisode',
+		'VideoGame',
+		'Recipe',
+		'Course',
+		'Quiz',
+		'LegislationObject',
+		'AudioObject',
+		'DModel',
+		'DataDownload',
+		'ImageObject',
+		'LegislationObject',
+		'MusicVideoObject',
+		'VideoObject',
+		'Audiobook',
+		'Barcode',
+		'EmailMessage',
+		'MusicAlbum',
+		'MusicRelease',
+		'ComicIssue',
+		'ClaimReview',
+		'CriticReview',
+		'EmployerReview',
+		'MediaReview',
+		'Recommendation',
+		'UserReview',
+		'ReviewNewsArticle',
+		'MobileApplication',
+		'VideoGame',
+		'WebApplication',
+		'CoverArt',
+		'ComicCoverArt',
+		'HealthTopicContent',
+		'AboutPage',
+		'CheckoutPage',
+		'CollectionPage',
+		'ContactPage',
+		'FaqPage',
+		'ItemPage',
+		'MedicalWebPage',
+		'ProfilePage',
+		'QaPage',
+		'RealEstateListing',
+		'SearchResultsPage',
+		'MediaGallery',
+		'ImageGallery',
+		'VideoGallery',
+		'SiteNavigationElement',
+		'Table',
+		'WpAdBlock',
+		'WpFooter',
+		'WpHeader',
+		'WpSideBar',
+	);
+
 	public function __construct() {
 		add_filter( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 10, 2 );
 	}
@@ -30,14 +205,12 @@ class Mentions {
 		$type = $jsonld[0]['@type'];
 
 
-
 		if ( ! $this->entity_is_descendant_of_creative_work( $type ) && ! $this->entity_is_creative_work( $type ) ) {
 			return $jsonld;
 		}
 
 		$entity_references = Object_Relation_Service::get_instance()
 		                                            ->get_references( $post_id, Object_Type_Enum::POST );
-
 
 
 		$jsonld[0]['mentions'] = array_values( array_filter( array_map( function ( $item ) {
@@ -61,25 +234,11 @@ class Mentions {
 
 
 	private function entity_is_descendant_of_creative_work( $type ) {
-
-		if ( ! is_array( $type ) ) {
+		if ( is_string( $type ) ) {
 			$type = array( $type );
 		}
 
-		$creative_work_term = get_term_by( 'name', 'CreativeWork', \Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
-
-		if ( ! $creative_work_term ) {
-			return false;
-		}
-
-		$descendants = get_term_meta( $creative_work_term->term_id, '_wl_parent_of' );
-
-		$slugs_to_schema_name = array_map( function ( $item ) {
-			return implode( '', array_map( 'ucfirst', explode( '-', $item ) ) );
-		}, $descendants );
-
-		return count( array_intersect( $type, $slugs_to_schema_name ) ) > 0;
-
+		return count( array_intersect( $type, $this::$schema_descendants ) ) > 0;
 	}
 
 	private function entity_is_creative_work( $type ) {

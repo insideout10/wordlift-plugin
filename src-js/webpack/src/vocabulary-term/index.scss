@@ -1,0 +1,20 @@
+
+#wl-entity-type__checklist {
+  border: 1px solid rgb(140, 143, 148);
+  border-radius: 4px;
+  background: white;
+  width: 95%;
+  height: 160px;
+  ul{
+    margin: 4px 8px;
+    overflow-y: scroll;
+    height: 120px;
+    li {
+      list-style-type:none;
+    }
+  }
+}
+
+#wl_entity_type_search{
+  width: 100%;
+}
