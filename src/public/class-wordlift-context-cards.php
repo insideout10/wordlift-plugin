@@ -40,35 +40,38 @@ class Wordlift_Context_Cards_Service {
 		add_filter( 'wl_anchor_data_attributes', array( $this, 'anchor_data_attributes' ), 10, 2 );
 	}
 
+	private function get_product_attributes( $post_id ) {
+
+		$product = wc_get_product( $post_id );
+
+		return array(
+			'regular_price'   => $product->get_regular_price(),
+			'currency_symbol' => get_woocommerce_currency_symbol(),
+			'discount_pc'     => ( $product->get_sale_price() && ( $product->get_regular_price() > 0 ) ) ? round( 1 - ( $product->get_sale_price() / $product->get_regular_price() ), 2 ) * 100 : 0,
+			'average_rating'  => $product->get_average_rating(),
+			'rating_count'    => $product->get_rating_count(),
+			'rating_html'     => wc_get_rating_html( $product->get_average_rating(), $product->get_rating_count() )
+		);
+	}
+
 	public function anchor_data_attributes( $attributes, $post_id ) {
 
 		$supported_types   = Wordlift_Entity_Service::valid_entity_post_types();
 		$post_type         = get_post_type( $post_id );
 		$enabled_templates = apply_filters( 'wl_context_cards_enabled_templates', array( 'product' ) );
 
-		if ( in_array( $post_type, $supported_types ) && in_array( $post_type, $enabled_templates ) ) {
-
-			$additional_attributes = array( 'post-type-template' => $post_type );
-
-			switch($post_type){
-				case 'product':
-					$product = wc_get_product( $post_id );
-					$additional_attributes['template-payload'] = json_encode(
-						array(
-							'regular_price'   => $product->get_regular_price(),
-							'currency_symbol' => get_woocommerce_currency_symbol(),
-							'discount_pc'     => ($product->get_sale_price() && ($product->get_regular_price() > 0)) ? round( 1 - ( $product->get_sale_price() / $product->get_regular_price() ), 2 ) * 100 : 0,
-							'average_rating'  => $product->get_average_rating(),
-							'rating_count'    => $product->get_rating_count(),
-							'rating_html'     => wc_get_rating_html( $product->get_average_rating(), $product->get_rating_count() )
-						)
-					);
-			}
-
-			return $attributes + $additional_attributes;
+		if ( ! in_array( $post_type, $supported_types ) || ! in_array( $post_type, $enabled_templates ) ) {
+			return $attributes;
 		}
 
-		return $attributes;
+		$additional_attributes = array( 'post-type-template' => $post_type );
+
+		if ( $post_type === 'product' && function_exists( 'wc_get_product' ) ) {
+			$additional_attributes['template-payload'] = json_encode( $this->get_product_attributes( $post_id ) );
+		}
+
+		return $attributes + $additional_attributes;
+
 	}
 
 }
