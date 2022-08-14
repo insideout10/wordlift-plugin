@@ -197,7 +197,7 @@ class Mentions {
 
 	public function wl_after_get_jsonld( $jsonld, $post_id ) {
 
-		if ( count( $jsonld ) === 0 || ! array_key_exists( '@type', $jsonld[0] ) || array_key_exists( 'mentions', $jsonld[0] ) ) {
+		if ( count( $jsonld ) === 0 || ! is_array( $jsonld[0] ) || ! array_key_exists( '@type', $jsonld[0] ) || array_key_exists( 'mentions', $jsonld[0] ) ) {
 			return $jsonld;
 		}
 

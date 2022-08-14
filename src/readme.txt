@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.37.2 (2022-08-14) =
+
+* Fix: error on JSON-LD not containing an array.
+
 = 3.37.1 (2022-08-09) =
 
 * Fix [#1557](https://github.com/insideout10/wordlift-plugin/issues/1557): Fix entities connected via mentions.

@@ -190,20 +190,20 @@ class Wordlift_Jsonld_Service {
 		$jsonld = array( $entity_to_jsonld_converter->convert( $post_id, $references, $references_infos ) );
 
 
-		$that = $this;
+		$that                       = $this;
 		$expanded_references_jsonld = array_map( function ( $item ) use ( $context, $entity_to_jsonld_converter, &$references_infos, $that ) {
 			// "2nd level properties" may not output here, e.g. a post
 			// mentioning an event, located in a place: the place is referenced
 			// via the `@id` but no other properties are loaded.
 			$ignored = array();
 			if ( $item instanceof Term_Reference ) {
-			    $term_jsonld =  $that->term_jsonld_adapter->get( $item->get_id(), $context );
-			    // For term references, we publish a jsonld array on the page, use only the first item.
-			    return count( $term_jsonld ) > 0 ? $term_jsonld[0] : false;
+				$term_jsonld = $that->term_jsonld_adapter->get( $item->get_id(), $context );
+
+				// For term references, we publish a jsonld array on the page, use only the first item.
+				return count( $term_jsonld ) > 0 ? $term_jsonld[0] : false;
+			} else if ( $item instanceof Post_Reference ) {
+				$item = $item->get_id();
 			}
-			else if ( $item instanceof  Post_Reference) {
-			    $item = $item->get_id();
-            }
 
 			return $entity_to_jsonld_converter->convert( $item, $ignored, $references_infos );
 		}, array_unique( $references ) );
