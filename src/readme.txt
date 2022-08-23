@@ -145,6 +145,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 = 3.37.2 (2022-08-14) =
 
 * Fix: error on JSON-LD not containing an array.
+* Fix: Fix publisher element on settings screen.
 
 = 3.37.1 (2022-08-09) =
 
