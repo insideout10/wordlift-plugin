@@ -52,8 +52,6 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 		// Child elements.
 		$this->select_element = $select_element;
 
-
-
 	}
 
 	/**
@@ -119,7 +117,7 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 			// The selected id.
 			'value'   => $current_post_id,
 			// The selected item (must be in the options for Select2 to display it).
-			'options' => $current_post ? array( $current_post->ID => wp_strip_all_tags( $current_post->post_title ) ) : array(),
+			'options' => $current_post ? array( $current_post->ID => $current_post->post_title ) : array(),
 			// Data attributes.
 			'data'    => array(
 				// The list of available options.

@@ -156,7 +156,7 @@ class Wordlift_Publisher_Service {
 
 			return array(
 				'id'            => $entity->ID,
-				'text'          => wp_strip_all_tags( $entity->post_title ),
+				'text'          => $entity->post_title,
 				'type'          => $type[0]->name,
 				'thumbnail_url' => $publisher_service->get_attachment_image_url( $thumb_id ),
 			);
