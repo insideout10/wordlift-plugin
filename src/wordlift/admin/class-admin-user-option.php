@@ -25,7 +25,7 @@ class Admin_User_Option {
 			return;
 		}
 
-		if ( ! isset( $_POST[ self::WORDLIFT_ADMIN ] ) ) {
+		if ( ! isset( $_POST[ self::WORDLIFT_ADMIN ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			delete_user_meta( get_current_user_id(), self::WORDLIFT_ADMIN );
 
 			return;
