@@ -98,7 +98,7 @@ class Config {
 			}
 		}
 
-		$key = wp_unslash( (string) $_POST['license'] );
+		$key = isset( $_POST['license'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['license'] ) ) : '';
 
 		if ( ! $this->is_key_valid_and_not_bound_to_any_domain( $key ) ) {
 			wp_send_json_error( __( 'Key is not valid or associated with other domain', 'wordlift' ), 403 );
