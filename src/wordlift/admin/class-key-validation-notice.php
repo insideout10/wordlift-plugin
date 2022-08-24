@@ -65,7 +65,7 @@ class Key_Validation_Notice {
 		?>
         <div class="wl-notice notice is-dismissible error">
             <p>
-				<?php echo __( "Your WordLift key is not valid, please update the key in <a href='$settings_url'>WordLift Settings</a> or contact our support at hello@wordlift.io.", 'wordlift' ); ?>
+				<?php echo wp_kses( __( "Your WordLift key is not valid, please update the key in <a href='$settings_url'>WordLift Settings</a> or contact our support at hello@wordlift.io.", 'wordlift' ), array( 'a' => array( 'href' ) ) ); ?>
             </p>
             <button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span>
             </button>
@@ -124,7 +124,7 @@ class Key_Validation_Notice {
 		     || ! isset( $_GET['_wl_key_validation_notice_nonce'] ) ) {
 			return false;
 		}
-		$nonce = wp_unslash( (string) $_GET['_wl_key_validation_notice_nonce']);
+		$nonce = wp_unslash( (string) $_GET['_wl_key_validation_notice_nonce'] );
 		if ( wp_verify_nonce( $nonce, self::KEY_VALIDATION_NONCE_ACTION )
 		     && current_user_can( 'manage_options' ) ) {
 			// close the notification.
