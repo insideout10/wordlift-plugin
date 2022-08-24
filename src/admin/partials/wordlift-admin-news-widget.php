@@ -5,7 +5,7 @@
             <div>
                 <a target="_blank"
                    href="<?php echo esc_url( $item['post_url'] ); ?>"><?php echo esc_html( $item['post_title'] ); ?></a>
-                <p><?php echo $item['post_description']; ?></p>
+                <p><?php echo wp_kses( $item['post_description'], wp_kses_allowed_html('post') ); ?></p>
             </div>
 		<?php } ?>
 	<?php } ?>
