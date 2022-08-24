@@ -5,13 +5,13 @@ use Wordlift\Videoobject\Provider\Client\Youtube_Client;
 
 
 if ( isset( $_POST['wordlift_videoobject_youtube_api_key'] )
-	 || isset( $_POST['wordlift_videoobject_vimeo_api_key'] ) ) {
+     || isset( $_POST['wordlift_videoobject_vimeo_api_key'] ) ) {
 
 	/**
 	 * @todo: does this fields need to be encrypted before saving ?
 	 */
-	$youtube_api_key = (string) $_POST['wordlift_videoobject_youtube_api_key'];
-	$vimeo_api_key   = (string) $_POST['wordlift_videoobject_vimeo_api_key'];
+	$youtube_api_key = sanitize_text_field( wp_unslash( (string) $_POST['wordlift_videoobject_youtube_api_key'] ) );
+	$vimeo_api_key   = sanitize_text_field( wp_unslash( (string) $_POST['wordlift_videoobject_vimeo_api_key'] ) );
 
 	if ( $youtube_api_key ) {
 		update_option( Youtube_Client::get_api_key_option_name(), $youtube_api_key );
@@ -35,15 +35,15 @@ if ( isset( $_POST['submit'] ) ) {
 }
 
 ?>
-<h1><?php _e( 'API Settings', 'wordlift' ); ?></h1>
-<p><?php _e( 'To let WordLift access metadata from YouTube or Vimeo you will need to add here your API Key.', 'wordlift' ); ?></p>
+<h1><?php esc_html_e( 'API Settings', 'wordlift' ); ?></h1>
+<p><?php esc_html_e( 'To let WordLift access metadata from YouTube or Vimeo you will need to add here your API Key.', 'wordlift' ); ?></p>
 <form method="post">
-	<table>
-		<tr>
-			<td>
-				<?php _e( 'YouTube API Key', 'wordlift' ); ?>
-			</td>
-			<td>
+    <table>
+        <tr>
+            <td>
+				<?php esc_html_e( 'YouTube API Key', 'wordlift' ); ?>
+            </td>
+            <td>
 				<?php
 				$element = new Wordlift_Admin_Input_Element();
 				$element->render(
@@ -54,18 +54,18 @@ if ( isset( $_POST['submit'] ) ) {
 					)
 				);
 				?>
-			</td>
-			<td>
-				<a href="https://developers.google.com/youtube/registering_an_application"><?php _e( 'Click here', 'wordlift' ); ?></a>
-				<?php _e( ' for instructions on getting your YouTube API Key', 'wordlift' ); ?>
-			</td>
-		</tr>
+            </td>
+            <td>
+                <a href="https://developers.google.com/youtube/registering_an_application"><?php _e( 'Click here', 'wordlift' ); ?></a>
+				<?php esc_html_e( ' for instructions on getting your YouTube API Key', 'wordlift' ); ?>
+            </td>
+        </tr>
 
-		<tr>
-			<td>
-				<?php _e( 'Vimeo API Key', 'wordlift' ); ?>
-			</td>
-			<td>
+        <tr>
+            <td>
+				<?php esc_html_e( 'Vimeo API Key', 'wordlift' ); ?>
+            </td>
+            <td>
 				<?php
 				$element = new Wordlift_Admin_Input_Element();
 				$element->render(
@@ -76,31 +76,31 @@ if ( isset( $_POST['submit'] ) ) {
 					)
 				);
 				?>
-			</td>
-			<td>
-				<a href="https://developer.vimeo.com/api/guides/start"><?php _e( 'Click here', 'wordlift' ); ?></a>
-				<?php _e( ' for instructions on getting your Vimeo API Key', 'wordlift' ); ?>
-			</td>
-		</tr>
+            </td>
+            <td>
+                <a href="https://developer.vimeo.com/api/guides/start"><?php esc_html_e( 'Click here', 'wordlift' ); ?></a>
+				<?php esc_html_e( ' for instructions on getting your Vimeo API Key', 'wordlift' ); ?>
+            </td>
+        </tr>
 
-	</table>
-	<h1><?php _e( 'Video Sitemap', 'wordlift' ); ?></h1>
-	<p>
-		<?php _e( 'The Video Sitemap works like any other XML Sitemap. Search engines will use it to display rich snippets in result pages.', 'wordlift' ); ?>
-	</p>
+    </table>
+    <h1><?php esc_html_e( 'Video Sitemap', 'wordlift' ); ?></h1>
+    <p>
+		<?php esc_html_e( 'The Video Sitemap works like any other XML Sitemap. Search engines will use it to display rich snippets in result pages.', 'wordlift' ); ?>
+    </p>
 	<?php $wl_is_sitemap_enabled = esc_attr( get_option( '_wl_video_sitemap_generation', false ) ? 'checked' : '' ); ?>
-	<p> <?php _e( 'Enable Video Sitemap' ); ?>
-		<input type="checkbox" name="wl_enable_video_sitemap" value="1" <?php echo $wl_is_sitemap_enabled; ?> ></p>
-	<p> 
-	<?php
-	if ( $wl_is_sitemap_enabled ) {
-		$wl_sitemap_link = esc_attr( get_home_url( null, 'wl-video-sitemap.xml' ) );
-		printf( __( 'Here is <a href="%s">link</a> to your Video Sitemap. Add it now, to Google Search Console.', 'wordlift' ), $wl_sitemap_link );
-	}
-	?>
-		</p>
+    <p> <?php esc_html_e( 'Enable Video Sitemap' ); ?>
+        <input type="checkbox" name="wl_enable_video_sitemap" value="1" <?php echo $wl_is_sitemap_enabled; ?> ></p>
+    <p>
+		<?php
+		if ( $wl_is_sitemap_enabled ) {
+			$wl_sitemap_link = esc_attr( get_home_url( null, 'wl-video-sitemap.xml' ) );
+			echo wp_kses( sprintf( __( 'Here is <a href="%s">link</a> to your Video Sitemap. Add it now, to Google Search Console.', 'wordlift' ), $wl_sitemap_link ), array( 'a' => array( 'href' => array() ) ) );
+		}
+		?>
+    </p>
 
-	<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary"
-							 value="Save Changes">
-	</p>
+    <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary"
+                             value="Save Changes">
+    </p>
 </form>
