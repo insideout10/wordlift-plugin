@@ -131,12 +131,12 @@ class Config {
 		$attachment_id = $this->may_be_get_attachment_id();
 
 		$params = array(
-			'key'              => isset( $_POST['license'] ) ? (string) $_POST['license'] : '',
-			'vocabulary'       => isset( $_POST['vocabulary'] ) ? (string) $_POST['vocabulary'] : '',
-			'wl-country-code'  => isset( $_POST['country'] ) ? (string) $_POST['country'] : '',
-			'name'             => isset( $_POST['publisherName'] ) ? (string) $_POST['publisherName'] : '',
-			'user_type'        => isset( $_POST['publisher'] ) ? (string) $_POST['publisher'] : '',
-			'logo'             => $attachment_id
+			'key'             => isset( $_POST['license'] ) ? esc_html( (string) $_POST['license'] ) : '',
+			'vocabulary'      => isset( $_POST['vocabulary'] ) ? esc_html( (string) $_POST['vocabulary'] ) : '',
+			'wl-country-code' => isset( $_POST['country'] ) ? esc_html( (string) $_POST['country'] ) : '',
+			'name'            => isset( $_POST['publisherName'] ) ? esc_html( (string) $_POST['publisherName'] ) : '',
+			'user_type'       => isset( $_POST['publisher'] ) ? esc_html( (string) $_POST['publisher'] ) : '',
+			'logo'            => $attachment_id
 		);
 
 		$diagnostic = isset( $_POST['diagnostic'] ) ? (bool) $_POST['diagnostic'] : false;
