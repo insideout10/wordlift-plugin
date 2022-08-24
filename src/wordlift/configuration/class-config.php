@@ -98,7 +98,7 @@ class Config {
 			}
 		}
 
-		$key = (string) $_POST['license'];
+		$key = wp_unslash( (string) $_POST['license'] );
 
 		if ( ! $this->is_key_valid_and_not_bound_to_any_domain( $key ) ) {
 			wp_send_json_error( __( 'Key is not valid or associated with other domain', 'wordlift' ), 403 );
@@ -131,11 +131,11 @@ class Config {
 		$attachment_id = $this->may_be_get_attachment_id();
 
 		$params = array(
-			'key'             => isset( $_POST['license'] ) ? esc_html( (string) $_POST['license'] ) : '',
-			'vocabulary'      => isset( $_POST['vocabulary'] ) ? esc_html( (string) $_POST['vocabulary'] ) : '',
-			'wl-country-code' => isset( $_POST['country'] ) ? esc_html( (string) $_POST['country'] ) : '',
-			'name'            => isset( $_POST['publisherName'] ) ? esc_html( (string) $_POST['publisherName'] ) : '',
-			'user_type'       => isset( $_POST['publisher'] ) ? esc_html( (string) $_POST['publisher'] ) : '',
+			'key'             => isset( $_POST['license'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['license'] ) ) : '',
+			'vocabulary'      => isset( $_POST['vocabulary'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['vocabulary'] ) ) : '',
+			'wl-country-code' => isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['country'] ) ) : '',
+			'name'            => isset( $_POST['publisherName'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['publisherName'] ) ) : '',
+			'user_type'       => isset( $_POST['publisher'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['publisher'] ) ) : '',
 			'logo'            => $attachment_id
 		);
 
@@ -158,8 +158,8 @@ class Config {
 		}
 
 		$allowed_extensions = array( 'png', 'jpeg', 'jpg' );
-		$image_string       = (string) $_POST['image'];
-		$image_ext          = (string) $_POST['imageExtension'];
+		$image_string       = sanitize_text_field( wp_unslash( (string) $_POST['image'] ) );
+		$image_ext          = sanitize_text_field( wp_unslash( (string) $_POST['imageExtension'] ) );
 
 		if ( ! in_array( $image_ext, $allowed_extensions ) ) {
 			return false;
