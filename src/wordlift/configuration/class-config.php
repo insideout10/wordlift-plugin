@@ -98,7 +98,7 @@ class Config {
 			}
 		}
 
-		$key = (string) $_POST['license'];
+		$key = isset( $_POST['license'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['license'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		if ( ! $this->is_key_valid_and_not_bound_to_any_domain( $key ) ) {
 			wp_send_json_error( __( 'Key is not valid or associated with other domain', 'wordlift' ), 403 );
@@ -131,15 +131,15 @@ class Config {
 		$attachment_id = $this->may_be_get_attachment_id();
 
 		$params = array(
-			'key'              => isset( $_POST['license'] ) ? (string) $_POST['license'] : '',
-			'vocabulary'       => isset( $_POST['vocabulary'] ) ? (string) $_POST['vocabulary'] : '',
-			'wl-country-code'  => isset( $_POST['country'] ) ? (string) $_POST['country'] : '',
-			'name'             => isset( $_POST['publisherName'] ) ? (string) $_POST['publisherName'] : '',
-			'user_type'        => isset( $_POST['publisher'] ) ? (string) $_POST['publisher'] : '',
-			'logo'             => $attachment_id
+			'key'             => isset( $_POST['license'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['license'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			'vocabulary'      => isset( $_POST['vocabulary'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['vocabulary'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			'wl-country-code' => isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['country'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			'name'            => isset( $_POST['publisherName'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['publisherName'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			'user_type'       => isset( $_POST['publisher'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['publisher'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			'logo'            => $attachment_id
 		);
 
-		$diagnostic = isset( $_POST['diagnostic'] ) ? (bool) $_POST['diagnostic'] : false;
+		$diagnostic = isset( $_POST['diagnostic'] ) ? (bool) $_POST['diagnostic'] : false; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( $diagnostic ) {
 			$params['share-diagnostic'] = 'on';
 		}
@@ -153,13 +153,13 @@ class Config {
 	private function may_be_get_attachment_id() {
 
 		// if image or image extension not posted then return false.
-		if ( ! isset( $_POST['image'] ) || ! isset( $_POST['imageExtension'] ) ) {
+		if ( ! isset( $_POST['image'] ) || ! isset( $_POST['imageExtension'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			return false;
 		}
 
 		$allowed_extensions = array( 'png', 'jpeg', 'jpg' );
-		$image_string       = (string) $_POST['image'];
-		$image_ext          = (string) $_POST['imageExtension'];
+		$image_string       = sanitize_text_field( wp_unslash( (string) $_POST['image'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$image_ext          = sanitize_text_field( wp_unslash( (string) $_POST['imageExtension'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		if ( ! in_array( $image_ext, $allowed_extensions ) ) {
 			return false;

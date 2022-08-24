@@ -65,8 +65,8 @@ class Wordlift_Geomap_Shortcode extends Wordlift_Shortcode {
 			$geomap_id = 'wl_geomap_' . $post_id;
 		}
 
-		wp_enqueue_style( 'wl-leaflet', 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.css', array(), '1.6.0' );
-		wp_enqueue_script( 'wl-leaflet', 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.js', array(), '1.6.0', true );
+
+		wl_enqueue_leaflet( true );
 
 		// Use the registered style which define an optional dependency to font-awesome.
 		//

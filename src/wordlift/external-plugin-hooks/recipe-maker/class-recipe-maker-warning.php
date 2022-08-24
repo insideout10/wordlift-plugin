@@ -55,11 +55,11 @@ class Recipe_Maker_Warning {
 			// Show notification.
 			?>
             <div class="notice notice-warning is-dismissible">
-                <p><?php echo __( 'The following recipes didnt have minimum image size of 1200 x 1200 px', 'wordlift' ); ?></p>
+                <p><?php echo wp_kses( __( 'The following recipes didnt have minimum image size of 1200 x 1200 px', 'wordlift' ), array() ); ?></p>
                 <ol>
 					<?php
 					foreach ( $recipe_with_image_warnings as $post_id ) {
-						echo "<li>" . get_the_title( $post_id ) . "</li>";
+						echo "<li>" . esc_html( get_the_title( $post_id ) ) . "</li>";
 					}
 					?>
                 </ol>

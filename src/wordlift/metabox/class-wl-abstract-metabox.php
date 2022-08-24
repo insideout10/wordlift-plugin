@@ -66,7 +66,7 @@ class Wl_Abstract_Metabox {
 
 		// WordPress 4.2 do not accept an array of screens as parameter, have to do be explicit.
 		foreach ( Wordlift_Entity_Service::valid_entity_post_types() as $screen ) {
-			add_meta_box( $id, $title, array(
+			add_meta_box( $id, esc_html( $title ), array(
 				$this,
 				'html',
 			), $screen, 'normal', 'high' );
@@ -370,9 +370,7 @@ class Wl_Abstract_Metabox {
 		wp_enqueue_style( 'wl-flatpickr', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . "/admin/js/flatpickr/flatpickr$min.css", array(), '3.0.6' );
 		wp_enqueue_script( 'wl-flatpickr', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . "/admin/js/flatpickr/flatpickr$min.js", array( 'jquery' ), '3.0.6', true );
 
-		// Leaflet.
-		wp_enqueue_style( 'wl-leaflet', 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.css', array(), '1.6.0' );
-		wp_enqueue_script( 'wl-leaflet', 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.js', array(), '1.6.0' );
+		wl_enqueue_leaflet();
 
 		// Add AJAX autocomplete to facilitate metabox editing.
 		wp_enqueue_script( 'wl-entity-metabox-utility', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/admin/js/wl_entity_metabox_utilities.js' );

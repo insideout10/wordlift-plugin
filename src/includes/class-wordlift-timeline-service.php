@@ -192,8 +192,9 @@ class Wordlift_Timeline_Service {
 		$timeline['events'] = array_map( function ( $item ) use ( &$timeline, &$event_index, &$start_at_slide, &$now, $display_images_as, $excerpt_length ) {
 
 			// Get the start and end dates.
-			$start_date = strtotime( get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_START, true ) );
-			$end_date   = strtotime( get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_END, true ) );
+			// We have to remove double quotes from date to make timeline work properly
+			$start_date = strtotime( str_replace( '"', '', get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_START, true ) ) );
+			$end_date   = strtotime( str_replace( '"', '',get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_END, true ) ) );
 
 			// Set the starting slide.
 			$event_index ++;
