@@ -66,7 +66,7 @@ class Wl_Abstract_Metabox {
 
 		// WordPress 4.2 do not accept an array of screens as parameter, have to do be explicit.
 		foreach ( Wordlift_Entity_Service::valid_entity_post_types() as $screen ) {
-			add_meta_box( $id, $title, array(
+			add_meta_box( $id, esc_html( $title ), array(
 				$this,
 				'html',
 			), $screen, 'normal', 'high' );
