@@ -242,8 +242,6 @@ require_once( 'modules/linked_data/wordlift_linked_data.php' );
 require_once( 'modules/acf4so/load.php' );
 
 // Shortcodes
-
-require_once( 'modules/geo_widget/wordlift_geo_widget.php' );
 require_once( 'shortcodes/class-wordlift-shortcode-rest.php' );
 require_once( 'shortcodes/wordlift_shortcode_chord.php' );
 require_once( 'shortcodes/wordlift_shortcode_geomap.php' );
