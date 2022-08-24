@@ -56,7 +56,7 @@ if ( isset( $_POST['submit'] ) ) {
 				?>
             </td>
             <td>
-                <a href="https://developers.google.com/youtube/registering_an_application"><?php _e( 'Click here', 'wordlift' ); ?></a>
+                <a href="https://developers.google.com/youtube/registering_an_application"><?php esc_html_e( 'Click here', 'wordlift' ); ?></a>
 				<?php esc_html_e( ' for instructions on getting your YouTube API Key', 'wordlift' ); ?>
             </td>
         </tr>
@@ -90,7 +90,7 @@ if ( isset( $_POST['submit'] ) ) {
     </p>
 	<?php $wl_is_sitemap_enabled = esc_attr( get_option( '_wl_video_sitemap_generation', false ) ? 'checked' : '' ); ?>
     <p> <?php esc_html_e( 'Enable Video Sitemap' ); ?>
-        <input type="checkbox" name="wl_enable_video_sitemap" value="1" <?php echo $wl_is_sitemap_enabled; ?> ></p>
+        <input type="checkbox" name="wl_enable_video_sitemap" value="1" <?php echo esc_html( $wl_is_sitemap_enabled ); ?> ></p>
     <p>
 		<?php
 		if ( $wl_is_sitemap_enabled ) {
