@@ -72,7 +72,7 @@ add_action( 'admin_menu', 'wl_remove_entity_type_menu', 100 );
 function wl_admin_menu_callback() {
 
 	if ( ! current_user_can( 'manage_options' ) ) {
-		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+		wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
 	}
 
 	echo '<div class="wrap">';
