@@ -31,7 +31,7 @@ class Wordlift_Metabox_Field_Select extends Wl_Metabox_Field {
 				<?php foreach ( $this->raw_custom_field['options'] as $option => $label ): ?>
 
 					<option value="<?php echo esc_attr( $option ); ?>" <?php selected( $text, $option ); ?>>
-						<?php echo $label; ?>
+						<?php echo esc_html( $label ); ?>
 					</option>
 
 				<?php endforeach ?>
