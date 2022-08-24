@@ -81,7 +81,7 @@ class Ttl_Cache_Cleaner {
 			@unlink( $file[ Ttl_Cache_Cleaner::PATH ] );
 		}
 
-		$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( (string) $_REQUEST['action'] ) ) : '';
+		$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( (string) $_REQUEST['action'] ) ) : '';// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX && 'wl_ttl_cache_cleaner__flush' === $action ) {
 			wp_send_json_success( count( $files ) );
 		}
