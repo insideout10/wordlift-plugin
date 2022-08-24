@@ -12,15 +12,15 @@
 			esc_html__( 'grab a key', 'wordlift' )
 		);
 
-		echo sprintf(
+		echo wp_kses( sprintf(
 			esc_html__(
 				'If you already purchased a plan, check your email, get the'
 				. ' activation key from your inbox and insert it in the'
 				. ' field below. Otherwise %s!',
 				'wordlift'
 			),
-			 $grab_a_key_link_html
-		);
+            $grab_a_key_link_html
+		), array( 'a' => array( 'href' => array() ) )  );
 		?>
 	</p>
 	<input
