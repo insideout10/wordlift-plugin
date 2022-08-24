@@ -176,12 +176,12 @@ class Wordlift_Admin_Setup {
 
 		// If the nonce is invalid, return an error.
 		if ( ! wp_verify_nonce( $_GET['_wl_notice_nonce'], 'wordlift_hide_notices_nonce' ) ) {
-			wp_die( __( 'Action failed. Please refresh the page and retry.', 'wordlift' ) );
+			wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'wordlift' ) );
 		}
 
 		// If the user doesn't have the right privileges, return an error.
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( __( 'Cheatin&#8217; huh?', 'wordlift' ) );
+			wp_die( esc_html__( 'Cheatin&#8217; huh?', 'wordlift' ) );
 		}
 
 		// Store a flag telling to skip the wizard.
@@ -224,7 +224,7 @@ class Wordlift_Admin_Setup {
 
 			// Check if the user has the right privileges.
 			if ( ! current_user_can( 'manage_options' ) ) {
-				wp_die( __( 'Sorry, you do not have a permission to save the settings', 'wordlift' ) );
+				wp_die( esc_html__( 'Sorry, you do not have a permission to save the settings', 'wordlift' ) );
 			}
 
 			// Save the configuration.
