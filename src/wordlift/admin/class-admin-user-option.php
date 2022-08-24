@@ -37,8 +37,18 @@ class Admin_User_Option {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
-		$is_checked = intval( get_user_meta( get_current_user_id(), self::WORDLIFT_ADMIN, true ) ) === 1;
-		echo $this->get_checkbox( $is_checked );
+		$is_checked   = intval( get_user_meta( get_current_user_id(), self::WORDLIFT_ADMIN, true ) ) === 1;
+		$allowed_html = array(
+			'tr'    => array(),
+			'th'    => array(),
+			'td'    => array(),
+			'input' => array(
+				'type'    => array(),
+				'name'    => array(),
+				'checked' => array(),
+			)
+		);
+		echo wp_kses( $this->get_checkbox( $is_checked ), $allowed_html );
 	}
 
 	public static function get_checkbox( $is_checked ) {
