@@ -102,19 +102,19 @@ class Wordlift_Admin_Schemaorg_Taxonomy_Metabox {
                        class="taxonomy-add-new">
 						<?php
 						/* translators: %s: add new taxonomy label */
-						printf( __( '+ %s' ), $taxonomy->labels->add_new_item );
+						echo  esc_html( sprintf( __( '+ %s' ), $taxonomy->labels->add_new_item ) );
 						?>
                     </a>
                     <p id="<?php echo esc_attr( $tax_name ); ?>-add" class="category-add wp-hidden-child">
                         <label class="screen-reader-text"
-                               for="new<?php echo esc_attr( $tax_name ); ?>"><?php echo $taxonomy->labels->add_new_item; ?></label>
-                        <input type="text" name="new<?php echo $tax_name; ?>"
+                               for="new<?php echo esc_attr( $tax_name ); ?>"><?php echo esc_html( $taxonomy->labels->add_new_item ); ?></label>
+                        <input type="text" name="new<?php echo esc_html($tax_name); ?>"
                                id="new<?php echo esc_attr( $tax_name ); ?>"
                                class="form-required form-input-tip"
                                value="<?php echo esc_attr( $taxonomy->labels->new_item_name ); ?>"
                                aria-required="true"/>
                         <label class="screen-reader-text" for="new<?php echo esc_attr( $tax_name ); ?>_parent">
-							<?php echo $taxonomy->labels->parent_item_colon; ?>
+							<?php echo esc_html( $taxonomy->labels->parent_item_colon ); ?>
                         </label>
 						<?php
 						$parent_dropdown_args = array(
@@ -154,7 +154,7 @@ class Wordlift_Admin_Schemaorg_Taxonomy_Metabox {
 						wp_dropdown_categories( $parent_dropdown_args );
 						?>
                         <input type="button" id="<?php echo esc_attr( $tax_name ); ?>-add-submit"
-                               data-wp-lists="add:<?php echo $tax_name; ?>checklist:<?php echo esc_attr( $tax_name ); ?>-add"
+                               data-wp-lists="add:<?php echo esc_html( $tax_name ); ?>checklist:<?php echo esc_attr( $tax_name ); ?>-add"
                                class="button category-add-submit"
                                value="<?php echo esc_attr( $taxonomy->labels->add_new_item ); ?>"/>
 						<?php wp_nonce_field( 'add-' . $tax_name, '_ajax_nonce-add-' . $tax_name, false ); ?>
