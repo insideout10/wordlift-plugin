@@ -124,9 +124,7 @@ class Key_Validation_Notice {
 		     || ! isset( $_GET['_wl_key_validation_notice_nonce'] ) ) {
 			return false;
 		}
-		$type  = (string) $_GET['wl_key_validation_notice'];
-		$nonce = (string) $_GET['_wl_key_validation_notice_nonce'];
-
+		$nonce = wp_unslash( (string) $_GET['_wl_key_validation_notice_nonce']);
 		if ( wp_verify_nonce( $nonce, self::KEY_VALIDATION_NONCE_ACTION )
 		     && current_user_can( 'manage_options' ) ) {
 			// close the notification.
