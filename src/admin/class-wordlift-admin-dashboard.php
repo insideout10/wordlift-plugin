@@ -81,7 +81,7 @@ class Wordlift_Dashboard_Service {
 	 *
 	 */
 	public function dashboard_widget_callback( $post ) {
-
+        $caption_kses = array( 'a' => array( 'href' => array() ) );
 		$enriched_posts_title   = __( 'enriched posts', 'wordlift' );
 		$enriched_posts_caption = sprintf( wp_kses(
 			__( '%1$s, of your <a href="%2$s">posts</a> are annotated. This means %3$s annotated posts on %4$s.', 'wordlift' ),
@@ -111,34 +111,44 @@ class Wordlift_Dashboard_Service {
 
 		$triples_label = __( 'triples', 'wordlift' );
 
-		echo <<<EOF
-	<div id="wl-dashboard-widget-inner-wrapper">
-		<div class="wl-stat-card">
-			<div class="wl-stat-graph-wrapper">
-				<h4>$enriched_posts_title <a href="http://docs.wordlift.it/en/latest/faq.html#what-is-content-enrichment" target="_blank"><i class="wl-info"></i></a></h4>
-				<svg id="wl-posts-pie-chart" viewBox="0 0 32 32"><circle r="16" cx="16" cy="16" /></svg>
-			</div>
-			<p>$enriched_posts_caption</p>
-		</div>
-		<div class="wl-stat-card">
-			<div class="wl-stat-graph-wrapper">
-				<h4>$rating_title <a href="http://docs.wordlift.it/en/latest/faq.html#what-factors-determine-the-rating-of-an-entity" target="_blank"><i class="wl-info"></i></a></h4>
-				<svg id="wl-entities-gauge-chart" viewBox="0 0 32 32"><circle r="16" cx="16" cy="16" class="baseline" /><circle r="16" cx="16" cy="16" class="stat" /></svg>
-			</div>
-			<p>$rating_caption</p>
-		</div>
-		<div class="wl-stat-card">
-			<div class="wl-stat-graph-wrapper">
-				<h4>$graph_title <a href="http://docs.wordlift.it/en/latest/faq.html#what-is-a-triple" target="_blank"><i class="wl-info"></i></a></h4>
-				<div class="wl-triples">
-					<span id="wl-dashboard-widget-triples"></span>
-					<span class="wl-triples-label">$triples_label</span>
-				</div>
-			</div>
-			<p>$graph_caption</p>
-		</div>
-	</div>
-EOF;
+		?>
+        <div id="wl-dashboard-widget-inner-wrapper">
+            <div class="wl-stat-card">
+                <div class="wl-stat-graph-wrapper">
+                    <h4><?php echo esc_html( $enriched_posts_title ); ?> <a
+                                href="http://docs.wordlift.it/en/latest/faq.html#what-is-content-enrichment"
+                                target="_blank"><i class="wl-info"></i></a></h4>
+                    <svg id="wl-posts-pie-chart" viewBox="0 0 32 32">
+                        <circle r="16" cx="16" cy="16"/>
+                    </svg>
+                </div>
+                <p><?php echo wp_kses( $enriched_posts_caption, $caption_kses ); ?> </p>
+            </div>
+            <div class="wl-stat-card">
+                <div class="wl-stat-graph-wrapper">
+                    <h4><?php echo esc_html( $rating_title ); ?> <a
+                                href="http://docs.wordlift.it/en/latest/faq.html#what-factors-determine-the-rating-of-an-entity"
+                                target="_blank"><i class="wl-info"></i></a></h4>
+                    <svg id="wl-entities-gauge-chart" viewBox="0 0 32 32">
+                        <circle r="16" cx="16" cy="16" class="baseline"/>
+                        <circle r="16" cx="16" cy="16" class="stat"/>
+                    </svg>
+                </div>
+                <p><?php echo wp_kses( $rating_caption, $caption_kses ); ?></p>
+            </div>
+            <div class="wl-stat-card">
+                <div class="wl-stat-graph-wrapper">
+                    <h4><?php echo esc_html( $graph_title ); ?><a href="http://docs.wordlift.it/en/latest/faq.html#what-is-a-triple"
+                                        target="_blank"><i class="wl-info"></i></a></h4>
+                    <div class="wl-triples">
+                        <span id="wl-dashboard-widget-triples"></span>
+                        <span class="wl-triples-label"><?php echo esc_html( $triples_label ); ?></span>
+                    </div>
+                </div>
+                <p><?php echo wp_kses( $graph_caption, $caption_kses ); ?></p>
+            </div>
+        </div>
+		<?php
 
 	}
 
