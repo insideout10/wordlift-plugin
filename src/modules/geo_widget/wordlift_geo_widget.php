@@ -20,8 +20,7 @@ function wordlift_geo_widget_shortcode( $atts, $content = null ) {
 	), $atts );
 
 	// Add leaflet css and library.
-	wp_enqueue_style( 'wl-leaflet', 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.css', array(), '1.6.0' );
-	wp_enqueue_script( 'wl-leaflet', 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.js', array(), '1.6.0', true );
+	wl_enqueue_leaflet( true );
 
 	ob_start(); // Collect the buffer.
 	wordlift_geo_widget_html(

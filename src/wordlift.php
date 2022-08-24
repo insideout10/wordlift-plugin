@@ -263,6 +263,14 @@ function wl_block_categories( $categories, $post ) {
 	);
 }
 
+// This function is created temporarily to handle the legacy library,
+// this has to be removed when removing the legacy fields from the ui.
+function wl_enqueue_leaflet( $in_footer = false ) {
+	// Leaflet.
+	wp_enqueue_style( 'wl-leaflet', plugin_dir_url( __FILE__ ) . "js/leaflet/leaflet.css", array(), '1.6.0' );
+	wp_enqueue_script( 'wl-leaflet', plugin_dir_url( __FILE__ ) . "js/leaflet/leaflet.js", array(), '1.6.0', $in_footer );
+}
+
 add_filter( 'block_categories', 'wl_block_categories', 10, 2 );
 
 // Temporary fix for a typo in WooCommerce Extension.
