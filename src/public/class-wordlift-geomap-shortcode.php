@@ -88,11 +88,11 @@ class Wordlift_Geomap_Shortcode extends Wordlift_Shortcode {
 		$esc_post_id = esc_attr( $post_id );
 
 		// Return HTML template.
-		return <<<EOF
-<div class="wl-geomap"  id="$esc_id" data-post-id="$esc_post_id"
-	style="width:$esc_width; height:$esc_height; background-color: gray;">
+		return "
+<div class='wl-geomap'  id='$esc_id' data-post-id='$esc_post_id'
+	style='width:$esc_width; height:$esc_height; background-color: gray;'>
 </div>
-EOF;
+";
 	}
 
 	private function register_block_type() {

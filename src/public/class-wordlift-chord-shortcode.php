@@ -102,19 +102,19 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 
 		// Building template.
 		// TODO: in the HTML code there are static CSS rules. Move them to the CSS file.
-		return <<<EOF
-<div class="$esc_class" 
-	id="$esc_id"
-	data-post-id="$esc_post_id"
-    data-depth="$esc_depth"
-    data-main-color="$esc_main_color"
-	style="width:$esc_width;
+		return "
+<div class='$esc_class' 
+	id='$esc_id'
+	data-post-id='$esc_post_id'
+    data-depth='$esc_depth'
+    data-main-color='$esc_main_color'
+	style='width:$esc_width;
         height:$esc_height;
         background-color:white;
         margin-top:10px;
-        margin-bottom:10px">
+        margin-bottom:10px'>
 </div>
-EOF;
+";
 	}
 
 	private function register_block_type() {
