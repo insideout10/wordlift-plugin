@@ -128,7 +128,7 @@ class Wordlift_Install_1_0_0 extends Wordlift_Install {
 		$charset_collate = $wpdb->get_charset_collate();
 
 		// Sql statement for the relation instances custom table.
-		$sql = <<<EOF
+		$sql = "
 			CREATE TABLE $table_name (
 					id int(11) NOT NULL AUTO_INCREMENT,
 					subject_id int(11) NOT NULL,
@@ -138,7 +138,7 @@ class Wordlift_Install_1_0_0 extends Wordlift_Install {
 					KEY subject_id_index (subject_id),
 					KEY object_id_index (object_id)
 			) $charset_collate;
-EOF;
+";
 
 		// @see: https://codex.wordpress.org/Creating_Tables_with_Plugins
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
