@@ -43,9 +43,7 @@ class Term_Matches_Widget {
                 <h3><?php esc_html_e( 'Match terms', 'wordlift' ) ?></h3>
             </header>
             <p>
-                <strong><a href='<?php echo esc_attr( $match_terms_url ) ?>'> <?php esc_html( Badge_Generator::get_formatted_count_string( $term_count ) ); ?>
-                        term(s)</a></strong>
-				<?php esc_html_e( ' waiting to be matched with entities.', 'wordlift' ) ?>
+                <strong><a href='<?php echo esc_attr( $match_terms_url ) ?>'><?php echo esc_html( Badge_Generator::get_formatted_count_string( $term_count ) ); ?> term(s)</a></strong> <?php esc_html_e( ' waiting to be matched with entities.', 'wordlift' ) ?>
             </p>
         </div>
 		<?php

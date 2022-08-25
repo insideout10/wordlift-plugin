@@ -29,8 +29,12 @@ EOF;
 		$contents = ob_get_contents();
 		ob_end_clean();
 
-		$this->assertEquals( $contents, $expected_html );
+		$this->assertEquals( $this->remove_spaces( $contents ),  $this->remove_spaces( $expected_html ) );
 
+	}
+
+	private function remove_spaces( $string ) {
+		return str_replace( ' ', '', preg_replace('/\s+/S', " ", $string ) );
 	}
 
 
