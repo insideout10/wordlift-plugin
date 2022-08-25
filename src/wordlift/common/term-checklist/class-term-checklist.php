@@ -30,14 +30,12 @@ class Term_Checklist {
 			 */
 			$term_name  = esc_html( $term->name );
 			$checked    = in_array( $term->slug, $selected_term_slugs ) ? 'checked' : '';
-			$terms_html .= <<<EOF
-<li id="wl_entity_type-{$term->term_id}">
-	<label class="selectit">
-	<input value="{$term->slug}" type="checkbox" name="{$input_name}[]" id="in-wl_entity_type-{$term->term_id}" $checked>
+			$terms_html .= "<li id=\"wl_entity_type-{$term->term_id}\">
+	<label class=\"selectit\">
+	<input value=\"{$term->slug}\" type=\"checkbox\" name=\"{$input_name}[]\" id=\"in-wl_entity_type-{$term->term_id}\" $checked>
 		${term_name}
 	</label>
-</li>
-EOF;
+</li>";
 
 		}
 

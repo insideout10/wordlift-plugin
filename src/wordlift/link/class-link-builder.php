@@ -97,9 +97,7 @@ class Link_Builder {
 		$attributes_html = $this->get_attributes_for_link();
 
 		// Return the link.
-		return <<<EOF
-<a class="wl-entity-page-link" $title_attribute href="{$this->href}"$attributes_html>{$this->label}</a>
-EOF;
+		return "<a class=\"wl-entity-page-link\" $title_attribute href=\"{$this->href}\"$attributes_html>{$this->label}</a>";
 	}
 
 
