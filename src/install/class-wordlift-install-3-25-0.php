@@ -141,7 +141,7 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
 		$charset_collate       = $this->wpdb->get_charset_collate();
 		// @@todo: is necessary to prefix the column names with `rule_` ? we're the rules table already.
-		$sql = <<<EOF
+		$sql = "
         CREATE TABLE IF NOT EXISTS $table_name (
 				rule_id INT(11) NOT NULL AUTO_INCREMENT,
 				rule_field_one VARCHAR(255) NOT NULL,
@@ -152,7 +152,7 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 				ON DELETE CASCADE,
 				PRIMARY KEY  (rule_id)
         ) $charset_collate;
-EOF;
+";
 		// Execute the query for mappings table.
 		$this->wpdb->query( $sql );
 	}
