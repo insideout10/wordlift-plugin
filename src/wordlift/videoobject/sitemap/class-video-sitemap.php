@@ -69,10 +69,10 @@ class Video_Sitemap {
 	 * @return string
 	 */
 	private function get_sitemap_xml() {
-		$sitemap_start_tag = <<<EOF
+		$sitemap_start_tag = '
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-EOF;
+';
 		$sitemap_body      = Xml_Generator::get_xml_for_all_posts_with_videos();
 
 		$sitemap_end_tag = "</urlset>";
