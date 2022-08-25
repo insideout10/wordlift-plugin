@@ -31,7 +31,7 @@ class Notices {
 
 		$type_e = esc_attr( $notice['type'] );
 		?>
-        <div class="notice notice-<?php echo $type_e; ?> is-dismissible">
+        <div class="notice notice-<?php echo esc_attr( $type_e ); ?> is-dismissible">
             <p><?php echo wp_kses( $notice['html'], [ 'a' ] ); ?></p>
         </div>
 		<?php
