@@ -408,7 +408,7 @@ class Wordlift_Entity_Service {
 		// Print all the currently set alternative labels.
 		foreach ( $this->get_alternative_labels( $post->ID ) as $alt_label ) {
 
-			echo $this->get_alternative_label_input( $alt_label );
+			echo $this->get_alternative_label_input( $alt_label ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		};
 

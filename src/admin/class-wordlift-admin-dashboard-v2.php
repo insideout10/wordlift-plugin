@@ -99,7 +99,7 @@ class Wordlift_Admin_Dashboard_V2 {
 
         <div id="wl-todays-tip" class="wl-dashboard__block wl-dashboard__block--todays-tip">
             <header>
-                <h3><?php echo __( "Today's Tip", 'wordlift' ); ?></h3>
+                <h3><?php esc_html_e( "Today's Tip", 'wordlift' ); ?></h3>
             </header>
             <article>
                 <p><strong><?php echo esc_html( wp_strip_all_tags( $data['title'] ) ); ?></strong>

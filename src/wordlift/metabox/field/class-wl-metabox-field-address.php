@@ -75,7 +75,7 @@ class Wl_Metabox_Field_Address extends Wl_Metabox_Field {
 		?>
 			<div class='wl-field'>
 			<h3><?php echo esc_attr( $this->label ); ?></h3>
-			<?php echo $this->html_nonce() ?>
+			<?php $this->html_nonce( true ); ?>
 
 		<?php
 		// print data loaded from DB

@@ -60,7 +60,7 @@ class Jsonld_Adapter {
 EOF;
 		$jsonld_post_html_output = apply_filters( 'wl_jsonld_post_html_output', $jsonld_post_html_output, $post_id );
 
-		echo $jsonld_post_html_output;
+		echo $jsonld_post_html_output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 	}
 

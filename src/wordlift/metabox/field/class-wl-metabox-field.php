@@ -176,9 +176,9 @@ class Wl_Metabox_Field implements Field {
 	 *
 	 * Overwrite this method in a child class to obtain custom behaviour.
 	 */
-	public function html_nonce() {
+	public function html_nonce( $echo = false ) {
 
-		return wp_nonce_field( 'wordlift_' . $this->meta_name . '_entity_box', 'wordlift_' . $this->meta_name . '_entity_box_nonce', true, false );
+		return wp_nonce_field( 'wordlift_' . $this->meta_name . '_entity_box', 'wordlift_' . $this->meta_name . '_entity_box_nonce', true, $echo );
 	}
 
 	/**

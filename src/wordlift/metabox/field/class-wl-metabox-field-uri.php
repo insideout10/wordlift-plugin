@@ -162,7 +162,7 @@ class Wl_Metabox_Field_uri extends Wl_Metabox_Field {
             <input
                     type="hidden"
                     class="<?php echo esc_attr( $this->meta_name ); ?>"
-                    name="wl_metaboxes[<?php echo $this->meta_name ?>][]"
+                    name="wl_metaboxes[<?php echo esc_attr( $this->meta_name ); ?>][]"
                     value="<?php echo esc_attr( $value ); ?>"
             />
 

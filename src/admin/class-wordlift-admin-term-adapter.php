@@ -89,13 +89,13 @@ class Wordlift_Admin_Term_Adapter {
 
 		?>
         <tr class="form-field term-name-wrap">
-            <th scope="row"><label for="wl-entity-id"><?php _ex( 'Entity', 'term entity', 'wordlift' ); ?></label></th>
+            <th scope="row"><label for="wl-entity-id"><?php esc_html_e( 'Entity', 'term entity', 'wordlift' ); ?></label></th>
             <td>
 				<?php foreach ( $values as $value ) { ?>
                     <input type="text" name="wl_entity_id[]" value="<?php echo esc_attr( $value ); ?>"/>
 				<?php } ?>
                 <div id="wl-term-entity-id"></div>
-                <p class="description"><?php _e( 'The entity bound to the term.', 'wordlift' ); ?></p>
+                <p class="description"><?php esc_html_e( 'The entity bound to the term.', 'wordlift' ); ?></p>
             </td>
         </tr>
 		<?php

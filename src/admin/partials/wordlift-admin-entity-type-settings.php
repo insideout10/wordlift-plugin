@@ -27,7 +27,7 @@ $term_settings = ! is_null( $settings ) ? $settings : array(
 	<h1><?php esc_html_e( 'Edit Entity Type', 'wordlift' ) ?></h1>
 
 	<form name="edittag" id="edittag" method="post"
-	      action="<?php echo admin_url( 'admin.php?page=wl_entity_type_settings' ) ?>"
+	      action="<?php echo esc_html( admin_url( 'admin.php?page=wl_entity_type_settings' ) ) ?>"
 	      class="validate">
 		<input type="hidden" name="tag_ID"
 		       value="<?php echo esc_attr( $term_id ) ?>" />

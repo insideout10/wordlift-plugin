@@ -225,7 +225,7 @@ if ( ! empty( $top_entities ) ) {
     <div class="wl-dashboard__block wl-dashboard__block--top-entities">
         <header>
             <span class="dashicons dashicons-editor-help"></span>
-            <h3><?php echo __( 'Top entities', 'wordlift' ); ?></h3>
+            <h3><?php esc_html_e( 'Top entities', 'wordlift' ); ?></h3>
             <span class="wl-dashboard__legend wl-dashboard__legend--entities"><?php echo esc_html( _x( 'Links with entities', 'Dashboard', 'wordlift' ) ); ?></span>
             <span class="wl-dashboard__legend wl-dashboard__legend--posts"><?php echo esc_html( _x( 'Post with entities', 'Dashboard', 'wordlift' ) ); ?></span>
         </header>

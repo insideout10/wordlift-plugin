@@ -64,7 +64,7 @@ class Entity_Type {
             </td>
         </tr>
 EOF;
-		echo sprintf( $template, esc_html( $entity_types_text ), $terms_html );
+		echo sprintf( $template, esc_html( $entity_types_text ), $terms_html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		$this->enqueue_script_and_style();
 	}

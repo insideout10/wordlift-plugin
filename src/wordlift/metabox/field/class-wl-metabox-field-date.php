@@ -121,7 +121,7 @@ class Wl_Metabox_Field_Date extends Wl_Metabox_Field {
         <script type='text/javascript'>
             (function ($) {
                 $(function () {
-                    $('.<?php echo esc_js( $this->meta_name ); ?>[type=text]').flatpickr(<?php echo $js; ?>);
+                    $('.<?php echo esc_js( $this->meta_name ); ?>[type=text]').flatpickr(<?php echo esc_html( $js ); ?>);
                 });
             })(jQuery);
         </script>

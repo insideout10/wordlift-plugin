@@ -30,7 +30,7 @@ class Wordlift_Metabox_Field_Integer extends Wl_Metabox_Field {
 					id="<?php echo esc_attr( $this->meta_name ); ?>"
 					class="<?php echo esc_attr( $this->meta_name ); ?>"
 					value="<?php echo esc_attr( $text ) ?>"
-					name="wl_metaboxes[<?php echo $this->meta_name; ?>][]"
+					name="wl_metaboxes[<?php echo esc_attr( $this->meta_name ); ?>][]"
 					style="width:88%"
 					min="0"
 				/>

@@ -271,7 +271,7 @@ class Wordlift_Jsonld_Service {
 
 		$jsonld = json_encode( $this->get_jsonld( $is_homepage, $post_id, Jsonld_Context_Enum::PAGE ) );
 		?>
-        <script type="application/ld+json"><?php echo $jsonld; ?></script><?php
+        <script type="application/ld+json"><?php echo esc_html( $jsonld ); ?></script><?php
 	}
 
 }

@@ -173,7 +173,7 @@ class Wordlift_Notice_Service {
 	public function admin_notices() {
 
 		foreach ( $this->notices as $notice ) {
-			echo( $notice );
+			echo( $notice ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 
 	}

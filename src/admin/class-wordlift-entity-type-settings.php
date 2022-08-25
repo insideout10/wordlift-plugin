@@ -133,8 +133,8 @@ class Wordlift_Admin_Entity_Type_Settings {
 		// Validate capabilities.
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die(
-				'<h1>' . __( 'Cheatin&#8217; uh?' ) . '</h1>' .
-				'<p>' . __( 'Sorry, you are not allowed to edit this item.' ) . '</p>',
+				'<h1>' . esc_html__( 'Cheatin&#8217; uh?' ) . '</h1>' .
+				'<p>' . esc_html__( 'Sorry, you are not allowed to edit this item.' ) . '</p>',
 				403
 			);
 		}
@@ -143,7 +143,7 @@ class Wordlift_Admin_Entity_Type_Settings {
 		$term_id = isset( $_REQUEST['tag_ID'] ) ? (int) $_REQUEST['tag_ID'] : 0;
 
 		if ( ! term_exists( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) ) {
-			wp_die( __( 'You attempted to edit an entity type term that doesn&#8217;t exist.', 'wordlift' ) );
+			wp_die( esc_html__( 'You attempted to edit an entity type term that doesn&#8217;t exist.', 'wordlift' ) );
 		}
 
 	}

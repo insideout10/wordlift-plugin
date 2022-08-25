@@ -44,7 +44,7 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 				id="<?php echo esc_attr( $params['id'] ); ?>"
 				name="<?php echo esc_attr( $params['name'] ); ?>"
 				class="<?php echo esc_attr( $params['class'] ); ?>"
-			<?php echo $this->get_data_attributes( $params['data'] ); ?>
+			<?php echo $this->get_data_attributes( $params['data'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		>
 			<?php $this->render_options( $params ); ?>
 		</select>
@@ -54,7 +54,7 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 		$this->print_notice( $params['notice'] );
 
 		// Print the field description.
-		echo $this->get_description( $params['description'] );
+		echo wp_kses( $this->get_description( $params['description'] ), array( 'p' => array() ) );
 
 		return $this;
 	}

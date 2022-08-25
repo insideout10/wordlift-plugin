@@ -73,10 +73,10 @@ class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 		       id="<?php echo esc_attr( $params['id'] ); ?>"
 		       name="<?php echo esc_attr( $params['name'] ); ?>"
 		       value="<?php echo esc_attr( $params['value'] ); ?>"
-			<?php echo $readonly; ?>
-			<?php echo $css_class; ?>
+			<?php echo $readonly; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php echo $css_class; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		/>
-		<?php echo $description; ?>
+		<?php echo $description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
 		<?php
 

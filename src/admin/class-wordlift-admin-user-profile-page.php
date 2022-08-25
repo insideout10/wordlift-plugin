@@ -95,7 +95,7 @@ class Wordlift_Admin_User_Profile_Page {
 		    <?php if ( apply_filters( 'wl_feature__enable__user-author', true ) ) { ?>
             <tr class="user-description-wrap">
                 <th><label
-                            for="wl_person"><?php _e( 'Author from the vocabulary', 'wordlift' ); ?></label>
+                            for="wl_person"><?php esc_html_e( 'Author from the vocabulary', 'wordlift' ); ?></label>
                 </th>
                 <td>
 					<?php
@@ -105,7 +105,7 @@ class Wordlift_Admin_User_Profile_Page {
 						'current_entity' => $this->user_service->get_entity( $user->ID ),
 					) );
 					?>
-                    <p class="description"><?php _e( 'The entity, person or organization, from the vocabulary to associate with this author.', 'wordlift' ); ?></p>
+                    <p class="description"><?php esc_html_e( 'The entity, person or organization, from the vocabulary to associate with this author.', 'wordlift' ); ?></p>
                 </td>
             </tr>
 		    <?php } ?>

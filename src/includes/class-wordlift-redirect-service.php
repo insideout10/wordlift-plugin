@@ -83,7 +83,7 @@ class Wordlift_Redirect_Service {
 
 		// Check the `uri` parameter.
 		if ( ! ( $entity_uri = filter_input( INPUT_GET, 'uri', FILTER_VALIDATE_URL ) ) ) {
-			wp_die( __( 'Invalid URI.', 'wordlift' ), __( 'Invalid URI.', 'wordlift' ), array(
+			wp_die( esc_html__( 'Invalid URI.', 'wordlift' ), esc_html__( 'Invalid URI.', 'wordlift' ), array(
 				'response'  => 400,
 				'back_link' => true,
 			) );
@@ -91,7 +91,7 @@ class Wordlift_Redirect_Service {
 
 		// Check the `to` parameter.
 		if ( ! ( $target = filter_input( INPUT_GET, 'to' ) ) ) {
-			wp_die( __( 'Invalid `to` parameter.', 'wordlift' ), __( 'Invalid `to` parameter.', 'wordlift' ), array(
+			wp_die( esc_html__( 'Invalid `to` parameter.', 'wordlift' ), esc_html__( 'Invalid `to` parameter.', 'wordlift' ), array(
 				'response'  => 400,
 				'back_link' => true,
 			) );
@@ -102,7 +102,7 @@ class Wordlift_Redirect_Service {
 		                                    ->get_by_entity_id_or_same_as( $entity_uri );
 
 		if ( ! isset( $content ) ) {
-			wp_die( __( 'Entity not found.', 'wordlift' ), __( 'Entity not found.', 'wordlift' ), array(
+			wp_die( esc_html__( 'Entity not found.', 'wordlift' ), esc_html__( 'Entity not found.', 'wordlift' ), array(
 				'response'  => 404,
 				'back_link' => true,
 			) );
