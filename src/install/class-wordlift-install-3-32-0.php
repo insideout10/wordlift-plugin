@@ -48,9 +48,9 @@ class Wordlift_Install_3_32_0 extends Wordlift_Install {
 	 * @return string
 	 */
 	protected function get_query_template() {
-		return <<<EOF
+		return "
 ALTER TABLE %s
 ADD %s TINYINT DEFAULT 0; 
-EOF;
+";
 	}
 }

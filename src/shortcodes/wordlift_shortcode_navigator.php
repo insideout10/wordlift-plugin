@@ -293,7 +293,7 @@ function _wl_network_navigator_get_results(
 
 	/** @noinspection SqlNoDataSourceInspection */
 	return $wpdb->get_results(
-		$wpdb->prepare( <<<EOF
+		$wpdb->prepare( "
 SELECT %3\$s, p2.ID as entity_id
  FROM {$wpdb->prefix}wl_relation_instances r1
 	-- get the ID of the post entity in common between the object and the subject 2. 
@@ -318,7 +318,7 @@ SELECT %3\$s, p2.ID as entity_id
  ORDER BY %4\$s
  LIMIT %1\$d
  OFFSET %2\$d
-EOF
+"
 			, $limit, $offset, $select, $order_by )
 	);
 

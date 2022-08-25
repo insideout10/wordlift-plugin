@@ -39,7 +39,7 @@ class Navigator_Data {
 
 		/** @noinspection SqlNoDataSourceInspection */
 		return $wpdb->get_results(
-			$wpdb->prepare( <<<EOF
+			$wpdb->prepare( "
 SELECT %4\$s, p2.ID as entity_id
  FROM {$wpdb->prefix}wl_relation_instances r1
     INNER JOIN {$wpdb->prefix}wl_relation_instances r2
@@ -72,7 +72,7 @@ SELECT %4\$s, p2.ID as entity_id
  ORDER BY %5\$s
  LIMIT %2\$d
  OFFSET %3\$d
-EOF
+"
 				, $post_id, $limit, $offset, $select, $order_by )
 		);
 
@@ -99,7 +99,7 @@ EOF
 
 		/** @noinspection SqlNoDataSourceInspection */
 		return $wpdb->get_results(
-			$wpdb->prepare( <<<EOF
+			$wpdb->prepare( "
 SELECT %4\$s, p2.ID as entity_id
  FROM {$wpdb->prefix}wl_relation_instances r1
 	-- get the ID of the post entity in common between the object and the subject 2. 
@@ -129,7 +129,7 @@ SELECT %4\$s, p2.ID as entity_id
  ORDER BY %5\$s
  LIMIT %2\$d
  OFFSET %3\$d
-EOF
+"
 				, $post_id, $limit, $offset, $select, $order_by )
 		);
 	}

@@ -177,7 +177,7 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
 		// @@todo is this table actually needed? I am not understanding what it does.
-		$sql = <<<EOF
+		$sql = "
         CREATE TABLE IF NOT EXISTS $table_name (
                 rule_group_id INT(11) NOT NULL AUTO_INCREMENT,
                 mapping_id INT(11) NOT NULL,
@@ -185,7 +185,7 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
                 FOREIGN KEY (mapping_id) REFERENCES $mapping_table_name(mapping_id)
                 ON DELETE CASCADE
         ) $charset_collate;
-EOF;
+";
 		// Execute the query for rule group table, we cant use db delta
 		// due to lack of support for foreign keys.
 		$this->wpdb->query( $sql );
@@ -217,7 +217,7 @@ EOF;
 
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
 		// @@todo do you we need the `property_` prefix? this is the property table anyway.
-		$sql = <<<EOF
+		$sql = "
         CREATE TABLE IF NOT EXISTS $table_name (
                 property_id INT(11) NOT NULL AUTO_INCREMENT,
                 mapping_id INT(11) NOT NULL,
@@ -230,7 +230,7 @@ EOF;
                 FOREIGN KEY (mapping_id) REFERENCES $mapping_table_name(mapping_id)
                 ON DELETE CASCADE
         ) $charset_collate;
-EOF;
+";
 		// Execute the query for property table, we cant use db delta
 		// due to lack of support for foreign keys.
 		$this->wpdb->query( $sql );

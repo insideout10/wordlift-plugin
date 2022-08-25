@@ -154,9 +154,7 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		$jsonld_string = wp_json_encode( $jsonld );
 
-		$jsonld_term_html_output = <<<EOF
-<script type="application/ld+json" id="wl-jsonld-term">$jsonld_string</script>
-EOF;
+		$jsonld_term_html_output = '<script type="application/ld+json" id="wl-jsonld-term">' . $jsonld_string . '</script>';
 		$jsonld_term_html_output = apply_filters( 'wl_jsonld_term_html_output', $jsonld_term_html_output, $term_id );
 
 		echo $jsonld_term_html_output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
