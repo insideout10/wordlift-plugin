@@ -56,14 +56,14 @@ class Entity_Type {
 
 		$terms_html = Term_Checklist::render( 'tax_input[wl_entity_type]', $types, $selected_entity_types );
 
-		$template = <<<EOF
+		$template = '
         <tr class="form-field term-name-wrap">
             <th scope="row"><label for="wl-entity-type__checklist">%s</label></th>
             <td>
                 <div id="wl-entity-type__checklist">%s</div>
             </td>
         </tr>
-EOF;
+';
 		echo sprintf( $template, esc_html( $entity_types_text ), $terms_html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		$this->enqueue_script_and_style();
