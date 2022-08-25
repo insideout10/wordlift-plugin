@@ -52,7 +52,7 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 
 
 	public function no_items() {
-		_e( 'No main ingredients found.', 'wordlift' );
+		esc_html_e( 'No main ingredients found.', 'wordlift' );
 	}
 
 	public function get_columns() {
