@@ -32,7 +32,7 @@ class Webhooks_Settings {
 			'sanitize_callback'
 		) );
 		add_settings_section( 'wl_settings__webhooks__general', __( 'Webhooks Settings', 'wordlift' ), function ( $args ) {
-			echo __( 'Set one or more URLs that should be called when data is changed.', 'wordlift' );
+            esc_html_e( 'Set one or more URLs that should be called when data is changed.', 'wordlift' );
 		}, 'wl_settings__webhooks' );
 		add_settings_field( 'wl_settings__webhooks__general__urls', __( 'URLs:', 'wordlift' ), function ( $args ) {
 			?>
