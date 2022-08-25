@@ -63,12 +63,12 @@ class Wordlift_Admin_Radio_Input_Element implements Wordlift_Admin_Element {
 
         <input type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
                name="<?php echo esc_attr( $params['name'] ); ?>"
-               value="yes" <?php echo esc_html( $css_class ); ?>
+               value="yes" <?php echo $css_class; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php checked( $value, 'yes' ); ?>
         /> Yes
         <input type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
                name="<?php echo esc_attr( $params['name'] ); ?>"
-               value="no" <?php echo esc_html( $css_class ); ?>
+               value="no" <?php echo $css_class; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped?>
 			<?php checked( $value, 'no' ); ?>
         /> No
 
