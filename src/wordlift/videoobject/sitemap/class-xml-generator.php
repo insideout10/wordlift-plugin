@@ -115,7 +115,7 @@ class Xml_Generator {
 			}
 		}
 
-		return <<<EOF
+		return "
    <url>
      <loc>${permalink}</loc>
      <video:video>
@@ -125,7 +125,7 @@ class Xml_Generator {
 	   $optional_data
      </video:video>
    </url>
-EOF;
+";
 
 	}
 
