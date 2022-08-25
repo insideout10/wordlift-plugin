@@ -73,7 +73,7 @@ class Wordlift_Admin_Radio_Input_Element implements Wordlift_Admin_Element {
         /> No
 
 		<?php
-		echo  wp_kses( $description, array( 'a' => array( 'href' => array() ) ) );
+		echo  wp_kses( $description, array(  'p' =>array(), 'a' => array( 'href' => array() ) ) );
 
 		return $this;
 	}
