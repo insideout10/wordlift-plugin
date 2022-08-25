@@ -38,13 +38,13 @@ class Lod_Import {
 	public function render() {
 		?>
         <div class="wrap">
-            <h1><?php _e( 'LOD Import', 'wordlift' ); ?></h1>
-            <p><?php _e( 'Helpful stuff here', 'wordlift' ); ?></p>
+            <h1><?php esc_html_e( 'LOD Import', 'wordlift' ); ?></h1>
+            <p><?php esc_html_e( 'Helpful stuff here', 'wordlift' ); ?></p>
             <form method="post" novalidate="novalidate">
                 <div class="form-field">
-                    <label for="item-ids"><?php _e( 'Linked Data IDs', 'wordlift' ); ?></label>
+                    <label for="item-ids"><?php esc_html_e( 'Linked Data IDs', 'wordlift' ); ?></label>
                     <textarea name="item-ids" id="item-ids" rows="5" cols="40"></textarea>
-                    <p><?php _e( 'The description is not prominent by default; however, some themes may show it.', 'wordlift' ); ?></p>
+                    <p><?php esc_html_e( 'The description is not prominent by default; however, some themes may show it.', 'wordlift' ); ?></p>
                 </div>
 				<?php submit_button( 'Import' ); ?>
             </form>
