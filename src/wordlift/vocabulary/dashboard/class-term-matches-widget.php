@@ -1,6 +1,7 @@
 <?php
 
 namespace Wordlift\Vocabulary\Dashboard;
+
 use Wordlift\Vocabulary\Data\Term_Count\Term_Count;
 use Wordlift\Vocabulary\Menu\Badge\Badge_Generator;
 
@@ -29,25 +30,25 @@ class Term_Matches_Widget {
 	}
 
 	public function render_widget() {
-		$term_count  = $this->term_count->get_term_count();
+		$term_count = $this->term_count->get_term_count();
 		if ( $term_count <= 0 ) {
 			return;
 		}
 
-		$match_terms_url = menu_page_url('wl-vocabulary-match-terms', false);
-		$term_count_link = "<a href='$match_terms_url'>" . Badge_Generator::get_formatted_count_string( $term_count ) . " term(s)</a>";
-		$match_terms = __('Match terms', 'wordlift');
-		$additional_text = __(' waiting to be matched with entities.', 'wordlift');
-		echo <<<EOF
+		$match_terms_url = menu_page_url( 'wl-vocabulary-match-terms', false );
+
+		?>
         <div id="wl-match-terms" class="wl-dashboard__block wl-dashboard__block--match-terms">
             <header>
-                <h3>$match_terms</h3>
+                <h3><?php esc_html_e( 'Match terms', 'wordlift' ) ?></h3>
             </header>
-                <p>
-                	<strong>$term_count_link</strong> $additional_text	
-                </p>
+            <p>
+                <strong><a href='<?php echo esc_attr( $match_terms_url ) ?>'> <?php esc_html( Badge_Generator::get_formatted_count_string( $term_count ) ); ?>
+                        term(s)</a></strong>
+				<?php esc_html_e( ' waiting to be matched with entities.', 'wordlift' ) ?>
+            </p>
         </div>
-EOF;
+		<?php
 	}
 
 }
