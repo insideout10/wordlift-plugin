@@ -142,7 +142,7 @@ class Wordlift_Admin_Download_Your_Data_Page {
 		 * Echo the response body. As this is not HTML we can not escape it
 		 * and neither sanitize it, therefor turning off the linter notice.
 		 */
-		echo $body;
+		echo $body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		// Exit in both cases.
 		exit;

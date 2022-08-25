@@ -97,7 +97,7 @@ class Wl_Abstract_Metabox {
 			$field->get_data();
 
 			// print field HTML (nonce included).
-			echo $field->html();
+			echo $field->html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 
 	}
