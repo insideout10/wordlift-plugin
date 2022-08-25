@@ -74,13 +74,13 @@ class Notices {
                     .then(response => response.ok ? response.json() : Promise.reject())
                 const ajaxUrl = "<?php echo esc_html( parse_url( admin_url( 'admin-ajax.php' ), PHP_URL_PATH ) ); ?>"
                 window.wordliftInstallAcf4so = function (installBtn) {
-                    installBtn.innerHTML = `<?php echo $installing_message ?>`
+                    installBtn.innerHTML = `<?php echo wp_kses( $installing_message, array( 'span'=> array( 'class' => array() ) ) ) ?>`
                     installPlugin(ajaxUrl)
                         .catch(e => {
-                            pluginInstallationNotice.innerHTML = `<?php echo $installation_failed_message ?>`
+                            pluginInstallationNotice.innerHTML = `<?php echo $installation_failed_message; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>`
                         })
                         .then(() => {
-                            pluginInstallationNotice.innerHTML = `<?php echo $installation_success_message ?>`
+                            pluginInstallationNotice.innerHTML = `<?php echo $installation_success_message; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>`
                             pluginInstallationNotice.classList.remove('notice-error')
                             pluginInstallationNotice.classList.add('notice-success')
                         })
@@ -92,7 +92,7 @@ class Notices {
 
         <div class="notice notice-error" id="wordlift_acf4so_plugin_installation_notice">
             <p>
-				<?php echo $message; ?>
+				<?php echo wp_kses( $message, array( 'b' => array() ) ); ?>
                 <button class="button action right" onclick="wordliftInstallAcf4so(this)">
 					<?php esc_html_e( $button_text ); ?>
 
