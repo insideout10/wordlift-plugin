@@ -57,11 +57,10 @@ class Wl_Metabox_Field_Coordinates extends Wl_Metabox_Field {
 
 		// Show Leaflet map to pick coordinates
 		$element_id = uniqid( 'wl-geo-map-' );
-		$html       .= <<<EOF
+		$html       .= "
+<div id=\"$element_id\"></div>
 
-<div id="$element_id"></div>
-
-<script type="text/javascript">
+<script type=\"text/javascript\">
 
 	window.addEventListener( 'load', function () {
 
@@ -87,8 +86,7 @@ class Wl_Metabox_Field_Coordinates extends Wl_Metabox_Field {
 	
 		})(jQuery);
 	})
-</script>
-EOF;
+</script>";
 
 
 		$html .= $this->html_wrapper_close();
