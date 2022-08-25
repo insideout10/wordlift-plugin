@@ -57,7 +57,7 @@ class Video_Sitemap {
 			$this->sitemap_cache->put( self::XML_CACHE_KEY, $xml );
 		}
 
-		echo $xml;
+		echo $xml; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		die();
 	}
 
