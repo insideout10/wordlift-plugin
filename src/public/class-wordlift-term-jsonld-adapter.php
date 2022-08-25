@@ -159,7 +159,7 @@ class Wordlift_Term_JsonLd_Adapter {
 EOF;
 		$jsonld_term_html_output = apply_filters( 'wl_jsonld_term_html_output', $jsonld_term_html_output, $term_id );
 
-		echo $jsonld_term_html_output;
+		echo $jsonld_term_html_output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 	}
 

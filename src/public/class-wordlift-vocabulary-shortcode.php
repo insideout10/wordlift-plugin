@@ -160,10 +160,10 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 		?>
         <div class='wl-vocabulary'>
             <nav class='wl-vocabulary-alphabet-nav'>
-				<?php echo $header; ?>
+				<?php echo $header; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
             </nav>
             <div class='wl-vocabulary-grid'>
-				<?php echo $sections; ?>
+				<?php echo $sections; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
             </div>
         </div>
 		<?php
