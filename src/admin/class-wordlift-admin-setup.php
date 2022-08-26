@@ -175,7 +175,7 @@ class Wordlift_Admin_Setup {
 		}
 
 		// If the nonce is invalid, return an error.
-		if ( ! wp_verify_nonce( $_GET['_wl_notice_nonce'], 'wordlift_hide_notices_nonce' ) ) {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wl_notice_nonce'] ) ), 'wordlift_hide_notices_nonce' ) ) {
 			wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'wordlift' ) );
 		}
 
