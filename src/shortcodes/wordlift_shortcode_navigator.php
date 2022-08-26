@@ -387,7 +387,7 @@ add_action( 'rest_api_init', function () {
  * @since 2.2.0
  */
 add_action( 'plugins_loaded', function () {
-	$action = array_key_exists( 'action', $_REQUEST ) ? (string) $_REQUEST['action'] : '';
+	$action = array_key_exists( 'action', $_REQUEST ) ? sanitize_text_field( (string) $_REQUEST['action'] ) : '';
 	if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX || 'wl_navigator' !== $action ) {
 		return;
 	}
@@ -398,7 +398,7 @@ add_action( 'plugins_loaded', function () {
 }, 0 );
 
 add_action( 'init', function () {
-	$action = array_key_exists( 'action', $_REQUEST ) ? (string) $_REQUEST['action'] : '';
+	$action = array_key_exists( 'action', $_REQUEST ) ? sanitize_text_field( (string) $_REQUEST['action'] ) : '';
 	if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX || 'wl_navigator' !== $action ) {
 		return;
 	}

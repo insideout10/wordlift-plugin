@@ -66,9 +66,9 @@ function wl_shortcode_faceted_search_origin( $request ) {
 
 	$current_post_id = (int) $_GET['post_id']; // WPCS: input var ok; CSRF ok.
 	$current_post    = get_post( $current_post_id );
-	$faceted_id      = isset( $_GET['uniqid'] ) ? (string) $_GET['uniqid'] : '';
+	$faceted_id      = isset( $_GET['uniqid'] ) ? sanitize_text_field( (string) $_GET['uniqid'] ) : '';
 
-	$post_types          = isset( $_GET['post_types'] ) ? (string) $_GET['post_types'] : '';
+	$post_types          = isset( $_GET['post_types'] ) ? sanitize_text_field( (string) $_GET['post_types'] ) : '';
 	$post_types          = explode( ',', $post_types );
 	$existing_post_types = get_post_types();
 	$post_types          = array_values( array_intersect( $existing_post_types, $post_types ) );
