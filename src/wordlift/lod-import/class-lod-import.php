@@ -23,7 +23,8 @@ class Lod_Import {
 
 	public function admin_menu() {
 
-		$callback = 'POST' === $_SERVER['REQUEST_METHOD'] ? 'handle' : 'render';
+
+		$callback = isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ? 'handle' : 'render';
 
 		add_submenu_page(
 			'wl_admin_menu',
@@ -68,7 +69,7 @@ class Lod_Import {
 
 	private function import_single( $item_id ) {
 
-		$content_service     = Wordpress_Content_Service::get_instance();
+		$content_service = Wordpress_Content_Service::get_instance();
 
 		// Do not create/update an existing entity.
 		if ( $content_service->get_by_entity_id_or_same_as( $item_id ) ) {
@@ -79,7 +80,7 @@ class Lod_Import {
 		$importer      = Remote_Entity_Importer_Factory::from_entity( $remote_entity );
 		$content_id    = $importer->import();
 		if ( $content_id instanceof Content_Id && $content_id->get_type() === Object_Type_Enum::POST ) {
-			edit_post_link( null, null, null,  $content_id->get_id() );
+			edit_post_link( null, null, null, $content_id->get_id() );
 		}
 
 	}

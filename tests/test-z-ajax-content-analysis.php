@@ -55,7 +55,6 @@ class Ajax_Content_Analysis_Test extends Wordlift_Ajax_Unit_Test_Case {
 	}
 
 	public function test() {
-
 		// Create an entity, by also setting its entity URL and type.
 		$post_id = $this->factory()->post->create( array(
 			'post_type'    => 'entity',

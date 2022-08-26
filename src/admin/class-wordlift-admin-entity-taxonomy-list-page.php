@@ -108,11 +108,11 @@ class Wordlift_Admin_Entity_Taxonomy_List_Page {
 
 		// Bail out if we're not dealing with the `wl_entity_type_edit_term`
 		// capability.
-		if ( 'wl_entity_type_edit_term' !== $cap ) {
+		if ( 'wl_entity_type_edit_term' !== $cap || ! isset( $_SERVER['REQUEST_URI'] ) ) {
 			return $caps;
 		}
 
-		$path = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
+		$path = wp_parse_url( esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'], PHP_URL_PATH ) ) );
 
 		// Bail out if the `path` cannot be determined.
 		if ( null === $path ) {

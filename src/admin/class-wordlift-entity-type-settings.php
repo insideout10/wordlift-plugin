@@ -163,8 +163,8 @@ class Wordlift_Admin_Entity_Type_Settings {
 
 		$term = get_term( $term_id, 'wl_entity_type' );
 
-		$title       = isset( $_POST['title'] ) ? (string) $_POST['title'] : '';
-		$description = isset( $_POST['description'] ) ? (string) $_POST['description'] : '';
+		$title       = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['title'] ) ): '';
+		$description = isset( $_POST['description'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['description'] ) ): '';
 		$this->set_setting(
 			$term_id,
 			trim( wp_unslash( $title ) ),

@@ -121,13 +121,14 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	// Save all the selected internal entity uris to this variable.
 	$internal_entity_uris = array();
 
+
 	// Save the entities coming with POST data.
 	if ( isset( $_POST['wl_entities'] ) ) {
+		$data              = filter_var_array( $_POST, array( 'wl_entities' => array( 'flags' => FILTER_REQUIRE_ARRAY ) ) );
+		$entities_via_post = $data['wl_entities'];
 		wl_write_log( "[ post id :: $post_id ][ POST(wl_entities) :: " );
-		wl_write_log( json_encode( $_POST['wl_entities'] ) );
+		wl_write_log( json_encode( $entities_via_post ) );
 		wl_write_log( "]" );
-
-		$entities_via_post = $_POST['wl_entities'];
 
 		foreach ( $entities_via_post as $entity_uri => $entity ) {
 
@@ -233,8 +234,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	if ( isset( $_POST['wl_entities'] ) ) {
 		// Save post metadata if available
-		$metadata_via_post = ( isset( $_POST['wl_metadata'] ) ) ?
-			$_POST['wl_metadata'] : array();
+		$metadata_via_post = ( isset( $_POST['wl_metadata'] ) ) ? filter_input_array( INPUT_POST, array( 'wl_metadata' => FILTER_DEFAULT ) ) : array();
 
 		$fields = array(
 			Wordlift_Schema_Service::FIELD_LOCATION_CREATED,

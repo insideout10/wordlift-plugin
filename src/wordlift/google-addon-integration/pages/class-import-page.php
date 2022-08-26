@@ -62,7 +62,11 @@ class Import_Page extends Wordlift_Admin_Page {
 	}
 
 	private function get_entity_urls() {
-		$entities = $_GET['e'];
+		if ( isset( $_GET['e'] ) ) {
+			return array();
+		}
+
+		$entities = esc_url_raw( wp_unslash( $_GET['e'] ) );
 
 		if ( empty( $entities ) ) {
 			return array();

@@ -198,7 +198,7 @@ class Wl_Metabox_Field implements Field {
 		}
 
 		// Verify that the nonce is valid.
-		return wp_verify_nonce( $_POST[ $nonce_name ], $nonce_verify );
+		return wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ $nonce_name ] ) ), $nonce_verify );
 	}
 
 	/**

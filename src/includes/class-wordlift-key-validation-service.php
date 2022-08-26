@@ -121,7 +121,7 @@ class Wordlift_Key_Validation_Service {
 			wp_send_json_error( 'The key parameter is required.' );
 		}
 
-		$response = $this->get_account_info( (string) $_POST['key'] );
+		$response = $this->get_account_info( sanitize_text_field( wp_unslash( (string) $_POST['key'] ) ) );
 
 		// If we got an error, return invalid.
 		if ( is_wp_error( $response ) || 2 !== (int) $response['response']['code'] / 100 ) {

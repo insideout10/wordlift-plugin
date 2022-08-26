@@ -11,7 +11,6 @@ class EntityCreationViaPostCreationTest extends Wordlift_Unit_Test_Case {
 	 */
 	function setUp() {
 		parent::setUp();
-
 		add_filter( 'pre_http_request', array( $this, '_mock_api' ), 10, 3 );
 	}
 

@@ -33,7 +33,7 @@ class Wordlift_UI_Service {
 	 */
 	public static function get_button_html( $element_id, $label ) {
 
-		return sprintf( self::BUTTON_HTML, $element_id, esc_html( $label ) );// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		return sprintf( self::BUTTON_HTML, $element_id, esc_html( $label ) );
 	}
 
 	/**
@@ -48,7 +48,12 @@ class Wordlift_UI_Service {
 	 */
 	public static function print_button( $element_id, $label ) {
 
-		echo( self::get_button_html( $element_id, $label ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo wp_kses( self::get_button_html( $element_id, $label ), array(
+			'a' => array(
+				'id'    => array(),
+				'class' => array()
+			)
+		) );
 
 	}
 

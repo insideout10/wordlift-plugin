@@ -173,7 +173,10 @@ class Wordlift_Notice_Service {
 	public function admin_notices() {
 
 		foreach ( $this->notices as $notice ) {
-			echo( $notice ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo wp_kses( $notice, array(
+				'div' => array( 'class' => array() ),
+				'p'   => array()
+			) );
 		}
 
 	}
@@ -190,7 +193,7 @@ class Wordlift_Notice_Service {
 
 		switch ( gettype( $message ) ) {
 			case 'array':
-				return implode('<br />', $message );
+				return implode( '<br />', $message );
 			default:
 				return $message;
 		}

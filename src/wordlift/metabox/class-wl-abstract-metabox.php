@@ -320,8 +320,8 @@ class Wl_Abstract_Metabox {
 			return;
 		}
 
-		$posted_data = $_POST['wl_metaboxes'];
-
+		$posted_data = filter_var_array( $_POST, array( 'wl_metaboxes' => array( 'flags' => FILTER_REQUIRE_ARRAY ) ) );
+		$posted_data = $posted_data['wl_metaboxes'];
 		foreach ( $this->fields as $field ) {
 
 			// Verify nonce.

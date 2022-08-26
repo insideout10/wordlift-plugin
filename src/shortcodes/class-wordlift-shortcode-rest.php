@@ -112,10 +112,10 @@ abstract class Wordlift_Shortcode_REST {
 
 		// Directly accessing $_SERVER['REQUEST_URI'] or $_GET['rest_route'] here as it's too early to use global $wp reliably
 
-		if ( $_SERVER['REQUEST_URI'] && strpos( (string) $_SERVER['REQUEST_URI'], $compare_route ) ) {
+		if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( esc_url_raw( wp_unslash( (string) $_SERVER['REQUEST_URI'] ) ), $compare_route ) ) {
 			return true;
 		}
-		if ( ! empty( $_GET['rest_route'] ) && strpos( (string) $_GET['rest_route'], $compare_route ) ) {
+		if ( ! empty( $_GET['rest_route'] ) && strpos( esc_url_raw( wp_unslash( (string) $_GET['rest_route'] ) ), $compare_route ) ) {
 			return true;
 		}
 

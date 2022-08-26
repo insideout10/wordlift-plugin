@@ -115,7 +115,7 @@ class Wordlift_Deactivator_Feedback {
 		// Bail if the nonce is not valid.
 		if (
 			empty( $_POST['wl_deactivation_feedback_nonce'] ) || // The nonce doens't exists.
-			! wp_verify_nonce( $_POST['wl_deactivation_feedback_nonce'], 'wl_deactivation_feedback_nonce' ) // The nonce is invalid.
+			! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wl_deactivation_feedback_nonce'] ) ), 'wl_deactivation_feedback_nonce' ) // The nonce is invalid.
 		) {
 			wp_send_json_error( __( 'Nonce Security Check Failed!', 'wordlift' ) );
 		}
@@ -131,9 +131,9 @@ class Wordlift_Deactivator_Feedback {
 		// Prepare the options.
 		$options = array(
 			// The deactivation reason.
-			'code'             => (string) $_POST['code'],
+			'code'             => sanitize_text_field( wp_unslash( (string) $_POST['code'] ) ),
 			// Additional information if provided.
-			'details'          => ( ! empty( $_POST['details'] ) ) ? (string) $_POST['details'] : '',
+			'details'          => ( ! empty( $_POST['details'] ) ) ? sanitize_text_field( wp_unslash( (string) $_POST['details'] ) ) : '',
 			// The website url.
 			'url'              => get_bloginfo( 'url' ),
 			// WP version.
