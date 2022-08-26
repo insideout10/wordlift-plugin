@@ -38,8 +38,12 @@ class Wordlift_Mapping_Ajax_Adapter {
 	 */
 	public function set_entity_types_for_post_type() {
 
-		$post_type    = sanitize_text_field( $_REQUEST['post_type'] );
-		$entity_types = (array) $_REQUEST['entity_types'];
+		if ( ! isset( $_REQUEST['post_type'] ) || ! isset( $_REQUEST['entity_types'] ) ) {
+			return;
+		}
+
+		$post_type    = sanitize_text_field( wp_unslash( $_REQUEST['post_type'] ) );
+		$entity_types =  array_map( 'esc_html',  wp_unslash( (array)  $_REQUEST['entity_types'] ) );
 
 		$this->mapping_service->set_entity_types_for_post_type( $post_type, $entity_types );
 
@@ -50,7 +54,7 @@ class Wordlift_Mapping_Ajax_Adapter {
 	public function update_post_type_entity_types() {
 
 		// If the nonce is invalid, return an error.
-		$nonce = isset( $_REQUEST['_nonce'] ) ? $_REQUEST['_nonce'] : '';
+		$nonce = isset( $_REQUEST['_nonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_nonce'] ) ): '';
 		if ( ! wp_verify_nonce( $nonce, 'update_post_type_entity_types' ) ) {
 			wp_send_json_error( __( 'Nonce Security Check Failed!', 'wordlift' ) );
 		}
@@ -64,10 +68,10 @@ class Wordlift_Mapping_Ajax_Adapter {
 		}
 
 		// Get the post type.
-		$post_type = isset( $_REQUEST['post_type'] ) ? sanitize_text_field( $_REQUEST['post_type'] ) : '';
+		$post_type = isset( $_REQUEST['post_type'] ) ? sanitize_text_field(wp_unslash( $_REQUEST['post_type'] ) ) : '';
 
 		// Get the entity types URIs.
-		$entity_types = isset( $_REQUEST['entity_types'] ) ? (array) $_REQUEST['entity_types'] : array();
+		$entity_types = isset( $_REQUEST['entity_types'] ) ? array_map( 'esc_url_raw', wp_unslash( (array) $_REQUEST['entity_types'] ) ) : array();
 
 		// Get the offset.
 		$offset = isset( $_REQUEST['offset'] ) ? intval( $_REQUEST['offset'] ) : 0;
