@@ -23,7 +23,8 @@ class Lod_Import {
 
 	public function admin_menu() {
 
-		$callback = 'POST' === sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ? 'handle' : 'render';
+
+		$callback = isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ? 'handle' : 'render';
 
 		add_submenu_page(
 			'wl_admin_menu',
