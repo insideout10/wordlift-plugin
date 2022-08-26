@@ -56,6 +56,11 @@ class Notices {
 
 	private function display_notice( $message, $button_text ) {
 
+		$kses_options                 = array(
+			'p'      => array(),
+			'b'      => array(),
+			'button' => array( 'class' => array(), 'onclick' => array() )
+		);
 		$installation_success_message = __(
 			'</p>WordLift: <b>Advanced Custom Fields for Schema.org</b> plugin installed and activated.</p>',
 			'wordlift'
@@ -74,13 +79,13 @@ class Notices {
                     .then(response => response.ok ? response.json() : Promise.reject())
                 const ajaxUrl = "<?php echo esc_html( parse_url( admin_url( 'admin-ajax.php' ), PHP_URL_PATH ) ); ?>"
                 window.wordliftInstallAcf4so = function (installBtn) {
-                    installBtn.innerHTML = `<?php echo wp_kses( $installing_message, array( 'span'=> array( 'class' => array() ) ) ) ?>`
+                    installBtn.innerHTML = `<?php echo wp_kses( $installing_message, array( 'span' => array( 'class' => array() ) ) ) ?>`
                     installPlugin(ajaxUrl)
                         .catch(e => {
-                            pluginInstallationNotice.innerHTML = `<?php echo $installation_failed_message; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>`
+                            pluginInstallationNotice.innerHTML = `<?php echo wp_kses( $installation_failed_message, $kses_options); ?>`
                         })
                         .then(() => {
-                            pluginInstallationNotice.innerHTML = `<?php echo $installation_success_message; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>`
+                            pluginInstallationNotice.innerHTML = `<?php echo wp_kses( $installation_success_message, $kses_options); ?>`
                             pluginInstallationNotice.classList.remove('notice-error')
                             pluginInstallationNotice.classList.add('notice-success')
                         })
