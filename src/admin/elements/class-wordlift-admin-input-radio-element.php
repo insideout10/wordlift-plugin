@@ -55,25 +55,22 @@ class Wordlift_Admin_Radio_Input_Element implements Wordlift_Admin_Element {
 		) );
 
 		// Set the readonly and class attributes and the description.
-		$value       = $params['value'];
-		$css_class   = ! empty( $params['css_class'] ) ? ' class="' . esc_attr( $params['css_class'] ) . '"' : '';
-		$description = ! empty( $params['description'] ) ? '<p>' . wp_kses( $params['description'], array( 'a' => array( 'href' => array() ) ) ) . '</p>' : '';
-
+		$value = $params['value'];
 		?>
 
         <input type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
                name="<?php echo esc_attr( $params['name'] ); ?>"
-               value="yes" <?php echo $css_class; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+               value="yes" <?php if ( ! empty( $params['css_class'] ) ) { ?> class="<?php echo esc_attr( $params['css_class'] ) ?>" <?php } ?>
 			<?php checked( $value, 'yes' ); ?>
         /> Yes
         <input type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
                name="<?php echo esc_attr( $params['name'] ); ?>"
-               value="no" <?php echo $css_class; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped?>
+               value="no" <?php if ( ! empty( $params['css_class'] ) ) { ?> class="<?php echo esc_attr( $params['css_class'] ) ?>" <?php } ?>
 			<?php checked( $value, 'no' ); ?>
         /> No
-
+		<?php if ( ! empty( $params['description'] ) ) { ?>
+            <p><?php echo wp_kses( $params['description'], array( 'a' => array( 'href' => array() ) ) ); ?></p><?php } ?>
 		<?php
-		echo  wp_kses( $description, array(  'p' =>array(), 'a' => array( 'href' => array() ) ) );
 
 		return $this;
 	}

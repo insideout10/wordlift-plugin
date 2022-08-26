@@ -59,12 +59,6 @@ class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 			'description' => '',
 		) );
 		$params     = apply_filters( 'wl_admin_input_element_params', $pre_params );
-
-		// Set the readonly and class attributes and the description.
-		$readonly    = $params['readonly'] ? ' readonly="readonly"' : '';
-		$css_class   = ! empty( $params['css_class'] ) ? ' class="' . esc_attr( $params['css_class'] ) . '"' : '';
-		$description = ! empty( $params['description'] ) ? '<p>' . wp_kses( $params['description'], array( 'a' => array( 'href' => array() ) ) ) . '</p>' : '';
-
 		// allow different types of input - default to 'text'.
 		$input_type = ! empty( $params['type'] ) ? $params['type'] : 'text';
 		?>
@@ -73,10 +67,10 @@ class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 		       id="<?php echo esc_attr( $params['id'] ); ?>"
 		       name="<?php echo esc_attr( $params['name'] ); ?>"
 		       value="<?php echo esc_attr( $params['value'] ); ?>"
-			<?php echo $readonly; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			<?php echo $css_class; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php if ( ! empty( $params['readonly'] ) ) { ?> readonly="readonly" <?php } ?>
+            <?php if ( ! empty( $params['css_class'] ) ) { ?> class="<?php echo esc_attr( $params['css_class'] ) ?>" <?php } ?>
 		/>
-		<?php echo $description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+        <?php if ( ! empty( $params['description'] ) ) { ?><p><?php echo wp_kses( $params['description'], array( 'a' => array( 'href' => array() ) ) ); ?></p><?php } ?>
 
 		<?php
 
