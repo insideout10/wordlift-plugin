@@ -124,7 +124,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	// Save the entities coming with POST data.
 	if ( isset( $_POST['wl_entities'] ) ) {
-		$data              = filter_input_array( INPUT_POST, array( 'wl_entities' => array( 'flags' => FILTER_REQUIRE_ARRAY ) ) );
+		$data              = filter_var_array( $_POST, array( 'wl_entities' => array( 'flags' => FILTER_REQUIRE_ARRAY ) ) );
 		$entities_via_post = $data['wl_entities'];
 		wl_write_log( "[ post id :: $post_id ][ POST(wl_entities) :: " );
 		wl_write_log( json_encode( $entities_via_post ) );
