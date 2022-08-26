@@ -170,10 +170,10 @@ class Wordlift_Timeline_Service {
 		}
 
 		// {media|thumbnail}: if set to 'media' the image is attached to the slide, if set to 'background' the image is set as background.
-		$display_images_as = isset( $_REQUEST['display_images_as'] ) ? (string) $_REQUEST['display_images_as'] : 'media';
+		$display_images_as = isset( $_REQUEST['display_images_as'] ) ? sanitize_text_field( wp_unslash( (string) $_REQUEST['display_images_as'] ) ) : 'media';
 
 		// The number of words for the excerpt (by default 55, as WordPress).
-		$this->excerpt_length = $excerpt_length = isset( $_REQUEST['excerpt_length'] ) && is_numeric( $_REQUEST['excerpt_length'] ) ? $_REQUEST['excerpt_length'] : 55;
+		$this->excerpt_length = $excerpt_length = isset( $_REQUEST['excerpt_length'] ) && is_numeric( $_REQUEST['excerpt_length'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['excerpt_length'] ) ) : 55;
 		add_filter( 'excerpt_length', array( $this, 'excerpt_length' ) );
 
 		// Add a filter to remove the [...] after excerpts, since we're adding
