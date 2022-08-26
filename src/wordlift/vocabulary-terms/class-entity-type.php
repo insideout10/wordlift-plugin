@@ -82,8 +82,11 @@ class Entity_Type {
 		if ( ! isset( $_REQUEST['tax_input'] ) ) {
 			return;
 		}
-		$entity_types = isset( $_REQUEST['tax_input'][ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ] )
-			? (array) $_REQUEST['tax_input'][ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ] : array();
+		$entity_types = array();
+		if ( isset( $_REQUEST['tax_input'][ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ] ) ) {
+			$entity_types_data = filter_var_array( $_REQUEST, array( 'tax_input' => array( 'flags' => FILTER_REQUIRE_ARRAY ) ) );
+			$entity_types      = $entity_types_data[ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ];
+		}
 		if ( isset( $entity_types ) && is_array( $entity_types ) ) {
 			// Save the taxonomies.
 			delete_term_meta( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
