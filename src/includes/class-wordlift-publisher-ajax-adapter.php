@@ -28,9 +28,10 @@ class Wordlift_Publisher_Ajax_Adapter {
 	/**
 	 * Create a {@link Wordlift_Publisher_Ajax_Adapter} instance.
 	 *
+	 * @param \Wordlift_Publisher_Service $publisher_service The {@link Wordlift_Publisher_Service} instance.
+	 *
 	 * @since 3.11.0
 	 *
-	 * @param \Wordlift_Publisher_Service $publisher_service The {@link Wordlift_Publisher_Service} instance.
 	 */
 	function __construct( $publisher_service ) {
 
@@ -60,7 +61,7 @@ class Wordlift_Publisher_Ajax_Adapter {
 		}
 
 		// Get the response.
-		$response = $this->publisher_service->query( (string) $_POST['q'] );
+		$response = $this->publisher_service->query( sanitize_text_field( wp_unslash( (string) $_POST['q'] ) ) );
 
 		// Finally output the response.
 		wp_send_json_success( $response );
