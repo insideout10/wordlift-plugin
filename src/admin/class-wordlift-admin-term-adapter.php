@@ -140,6 +140,7 @@ class Wordlift_Admin_Term_Adapter {
 			return;
 		}
 
+        $entity_ids = array_map( 'esc_url_raw', wp_unslash( $_POST['wl_entity_id'] ) );
 		// Update.
 		//
 		// Only use mb_* functions when mbstring is available.
@@ -148,11 +149,11 @@ class Wordlift_Admin_Term_Adapter {
 		if ( extension_loaded( 'mbstring' ) ) {
 			mb_regex_encoding( 'UTF-8' );
 
-			$merged = array_reduce( (array) $_POST['wl_entity_id'], function ( $carry, $item ) {
+			$merged = array_reduce( $entity_ids, function ( $carry, $item ) {
 				return array_merge( $carry, mb_split( "\x{2063}", wp_unslash( $item ) ) );
 			}, array() );
 		} else {
-			$merged = array_reduce( (array) $_POST['wl_entity_id'], function ( $carry, $item ) {
+			$merged = array_reduce( $entity_ids, function ( $carry, $item ) {
 				return array_merge( $carry, preg_split( "/\x{2063}/u", wp_unslash( $item ) ) );
 			}, array() );
 		}
