@@ -77,7 +77,7 @@ class Wordlift_Http_Api {
 			return;
 		}
 
-		$action = isset( $_REQUEST['action'] ) ? (string) $_REQUEST['action'] : '';
+		$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( (string) $_REQUEST['action'] ) ): '';
 		$this->do_action( $action );
 
 		exit;
