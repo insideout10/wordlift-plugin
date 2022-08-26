@@ -36,10 +36,13 @@ function wl_ajax_analyze_disabled_action() {
 function wl_ajax_analyze_action() {
 
 	check_admin_referer( 'wl_analyze' );
+	$data = '';
 
-	// If you use `filter_input` here, `Ajax_Content_Analysis_Test` would fail because `filter_input` doesn't use
-	// `$_POST`.
-	$data = isset( $_POST['data'] ) ? (string) $_POST['data'] : '';
+	if ( isset( $_POST['data'] ) ) {
+		// We need to send the data from editor without sanitizing to analysis service.
+		$filtered_data = filter_input_array( INPUT_POST, array( 'data' => array( 'flags' => FILTER_UNSAFE_RAW ) ) );
+		$data          = $filtered_data['data'];
+	}
 
 	wp_send_json_success( wl_analyze_content( $data, 'application/json; charset=' . strtolower( get_bloginfo( 'charset' ) ) ) );
 
