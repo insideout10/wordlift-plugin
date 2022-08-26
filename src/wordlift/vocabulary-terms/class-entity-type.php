@@ -53,19 +53,28 @@ class Entity_Type {
 				'hide_empty' => false,
 			)
 		);
-
-		$terms_html = Term_Checklist::render( 'tax_input[wl_entity_type]', $types, $selected_entity_types );
-
-		$template = '
+		?>
         <tr class="form-field term-name-wrap">
             <th scope="row"><label for="wl-entity-type__checklist">%s</label></th>
             <td>
-                <div id="wl-entity-type__checklist">%s</div>
+                <div id="wl-entity-type__checklist">
+					<?php echo wp_kses( Term_Checklist::render( 'tax_input[wl_entity_type]', $types, $selected_entity_types ), array(
+						'li'    => array( 'id' => array() ),
+						'ul'    => array( 'id' => array() ),
+						'label' => array( 'class' => array() ),
+						'input' => array(
+							'value'       => array(),
+							'type'        => array(),
+							'name'        => array(),
+							'id'          => array(),
+							'placeholder' => array(),
+							'checked'     => array()
+						)
+					) ); ?>
+                </div>
             </td>
         </tr>
-';
-		echo sprintf( $template, esc_html( $entity_types_text ), $terms_html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-
+		<?php
 		$this->enqueue_script_and_style();
 	}
 
@@ -95,8 +104,8 @@ class Entity_Type {
 	private function enqueue_script_and_style() {
 
 		Scripts_Helper::enqueue_based_on_wordpress_version( 'wl-vocabulary-term',
-			plugin_dir_url( dirname(  __DIR__ ) ) . '/js/dist/vocabulary-term',
-			array('wp-polyfill')
+			plugin_dir_url( dirname( __DIR__ ) ) . '/js/dist/vocabulary-term',
+			array( 'wp-polyfill' )
 		);
 		wp_enqueue_style( 'wl-vocabulary-term',
 			plugin_dir_url( dirname( __DIR__ ) ) . '/js/dist/vocabulary-term.css' );
