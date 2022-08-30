@@ -68,8 +68,8 @@ final class Mappings_DBO {
 	 */
 	public function get_properties( $mapping_id ) {
 		global $wpdb;
-		$property_rows       = $this->wpdb->get_results(
-			$this->wpdb->prepare( "SELECT * FROM {$wpdb->prefix}wl_mapping_property WHERE mapping_id=%d", $mapping_id ),
+		$property_rows = $wpdb->get_results(
+			$wpdb->prepare( "SELECT * FROM {$wpdb->prefix}wl_mapping_property WHERE mapping_id=%d", $mapping_id ),
 			ARRAY_A
 		);
 
@@ -86,10 +86,14 @@ final class Mappings_DBO {
 	 * @return bool Returns true if the row exists, false if it does not
 	 */
 	private function check_if_row_exists( $table_name, $primary_key_name, $primary_key_value ) {
+		global $wpdb;
 		$primary_key_value = (int) $primary_key_value;
 		$count             = (int) $this->wpdb->get_var(
-			$this->wpdb->prepare(
-				"SELECT COUNT($primary_key_name) from $table_name where $primary_key_name = %d",
+			$wpdb->prepare(
+				'SELECT COUNT(%s) from %s where %s = %d',
+				$primary_key_name,
+				$table_name,
+				$primary_key_name,
 				$primary_key_value
 			)
 		);
@@ -226,8 +230,8 @@ final class Mappings_DBO {
 	 */
 	public function get_rule_group_list( $mapping_id ) {
 		global $wpdb;
-		return $this->wpdb->get_results(
-			$this->wpdb->prepare(
+		return $wpdb->get_results(
+			$wpdb->prepare(
 				"SELECT rule_group_id FROM {$wpdb->prefix}wl_mapping_rule_group WHERE mapping_id=%d",
 				$mapping_id
 			),
@@ -244,8 +248,8 @@ final class Mappings_DBO {
 	 */
 	public function get_rule_groups_by_mapping( $mapping_id ) {
 		global $wpdb;
-		$rule_group_rows       = $this->wpdb->get_results(
-			$this->wpdb->prepare(
+		$rule_group_rows = $wpdb->get_results(
+			$wpdb->prepare(
 				"SELECT rule_group_id FROM {$wpdb->prefix}wl_mapping_rule_group WHERE mapping_id=%d",
 				$mapping_id
 			),
@@ -273,8 +277,8 @@ final class Mappings_DBO {
 	 */
 	public function get_rules_by_rule_group( $rule_group_id ) {
 		global $wpdb;
-		return $this->wpdb->get_results(
-			$this->wpdb->prepare(
+		return $wpdb->get_results(
+			$wpdb->prepare(
 				"SELECT * FROM {$wpdb->prefix}wl_mapping_rule WHERE rule_group_id=%d",
 				$rule_group_id
 			),
@@ -316,8 +320,8 @@ final class Mappings_DBO {
 	 */
 	public function get_mapping_item_data( $mapping_id ) {
 		global $wpdb;
-		return $this->wpdb->get_row(
-			$this->wpdb->prepare(
+		return $wpdb->get_row(
+			$wpdb->prepare(
 				"SELECT * FROM {$wpdb->prefix}wl_mapping WHERE mapping_id=%d",
 				$mapping_id
 			),
