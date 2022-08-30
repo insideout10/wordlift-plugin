@@ -30,10 +30,8 @@ class Options_Cache implements Cache {
 	public function flush_all() {
 		if ( $this->namespace !== '' ) {
 			global $wpdb;
-			$options_table_name = $wpdb->options;
-			$namespace_esc      = $wpdb->esc_like( $this->namespace ) . '__%';
-			$sql                = $wpdb->prepare( "DELETE FROM $options_table_name WHERE option_name LIKE %s", $namespace_esc );
-			$wpdb->query( $sql );
+			$namespace_esc = $wpdb->esc_like( $this->namespace ) . '__%';
+			$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->options WHERE option_name LIKE %s", $namespace_esc ) );
 		}
 	}
 
