@@ -44,7 +44,7 @@ class Data_Source_Factory {
 	 * @return Data_Source_Factory
 	 */
 	public static function get_instance() {
-		if ( self::$instance === null ) {
+		if ( null === self::$instance ) {
 			self::$instance = new Data_Source_Factory();
 		}
 

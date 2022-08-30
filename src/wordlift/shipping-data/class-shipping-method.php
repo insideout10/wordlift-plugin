@@ -43,10 +43,12 @@ class Shipping_Method {
 
 	}
 
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function add_available_delivery_method( &$jsonld ) {
 
 	}
 
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function add_shipping_rate( &$offer_shipping_details ) {
 
 	}

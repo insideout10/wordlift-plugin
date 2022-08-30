@@ -43,6 +43,7 @@ class Async_Template_Decorator {
 				'permission_callback' => '__return_true',
 				'args'                => array(
 					'template_id' => array(
+						// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 						'validate_callback' => function ( $param, $request, $key ) {
 							return is_string( $param ) && $param;
 						},
@@ -77,6 +78,7 @@ class Async_Template_Decorator {
 	 */
 	private static function get_widget_name( $shortcode_instance ) {
 		$name = str_replace( 'wl_', '', $shortcode_instance::SHORTCODE );
+
 		return str_replace( '_', '-', $name );
 	}
 

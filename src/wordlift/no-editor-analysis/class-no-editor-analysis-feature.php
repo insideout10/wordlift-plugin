@@ -18,6 +18,7 @@ class No_Editor_Analysis_Feature {
 			return false;
 		}
 
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		return apply_filters( 'wl_feature__enable__no-editor-analysis', false )
 			   && (
 				   // If the post doesnt have `editor` attribute

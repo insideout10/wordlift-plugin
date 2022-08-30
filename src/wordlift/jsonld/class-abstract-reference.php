@@ -24,7 +24,7 @@ abstract class Abstract_Reference implements Reference {
 		$this->id = $id;
 	}
 
-	abstract function get_type();
+	abstract public function get_type();
 
 	public function get_id() {
 		return $this->id;

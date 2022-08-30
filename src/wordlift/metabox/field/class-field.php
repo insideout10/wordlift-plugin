@@ -62,7 +62,7 @@ interface Field {
 	 *
 	 * @param array $values Array of values to be sanitized and then stored into $this->data.
 	 */
-	function save_data( $values );
+	public function save_data( $values );
 
 	/**
 	 * Returns the HTML tag that will contain the Field. By default the we

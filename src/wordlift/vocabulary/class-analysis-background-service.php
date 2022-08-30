@@ -51,8 +51,6 @@ class Analysis_Background_Service {
 	 */
 	public function next() {
 
-		$state = $this->info();
-
 		return Terms_Compat::get_terms(
 			Terms_Compat::get_public_taxonomies(),
 			array(
@@ -117,12 +115,10 @@ class Analysis_Background_Service {
 			// This adds the entities to ttl cache
 			$result = $this->analysis_service->get_entities( $tag );
 
-			$this->log->debug( 'Received result ' . var_export( $result ) . " for ${term_id}" );
-
 			// then set the analysis complete flag.
 			update_term_meta( $term_id, self::ANALYSIS_DONE_FLAG, 1 );
 
-			if ( $result !== false ) {
+			if ( false !== $result ) {
 				if ( count( $result ) > 0 ) {
 					update_term_meta( $term_id, self::ENTITIES_PRESENT_FOR_TERM, 1 );
 				}

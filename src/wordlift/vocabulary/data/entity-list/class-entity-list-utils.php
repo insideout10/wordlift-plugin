@@ -28,7 +28,7 @@ class Entity_List_Utils {
 
 		foreach ( $entities as &$entity ) {
 			$entity_id          = $entity['entityId'];
-			$entity['isActive'] = in_array( $entity_id, $active_entities );
+			$entity['isActive'] = in_array( $entity_id, $active_entities, true );
 		}
 
 		return $entities;

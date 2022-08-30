@@ -164,6 +164,7 @@ class Mappings_REST_Controller {
 	 *
 	 * @return array The array of the taxonomies & terms.
 	 */
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public static function get_taxonomy_terms_for_the_posted_taxonomy( $request ) {
 		$taxonomy_terms  = array();
 		$post_taxonomies = get_taxonomies( array(), 'objects' );
@@ -356,6 +357,7 @@ class Mappings_REST_Controller {
 	 *
 	 * @return array
 	 */
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public static function list_mapping_items( $request ) {
 		$dbo = new Mappings_DBO();
 

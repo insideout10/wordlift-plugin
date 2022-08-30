@@ -21,18 +21,18 @@ class Jsonld_User_Service {
 	 *
 	 * @param \Wordlift_User_Service $user_service
 	 */
-	function __construct( $user_service ) {
+	public function __construct( $user_service ) {
 		$this->user_service = $user_service;
 	}
 
 	/**
 	 * @param Jsonld_Service $jsonld_service
 	 */
-	function set_jsonld_service( $jsonld_service ) {
+	public function set_jsonld_service( $jsonld_service ) {
 		$this->jsonld_service = $jsonld_service;
 	}
 
-	function get( $user_id ) {
+	public function get( $user_id ) {
 		$userdata = get_userdata( $user_id );
 
 		// Bail out if user not found.

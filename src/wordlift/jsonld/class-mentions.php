@@ -244,7 +244,7 @@ class Mentions {
 	}
 
 	private function entity_is_creative_work( $type ) {
-		return ( $type === 'CreativeWork' ) || ( is_array( $type ) && in_array( 'CreativeWork', $type ) );
+		return ( 'CreativeWork' === $type ) || ( is_array( $type ) && in_array( 'CreativeWork', $type, true ) );
 	}
 
 }

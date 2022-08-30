@@ -46,12 +46,14 @@ class Tag_Rest_Endpoint {
 						},
 						'args'                => array(
 							'limit'  => array(
+								// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 								'validate_callback' => function ( $param, $request, $key ) {
 									return is_numeric( $param ) && $param;
 								},
 								'required'          => true,
 							),
 							'offset' => array(
+								// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 								'validate_callback' => function ( $param, $request, $key ) {
 									return is_numeric( $param );
 								},

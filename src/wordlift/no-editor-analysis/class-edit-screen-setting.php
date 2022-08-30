@@ -14,7 +14,7 @@ class Edit_Screen_Setting {
 		add_filter( 'wl_admin_settings', array( $this, 'wl_admin_settings' ) );
 	}
 
-	function wl_admin_settings( $settings ) {
+	public function wl_admin_settings( $settings ) {
 		$settings['analysis']['isNoEditorAnalysisActive'] = No_Editor_Analysis_Feature::can_no_editor_analysis_be_used( get_the_ID() );
 		return $settings;
 	}

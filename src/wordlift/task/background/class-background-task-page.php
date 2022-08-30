@@ -70,7 +70,7 @@ class Background_Task_Page {
 			plugin_dir_url( __FILE__ ) . 'assets/task-page.js',
 			array( 'wp-api' ),
 			WORDLIFT_VERSION,
-            false
+			false
 		);
 
 		wp_localize_script( 'wl-task-page', '_wlTaskPageSettings', array( 'rest_path' => $this->background_task_route->get_rest_path() ) );

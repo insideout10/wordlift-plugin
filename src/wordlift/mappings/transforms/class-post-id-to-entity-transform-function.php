@@ -20,8 +20,6 @@ use Wordlift\Mappings\Mappings_Transform_Function;
  */
 class Post_Id_To_Entity_Transform_Function implements Mappings_Transform_Function {
 
-	/**
-	 */
 	public function __construct() {
 
 		add_filter( 'wl_mappings_transformation_functions', array( $this, 'wl_mappings_transformation_functions' ) );
@@ -61,6 +59,7 @@ class Post_Id_To_Entity_Transform_Function implements Mappings_Transform_Functio
 	/**
 	 * @inheritDoc
 	 */
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function transform_data( $data, $jsonld, &$references, $post_id ) {
 
 		$ret_val = array();
@@ -69,6 +68,7 @@ class Post_Id_To_Entity_Transform_Function implements Mappings_Transform_Functio
 			// We need a numeric post ID.
 			if ( ! is_numeric( $target_post_id ) ) {
 
+				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 				@header( "X-Post-Id-To-Entity-Transform-Function: $target_post_id not numeric." );
 
 				continue;
@@ -80,6 +80,7 @@ class Post_Id_To_Entity_Transform_Function implements Mappings_Transform_Functio
 
 			// No entity URL.
 			if ( empty( $entity_url ) ) {
+				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 				@header( "X-Post-Id-To-Entity-Transform-Function: entity url for $data not found." );
 
 				continue;

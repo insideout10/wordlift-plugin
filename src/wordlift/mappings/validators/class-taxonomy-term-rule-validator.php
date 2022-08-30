@@ -41,7 +41,7 @@ class Taxonomy_Term_Rule_Validator implements Rule_Validator {
 	}
 
 	public function is_valid( $identifier, $operator, $operand_1, $taxonomy, $type ) {
-		if ( $type !== Jsonld_Converter::TERM ) {
+		if ( Jsonld_Converter::TERM !== $type) {
 			return false;
 		}
 		$current_term = get_term( $identifier );
@@ -59,15 +59,15 @@ class Taxonomy_Term_Rule_Validator implements Rule_Validator {
 			},
 			$terms
 		);
-		if ( $operator === Rule_Validator::IS_EQUAL_TO ) {
+		if ( Rule_Validator::IS_EQUAL_TO === $operator ) {
 			// if we dont have term id, then skip the flow.
 			// If we are in term page, then we need to check if the current
 			// term belongs to the taxonomy
-			return in_array( $current_term->term_id, $terms );
+			return in_array( $current_term->term_id, $terms, true );
 		}
 
-		if ( $operator === Rule_Validator::IS_NOT_EQUAL_TO ) {
-			return ! in_array( $current_term->term_id, $terms );
+		if ( Rule_Validator::IS_NOT_EQUAL_TO === $operator ) {
+			return ! in_array( $current_term->term_id, $terms, true );
 		}
 
 	}

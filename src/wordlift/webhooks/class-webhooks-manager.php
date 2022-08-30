@@ -14,7 +14,6 @@ class Webhooks_Manager {
 	/**
 	 * Registering the actions to call up sync_many or sync_delete methods
 	 */
-
 	public function __construct() {
 		add_action( 'wl_sync__sync_many', array( $this, 'sync_many' ), 10 );
 		add_action( 'wl_sync__delete_one', array( $this, 'sync_delete' ), 10, 3 );
@@ -25,7 +24,6 @@ class Webhooks_Manager {
 	 *
 	 * @param array $hashes
 	 */
-
 	public function sync_many( $hashes ) {
 
 		$urls = explode( "\n", get_option( Webhooks_Loader::URLS_OPTION_NAME, '' ) );
@@ -69,7 +67,6 @@ class Webhooks_Manager {
 	 * @param int    $object_id
 	 * @param string $uri
 	 */
-
 	public function sync_delete( $type, $object_id, $uri ) {
 
 		$urls = explode( "\n", get_option( Webhooks_Loader::URLS_OPTION_NAME, '' ) );

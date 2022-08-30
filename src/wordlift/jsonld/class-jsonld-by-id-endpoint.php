@@ -119,6 +119,7 @@ class Jsonld_By_Id_Endpoint {
 						'items'             => array(
 							'type' => 'string',
 						),
+						// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 						'validate_callback' => function ( $values, $request, $param ) {
 
 							if ( ! is_array( $values ) ) {

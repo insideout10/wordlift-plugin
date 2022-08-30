@@ -16,7 +16,7 @@ class Acf_Group_Formatter {
 	}
 
 	public function format_group_value( $field_data, $field_type ) {
-		if ( $field_type !== 'group' ) {
+		if ( 'group' !== $field_type ) {
 			// Return early if the field type is not group
 			return $field_data;
 		}

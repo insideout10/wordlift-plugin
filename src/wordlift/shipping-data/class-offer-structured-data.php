@@ -25,7 +25,7 @@ class Offer_Structured_Data {
 	public function entity_jsonld( $jsonld, $post_id ) {
 
 		// Bail out if it's not a Product or the offers property isn't set.
-		if ( ! in_array( 'Product', (array) $jsonld['@type'] ) || ! isset( $jsonld['offers'] ) ) {
+		if ( ! in_array( 'Product', (array) $jsonld['@type'], true ) || ! isset( $jsonld['offers'] ) ) {
 			return $jsonld;
 		}
 

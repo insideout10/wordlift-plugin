@@ -18,11 +18,13 @@ class Srcset_Util {
 		$medium = get_the_post_thumbnail_url( $post_id, 'medium' );
 		$large  = get_the_post_thumbnail_url( $post_id, 'large' );
 
-		if ( $medium && $width = self::get_image_width( $post_id, 'medium' ) ) {
+		$width = self::get_image_width( $post_id, 'medium' );
+		if ( $medium && $width ) {
 			$srcset[] = $medium . ' ' . $width . 'w';
 		}
 
-		if ( $large && $width = self::get_image_width( $post_id, 'large' ) ) {
+		$width = self::get_image_width( $post_id, 'large' );
+		if ( $large && $width ) {
 			$srcset[] = $large . ' ' . $width . 'w';
 		}
 

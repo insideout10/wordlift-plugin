@@ -51,7 +51,7 @@ class Analysis_Service {
 
 		$cache_key    = $tag->term_id;
 		$cache_result = $this->cache_service->get( $cache_key );
-		if ( $cache_result !== false ) {
+		if ( false !== $cache_result ) {
 			return $cache_result;
 		}
 
@@ -78,7 +78,7 @@ class Analysis_Service {
 	 * @return bool|string
 	 */
 	public static function format_entity_url( $entity_url ) {
-		$result = parse_url( $entity_url );
+		$result = wp_parse_url( $entity_url );
 		if ( ! $result ) {
 			return false;
 		}
@@ -95,7 +95,7 @@ class Analysis_Service {
 
 		$cache_results = $this->cache_service->get( $entity_url );
 
-		if ( $cache_results !== false ) {
+		if ( false !== $cache_results ) {
 			return $cache_results;
 		}
 
@@ -115,13 +115,8 @@ class Analysis_Service {
 			return false;
 		}
 
-		$this->log->debug( 'Requesting entity data for url :' . $meta_url );
-		$this->log->debug( 'Got entity meta data as : ' );
-		$this->log->debug( var_export( $response, true ) );
 		if ( ! is_wp_error( $response ) ) {
 			$meta = json_decode( wp_remote_retrieve_body( $response ), true );
-			$this->log->debug( 'Saved entity data to meta :' );
-			$this->log->debug( var_export( $meta, true ) );
 			$this->cache_service->put( $entity_url, $meta );
 
 			return $meta;
@@ -143,9 +138,6 @@ class Analysis_Service {
 				$filtered_entities[] = $entity;
 			}
 		}
-		$this->log->debug( 'Returning filtered entities as' );
-		$this->log->debug( var_export( $filtered_entities, true ) );
-
 		return $filtered_entities;
 
 	}

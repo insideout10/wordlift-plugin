@@ -28,7 +28,7 @@ class Meta_Data_Source implements Abstract_Data_Source {
 
 		$value = $property['field_name'];
 
-		if ( $type === Jsonld_Converter::TERM ) {
+		if ( Jsonld_Converter::TERM === $type ) {
 			$meta = get_term_meta( $identifier, $value );
 		} else {
 			$meta = get_post_meta( $identifier, $value );

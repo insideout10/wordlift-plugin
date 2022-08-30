@@ -17,14 +17,14 @@ class Filler_Posts_Util {
 
 	public function __construct( $post_id, $alternate_post_type = null ) {
 
-		$post_type = $alternate_post_type ?: get_post_type( $post_id );
+		$post_type = $alternate_post_type ? $alternate_post_type : get_post_type( $post_id );
 
-		if ( $post_type === 'post' || ( is_array( $post_type ) && in_array( 'post', $post_type ) ) ) {
+		if ( 'post' === $post_type || ( is_array( $post_type ) && in_array( 'post', $post_type, true ) ) ) {
 			$this->sources = array(
 				new Same_Category_Filler_Posts( $post_id ),
 				new Same_Post_Type_Filler_Posts( $post_id ),
 			);
-		} elseif ( $post_type === 'product' || ( is_array( $post_type ) && in_array( 'product', $post_type ) ) ) {
+		} elseif ( 'product' === $post_type || ( is_array( $post_type ) && in_array( 'product', $post_type, true ) ) ) {
 			$this->sources = array(
 				new Same_Post_Type_Same_Category_Posts( $post_id, 'product' ),
 				new Same_Post_Type_Filler_Posts( $post_id, 'product' ),

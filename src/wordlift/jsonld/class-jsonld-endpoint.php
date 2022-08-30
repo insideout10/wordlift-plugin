@@ -57,6 +57,7 @@ class Jsonld_Endpoint {
 						'permission_callback' => '__return_true',
 						'args'                => array(
 							'id' => array(
+								// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 								'validate_callback' => function ( $param, $request, $key ) {
 									return is_numeric( $param );
 								},

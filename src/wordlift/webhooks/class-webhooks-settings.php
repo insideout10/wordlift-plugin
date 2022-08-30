@@ -28,7 +28,6 @@ class Webhooks_Settings {
 	/**
 	 * Call back function to register the option group
 	 */
-
 	public function wl_admin_register_setting() {
 		register_setting(
 			'wl_settings__webhooks',
@@ -41,7 +40,7 @@ class Webhooks_Settings {
 		add_settings_section(
 			'wl_settings__webhooks__general',
 			__( 'Webhooks Settings', 'wordlift' ),
-			function ( $args ) {
+			function () {
 				esc_html_e( 'Set one or more URLs that should be called when data is changed.', 'wordlift' );
 			},
 			'wl_settings__webhooks'
@@ -49,7 +48,7 @@ class Webhooks_Settings {
 		add_settings_field(
 			'wl_settings__webhooks__general__urls',
 			__( 'URLs:', 'wordlift' ),
-			function ( $args ) {
+			function () {
 				?>
 			<textarea id="wl_settings__webhooks__general__urls"
 					  name="wl_webhooks_urls"><?php echo esc_html( get_option( Webhooks_Loader::URLS_OPTION_NAME, '' ) ); ?></textarea>
@@ -67,7 +66,7 @@ class Webhooks_Settings {
 	 *
 	 * @return string
 	 */
-	function sanitize_callback( $values ) {
+	public function sanitize_callback( $values ) {
 
 		return implode(
 			"\n",

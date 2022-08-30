@@ -50,7 +50,7 @@ class Term_Page_Hook {
 			true
 		);
 
-		wp_enqueue_style( self::HANDLE, plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/vocabulary-term-page.full.css' );
+		wp_enqueue_style( self::HANDLE, plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/vocabulary-term-page.full.css', array(), WORDLIFT_VERSION );
 
 		$term_data_arr = $term_data->get_data();
 

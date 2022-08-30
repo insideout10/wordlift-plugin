@@ -79,6 +79,7 @@ class Entity_Rest_Endpoint {
 				},
 				'args'                => array(
 					'term_id' => array(
+						// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 						'validate_callback' => function ( $param, $request, $key ) {
 							return is_numeric( $param ) && $param;
 						},
@@ -123,6 +124,7 @@ class Entity_Rest_Endpoint {
 				},
 				'args'                => array(
 					'term_id' => array(
+						// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 						'validate_callback' => function ( $param, $request, $key ) {
 							return is_numeric( $param ) && $param;
 						},
@@ -149,12 +151,14 @@ class Entity_Rest_Endpoint {
 				},
 				'args'                => array(
 					'term_id' => array(
+						// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 						'validate_callback' => function ( $param, $request, $key ) {
 							return is_numeric( $param ) && $param;
 						},
 						'required'          => true,
 					),
 					'entity'  => array(
+						// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 						'validate_callback' => function ( $param, $request, $key ) {
 							return is_array( $param );
 						},

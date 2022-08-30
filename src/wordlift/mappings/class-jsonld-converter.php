@@ -216,9 +216,10 @@ class Jsonld_Converter {
 			 * loop through it and create associative array if the levels
 			 * didnt exist.
 			 */
-			while ( count( $keys ) > 0 ) {
+			$count = count( $keys );
+			while ( $count > 0 ) {
 				$key = array_shift( $keys );
-				if ( $key === '' ) {
+				if ( '' === $key ) {
 					continue;
 				}
 				if ( ! array_key_exists( $key, $current_property_pointer ) ) {

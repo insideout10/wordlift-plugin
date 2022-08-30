@@ -64,7 +64,7 @@ class Post_Type_Rule_Validator implements Rule_Validator {
 		 * which causes a bug, so this rule validator would return false
 		 * when the current thing is not a post.
 		 */
-		if ( $type !== Jsonld_Converter::POST ) {
+		if ( Jsonld_Converter::POST !== $type ) {
 			return false;
 		}
 		// Get the post type and then check whether it matches or not according to the operator.

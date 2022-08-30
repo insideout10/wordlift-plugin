@@ -56,6 +56,6 @@ abstract class Filler_Posts {
 	 *
 	 * @return array<\WP_Post>
 	 */
-	abstract function get_posts( $filler_count, $post_ids_to_be_excluded );
+	abstract public function get_posts( $filler_count, $post_ids_to_be_excluded );
 
 }

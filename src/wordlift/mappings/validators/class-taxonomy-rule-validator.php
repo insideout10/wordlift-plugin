@@ -19,6 +19,7 @@ class Taxonomy_Rule_Validator implements Rule_Validator {
 	/**
 	 * {@inheritdoc}
 	 */
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function is_valid( $identifier, $operator, $operand_1, $operand_2, $type ) {
 
 		$taxonomy  = $operand_1;

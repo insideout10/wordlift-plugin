@@ -82,7 +82,8 @@ class Admin_Mappings_Page extends Wordlift_Admin_Page {
 		wp_enqueue_style(
 			'wl-mappings-admin',
 			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/mappings.css',
-			Wordlift::get_instance()->get_version()
+			array(),
+			WORDLIFT_VERSION
 		);
 		self::provide_ui_dependencies();
 	}

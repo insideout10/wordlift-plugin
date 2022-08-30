@@ -12,13 +12,6 @@ use Wordlift\Common\Singleton;
 
 class Reference_Processor extends Singleton {
 
-	/**
-	 * @return Reference_Processor
-	 */
-	public static function get_instance() {
-		return parent::get_instance();
-	}
-
 	public function serialize_references( $references ) {
 
 		return array_map(

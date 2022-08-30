@@ -14,7 +14,7 @@ class Flat_Rate_Shipping_Method extends Shipping_Method {
 			$jsonld['availableDeliveryMethod'] = array( $jsonld['availableDeliveryMethod'] );
 		}
 
-		if ( ! in_array( 'ParcelDelivery', $jsonld['availableDeliveryMethod'] ) ) {
+		if ( ! in_array( 'ParcelDelivery', $jsonld['availableDeliveryMethod'], true ) ) {
 			array_push( $jsonld['availableDeliveryMethod'], 'ParcelDelivery' );
 		}
 

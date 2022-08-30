@@ -75,7 +75,7 @@ class Shipping_Zones {
 
 			$country = substr( $wc_shipping_zone->code, 0, 2 );
 
-			if ( ! in_array( $country, $countries ) ) {
+			if ( ! in_array( $country, $countries, true ) ) {
 				$countries[] = $country;
 			}
 		}

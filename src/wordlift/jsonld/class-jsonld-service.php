@@ -37,7 +37,7 @@ class Jsonld_Service {
 	 * @param Wordlift_Term_JsonLd_Adapter $term_jsonld_adapter
 	 * @param Jsonld_User_Service          $jsonld_user_service
 	 *
-	 * @throws Exception
+	 * @throws Exception when an error occurs.
 	 */
 	public function __construct( $legacy_jsonld_service, $term_jsonld_adapter, $jsonld_user_service ) {
 

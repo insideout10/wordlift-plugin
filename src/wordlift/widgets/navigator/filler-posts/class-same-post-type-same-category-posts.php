@@ -8,9 +8,9 @@ namespace Wordlift\Widgets\Navigator\Filler_Posts;
  */
 class Same_Post_Type_Same_Category_Posts extends Filler_Posts {
 
-	function get_posts( $filler_count, $post_ids_to_be_excluded ) {
+	public function get_posts( $filler_count, $post_ids_to_be_excluded ) {
 		$current_post_categories = wp_get_post_categories( $this->post_id );
-		$post_type               = $this->alternate_post_type ?: get_post_type( $this->post_id );
+		$post_type               = $this->alternate_post_type ? $this->alternate_post_type : get_post_type( $this->post_id );
 
 		return get_posts(
 			array(

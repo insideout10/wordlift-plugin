@@ -127,7 +127,8 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		wp_enqueue_style(
 			'wl-mappings-edit',
 			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/mappings-edit.css',
-			Wordlift::get_instance()->get_version()
+			array(),
+			WORDLIFT_VERSION
 		);
 	}
 

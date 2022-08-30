@@ -29,7 +29,7 @@ class Acf_Data_Source implements Abstract_Data_Source {
 	 * @return array|mixed
 	 */
 	private function get_data_for_acf_field( $field_name, $identifier, $type ) {
-		if ( $type === Jsonld_Converter::TERM ) {
+		if ( Jsonld_Converter::TERM === $type ) {
 			$term = get_term( $identifier );
 			// Data fetching method for term is different.
 			$field_data = get_field_object( $field_name, $term );
@@ -40,7 +40,7 @@ class Acf_Data_Source implements Abstract_Data_Source {
 		}
 		// only process if it is a repeater field, else return the data.
 		if ( is_array( $field_data ) && array_key_exists( 'type', $field_data )
-			 && $field_data['type'] === 'repeater' ) {
+			 && 'repeater' === $field_data['type'] ) {
 			/**
 			 * check if we have only one sub field, currently we only support one subfield,
 			 * so each repeater item should be checked if there is a single sub field.

@@ -61,7 +61,7 @@ class Taxonomy_Option {
 					 * $item Taxonomy
 					 */
 					$taxonomy_options[] = array(
-						'label'        => __( $item->label, 'wordlift' ),
+						'label'        => $item->label,
 						'value'        => $item->name,
 						// The value of parent option on rule field one.
 						'parent_value' => Taxonomy_Option::PARENT_VALUE,

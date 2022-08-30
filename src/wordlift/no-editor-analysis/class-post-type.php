@@ -3,7 +3,7 @@ namespace Wordlift\No_Editor_Analysis;
 
 class Post_Type {
 
-	static function is_no_editor_analysis_enabled_for_post_type( $post_type ) {
+	public static function is_no_editor_analysis_enabled_for_post_type( $post_type ) {
 
 		if ( ! $post_type ) {
 			return false;

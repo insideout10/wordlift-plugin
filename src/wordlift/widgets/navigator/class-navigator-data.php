@@ -9,7 +9,7 @@ namespace Wordlift\Widgets\Navigator;
 class Navigator_Data {
 
 	public static function get_post_types_as_string( $post_types ) {
-		if ( $post_types === array() ) {
+		if ( array() === $post_types ) {
 			$post_types = get_post_types();
 		}
 		$post_types = array_map(

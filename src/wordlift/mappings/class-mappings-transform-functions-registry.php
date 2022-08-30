@@ -105,7 +105,7 @@ class Mappings_Transform_Functions_Registry {
 		$transformation_function_names = array();
 		$transformation_functions      = array();
 		foreach ( $this->transform_function_array as $transformation_function ) {
-			if ( ! in_array( $transformation_function->get_name(), $transformation_function_names ) ) {
+			if ( ! in_array( $transformation_function->get_name(), $transformation_function_names, true ) ) {
 				array_push( $transformation_function_names, $transformation_function->get_name() );
 				array_push( $transformation_functions, $transformation_function );
 			}
