@@ -165,14 +165,18 @@ class Jsonld_Endpoint {
 
 		global $wpdb;
 
-		$sql = "
+		$post_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"
 			SELECT ID
 			FROM $wpdb->posts
 			WHERE post_name = %s
 			 AND post_type = %s
-		";
-
-		$post_id = $wpdb->get_var( $wpdb->prepare( $sql, $post_name, $post_type ) );
+		",
+				$post_name,
+				$post_type
+			)
+		);
 
 		if ( is_null( $post_id ) ) {
 			return new WP_REST_Response( esc_html( "$post_name of type $post_type not found." ), 404, array( 'Content-Type' => 'text/html' ) );
@@ -194,15 +198,19 @@ class Jsonld_Endpoint {
 
 		global $wpdb;
 
-		$sql = "
+		$post_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"
 			SELECT post_id AS ID
 			FROM $wpdb->postmeta
 			WHERE meta_key = %s
 			 AND meta_value = %s
 			LIMIT 1
-		";
-
-		$post_id = $wpdb->get_var( $wpdb->prepare( $sql, $meta_key, $meta_value ) );
+		",
+				$meta_key,
+				$meta_value
+			)
+		);
 
 		if ( is_null( $post_id ) ) {
 			return new WP_REST_Response( esc_html( "Post with meta key $meta_key and value $meta_value not found." ), 404, array( 'Content-Type' => 'text/html' ) );
