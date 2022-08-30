@@ -37,10 +37,9 @@ final class Mappings_DBO {
 	 * @return array An array of mappings.
 	 */
 	public function get_mappings() {
-		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
-
+		global $wpdb;
 		return $this->wpdb->get_results(
-			"SELECT * FROM $mapping_table_name",
+			"SELECT * FROM {$wpdb->prefix}wl_mapping",
 			ARRAY_A
 		);
 	}
@@ -53,10 +52,9 @@ final class Mappings_DBO {
 	 * @return array An array of mappings.
 	 */
 	public function get_active_mappings() {
-		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
-
+		global $wpdb;
 		return $this->wpdb->get_results(
-			"SELECT * FROM $mapping_table_name WHERE mapping_status = 'active'",
+			"SELECT * FROM {$wpdb->prefix}wl_mapping WHERE mapping_status = 'active'",
 			ARRAY_A
 		);
 	}
@@ -69,9 +67,9 @@ final class Mappings_DBO {
 	 * @return array List of property items belong to $mapping_id.
 	 */
 	public function get_properties( $mapping_id ) {
-		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
+		global $wpdb;
 		$property_rows       = $this->wpdb->get_results(
-			$this->wpdb->prepare( "SELECT * FROM $property_table_name WHERE mapping_id=%d", $mapping_id ),
+			$this->wpdb->prepare( "SELECT * FROM {$wpdb->prefix}wl_mapping_property WHERE mapping_id=%d", $mapping_id ),
 			ARRAY_A
 		);
 
@@ -227,11 +225,10 @@ final class Mappings_DBO {
 	 * @return array Get list of rule group items.
 	 */
 	public function get_rule_group_list( $mapping_id ) {
-		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
-
+		global $wpdb;
 		return $this->wpdb->get_results(
 			$this->wpdb->prepare(
-				"SELECT rule_group_id FROM $rule_group_table_name WHERE mapping_id=%d",
+				"SELECT rule_group_id FROM {$wpdb->prefix}wl_mapping_rule_group WHERE mapping_id=%d",
 				$mapping_id
 			),
 			ARRAY_A
@@ -246,11 +243,10 @@ final class Mappings_DBO {
 	 * @return array Get list of rule group items.
 	 */
 	public function get_rule_groups_by_mapping( $mapping_id ) {
-
-		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
+		global $wpdb;
 		$rule_group_rows       = $this->wpdb->get_results(
 			$this->wpdb->prepare(
-				"SELECT rule_group_id FROM $rule_group_table_name WHERE mapping_id=%d",
+				"SELECT rule_group_id FROM {$wpdb->prefix}wl_mapping_rule_group WHERE mapping_id=%d",
 				$mapping_id
 			),
 			ARRAY_A
@@ -276,11 +272,10 @@ final class Mappings_DBO {
 	 * @return array Get list of rule items.
 	 */
 	public function get_rules_by_rule_group( $rule_group_id ) {
-		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
-
+		global $wpdb;
 		return $this->wpdb->get_results(
 			$this->wpdb->prepare(
-				"SELECT * FROM $rule_table_name WHERE rule_group_id=%d",
+				"SELECT * FROM {$wpdb->prefix}wl_mapping_rule WHERE rule_group_id=%d",
 				$rule_group_id
 			),
 			ARRAY_A
@@ -320,11 +315,10 @@ final class Mappings_DBO {
 	 * @return array Returns single mapping table row..
 	 */
 	public function get_mapping_item_data( $mapping_id ) {
-		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
-
+		global $wpdb;
 		return $this->wpdb->get_row(
 			$this->wpdb->prepare(
-				"SELECT * FROM $mapping_table_name WHERE mapping_id=%d",
+				"SELECT * FROM {$wpdb->prefix}wl_mapping WHERE mapping_id=%d",
 				$mapping_id
 			),
 			ARRAY_A
