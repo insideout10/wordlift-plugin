@@ -35,12 +35,14 @@ class Faq_Rest_Controller {
 		 */
 		$post_id_validation_settings   = array(
 			'required'          => true,
+			// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 			'validate_callback' => function ( $param, $request, $key ) {
 				return is_numeric( $param );
 			},
 		);
 		$faq_items_validation_settings = array(
 			'required'          => true,
+			// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 			'validate_callback' => function ( $param, $request, $key ) {
 				return is_array( $param ) && count( $param ) > 0;
 			},
@@ -157,7 +159,7 @@ class Faq_Rest_Controller {
 
 		return array(
 			'status'  => 'success',
-			'message' => __( 'Faq Items updated successfully' ),
+			'message' => __( 'Faq Items updated successfully', 'wordlift' ),
 		);
 
 	}
@@ -187,16 +189,16 @@ class Faq_Rest_Controller {
 				'id'       => (int) $faq_item['id'],
 			);
 			/**
-			 * If the field to be deleted is answer, then dont delete the faq item,
+			 * If the field to be deleted is answer, then don't delete the faq item,
 			 * if it is question then delete the faq item.
 			 */
-			if ( $faq_item['field_to_be_deleted'] === self::ANSWER ) {
+			if ( self::ANSWER === $faq_item['field_to_be_deleted'] ) {
 				$previous_value = $deleted_faq_item;
-				// then dont delete the faq item, set the answer as empty.
+				// then don't delete the faq item, set the answer as empty.
 				$deleted_faq_item['answer'] = '';
 				$new_value                  = $deleted_faq_item;
 				update_post_meta( $post_id, self::FAQ_META_KEY, $new_value, $previous_value );
-			} elseif ( $faq_item['field_to_be_deleted'] === self::QUESTION ) {
+			} elseif ( self::QUESTION === $faq_item['field_to_be_deleted'] ) {
 				/**
 				 * If the question is deleted, then delete the faq item.
 				 */
@@ -209,7 +211,7 @@ class Faq_Rest_Controller {
 		 */
 		return array(
 			'status'  => 'success',
-			'message' => __( 'Faq item successfully deleted.' ),
+			'message' => __( 'Faq item successfully deleted.', 'wordlift' ),
 		);
 	}
 
@@ -239,7 +241,7 @@ class Faq_Rest_Controller {
 		 */
 		return array(
 			'status'  => 'success',
-			'message' => __( 'Question successfully added.' ),
+			'message' => __( 'Question successfully added.', 'wordlift' ),
 			'id'      => (int) $faq_items[0]['id'],
 		);
 

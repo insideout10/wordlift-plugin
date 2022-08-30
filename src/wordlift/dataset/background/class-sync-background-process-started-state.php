@@ -40,7 +40,8 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
 	 * @param bool                        $reset Whether to reset the counters
 	 */
-	function __construct( $context, $sync_service, $sync_object_adapter_factory, $reset = true ) {
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public function __construct( $context, $sync_service, $sync_object_adapter_factory, $reset = true ) {
 		parent::__construct( Sync_Background_Process::STATE_STARTED );
 
 		$this->context      = $context;
@@ -53,7 +54,7 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 		);
 	}
 
-	function enter() {
+	public function enter() {
 		// Delete the KG contents.
 		$this->sync_service->delete_all();
 
@@ -78,16 +79,17 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 		$this->resume();
 	}
 
-	function resume() {
+	public function resume() {
 		$this->context->push_to_queue( true );
 		$this->context->save()->dispatch();
 	}
 
-	function leave() {
+	public function leave() {
 		$this->context->set_state( null );
 	}
 
-	function task( $args ) {
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public function task( $args ) {
 
 		$offset     = get_option( '_wl_sync_background_process_offset' );
 		$stage      = get_option( '_wl_sync_background_process_stage' );
@@ -98,6 +100,7 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 		try {
 			$object_adapters = $this->stages[ $stage ]->get_sync_object_adapters( $offset, $batch_size );
 			$this->sync_service->sync_many( $object_adapters, true );
+		// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 		} catch ( \Exception $e ) {
 			// ignored.
 		}

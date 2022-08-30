@@ -15,19 +15,19 @@ class Sync_Post_Adapter extends Abstract_Sync_Object_Adapter {
 	 *
 	 * @param int $post_id
 	 *
-	 * @throws xception when an error occurs.
+	 * @throws \Exception when an error occurs.
 	 */
-	function __construct( $post_id ) {
+	public function __construct( $post_id ) {
 		parent::__construct( Object_Type_Enum::POST, $post_id );
 
 		$this->post_id = $post_id;
 	}
 
-	function is_published() {
+	public function is_published() {
 		return ( 'publish' === get_post_status( $this->post_id ) );
 	}
 
-	function is_public() {
+	public function is_public() {
 		// Check if the post type is public.
 		$post_type     = get_post_type( $this->post_id );
 		$post_type_obj = get_post_type_object( $post_type );
@@ -51,7 +51,7 @@ class Sync_Post_Adapter extends Abstract_Sync_Object_Adapter {
 			)
 		);
 
-		$result = $wpdb->query(
+		$wpdb->query(
 			$wpdb->prepare(
 				"
 			INSERT INTO {$wpdb->prefix}wl_entities( content_id, content_type, $field_names )

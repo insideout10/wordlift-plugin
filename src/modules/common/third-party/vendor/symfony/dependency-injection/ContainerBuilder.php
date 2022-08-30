@@ -473,7 +473,7 @@ class ContainerBuilder extends Container implements TaggedContainerInterface {
 	 * @throws InvalidArgumentException          when no definitions are available
 	 * @throws ServiceCircularReferenceException When a circular reference is detected
 	 * @throws ServiceNotFoundException          When the service is not defined
-	 * @throws xception when an error occurs.
+	 * @throws \Exception when an error occurs.
 	 *
 	 * @see Reference
 	 */

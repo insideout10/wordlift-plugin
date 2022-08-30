@@ -4,6 +4,7 @@ namespace Wordlift\Dataset;
 
 use Wordlift\Object_Type_Enum;
 
+// phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledClassName
 class Sync_Hooks_Wordpress_Ontology {
 
 	const HTTP_PURL_ORG_WORDPRESS_1_0 = 'http://purl.org/wordpress/1.0/';

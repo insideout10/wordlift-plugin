@@ -35,14 +35,15 @@ class Sync_Page {
 			'wl-tasks-page',
 			plugin_dir_url( __DIR__ ) . 'tasks/admin/assets/tasks-page.css',
 			array(),
-			\Wordlift::get_instance()->get_version(),
-			'all'
+			\Wordlift::get_instance()->get_version()
 		);
+
 		wp_enqueue_script(
 			'wl-dataset-sync-page',
 			plugin_dir_url( __FILE__ ) . 'assets/sync-page.js',
 			array( 'wp-api' ),
-			\Wordlift::get_instance()->get_version()
+			\Wordlift::get_instance()->get_version(),
+            false
 		);
 
 		?>

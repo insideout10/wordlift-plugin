@@ -17,11 +17,11 @@ class Sync_Background_Process_Users_Stage {
 	 *
 	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
 	 */
-	function __construct( $sync_object_adapter_factory ) {
+	public function __construct( $sync_object_adapter_factory ) {
 		$this->sync_object_adapter_factory = $sync_object_adapter_factory;
 	}
 
-	function count() {
+	public function count() {
 
 		global $wpdb;
 		$in_post_type = $this->get_post_types_string();
@@ -35,7 +35,7 @@ class Sync_Background_Process_Users_Stage {
 		return $wpdb->get_var( $sql );
 	}
 
-	function get_sync_object_adapters( $offset, $limit ) {
+	public function get_sync_object_adapters( $offset, $limit ) {
 
 		global $wpdb;
 		$in_post_type = $this->get_post_types_string();

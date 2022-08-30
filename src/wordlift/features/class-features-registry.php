@@ -12,7 +12,7 @@ class Features_Registry {
 	private static $instance = null;
 
 	public static function get_instance() {
-		if ( self::$instance === null ) {
+		if ( null === self::$instance ) {
 			self::$instance = new Features_Registry();
 		}
 

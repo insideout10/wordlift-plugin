@@ -67,7 +67,10 @@ class Key_Validation_Notice {
 		?>
 		<div class="wl-notice notice is-dismissible error">
 			<p>
-				<?php echo wp_kses( __( "Your WordLift key is not valid, please update the key in <a href='$settings_url'>WordLift Settings</a> or contact our support at hello@wordlift.io.", 'wordlift' ), array( 'a' => array( 'href' ) ) ); ?>
+				<?php
+				/* translators: %s: the link to the WordLift configuration screen. */
+				echo wp_kses( sprintf( __( "Your WordLift key is not valid, please update the key in <a href='%s'>WordLift Settings</a> or contact our support at hello@wordlift.io.", 'wordlift' ), esc_attr( $settings_url ) ), array( 'a' => array( 'href' ) ) );
+				?>
 			</p>
 			<button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span>
 			</button>

@@ -39,7 +39,7 @@ class Faq_To_Jsonld_Converter {
 				return $jsonld;
 			}
 			// check if it is a array, then append the type.
-			if ( is_array( $jsonld['@type'] ) && ! in_array( self::FAQ_JSONLD_TYPE, $jsonld['@type'] ) ) {
+			if ( is_array( $jsonld['@type'] ) && ! in_array( self::FAQ_JSONLD_TYPE, $jsonld['@type'], true ) ) {
 				array_push( $jsonld['@type'], self::FAQ_JSONLD_TYPE );
 				return $jsonld;
 			}
@@ -75,6 +75,7 @@ class Faq_To_Jsonld_Converter {
 	 * @return array Associtative array of type, mainEntity.
 	 */
 	private function get_faq_data( $faq_items ) {
+		$jsonld_data               = array();
 		$jsonld_data['mainEntity'] = array();
 		foreach ( $faq_items as $faq_item ) {
 			if ( 0 === strlen( $faq_item['question'] ) || 0 === strlen( $faq_item['answer'] ) ) {

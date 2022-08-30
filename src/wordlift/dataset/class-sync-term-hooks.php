@@ -28,7 +28,7 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 	 * @param Sync_Service                $sync_service
 	 * @param Sync_Object_Adapter_Factory $sync_object_factory
 	 */
-	function __construct( $sync_service, $sync_object_factory ) {
+	public function __construct( $sync_service, $sync_object_factory ) {
 		parent::__construct();
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
@@ -58,6 +58,7 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 		$this->sync( $term_id );
 	}
 
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function changed_term_meta( $meta_id, $term_id, $meta_key, $_meta_value ) {
 
 		if ( in_array(
@@ -72,7 +73,8 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 						'entity_url',
 					)
 				)
-			)
+			),
+			true
 		)
 		) {
 			return;
@@ -107,7 +109,7 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 	/**
 	 * @param $term \WP_Term
 	 *
-	 * @throws xception when an error occurs.
+	 * @throws \Exception when an error occurs.
 	 */
 	public function delete_term( $term_id ) {
 		$args = array(

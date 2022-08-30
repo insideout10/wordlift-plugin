@@ -25,14 +25,12 @@ class Faq_Content_Filter {
 		/**
 		 * Replace all the question tags.
 		 */
-		$faq_question_opening_tag = '<' . self::FAQ_QUESTION_TAG_NAME . '>';
 		$faq_question_closing_tag = '</' . self::FAQ_QUESTION_TAG_NAME . '>';
 		$content                  = preg_replace( '/<wl-faq-question class=".+?">/m', '', $content );
 		$content                  = str_replace( $faq_question_closing_tag, '', $content );
 		/**
 		 * Replace all the answer tags.
 		 */
-		$faq_answer_opening_tag = '<' . self::FAQ_ANSWER_TAG_NAME . '>';
 		$faq_answer_closing_tag = '</' . self::FAQ_ANSWER_TAG_NAME . '>';
 		$content                = preg_replace( '/<wl-faq-answer class=".+?">/m', '', $content );
 		$content                = str_replace( $faq_answer_closing_tag, '', $content );

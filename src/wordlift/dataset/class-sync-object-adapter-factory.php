@@ -11,9 +11,9 @@ class Sync_Object_Adapter_Factory {
 	 * @param int $object_id The object id.
 	 *
 	 * @return Sync_Object_Adapter
-	 * @throws xception when an error occurs.
+	 * @throws \Exception when an error occurs.
 	 */
-	function create( $type, $object_id ) {
+	public function create( $type, $object_id ) {
 
 		switch ( $type ) {
 			case Object_Type_Enum::POST:
@@ -28,7 +28,7 @@ class Sync_Object_Adapter_Factory {
 
 	}
 
-	function create_many( $type, $object_ids ) {
+	public function create_many( $type, $object_ids ) {
 		$that = $this;
 
 		return array_map(

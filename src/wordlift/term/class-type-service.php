@@ -22,13 +22,6 @@ class Type_Service extends Singleton {
 	 */
 	private $schema_service;
 
-	/**
-	 * @return Type_Service
-	 */
-	public static function get_instance() {
-		return parent::get_instance();
-	}
-
 	public function __construct() {
 		parent::__construct();
 		$this->schema_service = \Wordlift_Schema_Service::get_instance();

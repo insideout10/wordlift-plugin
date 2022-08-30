@@ -199,7 +199,7 @@ class Patches implements PluginInterface, EventSubscriberInterface {
 	 * Get the patches from root composer or external file
 	 *
 	 * @return Patches
-	 * @throws xception when an error occurs.
+	 * @throws \Exception when an error occurs.
 	 */
 	public function grabPatches() {
 		// First, try to get the patches from the root composer.json.
@@ -248,7 +248,7 @@ class Patches implements PluginInterface, EventSubscriberInterface {
 	}
 	/**
 	 * @param PackageEvent $event
-	 * @throws xception when an error occurs.
+	 * @throws \Exception when an error occurs.
 	 */
 	public function postInstall( PackageEvent $event ) {
 		// Check if we should exit in failure.
@@ -302,7 +302,7 @@ class Patches implements PluginInterface, EventSubscriberInterface {
 	 *
 	 * @param OperationInterface $operation
 	 * @return PackageInterface
-	 * @throws xception when an error occurs.
+	 * @throws \Exception when an error occurs.
 	 */
 	protected function getPackageFromOperation( OperationInterface $operation ) {
 		if ( $operation instanceof InstallOperation ) {
@@ -321,7 +321,7 @@ class Patches implements PluginInterface, EventSubscriberInterface {
 	 * @param $install_path
 	 * @param $patch_url
 	 * @param PackageInterface $package
-	 * @throws xception when an error occurs.
+	 * @throws \Exception when an error occurs.
 	 */
 	protected function getAndApplyPatch( RemoteFilesystem $downloader, $install_path, $patch_url, PackageInterface $package ) {
 		// Local patch file.

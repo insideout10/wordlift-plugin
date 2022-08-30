@@ -6,7 +6,7 @@ abstract class Abstract_Sync_Hooks {
 
 	private $queue = array();
 
-	function __construct() {
+	public function __construct() {
 
 		// To sync at the end of the usual WordPress lifecycle
 		add_action( 'shutdown', array( $this, 'shutdown' ) );
