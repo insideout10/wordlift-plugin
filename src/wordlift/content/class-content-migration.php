@@ -23,26 +23,26 @@ class Content_Migration {
 	private function migrate_entity_url() {
 		global $wpdb;
 
-		$sql = "INSERT INTO {$wpdb->prefix}wl_entities( content_id, content_type, rel_uri, rel_uri_hash ) 
+		$wpdb->query(
+			"INSERT INTO {$wpdb->prefix}wl_entities( content_id, content_type, rel_uri, rel_uri_hash ) 
 			SELECT post_id AS content_id, 0 AS content_type,
 			    SUBSTR( meta_value, LENGTH( SUBSTRING_INDEX( meta_value, '/', 4 ) ) + 2 ) AS rel_uri,
 			    SHA1( SUBSTR( meta_value, LENGTH( SUBSTRING_INDEX( meta_value, '/', 4 ) ) + 2 ) ) AS rel_uri_hash   
 			FROM $wpdb->postmeta
 			WHERE meta_key = 'entity_url' AND post_id IN (SELECT ID FROM $wpdb->posts)
-			ON DUPLICATE KEY UPDATE rel_uri = VALUES( rel_uri ), rel_uri_hash = VALUES( rel_uri_hash );";
-
-		$wpdb->query( $sql );
+			ON DUPLICATE KEY UPDATE rel_uri = VALUES( rel_uri ), rel_uri_hash = VALUES( rel_uri_hash );"
+		);
 
 	}
 
 	private function delete_legacy_fields_from_postmeta() {
 		global $wpdb;
 
-		$sql = "DELETE
+		$wpdb->query(
+			"DELETE
 			FROM $wpdb->postmeta
-			WHERE meta_key = 'entity_url';";
-
-		$wpdb->query( $sql );
+			WHERE meta_key = 'entity_url';"
+		);
 
 	}
 
