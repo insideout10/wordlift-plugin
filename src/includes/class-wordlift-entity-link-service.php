@@ -225,18 +225,21 @@ class Wordlift_Entity_Link_Service {
 			}
 		}
 
-		// Post slugs must be unique across all posts.
-		$check_sql = $wpdb->prepare(
-			"SELECT post_name
+		return null !== $wpdb->get_var(
+			$wpdb->prepare(
+				sprintf(
+					"SELECT post_name
 			FROM $wpdb->posts
 			WHERE post_name = %s
-			AND post_type IN ('" . implode( "', '", array_map( 'esc_sql', $post_types ) ) . "')
+			AND post_type IN (%s)
 			LIMIT 1
 			",
-			$slug
+					'%s',
+					implode( ',', array_fill( 0, count( $post_types ), '%s' ) )
+				),
+				array_merge( array( $slug ), $post_types )
+			)
 		);
-
-		return null !== $wpdb->get_var( $check_sql );
 	}
 
 }
