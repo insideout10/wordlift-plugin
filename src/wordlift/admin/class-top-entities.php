@@ -23,7 +23,8 @@ class Top_Entities {
 
 		global $wpdb;
 
-		$query = "
+		$results = $wpdb->get_results(
+			"
 			SELECT p_as_object.ID
 			    , p_as_object.post_title
 			    , COALESCE(SUM(CASE WHEN t_as_subject.slug IS NULL THEN 1 END), 0)     entities
@@ -47,9 +48,8 @@ class Top_Entities {
 			GROUP BY p_as_object.ID, p_as_object.post_title
 			ORDER BY total DESC
 			LIMIT 20
-		";
-
-		$results = $wpdb->get_results( $query );
+		"
+		);
 
 		update_option( self::OPTION_KEY, $results );
 	}
