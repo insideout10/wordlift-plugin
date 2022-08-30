@@ -43,7 +43,7 @@ class Wordlift_Mapping_Ajax_Adapter {
 		}
 
 		$post_type    = sanitize_text_field( wp_unslash( $_REQUEST['post_type'] ) );
-		$entity_types =  array_map( 'esc_html',  wp_unslash( (array)  $_REQUEST['entity_types'] ) );
+		$entity_types =  array_map( 'sanitize_text_field',  wp_unslash( (array)  $_REQUEST['entity_types'] ) );
 
 		$this->mapping_service->set_entity_types_for_post_type( $post_type, $entity_types );
 
@@ -71,7 +71,7 @@ class Wordlift_Mapping_Ajax_Adapter {
 		$post_type = isset( $_REQUEST['post_type'] ) ? sanitize_text_field(wp_unslash( $_REQUEST['post_type'] ) ) : '';
 
 		// Get the entity types URIs.
-		$entity_types = isset( $_REQUEST['entity_types'] ) ? array_map( 'esc_url_raw', wp_unslash( (array) $_REQUEST['entity_types'] ) ) : array();
+		$entity_types = isset( $_REQUEST['entity_types'] ) ? array_map( 'sanitize_url', wp_unslash( (array) $_REQUEST['entity_types'] ) ) : array();
 
 		// Get the offset.
 		$offset = isset( $_REQUEST['offset'] ) ? intval( $_REQUEST['offset'] ) : 0;
