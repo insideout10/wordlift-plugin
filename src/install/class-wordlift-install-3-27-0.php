@@ -23,18 +23,15 @@ class Wordlift_Install_3_27_0 extends Wordlift_Install {
 	 * @inheritDoc
 	 */
 	public function install() {
-
 		global $wpdb;
 
-		$empty_post_name_query = "
-		    SELECT ID, post_title 
+		$posts_with_empty_post_name = $wpdb->get_results(
+			"    SELECT ID, post_title 
 		    FROM $wpdb->posts
 		    WHERE post_type = 'entity'
 		    AND post_status = 'publish' 
-		    AND post_name = ''
-		";
-
-		$posts_with_empty_post_name = $wpdb->get_results( $empty_post_name_query, OBJECT );
+		    AND post_name = ''"
+		);
 
 		foreach ( $posts_with_empty_post_name as $post ) {
 			wp_update_post(

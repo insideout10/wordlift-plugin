@@ -27,7 +27,7 @@ class Recipe_Maker_Jsonld_Swap {
 		$this->validation_service = $validation_service;
 		$this->jsonld_service     = $jsonld_service;
 
-		add_filter( 'wprm_recipe_metadata', array( $this, 'alter_jsonld' ), 10, 2 );
+		add_filter( 'wprm_recipe_metadata', array( $this, 'alter_jsonld' ), 10 );
 	}
 
 	/**
@@ -38,7 +38,7 @@ class Recipe_Maker_Jsonld_Swap {
 	 *
 	 * @return array
 	 */
-	public function alter_jsonld( $metadata, $recipe ) {
+	public function alter_jsonld( $metadata ) {
 
 		// If this filter is invoked on any other page except post, then we should not modify the jsonld.
 		if ( ! get_post() instanceof \WP_Post ) {

@@ -18,6 +18,7 @@ class Wordlift_Install_3_36_0 extends Wordlift_Install {
 		$is_woocommerce_extension_installed = defined( 'WL_WOO_VERSION' );
 
 		if ( $is_woocommerce_extension_installed ) {
+			// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 			do_action( 'wl_install_and_activate_advanced-custom-fields-for-schema-org' );
 		}
 	}

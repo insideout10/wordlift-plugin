@@ -48,7 +48,7 @@ class Tasks_Page extends Submenu_Page_Base {
 	 * @since 1.0.0
 	 */
 	public function __construct( $task_ajax_adapters_registry ) {
-		parent::__construct( $this->menu_slug, __( 'Tasks', 'wordlift-framework' ), 'manage_options', 'wl_admin_menu', __( 'Tasks', 'wordlift-framework' ) );
+		parent::__construct( $this->menu_slug, __( 'Tasks', 'wordlift' ), 'manage_options', 'wl_admin_menu', __( 'Tasks', 'wordlift' ) );
 
 		$this->task_ajax_adapters_registry = $task_ajax_adapters_registry;
 

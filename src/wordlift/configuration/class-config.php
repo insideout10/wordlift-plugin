@@ -56,12 +56,12 @@ class Config {
 
 		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( get_option( 'home' ) ) );
 
-		if ( $account_info_data['url'] === null ) {
+		if ( null === $account_info_data['url'] ) {
 			return true;
 		}
 
 		// Check if the key belongs to same site.
-		if ( $site_url !== untrailingslashit( $account_info_data['url'] ) ) {
+		if ( untrailingslashit( $account_info_data['url'] ) !== $site_url ) {
 			// key already associated with another account.
 			return false;
 		}
@@ -89,6 +89,7 @@ class Config {
 		// validate all the fields before processing
 		foreach ( $required_fields as $field ) {
 			if ( ! array_key_exists( $field, $_POST ) ) {
+				/* translators: %s: field name */
 				wp_send_json_error( sprintf( __( 'Field %s is required', 'wordlift' ), $field ), 422 );
 
 				return;
@@ -156,16 +157,18 @@ class Config {
 		$image_string       = sanitize_text_field( wp_unslash( (string) $_POST['image'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$image_ext          = sanitize_text_field( wp_unslash( (string) $_POST['imageExtension'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
-		if ( ! in_array( $image_ext, $allowed_extensions ) ) {
+		if ( ! in_array( $image_ext, $allowed_extensions, true ) ) {
 			return false;
 		}
 
+		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
 		$image_decoded_string = base64_decode( $image_string );
 
 		$upload_dir = wp_upload_dir();
 
 		$file_path = $upload_dir['path'] . DIRECTORY_SEPARATOR . md5( $image_string ) . '.' . $image_ext;
 
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 		file_put_contents( $file_path, $image_decoded_string );
 
 		$attachment_id = wp_insert_attachment(

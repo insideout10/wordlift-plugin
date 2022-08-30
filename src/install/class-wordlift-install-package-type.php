@@ -48,7 +48,7 @@ class Wordlift_Install_Package_Type extends Wordlift_Install {
 	/**
 	 * Must install when the package type isn't set.
 	 *
-	 * https://github.com/insideout10/wordlift-plugin/issues/761
+	 * See https://github.com/insideout10/wordlift-plugin/issues/761
 	 *
 	 * @since 3.20.0
 	 * @return bool True if package type is set, otherwise false.

@@ -23,7 +23,7 @@ interface Task_Progress {
 	 *
 	 * @since 1.0.0
 	 */
-	function set_count( $value );
+	public function set_count( $value );
 
 	/**
 	 * Set the current processed item.
@@ -33,13 +33,13 @@ interface Task_Progress {
 	 *
 	 * @since 1.0.0
 	 */
-	function set_progress( $counter, $item );
+	public function set_progress( $counter, $item );
 
 	/**
 	 * Set the operation as complete.
 	 *
 	 * @since 1.0.0
 	 */
-	function finish();
+	public function finish();
 
 }

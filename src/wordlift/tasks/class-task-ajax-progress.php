@@ -69,7 +69,7 @@ class Task_Ajax_Progress implements Task_Progress {
 	/**
 	 * {@inheritDoc}
 	 */
-	function set_count( $value ) {
+	public function set_count( $value ) {
 
 		$this->log->debug( "New count $value for action $this->action..." );
 
@@ -80,14 +80,15 @@ class Task_Ajax_Progress implements Task_Progress {
 	/**
 	 * {@inheritDoc}
 	 */
-	function set_progress( $index, $item ) {
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public function set_progress( $index, $item ) {
 		$this->index = $index;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	function finish() {
+	public function finish() {
 		wp_send_json_success(
 			array(
 				'count'    => $this->count,

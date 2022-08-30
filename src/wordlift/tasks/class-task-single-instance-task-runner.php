@@ -140,7 +140,8 @@ class Task_Single_Instance_Task_Runner {
 		// List the chunk of elements to process.
 		$items = $this->task->list_items( $limit, $offset );
 
-		for ( $i = 0; $i < count( $items ); $i ++ ) {
+		$count = count( $items );
+		for ( $i = 0; $i < $count; $i ++ ) {
 			// Process the item.
 			$this->task->process_item( $items[ $i ] );
 

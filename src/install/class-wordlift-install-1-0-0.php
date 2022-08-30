@@ -142,9 +142,7 @@ class Wordlift_Install_1_0_0 extends Wordlift_Install {
 
 		// @see: https://codex.wordpress.org/Creating_Tables_with_Plugins
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		$results = dbDelta( $sql );
-
-		$this->log->trace( 'create_relation_instance_table :: ' . var_export( $results, true ) );
+		dbDelta( $sql );
 
 	}
 

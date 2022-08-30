@@ -30,24 +30,17 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 		$this->term_entity_type_service = Type_Service::get_instance();
 	}
 
-	/**
-	 * @return Term_Relation_Service
-	 */
-	public static function get_instance() {
-		return parent::get_instance();
-	}
-
 	public function get_references( $subject_id, $subject_type ) {
 		global $wpdb;
-		$table_name = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
-		$query      = $wpdb->prepare(
-			"SELECT object_id FROM $table_name WHERE subject_id = %d AND object_type = %d AND subject_type = %d",
-			$subject_id,
-			Object_Type_Enum::TERM,
-			$subject_type
-		);
 
-		$term_ids = $wpdb->get_col( $query );
+		$term_ids = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT object_id FROM {$wpdb->prefix}wl_relation_instances WHERE subject_id = %d AND object_type = %d AND subject_type = %d",
+				$subject_id,
+				Object_Type_Enum::TERM,
+				$subject_type
+			)
+		);
 
 		return array_map(
 			function ( $term_id ) {
@@ -57,6 +50,7 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 		);
 	}
 
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function get_relations_from_content( $content, $subject_type, $local_entity_uris ) {
 		$entity_uris = Object_Relation_Service::get_entity_uris( $content );
 
@@ -67,14 +61,15 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 	 * @param $term_id int Term id.
 	 */
 	public function get_relation_type( $term_id ) {
-		$schema               = $this->term_entity_type_service->get_schema(
+		$schema = $this->term_entity_type_service->get_schema(
 			$term_id
 		);
+		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 		$classification_boxes = unserialize( WL_CORE_POST_CLASSIFICATION_BOXES );
 
 		$entity_type = str_replace( 'wl-', '', $schema['css_class'] );
 		foreach ( $classification_boxes as $cb ) {
-			if ( in_array( $entity_type, $cb['registeredTypes'] ) ) {
+			if ( in_array( $entity_type, $cb['registeredTypes'], true ) ) {
 				return $cb['id'];
 			}
 		}

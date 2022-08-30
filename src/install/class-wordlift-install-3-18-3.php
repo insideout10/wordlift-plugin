@@ -61,7 +61,7 @@ class Wordlift_Install_3_18_3 extends Wordlift_Install {
 				INNER JOIN {$wpdb->prefix}wl_relation_instances AS ri
 					ON p.ID = ri.subject_id
 				WHERE p.post_status = 'publish'
-				AND p.post_type = '%s'
+				AND p.post_type = 'post'
 				AND (
 					p.ID NOT IN (
 						SELECT object_id
@@ -70,7 +70,6 @@ class Wordlift_Install_3_18_3 extends Wordlift_Install {
 					)
 				)
 				",
-				'post',
 				$term->term_id
 			)
 		);

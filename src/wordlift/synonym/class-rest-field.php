@@ -38,6 +38,7 @@ class Rest_Field {
 	 * @param $post \WP_Post
 	 * @param $meta_key string
 	 */
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function update_value( $meta_values, $post, $meta_key ) {
 
 		if ( ! is_array( $meta_values ) ) {

@@ -21,9 +21,9 @@ interface Task {
 	 * @return string The task id.
 	 * @since 1.0.0
 	 */
-	function get_id();
+	public function get_id();
 
-	function get_label();
+	public function get_label();
 
 	/**
 	 * List the items to process.
@@ -34,7 +34,7 @@ interface Task {
 	 * @return array An array of items.
 	 * @since 1.0.0
 	 */
-	function list_items( $limit = 10, $offset = 0 );
+	public function list_items( $limit = 10, $offset = 0 );
 
 	/**
 	 * Count the total number of items to process.
@@ -42,7 +42,7 @@ interface Task {
 	 * @return int Total number of items to process.
 	 * @since 1.0.0
 	 */
-	function count_items();
+	public function count_items();
 
 	/**
 	 * Process the provided item.
@@ -51,6 +51,6 @@ interface Task {
 	 *
 	 * @since 1.0.0
 	 */
-	function process_item( $item );
+	public function process_item( $item );
 
 }

@@ -43,7 +43,7 @@ class Recipe_Maker_Jsonld_Hook {
 		add_filter( 'wl_post_jsonld_array', array( $this, 'wl_entity_jsonld_array' ), 10, 2 );
 
 		// Then we merge the jsonld for every recipe.
-		add_filter( 'wl_entity_jsonld', array( $this, 'wl_entity_jsonld' ), 10, 3 );
+		add_filter( 'wl_entity_jsonld', array( $this, 'wl_entity_jsonld' ), 10, 2 );
 	}
 
 	public function wl_entity_jsonld_array( $arr, $post_id ) {
@@ -71,7 +71,7 @@ class Recipe_Maker_Jsonld_Hook {
 
 	}
 
-	public function wl_entity_jsonld( $jsonld, $post_id, $references ) {
+	public function wl_entity_jsonld( $jsonld, $post_id ) {
 		$recipe_data = $this->process_single_recipe_item( $post_id );
 		if ( ! $recipe_data ) {
 			return $jsonld;
@@ -96,7 +96,8 @@ class Recipe_Maker_Jsonld_Hook {
 		}
 		$linked_recipe = \WPRM_Recipe_Manager::get_recipe( $linked_recipe_id );
 		if ( $linked_recipe ) {
-			return \WPRM_Metadata::get_metadata_details( $linked_recipe ) ?: array();
+			$metadata = \WPRM_Metadata::get_metadata_details( $linked_recipe );
+			return $metadata ? $metadata : array();
 		}
 
 		return array();

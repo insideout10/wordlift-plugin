@@ -21,6 +21,9 @@ class Task_Ajax_Adapter {
 	 */
 	private $task;
 
+	/**
+	 * @var string $action_name The action name.
+	 */
 	private $action_name;
 
 	/**
@@ -37,13 +40,14 @@ class Task_Ajax_Adapter {
 
 	}
 
-	function start() {
+	public function start() {
 
 		// First check if there is a valid nonce.
 		check_ajax_referer( $this->action_name );
 
 		// Get the offset.
-		$offset = filter_input( INPUT_POST, 'offset', FILTER_SANITIZE_NUMBER_INT ) ?: 0;
+		$offset = filter_input( INPUT_POST, 'offset', FILTER_SANITIZE_NUMBER_INT );
+		$offset = $offset ? $offset : 0;
 
 		// Compatibility fix for FacetWP, which somewhere in some filter checks for the $_POST array.
 		unset( $_POST['offset'] );

@@ -51,7 +51,8 @@ class Lod_Import {
 	}
 
 	public function handle() {
-		if ( ! $item_ids = filter_input( INPUT_POST, 'item-ids' ) ) {
+		$item_ids = filter_input( INPUT_POST, 'item-ids' );
+		if ( ! $item_ids ) {
 			?>
 			<p class="notice notice-error">Please type stgh</p>
 			<?php

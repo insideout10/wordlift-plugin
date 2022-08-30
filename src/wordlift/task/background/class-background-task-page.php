@@ -84,12 +84,12 @@ class Background_Task_Page {
 
 			<button id="wl-start-btn" type="button" class="button button-large button-primary">
 			<?php
-				esc_html_e( 'Start', 'wordlift-framework' );
+				esc_html_e( 'Start', 'wordlift' );
 			?>
 				</button>
 			<button id="wl-stop-btn" type="button" class="button button-large button-primary hidden">
 			<?php
-				esc_html_e( 'Stop', 'wordlift-framework' );
+				esc_html_e( 'Stop', 'wordlift' );
 			?>
 				</button>
 

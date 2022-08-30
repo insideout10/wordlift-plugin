@@ -81,10 +81,10 @@ class Wordlift_Install_Service {
 			new Wordlift_Install_3_18_3(),
 			new Wordlift_Install_3_19_5(),
 			new Wordlift_Install_3_20_0(),
+
 			/*
 			 * This should be enabled with #852.
 			 */
-			// new Wordlift_Install_All_Entity_Types(),
 			new Wordlift_Install_Package_Type(),
 			new Wordlift_Install_3_23_4(),
 			new Wordlift_Install_3_24_2(),
@@ -151,6 +151,7 @@ class Wordlift_Install_Service {
 				}
 			}
 
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			@delete_transient( '_wl_installing' );
 
 		}

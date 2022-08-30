@@ -58,7 +58,7 @@ class Recipe_Maker_After_Get_Jsonld_Hook {
 				continue;
 			}
 			$type = $value['@type'];
-			if ( $type === 'Recipe' ) {
+			if ( 'Recipe' === $type ) {
 				$value['isPartOf'] = array(
 					'@id' => $post_jsonld_id,
 				);

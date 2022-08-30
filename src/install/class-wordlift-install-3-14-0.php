@@ -29,7 +29,7 @@ class Wordlift_Install_3_14_0 extends Wordlift_Install {
 
 		// The recipe term doesn't exists, so create it.
 		if ( empty( $recipe ) ) {
-			$result = wp_insert_term(
+			wp_insert_term(
 				'Recipe',
 				Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				array(
@@ -53,7 +53,6 @@ class Wordlift_Install_3_14_0 extends Wordlift_Install {
 		$admins->add_cap( 'delete_published_wordlift_entities' );
 		$admins->add_cap( 'delete_private_wordlift_entities' );
 
-		// Assign capabilities to manipulate entities to editors.
 		/*
 		 * Check that the `editor` role exists before using it.
 		 *
