@@ -78,6 +78,7 @@ class Ttl_Cache_Cleaner {
 		$files = $this->reduce( array(), Ttl_Cache::get_cache_folder() );
 
 		foreach ( $files as $file ) {
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			@unlink( $file[ self::PATH ] );
 		}
 
@@ -111,7 +112,8 @@ class Ttl_Cache_Cleaner {
 		);
 
 		// Start removing stale files.
-		for ( $i = 0; $i < count( $files ); $i ++ ) {
+		$count = count( $files );
+		for ( $i = 0; $i < $count; $i ++ ) {
 			$file = $files[ $i ];
 			// Break if the mtime is within the range.
 			if ( $file[ self::MTIME ] > $max_mtime ) {
@@ -119,6 +121,7 @@ class Ttl_Cache_Cleaner {
 			}
 
 			unset( $files[ $i ] );
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			@unlink( $file[ self::PATH ] );
 		}
 
@@ -136,6 +139,7 @@ class Ttl_Cache_Cleaner {
 		while ( $total_size > $this->max_size ) {
 			$file        = array_shift( $files );
 			$total_size -= $file[ self::SIZE ];
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			@unlink( $file[ self::PATH ] );
 		}
 
@@ -168,7 +172,9 @@ class Ttl_Cache_Cleaner {
 
 		// Catch exceptions to be sure to close the dir handle.
 		try {
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			$accumulator = @$this->_reduce( $accumulator, $path, $handle );
+		// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 		} catch ( Exception $e ) {
 			// Do nothing.
 		}
@@ -186,9 +192,11 @@ class Ttl_Cache_Cleaner {
 	 *
 	 * @return array
 	 */
+	// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 	private function _reduce( $accumulator, $path, $handle ) {
 
-		while ( false !== ( $entry = readdir( $handle ) ) ) {
+		$entry = readdir( $handle );
+		while ( false !== $entry ) {
 
 			// Skip to the next one.
 			if ( 0 === strpos( $entry, '.' ) ) {

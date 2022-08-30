@@ -11,7 +11,7 @@ class Remote_Entity_Factory {
 	 *
 	 * @return Remote_Entity
 	 */
-	static function from_response( $entity_url, $response ) {
+	public static function from_response( $entity_url, $response ) {
 
 		if ( ! $response->is_success() ) {
 			return new Invalid_Remote_Entity();

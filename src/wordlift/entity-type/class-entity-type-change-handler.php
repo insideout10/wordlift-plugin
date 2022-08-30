@@ -41,7 +41,7 @@ class Entity_Type_Change_Handler {
 
 	public function set_object_terms( $object_id, $terms, $tt_ids, $taxonomy ) {
 
-		if ( $taxonomy !== Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) {
+		if ( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME !== $taxonomy ) {
 			return;
 		}
 
@@ -60,7 +60,7 @@ class Entity_Type_Change_Handler {
 		}
 
 		// Check if set to Article or one of its descendants
-		if ( ! in_array( $types[0], Jsonld_Article_Wrapper::$article_types ) ) {
+		if ( ! in_array( $types[0], Jsonld_Article_Wrapper::$article_types, true ) ) {
 			return;
 		}
 

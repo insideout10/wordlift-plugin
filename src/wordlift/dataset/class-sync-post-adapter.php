@@ -15,7 +15,7 @@ class Sync_Post_Adapter extends Abstract_Sync_Object_Adapter {
 	 *
 	 * @param int $post_id
 	 *
-	 * @throws \Exception
+	 * @throws xception when an error occurs.
 	 */
 	function __construct( $post_id ) {
 		parent::__construct( Object_Type_Enum::POST, $post_id );

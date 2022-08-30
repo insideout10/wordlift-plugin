@@ -20,8 +20,8 @@ class Entity_No_Index_Flag {
 
 				$post_type = get_post_type( $post_id );
 
-				if ( $post_type !== \Wordlift_Entity_Service::TYPE_NAME ) {
-					// Dont set this flag for any other post types.
+				if ( \Wordlift_Entity_Service::TYPE_NAME !== $post_type ) {
+					// Don't set this flag for any other post types.
 					return;
 				}
 

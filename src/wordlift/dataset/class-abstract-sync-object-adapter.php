@@ -24,7 +24,7 @@ abstract class Abstract_Sync_Object_Adapter implements Sync_Object_Adapter {
 	 * @param int            $object_id A post or term id.
 	 * @param Jsonld_Service
 	 *
-	 * @throws \Exception
+	 * @throws xception when an error occurs.
 	 */
 	function __construct( $type, $object_id ) {
 

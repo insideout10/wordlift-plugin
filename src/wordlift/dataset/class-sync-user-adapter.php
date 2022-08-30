@@ -11,7 +11,7 @@ class Sync_User_Adapter extends Abstract_Sync_Object_Adapter {
 	 *
 	 * @param int $user_id
 	 *
-	 * @throws \Exception
+	 * @throws xception when an error occurs.
 	 */
 	function __construct( $user_id ) {
 		parent::__construct( Object_Type_Enum::USER, $user_id );

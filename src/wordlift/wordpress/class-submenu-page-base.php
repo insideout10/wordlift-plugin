@@ -77,8 +77,8 @@ abstract class Submenu_Page_Base implements Page {
 		return $page;
 	}
 
-	abstract function enqueue_scripts();
+	abstract public function enqueue_scripts();
 
-	abstract function render();
+	abstract public function render();
 
 }

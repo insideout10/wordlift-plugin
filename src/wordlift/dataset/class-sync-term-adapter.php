@@ -15,7 +15,7 @@ class Sync_Term_Adapter extends Abstract_Sync_Object_Adapter {
 	 *
 	 * @param int $term_id
 	 *
-	 * @throws \Exception
+	 * @throws xception when an error occurs.
 	 */
 	function __construct( $term_id ) {
 		parent::__construct( Object_Type_Enum::TERM, $term_id );

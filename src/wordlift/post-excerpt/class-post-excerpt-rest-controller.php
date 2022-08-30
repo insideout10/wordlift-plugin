@@ -89,7 +89,7 @@ class Post_Excerpt_Rest_Controller {
 	public static function get_post_excerpt_conditionally( $post_id, $post_body, $current_hash ) {
 		$previous_data   = get_post_meta( $post_id, self::POST_EXCERPT_META_KEY, true );
 		$server_response = null;
-		if ( $previous_data === '' ) {
+		if ( '' === $previous_data ) {
 			// There is no data in meta, so just fetch the data from remote server.
 			$server_response = self::get_post_excerpt_from_remote_server( $post_id, $post_body );
 		} else {
@@ -194,12 +194,14 @@ class Post_Excerpt_Rest_Controller {
 		/** @var  $post_id_validation_settings array Settings used to validate post id */
 		$post_id_validation_settings   = array(
 			'required'          => true,
+			// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 			'validate_callback' => function ( $param, $request, $key ) {
 				return is_numeric( $param );
 			},
 		);
 		$post_body_validation_settings = array(
 			'required'          => true,
+			// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 			'validate_callback' => function ( $param, $request, $key ) {
 				return is_string( $param );
 			},
