@@ -4,6 +4,7 @@ namespace Wordlift\Content\Wordpress;
 
 use Wordlift\Content\Content_Service;
 
+// phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledClassName
 class Wordpress_Content_Service {
 
 	protected function __construct() {

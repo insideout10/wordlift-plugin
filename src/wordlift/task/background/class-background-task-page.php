@@ -69,7 +69,8 @@ class Background_Task_Page {
 			'wl-task-page',
 			plugin_dir_url( __FILE__ ) . 'assets/task-page.js',
 			array( 'wp-api' ),
-			Wordlift::get_instance()->get_version()
+			WORDLIFT_VERSION,
+            false
 		);
 
 		wp_localize_script( 'wl-task-page', '_wlTaskPageSettings', array( 'rest_path' => $this->background_task_route->get_rest_path() ) );

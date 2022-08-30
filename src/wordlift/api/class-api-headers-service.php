@@ -26,7 +26,7 @@ class Api_Headers_Service {
 	 * @return Api_Headers_Service
 	 */
 	public static function get_instance() {
-		if ( self::$instance === null ) {
+		if ( null === self::$instance ) {
 			self::$instance = new Api_Headers_Service();
 		}
 

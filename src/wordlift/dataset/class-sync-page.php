@@ -43,7 +43,7 @@ class Sync_Page {
 			plugin_dir_url( __FILE__ ) . 'assets/sync-page.js',
 			array( 'wp-api' ),
 			\Wordlift::get_instance()->get_version(),
-            false
+			false
 		);
 
 		?>

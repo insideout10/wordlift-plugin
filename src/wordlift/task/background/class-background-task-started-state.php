@@ -21,14 +21,14 @@ class Background_Task_Started_State extends Abstract_Background_Task_State {
 	 *
 	 * @param Background_Task $context
 	 */
-	function __construct( $context, $task ) {
+	public function __construct( $context, $task ) {
 		parent::__construct( $context, Background_Task::STATE_STARTED );
 
 		$this->context = $context;
 		$this->task    = $task;
 	}
 
-	function enter() {
+	public function enter() {
 
 		$count = $this->task->starting();
 
@@ -42,16 +42,16 @@ class Background_Task_Started_State extends Abstract_Background_Task_State {
 		$this->resume();
 	}
 
-	function resume() {
+	public function resume() {
 		$this->context->push_to_queue( true );
 		$this->context->save()->dispatch();
 	}
 
-	function leave() {
+	public function leave() {
 		$this->context->set_state( null );
 	}
 
-	function task( $value ) {
+	public function task( $value ) {
 		$offset = get_option( $this->context->get_option_prefix() . 'offset' );
 		$count  = get_option( $this->context->get_option_prefix() . 'count' );
 

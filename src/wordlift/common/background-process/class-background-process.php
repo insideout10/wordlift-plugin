@@ -179,10 +179,7 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 	 * @return int[] or false
 	 */
 	protected function get_next_batch() {
-		$next = $this->data_source->next();
-		$this->log->debug( 'Returned the following items to be processed for next batch ' . var_export( $next, true ) );
-
-		return $next;
+		return $this->data_source->next();
 	}
 
 	private function update_batch_index() {
@@ -198,7 +195,6 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 		$state = self::get_state()
 					 ->increment_index( $this->data_source->get_batch_size() )
 					 ->set_state( $next_state );
-		$this->log->debug( 'Items index for ' . $this->get_action_key() . ' updated to ' . var_export( $state->get_array(), true ) );
 
 		update_option( $this->get_state_storage_key(), $state, false );
 

@@ -11,16 +11,14 @@ namespace Wordlift\Duplicate_Markup_Remover;
 class Videoobject_Duplicate_Remover {
 
 	public function __construct() {
-		add_filter( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 10, 2 );
+		add_filter( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 10 );
 	}
 
 	/**
 	 * @param $jsonld array The final jsonld.
-	 * @param $post_id int The post id.
-	 *
 	 * @return array Filtered jsonld.
 	 */
-	public function wl_after_get_jsonld( $jsonld, $post_id ) {
+	public function wl_after_get_jsonld( $jsonld ) {
 
 		if ( ! is_array( $jsonld )
 			 || ! count( $jsonld ) > 1
@@ -38,8 +36,8 @@ class Videoobject_Duplicate_Remover {
 			}
 			$type = $value['@type'];
 
-			if ( ( is_string( $type ) && $type !== 'Article' )
-				 || ( is_array( $type ) && ! in_array( 'Article', $type ) ) ) {
+			if ( ( is_string( $type ) && 'Article' !== $type )
+				 || ( is_array( $type ) && ! in_array( 'Article', $type, true ) ) ) {
 				continue;
 			}
 			// Video doesnt exist, dont try to remove it.

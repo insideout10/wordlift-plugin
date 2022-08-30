@@ -9,6 +9,7 @@ namespace Wordlift\Content\Wordpress;
 use Wordlift\Content\Content_Id;
 use Wordlift\Object_Type_Enum;
 
+// phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledClassName
 class Wordpress_Content_Id implements Content_Id {
 
 	/**

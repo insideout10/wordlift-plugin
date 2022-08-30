@@ -4,7 +4,7 @@ namespace Wordlift\Common;
 
 abstract class Singleton {
 
-	static $instances = array();
+	public static $instances = array();
 
 	protected function __construct() {
 	}

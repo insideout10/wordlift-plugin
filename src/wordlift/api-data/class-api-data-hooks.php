@@ -40,6 +40,7 @@ class Api_Data_Hooks {
 		$this->delete_cache_for_meta_values( $post_id );
 	}
 
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function post_meta_request_delete_cache( $meta_id, $post_id, $meta_key, $_meta_value ) {
 		$this->cache_requests[] = $post_id;
 	}
@@ -53,6 +54,7 @@ class Api_Data_Hooks {
 		// Avoid duplicate cache requests.
 		$unique_requests = array_unique( $this->cache_requests );
 
+		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		foreach ( $unique_requests as $key => $post_id ) {
 			$this->delete_cache_for_meta_values( $post_id );
 		}
@@ -60,8 +62,6 @@ class Api_Data_Hooks {
 
 	/**
 	 * @param integer $post_id
-	 *
-	 * @return
 	 */
 	private function delete_cache_for_meta_values( $post_id ) {
 
@@ -79,7 +79,7 @@ class Api_Data_Hooks {
 				/**
 				 * Skip the <permalink>
 				 */
-				if ( $link === '<permalink>' ) {
+				if ( '<permalink>' === $link ) {
 					$link = get_permalink();
 				}
 

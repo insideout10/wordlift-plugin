@@ -20,6 +20,7 @@ interface Api_Service_Ext {
  * @property int $subscription_id;
  * @property string $url;
  */
+// phpcs:ignore Generic.Files.OneObjectStructurePerFile.MultipleFound
 interface Me_Response {
 }
 
@@ -29,5 +30,6 @@ interface Me_Response {
  * @property string $dataset_uri
  * @property string $url
  */
+// phpcs:ignore Generic.Files.OneObjectStructurePerFile.MultipleFound
 interface Network {
 }

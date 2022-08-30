@@ -16,13 +16,6 @@ class Object_Link_Provider extends Singleton {
 	 */
 	private $link_providers;
 
-	/**
-	 * @return Object_Link_Provider
-	 */
-	public static function get_instance() {
-		return parent::get_instance();
-	}
-
 	public function __construct() {
 		parent::__construct();
 		$this->link_providers = array(

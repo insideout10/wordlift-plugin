@@ -26,6 +26,7 @@ class Rest_Endpoint {
 						},
 						'args'                => array(
 							'id' => array(
+								// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 								'validate_callback' => function ( $param, $request, $key ) {
 									return is_string( $param );
 								},

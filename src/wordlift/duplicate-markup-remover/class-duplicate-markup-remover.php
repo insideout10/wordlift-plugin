@@ -27,16 +27,15 @@ class Duplicate_Markup_Remover {
 	);
 
 	public function __construct() {
-		add_filter( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 10, 2 );
+		add_filter( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 10 );
 	}
 
 	/**
 	 * @param $jsonld array The final jsonld.
-	 * @param $post_id int The post id.
 	 *
 	 * @return array Filtered jsonld.
 	 */
-	public function wl_after_get_jsonld( $jsonld, $post_id ) {
+	public function wl_after_get_jsonld( $jsonld ) {
 
 		foreach ( $this->types_to_properties_map as $type_to_remove => $properties_to_remove ) {
 			$jsonld = $this->remove_type( $jsonld, $type_to_remove, $properties_to_remove );
@@ -90,11 +89,11 @@ class Duplicate_Markup_Remover {
 				unset( $jsonld[ $key ] );
 			}
 
-			if ( is_array( $type ) && in_array( $type_to_remove, $type ) ) {
+			if ( is_array( $type ) && in_array( $type_to_remove, $type, true ) ) {
 				// Remove the supplied SchemaType markup.
-				$position = array_search( $type_to_remove, $type );
+				$position = array_search( $type_to_remove, $type, true );
 				// Also update the type.
-				if ( $position !== false ) {
+				if ( false !== $position ) {
 					unset( $type[ $position ] );
 					$value['@type'] = array_values( $type );
 				}

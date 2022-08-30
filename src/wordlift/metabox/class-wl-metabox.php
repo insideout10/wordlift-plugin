@@ -40,7 +40,6 @@ class Wl_Metabox extends Wl_Abstract_Metabox {
 
 			// Add hooks to print metaboxes and save submitted data.
 			add_action( 'add_meta_boxes', array( $this, 'add_main_metabox' ) );
-			$that = $this;
 			add_action( 'wl_linked_data_save_post', array( $this, 'save_form' ) );
 
 			// Enqueue js and css.

@@ -14,12 +14,12 @@ abstract class Abstract_Background_Task_State implements Background_Task_State {
 	 */
 	private $context;
 
-	function __construct( $context, $state ) {
+	public function __construct( $context, $state ) {
 		$this->state   = $state;
 		$this->context = $context;
 	}
 
-	function get_info() {
+	public function get_info() {
 		$started     = get_option( $this->context->get_option_prefix() . 'started' );
 		$offset      = get_option( $this->context->get_option_prefix() . 'offset' );
 		$count       = get_option( $this->context->get_option_prefix() . 'count', array( 0 ) );
@@ -28,7 +28,7 @@ abstract class Abstract_Background_Task_State implements Background_Task_State {
 		return new Background_Task_Info( $this->state, $started, $offset, $count, $last_update );
 	}
 
-	function resume() {
+	public function resume() {
 		// do nothing.
 	}
 

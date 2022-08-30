@@ -69,6 +69,7 @@ class Wl_Metabox_Field_Address extends Wl_Metabox_Field {
 	 * @return string Field HTML
 	 */
 	public function html() {
+        // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@ob_start();
 		// Open main <div> for the Field, then insert label and nonce
 		?>

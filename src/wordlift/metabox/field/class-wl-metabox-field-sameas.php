@@ -20,6 +20,7 @@ use Wordlift_Sanitizer;
  * @package    Wordlift
  * @subpackage Wordlift/admin/WL_Metabox
  */
+// phpcs:ignore PEAR.NamingConventions.ValidClassName.Invalid
 class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 
 	/**
@@ -117,14 +118,6 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 	/**
 	 * @inheritdoc
 	 */
-	protected function get_stored_values_html( &$count ) {
-
-		return parent::get_stored_values_html( $count );
-	}
-
-	/**
-	 * @inheritdoc
-	 */
 	public function html() {
 
 		/**
@@ -135,6 +128,7 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 		 * @return bool
 		 * @since 3.29.1
 		 */
+        // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( apply_filters( 'wl_feature__enable__metabox-sameas', true ) ) {
 
 			// Open main <div> for the Field.
@@ -163,6 +157,7 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 	 * @inheritdoc
 	 */
 	public function html_input( $value ) {
+        // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@ob_start();
 		?>
 		<div class="wl-input-wrapper wl-input-wrapper-readonly">

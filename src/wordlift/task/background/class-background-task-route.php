@@ -84,7 +84,7 @@ class Background_Task_Route {
 	public function permission_callback() {
 		$user = wp_get_current_user();
 
-		return is_super_admin( $user->ID ) || in_array( 'administrator', (array) $user->roles );
+		return is_super_admin( $user->ID ) || in_array( 'administrator', (array) $user->roles, true );
 	}
 
 	public function get_rest_path() {

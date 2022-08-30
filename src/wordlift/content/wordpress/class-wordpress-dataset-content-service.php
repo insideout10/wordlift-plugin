@@ -6,6 +6,7 @@ use Exception;
 use Wordlift\Assertions;
 use Wordlift\Content\Content_Service;
 
+// phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledClassName
 class Wordpress_Dataset_Content_Service implements Content_Service {
 
 	/**
@@ -44,7 +45,7 @@ class Wordpress_Dataset_Content_Service implements Content_Service {
 		$this->delegates[] = $delegate;
 	}
 
-	function get_by_entity_id( $uri ) {
+	public function get_by_entity_id( $uri ) {
 		foreach ( $this->delegates as $delegate ) {
 			$content = $delegate->get_by_entity_id_or_same_as( $uri );
 			if ( isset( $content ) ) {
@@ -58,9 +59,9 @@ class Wordpress_Dataset_Content_Service implements Content_Service {
 	/**
 	 * Get a
 	 *
-	 * @throws Exception
+	 * @throws Exception in case of error.
 	 */
-	function get_by_entity_id_or_same_as( $uri ) {
+	public function get_by_entity_id_or_same_as( $uri ) {
 		foreach ( $this->delegates as $delegate ) {
 			$content = $delegate->get_by_entity_id_or_same_as( $uri );
 			if ( isset( $content ) ) {
@@ -71,9 +72,10 @@ class Wordpress_Dataset_Content_Service implements Content_Service {
 		return null;
 	}
 
-	function get_entity_id( $content_id ) {
+	public function get_entity_id( $content_id ) {
 		foreach ( $this->delegates as $delegate ) {
-			if ( $delegate->supports( $content_id ) && $uri = $delegate->get_entity_id( $content_id ) ) {
+			$uri = $delegate->get_entity_id( $content_id );
+			if ( $delegate->supports( $content_id ) && $uri ) {
 				return $uri;
 			}
 		}
@@ -81,7 +83,7 @@ class Wordpress_Dataset_Content_Service implements Content_Service {
 		return null;
 	}
 
-	function set_entity_id( $content_id, $uri ) {
+	public function set_entity_id( $content_id, $uri ) {
 		foreach ( $this->delegates as $delegate ) {
 			if ( $delegate->supports( $content_id ) ) {
 				$delegate->set_entity_id( $content_id, $uri );
@@ -93,7 +95,7 @@ class Wordpress_Dataset_Content_Service implements Content_Service {
 		throw new Exception( 'Not supported' );
 	}
 
-	function supports( $content_id ) {
+	public function supports( $content_id ) {
 		foreach ( $this->delegates as $delegate ) {
 			if ( $delegate->supports( $content_id ) ) {
 				return true;
@@ -103,7 +105,7 @@ class Wordpress_Dataset_Content_Service implements Content_Service {
 		return false;
 	}
 
-	function delete( $content_id ) {
+	public function delete( $content_id ) {
 		foreach ( $this->delegates as $delegate ) {
 			if ( $delegate->supports( $content_id ) ) {
 				$delegate->delete( $content_id );

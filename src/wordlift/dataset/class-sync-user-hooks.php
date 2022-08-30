@@ -72,8 +72,8 @@ class Sync_User_Hooks extends Abstract_Sync_Hooks {
 						'entity_url',
 					)
 				)
-			)
-			, true
+			),
+			true
 		) ) {
 			return;
 		}

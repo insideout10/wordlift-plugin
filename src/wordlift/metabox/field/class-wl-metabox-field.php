@@ -202,7 +202,7 @@ class Wl_Metabox_Field implements Field {
 	 *
 	 * Overwrite this method in a child class to obtain custom behaviour.
 	 */
-	function get_data() {
+	public function get_data() {
 		$instance = Store_Factory::get_instance( $this->type );
 		// @todo: check if $instance is not null.
 		$this->data = $instance::get_data( $this->id, $this->meta_name );
@@ -274,7 +274,7 @@ class Wl_Metabox_Field implements Field {
 	 *
 	 * @param array $values Array of values to be sanitized and then stored into $this->data.
 	 */
-	function save_data( $values ) {
+	public function save_data( $values ) {
 		$santizied_data = $this->sanitize_data( $values );
 		$instance       = Store_Factory::get_instance( $this->type );
 		$instance::save_data( $this->id, $this->meta_name, $this->cardinality, $santizied_data );
@@ -403,7 +403,7 @@ class Wl_Metabox_Field implements Field {
 
 		// If cardinality allows it, print button to add new values.
 		if ( $count < $this->cardinality ) {
-			return '<button class="button wl-add-input wl-button" type="button">' . esc_html__( 'Add' ) . '</button>';
+			return '<button class="button wl-add-input wl-button" type="button">' . esc_html__( 'Add', 'wordlift' ) . '</button>';
 		}
 
 		// Return an empty string.
@@ -425,7 +425,7 @@ class Wl_Metabox_Field implements Field {
 
 		// If cardinality allows it, print button to add new values.
 		if ( $count < $this->cardinality ) {
-			return '<button class="button wl-add-input wl-button wl-add-input--sameas ' . $class . '" type="button">' . esc_html__( $label ) . '</button>';
+			return '<button class="button wl-add-input wl-button wl-add-input--sameas ' . $class . '" type="button">' . esc_html( $label ) . '</button>';
 		}
 
 		// Return an empty string.
@@ -440,6 +440,7 @@ class Wl_Metabox_Field implements Field {
 	 * @return string The html code fragment.
 	 */
 	public function html_input( $value ) {
+        // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@ob_start();
 		?>
 		<div class="wl-input-wrapper">

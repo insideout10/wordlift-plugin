@@ -21,7 +21,8 @@ class All_Posts_Task implements Task {
 		global $wpdb;
 
 		// Try to get the count from transient, or load it from database.
-		if ( false === ( $count = get_transient( '_wl_task__all_posts_task__count' ) ) ) {
+		$count = get_transient( '_wl_task__all_posts_task__count' );
+		if ( false === $count ) {
 			$count = $wpdb->get_var( "SELECT COUNT( 1 ) FROM $wpdb->posts" );
 			set_transient( '_wl_task__all_posts_task__count', $count, HOUR_IN_SECONDS );
 		}

@@ -33,7 +33,7 @@ class Response_Adapter {
 		}
 		$wl1_as_base64_string = $headers[ self::WL_1 ];
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
-		$wl1                  = json_decode( base64_decode( $wl1_as_base64_string ), true );
+		$wl1 = json_decode( base64_decode( $wl1_as_base64_string ), true );
 
 		$updated_features = $wl1['features'];
 

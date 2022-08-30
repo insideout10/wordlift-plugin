@@ -10,6 +10,7 @@ namespace Wordlift\Content\Wordpress;
 use Wordlift\Content\Content_Migration;
 use Wordlift\Content\Content_Service;
 
+// phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledClassName
 class Wordpress_Post_Content_Service {
 
 	private static $instance = null;
@@ -24,6 +25,7 @@ class Wordpress_Post_Content_Service {
 
 		if ( ! isset( self::$instance ) ) {
 
+			// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 			if ( ! apply_filters( 'wl_feature__enable__rel-item-id', false ) ) {
 				self::$instance = Wordpress_Post_Content_Legacy_Service::get_instance();
 			} else {

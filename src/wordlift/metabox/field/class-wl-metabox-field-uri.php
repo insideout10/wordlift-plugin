@@ -18,6 +18,7 @@ use Wordlift_Entity_Service;
  * @package    Wordlift
  * @subpackage Wordlift/admin/WL_Metabox
  */
+// phpcs:ignore PEAR.NamingConventions.ValidClassName.Invalid
 class Wl_Metabox_Field_uri extends Wl_Metabox_Field {
 
 	/**
@@ -151,6 +152,7 @@ class Wl_Metabox_Field_uri extends Wl_Metabox_Field {
 		// The visible <input> has the human readable value (i.e. entity name or uri)
 		// and is accompained by an hidden <input> tag, passed to the server,
 		// that contains the raw value (i.e. the uri or entity id).
+        // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@ob_start();
 		?>
 		<div class="wl-input-wrapper wl-autocomplete-wrapper">

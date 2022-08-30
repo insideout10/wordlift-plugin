@@ -5,6 +5,7 @@ namespace Wordlift\Content\Wordpress;
 use Exception;
 use Wordlift\Entity\Entity_Uri_Generator;
 
+// phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledClassName
 class Wordpress_Dataset_Content_Service_Hooks {
 
 	public static function register() {
@@ -17,7 +18,7 @@ class Wordpress_Dataset_Content_Service_Hooks {
 	}
 
 	/**
-	 * @throws Exception
+	 * @throws Exception in case of error.
 	 */
 	public static function insert_post( $post_id ) {
 		if ( ! wp_is_post_revision( $post_id ) ) {
@@ -30,7 +31,7 @@ class Wordpress_Dataset_Content_Service_Hooks {
 	}
 
 	/**
-	 * @throws Exception
+	 * @throws Exception in case of error.
 	 */
 	public static function created_term( $term_id ) {
 		self::set_entity_id( Wordpress_Content_Id::create_term( $term_id ) );
@@ -41,7 +42,7 @@ class Wordpress_Dataset_Content_Service_Hooks {
 	}
 
 	/**
-	 * @throws Exception
+	 * @throws Exception in case of error.
 	 */
 	public static function user_register( $user_id ) {
 		self::set_entity_id( Wordpress_Content_Id::create_user( $user_id ) );
@@ -55,7 +56,7 @@ class Wordpress_Dataset_Content_Service_Hooks {
 	 * @param Wordpress_Content_Id $content_id
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws Exception in case of error.
 	 */
 	private static function set_entity_id( $content_id ) {
 		$content_service = Wordpress_Content_Service::get_instance();
@@ -65,7 +66,9 @@ class Wordpress_Dataset_Content_Service_Hooks {
 				$rel_uri = Entity_Uri_Generator::create_uri( $content_id->get_type(), $content_id->get_id() );
 				$content_service->set_entity_id( $content_id, $rel_uri );
 			}
+		// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 		} catch ( Exception $e ) {
+			// Don't report.
 		}
 	}
 

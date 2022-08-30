@@ -44,7 +44,7 @@ class Sync_Background_Process_Posts_Stage {
 	 *
 	 * @return Sync_Object_Adapter[]
 	 */
-	function get_sync_object_adapters( $offset, $limit ) {
+	public function get_sync_object_adapters( $offset, $limit ) {
 
 		$post_types = get_post_types( array( 'public' => true ) );
 

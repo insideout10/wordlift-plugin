@@ -22,7 +22,7 @@ class Post_Store implements Store {
 		foreach ( $values as $value ) {
 			// To avoid duplicate values
 			delete_post_meta( $entity_id, $meta_key, $value );
-			$meta_id = add_post_meta( $entity_id, $meta_key, $value, $single );
+			add_post_meta( $entity_id, $meta_key, $value, $single );
 		}
 	}
 

@@ -126,9 +126,9 @@ class Wl_Abstract_Metabox {
 		if ( isset( $this->fields ) ) {
 			return;
 		}
-		if ( $type === Object_Type_Enum::POST ) {
+		if ( Object_Type_Enum::POST === $type ) {
 			$entity_type = wl_entity_taxonomy_get_custom_fields( $id );
-		} elseif ( $type === Object_Type_Enum::TERM ) {
+		} elseif ( Object_Type_Enum::TERM === $type ) {
 			$term_entity_types = get_term_meta( $id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 			$term_entity_types = array_map(
 				function ( $term ) {
@@ -310,7 +310,7 @@ class Wl_Abstract_Metabox {
 		$this->log->trace( "Saving form data for entity post $id..." );
 
 		// Skip saving if the save is called for a different post.
-		if ( isset( $_POST['post_ID'] ) && (int) $_POST['post_ID'] !== $id && $type === Object_Type_Enum::POST ) {
+		if ( isset( $_POST['post_ID'] ) && (int) $_POST['post_ID'] !== $id && Object_Type_Enum::POST === $type ) {
 			$this->log->debug( '`wl_metaboxes`, skipping because the post id from request doesnt match the id from filter.' );
 			return;
 		}
@@ -377,7 +377,7 @@ class Wl_Abstract_Metabox {
 		wl_enqueue_leaflet();
 
 		// Add AJAX autocomplete to facilitate metabox editing.
-		wp_enqueue_script( 'wl-entity-metabox-utility', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/admin/js/wl_entity_metabox_utilities.js' );
+		wp_enqueue_script( 'wl-entity-metabox-utility', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/admin/js/wl_entity_metabox_utilities.js', array(), WORDLIFT_VERSION, false );
 		wp_localize_script(
 			'wl-entity-metabox-utility',
 			'wlEntityMetaboxParams',

@@ -27,7 +27,7 @@ interface Field {
 	 *
 	 * Overwrite this method in a child class to obtain custom behaviour.
 	 */
-	function get_data();
+	public function get_data();
 
 	/**
 	 * Sanitizes data before saving to DB. Default sanitization trashes empty

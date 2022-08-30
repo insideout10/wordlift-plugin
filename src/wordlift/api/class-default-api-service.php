@@ -1,9 +1,5 @@
 <?php
 
-/**
- *
- */
-
 namespace Wordlift\Api;
 
 use Exception;
@@ -91,8 +87,9 @@ class Default_Api_Service implements Api_Service, Api_Service_Ext {
 		// Set the time limit if lesser than our request timeout.
 		$max_execution_time = ini_get( 'max_execution_time' );
 		if ( ! ( defined( 'WP_CLI' ) && WP_CLI )
-			 && ( 0 != $max_execution_time )
+			 && ( 0 !== intval( $max_execution_time ) )
 			 && ( $max_execution_time < $request_timeout ) ) {
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			@set_time_limit( $request_timeout );
 		}
 
@@ -130,8 +127,10 @@ class Default_Api_Service implements Api_Service, Api_Service_Ext {
 			$this->log->trace(
 				"=== REQUEST  ===========================\n"
 				. "=== URL: $request_url ===========================\n"
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
 				. var_export( $request_args, true )
 				. "=== RESPONSE ===========================\n"
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
 				. var_export( $response, true )
 			);
 		}
@@ -150,7 +149,7 @@ class Default_Api_Service implements Api_Service, Api_Service_Ext {
 
 	/**
 	 * @return Me_Response
-	 * @throws Exception
+	 * @throws Exception when an error occurs.
 	 */
 	public function me() {
 		return json_decode( $this->get( '/me' )->get_body() );

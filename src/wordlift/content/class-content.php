@@ -9,34 +9,34 @@ interface Content {
 	 *
 	 * @return mixed Get the actual content.
 	 */
-	function get_bag();
+	public function get_bag();
 
 	/**
 	 * Get the content id.
 	 *
 	 * @return mixed
 	 */
-	function get_id();
+	public function get_id();
 
 	/**
 	 * Get the content type.
 	 *
 	 * @return mixed
 	 */
-	function get_object_type_enum();
+	public function get_object_type_enum();
 
 	/**
 	 * Get the permalink.
 	 *
 	 * @return string
 	 */
-	function get_permalink();
+	public function get_permalink();
 
 	/**
 	 * Get the edit link.
 	 *
 	 * @return string
 	 */
-	function get_edit_link();
+	public function get_edit_link();
 
 }

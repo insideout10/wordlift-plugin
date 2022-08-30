@@ -21,7 +21,7 @@ class Assertions {
 	 * @param mixed  $value The value to test.
 	 * @param string $type The expected type.
 	 *
-	 * @throws Exception
+	 * @throws Exception when an error occurs.
 	 */
 	public static function assert_of_type( $value, $type ) {
 
@@ -32,7 +32,6 @@ class Assertions {
 
 		// Check for type.
 		if ( get_class( $value ) !== $type ) {
-			echo "Value must be a $type.";
 			throw new Exception( "Value must be a $type." );
 		}
 

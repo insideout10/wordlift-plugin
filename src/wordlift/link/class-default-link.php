@@ -11,7 +11,7 @@ use Wordlift\Common\Singleton;
 
 abstract class Default_Link extends Singleton implements Link {
 
-	function get_link_title( $id, $label_to_be_ignored ) {
+	public function get_link_title( $id, $label_to_be_ignored ) {
 
 		$entity_labels = $this->get_synonyms( $id );
 

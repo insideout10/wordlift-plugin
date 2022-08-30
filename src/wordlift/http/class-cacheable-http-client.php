@@ -73,6 +73,7 @@ class Cacheable_Http_Client extends Simple_Http_Client {
 	public function request( $url, $options = array() ) {
 
 		// Create a hash and a path to the cache file.
+		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 		$hash     = md5( $url ) . '-' . md5( serialize( $options ) );
 		$filename = $this->get_path( $hash );
 
@@ -80,6 +81,7 @@ class Cacheable_Http_Client extends Simple_Http_Client {
 		if ( file_exists( $filename ) && $this->ttl >= time() - filemtime( $filename ) ) {
 			$this->log->trace( "Cache HIT.\n" );
 
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 			return json_decode( file_get_contents( $filename ), true );
 		}
 
@@ -100,7 +102,9 @@ class Cacheable_Http_Client extends Simple_Http_Client {
 		}
 
 		// Cache.
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@unlink( $filename );
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged,WordPress.WP.AlternativeFunctions.json_encode_json_encode,WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 		@file_put_contents( $filename, json_encode( $response ) );
 
 		return $response;

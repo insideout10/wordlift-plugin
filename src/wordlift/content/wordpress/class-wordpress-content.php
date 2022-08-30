@@ -8,6 +8,7 @@ use WP_Post;
 use WP_Term;
 use WP_User;
 
+// phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledClassName
 class Wordpress_Content implements Content {
 
 	/**
@@ -31,11 +32,11 @@ class Wordpress_Content implements Content {
 	 *
 	 * @return WP_Post|WP_Term|WP_User
 	 */
-	function get_bag() {
+	public function get_bag() {
 		return $this->bag;
 	}
 
-	function get_id() {
+	public function get_id() {
 		if ( ! is_object( $this->bag ) ) {
 			return null;
 		}
@@ -51,7 +52,7 @@ class Wordpress_Content implements Content {
 		return null;
 	}
 
-	function get_object_type_enum() {
+	public function get_object_type_enum() {
 		if ( ! is_object( $this->bag ) ) {
 			return null;
 		}
@@ -59,7 +60,7 @@ class Wordpress_Content implements Content {
 		return Object_Type_Enum::from_wordpress_instance( $this->bag );
 	}
 
-	function get_permalink() {
+	public function get_permalink() {
 		if ( ! is_object( $this->bag ) ) {
 			return null;
 		}
@@ -76,7 +77,7 @@ class Wordpress_Content implements Content {
 		return null;
 	}
 
-	function get_edit_link() {
+	public function get_edit_link() {
 		if ( ! is_object( $this->bag ) ) {
 			return null;
 		}

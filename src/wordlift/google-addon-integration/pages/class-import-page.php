@@ -32,7 +32,8 @@ class Import_Page extends Wordlift_Admin_Page {
 			'wl-gaddon-import-page',
 			plugin_dir_url( __FILE__ ) . 'assets/gaddon-import-page.js',
 			array(),
-			\Wordlift::get_instance()->get_version()
+			WORDLIFT_VERSION,
+			false
 		);
 
 		wp_localize_script(

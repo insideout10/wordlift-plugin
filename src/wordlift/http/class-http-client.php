@@ -24,7 +24,7 @@ interface Http_Client {
 	 * @return \WP_Error|array The response or WP_Error on failure.
 	 * @since 1.0.0
 	 */
-	function get( $url, $options = array() );
+	public function get( $url, $options = array() );
 
 	/**
 	 * Perform a request to the specified `$url`.
@@ -35,6 +35,6 @@ interface Http_Client {
 	 * @return \WP_Error|array The response or WP_Error on failure.
 	 * @since 1.0.0
 	 */
-	function request( $url, $options = array() );
+	public function request( $url, $options = array() );
 
 }

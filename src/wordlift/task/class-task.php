@@ -7,7 +7,7 @@ interface Task {
 	/**
 	 * @return int The total number of items to process.
 	 */
-	function starting();
+	public function starting();
 
 	/**
 	 * @param $value mixed The incoming value.
@@ -18,6 +18,6 @@ interface Task {
 	 * @type int $batch_size The number of items to process within this call.
 	 * }
 	 */
-	function tick( $value, $args );
+	public function tick( $value, $args );
 
 }

@@ -24,6 +24,7 @@ class Wordlift_Metabox_Field_Multiline extends Wl_Metabox_Field {
 	 * @inheritdoc
 	 */
 	public function html_input( $text ) {
+        // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@ob_start();
 		?>
 			<div class="wl-input-wrapper">

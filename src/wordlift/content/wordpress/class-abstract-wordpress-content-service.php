@@ -6,6 +6,7 @@ use Wordlift\Assertions;
 use Wordlift\Content\Content_Service;
 use Wordlift_Configuration_Service;
 
+// phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledClassName
 abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 
 	protected function __construct() {

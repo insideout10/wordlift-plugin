@@ -25,7 +25,7 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 	/**
 	 * Sync_Post_Hooks constructor.
 	 *
-	 * @param Sync_Service $sync_service
+	 * @param Sync_Service                $sync_service
 	 * @param Sync_Object_Adapter_Factory $sync_object_factory
 	 */
 	public function __construct( $sync_service, $sync_object_factory ) {
@@ -85,21 +85,21 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 	public function changed_post_meta( $meta_id, $post_id, $meta_key, $_meta_value ) {
 
 		if ( in_array(
-			     $meta_key,
-			     apply_filters(
-				     'wl_dataset__sync_post_hooks__ignored_meta_keys',
-				     apply_filters(
-					     'wl_dataset__sync_hooks__ignored_meta_keys',
-					     array(
-						     '_pingme',
-						     '_encloseme',
-						     'entity_url',
-					     )
-				     )
-			     ),
-				true
-		     )
-		     || ! in_array( get_post_type( $post_id ), \Wordlift_Entity_Service::valid_entity_post_types(), true )
+			$meta_key,
+			apply_filters(
+				'wl_dataset__sync_post_hooks__ignored_meta_keys',
+				apply_filters(
+					'wl_dataset__sync_hooks__ignored_meta_keys',
+					array(
+						'_pingme',
+						'_encloseme',
+						'entity_url',
+					)
+				)
+			),
+			true
+		)
+			 || ! in_array( get_post_type( $post_id ), \Wordlift_Entity_Service::valid_entity_post_types(), true )
 		) {
 			return;
 		}

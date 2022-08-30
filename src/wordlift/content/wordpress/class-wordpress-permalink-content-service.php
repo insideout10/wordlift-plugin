@@ -6,6 +6,7 @@ use Exception;
 use Wordlift\Content\Content_Service;
 use Wordlift\Object_Type_Enum;
 
+// phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledClassName
 class Wordpress_Permalink_Content_Service implements Content_Service {
 
 	private static $instance = null;
@@ -31,7 +32,7 @@ class Wordpress_Permalink_Content_Service implements Content_Service {
 	 *
 	 * @return Wordpress_Content|null
 	 */
-	function get_by_entity_id( $uri ) {
+	public function get_by_entity_id( $uri ) {
 		if ( ! preg_match( '@.*#(\w+)/(\d+)@', $uri, $matches ) ) {
 			return null;
 		}
@@ -53,9 +54,9 @@ class Wordpress_Permalink_Content_Service implements Content_Service {
 	/**
 	 * Get a
 	 *
-	 * @throws Exception
+	 * @throws Exception in case of error.
 	 */
-	function get_by_entity_id_or_same_as( $uri ) {
+	public function get_by_entity_id_or_same_as( $uri ) {
 		// If the URL is in the local site URL, then try to find a corresponding post.
 		if ( 0 === strpos( $uri, site_url() ) ) {
 			return $this->get_by_entity_id( $uri );
@@ -114,7 +115,7 @@ class Wordpress_Permalink_Content_Service implements Content_Service {
 	 *
 	 * @return string|void|null
 	 */
-	function get_entity_id( $content_id ) {
+	public function get_entity_id( $content_id ) {
 		$type = $content_id->get_type();
 		$id   = $content_id->get_id();
 
@@ -137,7 +138,8 @@ class Wordpress_Permalink_Content_Service implements Content_Service {
 		return "$base_uri#$type_name/$id";
 	}
 
-	function set_entity_id( $content_id, $uri ) {
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public function set_entity_id( $content_id, $uri ) {
 		// do nothing.
 	}
 
@@ -146,18 +148,20 @@ class Wordpress_Permalink_Content_Service implements Content_Service {
 	 *
 	 * @return bool|void
 	 */
-	function supports( $content_id ) {
+	public function supports( $content_id ) {
 		return in_array(
 			$content_id->get_type(),
 			array(
 				Object_Type_Enum::POST,
 				Object_Type_Enum::TERM,
 				Object_Type_Enum::USER,
-			)
+			),
+			true
 		);
 	}
 
-	function delete( $content_id ) {
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public function delete( $content_id ) {
 		// Ignore, we don't store any data.
 	}
 }
