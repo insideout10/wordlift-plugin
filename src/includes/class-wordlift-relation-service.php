@@ -135,7 +135,7 @@ class Wordlift_Relation_Service {
 			. self::order_by( $order_by )
 			. self::limit( $limit );
 
-		return '*' === $actual_fields ? $wpdb->get_results( $sql ) : $wpdb->get_col( $sql );
+		return '*' === $actual_fields ? $wpdb->get_results( $sql ) : $wpdb->get_col( $sql );  // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	}
 
 	/**
@@ -294,21 +294,16 @@ class Wordlift_Relation_Service {
 		$actual_fields = self::fields( $fields );
 
 		$sql = $wpdb->prepare(
-			"
-			SELECT p.$actual_fields
-			FROM {$this->relation_table} r
-			INNER JOIN $wpdb->posts p
-				ON p.id = r.subject_id
-			"
+			"SELECT p.$actual_fields FROM {$this->relation_table} r INNER JOIN $wpdb->posts p ON p.id = r.subject_id" // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			// Add the status clause.
-			. self::and_status( $status )
-			. self::inner_join_is_not_article()
+			. self::and_status( $status ) // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			. self::inner_join_is_not_article() // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			. ' WHERE r.object_id = %d '
-			. self::and_post_type_in(),
+			. self::and_post_type_in(), // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$object_id
 		);
 
-		return '*' === $actual_fields ? $wpdb->get_results( $sql ) : $wpdb->get_col( $sql );
+		return '*' === $actual_fields ? $wpdb->get_results( $sql ) : $wpdb->get_col( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	}
 
 	/**
@@ -337,15 +332,15 @@ class Wordlift_Relation_Service {
 				ON p.id = r.object_id
 			"
 			// Add the status clause.
-			. self::and_status( $status )
-			. self::inner_join_is_not_article()
+			. self::and_status( $status ) // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			. self::inner_join_is_not_article() // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			. ' WHERE r.subject_id = %d '
-			. self::and_post_type_in()
-			. self::and_predicate( $predicate ),
+			. self::and_post_type_in() // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			. self::and_predicate( $predicate ), // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$subject_id
 		);
 
-		return '*' === $actual_fields ? $wpdb->get_results( $sql ) : $wpdb->get_col( $sql );
+		return '*' === $actual_fields ? $wpdb->get_results( $sql ) : $wpdb->get_col( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	}
 
 	/**
