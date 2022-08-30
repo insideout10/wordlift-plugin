@@ -16,5 +16,5 @@ if ( ! apply_filters( 'wl_feature__enable__shipping-sd', false ) ) {
 	return;
 }
 
-$shipping_zones        = new Shipping_Zones();
+$shipping_zones = new Shipping_Zones();
 new Offer_Structured_Data( $shipping_zones );

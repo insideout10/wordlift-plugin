@@ -241,11 +241,11 @@ class Wordlift_Entity_Uri_Service {
 
 		// Try url_to_postid
 		$post_id = url_to_postid( htmlspecialchars_decode( $url ) );
-		if ( $post_id !== 0 ) {
+		if ( 0 !== $post_id ) {
 			return $post_id;
 		}
 
-		$parsed_url = parse_url( $url );
+		$parsed_url = wp_parse_url( $url );
 
 		if ( ! isset( $parsed_url['query'] ) ) {
 			return false;

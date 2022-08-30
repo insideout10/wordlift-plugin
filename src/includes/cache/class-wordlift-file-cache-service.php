@@ -80,6 +80,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		// Create the cache dir.
 		if ( ! file_exists( $this->cache_dir ) ) {
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			@mkdir( $this->cache_dir, 0755, true );
 		}
 
@@ -105,7 +106,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	 * @return mixed|false The cached contents or false if the cache isn't found.
 	 * @since 3.16.0
 	 */
-	function get_cache( $id ) {
+	public function get_cache( $id ) {
 
 		// Bail out if we don't have the cache.
 		if ( ! $this->has_cache( $id ) ) {
@@ -118,10 +119,11 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 		$this->log->trace( "Trying to get cache contents for $id from $filename..." );
 
 		// Try to decode the contents.
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$contents = json_decode( file_get_contents( $filename ), true );
 
 		// Return false if decoding failed, otherwise the decoded contents.
-		return $contents ?: false;
+		return $contents ? $contents : false;
 	}
 
 	/**
@@ -132,7 +134,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	 * @return bool True if the `id` has a cache.
 	 * @since 3.16.0
 	 */
-	function has_cache( $id ) {
+	public function has_cache( $id ) {
 
 		// Get the filename.
 		$filename = $this->get_filename( $id );
@@ -144,12 +146,13 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	/**
 	 * @inheritdoc
 	 */
-	function set_cache( $id, $contents ) {
+	public function set_cache( $id, $contents ) {
 
 		$filename = $this->get_filename( $id );
 
 		$this->log->trace( "Writing cache contents for $id to $filename..." );
 
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged,WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 		@file_put_contents( $filename, wp_json_encode( $contents ) );
 
 	}
@@ -161,13 +164,14 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	 *
 	 * @since 3.16.0
 	 */
-	function delete_cache( $id ) {
+	public function delete_cache( $id ) {
 
 		$filename = $this->get_filename( $id );
 
 		$this->log->trace( "Deleting cache contents for $id, file $filename..." );
 
 		if ( file_exists( $filename ) ) {
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			@unlink( $filename );
 		}
 
@@ -178,7 +182,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	 *
 	 * @since 3.16.0
 	 */
-	function flush() {
+	public function flush() {
 
 		// Bail out if the cache dir isn't set.
 		if ( empty( $this->cache_dir ) || '/' === $this->cache_dir ) {
@@ -187,6 +191,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		$this->log->trace( "Flushing cache contents from $this->cache_dir..." );
 
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		$handle = @opendir( $this->cache_dir );
 
 		// Bail out if the directory can't be opened.
@@ -198,11 +203,13 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 		$file_extension_length = strlen( $this->file_extension );
 
 		// Loop into the directory to delete files.
-		while ( false !== ( $entry = readdir( $handle ) ) ) {
+		$entry = readdir( $handle );
+		while ( false !== $entry ) {
 			if ( substr( $entry, - $file_extension_length ) === $this->file_extension
 				 && file_exists( $this->cache_dir . $entry ) ) {
 				$this->log->trace( "Deleting file {$this->cache_dir}{$entry}..." );
 
+				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 				@unlink( $this->cache_dir . $entry );
 			}
 		}

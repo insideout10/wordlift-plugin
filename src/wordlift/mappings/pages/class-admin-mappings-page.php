@@ -11,7 +11,6 @@
 
 namespace Wordlift\Mappings\Pages;
 
-use Wordlift;
 use Wordlift\Mappings\Mappings_REST_Controller;
 use Wordlift\Scripts\Scripts_Helper;
 use Wordlift_Admin_Page;

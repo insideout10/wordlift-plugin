@@ -10,7 +10,7 @@ use Wordlift\Vocabulary\Api\Search_Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Api\Tag_Rest_Endpoint;
 use Wordlift\Vocabulary\Cache\Cache_Service_Factory;
 use Wordlift\Vocabulary\Dashboard\Term_Matches_Widget;
-use Wordlift\Vocabulary\Data\Term_Count\Cached_Term_count_Manager;
+use Wordlift\Vocabulary\Data\Term_Count\Cached_Term_Count_Manager;
 use Wordlift\Vocabulary\Data\Term_Count\Term_Count_Factory;
 use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
 use Wordlift\Vocabulary\Hooks\Tag_Created_Hook;
@@ -63,7 +63,7 @@ class Vocabulary_Loader {
 		$dashboard_widget = new Term_Matches_Widget( $term_count );
 		$dashboard_widget->connect_hook();
 
-		$cached_term_count_manager = new Cached_Term_count_Manager();
+		$cached_term_count_manager = new Cached_Term_Count_Manager();
 		$cached_term_count_manager->connect_hook();
 
 		$settings_tab = new Settings_Tab();

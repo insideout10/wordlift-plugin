@@ -178,7 +178,7 @@ class Wordlift_Sample_Data_Service {
 	 *
 	 * @since 3.12.0
 	 */
-	function create() {
+	public function create() {
 
 		// Get the source image path.
 		$source = plugin_dir_path( __DIR__ ) . 'images/rome.png';
@@ -260,7 +260,7 @@ class Wordlift_Sample_Data_Service {
 	 *
 	 * @since 3.12.0
 	 */
-	function delete() {
+	public function delete() {
 
 		$this->delete_by_type( 'post' );
 		$this->delete_by_type( 'entity' );
@@ -315,6 +315,7 @@ class Wordlift_Sample_Data_Service {
 		$destination = $upload_path . '/wl-sample-data.png';
 
 		// Copy the source file to the destination.
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@copy( $source, $destination );
 
 		return $this->create_attachment( $destination );

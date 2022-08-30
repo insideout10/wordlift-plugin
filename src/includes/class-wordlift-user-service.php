@@ -104,7 +104,8 @@ class Wordlift_User_Service {
 		}
 
 		// Try to build an URI, return false in case of failure.
-		if ( false === ( $user_uri = $this->_build_uri( $user_id ) ) ) {
+		$user_uri = $this->_build_uri( $user_id );
+		if ( false === $user_uri ) {
 			return false;
 		}
 
@@ -153,6 +154,7 @@ class Wordlift_User_Service {
 	 * @return false|string The user's URI or false if not found.
 	 * @since 3.1.7
 	 */
+	// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 	private function _get_uri( $user_id ) {
 
 		$user_uri = get_user_meta( $user_id, self::URI_META_KEY, true );
@@ -172,10 +174,12 @@ class Wordlift_User_Service {
 	 * @return false|string The user's URI or false in case of failure.
 	 * @since 3.1.7
 	 */
+	// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 	private function _build_uri( $user_id ) {
 
 		// Get the user, return false in case of failure.
-		if ( false === ( $user = get_userdata( $user_id ) ) ) {
+		$user = get_userdata( $user_id );
+		if ( false === $user ) {
 			return false;
 		};
 
@@ -200,6 +204,7 @@ class Wordlift_User_Service {
 	 * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.
 	 * @since 3.1.7
 	 */
+	// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 	private function _set_uri( $user_id, $user_uri ) {
 
 		return update_user_meta( $user_id, self::URI_META_KEY, $user_uri );
@@ -273,7 +278,7 @@ class Wordlift_User_Service {
 		$user = get_user_by( 'id', $user_id );
 
 		// Return true, if the user is found and has the `editor` role.
-		return is_a( $user, 'WP_User' ) && in_array( 'editor', (array) $user->roles );
+		return is_a( $user, 'WP_User' ) && in_array( 'editor', (array) $user->roles, true );
 	}
 
 	/**

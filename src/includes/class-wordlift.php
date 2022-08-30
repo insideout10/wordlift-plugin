@@ -82,8 +82,6 @@ use Wordlift\Widgets\Async_Template_Decorator;
  */
 class Wordlift {
 
-	// <editor-fold desc="## FIELDS">
-
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the plugin.
@@ -615,11 +613,8 @@ class Wordlift {
 	private $features_registry;
 
 	private $analytics_settings_page;
-	// </editor-fold>
 
-	// Experimental code added by Nishit for feature request 1496
 	private $webhook_loader;
-	// Experimental code ents here
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -680,7 +675,7 @@ class Wordlift {
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
 	 *
-	 * @throws Exception
+	 * @throws Exception when an error occurs.
 	 * @since    1.0.0
 	 * @access   private
 	 */
@@ -1028,6 +1023,7 @@ class Wordlift {
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 		 */
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES ) ) {
 			require_once plugin_dir_path( __DIR__ ) . 'includes/schemaorg/class-wordlift-schemaorg-sync-service.php';
 			require_once plugin_dir_path( __DIR__ ) . 'includes/schemaorg/class-wordlift-schemaorg-property-service.php';
@@ -1074,6 +1070,7 @@ class Wordlift {
 		$that = $this;
 		add_action(
 			'plugins_loaded',
+			// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 			function () use ( &$that, $schemaorg_property_service ) {
 
 				/** Services. */
@@ -1374,18 +1371,19 @@ class Wordlift {
 				 * @since 3.30.0
 				 * @see https://github.com/insideout10/wordlift-plugin/issues/1318
 				 */
-
+				// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 				if ( apply_filters( 'wl_feature__enable__article-wrapper', false ) ) {
 					new Jsonld_Article_Wrapper( Wordlift_Post_To_Jsonld_Converter::get_instance(), $that->cached_postid_to_jsonld_converter );
 				}
 
+				// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 				if ( apply_filters( 'wl_feature__enable__match-terms', false ) ) {
 					$vocabulary_loader = new Vocabulary_Loader();
 					$vocabulary_loader->init_vocabulary();
 				}
 
 				/**
-				 *Added for feature request 1496 (Webhooks)
+				 * Added for feature request 1496 (Webhooks)
 				 */
 				if ( apply_filters( 'wl_feature__enable__webhooks', false ) ) {
 					$that->webhook_loader = new Webhooks_Loader();
@@ -1529,6 +1527,7 @@ class Wordlift {
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 		 */
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( ! apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES ) ) {
 			$that->loader->add_filter( 'wp_terms_checklist_args', $that->entity_types_taxonomy_walker, 'terms_checklist_args' );
 		}
@@ -1581,6 +1580,7 @@ class Wordlift {
 		 *
 		 * Since 3.30.0 this feature is registered using registry.
 		 */
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( apply_filters( 'wl_feature__enable__settings-screen', true ) || Admin_User_Option::is_wordlift_admin() ) {
 			add_action( 'wl_admin_menu', array( $that->settings_page, 'admin_menu' ), 10, 2 );
 		}
@@ -1713,10 +1713,8 @@ class Wordlift {
 		$that->loader->add_action( 'init', $that->entity_post_type_service, 'register' );
 
 		// Bind the link generation and handling hooks to the entity link service.
-		$that->loader->add_filter( 'post_type_link', $that->entity_link_service, 'post_type_link', 10, 4 );
+		$that->loader->add_filter( 'post_type_link', $that->entity_link_service, 'post_type_link', 10, 2 );
 		$that->loader->add_action( 'pre_get_posts', $that->entity_link_service, 'pre_get_posts', PHP_INT_MAX, 1 );
-		// $that->loader->add_filter( 'wp_unique_post_slug_is_bad_flat_slug', $that->entity_link_service, 'wp_unique_post_slug_is_bad_flat_slug', 10, 3 );
-		// $that->loader->add_filter( 'wp_unique_post_slug_is_bad_hierarchical_slug', $that->entity_link_service, 'wp_unique_post_slug_is_bad_hierarchical_slug', 10, 4 );
 
 		$that->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$that->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
@@ -1805,7 +1803,7 @@ class Wordlift {
 	/**
 	 * Load dependencies for WP-CLI.
 	 *
-	 * @throws Exception
+	 * @throws Exception when an error occurs.
 	 * @since 3.18.0
 	 */
 	private function load_cli_dependencies() {
@@ -1821,7 +1819,7 @@ class Wordlift {
 		 * @return bool
 		 * @since 3.27.6
 		 */
-
+		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter,WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_register_script( 'wl_enabled_blocks', false );
 
 		$enabled_blocks = array();
@@ -1831,6 +1829,7 @@ class Wordlift {
 		 *
 		 * @since 3.32.3
 		 */
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( apply_filters( 'wl_feature__enable__product-navigator', true ) ) {
 			$enabled_blocks[] = 'wordlift/products-navigator';
 		}
@@ -1860,6 +1859,7 @@ class Wordlift {
 	 */
 	public function register_screens() {
 		// Hook the menu to the Download Your Data page.
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( apply_filters( 'wl_feature__enable__settings-download', true ) ) {
 			Assertions::is_set( $this->download_your_data_page, "`download_your_data_page` can't be null" );
 			add_action( 'admin_menu', array( $this->download_your_data_page, 'admin_menu' ), 100, 0 );

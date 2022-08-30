@@ -41,7 +41,7 @@ class Taxonomy_Term_Rule_Validator implements Rule_Validator {
 	}
 
 	public function is_valid( $identifier, $operator, $operand_1, $taxonomy, $type ) {
-		if ( Jsonld_Converter::TERM !== $type) {
+		if ( Jsonld_Converter::TERM !== $type ) {
 			return false;
 		}
 		$current_term = get_term( $identifier );

@@ -60,7 +60,9 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 			'labels'             => $labels,
 			'capabilities'       => $capabilities,
 			'hierarchical'       => true,
+			// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 			'show_admin_column'  => apply_filters( 'wl_feature__enable__entity-types-taxonomy', true ),
+			// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 			'show_in_rest'       => apply_filters( 'wl_feature__enable__entity-types-taxonomy', true ),
 			'show_in_quick_edit' => false,
 			'publicly_queryable' => false,
@@ -72,6 +74,7 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 		 * @since 3.20.0
 		 */
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES ) ) {
 			$args['meta_box_cb'] = apply_filters( 'wl_feature__enable__entity-types-taxonomy', true ) ? array(
 				'Wordlift_Admin_Schemaorg_Taxonomy_Metabox',
@@ -116,7 +119,7 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		add_filter(
 			'register_post_type_args',
 			function ( $args, $post_type ) {
-				if ( in_array( $post_type, Wordlift_Entity_Service::valid_entity_post_types() ) ) {
+				if ( in_array( $post_type, Wordlift_Entity_Service::valid_entity_post_types(), true ) ) {
 					if ( ! isset( $args['supports'] ) ) {
 						$args['supports'] = array();
 					}
@@ -191,7 +194,7 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 				$uris = Wordlift_Entity_Type_Adapter::get_entity_types( $post_type );
 				foreach ( $uris as $uri ) {
 					// set the uri based on post type.
-					if ( $uri === 'http://schema.org/Article' || $uri === 'http://schema.org/Thing' ) {
+					if ( 'http://schema.org/Article' === $uri || 'http://schema.org/Thing' === $uri ) {
 						$uri = Wordlift_Entity_Service::TYPE_NAME === $post_type ?
 							'http://schema.org/Thing' : 'http://schema.org/Article';
 					}

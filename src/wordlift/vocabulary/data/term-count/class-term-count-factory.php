@@ -13,7 +13,7 @@ class Term_Count_Factory {
 	const CACHED_TERM_COUNT = 'cached_term_count';
 
 	public static function get_instance( $type ) {
-		if ( $type === self::CACHED_TERM_COUNT ) {
+		if ( self::CACHED_TERM_COUNT === $type ) {
 			return new Cached_Term_Count( new Default_Term_Count() );
 		}
 

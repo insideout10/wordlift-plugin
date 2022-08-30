@@ -76,12 +76,10 @@ class Wordlift_Entity_Link_Service {
 	 *
 	 * @param string  $post_link The post's permalink.
 	 * @param WP_Post $post      The post in question.
-	 * @param bool    $leavename Whether to keep the post name.
-	 * @param bool    $sample    Is it a sample permalink.
 	 *
 	 * @return string The link to the post.
 	 */
-	public function post_type_link( $post_link, $post, $leavename, $sample ) {
+	public function post_type_link( $post_link, $post ) {
 
 		// Return the post link if this is not our post type.
 		if ( ! empty( $this->slug ) || $this->entity_type_service->get_post_type() !== get_post_type( $post ) ) {
@@ -142,7 +140,7 @@ class Wordlift_Entity_Link_Service {
 		$post_types = Wordlift_Entity_Service::valid_entity_post_types();
 
 		// Ignore post types different from the ones we need to check.
-		if ( ! in_array( $post_type, $post_types ) ) {
+		if ( ! in_array( $post_type, $post_types, true ) ) {
 			return $bad_slug;
 		}
 
@@ -152,31 +150,6 @@ class Wordlift_Entity_Link_Service {
 		$this->log->debug( "Checking if a slug exists [ post type :: $post_type ][ slug :: $slug ][ exists :: " . ( $exists ? 'yes' : 'no' ) . ' ]' );
 
 		return apply_filters( 'wl_unique_post_slug_is_bad_flat_slug', $exists, $bad_slug, $slug, $post_type );
-	}
-
-	/**
-	 * Hook to WordPress' wp_unique_post_slug_is_bad_hierarchical_slug filter. This is called when a page is saved.
-	 *
-	 * @since 3.6.0
-	 *
-	 * @param bool   $bad_slug  Whether the post slug would be bad as a flat slug.
-	 * @param string $slug      The post slug.
-	 * @param string $post_type Post type.
-	 * @param int    $post_parent
-	 *
-	 * @return bool Whether the slug is bad.
-	 */
-	public function wp_unique_post_slug_is_bad_hierarchical_slug( $bad_slug, $slug, $post_type, $post_parent ) {
-
-		// We only care about pages here.
-		if ( 'page' !== $post_type ) {
-			return $bad_slug;
-		}
-
-		// We redirect the call to the flat hook, this means that this check is going to solve also the 6-years old issue
-		// about overlapping slugs among pages and posts:
-		// https://core.trac.wordpress.org/ticket/13459
-		return $this->wp_unique_post_slug_is_bad_flat_slug( $bad_slug, $slug, $post_type );
 	}
 
 	/**

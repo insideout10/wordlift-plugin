@@ -9,7 +9,7 @@ namespace Wordlift\Vocabulary\Data\Entity_List;
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 class Default_Entity_List extends Entity_List {
-
+	
 	const META_KEY = '_wl_vocabulary_entity_match_for_term';
 
 	/**
@@ -91,7 +91,7 @@ class Default_Entity_List extends Entity_List {
 		$entity_list = get_term_meta( $this->term_id, self::META_KEY );
 		foreach ( $entity_list as $key => $entity ) {
 			$same_as = $entity['sameAs'];
-			if ( in_array( $entity_id, $same_as ) ) {
+			if ( in_array( $entity_id, $same_as, true ) ) {
 				// since entity ids are unique, we break after finding the first instance.
 				unset( $entity_list[ $key ] );
 				break;
@@ -130,7 +130,7 @@ class Default_Entity_List extends Entity_List {
 		$allowed_keys = array( '@id', 'description', 'sameAs', '@type', 'name' );
 		$data         = array();
 		foreach ( $entity_data as $key => $value ) {
-			if ( in_array( $key, $allowed_keys ) ) {
+			if ( in_array( $key, $allowed_keys, true ) ) {
 				$data[ $key ] = $value;
 			}
 		}

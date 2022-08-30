@@ -531,8 +531,10 @@ class Wordlift_Configuration_Service {
 			$base_url = $api_service->get_base_url();
 
 			if ( ! is_array( $response ) ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
 				$this->log->error( "Unexpected response when opening URL $base_url$url: " . var_export( $response, true ) );
 			} else {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
 				$this->log->error( "Unexpected status code when opening URL $base_url$url: " . $response['response']['code'] . "\n" . var_export( $response, true ) );
 			}
 
@@ -552,7 +554,9 @@ class Wordlift_Configuration_Service {
 		 * @since 3.27.7
 		 * Remove the trailing slash returned from the new platform api.
 		 */
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$dataset_uri  = untrailingslashit( $json->datasetURI );
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$package_type = isset( $json->packageType ) ? $json->packageType : null;
 
 		$this->log->info( "Updating [ dataset uri :: $dataset_uri ][ package type :: $package_type ]..." );
@@ -575,7 +579,7 @@ class Wordlift_Configuration_Service {
 	 * @return mixed The same value in the $value parameter
 	 * @since 3.12.0
 	 */
-	function maybe_update_dataset_uri( $value, $old_value ) {
+	public function maybe_update_dataset_uri( $value, $old_value ) {
 
 		// Check the old key value and the new one. Here we're only handling the
 		// case where the key hasn't changed and the dataset URI isn't set. The

@@ -130,7 +130,8 @@ class Wordlift_Topic_Taxonomy_Service {
 		// Define taxonomy term slug
 		$term_slug = sanitize_title( $topic->post_title );
 		// Look for an existing taxonomy term with a given slug
-		if ( $term = get_term_by( 'slug', $term_slug, self::TAXONOMY_NAME ) ) {
+		$term = get_term_by( 'slug', $term_slug, self::TAXONOMY_NAME );
+		if ( $term ) {
 			return (int) $term->term_id;
 		}
 		// Otherwise create a new term and return it

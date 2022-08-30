@@ -13,7 +13,7 @@ class Post_Jsonld {
 
 	public function enhance_post_jsonld() {
 		add_filter( 'wl_post_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 2 );
-		add_filter( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 11, 2 );
+		add_filter( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 11 );
 	}
 
 	public function wl_post_jsonld_array( $arr, $post_id ) {
@@ -21,7 +21,7 @@ class Post_Jsonld {
 		$jsonld     = $arr['jsonld'];
 		$references = $arr['references'];
 
-		$this->add_mentions( $post_id, $jsonld, $references );
+		$this->add_mentions( $post_id, $jsonld );
 
 		return array(
 			'jsonld'     => $jsonld,
@@ -30,7 +30,7 @@ class Post_Jsonld {
 
 	}
 
-	public function add_mentions( $post_id, &$jsonld, &$references ) {
+	public function add_mentions( $post_id, &$jsonld ) {
 
 		$taxonomies = Terms_Compat::get_public_taxonomies();
 		$terms      = array();
@@ -93,17 +93,17 @@ class Post_Jsonld {
 
 	}
 
-	public function wl_after_get_jsonld( $jsonld, $post_id ) {
+	public function wl_after_get_jsonld( $jsonld ) {
 
 		if ( ! is_array( $jsonld ) || count( $jsonld ) === 0 ) {
 			return $jsonld;
 		}
 
 		foreach ( $jsonld as $key => $value ) {
-			if ( $value['@type'] === 'Article' && isset( $value['image'] ) ) {
+			if ( 'Article' === $value['@type'] && isset( $value['image'] ) ) {
 				$image = $value['image'];
 			}
-			if ( $value['@type'] === 'Recipe' && ! isset( $value['image'] ) ) {
+			if ( 'Recipe' === $value['@type'] && ! isset( $value['image'] ) ) {
 				$index = $key;
 			}
 		}

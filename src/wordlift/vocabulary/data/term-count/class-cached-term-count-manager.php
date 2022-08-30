@@ -9,7 +9,7 @@ use Wordlift\Vocabulary\Terms_Compat;
  *
  * @since 3.30.0
  */
-class Cached_Term_count_Manager {
+class Cached_Term_Count_Manager {
 
 	public function connect_hook() {
 

@@ -33,9 +33,6 @@ class Wordlift_Mapping_Ajax_Adapter {
 
 	}
 
-	/**
-	 *
-	 */
 	public function set_entity_types_for_post_type() {
 
 		if ( ! isset( $_REQUEST['post_type'] ) || ! isset( $_REQUEST['entity_types'] ) ) {

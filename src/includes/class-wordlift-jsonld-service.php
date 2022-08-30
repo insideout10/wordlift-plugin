@@ -103,6 +103,7 @@ class Wordlift_Jsonld_Service {
 		//
 		// See https://github.com/insideout10/wordlift-plugin/issues/406.
 		// See https://codex.wordpress.org/AJAX_in_Plugins.
+        // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@ob_clean();
 
 		// Get the parameter from the request.
@@ -119,11 +120,11 @@ class Wordlift_Jsonld_Service {
 	 *
 	 * @param mixed $response Variable (usually an array or object) to encode as JSON,
 	 *                           then print and die.
-	 * @param int   $status_code The HTTP status code to output.
 	 *
 	 * @since 3.18.5
 	 */
-	private function send_jsonld( $response, $status_code = null ) {
+	private function send_jsonld( $response ) {
+        // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@header( 'Content-Type: application/ld+json; charset=' . get_option( 'blog_charset' ) );
 		echo wp_json_encode( $response );
 		if ( apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
@@ -193,6 +194,7 @@ class Wordlift_Jsonld_Service {
 				// via the `@id` but no other properties are loaded.
 				$ignored = array();
 				if ( $item instanceof Term_Reference ) {
+                    // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 					  $term_jsonld = $that->term_jsonld_adapter->get( $item->get_id(), $context );
 
 					  // For term references, we publish a jsonld array on the page, use only the first item.
@@ -201,6 +203,7 @@ class Wordlift_Jsonld_Service {
 					$item = $item->get_id();
 				}
 
+				// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 				return $entity_to_jsonld_converter->convert( $item, $ignored, $references_infos );
 			},
 			array_unique( $references )
@@ -223,7 +226,7 @@ class Wordlift_Jsonld_Service {
 				   // Check that the reference is required
 				   $item['reference']->get_required() &&
 				   // Check that the reference isn't being output already.
-				   ! in_array( $item['reference']->get_id(), $references );
+				   ! in_array( $item['reference']->get_id(), $references, true );
 			}
 		);
 
@@ -238,7 +241,7 @@ class Wordlift_Jsonld_Service {
 						}
 
 						$post_id = $item['reference']->get_id();
-						if ( in_array( $post_id, $references ) ) {
+						if ( in_array( $post_id, $references, true ) ) {
 							return null;
 						}
 
@@ -278,7 +281,7 @@ class Wordlift_Jsonld_Service {
 		$is_homepage = is_home() || is_front_page();
 		$post_id     = is_singular() ? get_the_ID() : null;
 
-		$jsonld = json_encode( $this->get_jsonld( $is_homepage, $post_id, Jsonld_Context_Enum::PAGE ) );
+		$jsonld = wp_json_encode( $this->get_jsonld( $is_homepage, $post_id, Jsonld_Context_Enum::PAGE ) );
 		?>
 		<script type="application/ld+json"><?php echo esc_html( $jsonld ); ?></script>
 													  <?php

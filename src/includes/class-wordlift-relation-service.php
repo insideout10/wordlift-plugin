@@ -149,7 +149,7 @@ class Wordlift_Relation_Service {
 	 */
 	private static function and_post_type_in( $post_types = array() ) {
 
-		if ( $post_types === array() ) {
+		if ( array() === $post_types ) {
 			$post_types = Wordlift_Entity_Service::valid_entity_post_types();
 		}
 

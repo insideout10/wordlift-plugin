@@ -147,6 +147,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 *
 	 * @inheritdoc
 	 */
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function convert( $post_id, &$references = array(), &$references_infos = array(), &$cache = false ) {
 
 		// Ensure post ID is `int`. Otherwise we may have issues with caching, since caching is strict about
@@ -163,6 +164,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 			$this->log->debug( "Cached contents found for post $post_id." );
 
 			// Inform the caller that this is cached result.
+			// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 			$cache = true;
 			$this->add_http_header( $post_id, true );
 
@@ -171,6 +173,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		}
 
 		// Set cached to false.
+		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$cache = false;
 		$this->add_http_header( $post_id, false );
 
@@ -198,6 +201,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * @return mixed|bool The cached contents or false if the cached isn't found.
 	 * @since 3.16.0
 	 */
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	private function get_cache( $post_id, &$references = array() ) {
 
 		// Ensure post ID is int, because cache is strict about var types.
@@ -217,6 +221,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		}
 
 		// Remap the cache.
+		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$references = $this->reference_processor->deserialize_references( $contents['references'] );
 
 		return $contents['jsonld'];
@@ -276,7 +281,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 */
 	public function changed_post_meta( $id, $post_id, $meta_key ) {
 
-		if ( in_array( $meta_key, self::$ignored_meta_keys ) ) {
+		if ( in_array( $meta_key, self::$ignored_meta_keys, true ) ) {
 			$this->log->trace( "Post $post_id meta $meta_key ignored." );
 
 			return;
@@ -357,7 +362,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	private function flush_cache_if_publisher( $post_id ) {
 
 		// Bail out if it's not the publisher.
-		if ( $post_id !== Wordlift_Configuration_Service::get_instance()->get_publisher_id() ) {
+		if ( Wordlift_Configuration_Service::get_instance()->get_publisher_id() !== $post_id ) {
 			return;
 		}
 

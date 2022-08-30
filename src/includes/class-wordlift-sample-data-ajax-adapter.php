@@ -33,7 +33,7 @@ class Wordlift_Sample_Data_Ajax_Adapter {
 	 *
 	 * @param \Wordlift_Sample_Data_Service $sample_data_service The {@link Wordlift_Sample_Data_Service} instance.
 	 */
-	function __construct( $sample_data_service ) {
+	public function __construct( $sample_data_service ) {
 
 		$this->sample_data_service = $sample_data_service;
 
@@ -44,7 +44,7 @@ class Wordlift_Sample_Data_Ajax_Adapter {
 	 *
 	 * @since 3.12.0
 	 */
-	function create() {
+	public function create() {
 
 		// Clean any potential garbage before us.
 		ob_clean();
@@ -57,7 +57,7 @@ class Wordlift_Sample_Data_Ajax_Adapter {
 
 	}
 
-	function delete() {
+	public function delete() {
 
 		// Clean any potential garbage before us.
 		ob_clean();
@@ -66,6 +66,7 @@ class Wordlift_Sample_Data_Ajax_Adapter {
 		$this->sample_data_service->delete();
 
 		// Send success.
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@header( 'Content-Disposition: inline' );
 		wp_send_json_success();
 
