@@ -61,8 +61,7 @@ wl_write_log( 'Done.' );
  * Delete post-entity relationships
  */
 wl_write_log( 'Deleting post-entity relationships... ' );
-$sql = 'DROP TABLE IF EXISTS ' . wl_core_get_relation_instances_table_name() . ';';
-$wpdb->query( $sql );
+$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}wl_relation_instances" );
 delete_option( 'wl_db_version' );
 wl_write_log( 'Done.' );
 
