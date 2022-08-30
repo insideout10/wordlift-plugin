@@ -7,11 +7,11 @@ use WPRM_Recipe;
 class Main_Ingredient_Jsonld {
 
 	public function register_hooks() {
-		add_action( 'wprm_recipe_metadata', [ $this, '__recipe_metadata' ], 10, 2 );
+		add_action( 'wprm_recipe_metadata', array( $this, '__recipe_metadata' ), 10, 2 );
 	}
 
 	/**
-	 * @param array $metadata
+	 * @param array       $metadata
 	 * @param WPRM_Recipe $recipe
 	 *
 	 * @return array
@@ -26,8 +26,8 @@ class Main_Ingredient_Jsonld {
 
 		// We're embedding the full json-ld here because WL doesn't output its own markup, so it makes no sense
 		// to hook to wl_after_json_ld.
-		$metadata['about'] = isset( $metadata['about'] ) ? $metadata['about'] : [];
-		$metadata['about'] = array_merge( $metadata['about'], [ json_decode( $jsonld, true ) ] );
+		$metadata['about'] = isset( $metadata['about'] ) ? $metadata['about'] : array();
+		$metadata['about'] = array_merge( $metadata['about'], array( json_decode( $jsonld, true ) ) );
 
 		return $metadata;
 	}

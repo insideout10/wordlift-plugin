@@ -36,9 +36,9 @@ class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
 	/**
 	 * The {@link Class_Wordlift_Autocomplete_Service} instance.
 	 *
-	 * @param Entity_Helper $entity_helper
+	 * @param Entity_Helper                $entity_helper
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service
-	 * @param \Wordlift_Entity_Service $entity_service
+	 * @param \Wordlift_Entity_Service     $entity_service
 	 *
 	 * @since 3.15.0
 	 */
@@ -55,47 +55,53 @@ class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
 	/**
 	 * Make request to external API and return the response.
 	 *
-	 * @param string $query The search string.
-	 * @param string $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
-	 *                      in Wikipedia. By default is "cloud".
+	 * @param string       $query The search string.
+	 * @param string       $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
+	 *                            in Wikipedia. By default is "cloud".
 	 * @param array|string $excludes The exclude parameter string.
 	 *
 	 * @return array $response The API response.
 	 * @since 3.15.0
-	 *
 	 */
 	public function query( $query, $scope = 'cloud', $excludes = array() ) {
 
 		$results = $this->do_query( $query, $scope, $excludes );
 
-		$uris = array_reduce( $results, function ( $carry, $result ) {
+		$uris = array_reduce(
+			$results,
+			function ( $carry, $result ) {
 
-			$carry[] = $result['id'];
+				$carry[] = $result['id'];
 
-			return array_merge( $carry, $result['sameAss'] );
-		}, array() );
+				return array_merge( $carry, $result['sameAss'] );
+			},
+			array()
+		);
 
 		$mappings = $this->entity_helper->map_many_to_local( $uris );
 
 		$that           = $this;
-		$mapped_results = array_map( function ( $result ) use ( $that, $mappings ) {
+		$mapped_results = array_map(
+			function ( $result ) use ( $that, $mappings ) {
 
-			if ( $that->entity_uri_service->is_internal( $result['id'] ) ) {
-				return $result;
-			}
-
-			$uris = array_merge( (array) $result['id'], $result['sameAss'] );
-
-			foreach ( $uris as $uri ) {
-				if ( isset( $mappings[ $uri ] ) ) {
-					$local_entity = $that->entity_uri_service->get_entity( $mappings[ $uri ] );
-
-					return $that->post_to_autocomplete_result( $mappings[ $uri ], $local_entity );
+				if ( $that->entity_uri_service->is_internal( $result['id'] ) ) {
+					  return $result;
 				}
-			}
 
-			return $result;
-		}, $results );
+				$uris = array_merge( (array) $result['id'], $result['sameAss'] );
+
+				foreach ( $uris as $uri ) {
+					if ( isset( $mappings[ $uri ] ) ) {
+						$local_entity = $that->entity_uri_service->get_entity( $mappings[ $uri ] );
+
+						return $that->post_to_autocomplete_result( $mappings[ $uri ], $local_entity );
+					}
+				}
+
+				return $result;
+			},
+			$results
+		);
 
 		return $mapped_results;
 	}
@@ -128,14 +134,13 @@ class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
 	/**
 	 * Build the autocomplete url.
 	 *
-	 * @param string $query The search string.
+	 * @param string       $query The search string.
 	 * @param array|string $exclude The exclude parameter.
-	 * @param string $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
-	 *                      in Wikipedia. By default is "cloud".
+	 * @param string       $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
+	 *                            in Wikipedia. By default is "cloud".
 	 *
 	 * @return string Built url.
 	 * @since 3.15.0
-	 *
 	 */
 	private function build_request_url( $query, $exclude, $scope ) {
 		$configuration_service = Wordlift_Configuration_Service::get_instance();
@@ -153,7 +158,7 @@ class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
 
 		// Add the exclude parameter.
 		if ( ! empty( $exclude ) ) {
-			$request_url .= "&exclude=" . implode( '&exclude=', array_map( 'urlencode', (array) $exclude ) );
+			$request_url .= '&exclude=' . implode( '&exclude=', array_map( 'urlencode', (array) $exclude ) );
 		}
 
 		// return the built url.

@@ -60,37 +60,37 @@ $reasons = array(
 );
 ?>
 <div class="wl-modal-deactivation-feedback" style="display: none">
-    <div class="wl-modal">
-        <div class="wl-modal-body">
-            <h2>
+	<div class="wl-modal">
+		<div class="wl-modal-body">
+			<h2>
 				<?php esc_html_e( 'We\'re sorry to see you go!', 'wordlift' ); ?>
-            </h2>
+			</h2>
 
-            <div class="wl-modal-panel active">
-                <h4>
+			<div class="wl-modal-panel active">
+				<h4>
 					<?php esc_html_e( 'If you have a moment, please let us know why you are deactivating', 'wordlift' ); ?>
-                    :
-                </h4>
+					:
+				</h4>
 
-                <ul>
+				<ul>
 					<?php foreach ( $reasons as $reason ) : ?>
-                        <li class="wl-reason-item <?php echo ( $reason['id'] == 'I_DONT_USE_IT' ) ? 'selected' : ''; ?>">
-                            <label>
-                                <input
-                                        type="radio"
-                                        name="wl-code"
-                                        class="wl-code"
+						<li class="wl-reason-item <?php echo ( $reason['id'] == 'I_DONT_USE_IT' ) ? 'selected' : ''; ?>">
+							<label>
+								<input
+										type="radio"
+										name="wl-code"
+										class="wl-code"
 									<?php checked( 'I_DONT_USE_IT', $reason['id'], true ); ?>
-                                        value="<?php echo esc_attr( $reason['id'] ); ?>"
-                                />
+										value="<?php echo esc_attr( $reason['id'] ); ?>"
+								/>
 
-                                <span class="description">
+								<span class="description">
 									<?php echo esc_html( $reason['text'] ); ?>
 								</span>
-                            </label>
+							</label>
 
 							<?php if ( ! empty( $reason['message'] ) ) : ?>
-                                <div class="additional-info <?php echo ( ! empty( $reason['message']['field'] ) ) ? 'has-field' : ''; ?>">
+								<div class="additional-info <?php echo ( ! empty( $reason['message']['field'] ) ) ? 'has-field' : ''; ?>">
 									<?php
 									if ( ! empty( $reason['message']['field'] ) ) {
 										if ( $reason['message']['field'] === 'text' ) {
@@ -101,43 +101,52 @@ $reasons = array(
 									}
 									echo wp_kses( wpautop( $reason['message']['text'] ), array( 'p' => array() ) )
 									?>
-                                </div>
+								</div>
 							<?php endif ?>
-                        </li>
+						</li>
 					<?php endforeach ?>
-                </ul>
-            </div>
+				</ul>
+			</div>
 
-            <div class="notes">
-                <p>
+			<div class="notes">
+				<p>
 					<?php
-					echo wp_kses( sprintf(
-						__( 'Important notice: Uninstalling the plugin will delete your vocabulary.<br>Maybe you would like to <a href="%s" target="_blank">download your data</a> first.', 'wordlift' ),
-						add_query_arg( array( 'page' => 'wl_download_your_data' ), admin_url( 'admin.php' ) )
-					), array( 'br' => array(), 'a' => array( 'href' => array(), 'target' => array() ) ) );
+					echo wp_kses(
+						sprintf(
+							__( 'Important notice: Uninstalling the plugin will delete your vocabulary.<br>Maybe you would like to <a href="%s" target="_blank">download your data</a> first.', 'wordlift' ),
+							add_query_arg( array( 'page' => 'wl_download_your_data' ), admin_url( 'admin.php' ) )
+						),
+						array(
+							'br' => array(),
+							'a'  => array(
+								'href'   => array(),
+								'target' => array(),
+							),
+						)
+					);
 					?>
-                </p>
-            </div>
+				</p>
+			</div>
 
-            <div class="wl-errors"></div>
-        </div>
+			<div class="wl-errors"></div>
+		</div>
 
-        <div class="wl-modal-footer">
-            <a href="#" class="button button-secondary wl-modal-button-close">
+		<div class="wl-modal-footer">
+			<a href="#" class="button button-secondary wl-modal-button-close">
 				<?php esc_html_e( 'Cancel', 'wordlift' ); ?>
-            </a>
+			</a>
 
-            <a href="#" class="button button-primary wl-modal-button-deactivate">
+			<a href="#" class="button button-primary wl-modal-button-deactivate">
 				<?php esc_html_e( 'Deactivate', 'wordlift' ); ?>
-            </a>
-            <div class="clear"></div>
-        </div>
+			</a>
+			<div class="clear"></div>
+		</div>
 
-        <input
-                type="hidden"
-                name="wl_deactivation_feedback_nonce"
-                class="wl_deactivation_feedback_nonce"
-                value="<?php echo esc_attr( wp_create_nonce( 'wl_deactivation_feedback_nonce' ) ); ?>"
-        >
-    </div>
+		<input
+				type="hidden"
+				name="wl_deactivation_feedback_nonce"
+				class="wl_deactivation_feedback_nonce"
+				value="<?php echo esc_attr( wp_create_nonce( 'wl_deactivation_feedback_nonce' ) ); ?>"
+		>
+	</div>
 </div>

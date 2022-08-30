@@ -56,12 +56,11 @@ class Jsonld_Generator {
 
 		$references = array_merge( $references, $term_jsonld_data['references'] );
 
-
 		array_unshift( $jsonld, $term_jsonld );
 
 		return array(
 			'jsonld'     => $jsonld,
-			'references' => $references
+			'references' => $references,
 		);
 	}
 
@@ -98,8 +97,8 @@ class Jsonld_Generator {
 			$value = $this->property_getter->get( $term_id, $key, Object_Type_Enum::TERM );
 			$value = $this->process_value( $value, $references );
 			if ( ! isset( $value ) ||
-			     is_array( $value ) && empty( $value ) ||
-			     is_string( $value ) && empty( $value ) ) {
+				 is_array( $value ) && empty( $value ) ||
+				 is_string( $value ) && empty( $value ) ) {
 				continue;
 			}
 			$jsonld[ $name ] = $value;
@@ -110,10 +109,14 @@ class Jsonld_Generator {
 			$jsonld['mainEntityOfPage'] = $permalink;
 		}
 
-		return apply_filters( 'wl_no_vocabulary_term_jsonld_array', array(
-			'jsonld'     => $jsonld,
-			'references' => $references
-		), $term_id );
+		return apply_filters(
+			'wl_no_vocabulary_term_jsonld_array',
+			array(
+				'jsonld'     => $jsonld,
+				'references' => $references,
+			),
+			$term_id
+		);
 
 	}
 
@@ -124,26 +127,34 @@ class Jsonld_Generator {
 	private function process_value( $value, &$references ) {
 
 		if ( is_array( $value )
-		     && count( $value ) > 0
-		     && $value[0] instanceof \Wordlift_Property_Entity_Reference ) {
+			 && count( $value ) > 0
+			 && $value[0] instanceof \Wordlift_Property_Entity_Reference ) {
 
 			// All of the references from the custom fields are post references.
-			$references = array_merge( $references, array_map( function ( $property_entity_reference ) {
-				/**
-				 * @var $property_entity_reference \Wordlift_Property_Entity_Reference
-				 */
-				return new Post_Reference( $property_entity_reference->get_id() );
-			}, $value ) );
-
+			$references = array_merge(
+				$references,
+				array_map(
+					function ( $property_entity_reference ) {
+						/**
+						 * @var $property_entity_reference \Wordlift_Property_Entity_Reference
+						 */
+						return new Post_Reference( $property_entity_reference->get_id() );
+					},
+					$value
+				)
+			);
 
 			$that = $this;
 
-			return array_map( function ( $reference ) use ( $that ) {
-				/**
-				 * @var $reference \Wordlift_Property_Entity_Reference
-				 */
-				return array( '@id' => $that->entity_service->get_uri( $reference->get_id() ) );
-			}, $value );
+			return array_map(
+				function ( $reference ) use ( $that ) {
+					/**
+					 * @var $reference \Wordlift_Property_Entity_Reference
+					 */
+					return array( '@id' => $that->entity_service->get_uri( $reference->get_id() ) );
+				},
+				$value
+			);
 
 		}
 

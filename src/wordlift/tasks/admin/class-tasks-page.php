@@ -14,7 +14,6 @@ namespace Wordlift\Tasks\Admin;
 
 use Wordlift\Tasks\Task_Ajax_Adapters_Registry;
 use Wordlift\Wordpress\Submenu_Page_Base;
-use Wordlift\Wordpress\Page;
 
 class Tasks_Page extends Submenu_Page_Base {
 
@@ -62,10 +61,16 @@ class Tasks_Page extends Submenu_Page_Base {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_style( $this->menu_slug, plugin_dir_url( __FILE__ ) . 'assets/tasks-page.css', array(), $this->asset_version, 'all' );
-		wp_enqueue_script( $this->menu_slug, plugin_dir_url( __FILE__ ) . 'assets/tasks-page.js', array(
-			'jquery',
-			'wp-util'
-		), $this->asset_version, true );
+		wp_enqueue_script(
+			$this->menu_slug,
+			plugin_dir_url( __FILE__ ) . 'assets/tasks-page.js',
+			array(
+				'jquery',
+				'wp-util',
+			),
+			$this->asset_version,
+			true
+		);
 	}
 
 	/**
@@ -76,7 +81,7 @@ class Tasks_Page extends Submenu_Page_Base {
 	public function render() {
 
 		// Include the partial.
-		include( plugin_dir_path( __FILE__ ) . 'assets/tasks-page.php' );
+		include plugin_dir_path( __FILE__ ) . 'assets/tasks-page.php';
 
 	}
 

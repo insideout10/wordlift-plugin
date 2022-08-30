@@ -22,12 +22,17 @@ class Main_Ingredient_Recipe_Lift_Strategy implements Recipe_Lift_Strategy {
 	function run() {
 		$this->notices->queue( 'info', __( 'WordLift detected WP Recipe Maker and, it is lifting the ingredients...', 'wordlift' ) );
 
-		$recipes      = get_posts( [ 'post_type' => 'wprm_recipe', 'numberposts' => - 1 ] );
-		$count = count( $recipes );
+		$recipes = get_posts(
+			array(
+				'post_type'   => 'wprm_recipe',
+				'numberposts' => - 1,
+			)
+		);
+		$count   = count( $recipes );
 
 		$count_lifted = 0;
 		foreach ( $recipes as $recipe ) {
-			$this->notices->queue( 'info', sprintf( __( 'WordLift is adding the main ingredient to recipes. So far it lifted %d of %d recipe(s).', 'wordlift' ), $count_lifted, $count ) );
+			$this->notices->queue( 'info', sprintf( __( 'WordLift is adding the main ingredient to recipes. So far it lifted %1$d of %2$d recipe(s).', 'wordlift' ), $count_lifted, $count ) );
 
 			// Emit something to keep the connection alive.
 			echo "$count_lifted\n";
@@ -52,6 +57,6 @@ class Main_Ingredient_Recipe_Lift_Strategy implements Recipe_Lift_Strategy {
 		 * @@todo add notification that procedure is complete, with information about the number of processed items vs
 		 *   total items
 		 */
-		$this->notices->queue( 'info', sprintf( __( 'WordLift lifted %d of %d recipe(s).', 'wordlift' ), $count_lifted, $count ) );
+		$this->notices->queue( 'info', sprintf( __( 'WordLift lifted %1$d of %2$d recipe(s).', 'wordlift' ), $count_lifted, $count ) );
 	}
 }

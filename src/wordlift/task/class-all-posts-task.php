@@ -43,9 +43,15 @@ class All_Posts_Task implements Task {
 	public function tick( $value, $args ) {
 		global $wpdb;
 
-		$ids = $wpdb->get_col( $wpdb->prepare( "
+		$ids = $wpdb->get_col(
+			$wpdb->prepare(
+				'
 			SELECT ID FROM wp_posts ORDER BY ID LIMIT %d,%d;
-		", $args['offset'], $args['batch_size'] ) );
+		',
+				$args['offset'],
+				$args['batch_size']
+			)
+		);
 
 		foreach ( $ids as $id ) {
 			call_user_func( $this->callable, $id );

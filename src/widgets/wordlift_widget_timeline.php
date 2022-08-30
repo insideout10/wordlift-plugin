@@ -10,7 +10,7 @@ class Wordlift_Timeline_Widget extends WP_Widget {
 		parent::__construct(
 			'wl_timeline_widget', // Base ID
 			__( 'WordLift Timeline Widget', 'wordlift' ), // Name
-			array( 'description' => __( 'Displays entities of type event using an interactive timeline.', 'wordlift' ), ) // Args
+			array( 'description' => __( 'Displays entities of type event using an interactive timeline.', 'wordlift' ) ) // Args
 		);
 	}
 
@@ -21,7 +21,7 @@ class Wordlift_Timeline_Widget extends WP_Widget {
 	 * @param array $instance
 	 */
 	public function widget( $args, $instance ) {
-		// outputs the content of the widget	
+		// outputs the content of the widget
 		echo do_shortcode( '[wl_timeline global=true]' );
 	}
 

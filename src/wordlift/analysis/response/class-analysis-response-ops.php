@@ -34,7 +34,6 @@ class Analysis_Response_Ops {
 	 */
 	private $entity_uri_service;
 
-
 	/**
 	 * @var Entity_Helper
 	 */
@@ -49,8 +48,8 @@ class Analysis_Response_Ops {
 	 * Analysis_Response_Ops constructor.
 	 *
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service}.
-	 * @param Entity_Helper $entity_helper The {@link Entity_Helper}.
-	 * @param mixed $json The analysis response json.
+	 * @param Entity_Helper                $entity_helper The {@link Entity_Helper}.
+	 * @param mixed                        $json The analysis response json.
 	 *
 	 * @since 3.21.5
 	 */
@@ -69,7 +68,6 @@ class Analysis_Response_Ops {
 	 * matches from the local vocabulary.
 	 *
 	 * If found, the entity id is swapped with the local id and the remote id is added to the sameAs.
-	 *
 	 *
 	 * @return Analysis_Response_Ops The current Analysis_Response_Ops instance.
 	 */
@@ -92,7 +90,7 @@ class Analysis_Response_Ops {
 
 			// Ensure sameAs is an array.
 			if ( ! isset( $this->json->entities->{$internal_uri}->sameAs )
-			     || ! is_array( $this->json->entities->{$internal_uri}->sameAs ) ) {
+				 || ! is_array( $this->json->entities->{$internal_uri}->sameAs ) ) {
 				$this->json->entities->{$internal_uri}->sameAs = array();
 			}
 
@@ -135,11 +133,11 @@ class Analysis_Response_Ops {
 
 		// Try to get all the disambiguated annotations and bail out if an error occurs.
 		if ( false === preg_match_all(
-				'|<span\s+id="([^"]+)"\s+class="textannotation\s+(?:\S+\s+)?disambiguated(?=[\s"])[^"]*"\s+itemid="([^"]*)">(.*?)</span>|',
-				$content,
-				$matches,
-				PREG_OFFSET_CAPTURE
-			) ) {
+			'|<span\s+id="([^"]+)"\s+class="textannotation\s+(?:\S+\s+)?disambiguated(?=[\s"])[^"]*"\s+itemid="([^"]*)">(.*?)</span>|',
+			$content,
+			$matches,
+			PREG_OFFSET_CAPTURE
+		) ) {
 			return $this;
 		}
 
@@ -147,33 +145,40 @@ class Analysis_Response_Ops {
 			return $this;
 		}
 
-		$parse_data = array_reduce( range( 0, count( $matches[1] ) - 1 ), function ( $carry, $i ) use ( $matches ) {
-			if ( empty( $matches[0] ) ) {
+		$parse_data = array_reduce(
+			range( 0, count( $matches[1] ) - 1 ),
+			function ( $carry, $i ) use ( $matches ) {
+				if ( empty( $matches[0] ) ) {
+					return $carry;
+				}
+
+				$start         = $matches[0][ $i ][1];
+				$end           = $start + strlen( $matches[0][ $i ][0] );
+				$annotation_id = $matches[1][ $i ][0];
+				$item_id       = $matches[2][ $i ][0];
+				$text          = $matches[3][ $i ][0];
+
+				$annotation               = new StdClass();
+				$annotation->annotationId = $annotation_id;
+				$annotation->start        = $start;
+				$annotation->end          = $end;
+				$annotation->text         = $text;
+
+				$entity_match                = new StdClass();
+				$entity_match->confidence    = 100;
+				$entity_match->entityId      = $item_id;
+				$annotation->entityMatches[] = $entity_match;
+
+				$carry['annotations'][ $annotation_id ] = $annotation;
+				$carry['occurrences'][ $item_id ][]     = $annotation_id;
+
 				return $carry;
-			}
-
-			$start         = $matches[0][ $i ][1];
-			$end           = $start + strlen( $matches[0][ $i ][0] );
-			$annotation_id = $matches[1][ $i ][0];
-			$item_id       = $matches[2][ $i ][0];
-			$text          = $matches[3][ $i ][0];
-
-			$annotation               = new StdClass;
-			$annotation->annotationId = $annotation_id;
-			$annotation->start        = $start;
-			$annotation->end          = $end;
-			$annotation->text         = $text;
-
-			$entity_match                = new StdClass;
-			$entity_match->confidence    = 100;
-			$entity_match->entityId      = $item_id;
-			$annotation->entityMatches[] = $entity_match;
-
-			$carry['annotations'][ $annotation_id ] = $annotation;
-			$carry['occurrences'][ $item_id ][]     = $annotation_id;
-
-			return $carry;
-		}, array( 'annotations' => array(), 'occurrences' => array(), ) );
+			},
+			array(
+				'annotations' => array(),
+				'occurrences' => array(),
+			)
+		);
 
 		$annotations = $parse_data['annotations'];
 		$occurrences = $parse_data['occurrences'];
@@ -198,8 +203,8 @@ class Analysis_Response_Ops {
 		// Here we're adding back some data structures required by the client-side code.
 		//
 		// We're adding:
-		//  1. the .entities[entity_id].occurrences array with the annotations' ids.
-		//  2. the .entities[entity_id].annotations[annotation_id] = { id: annotation_id } map.
+		// 1. the .entities[entity_id].occurrences array with the annotations' ids.
+		// 2. the .entities[entity_id].annotations[annotation_id] = { id: annotation_id } map.
 		//
 		// Before 3.23.0 this was done by the client-side code located in src/coffee/editpost-widget/app.services.AnalysisService.coffee
 		// function `preselect`, which was called by src/coffee/editpost-widget/app.services.EditorService.coffee in
@@ -217,7 +222,6 @@ class Analysis_Response_Ops {
 			if ( ! is_bool( $this->json ) && ! isset( $this->json->annotations->{$annotation_id} ) ) {
 				$this->json->annotations->{$annotation_id} = $annotation;
 			}
-
 		}
 
 		return $this;
@@ -248,7 +252,6 @@ class Analysis_Response_Ops {
 
 					$entities[ $entity_matches->entityId ] = $serialized_entity;
 				}
-
 			}
 		}
 
@@ -267,7 +270,6 @@ class Analysis_Response_Ops {
 		return $this;
 
 	}
-
 
 	/**
 	 * Return the JSON response.
@@ -305,7 +307,6 @@ class Analysis_Response_Ops {
 
 		return $this;
 	}
-
 
 	/**
 	 * Get the string representation of the JSON.
@@ -369,7 +370,6 @@ class Analysis_Response_Ops {
 					// Remove the annotation if we have zero empty annotation matches.
 					unset( $this->json->annotations->{$annotation_key} );
 				}
-
 			}
 		}
 

@@ -52,17 +52,20 @@ class Term_Page_Hook {
 
 		wp_enqueue_style( self::HANDLE, plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/vocabulary-term-page.full.css' );
 
-
 		$term_data_arr = $term_data->get_data();
 
 		$term_data_arr['entities'] = Entity_List_Utils::mark_is_active_for_entities( $term->term_id, $term_data_arr['entities'] );
 
-		wp_localize_script( self::HANDLE, self::LOCALIZED_KEY, array(
-			'termData'  => $term_data_arr,
-			'apiConfig' => Api_Config::get_api_config(),
-			'restUrl'   => get_rest_url( null, Api_Config::REST_NAMESPACE . '/search-entity/' ),
-			'nonce'     => wp_create_nonce( 'wp_rest' ),
-		) );
+		wp_localize_script(
+			self::HANDLE,
+			self::LOCALIZED_KEY,
+			array(
+				'termData'  => $term_data_arr,
+				'apiConfig' => Api_Config::get_api_config(),
+				'restUrl'   => get_rest_url( null, Api_Config::REST_NAMESPACE . '/search-entity/' ),
+				'nonce'     => wp_create_nonce( 'wp_rest' ),
+			)
+		);
 
 		echo "<tr class=\"form-field\">
 				<th>Match</th>

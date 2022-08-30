@@ -60,22 +60,28 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 	public function render( $args ) {
 
 		// Parse the arguments and merge with default values.
-		$params = wp_parse_args( $args, array(
-			'id'             => uniqid( 'wl-input-' ),
-			'name'           => uniqid( 'wl-input-' ),
-			'current_entity' => 0,
-		) );
+		$params = wp_parse_args(
+			$args,
+			array(
+				'id'             => uniqid( 'wl-input-' ),
+				'name'           => uniqid( 'wl-input-' ),
+				'current_entity' => 0,
+			)
+		);
 
 		$current_entity_id = $params['current_entity'];
 		$data              = $this->publisher_service->query();
 
 		// Set a default to show when no entity is associated and a way to unassign.
-		array_unshift( $data, array(
-			'id'            => '0',
-			'text'          => __( '<em>(none)</em>', 'wordlift' ),
-			'type'          => '',
-			'thumbnail_url' => plugin_dir_url( dirname( __FILE__ ) ) . 'images/pixel.png',
-		) );
+		array_unshift(
+			$data,
+			array(
+				'id'            => '0',
+				'text'          => __( '<em>(none)</em>', 'wordlift' ),
+				'type'          => '',
+				'thumbnail_url' => plugin_dir_url( __DIR__ ) . 'images/pixel.png',
+			)
+		);
 
 		// Finally do the render, passing along also the current selected entity
 		// id and the options data.
@@ -96,38 +102,40 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 	protected function do_render( $params, $current_post_id, $data ) {
 
 		// Queue the script which will initialize the select and style it.
-		wp_enqueue_script( 'wl-author-element', plugin_dir_url( dirname( __FILE__ ) ) . 'js/1/author.js', array( 'wordlift-select2' ) );
-		wp_enqueue_style( 'wl-author-element', plugin_dir_url( dirname( __FILE__ ) ) . 'js/1/author.css' );
+		wp_enqueue_script( 'wl-author-element', plugin_dir_url( __DIR__ ) . 'js/1/author.js', array( 'wordlift-select2' ) );
+		wp_enqueue_style( 'wl-author-element', plugin_dir_url( __DIR__ ) . 'js/1/author.css' );
 
 		// Prepare the URLs for entities which don't have logos.
-		$person_thumbnail_url       = plugin_dir_url( dirname( __FILE__ ) ) . '../images/person.png';
-		$organization_thumbnail_url = plugin_dir_url( dirname( __FILE__ ) ) . '../images/organization.png';
+		$person_thumbnail_url       = plugin_dir_url( __DIR__ ) . '../images/person.png';
+		$organization_thumbnail_url = plugin_dir_url( __DIR__ ) . '../images/organization.png';
 
 		// Get the current post.
 		$current_post = $current_post_id ? get_post( $current_post_id ) : null;
 
 		// Finally render the Select.
-		$this->select_element->render( array(
-			// Id.
-			'id'      => $params['id'],
-			// Name.
-			'name'    => $params['name'],
-			// Class names.
-			'class'   => 'wl-select2-element',
-			// The selected id.
-			'value'   => $current_post_id,
-			// The selected item (must be in the options for Select2 to display it).
-			'options' => $current_post ? array( $current_post->ID => $current_post->post_title ) : array(),
-			// Data attributes.
-			'data'    => array(
-				// The list of available options.
-				'wl-select2-data'               => json_encode( $data ),
-				// The HTML template for each option.
-				'wl-select2-template-result'    => "<div class='wl-select2-result'><span class='wl-select2-thumbnail' style='background-image: url( <%- obj.thumbnail_url || ( 'Organization' === obj.type ? '$organization_thumbnail_url' : '$person_thumbnail_url' ) %> );'>&nbsp;</span><span class='wl-select2'><%- obj.text %></span><span class='wl-select2-type'><%- obj.type %></span></div>",
-				// The HTML template for the selected option.
-				'wl-select2-template-selection' => "<div class='wl-select2-selection'><span class='wl-select2-thumbnail' style='background-image: url( <%- obj.thumbnail_url || ( 'Organization' === obj.type ? '$organization_thumbnail_url' : '$person_thumbnail_url' ) %> );'>&nbsp;</span><span class='wl-select2'><%- obj.text %></span><span class='wl-select2-type'><%- obj.type %></span></div>",
-			),
-		) );
+		$this->select_element->render(
+			array(
+				// Id.
+				'id'      => $params['id'],
+				// Name.
+				'name'    => $params['name'],
+				// Class names.
+				'class'   => 'wl-select2-element',
+				// The selected id.
+				'value'   => $current_post_id,
+				// The selected item (must be in the options for Select2 to display it).
+				'options' => $current_post ? array( $current_post->ID => $current_post->post_title ) : array(),
+				// Data attributes.
+				'data'    => array(
+					// The list of available options.
+					'wl-select2-data'               => json_encode( $data ),
+					// The HTML template for each option.
+					'wl-select2-template-result'    => "<div class='wl-select2-result'><span class='wl-select2-thumbnail' style='background-image: url( <%- obj.thumbnail_url || ( 'Organization' === obj.type ? '$organization_thumbnail_url' : '$person_thumbnail_url' ) %> );'>&nbsp;</span><span class='wl-select2'><%- obj.text %></span><span class='wl-select2-type'><%- obj.type %></span></div>",
+					// The HTML template for the selected option.
+					'wl-select2-template-selection' => "<div class='wl-select2-selection'><span class='wl-select2-thumbnail' style='background-image: url( <%- obj.thumbnail_url || ( 'Organization' === obj.type ? '$organization_thumbnail_url' : '$person_thumbnail_url' ) %> );'>&nbsp;</span><span class='wl-select2'><%- obj.text %></span><span class='wl-select2-type'><%- obj.type %></span></div>",
+				),
+			)
+		);
 
 		// Finally return the element instance.
 		return $this;

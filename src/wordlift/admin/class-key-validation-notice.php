@@ -40,7 +40,7 @@ class Key_Validation_Notice {
 	 * Key_Validation_Notice constructor.
 	 *
 	 * @param \Wordlift_Key_Validation_Service $key_validation_service
-	 * @param Wordlift_Configuration_Service $configuration_service
+	 * @param Wordlift_Configuration_Service   $configuration_service
 	 */
 	public function __construct( $key_validation_service, $configuration_service ) {
 
@@ -54,22 +54,24 @@ class Key_Validation_Notice {
 		}
 
 		$that = $this;
-		add_action( 'plugins_loaded', function () use ( $that ) {
-			$that->notification_close_handler();
-		} );
+		add_action(
+			'plugins_loaded',
+			function () use ( $that ) {
+				$that->notification_close_handler();
+			}
+		);
 	}
-
 
 	public function show_notification() {
 		$settings_url = admin_url( 'admin.php?page=wl_configuration_admin_menu' );
 		?>
-        <div class="wl-notice notice is-dismissible error">
-            <p>
+		<div class="wl-notice notice is-dismissible error">
+			<p>
 				<?php echo wp_kses( __( "Your WordLift key is not valid, please update the key in <a href='$settings_url'>WordLift Settings</a> or contact our support at hello@wordlift.io.", 'wordlift' ), array( 'a' => array( 'href' ) ) ); ?>
-            </p>
-            <button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span>
-            </button>
-        </div>
+			</p>
+			<button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span>
+			</button>
+		</div>
 		<?php
 	}
 
@@ -95,38 +97,41 @@ class Key_Validation_Notice {
 
 	private function display_key_validation_notice() {
 		$that = $this;
-		add_action( 'admin_notices', function () use ( $that ) {
+		add_action(
+			'admin_notices',
+			function () use ( $that ) {
 
-			$is_notification_shown = get_option( Key_Validation_Notice::NOTIFICATION_OPTION_KEY, false );
+				$is_notification_shown = get_option( Key_Validation_Notice::NOTIFICATION_OPTION_KEY, false );
 
-			$key = $that->configuration_service->get_key();
+				$key = $that->configuration_service->get_key();
 
-			if ( ! $key ) {
-				// Dont show warning or make API call, return early.
-				return;
+				if ( ! $key ) {
+					// Dont show warning or make API call, return early.
+					return;
+				}
+
+				if ( $that->is_key_valid() ) {
+					return;
+				}
+
+				if ( $is_notification_shown ) {
+					return;
+				}
+
+				$that->show_notification();
+
 			}
-
-			if ( $that->is_key_valid() ) {
-				return;
-			}
-
-			if ( $is_notification_shown ) {
-				return;
-			}
-
-			$that->show_notification();
-
-		} );
+		);
 	}
 
 	public function notification_close_handler() {
 		if ( ! isset( $_GET['wl_key_validation_notice'] )
-		     || ! isset( $_GET['_wl_key_validation_notice_nonce'] ) ) {
+			 || ! isset( $_GET['_wl_key_validation_notice_nonce'] ) ) {
 			return false;
 		}
 		$nonce = sanitize_text_field( wp_unslash( (string) $_GET['_wl_key_validation_notice_nonce'] ) );
 		if ( wp_verify_nonce( $nonce, self::KEY_VALIDATION_NONCE_ACTION )
-		     && current_user_can( 'manage_options' ) ) {
+			 && current_user_can( 'manage_options' ) ) {
 			// close the notification.
 			update_option( self::NOTIFICATION_OPTION_KEY, true );
 		}

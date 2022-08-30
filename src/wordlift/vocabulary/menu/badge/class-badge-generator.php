@@ -2,9 +2,9 @@
 
 namespace Wordlift\Vocabulary\Menu\Badge;
 
-
 /**
  * Class Badge_Generator
+ *
  * @since 3.30.0
  * @package Wordlift\Vocabulary\Menu\Badge
  */
@@ -12,6 +12,7 @@ class Badge_Generator {
 
 	/**
 	 * Returns the term count which needs to be shown on ui.
+	 *
 	 * @param $number
 	 *
 	 * @return int
@@ -38,10 +39,9 @@ class Badge_Generator {
 	 * @return string
 	 */
 	public static function get_formatted_count_string( $number ) {
-		$round        = self::get_ui_count( $number );
+		$round = self::get_ui_count( $number );
 
 		return $round < 100 ? "$round" : "$round+";
 	}
-
 
 }

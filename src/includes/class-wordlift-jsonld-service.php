@@ -44,7 +44,6 @@ class Wordlift_Jsonld_Service {
 	 */
 	private $converter;
 
-
 	/**
 	 * A {@link Wordlift_Website_Jsonld_Converter} instance.
 	 *
@@ -66,10 +65,10 @@ class Wordlift_Jsonld_Service {
 	/**
 	 * Create a JSON-LD service.
 	 *
-	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Post_Converter $converter A {@link Wordlift_Uri_To_Jsonld_Converter} instance.
+	 * @param \Wordlift_Entity_Service           $entity_service A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Post_Converter           $converter A {@link Wordlift_Uri_To_Jsonld_Converter} instance.
 	 * @param \Wordlift_Website_Jsonld_Converter $website_converter A {@link Wordlift_Website_Jsonld_Converter} instance.
-	 * @param \Wordlift_Term_JsonLd_Adapter $term_jsonld_adapter
+	 * @param \Wordlift_Term_JsonLd_Adapter      $term_jsonld_adapter
 	 *
 	 * @since 3.8.0
 	 */
@@ -88,7 +87,6 @@ class Wordlift_Jsonld_Service {
 	 *
 	 * @return \Wordlift_Jsonld_Service The singleton instance for the JSON-LD service.
 	 * @since 3.15.1
-	 *
 	 */
 	public static function get_instance() {
 
@@ -121,10 +119,9 @@ class Wordlift_Jsonld_Service {
 	 *
 	 * @param mixed $response Variable (usually an array or object) to encode as JSON,
 	 *                           then print and die.
-	 * @param int $status_code The HTTP status code to output.
+	 * @param int   $status_code The HTTP status code to output.
 	 *
 	 * @since 3.18.5
-	 *
 	 */
 	private function send_jsonld( $response, $status_code = null ) {
 		@header( 'Content-Type: application/ld+json; charset=' . get_option( 'blog_charset' ) );
@@ -139,13 +136,12 @@ class Wordlift_Jsonld_Service {
 	/**
 	 * Get the JSON-LD.
 	 *
-	 * @param bool $is_homepage Whether the JSON-LD for the homepage is being requested.
+	 * @param bool     $is_homepage Whether the JSON-LD for the homepage is being requested.
 	 * @param int|null $post_id The JSON-LD for the specified {@link WP_Post} id.
-	 * @param int $context A context for the JSON-LD generation, valid values in Jsonld_Context_Enum.
+	 * @param int      $context A context for the JSON-LD generation, valid values in Jsonld_Context_Enum.
 	 *
 	 * @return array A JSON-LD structure.
 	 * @since 3.15.1
-	 *
 	 */
 	public function get_jsonld( $is_homepage = false, $post_id = null, $context = Jsonld_Context_Enum::UNKNOWN ) {
 
@@ -189,66 +185,79 @@ class Wordlift_Jsonld_Service {
 
 		$jsonld = array( $entity_to_jsonld_converter->convert( $post_id, $references, $references_infos ) );
 
-
 		$that                       = $this;
-		$expanded_references_jsonld = array_map( function ( $item ) use ( $context, $entity_to_jsonld_converter, &$references_infos, $that ) {
-			// "2nd level properties" may not output here, e.g. a post
-			// mentioning an event, located in a place: the place is referenced
-			// via the `@id` but no other properties are loaded.
-			$ignored = array();
-			if ( $item instanceof Term_Reference ) {
-				$term_jsonld = $that->term_jsonld_adapter->get( $item->get_id(), $context );
+		$expanded_references_jsonld = array_map(
+			function ( $item ) use ( $context, $entity_to_jsonld_converter, &$references_infos, $that ) {
+				// "2nd level properties" may not output here, e.g. a post
+				// mentioning an event, located in a place: the place is referenced
+				// via the `@id` but no other properties are loaded.
+				$ignored = array();
+				if ( $item instanceof Term_Reference ) {
+					  $term_jsonld = $that->term_jsonld_adapter->get( $item->get_id(), $context );
 
-				// For term references, we publish a jsonld array on the page, use only the first item.
-				return count( $term_jsonld ) > 0 ? $term_jsonld[0] : false;
-			} else if ( $item instanceof Post_Reference ) {
-				$item = $item->get_id();
-			}
+					  // For term references, we publish a jsonld array on the page, use only the first item.
+					  return count( $term_jsonld ) > 0 ? $term_jsonld[0] : false;
+				} elseif ( $item instanceof Post_Reference ) {
+					$item = $item->get_id();
+				}
 
-			return $entity_to_jsonld_converter->convert( $item, $ignored, $references_infos );
-		}, array_unique( $references ) );
-
+				return $entity_to_jsonld_converter->convert( $item, $ignored, $references_infos );
+			},
+			array_unique( $references )
+		);
 
 		// Convert each URI to a JSON-LD array, while gathering referenced entities.
 		// in the references array.
-		$jsonld = array_merge( $jsonld,
+		$jsonld = array_merge(
+			$jsonld,
 			// Convert each URI in the references array to JSON-LD. We don't output
 			// entities already output above (hence the array_diff).
-			array_filter( $expanded_references_jsonld ) );
+			array_filter( $expanded_references_jsonld )
+		);
 
-		$required_references = array_filter( $references_infos, function ( $item ) use ( $references ) {
+		$required_references = array_filter(
+			$references_infos,
+			function ( $item ) use ( $references ) {
 
-			return isset( $item['reference'] ) &&
-			       // Check that the reference is required
-			       $item['reference']->get_required() &&
-			       // Check that the reference isn't being output already.
-			       ! in_array( $item['reference']->get_id(), $references );
-		} );
-
-
-		$jsonld = array_merge( $jsonld, array_filter( array_map( function ( $item ) use ( $references, $entity_to_jsonld_converter ) {
-
-			if ( ! isset( $item['reference'] ) ) {
-				return null;
+				return isset( $item['reference'] ) &&
+				   // Check that the reference is required
+				   $item['reference']->get_required() &&
+				   // Check that the reference isn't being output already.
+				   ! in_array( $item['reference']->get_id(), $references );
 			}
+		);
 
-			$post_id = $item['reference']->get_id();
-			if ( in_array( $post_id, $references ) ) {
-				return null;
-			}
+		$jsonld = array_merge(
+			$jsonld,
+			array_filter(
+				array_map(
+					function ( $item ) use ( $references, $entity_to_jsonld_converter ) {
 
-			$references[] = $post_id;
+						if ( ! isset( $item['reference'] ) ) {
+							  return null;
+						}
 
-			return $entity_to_jsonld_converter->convert( $post_id, $references );
-		}, $required_references ) ) );
+						$post_id = $item['reference']->get_id();
+						if ( in_array( $post_id, $references ) ) {
+							return null;
+						}
+
+						$references[] = $post_id;
+
+						return $entity_to_jsonld_converter->convert( $post_id, $references );
+					},
+					$required_references
+				)
+			)
+		);
 
 		/**
 		 * Filter name: wl_after_get_jsonld
+		 *
 		 * @return array
 		 * @since 3.27.2
 		 * @var $jsonld array The final jsonld before outputting to page.
 		 * @var $post_id int The post id for which the jsonld is generated.
-		 *
 		 */
 		$jsonld = apply_filters( 'wl_after_get_jsonld', $jsonld, $post_id, $context );
 
@@ -271,7 +280,8 @@ class Wordlift_Jsonld_Service {
 
 		$jsonld = json_encode( $this->get_jsonld( $is_homepage, $post_id, Jsonld_Context_Enum::PAGE ) );
 		?>
-        <script type="application/ld+json"><?php echo esc_html( $jsonld ); ?></script><?php
+		<script type="application/ld+json"><?php echo esc_html( $jsonld ); ?></script>
+													  <?php
 	}
 
 }

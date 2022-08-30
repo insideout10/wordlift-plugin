@@ -25,7 +25,7 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 	/**
 	 * Sync_Term_Hooks constructor.
 	 *
-	 * @param Sync_Service $sync_service
+	 * @param Sync_Service                $sync_service
 	 * @param Sync_Object_Adapter_Factory $sync_object_factory
 	 */
 	function __construct( $sync_service, $sync_object_factory ) {
@@ -60,14 +60,20 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 
 	public function changed_term_meta( $meta_id, $term_id, $meta_key, $_meta_value ) {
 
-		if ( in_array( $meta_key,
-			apply_filters( 'wl_dataset__sync_post_hooks__ignored_meta_keys',
-				apply_filters( 'wl_dataset__sync_hooks__ignored_meta_keys',
+		if ( in_array(
+			$meta_key,
+			apply_filters(
+				'wl_dataset__sync_post_hooks__ignored_meta_keys',
+				apply_filters(
+					'wl_dataset__sync_hooks__ignored_meta_keys',
 					array(
 						'_pingme',
 						'_encloseme',
 						'entity_url',
-					) ) ) )
+					)
+				)
+			)
+		)
 		) {
 			return;
 		}
@@ -88,9 +94,11 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 			if ( ! isset( $term ) ) {
 				return;
 			}
-			$this->sync_service->sync_many( array(
-				$this->sync_object_factory->create( Object_Type_Enum::TERM, $term_id ),
-			) );
+			$this->sync_service->sync_many(
+				array(
+					$this->sync_object_factory->create( Object_Type_Enum::TERM, $term_id ),
+				)
+			);
 		} catch ( \Exception $e ) {
 			$this->log->error( "An error occurred while trying to sync post $term_id: " . $e->getMessage(), $e );
 		}
@@ -104,9 +112,8 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 	public function delete_term( $term_id ) {
 		$args = array(
 			$term_id,
-			Wordpress_Term_Content_Legacy_Service
-				::get_instance()
-				->get_entity_id( Wordpress_Content_Id::create_term( $term_id ) )
+			Wordpress_Term_Content_Legacy_Service::get_instance()
+				->get_entity_id( Wordpress_Content_Id::create_term( $term_id ) ),
 		);
 		// We can't postpone the execution for a `delete` because we would miss the actual data.
 		$this->do_delete( $args );

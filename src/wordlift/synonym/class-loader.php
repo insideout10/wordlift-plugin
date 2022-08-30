@@ -3,7 +3,6 @@ namespace Wordlift\Synonym;
 
 use Wordlift\Common\Loader\Default_Loader;
 
-
 /**
  * @since 3.31.7
  * @author Naveen Muthusamy <naveen@wordlift.io>

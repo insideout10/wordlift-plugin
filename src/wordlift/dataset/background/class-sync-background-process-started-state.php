@@ -35,10 +35,10 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 	/**
 	 * Sync_Background_Process_Started_State constructor.
 	 *
-	 * @param Sync_Background_Process $context
-	 * @param Sync_Service $sync_service
+	 * @param Sync_Background_Process     $context
+	 * @param Sync_Service                $sync_service
 	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
-	 * @param bool $reset Whether to reset the counters
+	 * @param bool                        $reset Whether to reset the counters
 	 */
 	function __construct( $context, $sync_service, $sync_object_adapter_factory, $reset = true ) {
 		parent::__construct( Sync_Background_Process::STATE_STARTED );
@@ -60,9 +60,12 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 		// Clear caches.
 		do_action( 'wl_ttl_cache_cleaner__flush' );
 
-		$counts = array_map( function ( $item ) {
-			return $item->count();
-		}, $this->stages );
+		$counts = array_map(
+			function ( $item ) {
+				return $item->count();
+			},
+			$this->stages
+		);
 
 		update_option( '_wl_sync_background_process_count', $counts, true );
 		update_option( '_wl_sync_background_process_stage', 0, true );

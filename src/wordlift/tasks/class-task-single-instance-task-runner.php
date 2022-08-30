@@ -70,8 +70,8 @@ class Task_Single_Instance_Task_Runner {
 	/**
 	 * Create a {@link Task_Single_Instance_Task_Runner} instance.
 	 *
-	 * @param Task $task The {@link Task} instance.
-	 * @param bool $force Whether to force starting a task even if another instance of the task is already running, default `false`.
+	 * @param Task  $task The {@link Task} instance.
+	 * @param bool  $force Whether to force starting a task even if another instance of the task is already running, default `false`.
 	 * @param array $callbacks An array of {@link Wordlift_For_Bungalowparkoverzicht_Progress}.
 	 *
 	 * @since 1.0.0
@@ -181,7 +181,7 @@ class Task_Single_Instance_Task_Runner {
 	/**
 	 * Set the task progress.
 	 *
-	 * @param int $index The current item index.
+	 * @param int   $index The current item index.
 	 * @param mixed $item The current item.
 	 *
 	 * @since 1.0.0

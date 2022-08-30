@@ -16,7 +16,6 @@ class Rest_Field {
 			return;
 		}
 
-
 		$post_types = Wordlift_Entity_Service::valid_entity_post_types();
 
 		foreach ( $post_types as $post_type ) {
@@ -26,12 +25,11 @@ class Rest_Field {
 				\Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY,
 				array(
 					'get_callback'    => array( $this, 'get_value' ),
-					'update_callback' => array( $this, 'update_value' )
+					'update_callback' => array( $this, 'update_value' ),
 				)
 			);
 
 		}
-
 
 	}
 
@@ -57,13 +55,12 @@ class Rest_Field {
 	 * @return array|mixed
 	 */
 	public function get_value( $post ) {
-		$data = get_post_meta( (int) $post["id"], \Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY );
+		$data = get_post_meta( (int) $post['id'], \Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY );
 		if ( ! is_array( $data ) ) {
 			return array();
 		}
 
 		return $data;
 	}
-
 
 }

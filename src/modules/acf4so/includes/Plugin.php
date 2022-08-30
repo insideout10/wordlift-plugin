@@ -2,7 +2,6 @@
 
 namespace Wordlift\Modules\Acf4so;
 
-
 interface Plugin {
 
 	function get_slug();
@@ -14,7 +13,6 @@ interface Plugin {
 	 * @throws \Exception
 	 */
 	function get_zip_url();
-
 
 	function is_plugin_installed();
 

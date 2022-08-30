@@ -29,11 +29,14 @@ class Wordlift_Entity_Type_Admin_Service {
 	 */
 	public function __construct() {
 
-		add_action( 'admin_init', array( $this, 'hide_entity_type_metabox', ) );
-		add_action( 'admin_init', array(
-			$this,
-			'set_filters_to_hide_entity_type_from_lists',
-		) );
+		add_action( 'admin_init', array( $this, 'hide_entity_type_metabox' ) );
+		add_action(
+			'admin_init',
+			array(
+				$this,
+				'set_filters_to_hide_entity_type_from_lists',
+			)
+		);
 	}
 
 	/**
@@ -71,11 +74,14 @@ class Wordlift_Entity_Type_Admin_Service {
 
 		// Loop over all the non entity post types which support entities and turn off the taxonomy column.
 		foreach ( $this->get_types_no_entity() as $type ) {
-			add_filter( 'manage_taxonomies_for_' . $type . '_columns', function ( $taxonomies ) {
-				unset( $taxonomies[ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ] );
+			add_filter(
+				'manage_taxonomies_for_' . $type . '_columns',
+				function ( $taxonomies ) {
+					unset( $taxonomies[ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ] );
 
-				return $taxonomies;
-			} );
+					return $taxonomies;
+				}
+			);
 		}
 
 	}

@@ -43,7 +43,7 @@ $args           = array(
 	'posts_per_page' => - 1,
 	'post_type'      => Wordlift_Entity_Service::TYPE_NAME,
 	'post_status'    => array( 'publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash' ),
-	'fields'         => 'ids'
+	'fields'         => 'ids',
 );
 $entities_array = get_posts( $args );
 

@@ -22,40 +22,55 @@ abstract class Wordlift_Shortcode_REST {
 		$this->args     = $args;
 
 		// Register rest route with callback
-		add_action( 'rest_api_init', function () use ( $scope ) {
-			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, $scope->endpoint, array(
-				'methods'             => WP_REST_Server::READABLE,
-				'permission_callback' => '__return_true',
-				'callback'            => array( $scope, 'rest_callback' ),
-				'args'                => $scope->args
-			) );
-		} );
+		add_action(
+			'rest_api_init',
+			function () use ( $scope ) {
+				register_rest_route(
+					WL_REST_ROUTE_DEFAULT_NAMESPACE,
+					$scope->endpoint,
+					array(
+						'methods'             => WP_REST_Server::READABLE,
+						'permission_callback' => '__return_true',
+						'callback'            => array( $scope, 'rest_callback' ),
+						'args'                => $scope->args,
+					)
+				);
+			}
+		);
 
 		// Optimizations: disable unneeded plugins on this specific REST call. WPSeo is slowing down the responses quite a bit.
-		add_action( 'plugins_loaded', function () use ( $scope ) {
+		add_action(
+			'plugins_loaded',
+			function () use ( $scope ) {
 
-			if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST || ! $scope->is_endpoint() ) {
-				return;
-			}
+				if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST || ! $scope->is_endpoint() ) {
+					return;
+				}
 
-			remove_action( 'plugins_loaded', 'rocket_init' );
-			remove_action( 'plugins_loaded', 'wpseo_premium_init', 14 );
-			remove_action( 'plugins_loaded', 'wpseo_init', 14 );
-		}, 0 );
+				remove_action( 'plugins_loaded', 'rocket_init' );
+				remove_action( 'plugins_loaded', 'wpseo_premium_init', 14 );
+				remove_action( 'plugins_loaded', 'wpseo_init', 14 );
+			},
+			0
+		);
 
-		add_action( 'init', function () use ( $scope ) {
+		add_action(
+			'init',
+			function () use ( $scope ) {
 
-			if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST || ! $scope->is_endpoint() ) {
-				return;
-			}
+				if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST || ! $scope->is_endpoint() ) {
+					return;
+				}
 
-			remove_action( 'init', 'wp_widgets_init', 1 );
-			remove_action( 'init', 'gglcptch_init' );
-		}, 0 );
+				remove_action( 'init', 'wp_widgets_init', 1 );
+				remove_action( 'init', 'gglcptch_init' );
+			},
+			0
+		);
 
 	}
 
-	public abstract function get_data( $request );
+	abstract public function get_data( $request );
 
 	public function rest_callback( WP_REST_Request $request ) {
 

@@ -76,7 +76,7 @@ class Wordlift_Install_3_18_3 extends Wordlift_Install {
 		);
 
 		// Loop through all posts and set `article` term for each one.
-		foreach ($post_ids as $p) {
+		foreach ( $post_ids as $p ) {
 			wp_set_object_terms(
 				(int) $p->ID,
 				$term->term_id,

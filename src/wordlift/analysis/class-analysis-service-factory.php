@@ -8,8 +8,6 @@
 
 namespace Wordlift\Analysis;
 
-use Wordlift\Features\Feature_Utils;
-use Wordlift\Features\Features_Registry;
 use Wordlift\No_Editor_Analysis\No_Editor_Analysis_Feature;
 
 /**

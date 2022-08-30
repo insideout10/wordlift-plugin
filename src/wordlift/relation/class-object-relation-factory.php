@@ -11,7 +11,6 @@
 
 namespace Wordlift\Relation;
 
-use Wordlift\Features\Feature_Utils;
 use Wordlift\No_Editor_Analysis\No_Editor_Analysis_Feature;
 
 class Object_Relation_Factory {
@@ -30,6 +29,5 @@ class Object_Relation_Factory {
 		return Object_Relation_Service::get_instance();
 
 	}
-
 
 }

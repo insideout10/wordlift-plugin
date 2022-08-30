@@ -18,7 +18,7 @@ class Assertions {
 	/**
 	 * Asserts that the provided value is of the specified type.
 	 *
-	 * @param mixed $value The value to test.
+	 * @param mixed  $value The value to test.
 	 * @param string $type The expected type.
 	 *
 	 * @throws Exception

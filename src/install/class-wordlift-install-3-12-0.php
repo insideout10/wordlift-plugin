@@ -29,9 +29,12 @@ class Wordlift_Install_3_12_0 extends Wordlift_Install {
 		 * initialization does the same, avoid possible race conditions by
 		 * deferring the actual flush to a later hook.
 		 */
-		add_action( 'wp_loaded', function () {
-			flush_rewrite_rules();
-		} );
+		add_action(
+			'wp_loaded',
+			function () {
+				flush_rewrite_rules();
+			}
+		);
 	}
 
 }

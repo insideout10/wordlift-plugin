@@ -71,6 +71,7 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 
 	/**
 	 * Create a Wordlift_Schema_Url_Property_Service instance.
+	 *
 	 * @since 3.6.0
 	 */
 	public function __construct() {
@@ -87,7 +88,6 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 	 *
 	 * @return array|NULL The schema:url value or NULL if not set.
 	 * @since 3.6.0
-	 *
 	 */
 	public function get( $post_id ) {
 
@@ -125,14 +125,13 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 	 * own strategy, i.e. if a value has never been set for this meta, then return
 	 * <permalink>.
 	 *
-	 * @param mixed $value The original value.
-	 * @param int $object_id The post id.
+	 * @param mixed  $value The original value.
+	 * @param int    $object_id The post id.
 	 * @param string $meta_key The meta key. We expect wl_schema_url or we return straight the value.
-	 * @param bool $single Whether to return a single value.
+	 * @param bool   $single Whether to return a single value.
 	 *
 	 * @return array|mixed|NULL|string
 	 * @since 3.6.0
-	 *
 	 */
 	public function get_post_metadata( $value, $object_id, $meta_key, $single ) {
 
@@ -163,19 +162,28 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 
 	private function add_filter_get_post_metadata() {
 
-		add_filter( 'get_post_metadata', array(
-			$this,
+		add_filter(
 			'get_post_metadata',
-		), 10, 4 );
+			array(
+				$this,
+				'get_post_metadata',
+			),
+			10,
+			4
+		);
 
 	}
 
 	private function remove_filter_get_post_metadata() {
 
-		remove_filter( 'get_post_metadata', array(
-			$this,
+		remove_filter(
 			'get_post_metadata',
-		), 10 );
+			array(
+				$this,
+				'get_post_metadata',
+			),
+			10
+		);
 
 	}
 

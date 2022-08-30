@@ -42,7 +42,7 @@ abstract class Wordlift_Property_Service {
 	 *
 	 * @return mixed
 	 */
-	public abstract function get( $post_id );
+	abstract public function get( $post_id );
 
 	/**
 	 * Sanitize the provided value.
@@ -53,7 +53,7 @@ abstract class Wordlift_Property_Service {
 	 *
 	 * @return mixed|NULL The sanitized value or NULL avoid saving this value (see {@link Wl_Metabox_Field}).
 	 */
-	public abstract function sanitize( $value );
+	abstract public function sanitize( $value );
 
 	/**
 	 * The RDF predicate for the property.
@@ -61,7 +61,7 @@ abstract class Wordlift_Property_Service {
 	 * @since 3.6.0
 	 * @return string The RDF predicate.
 	 */
-	public abstract function get_rdf_predicate();
+	abstract public function get_rdf_predicate();
 
 	/**
 	 * The RDF data type.
@@ -69,7 +69,7 @@ abstract class Wordlift_Property_Service {
 	 * @since 3.6.0
 	 * @return string The RDF data type.
 	 */
-	public abstract function get_rdf_data_type();
+	abstract public function get_rdf_data_type();
 
 	/**
 	 * The internal data type.
@@ -77,7 +77,7 @@ abstract class Wordlift_Property_Service {
 	 * @since 3.6.0
 	 * @return string The internal data type.
 	 */
-	public abstract function get_data_type();
+	abstract public function get_data_type();
 
 	/**
 	 * The cardinality.
@@ -85,7 +85,7 @@ abstract class Wordlift_Property_Service {
 	 * @since 3.6.0
 	 * @return mixed The cardinality.
 	 */
-	public abstract function get_cardinality();
+	abstract public function get_cardinality();
 
 	/**
 	 * The metabox field class name.
@@ -93,7 +93,7 @@ abstract class Wordlift_Property_Service {
 	 * @since 3.6.0
 	 * @return string The metabox field class name.
 	 */
-	public abstract function get_metabox_class();
+	abstract public function get_metabox_class();
 
 	/**
 	 * The untranslated metabox field label.
@@ -101,7 +101,7 @@ abstract class Wordlift_Property_Service {
 	 * @since 3.6.0
 	 * @return string The untranslated metabox field label.
 	 */
-	public abstract function get_metabox_label();
+	abstract public function get_metabox_label();
 
 	/**
 	 * The definition of the property returned as a compatible array.

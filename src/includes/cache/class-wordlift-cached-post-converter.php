@@ -66,7 +66,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * Wordlift_Cached_Post_Converter constructor.
 	 *
 	 * @param \Wordlift_Post_Converter $converter The {@link Wordlift_Post_Converter} implementation.
-	 * @param Ttl_Cache $cache The {@link Ttl_Cache} cache instance.
+	 * @param Ttl_Cache                $cache The {@link Ttl_Cache} cache instance.
 	 */
 	public function __construct( $converter, $cache ) {
 
@@ -89,30 +89,51 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		// Hook on post save to flush relevant cache.
 		add_action( 'save_post', array( $this, 'save_post' ) );
 
-		add_action( 'added_post_meta', array(
-			$this,
-			'changed_post_meta',
-		), 10, 3 );
-		add_action( 'updated_post_meta', array(
-			$this,
-			'changed_post_meta',
-		), 10, 3 );
-		add_action( 'deleted_post_meta', array(
-			$this,
-			'changed_post_meta',
-		), 10, 3 );
+		add_action(
+			'added_post_meta',
+			array(
+				$this,
+				'changed_post_meta',
+			),
+			10,
+			3
+		);
+		add_action(
+			'updated_post_meta',
+			array(
+				$this,
+				'changed_post_meta',
+			),
+			10,
+			3
+		);
+		add_action(
+			'deleted_post_meta',
+			array(
+				$this,
+				'changed_post_meta',
+			),
+			10,
+			3
+		);
 
 		// Flush cache when wordlift settings were updated.
-		add_action( 'update_option_wl_general_settings', array(
-			$this,
+		add_action(
 			'update_option_wl_general_settings',
-		) );
+			array(
+				$this,
+				'update_option_wl_general_settings',
+			)
+		);
 
 		// Flushes the cache when permalink structure is changed.
-		add_action( 'update_option_permalink_structure', array(
-			$this,
-			'permalinks_structure_changed',
-		) );
+		add_action(
+			'update_option_permalink_structure',
+			array(
+				$this,
+				'permalinks_structure_changed',
+			)
+		);
 
 		// Invalid cache on relationship change.
 		add_action( 'wl_relation_added', array( $this, 'relation_changed' ) );
@@ -171,12 +192,11 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	/**
 	 * Try to get the cached contents.
 	 *
-	 * @param int $post_id The {@link WP_Post} id.
+	 * @param int   $post_id The {@link WP_Post} id.
 	 * @param array $references The referenced posts.
 	 *
 	 * @return mixed|bool The cached contents or false if the cached isn't found.
 	 * @since 3.16.0
-	 *
 	 */
 	private function get_cache( $post_id, &$references = array() ) {
 
@@ -207,21 +227,23 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 *
 	 * The function will prepare the provided results and will ask the {@link Ttl_Cache} to cache them.
 	 *
-	 * @param int $post_id The {@link WP_Post} id.
+	 * @param int   $post_id The {@link WP_Post} id.
 	 * @param array $references An array of references.
 	 * @param array $jsonld A JSON-LD structure.
 	 *
 	 * @since 3.16.0
-	 *
 	 */
 	private function set_cache( $post_id, $references, $jsonld ) {
 
 		$this->log->trace( "Caching result for post $post_id..." );
 
-		$this->cache->put( $post_id, array(
-			'references' => $this->reference_processor->serialize_references( $references ),
-			'jsonld'     => $jsonld,
-		) );
+		$this->cache->put(
+			$post_id,
+			array(
+				'references' => $this->reference_processor->serialize_references( $references ),
+				'jsonld'     => $jsonld,
+			)
+		);
 
 	}
 
@@ -231,7 +253,6 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * @param int $post_id The {@link WP_Post} id.
 	 *
 	 * @since 3.16.0
-	 *
 	 */
 	public function save_post( $post_id ) {
 
@@ -247,12 +268,11 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * Hook to meta changed for a {@link WP_Post}, will cause the cause to
 	 * invalidate.
 	 *
-	 * @param int $id The {@link WP_Post} meta id.
-	 * @param int $post_id The {@link WP_Post} id.
+	 * @param int    $id The {@link WP_Post} meta id.
+	 * @param int    $post_id The {@link WP_Post} id.
 	 * @param string $meta_key The meta key.
 	 *
 	 * @since 3.16.0
-	 *
 	 */
 	public function changed_post_meta( $id, $post_id, $meta_key ) {
 
@@ -278,7 +298,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * @since 3.16.0
 	 */
 	public function update_option_wl_general_settings() {
-		$this->log->trace( "WordLift options changed, flushing cache..." );
+		$this->log->trace( 'WordLift options changed, flushing cache...' );
 
 		$this->cache->flush();
 	}
@@ -289,7 +309,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * @since 3.17.0
 	 */
 	public function permalinks_structure_changed() {
-		$this->log->trace( "Permalinks structure changed, flushing cache..." );
+		$this->log->trace( 'Permalinks structure changed, flushing cache...' );
 
 		$this->cache->flush();
 	}
@@ -300,7 +320,6 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * @param int $post_id The {@link WP_Post} id.
 	 *
 	 * @since 3.16.0
-	 *
 	 */
 	public function relation_changed( $post_id ) {
 		$this->log->trace( "Post $post_id relations changed, invalidating cache..." );
@@ -312,11 +331,10 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * When in Ajax, prints an http header with the information whether the
 	 * response is cached or not.
 	 *
-	 * @param int $post_id The {@link WP_Post} id.
+	 * @param int  $post_id The {@link WP_Post} id.
 	 * @param bool $cache Whether the response fragment is cached.
 	 *
 	 * @since 3.16.0
-	 *
 	 */
 	private function add_http_header( $post_id, $cache ) {
 
@@ -335,7 +353,6 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * @param int $post_id The changed {@link WP_Post}'s id.
 	 *
 	 * @since 3.16.0
-	 *
 	 */
 	private function flush_cache_if_publisher( $post_id ) {
 

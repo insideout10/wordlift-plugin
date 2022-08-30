@@ -25,19 +25,21 @@ class Background_Analysis_Endpoint {
 
 	public function __construct( $background_service, $cache_service ) {
 		$this->background_service = $background_service;
-		$this->cache_service = $cache_service;
+		$this->cache_service      = $cache_service;
 		$this->register_routes();
 	}
 
 	public function register_routes() {
 		$that = $this;
-		add_action( 'rest_api_init',
+		add_action(
+			'rest_api_init',
 			function () use ( $that ) {
 				$that->register_start_route();
 				$that->register_stop_route();
 				$that->register_stats_route();
 				$that->register_restart_route();
-			} );
+			}
+		);
 	}
 
 	private function register_start_route() {
@@ -82,7 +84,6 @@ class Background_Analysis_Endpoint {
 		);
 	}
 
-
 	private function register_restart_route() {
 		register_rest_route(
 			Api_Config::REST_NAMESPACE,
@@ -96,7 +97,6 @@ class Background_Analysis_Endpoint {
 			)
 		);
 	}
-
 
 	public function get_stats() {
 		/**
@@ -113,7 +113,6 @@ class Background_Analysis_Endpoint {
 		return true;
 	}
 
-
 	public function restart() {
 		$this->background_service->cancel();
 		// clear the flags and restart again.
@@ -122,10 +121,13 @@ class Background_Analysis_Endpoint {
 DELETE FROM $wpdb->termmeta WHERE meta_key=%s OR meta_key=%s
 ";
 		// Remove the flags, if the tag is already accepted we wont remove that ui flag.
-		$query = $wpdb->prepare( $query, array(
-			Analysis_Background_Service::ANALYSIS_DONE_FLAG,
-			Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM
-		) );
+		$query = $wpdb->prepare(
+			$query,
+			array(
+				Analysis_Background_Service::ANALYSIS_DONE_FLAG,
+				Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM,
+			)
+		);
 		$wpdb->query( $query );
 		// clear the cache
 		$this->cache_service->flush_all();
@@ -134,12 +136,10 @@ DELETE FROM $wpdb->termmeta WHERE meta_key=%s OR meta_key=%s
 		return array( 'status' => 'restart_complete' );
 	}
 
-
 	public function stop() {
 		$this->background_service->stop();
 
 		return true;
 	}
-
 
 }

@@ -120,7 +120,6 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return bool Return true if the post is an entity otherwise false.
 	 * @since 3.1.0
-	 *
 	 */
 	public function is_entity( $post_id ) {
 
@@ -162,12 +161,11 @@ class Wordlift_Entity_Service {
 	 *
 	 * @param integer $post_id An entity post id.
 	 *
-	 * @param string $default The default classification scope, `what` if not
-	 *                         provided.
+	 * @param string  $default The default classification scope, `what` if not
+	 *                          provided.
 	 *
 	 * @return string Returns a classification scope (e.g. 'what').
 	 * @since 3.5.0
-	 *
 	 */
 	public function get_classification_scope_for( $post_id, $default = WL_WHAT_RELATION ) {
 
@@ -249,7 +247,6 @@ class Wordlift_Entity_Service {
 	 *
 	 * @since      3.16.3 deprecated in favor of Wordlift_Entity_Uri_Service->get_entity( $uri );
 	 * @since      3.2.0
-	 *
 	 */
 	public function get_entity_post_by_uri( $uri ) {
 
@@ -264,9 +261,9 @@ class Wordlift_Entity_Service {
 	 *
 	 * @since 3.2.0
 	 *
-	 * @param int $post_id Post ID.
+	 * @param int     $post_id Post ID.
 	 * @param WP_Post $post Post object.
-	 * @param bool $update Whether this is an existing post being updated or not.
+	 * @param bool    $update Whether this is an existing post being updated or not.
 	 */
 	public function save_post( $post_id, $post, $update ) {
 
@@ -293,17 +290,15 @@ class Wordlift_Entity_Service {
 			$this->set_alternative_labels( $post_id, $alt_labels );
 		}
 
-
 	}
 
 	/**
 	 * Set the alternative labels.
 	 *
-	 * @param int $post_id The post id.
+	 * @param int   $post_id The post id.
 	 * @param array $alt_labels An array of labels.
 	 *
 	 * @since 3.2.0
-	 *
 	 */
 	public function set_alternative_labels( $post_id, $alt_labels ) {
 
@@ -318,7 +313,7 @@ class Wordlift_Entity_Service {
 			$alt_labels = array( $alt_labels );
 		}
 
-		$this->log->debug( "Setting alternative labels [ post id :: $post_id ][ alt labels :: " . implode( ',', $alt_labels ) . " ]" );
+		$this->log->debug( "Setting alternative labels [ post id :: $post_id ][ alt labels :: " . implode( ',', $alt_labels ) . ' ]' );
 
 		// Delete all the existing alternate labels.
 		delete_post_meta( $post_id, self::ALTERNATIVE_LABEL_META_KEY );
@@ -357,7 +352,6 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return mixed An array  of alternative labels.
 	 * @since 3.2.0
-	 *
 	 */
 	public function get_alternative_labels( $post_id ) {
 
@@ -388,7 +382,6 @@ class Wordlift_Entity_Service {
 	 * @param WP_Post $post Post object.
 	 *
 	 * @since 3.2.0
-	 *
 	 */
 	public function edit_form_before_permalink( $post ) {
 
@@ -408,7 +401,7 @@ class Wordlift_Entity_Service {
 		// Print all the currently set alternative labels.
 		foreach ( $this->get_alternative_labels( $post->ID ) as $alt_label ) {
 
-			echo wp_kses( $this->get_alternative_label_input( $alt_label ), wp_kses_allowed_html('post') );
+			echo wp_kses( $this->get_alternative_label_input( $alt_label ), wp_kses_allowed_html( 'post' ) );
 
 		};
 
@@ -423,7 +416,7 @@ class Wordlift_Entity_Service {
 		$dataset_uri     = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
 
 		if ( ! isset( $entity_id ) ||
-		     ( ! empty( $dataset_uri ) && 0 !== strpos( $entity_id, $dataset_uri ) ) ) {
+			 ( ! empty( $dataset_uri ) && 0 !== strpos( $entity_id, $dataset_uri ) ) ) {
 			$rel_uri = Entity_Uri_Generator::create_uri( $type, $object_id );
 			try {
 				$content_service->set_entity_id( new Wordpress_Content_Id( $object_id, $type ), $rel_uri );
@@ -443,7 +436,6 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return string The input HTML code.
 	 * @since 3.2.0
-	 *
 	 */
 	private function get_alternative_label_input( $value = '' ) {
 
@@ -455,7 +447,6 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return int The number of published entity posts.
 	 * @since 3.6.0
-	 *
 	 */
 	public function count() {
 		global $wpdb;
@@ -467,16 +458,18 @@ class Wordlift_Entity_Service {
 		}
 
 		// Query the count.
-		$count = $wpdb->get_var( $wpdb->prepare(
-			"SELECT COUNT( DISTINCT( tr.object_id ) )"
-			. " FROM {$wpdb->term_relationships} tr"
-			. " INNER JOIN {$wpdb->term_taxonomy} tt"
-			. "  ON tt.taxonomy = %s AND tt.term_taxonomy_id = tr.term_taxonomy_id"
-			. " INNER JOIN {$wpdb->terms} t"
-			. "  ON t.term_id = tt.term_id AND t.name != %s",
-			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
-			'article'
-		) );
+		$count = $wpdb->get_var(
+			$wpdb->prepare(
+				'SELECT COUNT( DISTINCT( tr.object_id ) )'
+				. " FROM {$wpdb->term_relationships} tr"
+				. " INNER JOIN {$wpdb->term_taxonomy} tt"
+				. '  ON tt.taxonomy = %s AND tt.term_taxonomy_id = tr.term_taxonomy_id'
+				. " INNER JOIN {$wpdb->terms} t"
+				. '  ON t.term_id = tt.term_id AND t.name != %s',
+				Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+				'article'
+			)
+		);
 
 		// Store the count in cache.
 		set_transient( '_wl_entity_service__count', $count, 900 );
@@ -492,7 +485,6 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return array The arguments for a `get_posts` call.
 	 * @since 3.15.0
-	 *
 	 */
 	public static function add_criterias( $args ) {
 
@@ -512,18 +504,18 @@ class Wordlift_Entity_Service {
 		);
 
 		return $args + array(
-				'post_type' => Wordlift_Entity_Service::valid_entity_post_types(),
-				/*
-				 * Ensure compatibility with Polylang.
-				 *
-				 * @see https://github.com/insideout10/wordlift-plugin/issues/855.
-				 * @see https://wordpress.org/support/topic/parse_query-filter-adds-language-taxonomy-to-query/.
-				 *
-				 * @since 3.19.5
-				 */
-				'lang'      => '',
-				'tax_query' => $tax_query,
-			);
+			'post_type' => self::valid_entity_post_types(),
+			/*
+			 * Ensure compatibility with Polylang.
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/855.
+			 * @see https://wordpress.org/support/topic/parse_query-filter-adds-language-taxonomy-to-query/.
+			 *
+			 * @since 3.19.5
+			 */
+			'lang'      => '',
+			'tax_query' => $tax_query,
+		);
 	}
 
 	/**
@@ -531,22 +523,23 @@ class Wordlift_Entity_Service {
 	 *
 	 * @param string $name The entity name.
 	 * @param string $type_uri The entity's type URI.
-	 * @param null $logo The entity logo id (or NULL if none).
+	 * @param null   $logo The entity logo id (or NULL if none).
 	 * @param string $status The post status, by default 'publish'.
 	 *
 	 * @return int|WP_Error The entity post id or a {@link WP_Error} in case the `wp_insert_post` call fails.
 	 * @since 3.9.0
-	 *
 	 */
 	public function create( $name, $type_uri, $logo = null, $status = 'publish' ) {
 
 		// Create an entity for the publisher.
-		$post_id = @wp_insert_post( array(
-			'post_type'    => self::TYPE_NAME,
-			'post_title'   => $name,
-			'post_status'  => $status,
-			'post_content' => '',
-		) );
+		$post_id = @wp_insert_post(
+			array(
+				'post_type'    => self::TYPE_NAME,
+				'post_title'   => $name,
+				'post_status'  => $status,
+				'post_content' => '',
+			)
+		);
 
 		// Return the error if any.
 		if ( is_wp_error( $post_id ) ) {
@@ -568,12 +561,11 @@ class Wordlift_Entity_Service {
 	 * Get the entities related to the one with the specified id. By default only
 	 * published entities will be returned.
 	 *
-	 * @param int $id The post id.
+	 * @param int    $id The post id.
 	 * @param string $post_status The target post status (default = publish).
 	 *
 	 * @return array An array of post ids.
 	 * @since 3.10.0
-	 *
 	 */
 	public function get_related_entities( $id, $post_status = 'publish' ) {
 
@@ -587,7 +579,6 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return array An array of entity posts.
 	 * @since 3.12.2
-	 *
 	 */
 	public function get( $params = array() ) {
 
@@ -609,7 +600,6 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return array Array containing the names of the valid post types.
 	 * @since 3.15.0
-	 *
 	 */
 	static function valid_entity_post_types() {
 

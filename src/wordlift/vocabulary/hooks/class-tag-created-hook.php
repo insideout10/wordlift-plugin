@@ -19,7 +19,7 @@ class Tag_Created_Hook {
 	 */
 	public function __construct( $analysis_background_service ) {
 		$this->analysis_background_service = $analysis_background_service;
-		$taxonomies = Terms_Compat::get_public_taxonomies();
+		$taxonomies                        = Terms_Compat::get_public_taxonomies();
 		foreach ( $taxonomies as $taxonomy ) {
 			add_action( "created_${taxonomy}", array( $this, 'created_term' ) );
 		}

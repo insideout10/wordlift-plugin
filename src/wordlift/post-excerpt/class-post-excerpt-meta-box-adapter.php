@@ -17,19 +17,19 @@ use Wordlift\Scripts\Scripts_Helper;
 final class Post_Excerpt_Meta_Box_Adapter {
 
 	/**
-	 * Key used by wordpress to add the excerpt meta box in
+	 * Key used by WordPress to add the excerpt meta box in
 	 * the $wp_meta_boxes global variable.
 	 */
 	const POST_EXCERPT_META_BOX_KEY = 'postexcerpt';
 
 	/**
 	 * Div id used for adding the additional content
-	 * to the wordpress excerpt meta box.
+	 * to the WordPress excerpt meta box.
 	 */
 	const WORDLIFT_EXCERPT_DIV_ID = 'wl-custom-excerpt-wrapper';
 
 	/**
-	 * @var callable|null The default callback used by wordpress to
+	 * @var callable|null The default callback used by WordPress to
 	 * echo the post_excerpt contents, defaults to null.
 	 */
 	public $wordpress_excerpt_callback = null;
@@ -50,7 +50,7 @@ final class Post_Excerpt_Meta_Box_Adapter {
 	 */
 	public function replace_post_excerpt_meta_box() {
 		global $wp_meta_boxes;
-		$post_type             = get_post_type();
+		$post_type = get_post_type();
 
 		// Bail out if feature is turned off
 		if ( ! apply_filters( 'wl_feature__enable__post-excerpt', true ) ) {
@@ -66,7 +66,7 @@ final class Post_Excerpt_Meta_Box_Adapter {
 			return;
 		}
 
-		$core_meta_boxes       = $wp_meta_boxes[ $post_type ]["normal"]["core"];
+		$core_meta_boxes = $wp_meta_boxes[ $post_type ]['normal']['core'];
 
 		if ( ! isset( $core_meta_boxes[ self::POST_EXCERPT_META_BOX_KEY ] ) ) {
 			return;
@@ -75,7 +75,7 @@ final class Post_Excerpt_Meta_Box_Adapter {
 		$post_excerpt_meta_box = $core_meta_boxes[ self::POST_EXCERPT_META_BOX_KEY ];
 		$callback              = $post_excerpt_meta_box['callback'];
 		/**
-		 * do_meta_boxes action is called 3 times by wordpress for
+		 * do_meta_boxes action is called 3 times by WordPress for
 		 * different set of metaboxes, so to prevent overwriting our
 		 * callback with null, this check is necessary.
 		 */
@@ -126,7 +126,7 @@ final class Post_Excerpt_Meta_Box_Adapter {
 		return array(
 			'normal'   => $normal,
 			'side'     => $side,
-			'advanced' => $advanced
+			'advanced' => $advanced,
 		);
 	}
 
@@ -148,18 +148,20 @@ final class Post_Excerpt_Meta_Box_Adapter {
 	private function enqueue_post_excerpt_scripts() {
 		Scripts_Helper::enqueue_based_on_wordpress_version(
 			'wl-post-excerpt',
-			plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'js/dist/post-excerpt',
+			plugin_dir_url( dirname( __DIR__ ) ) . 'js/dist/post-excerpt',
 			array( 'react', 'react-dom', 'wp-polyfill' ),
 			true
 		);
 		wp_enqueue_style(
 			'wl-post-excerpt',
-			plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'js/dist/post-excerpt.css',
+			plugin_dir_url( dirname( __DIR__ ) ) . 'js/dist/post-excerpt.css',
 			array()
 		);
-		wp_localize_script( 'wl-post-excerpt',
+		wp_localize_script(
+			'wl-post-excerpt',
 			'_wlExcerptSettings',
-			$this->get_post_excerpt_translations() );
+			$this->get_post_excerpt_translations()
+		);
 	}
 
 	public function get_post_excerpt_translations() {

@@ -1,6 +1,7 @@
 <?php
 
 namespace Wordlift\Videoobject\Data\Embedded_Video;
+
 /**
  * @since 3.31.0
  * @author Naveen Muthusamy <naveen@wordlift.io>

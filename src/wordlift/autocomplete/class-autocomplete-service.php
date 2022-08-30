@@ -14,8 +14,8 @@ interface Autocomplete_Service {
 	/**
 	 * Query the service for the specified data.
 	 *
-	 * @param string $query The query.
-	 * @param string $scope The scope.
+	 * @param string          $query The query.
+	 * @param string          $scope The scope.
 	 * @param string|string[] $excludes URLs to exclude.
 	 *
 	 * @return array An array of results.

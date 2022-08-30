@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Wordlift\Shipping_Data;
-
 
 class Flat_Rate_Shipping_Method extends Shipping_Method {
 

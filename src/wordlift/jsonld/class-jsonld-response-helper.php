@@ -35,11 +35,13 @@ class Jsonld_Response_Helper {
 		$date_interval    = new DateInterval( "PT{$cache_in_seconds}S" );
 		$expires          = $date_now->add( $date_interval )->format( 'D, j M Y H:i:s T' );
 
-		$response->set_headers( array(
-			'Content-Type'  => 'application/ld+json; charset=' . get_option( 'blog_charset' ),
-			'Cache-Control' => "max-age=$cache_in_seconds",
-			'Expires'       => $expires
-		) );
+		$response->set_headers(
+			array(
+				'Content-Type'  => 'application/ld+json; charset=' . get_option( 'blog_charset' ),
+				'Cache-Control' => "max-age=$cache_in_seconds",
+				'Expires'       => $expires,
+			)
+		);
 
 		return $response;
 	}

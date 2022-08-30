@@ -87,7 +87,6 @@ class Wordlift_Admin_Entity_Type_Settings {
 				// Register admin notices handler.
 				add_action( 'admin_notices', array( $this, 'admin_notice' ) );
 			}
-
 		}
 
 		/*
@@ -114,9 +113,9 @@ class Wordlift_Admin_Entity_Type_Settings {
 	function admin_notice() {
 		if ( isset( $_GET['message'] ) && ( '1' === $_GET['message'] ) ) {
 			?>
-            <div class="notice notice-success is-dismissible">
-                <p><?php esc_html_e( 'Settings saved', 'wordlift' ) ?></p>
-            </div>
+			<div class="notice notice-success is-dismissible">
+				<p><?php esc_html_e( 'Settings saved', 'wordlift' ); ?></p>
+			</div>
 			<?php
 		}
 	}
@@ -163,8 +162,8 @@ class Wordlift_Admin_Entity_Type_Settings {
 
 		$term = get_term( $term_id, 'wl_entity_type' );
 
-		$title       = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['title'] ) ): '';
-		$description = isset( $_POST['description'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['description'] ) ): '';
+		$title       = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['title'] ) ) : '';
+		$description = isset( $_POST['description'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['description'] ) ) : '';
 		$this->set_setting(
 			$term_id,
 			trim( wp_unslash( $title ) ),
@@ -192,7 +191,7 @@ class Wordlift_Admin_Entity_Type_Settings {
 		$term_id  = isset( $_REQUEST['tag_ID'] ) ? absint( $_REQUEST['tag_ID'] ) : 0;
 		$settings = $this->get_setting( $term_id );
 
-		include plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wordlift-admin-entity-type-settings.php';
+		include plugin_dir_path( __DIR__ ) . 'admin/partials/wordlift-admin-entity-type-settings.php';
 
 	}
 
@@ -200,11 +199,10 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 * Store the entity type term settings in the DB
 	 *
 	 * @param integer $term_id The ID of the entity type term
-	 * @param string $title The override for the terms title.
-	 * @param string $description The override for the terms description.
+	 * @param string  $title The override for the terms title.
+	 * @param string  $description The override for the terms description.
 	 *
 	 * @since 3.11.0
-	 *
 	 */
 	function set_setting( $term_id, $title, $description ) {
 
@@ -230,7 +228,6 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 * @type    string    description    The overriding description for the term
 	 *            }
 	 * @since 3.11.0
-	 *
 	 */
 	function get_setting( $term_id ) {
 

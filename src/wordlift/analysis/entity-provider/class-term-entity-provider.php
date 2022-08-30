@@ -24,7 +24,6 @@ class Term_Entity_Provider implements Entity_Provider {
 		$this->term_type_service = Type_Service::get_instance();
 	}
 
-
 	public function get_entity( $uri ) {
 
 		$content = Wordpress_Term_Content_Legacy_Service::get_instance()->get_by_entity_id_or_same_as( $uri );
@@ -38,7 +37,7 @@ class Term_Entity_Provider implements Entity_Provider {
 
 		$schema = $this->term_type_service->get_schema( $term_id );
 		// @todo: For now we dont support images
-//		$images = $this->post_image_storage->get( $term_entity->ID );
+		// $images = $this->post_image_storage->get( $term_entity->ID );
 		$same_as = get_term_meta( $term_id, 'entity_same_as' );
 		$same_as = $same_as ?: array();
 

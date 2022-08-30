@@ -49,27 +49,27 @@ class Wordlift_Install_Service {
 	public function __construct() {
 
 		/** Installs. */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-1-0-0.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-10-0.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-12-0.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-14-0.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-15-0.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-18-0.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-18-3.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-19-5.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-20-0.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-23-4.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-24-2.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-all-entity-types.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-package-type.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-25-0.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-27-0.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-27-1.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-28-0.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-32-0.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-33-9.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-36-0.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-1-0-0.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-10-0.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-12-0.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-14-0.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-15-0.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-18-0.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-18-3.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-19-5.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-20-0.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-23-4.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-24-2.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-all-entity-types.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-package-type.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-25-0.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-27-0.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-27-1.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-28-0.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-32-0.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-33-9.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-36-0.php';
 		// Get the install services.
 		$this->installs = array(
 			new Wordlift_Install_1_0_0(),
@@ -97,7 +97,7 @@ class Wordlift_Install_Service {
 			// Add the entities table.
 			new Wordlift_Install_3_33_9(),
 			// When woocommerce extension installed, acf4so should be installed automatically.
-			new Wordlift_Install_3_36_0()
+			new Wordlift_Install_3_36_0(),
 		);
 		self::$instance = $this;
 
@@ -137,20 +137,18 @@ class Wordlift_Install_Service {
 				$version = $install->get_version();
 
 				if ( version_compare( $version, $this->get_current_version(), '>' )
-				     || $install->must_install() ) {
+					 || $install->must_install() ) {
 					$class_name = get_class( $install );
 
 					$this->log->info( "Current version is {$this->get_current_version()}, installing $class_name..." );
 					// Install version.
 					$install->install();
 
-
 					$this->log->info( "$class_name installed." );
 
 					// Bump the version.
 					update_option( 'wl_db_version', $version );
 				}
-
 			}
 
 			@delete_transient( '_wl_installing' );
@@ -167,10 +165,9 @@ class Wordlift_Install_Service {
 			$version = $install->get_version();
 
 			if ( version_compare( $version, $this->get_current_version(), '>' )
-			     || $install->must_install() ) {
+				 || $install->must_install() ) {
 				return true;
 			}
-
 		}
 
 		return false;
@@ -184,6 +181,5 @@ class Wordlift_Install_Service {
 	private function get_current_version() {
 		return get_option( 'wl_db_version', '0.0.0' );
 	}
-
 
 }

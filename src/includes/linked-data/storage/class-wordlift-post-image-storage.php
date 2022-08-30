@@ -26,7 +26,6 @@ class Wordlift_Post_Image_Storage extends Wordlift_Storage {
 	 * @return array|string|null A single string, or an array of values or null
 	 *                           if the property isn't recognized.
 	 * @since 3.15.0
-	 *
 	 */
 	public function get( $post_id ) {
 
@@ -41,11 +40,13 @@ class Wordlift_Post_Image_Storage extends Wordlift_Storage {
 			$image_urls[] = $image_url;
 		}
 
-		$images = get_children( array(
-			'post_parent'    => $post_id,
-			'post_type'      => 'attachment',
-			'post_mime_type' => 'image',
-		) );
+		$images = get_children(
+			array(
+				'post_parent'    => $post_id,
+				'post_type'      => 'attachment',
+				'post_mime_type' => 'image',
+			)
+		);
 
 		// Collect the URLs.
 		foreach ( $images as $attachment_id => $attachment ) {

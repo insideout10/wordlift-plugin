@@ -5,7 +5,6 @@ namespace Wordlift\Google_Addon_Integration;
 use Wordlift\Common\Loader\Default_Loader;
 use Wordlift\Google_Addon_Integration\Pages\Import_Page;
 
-
 /**
  * @since 3.35.0
  * @author Naveen Muthusamy <naveen@wordlift.io>

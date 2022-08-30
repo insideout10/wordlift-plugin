@@ -25,7 +25,6 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 	 */
 	private $term_entity_type_service;
 
-
 	public function __construct() {
 		parent::__construct();
 		$this->term_entity_type_service = Type_Service::get_instance();
@@ -38,11 +37,11 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 		return parent::get_instance();
 	}
 
-
 	public function get_references( $subject_id, $subject_type ) {
 		global $wpdb;
 		$table_name = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
-		$query      = $wpdb->prepare( "SELECT object_id FROM $table_name WHERE subject_id = %d AND object_type = %d AND subject_type = %d",
+		$query      = $wpdb->prepare(
+			"SELECT object_id FROM $table_name WHERE subject_id = %d AND object_type = %d AND subject_type = %d",
 			$subject_id,
 			Object_Type_Enum::TERM,
 			$subject_type
@@ -50,11 +49,13 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 
 		$term_ids = $wpdb->get_col( $query );
 
-		return array_map( function ( $term_id ) {
-			return new Term_Reference( $term_id );
-		}, $term_ids );
+		return array_map(
+			function ( $term_id ) {
+				return new Term_Reference( $term_id );
+			},
+			$term_ids
+		);
 	}
-
 
 	public function get_relations_from_content( $content, $subject_type, $local_entity_uris ) {
 		$entity_uris = Object_Relation_Service::get_entity_uris( $content );
@@ -90,25 +91,27 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 	public function get_relations_from_entity_uris( $subject_type, $entity_uris ) {
 		$that = $this;
 
-		return array_map( function ( $entity_uri ) use ( $subject_type, $that ) {
+		return array_map(
+			function ( $entity_uri ) use ( $subject_type, $that ) {
 
-			try {
-				$content = Wordpress_Term_Content_Legacy_Service::get_instance()
-				                                                ->get_by_entity_id( $entity_uri );
+				try {
+					  $content = Wordpress_Term_Content_Legacy_Service::get_instance()
+															->get_by_entity_id( $entity_uri );
 
-				if ( ! isset( $content ) ) {
+					if ( ! isset( $content ) ) {
+						return false;
+					}
+
+					$term_id = $content->get_bag()->term_id;
+
+					return new Term_Relation( $term_id, $that->get_relation_type( $term_id ), $subject_type );
+				} catch ( \Exception $e ) {
 					return false;
 				}
 
-				$term_id = $content->get_bag()->term_id;
-
-				return new Term_Relation( $term_id, $that->get_relation_type( $term_id ), $subject_type );
-			} catch ( \Exception $e ) {
-				return false;
-			}
-
-		}, $entity_uris );
+			},
+			$entity_uris
+		);
 	}
-
 
 }

@@ -83,7 +83,7 @@ final class Mappings_DBO {
 	 *
 	 * @param string $table_name The table name you want to query, completely escaped value.
 	 * @param string $primary_key_name The primary key you want to query, should be escaped before passing.
-	 * @param int $primary_key_value The primary key value, no need to escape.
+	 * @param int    $primary_key_value The primary key value, no need to escape.
 	 *
 	 * @return bool Returns true if the row exists, false if it does not
 	 */

@@ -16,7 +16,7 @@ namespace Wordlift\Mappings;
 use Wordlift\Mappings\Validators\Rule_Groups_Validator;
 
 final class Mappings_Validator {
-	const TRASH_CATEGORY = 'trash';
+	const TRASH_CATEGORY  = 'trash';
 	const ACTIVE_CATEGORY = 'active';
 
 	/**
@@ -36,7 +36,7 @@ final class Mappings_Validator {
 	/**
 	 * Constructor for Wordlift_Mapping_Validator.
 	 *
-	 * @param Mappings_DBO $dbo The {@link Mappings_DBO} instance.
+	 * @param Mappings_DBO          $dbo The {@link Mappings_DBO} instance.
 	 * @param Rule_Groups_Validator $rule_groups_validator
 	 */
 	public function __construct( $dbo, $rule_groups_validator ) {
@@ -64,9 +64,9 @@ final class Mappings_Validator {
 				 * they have correct data format.
 				 */
 				if ( ! array_key_exists( 'property_name', $item ) ||
-				     ! array_key_exists( 'field_type', $item ) ||
-				     ! array_key_exists( 'field_name', $item ) ||
-				     ! array_key_exists( 'transform_function', $item )
+					 ! array_key_exists( 'field_type', $item ) ||
+					 ! array_key_exists( 'field_name', $item ) ||
+					 ! array_key_exists( 'transform_function', $item )
 				) {
 					// If these keys doesnt exist, then dont process.
 					return false;
@@ -83,7 +83,7 @@ final class Mappings_Validator {
 	 * a single rule passes the user defined logic.
 	 *
 	 * @param string $key The key which every object has mapped to our value.
-	 * @param array $items The array of items.
+	 * @param array  $items The array of items.
 	 * @param string $status The value which the items should have.
 	 *
 	 * @return array
@@ -101,7 +101,7 @@ final class Mappings_Validator {
 	 * Validates a post id with the list of active mapping items and check if
 	 * a mapping can be applied.
 	 *
-	 * @param int $identifier The post id or term id based on type.
+	 * @param int    $identifier The post id or term id based on type.
 	 *
 	 * @param string $type Post or term.
 	 *
@@ -139,7 +139,7 @@ final class Mappings_Validator {
 				 * so we will have the rule groups and the properties in the array keys
 				 */
 				if ( array_key_exists( 'properties', $mapping ) &&
-				     is_array( $mapping['properties'] ) ) {
+					 is_array( $mapping['properties'] ) ) {
 					$filter_registered_properties = array_merge( $filter_registered_properties, $mapping['properties'] );
 				}
 			}

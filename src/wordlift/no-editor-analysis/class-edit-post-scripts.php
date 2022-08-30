@@ -29,11 +29,10 @@ class Edit_Post_Scripts extends Edit_Post_Loader {
 				'wp-element',
 				'wp-hooks',
 				'wp-polyfill',
-				'wp-rich-text'
+				'wp-rich-text',
 			),
 			true
 		);
-
 
 		wp_enqueue_style(
 			self::HANDLE,

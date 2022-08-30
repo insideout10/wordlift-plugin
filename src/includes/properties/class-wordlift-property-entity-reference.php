@@ -40,8 +40,8 @@ class Wordlift_Property_Entity_Reference {
 	 * Create a Wordlift_Property_Entity_Reference instance with the provided URL.
 	 *
 	 * @param string $url The URL.
-	 * @param int $id The entity post id.
-	 * @param bool $required Whether this property is always required in SD output, default false.
+	 * @param int    $id The entity post id.
+	 * @param bool   $required Whether this property is always required in SD output, default false.
 	 *
 	 * @since 3.8.0
 	 */
@@ -58,7 +58,6 @@ class Wordlift_Property_Entity_Reference {
 	 *
 	 * @return string The URL associated with the entity reference.
 	 * @since 3.8.0
-	 *
 	 */
 	public function get_url() {
 
@@ -70,7 +69,6 @@ class Wordlift_Property_Entity_Reference {
 	 *
 	 * @return int The entity id.
 	 * @since 3.10.0
-	 *
 	 */
 	public function get_id() {
 

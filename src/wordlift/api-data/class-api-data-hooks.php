@@ -3,6 +3,7 @@
 /**
  *
  * API Data Hooks
+ *
  * @author Navdeep Singh <navdeep@wordlift.io>
  * @package Wordlift\Api_Data
  */
@@ -61,7 +62,6 @@ class Api_Data_Hooks {
 	 * @param integer $post_id
 	 *
 	 * @return
-	 *
 	 */
 	private function delete_cache_for_meta_values( $post_id ) {
 

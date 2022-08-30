@@ -18,7 +18,7 @@ class Data_Source_Factory {
 	public function __construct() {
 		$this->data_sources = array(
 			'acf'  => new Acf_Data_Source(),
-			'meta' => new Meta_Data_Source()
+			'meta' => new Meta_Data_Source(),
 		);
 	}
 
@@ -39,7 +39,6 @@ class Data_Source_Factory {
 				return $property_data['field_name'];
 		}
 	}
-
 
 	/**
 	 * @return Data_Source_Factory

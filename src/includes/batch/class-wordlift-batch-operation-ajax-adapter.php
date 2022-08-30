@@ -20,8 +20,8 @@ class Wordlift_Batch_Operation_Ajax_Adapter {
 	 * @since 3.20.0
 	 */
 	const ACCESS_ANONYMOUS = 1;
-	const ACCESS_ADMIN = 2;
-	const ACCESS_ALL = 3;
+	const ACCESS_ADMIN     = 2;
+	const ACCESS_ALL       = 3;
 
 	/**
 	 * A {@link Wordlift_Batch_Operation_Interface} instance.
@@ -45,8 +45,8 @@ class Wordlift_Batch_Operation_Ajax_Adapter {
 	 * Wordlift_Batch_Operation_Ajax_Adapter constructor.
 	 *
 	 * @param \Wordlift_Batch_Operation_Interface $operation The batch operation.
-	 * @param string $action The action name.
-	 * @param int $access The access level.
+	 * @param string                              $action The action name.
+	 * @param int                                 $access The access level.
 	 */
 	public function __construct( $operation, $action, $access = self::ACCESS_ADMIN ) {
 
@@ -75,13 +75,15 @@ class Wordlift_Batch_Operation_Ajax_Adapter {
 	 *
 	 * @return array The updated array of settings.
 	 * @since 3.20.0
-	 *
 	 */
 	public function add_nonce( $params ) {
 
-		return array_merge( $params, array(
-			"{$this->action}_nonce" => $this->create_nonce(),
-		) );
+		return array_merge(
+			$params,
+			array(
+				"{$this->action}_nonce" => $this->create_nonce(),
+			)
+		);
 	}
 
 	/**
@@ -103,9 +105,14 @@ class Wordlift_Batch_Operation_Ajax_Adapter {
 		$result = $this->operation->process( $offset, $limit );
 
 		// Send the results along with a potentially updated nonce.
-		wp_send_json_success( array_merge( $result, array(
-			'_nonce' => $this->create_nonce(),
-		) ) );
+		wp_send_json_success(
+			array_merge(
+				$result,
+				array(
+					'_nonce' => $this->create_nonce(),
+				)
+			)
+		);
 
 	}
 
@@ -126,10 +133,12 @@ class Wordlift_Batch_Operation_Ajax_Adapter {
 		$result = $this->operation->count();
 
 		// Send the results along with a potentially updated nonce.
-		wp_send_json_success( array(
-			'count'  => $result,
-			'_nonce' => $this->create_nonce(),
-		) );
+		wp_send_json_success(
+			array(
+				'count'  => $result,
+				'_nonce' => $this->create_nonce(),
+			)
+		);
 
 	}
 
@@ -138,7 +147,6 @@ class Wordlift_Batch_Operation_Ajax_Adapter {
 	 *
 	 * @return string The nonce.
 	 * @since 3.20.0
-	 *
 	 */
 	public function create_nonce() {
 

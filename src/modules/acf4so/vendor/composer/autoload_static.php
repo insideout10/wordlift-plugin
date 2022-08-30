@@ -4,33 +4,36 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit9b4e3e175e03285e60ba6309cc2e3477
-{
-    public static $prefixLengthsPsr4 = array (
-        'W' => 
-        array (
-            'Wordlift\\Modules\\Acf4so\\' => 24,
-        ),
-    );
+class ComposerStaticInit9b4e3e175e03285e60ba6309cc2e3477 {
 
-    public static $prefixDirsPsr4 = array (
-        'Wordlift\\Modules\\Acf4so\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/includes',
-        ),
-    );
+	public static $prefixLengthsPsr4 = array(
+		'W' =>
+		array(
+			'Wordlift\\Modules\\Acf4so\\' => 24,
+		),
+	);
 
-    public static $classMap = array (
-        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-    );
+	public static $prefixDirsPsr4 = array(
+		'Wordlift\\Modules\\Acf4so\\' =>
+		array(
+			0 => __DIR__ . '/../..' . '/includes',
+		),
+	);
 
-    public static function getInitializer(ClassLoader $loader)
-    {
-        return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit9b4e3e175e03285e60ba6309cc2e3477::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit9b4e3e175e03285e60ba6309cc2e3477::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit9b4e3e175e03285e60ba6309cc2e3477::$classMap;
+	public static $classMap = array(
+		'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+	);
 
-        }, null, ClassLoader::class);
-    }
+	public static function getInitializer( ClassLoader $loader ) {
+		return \Closure::bind(
+			function () use ( $loader ) {
+				$loader->prefixLengthsPsr4 = ComposerStaticInit9b4e3e175e03285e60ba6309cc2e3477::$prefixLengthsPsr4;
+				$loader->prefixDirsPsr4    = ComposerStaticInit9b4e3e175e03285e60ba6309cc2e3477::$prefixDirsPsr4;
+				$loader->classMap          = ComposerStaticInit9b4e3e175e03285e60ba6309cc2e3477::$classMap;
+
+			},
+			null,
+			ClassLoader::class
+		);
+	}
 }

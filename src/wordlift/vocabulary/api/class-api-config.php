@@ -15,9 +15,9 @@ class Api_Config {
 		$settings            = array();
 		$settings['restUrl'] = get_rest_url(
 			null,
-			Api_Config::REST_NAMESPACE . '/tags'
+			self::REST_NAMESPACE . '/tags'
 		);
-		$settings['baseUrl'] = get_rest_url( null, Api_Config::REST_NAMESPACE );
+		$settings['baseUrl'] = get_rest_url( null, self::REST_NAMESPACE );
 		$settings['nonce']   = wp_create_nonce( 'wp_rest' );
 
 		return $settings;

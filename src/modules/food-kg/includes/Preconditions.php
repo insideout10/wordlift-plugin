@@ -19,17 +19,19 @@ class Preconditions {
 
 	private function has_prerequisites() {
 		return defined( 'WPRM_VERSION' )
-		       && class_exists( 'WP_Recipe_Maker' )
-		       && apply_filters( 'wl_feature__enable__food-kg', false );
+			   && class_exists( 'WP_Recipe_Maker' )
+			   && apply_filters( 'wl_feature__enable__food-kg', false );
 	}
 
 	private function check_version() {
 		$check = version_compare( WPRM_VERSION, '8.1.0', '>=' )
-		         && version_compare( WPRM_VERSION, '8.4.0', '<' );
+				 && version_compare( WPRM_VERSION, '8.4.0', '<' );
 
 		if ( ! $check ) {
-			$this->notices->queue( 'warning',
-				sprintf( __( 'WordLift Food KG support requires WP Recipe Maker 8.1-8.3, %s found.', 'wordlift' ), WPRM_VERSION ) );
+			$this->notices->queue(
+				'warning',
+				sprintf( __( 'WordLift Food KG support requires WP Recipe Maker 8.1-8.3, %s found.', 'wordlift' ), WPRM_VERSION )
+			);
 		}
 
 		return $check;

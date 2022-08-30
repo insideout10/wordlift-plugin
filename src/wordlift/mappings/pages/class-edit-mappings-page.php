@@ -14,8 +14,8 @@ namespace Wordlift\Mappings\Pages;
 use Wordlift;
 use Wordlift\Mappings\Mappings_REST_Controller;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
-use Wordlift_Admin_Page;
 use Wordlift\Scripts\Scripts_Helper;
+use Wordlift_Admin_Page;
 
 /**
  * Define the Wordlift_Admin_Edit_Mappings class.
@@ -25,6 +25,7 @@ use Wordlift\Scripts\Scripts_Helper;
 class Edit_Mappings_Page extends Wordlift_Admin_Page {
 
 	/** Instance to store the registry class.
+	 *
 	 * @var Mappings_Transform_Functions_Registry { @link Mappings_Transform_Functions_Registry instance}
 	 */
 	public $transform_function_registry;
@@ -117,7 +118,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		// Enqueue the script.
 		Scripts_Helper::enqueue_based_on_wordpress_version(
 			'wl-mappings-edit',
-			plugin_dir_url( dirname( dirname( dirname( __FILE__ ) ) ) ) . 'js/dist/mappings-edit',
+			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/mappings-edit',
 			array( 'react', 'react-dom', 'wp-polyfill' ),
 			true
 		);
@@ -125,7 +126,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		// Enqueue the style.
 		wp_enqueue_style(
 			'wl-mappings-edit',
-			plugin_dir_url( dirname( dirname( dirname( __FILE__ ) ) ) ) . 'js/dist/mappings-edit.css',
+			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/mappings-edit.css',
 			Wordlift::get_instance()->get_version()
 		);
 	}
@@ -186,6 +187,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 
 	/**
 	 * Returns post type, post category, or any other post taxonomies
+	 *
 	 * @return array An array of select options
 	 */
 	private static function get_post_taxonomies_and_terms() {
@@ -199,7 +201,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 				array(
 					'label'      => $taxonomy->label,
 					'value'      => $taxonomy->name,
-					'api_source' => 'taxonomy'
+					'api_source' => 'taxonomy',
 				)
 			);
 		}
@@ -218,7 +220,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 
 		return array(
 			'taxonomy_options' => $taxonomy_options,
-			'term_options'     => $term_options
+			'term_options'     => $term_options,
 		);
 	}
 
@@ -253,7 +255,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 
 		return array(
 			'post_type_option_name'   => $post_type_option_name,
-			'post_type_option_values' => $post_type_option_values
+			'post_type_option_values' => $post_type_option_values,
 		);
 	}
 
@@ -267,13 +269,13 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		$post_taxonomy_option_name   = array(
 			'label'      => __( 'Post Taxonomy', 'wordlift' ),
 			'value'      => Wordlift\Mappings\Validators\Post_Taxonomy_Term_Rule_Validator::POST_TAXONOMY,
-			'api_source' => 'post_taxonomy'
+			'api_source' => 'post_taxonomy',
 		);
 		$post_taxonomy_option_values = array();
 
 		return array(
 			'post_taxonomy_option_name'   => $post_taxonomy_option_name,
-			'post_taxonomy_option_values' => $post_taxonomy_option_values
+			'post_taxonomy_option_values' => $post_taxonomy_option_values,
 		);
 	}
 
@@ -309,10 +311,10 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 	private function validate_nonce_and_assign_mapping_id( array $edit_mapping_settings ) {
 		// We verify the nonce before making to load the edit mapping page for the wl_edit_mapping_id
 		if ( isset( $_REQUEST['_wl_edit_mapping_nonce'] )
-		     && wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_wl_edit_mapping_nonce'] ) ), 'wl-edit-mapping-nonce' ) ) {
+			 && wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_wl_edit_mapping_nonce'] ) ), 'wl-edit-mapping-nonce' ) ) {
 			// We're using `INPUT_GET` here because this is a link from the UI, i.e. no POST.
 			$mapping_id                                  = isset( $_REQUEST['wl_edit_mapping_id'] ) ?
-				(int) filter_var( sanitize_text_field( wp_unslash($_REQUEST['wl_edit_mapping_id'] ) ), FILTER_VALIDATE_INT ) : 0;
+				(int) filter_var( sanitize_text_field( wp_unslash( $_REQUEST['wl_edit_mapping_id'] ) ), FILTER_VALIDATE_INT ) : 0;
 			$edit_mapping_settings['wl_edit_mapping_id'] = $mapping_id;
 		}
 
@@ -397,12 +399,15 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 	 */
 	private function load_field_type_and_name_options( array $edit_mapping_settings ) {
 		$all_field_name_options  = self::get_all_field_name_options();
-		$all_field_types_options = array_map( function ( $item ) {
-			return array(
-				'label' => $item['label'],
-				'value' => $item['field_type'],
-			);
-		}, $all_field_name_options );
+		$all_field_types_options = array_map(
+			function ( $item ) {
+				return array(
+					'label' => $item['label'],
+					'value' => $item['field_type'],
+				);
+			},
+			$all_field_name_options
+		);
 
 		$edit_mapping_settings['wl_field_type_options'] = $all_field_types_options;
 		// Add wl_edit_field_name_options.

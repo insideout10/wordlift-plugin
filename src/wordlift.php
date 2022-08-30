@@ -38,8 +38,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * Filter to disable WLP on any request, defaults to true.
- * @since 3.33.6
  *
+ * @since 3.33.6
  */
 if ( ! apply_filters( 'wl_is_enabled', true ) ) {
 	return;
@@ -54,14 +54,13 @@ require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 	 */
 wordlift_plugin_autoload_register();
 
-
 // Include WordLift constants.
-require_once( 'wordlift_constants.php' );
+require_once 'wordlift_constants.php';
 
 // Load modules.
-require_once( 'modules/core/wordlift_core.php' );
+require_once 'modules/core/wordlift_core.php';
 
-require_once( 'deprecations.php' );
+require_once 'deprecations.php';
 
 // Load early to enable/disable features.
 require_once plugin_dir_path( __FILE__ ) . 'wordlift/features/index.php';
@@ -155,7 +154,6 @@ function run_wordlift() {
 	}
 	add_filter( 'widget_text', 'do_shortcode' );
 
-
 	/**
 	 * Filter: wl_feature__enable__analysis
 	 *
@@ -182,35 +180,42 @@ function run_wordlift() {
 	// Load the API Data Hooks.
 	new Api_Data_Hooks();
 
-	add_action( 'plugins_loaded', function () {
-		// All features from registry should be initialized here.
-		$features_registry = Features_Registry::get_instance();
-		$features_registry->initialize_all_features();
-	}, 5 );
+	add_action(
+		'plugins_loaded',
+		function () {
+			// All features from registry should be initialized here.
+			$features_registry = Features_Registry::get_instance();
+			$features_registry->initialize_all_features();
+		},
+		5
+	);
 
-	add_action( 'plugins_loaded', function () use ( $plugin ) {
+	add_action(
+		'plugins_loaded',
+		function () use ( $plugin ) {
 
-		new Wordlift_Products_Navigator_Shortcode_REST();
+			new Wordlift_Products_Navigator_Shortcode_REST();
 
-		// Register the Dataset module, requires `$api_service`.
-		require_once plugin_dir_path( __FILE__ ) . 'wordlift/dataset/index.php';
-		require_once plugin_dir_path( __FILE__ ) . 'wordlift/shipping-data/index.php';
+			// Register the Dataset module, requires `$api_service`.
+			require_once plugin_dir_path( __FILE__ ) . 'wordlift/dataset/index.php';
+			require_once plugin_dir_path( __FILE__ ) . 'wordlift/shipping-data/index.php';
 
-		/*
-		 * Require the Entity annotation cleanup module.
-		 *
-		 * @since 3.34.6
-		 */
-		require_once plugin_dir_path( __FILE__ ) . 'wordlift/cleanup/index.php';
+			/*
+			* Require the Entity annotation cleanup module.
+			*
+			* @since 3.34.6
+			*/
+			require_once plugin_dir_path( __FILE__ ) . 'wordlift/cleanup/index.php';
 
-		/*
-		 * Import LOD entities.
-		 *
-		 * @since 3.35.0
-		 */
-		require_once plugin_dir_path( __FILE__ ) . 'wordlift/lod-import/index.php';
+			/*
+			* Import LOD entities.
+			*
+			* @since 3.35.0
+			*/
+			require_once plugin_dir_path( __FILE__ ) . 'wordlift/lod-import/index.php';
 
-	} );
+		}
+	);
 
 }
 
@@ -224,30 +229,32 @@ run_wordlift();
  */
 function wordlift_plugin_autoload_register() {
 
-	spl_autoload_register( function ( $class_name ) {
+	spl_autoload_register(
+		function ( $class_name ) {
 
-		// Bail out if these are not our classes.
-		if ( 0 !== strpos( $class_name, 'Wordlift\\' ) ) {
-			return false;
+			// Bail out if these are not our classes.
+			if ( 0 !== strpos( $class_name, 'Wordlift\\' ) ) {
+				  return false;
+			}
+
+			$class_name_lc = strtolower( str_replace( '_', '-', $class_name ) );
+
+			preg_match( '|^(?:(.*)\\\\)?(.+?)$|', $class_name_lc, $matches );
+
+			$path = str_replace( '\\', DIRECTORY_SEPARATOR, $matches[1] );
+			$file = 'class-' . $matches[2] . '.php';
+
+			$full_path = plugin_dir_path( __FILE__ ) . $path . DIRECTORY_SEPARATOR . $file;
+
+			if ( ! file_exists( $full_path ) ) {
+				return false;
+			}
+
+			require_once $full_path;
+
+			return true;
 		}
-
-		$class_name_lc = strtolower( str_replace( '_', '-', $class_name ) );
-
-		preg_match( '|^(?:(.*)\\\\)?(.+?)$|', $class_name_lc, $matches );
-
-		$path = str_replace( '\\', DIRECTORY_SEPARATOR, $matches[1] );
-		$file = 'class-' . $matches[2] . '.php';
-
-		$full_path = plugin_dir_path( __FILE__ ) . $path . DIRECTORY_SEPARATOR . $file;
-
-		if ( ! file_exists( $full_path ) ) {
-			return false;
-		}
-
-		require_once $full_path;
-
-		return true;
-	} );
+	);
 
 }
 
@@ -267,16 +274,19 @@ function wl_block_categories( $categories, $post ) {
 // this has to be removed when removing the legacy fields from the ui.
 function wl_enqueue_leaflet( $in_footer = false ) {
 	// Leaflet.
-	wp_enqueue_style( 'wl-leaflet', plugin_dir_url( __FILE__ ) . "js/leaflet/leaflet.css", array(), '1.6.0' );
-	wp_enqueue_script( 'wl-leaflet', plugin_dir_url( __FILE__ ) . "js/leaflet/leaflet.js", array(), '1.6.0', $in_footer );
+	wp_enqueue_style( 'wl-leaflet', plugin_dir_url( __FILE__ ) . 'js/leaflet/leaflet.css', array(), '1.6.0' );
+	wp_enqueue_script( 'wl-leaflet', plugin_dir_url( __FILE__ ) . 'js/leaflet/leaflet.js', array(), '1.6.0', $in_footer );
 }
 
 add_filter( 'block_categories', 'wl_block_categories', 10, 2 );
 
 // Temporary fix for a typo in WooCommerce Extension.
-add_filter( 'wl_feature__enable__dataset', function ( $value ) {
-	return apply_filters( 'wl_features__enable__dataset', $value );
-} );
+add_filter(
+	'wl_feature__enable__dataset',
+	function ( $value ) {
+		return apply_filters( 'wl_features__enable__dataset', $value );
+	}
+);
 
-require_once dirname( __FILE__ ) . '/modules/food-kg/load.php';
-require_once dirname( __FILE__ ) . '/modules/acf4so/load.php';
+require_once __DIR__ . '/modules/food-kg/load.php';
+require_once __DIR__ . '/modules/acf4so/load.php';

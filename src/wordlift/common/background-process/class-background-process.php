@@ -27,16 +27,17 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 
 	/**
 	 * The key which is used to store the Sync_State class for the current process
+	 *
 	 * @return string
 	 */
-	protected abstract function get_state_storage_key();
+	abstract protected function get_state_storage_key();
 
 	/**
 	 * The key which is used as prefix to store the options.
+	 *
 	 * @return string
 	 */
-	protected abstract function get_action_key();
-
+	abstract protected function get_action_key();
 
 	/**
 	 * Check whether the process must cancel or not.
@@ -59,7 +60,6 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 		return $state instanceof Sync_State && 'started' === $state->state && 30 > ( time() - $state->last_update );
 	}
 
-
 	/**
 	 * Start the background processing.
 	 *
@@ -70,7 +70,7 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 		$this->log->debug( "Trying to start  ${action}..." );
 		// Create a new Sync_Model state of `started`.
 		if ( ! $this->is_started( self::get_state() ) ) {
-			$this->log->debug( "Starting..." );
+			$this->log->debug( 'Starting...' );
 
 			$sync_state = new Sync_State( time(), 0, $this->data_source->count(), time(), 'started' );
 			update_option( $this->get_state_storage_key(), $sync_state, false );
@@ -89,7 +89,6 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 
 		return false;
 	}
-
 
 	/**
 	 * Cancels the current process.
@@ -112,7 +111,6 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 
 	}
 
-
 	/**
 	 * Get the sync state.
 	 *
@@ -127,7 +125,6 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 		}
 
 	}
-
 
 	/**
 	 * This function is called:
@@ -144,14 +141,14 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 
 		// Check if we must cancel.
 		if ( $this->must_cancel() || ! $items ) {
-			$this->log->debug( "Cancelling background process " . $this->action . " due to no items inside task() method" );
+			$this->log->debug( 'Cancelling background process ' . $this->action . ' due to no items inside task() method' );
 			$this->cancel();
 
 			return false;
 		}
 
 		if ( $items && is_array( $items ) ) {
-			$this->log->debug( sprintf( "Synchronizing items %s...", implode( ', ', $items ) ) );
+			$this->log->debug( sprintf( 'Synchronizing items %s...', implode( ', ', $items ) ) );
 		}
 		// Sync the item.
 		if ( $this->process_items( $items ) ) {
@@ -178,15 +175,15 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 
 	/**
 	 * Return next batch of items after processing.
+	 *
 	 * @return int[] or false
 	 */
 	protected function get_next_batch() {
 		$next = $this->data_source->next();
-		$this->log->debug( "Returned the following items to be processed for next batch " . var_export( $next, true ) );
+		$this->log->debug( 'Returned the following items to be processed for next batch ' . var_export( $next, true ) );
 
 		return $next;
 	}
-
 
 	private function update_batch_index() {
 		$next = $this->data_source->next();
@@ -199,13 +196,12 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 		 * @var Sync_State $sync The {@link Sync_State}.
 		 */
 		$state = self::get_state()
-		             ->increment_index( $this->data_source->get_batch_size() )
-		             ->set_state( $next_state );
-		$this->log->debug( 'Items index for ' . $this->get_action_key() . " updated to " . var_export( $state->get_array(), true ) );
+					 ->increment_index( $this->data_source->get_batch_size() )
+					 ->set_state( $next_state );
+		$this->log->debug( 'Items index for ' . $this->get_action_key() . ' updated to ' . var_export( $state->get_array(), true ) );
 
 		update_option( $this->get_state_storage_key(), $state, false );
 
 	}
-
 
 }

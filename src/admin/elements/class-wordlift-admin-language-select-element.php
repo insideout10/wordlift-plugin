@@ -38,13 +38,13 @@ class Wordlift_Admin_Language_Select_Element extends Wordlift_Admin_Select_Eleme
 
 		foreach ( $languages as $code => $label ) :
 			?>
-            <option
-                    value="<?php echo esc_attr( $code ); ?>"
+			<option
+					value="<?php echo esc_attr( $code ); ?>"
 				<?php echo selected( $code, $language, false ); ?>
-            >
+			>
 				<?php echo esc_html( $label ); ?>
-            </option>
-		<?php
+			</option>
+			<?php
 		endforeach;
 	}
 

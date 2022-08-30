@@ -26,7 +26,7 @@ function wl_shortcode_faceted_search( $request ) {
 	);
 
 	// Create the TTL cache and try to get the results.
-	$cache         = new Ttl_Cache( "faceted-search", 8 * 60 * 60 ); // 8 hours.
+	$cache         = new Ttl_Cache( 'faceted-search', 8 * 60 * 60 ); // 8 hours.
 	$cache_results = $cache->get( $cache_key );
 
 	// So that the endpoint can be used remotely
@@ -73,7 +73,6 @@ function wl_shortcode_faceted_search_origin( $request ) {
 	$existing_post_types = get_post_types();
 	$post_types          = array_values( array_intersect( $existing_post_types, $post_types ) );
 
-
 	// Post ID has to match an existing item.
 	if ( null === $current_post ) {
 		wp_die( 'No valid post_id given' );
@@ -100,12 +99,10 @@ function wl_shortcode_faceted_search_origin( $request ) {
 		if ( apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 			wp_die( 'No entities available' );
 		}
-
 	}
 
 	$limit = ( isset( $_GET['limit'] ) ) ? (int) $_GET['limit'] : 4;  // WPCS: input var ok; CSRF ok.
 	$amp   = ( isset( $_GET['amp'] ) ) ? true : false;
-
 
 	/**
 	 * see https://github.com/insideout10/wordlift-plugin/issues/1181
@@ -115,7 +112,6 @@ function wl_shortcode_faceted_search_origin( $request ) {
 	if ( isset( $_GET['sort'] ) && is_string( $_GET['sort'] ) ) {
 		$order_by = sanitize_sql_orderby( wp_unslash( (string) $_GET['sort'] ) );
 	}
-
 
 	$referencing_posts = Wordlift_Relation_Service::get_instance()->get_article_subjects(
 		$entity_ids,
@@ -129,10 +125,12 @@ function wl_shortcode_faceted_search_origin( $request ) {
 		$post_types
 	);
 
-
-	$referencing_post_ids = array_map( function ( $p ) {
-		return $p->ID;
-	}, $referencing_posts );
+	$referencing_post_ids = array_map(
+		function ( $p ) {
+			return $p->ID;
+		},
+		$referencing_posts
+	);
 
 	$post_results   = array();
 	$entity_results = array();
@@ -171,9 +169,12 @@ function wl_shortcode_faceted_search_origin( $request ) {
 
 		$post_results = array_merge( $post_results, $filler_posts );
 	}
-	$referencing_post_ids = array_map( function ( $post ) {
-		return $post->ID;
-	}, $post_results );
+	$referencing_post_ids = array_map(
+		function ( $post ) {
+			return $post->ID;
+		},
+		$post_results
+	);
 
 	// Populate $entity_results
 
@@ -235,17 +236,20 @@ function wl_shortcode_faceted_search_origin( $request ) {
 	$post_results = apply_filters( 'wl_faceted_data_posts', $post_results, $faceted_id );
 
 	// Add srcset attribute.
-	$post_results = array_map( function ( $post ) {
-		$post->srcset = Srcset_Util::get_srcset( $post->ID, Srcset_Util::FACETED_SEARCH_WIDGET );
+	$post_results = array_map(
+		function ( $post ) {
+			$post->srcset = Srcset_Util::get_srcset( $post->ID, Srcset_Util::FACETED_SEARCH_WIDGET );
 
-		return $post;
-	}, $post_results );
+			return $post;
+		},
+		$post_results
+	);
 
 	$entity_results = apply_filters( 'wl_faceted_data_entities', $entity_results, $faceted_id );
 
 	return array(
 		'posts'    => $amp ? array( array( 'values' => $post_results ) ) : $post_results,
-		'entities' => $entity_results
+		'entities' => $entity_results,
 	);
 
 }
@@ -269,10 +273,17 @@ function wl_shortcode_faceted_search_get_the_title( $post_id ) {
 /**
  * Adding `rest_api_init` action for network faceted-search
  */
-add_action( 'rest_api_init', function () {
-	register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/faceted-search', array(
-		'methods'             => 'GET',
-		'callback'            => 'wl_shortcode_faceted_search',
-		'permission_callback' => '__return_true',
-	) );
-} );
+add_action(
+	'rest_api_init',
+	function () {
+		register_rest_route(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
+			'/faceted-search',
+			array(
+				'methods'             => 'GET',
+				'callback'            => 'wl_shortcode_faceted_search',
+				'permission_callback' => '__return_true',
+			)
+		);
+	}
+);

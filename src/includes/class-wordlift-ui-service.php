@@ -29,7 +29,6 @@ class Wordlift_UI_Service {
 	 *
 	 * @return string The button HTML code.
 	 * @since 3.2.0
-	 *
 	 */
 	public static function get_button_html( $element_id, $label ) {
 
@@ -44,16 +43,18 @@ class Wordlift_UI_Service {
 	 *
 	 * @return string The button HTML code.
 	 * @since 3.2.0
-	 *
 	 */
 	public static function print_button( $element_id, $label ) {
 
-		echo wp_kses( self::get_button_html( $element_id, $label ), array(
-			'a' => array(
-				'id'    => array(),
-				'class' => array()
+		echo wp_kses(
+			self::get_button_html( $element_id, $label ),
+			array(
+				'a' => array(
+					'id'    => array(),
+					'class' => array(),
+				),
 			)
-		) );
+		);
 
 	}
 
@@ -65,7 +66,6 @@ class Wordlift_UI_Service {
 	 *
 	 * @return string The HTML code.
 	 * @since 3.2.0
-	 *
 	 */
 	public static function get_template_html( $element_id, $body ) {
 
@@ -80,7 +80,6 @@ class Wordlift_UI_Service {
 	 *
 	 * @return string øThe HTML code.
 	 * @since 3.2.0
-	 *
 	 */
 	public static function print_template( $element_id, $body ) {
 

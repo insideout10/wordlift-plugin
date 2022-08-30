@@ -27,7 +27,7 @@ class Object_Link_Provider extends Singleton {
 		parent::__construct();
 		$this->link_providers = array(
 			Object_Type_Enum::POST => Post_Link::get_instance(),
-			Object_Type_Enum::TERM => Term_Link::get_instance()
+			Object_Type_Enum::TERM => Term_Link::get_instance(),
 		);
 	}
 
@@ -47,9 +47,9 @@ class Object_Link_Provider extends Singleton {
 		return $provider->get_link_title( $id, $label_to_be_ignored );
 	}
 
-
 	/**
 	 * Return the object type by the entity uri.
+	 *
 	 * @return int which can be any of the {@link Object_Type_Enum} values.
 	 */
 	public function get_object_type( $uri ) {
@@ -92,7 +92,6 @@ class Object_Link_Provider extends Singleton {
 		return $this->link_providers[ $object_type ];
 	}
 
-
 	public function get_permalink( $id, $object_type ) {
 		$provider = $this->get_provider( $object_type );
 		if ( ! $provider ) {
@@ -124,6 +123,5 @@ class Object_Link_Provider extends Singleton {
 		return $provider->get_edit_page_link( $object_id );
 
 	}
-
 
 }

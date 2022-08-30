@@ -29,7 +29,7 @@ class Term_Metabox extends Wl_Abstract_Metabox {
 		// Enqueue this scripts for sameas fields.
 		wp_enqueue_script(
 			'wl-autocomplete-select',
-			plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'js/dist/autocomplete-select.js',
+			plugin_dir_url( dirname( __DIR__ ) ) . 'js/dist/autocomplete-select.js',
 			array(),
 			$plugin->get_version(),
 			true
@@ -37,7 +37,7 @@ class Term_Metabox extends Wl_Abstract_Metabox {
 
 		wp_enqueue_style(
 			'wl-autocomplete-select',
-			plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'js/dist/autocomplete-select.css',
+			plugin_dir_url( dirname( __DIR__ ) ) . 'js/dist/autocomplete-select.css',
 			array(),
 			$plugin->get_version()
 		);

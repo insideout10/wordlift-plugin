@@ -13,8 +13,8 @@ use WP_REST_Request;
 
 /**
  * Class Faq_Rest_Controller
- * @package Wordlift\FAQ
  *
+ * @package Wordlift\FAQ
  */
 class Faq_Rest_Controller {
 	const FAQ_META_KEY = '_wl_faq';
@@ -23,7 +23,7 @@ class Faq_Rest_Controller {
 	 * the DELETE request in API.
 	 */
 	const QUESTION = 'question';
-	const ANSWER = 'answer';
+	const ANSWER   = 'answer';
 
 	public static function register_routes() {
 		add_action( 'rest_api_init', 'Wordlift\FAQ\FAQ_Rest_Controller::register_route_callback' );
@@ -33,17 +33,17 @@ class Faq_Rest_Controller {
 		/**
 		 * Specifies the list of arguments to be present for update request.
 		 */
-		$post_id_validation_settings     = array(
-			'required'          => TRUE,
+		$post_id_validation_settings   = array(
+			'required'          => true,
 			'validate_callback' => function ( $param, $request, $key ) {
 				return is_numeric( $param );
-			}
+			},
 		);
-		$faq_items_validation_settings   = array(
-			'required'          => TRUE,
+		$faq_items_validation_settings = array(
+			'required'          => true,
 			'validate_callback' => function ( $param, $request, $key ) {
 				return is_array( $param ) && count( $param ) > 0;
-			}
+			},
 		);
 		/**
 		 * Array of args to be present in order to
@@ -51,7 +51,7 @@ class Faq_Rest_Controller {
 		 */
 		$create_or_update_or_delete_args = array(
 			'post_id'   => $post_id_validation_settings,
-			'faq_items' => $faq_items_validation_settings
+			'faq_items' => $faq_items_validation_settings,
 		);
 
 		/**
@@ -66,8 +66,9 @@ class Faq_Rest_Controller {
 				'permission_callback' => function () {
 					return current_user_can( 'publish_posts' );
 				},
-				'args'                => $create_or_update_or_delete_args
-			) );
+				'args'                => $create_or_update_or_delete_args,
+			)
+		);
 		/**
 		 * Rest route for updating faq items.
 		 */
@@ -80,7 +81,7 @@ class Faq_Rest_Controller {
 				'permission_callback' => function () {
 					return current_user_can( 'publish_posts' );
 				},
-				'args'                => $create_or_update_or_delete_args
+				'args'                => $create_or_update_or_delete_args,
 			)
 		);
 		/**
@@ -95,7 +96,7 @@ class Faq_Rest_Controller {
 				'permission_callback' => function () {
 					return current_user_can( 'publish_posts' );
 				},
-				'args'                => array( 'post_id' => $post_id_validation_settings )
+				'args'                => array( 'post_id' => $post_id_validation_settings ),
 			)
 		);
 		/**
@@ -110,7 +111,7 @@ class Faq_Rest_Controller {
 				'permission_callback' => function () {
 					return current_user_can( 'publish_posts' );
 				},
-				'args'                => $create_or_update_or_delete_args
+				'args'                => $create_or_update_or_delete_args,
 			)
 		);
 	}
@@ -144,19 +145,19 @@ class Faq_Rest_Controller {
 			$previous_value = array(
 				'question' => (string) $faq_item['previous_question_value'],
 				'answer'   => (string) $faq_item['previous_answer_value'],
-				'id'       => (int) $faq_item['id']
+				'id'       => (int) $faq_item['id'],
 			);
 			$new_value      = array(
 				'question' => (string) $faq_item['question'],
 				'answer'   => (string) $faq_item['answer'],
-				'id'       => (int) $faq_item['id']
+				'id'       => (int) $faq_item['id'],
 			);
 			update_post_meta( $post_id, self::FAQ_META_KEY, $new_value, $previous_value );
 		}
 
 		return array(
 			'status'  => 'success',
-			'message' => __( 'Faq Items updated successfully' )
+			'message' => __( 'Faq Items updated successfully' ),
 		);
 
 	}
@@ -179,30 +180,28 @@ class Faq_Rest_Controller {
 			 * in to a string when it was stored.
 			 * we cant rely on client to post it in correct order, so we create an array
 			 * in correct order.
-			 **/
+			 */
 			$deleted_faq_item = array(
 				'question' => $faq_item['question'],
 				'answer'   => $faq_item['answer'],
-				'id'       => (int) $faq_item['id']
+				'id'       => (int) $faq_item['id'],
 			);
 			/**
 			 * If the field to be deleted is answer, then dont delete the faq item,
 			 * if it is question then delete the faq item.
 			 */
-			if ( $faq_item['field_to_be_deleted'] === self::ANSWER) {
+			if ( $faq_item['field_to_be_deleted'] === self::ANSWER ) {
 				$previous_value = $deleted_faq_item;
 				// then dont delete the faq item, set the answer as empty.
 				$deleted_faq_item['answer'] = '';
-				$new_value = $deleted_faq_item;
-				update_post_meta($post_id, self::FAQ_META_KEY, $new_value, $previous_value);
-			}
-			else if ( $faq_item['field_to_be_deleted'] === self::QUESTION) {
+				$new_value                  = $deleted_faq_item;
+				update_post_meta( $post_id, self::FAQ_META_KEY, $new_value, $previous_value );
+			} elseif ( $faq_item['field_to_be_deleted'] === self::QUESTION ) {
 				/**
 				 * If the question is deleted, then delete the faq item.
 				 */
 				delete_post_meta( $post_id, self::FAQ_META_KEY, $deleted_faq_item );
 			}
-
 		}
 
 		/**

@@ -28,7 +28,7 @@ interface Task_Progress {
 	/**
 	 * Set the current processed item.
 	 *
-	 * @param int $counter The current item.
+	 * @param int   $counter The current item.
 	 * @param mixed $item The current item.
 	 *
 	 * @since 1.0.0

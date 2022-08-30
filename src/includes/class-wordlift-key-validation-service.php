@@ -67,15 +67,17 @@ class Wordlift_Key_Validation_Service {
 	 *
 	 * @return WP_Error|array The response or WP_Error on failure.
 	 * @since 3.9.0
-	 *
 	 */
 	public function get_account_info( $key ) {
 
 		$this->log->debug( 'Validating key...' );
 
-		return Default_Api_Service::get_instance()->get( '/accounts/info', array(
-			'Authorization' => "Key $key",
-		) )->get_response();
+		return Default_Api_Service::get_instance()->get(
+			'/accounts/info',
+			array(
+				'Authorization' => "Key $key",
+			)
+		)->get_response();
 	}
 
 	/**
@@ -125,12 +127,14 @@ class Wordlift_Key_Validation_Service {
 
 		// If we got an error, return invalid.
 		if ( is_wp_error( $response ) || 2 !== (int) $response['response']['code'] / 100 ) {
-			wp_send_json_success( array(
-				'valid'    => false,
-				'message'  => '',
-				'response' => $response,
-				'api_url'  => Default_Api_Service::get_instance()->get_base_url()
-			) );
+			wp_send_json_success(
+				array(
+					'valid'    => false,
+					'message'  => '',
+					'response' => $response,
+					'api_url'  => Default_Api_Service::get_instance()->get_base_url(),
+				)
+			);
 		}
 
 		$res_body = json_decode( wp_remote_retrieve_body( $response ), true );
@@ -146,28 +150,36 @@ class Wordlift_Key_Validation_Service {
 		if ( is_null( $url ) || $url === $site_url ) {
 			// Invalidate the cache key
 			$this->ttl_cache_service->delete( 'is_key_valid' );
-			wp_send_json_success( array( 'valid' => true, 'message' => '' ) );
+			wp_send_json_success(
+				array(
+					'valid'   => true,
+					'message' => '',
+				)
+			);
 		}
 
 		// If the URL doesn't match it means that this key has been configured elsewhere already.
 		if ( $url !== $site_url ) {
 			Wordlift_Configuration_Service::get_instance()->set_key( '' );
-			wp_send_json_success( array(
-				'valid'   => false,
-				'message' => __( 'The key is already used on another site, please contact us at hello@wordlift.io to move the key to another site.', 'wordlift' ),
-			) );
+			wp_send_json_success(
+				array(
+					'valid'   => false,
+					'message' => __( 'The key is already used on another site, please contact us at hello@wordlift.io to move the key to another site.', 'wordlift' ),
+				)
+			);
 		}
 
 		// Set a response with valid set to true or false according to the key validity with message.
-		wp_send_json_success( array(
-			'valid'   => false,
-			'message' => __( 'An error occurred, please contact us at hello@wordlift.io', 'wordlift' ),
-		) );
+		wp_send_json_success(
+			array(
+				'valid'   => false,
+				'message' => __( 'An error occurred, please contact us at hello@wordlift.io', 'wordlift' ),
+			)
+		);
 	}
 
 	/**
 	 * This function is hooked `admin_init` to check _wl_blog_url.
-	 *
 	 */
 	public function wl_load_plugin() {
 
@@ -176,7 +188,7 @@ class Wordlift_Key_Validation_Service {
 
 		if ( ! $wl_blog_url ) {
 			update_option( '_wl_blog_url', $home_url, true );
-		} else if ( $wl_blog_url !== $home_url ) {
+		} elseif ( $wl_blog_url !== $home_url ) {
 			update_option( '_wl_blog_url', $home_url, true );
 			Wordlift_Configuration_Service::get_instance()->set_key( '' );
 			set_transient( 'wl-key-error-msg', __( "Your web site URL has changed. To avoid data corruption, WordLift's key has been removed. Please provide a new key in WordLift Settings. If you believe this to be an error, please contact us at hello@wordlift.io", 'wordlift' ), 10 );
@@ -186,14 +198,13 @@ class Wordlift_Key_Validation_Service {
 
 	/**
 	 * This function is hooked to the `admin_notices` to show admin notification.
-	 *
 	 */
 	public function wl_key_update_notice() {
 		if ( get_transient( 'wl-key-error-msg' ) ) {
 			?>
-            <div class="updated notice is-dismissible error">
-                <p><?php esc_html_e( get_transient( 'wl-key-error-msg' ), 'wordlift' ); ?></p>
-            </div>
+			<div class="updated notice is-dismissible error">
+				<p><?php esc_html_e( get_transient( 'wl-key-error-msg' ), 'wordlift' ); ?></p>
+			</div>
 			<?php
 		}
 	}

@@ -59,7 +59,6 @@ class Wordlift_Entity_Post_Type_Service {
 	 * @param string $slug The entity type slug, if the slug is empty, the default slug will be used.
 	 *
 	 * @since 3.6.0
-	 *
 	 */
 	public function __construct( $post_type, $slug ) {
 
@@ -80,7 +79,6 @@ class Wordlift_Entity_Post_Type_Service {
 	 *
 	 * @return Wordlift_Entity_Post_Type_Service The entity type service singleton instance.
 	 * @since 3.6.0
-	 *
 	 */
 	public static function get_instance() {
 
@@ -92,7 +90,6 @@ class Wordlift_Entity_Post_Type_Service {
 	 *
 	 * @return string The entity type slug.
 	 * @since 3.6.0
-	 *
 	 */
 	public function get_slug() {
 
@@ -104,13 +101,11 @@ class Wordlift_Entity_Post_Type_Service {
 	 *
 	 * @return string The entity post type.
 	 * @since 3.6.0
-	 *
 	 */
 	public function get_post_type() {
 
 		return $this->post_type;
 	}
-
 
 	/**
 	 * Register the WordLift entity post type. This method is hooked to WordPress' init action.
@@ -154,7 +149,7 @@ class Wordlift_Entity_Post_Type_Service {
 				'comments',
 				'author',
 				'revisions',
-				'custom-fields'
+				'custom-fields',
 			),
 			'has_archive'     => true,
 			'menu_icon'       => WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-vocabulary-icon.svg',
@@ -177,7 +172,7 @@ class Wordlift_Entity_Post_Type_Service {
 			 * @return bool
 			 * @since 3.27.6
 			 */
-			'show_in_menu'    => apply_filters( 'wl_feature__enable__vocabulary', true )
+			'show_in_menu'    => apply_filters( 'wl_feature__enable__vocabulary', true ),
 		);
 
 		register_post_type( $this->post_type, $args );

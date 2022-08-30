@@ -57,11 +57,16 @@ class Wordlift_Mapping_Service {
 		$this->options = get_option( 'wl_mappings', array() );
 
 		// Hook to `wl_valid_entity_post_types` and to `wl_default_entity_types_for_post_type`.
-		add_filter( 'wl_valid_entity_post_types', array( $this, 'valid_entity_post_types', ), 9 );
-		add_filter( 'wl_default_entity_types_for_post_type', array(
-			$this,
-			'default_entity_types_for_post_type',
-		), 9, 2 );
+		add_filter( 'wl_valid_entity_post_types', array( $this, 'valid_entity_post_types' ), 9 );
+		add_filter(
+			'wl_default_entity_types_for_post_type',
+			array(
+				$this,
+				'default_entity_types_for_post_type',
+			),
+			9,
+			2
+		);
 
 		// Set the singleton instance.
 		self::$instance = $this;
@@ -157,11 +162,16 @@ class Wordlift_Mapping_Service {
 		$entity_type_service = $this->entity_type_service;
 		$tax_query           = $this->get_tax_query( $entity_types );
 
-		return Wordlift_Batch_Action::process( $post_type, $offset, $tax_query, function ( $post_id ) use ( $entity_type_service, $entity_types ) {
-			foreach ( $entity_types as $entity_type ) {
-				$entity_type_service->set( $post_id, $entity_type, false );
+		return Wordlift_Batch_Action::process(
+			$post_type,
+			$offset,
+			$tax_query,
+			function ( $post_id ) use ( $entity_type_service, $entity_types ) {
+				foreach ( $entity_types as $entity_type ) {
+					$entity_type_service->set( $post_id, $entity_type, false );
+				}
 			}
-		} );
+		);
 	}
 
 	/**
@@ -193,13 +203,21 @@ class Wordlift_Mapping_Service {
 	private function get_tax_query( $entity_types ) {
 
 		$entity_type_service = $this->entity_type_service;
-		$entity_types_terms  = array_filter( array_map( function ( $item ) use ( $entity_type_service ) {
-			return $entity_type_service->get_term_by_uri( $item );
-		}, $entity_types ) );
+		$entity_types_terms  = array_filter(
+			array_map(
+				function ( $item ) use ( $entity_type_service ) {
+					return $entity_type_service->get_term_by_uri( $item );
+				},
+				$entity_types
+			)
+		);
 
-		$entity_types_terms_ids = array_map( function ( $term ) {
-			return $term->term_id;
-		}, $entity_types_terms );
+		$entity_types_terms_ids = array_map(
+			function ( $term ) {
+				return $term->term_id;
+			},
+			$entity_types_terms
+		);
 
 		$tax_query = array(
 			'tax_query' => array(

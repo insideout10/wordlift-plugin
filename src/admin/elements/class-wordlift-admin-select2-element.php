@@ -25,13 +25,13 @@ class Wordlift_Admin_Select2_Element extends Wordlift_Admin_Select_Element {
 		// Loop through all params and add the options.
 		foreach ( $params['options'] as $value => $label ) :
 			?>
-            <option
-                    value="<?php echo esc_attr( $value ); ?>"
+			<option
+					value="<?php echo esc_attr( $value ); ?>"
 				<?php selected( $params['value'], $value ); ?>
-            >
+			>
 				<?php echo esc_html( $label ); ?>
-            </option>
-		<?php
+			</option>
+			<?php
 		endforeach;
 	}
 
@@ -41,11 +41,16 @@ class Wordlift_Admin_Select2_Element extends Wordlift_Admin_Select_Element {
 	protected function enqueue_resources() {
 		// Enqueue select2 library js and css.
 		// Underscore is needed for Select2's `templateResult` and `templateSelection` templates.
-		wp_enqueue_script( 'wordlift-select2', plugin_dir_url( dirname( __FILE__ ) ) . 'js/select2/js/select2' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.js', array(
-			'jquery',
-			'underscore',
-		), '4.0.3' );
-		wp_enqueue_style( 'wordlift-select2', plugin_dir_url( dirname( __FILE__ ) ) . 'js/select2/css/select2' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.css', array(), '4.0.3' );
+		wp_enqueue_script(
+			'wordlift-select2',
+			plugin_dir_url( __DIR__ ) . 'js/select2/js/select2' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.js',
+			array(
+				'jquery',
+				'underscore',
+			),
+			'4.0.3'
+		);
+		wp_enqueue_style( 'wordlift-select2', plugin_dir_url( __DIR__ ) . 'js/select2/css/select2' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.css', array(), '4.0.3' );
 	}
 
 }

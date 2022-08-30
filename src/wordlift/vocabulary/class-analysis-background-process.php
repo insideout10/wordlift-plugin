@@ -6,7 +6,6 @@ class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process
 
 	const WL_CMKG_ANALYSIS_BACKGROUND_PROCESS = '_wl_cmkg_analysis_background_process';
 
-
 	protected $action = 'wl_cmkg_analysis_background__analysis';
 
 	/**
@@ -30,7 +29,6 @@ class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
 		$this->analysis_background_service = $analysis_background_service;
-
 
 	}
 
@@ -59,7 +57,7 @@ class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process
 			return false;
 		}
 
-		$this->log->debug( sprintf( "Synchronizing terms %s...", implode( ', ', $term_ids ) ) );
+		$this->log->debug( sprintf( 'Synchronizing terms %s...', implode( ', ', $term_ids ) ) );
 		// Sync the item.
 		return $this->sync_items( $term_ids );
 	}
@@ -70,10 +68,10 @@ class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process
 	 * @return bool True if the process has been started, otherwise false.
 	 */
 	public function start() {
-		$this->log->debug( "Trying to start analysis bg service..." );
+		$this->log->debug( 'Trying to start analysis bg service...' );
 		// Create a new Sync_Model state of `started`.
 		if ( ! $this->is_started( self::get_state() ) ) {
-			$this->log->debug( "Starting..." );
+			$this->log->debug( 'Starting...' );
 
 			$sync_state = new Sync_State( time(), 0, $this->analysis_background_service->count(), time(), 'started' );
 			update_option( self::WL_CMKG_ANALYSIS_BACKGROUND_PROCESS, $sync_state, false );
@@ -144,7 +142,7 @@ class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process
 	 */
 	public function cancel() {
 
-		$this->log->debug( "Cancelling synchronization..." );
+		$this->log->debug( 'Cancelling synchronization...' );
 
 		// Cleanup the process data.
 		$this->cancel_process();
@@ -180,10 +178,9 @@ class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process
 			 * @var Sync_State $sync The {@link Sync_State}.
 			 */
 			$state = self::get_state()
-			             ->increment_index( $this->analysis_background_service->get_batch_size() )
-			             ->set_state( $next_state );
+						 ->increment_index( $this->analysis_background_service->get_batch_size() )
+						 ->set_state( $next_state );
 			update_option( self::WL_CMKG_ANALYSIS_BACKGROUND_PROCESS . '', $state, false );
-
 
 			// Return the next IDs or false if there aren't.
 			return isset( $next ) ? $next : false;
@@ -191,7 +188,7 @@ class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process
 			// Retry.
 			// @@todo: put a limit to the number of retries.
 
-			$this->log->error( sprintf( "Sync failed for terms %s.", implode( ', ', $term_ids ) ) );
+			$this->log->error( sprintf( 'Sync failed for terms %s.', implode( ', ', $term_ids ) ) );
 
 			return $term_ids;
 		}

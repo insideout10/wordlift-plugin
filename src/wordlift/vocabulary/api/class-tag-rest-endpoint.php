@@ -2,9 +2,7 @@
 
 namespace Wordlift\Vocabulary\Api;
 
-
 use Wordlift\Vocabulary\Analysis_Background_Service;
-use Wordlift\Vocabulary\Analysis_Service;
 use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
 use Wordlift\Vocabulary\Terms_Compat;
 use WP_REST_Server;
@@ -31,10 +29,10 @@ class Tag_Rest_Endpoint {
 
 	}
 
-
 	public function register_routes() {
 		$that = $this;
-		add_action( 'rest_api_init',
+		add_action(
+			'rest_api_init',
 			function () use ( $that ) {
 				register_rest_route(
 					Api_Config::REST_NAMESPACE,
@@ -42,7 +40,7 @@ class Tag_Rest_Endpoint {
 					array(
 						'methods'             => WP_REST_Server::CREATABLE,
 						'callback'            => array( $that, 'get_tags' ),
-						//@todo : review the permission level
+						// @todo : review the permission level
 						'permission_callback' => function () {
 							return current_user_can( 'manage_options' );
 						},
@@ -62,18 +60,17 @@ class Tag_Rest_Endpoint {
 						),
 					)
 				);
-			} );
-
+			}
+		);
 
 	}
 
-
 	public function get_tags( $request ) {
 
-		$data   = $request->get_params();
-		$offset = (int) $data['offset'];
-		$limit  = (int) $data['limit'];
-		$tags = $this->get_terms_from_db( $limit, $offset );
+		$data           = $request->get_params();
+		$offset         = (int) $data['offset'];
+		$limit          = (int) $data['limit'];
+		$tags           = $this->get_terms_from_db( $limit, $offset );
 		$term_data_list = array();
 
 		foreach ( $tags as $tag ) {
@@ -85,13 +82,12 @@ class Tag_Rest_Endpoint {
 			/**
 			 * @param $tag \WP_Term
 			 */
-			$term_data_instance = $this->term_data_factory->get_term_data($tag);
-			$term_data = $term_data_instance->get_data();
+			$term_data_instance = $this->term_data_factory->get_term_data( $tag );
+			$term_data          = $term_data_instance->get_data();
 			if ( $term_data['entities'] ) {
 				$term_data_list[] = $term_data;
 			}
 		}
-
 
 		return $term_data_list;
 	}
@@ -113,23 +109,23 @@ class Tag_Rest_Endpoint {
 	 */
 	public function get_terms_from_db( $limit, $offset ) {
 
-
-		return Terms_Compat::get_terms(Terms_Compat::get_public_taxonomies(), array(
-			'hide_empty' => false,
-			'number'     => $limit,
-			'offset'     => $offset,
-			'meta_query' => array(
-				array(
-					'key'     => Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM,
-					'compare' => 'EXISTS'
-				)
-			),
-			'orderby'    => 'count',
-			'order'      => 'DESC',
-		));
-
+		return Terms_Compat::get_terms(
+			Terms_Compat::get_public_taxonomies(),
+			array(
+				'hide_empty' => false,
+				'number'     => $limit,
+				'offset'     => $offset,
+				'meta_query' => array(
+					array(
+						'key'     => Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM,
+						'compare' => 'EXISTS',
+					),
+				),
+				'orderby'    => 'count',
+				'order'      => 'DESC',
+			)
+		);
 
 	}
-
 
 }

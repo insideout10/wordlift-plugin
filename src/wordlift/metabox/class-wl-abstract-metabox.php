@@ -2,8 +2,6 @@
 
 namespace Wordlift\Metabox;
 
-use Wordlift\Metabox\Field\Post_Field_Decorator;
-use Wordlift\Metabox\Field\Term_Field_Decorator;
 use Wordlift\Object_Type_Enum;
 use Wordlift_Entity_Service;
 use Wordlift_Entity_Type_Taxonomy_Service;
@@ -48,7 +46,7 @@ class Wl_Abstract_Metabox {
 
 	/**
 	 * Add a callback to print the metabox in page.
-	 * Wordpress will fire the $this->html() callback at the right time.
+	 * WordPress will fire the $this->html() callback at the right time.
 	 */
 	public function add_main_metabox() {
 
@@ -66,16 +64,23 @@ class Wl_Abstract_Metabox {
 
 		// WordPress 4.2 do not accept an array of screens as parameter, have to do be explicit.
 		foreach ( Wordlift_Entity_Service::valid_entity_post_types() as $screen ) {
-			add_meta_box( $id, esc_html( $title ), array(
-				$this,
-				'html',
-			), $screen, 'normal', 'high' );
+			add_meta_box(
+				$id,
+				esc_html( $title ),
+				array(
+					$this,
+					'html',
+				),
+				$screen,
+				'normal',
+				'high'
+			);
 		}
 
 		// Add filter to change the metabox CSS class.
 		//
 		// @since 3.20.0 Since we support post types other than `entity` for entities, we need to set the `screen`
-		//  dynamically according to the `get_current_screen()` function.
+		// dynamically according to the `get_current_screen()` function.
 		$current_screen = get_current_screen();
 		$screen         = $current_screen ? $current_screen->post_type : 'entity';
 		add_filter( "postbox_classes_{$screen}_$id", 'wl_admin_metaboxes_add_css_class' );
@@ -86,7 +91,6 @@ class Wl_Abstract_Metabox {
 	 * Render the metabox html.
 	 *
 	 * @since 3.1.0
-	 *
 	 */
 	public function html() {
 
@@ -108,7 +112,7 @@ class Wl_Abstract_Metabox {
 	 * Note: the first function that calls this method will instantiate the fields.
 	 * Why it isn't called from the constructor? Because we need to hook this process as late as possible.
 	 *
-	 * @param int $id | $term_id The post id or term id.
+	 * @param int                   $id | $term_id The post id or term id.
 	 *
 	 * @param $type int Post or Term
 	 *
@@ -124,15 +128,18 @@ class Wl_Abstract_Metabox {
 		}
 		if ( $type === Object_Type_Enum::POST ) {
 			$entity_type = wl_entity_taxonomy_get_custom_fields( $id );
-		} else if ( $type === Object_Type_Enum::TERM ) {
+		} elseif ( $type === Object_Type_Enum::TERM ) {
 			$term_entity_types = get_term_meta( $id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
-			$term_entity_types = array_map( function ( $term ) {
-				return get_term_by(
-					'slug',
-					$term,
-					Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME
-				);
-			}, $term_entity_types );
+			$term_entity_types = array_map(
+				function ( $term ) {
+					return get_term_by(
+						'slug',
+						$term,
+						Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME
+					);
+				},
+				$term_entity_types
+			);
 			$entity_type       = wl_get_custom_fields_by_entity_type( $term_entity_types );
 		}
 		if ( isset( $entity_type ) ) {
@@ -223,9 +230,9 @@ class Wl_Abstract_Metabox {
 	 * This method is a rude factory for Field objects.
 	 *
 	 * @param array $args The field's information.
-	 * @param bool $grouped Flag to distinguish between simple and grouped fields.
-	 * @param int $type Post or Term, based on the correct decorator would be selected.
-	 * @param int $id Identifier for the type.
+	 * @param bool  $grouped Flag to distinguish between simple and grouped fields.
+	 * @param int   $type Post or Term, based on the correct decorator would be selected.
+	 * @param int   $id Identifier for the type.
 	 */
 	public function add_field( $args, $grouped, $type, $id ) {
 
@@ -266,7 +273,6 @@ class Wl_Abstract_Metabox {
 				$field_class = 'Wl_Metabox_Field_' . $this_meta['type'];
 
 			}
-
 		}
 		/**
 		 * @since 3.31.6
@@ -293,7 +299,7 @@ class Wl_Abstract_Metabox {
 	/**
 	 * Save the form data for the specified entity {@link WP_Post}'s id.
 	 *
-	 * @param int $id The entity's {@link WP_Post}'s id.
+	 * @param int                   $id The entity's {@link WP_Post}'s id.
 	 *
 	 * @param $type int Post or term
 	 *
@@ -304,18 +310,17 @@ class Wl_Abstract_Metabox {
 		$this->log->trace( "Saving form data for entity post $id..." );
 
 		// Skip saving if the save is called for a different post.
-		if ( isset( $_POST['post_ID'] ) && (int) $_POST['post_ID'] !== $id  && $type === Object_Type_Enum::POST ) {
-			$this->log->debug( "`wl_metaboxes`, skipping because the post id from request doesnt match the id from filter." );
+		if ( isset( $_POST['post_ID'] ) && (int) $_POST['post_ID'] !== $id && $type === Object_Type_Enum::POST ) {
+			$this->log->debug( '`wl_metaboxes`, skipping because the post id from request doesnt match the id from filter.' );
 			return;
 		}
-
 
 		// Build Field objects.
 		$this->instantiate_fields( $id, $type );
 
 		// Check if WL metabox form was posted.
 		if ( ! isset( $_POST['wl_metaboxes'] ) ) {
-			$this->log->debug( "`wl_metaboxes`, skipping..." );
+			$this->log->debug( '`wl_metaboxes`, skipping...' );
 
 			return;
 		}
@@ -350,7 +355,6 @@ class Wl_Abstract_Metabox {
 		 * @param int $id The post data.
 		 *
 		 * @since  3.18.2
-		 *
 		 */
 		do_action( 'wl_save_form_pre_push_entity', $id, $_POST );
 
@@ -374,7 +378,10 @@ class Wl_Abstract_Metabox {
 
 		// Add AJAX autocomplete to facilitate metabox editing.
 		wp_enqueue_script( 'wl-entity-metabox-utility', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/admin/js/wl_entity_metabox_utilities.js' );
-		wp_localize_script( 'wl-entity-metabox-utility', 'wlEntityMetaboxParams', array(
+		wp_localize_script(
+			'wl-entity-metabox-utility',
+			'wlEntityMetaboxParams',
+			array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
 				'action'   => 'entity_by_title',
 			)

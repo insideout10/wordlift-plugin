@@ -7,7 +7,6 @@
 
 namespace Wordlift\Link;
 
-
 class Link_Builder {
 
 	private $id;
@@ -50,7 +49,7 @@ class Link_Builder {
 		 * @since 3.26.0
 		 */
 		$default_attributes = array(
-			'id' => implode( ';', $this->object_link_provider->get_same_as_uris( $this->id, $this->type ) )
+			'id' => implode( ';', $this->object_link_provider->get_same_as_uris( $this->id, $this->type ) ),
 		);
 
 		/**
@@ -75,7 +74,6 @@ class Link_Builder {
 	 * @return string A `title` attribute with an alternative label or an empty
 	 *                string if none available.
 	 * @since 3.32.0
-	 *
 	 */
 	private function get_title_attribute() {
 
@@ -99,6 +97,5 @@ class Link_Builder {
 		// Return the link.
 		return "<a class=\"wl-entity-page-link\" $title_attribute href=\"{$this->href}\"$attributes_html>{$this->label}</a>";
 	}
-
 
 }

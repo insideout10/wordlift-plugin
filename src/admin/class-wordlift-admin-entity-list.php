@@ -42,7 +42,6 @@ class Wordlift_Entity_List_Service {
 	 * @param \Wordlift_Rating_Service $rating_service A {@link Wordlift_Rating_Service} instance.
 	 *
 	 * @since 3.3.0
-	 *
 	 */
 	public function __construct( $rating_service ) {
 
@@ -56,7 +55,6 @@ class Wordlift_Entity_List_Service {
 	 * @return bool True if the screen is being displayed, false otherwis.
 	 *
 	 * @since 3.15.0
-	 *
 	 */
 	private function is_entity_list_screen() {
 
@@ -128,7 +126,7 @@ class Wordlift_Entity_List_Service {
 	 * @since 3.3.0
 	 *
 	 * @param string $column The current column.
-	 * @param int $entity_id An entity post id.
+	 * @param int    $entity_id An entity post id.
 	 */
 	public function render_custom_columns( $column, $entity_id ) {
 
@@ -139,12 +137,14 @@ class Wordlift_Entity_List_Service {
 				break;
 
 			case 'wl_column_thumbnail':
-
 				$edit_link = get_edit_post_link( $entity_id );
-				$thumb     = get_the_post_thumbnail( $entity_id, array(
-					self::THUMB_SIZE,
-					self::THUMB_SIZE,
-				) );
+				$thumb     = get_the_post_thumbnail(
+					$entity_id,
+					array(
+						self::THUMB_SIZE,
+						self::THUMB_SIZE,
+					)
+				);
 
 				if ( ! $thumb ) {
 					$thumb = "<img src='" . WL_DEFAULT_THUMBNAIL_PATH . "' width='" . self::THUMB_SIZE . "' />";
@@ -153,7 +153,6 @@ class Wordlift_Entity_List_Service {
 				break;
 
 			case 'wl_column_rating':
-
 				$rating = $this->rating_service->get_rating_for( $entity_id );
 				echo '<i class="wl-traffic-light wl-tl-' . esc_attr( $rating['traffic_light_score'] ) . '">' . esc_html( $rating['percentage_score'] ) . '%</i>';
 				break;
@@ -200,7 +199,6 @@ class Wordlift_Entity_List_Service {
 	 *
 	 * @return array Modified clauses.
 	 * @since 3.3.0
-	 *
 	 */
 	public function posts_clauses_classification_scope( $clauses ) {
 
@@ -241,7 +239,6 @@ class Wordlift_Entity_List_Service {
 	 * @param WP_Query $query The WP_Query instance (passed by reference).
 	 *
 	 * @since 3.15.0
-	 *
 	 */
 	public function pre_get_posts( $query ) {
 
@@ -253,19 +250,22 @@ class Wordlift_Entity_List_Service {
 		$query->set( 'post_type', Wordlift_Entity_Service::valid_entity_post_types() );
 
 		// Do not show however entities of type `Article`.
-		$query->set( 'tax_query', array(
-			'relation' => 'AND',
+		$query->set(
+			'tax_query',
 			array(
-				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
-				'operator' => 'EXISTS',
-			),
-			array(
-				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
-				'field'    => 'slug',
-				'terms'    => 'article',
-				'operator' => 'NOT IN',
-			),
-		) );
+				'relation' => 'AND',
+				array(
+					'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+					'operator' => 'EXISTS',
+				),
+				array(
+					'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+					'field'    => 'slug',
+					'terms'    => 'article',
+					'operator' => 'NOT IN',
+				),
+			)
+		);
 
 	}
 
@@ -276,7 +276,6 @@ class Wordlift_Entity_List_Service {
 	 * post type to "entity" as it is expected on that page.
 	 *
 	 * @since 3.15.0
-	 *
 	 */
 	function load_edit() {
 
@@ -304,10 +303,15 @@ class Wordlift_Entity_List_Service {
 		 * the global $post_type variable to the "entity" value after the modifications
 		 * initialization was finished.
 		 */
-		add_action( 'wp', function ( $wp_object ) {
-			global $post_type;
-			$post_type = Wordlift_Entity_Service::TYPE_NAME;
-		}, 10, 1 );
+		add_action(
+			'wp',
+			function ( $wp_object ) {
+				global $post_type;
+				$post_type = Wordlift_Entity_Service::TYPE_NAME;
+			},
+			10,
+			1
+		);
 
 	}
 

@@ -19,7 +19,7 @@ namespace Wordlift\Mappings\Validators;
  */
 interface Rule_Validator {
 
-	const IS_EQUAL_TO = '===';
+	const IS_EQUAL_TO     = '===';
 	const IS_NOT_EQUAL_TO = '!==';
 
 	/**
@@ -32,7 +32,7 @@ interface Rule_Validator {
 	/**
 	 * Test whether a post passes a validation.
 	 *
-	 * @param int $identifier The post id or term id.
+	 * @param int    $identifier The post id or term id.
 	 * @param string $operator The operator.
 	 * @param string $operand_1 The first operand.
 	 * @param string $operand_2 The second operand.

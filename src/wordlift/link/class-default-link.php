@@ -15,8 +15,6 @@ abstract class Default_Link extends Singleton implements Link {
 
 		$entity_labels = $this->get_synonyms( $id );
 
-
-
 		foreach ( $entity_labels as $entity_label ) {
 			// Return first synonym if it doesnt match the label.
 			if ( 0 !== strcasecmp( $entity_label, $label_to_be_ignored ) ) {

@@ -33,12 +33,12 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	/**
 	 * Wordlift_Entity_To_Jsonld_Converter constructor.
 	 *
-	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_User_Service $user_service A {@link Wordlift_User_Service} instance.
-	 * @param \Wordlift_Attachment_Service $attachment_service A {@link Wordlift_Attachment_Service} instance.
-	 * @param \Wordlift_Property_Getter $property_getter A {@link Wordlift_Property_Getter} instance.
+	 * @param \Wordlift_Entity_Type_Service        $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
+	 * @param \Wordlift_User_Service               $user_service A {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Attachment_Service         $attachment_service A {@link Wordlift_Attachment_Service} instance.
+	 * @param \Wordlift_Property_Getter            $property_getter A {@link Wordlift_Property_Getter} instance.
 	 * @param \Wordlift_Schemaorg_Property_Service $schemaorg_property_service A {@link Wordlift_Schemaorg_Property_Service} instance.
-	 * @param \Wordlift_Post_To_Jsonld_Converter $post_to_jsonld_converter The {@link Wordlift_Post_To_Jsonld_Converter} instance.
+	 * @param \Wordlift_Post_To_Jsonld_Converter   $post_to_jsonld_converter The {@link Wordlift_Post_To_Jsonld_Converter} instance.
 	 *
 	 * @since 3.8.0
 	 */
@@ -52,7 +52,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	 * Convert the provided {@link WP_Post} to a JSON-LD array. Any entity reference
 	 * found while processing the post is set in the $references array.
 	 *
-	 * @param int $post_id The {@link WP_Post} id.
+	 * @param int   $post_id The {@link WP_Post} id.
 	 * @param array $references An array of entity references.
 	 * @param array $references_infos
 	 *
@@ -119,10 +119,14 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 		 *
 		 * @api
 		 */
-		$ret_val    = apply_filters( 'wl_entity_jsonld_array', array(
-			'jsonld'     => $jsonld,
-			'references' => $references,
-		), $post_id );
+		$ret_val    = apply_filters(
+			'wl_entity_jsonld_array',
+			array(
+				'jsonld'     => $jsonld,
+				'references' => $references,
+			),
+			$post_id
+		);
 		$jsonld     = $ret_val['jsonld'];
 		$references = $ret_val['references'];
 
@@ -144,10 +148,9 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	 * Process the properties attached to the {@link WP_Post}.
 	 *
 	 * @param array $jsonld The JSON-LD array.
-	 * @param int $post_id The target {@link WP_Post} id.
+	 * @param int   $post_id The target {@link WP_Post} id.
 	 *
 	 * @since 3.20.0
-	 *
 	 */
 	private function process_post_properties( &$jsonld, $post_id ) {
 
@@ -158,14 +161,20 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 		foreach ( $props as $name => $instances ) {
 
 			// Get the values.
-			$values = array_map( function ( $instance ) {
-				return $instance['value'];
-			}, $instances );
+			$values = array_map(
+				function ( $instance ) {
+					return $instance['value'];
+				},
+				$instances
+			);
 
 			// We might receive empty values, remove them.
-			$non_empty_values = array_filter( $values, function ( $value ) {
-				return ! empty( $value );
-			} );
+			$non_empty_values = array_filter(
+				$values,
+				function ( $value ) {
+					return ! empty( $value );
+				}
+			);
 
 			// Skip empty properties.
 			if ( empty( $non_empty_values ) ) {
@@ -187,7 +196,6 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	 *
 	 * @return array The array remapped.
 	 * @since 3.8.0
-	 *
 	 */
 	private function post_process( $jsonld ) {
 

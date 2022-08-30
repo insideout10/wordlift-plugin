@@ -2,7 +2,6 @@
 
 namespace Wordlift\Modules\Acf4so;
 
-
 use Plugin_Upgrader;
 
 class Installer {
@@ -35,7 +34,7 @@ class Installer {
 			wp_cache_flush();
 			$this->upgrader->install( $this->plugin->get_zip_url() );
 		} catch ( \Exception $e ) {
-			error_log( "Error caught when installing plugin " . $this->plugin->get_slug() . " error: " . $e->getMessage() );
+			error_log( 'Error caught when installing plugin ' . $this->plugin->get_slug() . ' error: ' . $e->getMessage() );
 		}
 	}
 
@@ -65,19 +64,17 @@ class Installer {
 		$this->install_and_activate();
 
 		if ( $this->plugin->is_plugin_installed() && $this->plugin->is_plugin_activated() ) {
-			wp_send_json_success(null, 200);
+			wp_send_json_success( null, 200 );
 		}
 
-		wp_send_json_error(null, 400);
+		wp_send_json_error( null, 400 );
 	}
-
 
 	public function register_hooks() {
-		add_action( 'wl_feature__change__entity-types-professional', [ $this, 'install_and_activate_on_entity_type_change' ], 10, 2 );
-		add_action( 'wl_feature__change__entity-types-business', [ $this, 'install_and_activate_on_entity_type_change' ], 10, 2 );
-		add_action( "wp_ajax_wl_install_and_activate_{$this->plugin->get_name()}", [ $this, 'admin_ajax_install_and_activate' ] );
-		add_action("wl_install_and_activate_{$this->plugin->get_name()}", [ $this, 'install_and_activate'] );
+		add_action( 'wl_feature__change__entity-types-professional', array( $this, 'install_and_activate_on_entity_type_change' ), 10, 2 );
+		add_action( 'wl_feature__change__entity-types-business', array( $this, 'install_and_activate_on_entity_type_change' ), 10, 2 );
+		add_action( "wp_ajax_wl_install_and_activate_{$this->plugin->get_name()}", array( $this, 'admin_ajax_install_and_activate' ) );
+		add_action( "wl_install_and_activate_{$this->plugin->get_name()}", array( $this, 'install_and_activate' ) );
 	}
-
 
 }

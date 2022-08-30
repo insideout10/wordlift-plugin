@@ -48,12 +48,15 @@ class Post_Adapter {
 	 */
 	public function init() {
 
-		register_block_type( 'wordlift/classification', array(
-			'editor_script' => 'wl-block-editor',
-			'attributes'    => array(
-				'entities' => array( 'type' => 'array' ),
-			),
-		) );
+		register_block_type(
+			'wordlift/classification',
+			array(
+				'editor_script' => 'wl-block-editor',
+				'attributes'    => array(
+					'entities' => array( 'type' => 'array' ),
+				),
+			)
+		);
 
 	}
 
@@ -93,9 +96,10 @@ class Post_Adapter {
 			return $data;
 		}
 
-		$this->log->trace( "The following data has been received by `wp_insert_post_data`:\n"
-		                   . var_export( $data, true ) );
-
+		$this->log->trace(
+			"The following data has been received by `wp_insert_post_data`:\n"
+						   . var_export( $data, true )
+		);
 
 		try {
 			$entities = $this->parse_content( wp_unslash( $data['post_content'] ) );
@@ -111,7 +115,7 @@ class Post_Adapter {
 				$entity_uris = $this->get_entity_uris( $entity );
 
 				if ( $this->get_first_matching_entity_by_uri( $entity_uris ) === null &&
-				     Post_Entities_Validator::is_local_entity_uri_exist( Wordlift_Entity_Uri_Service::get_instance(), $entity_uris ) ) {
+					 Post_Entities_Validator::is_local_entity_uri_exist( Wordlift_Entity_Uri_Service::get_instance(), $entity_uris ) ) {
 					// Skip the entity
 					continue;
 				}
@@ -122,11 +126,9 @@ class Post_Adapter {
 				$this->create_or_update_entity( $entity, $post_status );
 
 			}
-
 		} catch ( \Exception $e ) {
 			$this->log->error( $e->getMessage() );
 		}
-
 
 		return $data;
 	}
@@ -142,12 +144,17 @@ class Post_Adapter {
 	private function parse_content( $post_content ) {
 
 		$all_blocks = parse_blocks( $post_content );
-		$this->log->trace( "The following blocks have been parsed while in `wp_insert_post`:\n"
-		                   . var_export( $all_blocks, true ) );
+		$this->log->trace(
+			"The following blocks have been parsed while in `wp_insert_post`:\n"
+						   . var_export( $all_blocks, true )
+		);
 
-		$blocks = array_filter( $all_blocks, function ( $item ) {
-			return ! empty( $item['blockName'] ) && 'wordlift/classification' === $item['blockName'];
-		} );
+		$blocks = array_filter(
+			$all_blocks,
+			function ( $item ) {
+				return ! empty( $item['blockName'] ) && 'wordlift/classification' === $item['blockName'];
+			}
+		);
 
 		// Bail out if the blocks' array is empty.
 		if ( empty( $blocks ) ) {
@@ -155,8 +162,10 @@ class Post_Adapter {
 		}
 
 		$block = current( $blocks );
-		$this->log->trace( "The following block has been found while in `wp_insert_post`:\n"
-		                   . var_export( $block, true ) );
+		$this->log->trace(
+			"The following block has been found while in `wp_insert_post`:\n"
+						   . var_export( $block, true )
+		);
 
 		// Bail out if the entities array is empty.
 		if ( empty( $block['attrs'] ) && empty( $block['attrs']['entities'] ) ) {
@@ -206,12 +215,15 @@ class Post_Adapter {
 	 */
 	public function get_labels( $entity ) {
 
-		$args = wp_parse_args( $entity, array(
-			'label'       => array(),
-			'synonyms'    => array(),
-			'annotations' => array(),
-			'occurrences' => array(),
-		) );
+		$args = wp_parse_args(
+			$entity,
+			array(
+				'label'       => array(),
+				'synonyms'    => array(),
+				'annotations' => array(),
+				'occurrences' => array(),
+			)
+		);
 
 		// We gather all the labels, occurrences texts and synonyms into one array.
 		$initial = array_merge(
@@ -221,20 +233,24 @@ class Post_Adapter {
 
 		$annotations = $args['annotations'];
 
-		return array_reduce( $args['occurrences'], function ( $carry, $item ) use ( $annotations ) {
+		return array_reduce(
+			$args['occurrences'],
+			function ( $carry, $item ) use ( $annotations ) {
 
-			// Bail out if occurrences->$item->text isn't set or its contents are already
-			// in `$carry`.
-			if ( ! isset( $annotations[ $item ]['text'] )
-			     || in_array( $annotations[ $item ]['text'], $carry ) ) {
+				// Bail out if occurrences->$item->text isn't set or its contents are already
+				// in `$carry`.
+				if ( ! isset( $annotations[ $item ]['text'] )
+				 || in_array( $annotations[ $item ]['text'], $carry ) ) {
+					return $carry;
+				}
+
+				// Push the label.
+				$carry[] = $annotations[ $item ]['text'];
+
 				return $carry;
-			}
-
-			// Push the label.
-			$carry[] = $annotations[ $item ]['text'];
-
-			return $carry;
-		}, $initial );
+			},
+			$initial
+		);
 	}
 
 	/**
@@ -245,8 +261,8 @@ class Post_Adapter {
 	 *
 	 * If an entity is not found the {@link Entity_Store} create function is called to create a new entity.
 	 *
-	 * @param array $entity {
-	 * The entity parameters.
+	 * @param array  $entity {
+	 *  The entity parameters.
 	 *
 	 * @type string The entity item id URI.
 	 * @type string|array The entity sameAs URI(s).
@@ -265,8 +281,10 @@ class Post_Adapter {
 
 		$post = $this->get_first_matching_entity_by_uri( $uris );
 
-		$this->log->trace( 'Entity' . ( empty( $post ) ? ' not' : '' ) . " found with the following URIs:\n"
-		                   . var_export( $uris, true ) );
+		$this->log->trace(
+			'Entity' . ( empty( $post ) ? ' not' : '' ) . " found with the following URIs:\n"
+						   . var_export( $uris, true )
+		);
 
 		// Get the labels.
 		$labels = $this->get_labels( $entity );
@@ -274,11 +292,14 @@ class Post_Adapter {
 		if ( empty( $post ) ) {
 			$entity_description = array_key_exists( 'description', $entity ) ? $entity['description'] : '';
 			// Create the entity if it doesn't exist.
-			$post_id = Entity_Store::get_instance()->create( array(
-				'labels'      => $labels,
-				'description' => $entity_description,
-				'same_as'     => $uris,
-			), $post_status );
+			$post_id = Entity_Store::get_instance()->create(
+				array(
+					'labels'      => $labels,
+					'description' => $entity_description,
+					'same_as'     => $uris,
+				),
+				$post_status
+			);
 
 			// Return the WP_Error if we got one.
 			if ( is_wp_error( $post_id ) ) {
@@ -296,11 +317,13 @@ class Post_Adapter {
 			}
 		} else {
 			// Update the entity otherwise.
-			$post_id = Entity_Store::get_instance()->update( array(
-				'ID'      => $post->ID,
-				'labels'  => $labels,
-				'same_as' => $uris,
-			) );
+			$post_id = Entity_Store::get_instance()->update(
+				array(
+					'ID'      => $post->ID,
+					'labels'  => $labels,
+					'same_as' => $uris,
+				)
+			);
 
 			// Add the entity type.
 			if ( isset( $entity['mainType'] ) ) {
@@ -313,10 +336,12 @@ class Post_Adapter {
 			// when the post is published.
 			// Once the entity is published dont update the post status.
 			if ( $post->post_status !== 'publish' ) {
-				wp_update_post( array(
-					'ID'          => $post->ID,
-					'post_status' => $post_status
-				) );
+				wp_update_post(
+					array(
+						'ID'          => $post->ID,
+						'post_status' => $post_status,
+					)
+				);
 			}
 		}
 
@@ -360,9 +385,12 @@ class Post_Adapter {
 	private function filter_valid_entity_ids( $entity ) {
 		$id = $entity['id'];
 
-		return array_filter( (array) $id, function ( $id ) {
-			return preg_match( '|^https?://|', $id );
-		} );
+		return array_filter(
+			(array) $id,
+			function ( $id ) {
+				return preg_match( '|^https?://|', $id );
+			}
+		);
 	}
 
 	/**

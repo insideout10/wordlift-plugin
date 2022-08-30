@@ -19,9 +19,9 @@ class Wl_Metabox_Field_Coordinates extends Wl_Metabox_Field {
 	}
 
 	public function get_data() {
-		$instance = Store_Factory::get_instance( $this->type );
-		$latitude = $instance::get_data( $this->id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE );
-		$longitude = $instance::get_data( $this->id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE );
+		$instance   = Store_Factory::get_instance( $this->type );
+		$latitude   = $instance::get_data( $this->id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE );
+		$longitude  = $instance::get_data( $this->id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE );
 		$this->data = array(
 			'latitude'  => isset( $latitude[0] ) && is_numeric( $latitude[0] ) ? $latitude[0] : '',
 			'longitude' => isset( $longitude[0] ) && is_numeric( $longitude[0] ) ? $longitude[0] : '',
@@ -46,7 +46,7 @@ class Wl_Metabox_Field_Coordinates extends Wl_Metabox_Field {
 		$coordinates = ( ! empty( $data['latitude'] ) && ! empty( $data['longitude'] ) ? sprintf( '[%f,%f]', $data['latitude'], $data['longitude'] ) : '[0,0]' );
 		$map_init    = '[0,0]' === $coordinates
 			? 'locate( {setView: true, maxZoom: 16} )'
-			: sprintf( "setView( [%f,%f], 9 )", $data['latitude'], $data['longitude'] );
+			: sprintf( 'setView( [%f,%f], 9 )', $data['latitude'], $data['longitude'] );
 
 		// Print input fields
 		$html .= '<label for="wl_place_lat">' . __( 'Latitude', 'wordlift' ) . '</label>';
@@ -57,7 +57,7 @@ class Wl_Metabox_Field_Coordinates extends Wl_Metabox_Field {
 
 		// Show Leaflet map to pick coordinates
 		$element_id = uniqid( 'wl-geo-map-' );
-		$html       .= "
+		$html      .= "
 <div id=\"$element_id\"></div>
 
 <script type=\"text/javascript\">
@@ -87,7 +87,6 @@ class Wl_Metabox_Field_Coordinates extends Wl_Metabox_Field {
 		})(jQuery);
 	})
 </script>";
-
 
 		$html .= $this->html_wrapper_close();
 

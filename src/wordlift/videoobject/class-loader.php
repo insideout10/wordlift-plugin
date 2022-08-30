@@ -17,7 +17,6 @@ use Wordlift\Videoobject\Sitemap\Video_Sitemap;
 use Wordlift\Videoobject\Tabs\Settings_Tab;
 use Wordlift\Videoobject\Ui\Post_Edit_Screen;
 
-
 /**
  * @since 3.31.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
@@ -28,7 +27,7 @@ class Loader extends Default_Loader {
 		$video_storage = Video_Storage_Factory::get_storage();
 		new Jsonld( $video_storage );
 
-		$sitemap_cache = new Ttl_Cache( "wl_video_sitemap", 86400 );
+		$sitemap_cache = new Ttl_Cache( 'wl_video_sitemap', 86400 );
 
 		$video_processor = new Video_Processor();
 		// Hook in to save_post to save the videos
@@ -37,7 +36,6 @@ class Loader extends Default_Loader {
 		// Add entry to wordlift admin tabs
 		$settings_tab = new Settings_Tab();
 		$settings_tab->init();
-
 
 		$video_sitemap = new Video_Sitemap( $sitemap_cache );
 		$video_sitemap->init();
@@ -59,7 +57,6 @@ class Loader extends Default_Loader {
 		 */
 		$embed_shortcode_capture = new Embed_Shortcode_Capture();
 		$embed_shortcode_capture->init();
-
 
 		/**
 		 * @since 3.32.0

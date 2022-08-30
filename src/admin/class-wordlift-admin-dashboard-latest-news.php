@@ -24,14 +24,20 @@ class Wordlift_Dashboard_Latest_News {
 	 * Add needed hooks for the latest news widget.
 	 */
 	public function __construct() {
-		add_action( 'wp_ajax_wordlift_get_latest_news', array(
-			$this,
-			'ajax_get_latest_news',
-		) );
-		add_action( 'wp_dashboard_setup', array(
-			$this,
-			'add_dashboard_latest_news_widget',
-		) );
+		add_action(
+			'wp_ajax_wordlift_get_latest_news',
+			array(
+				$this,
+				'ajax_get_latest_news',
+			)
+		);
+		add_action(
+			'wp_dashboard_setup',
+			array(
+				$this,
+				'add_dashboard_latest_news_widget',
+			)
+		);
 
 	}
 
@@ -42,9 +48,9 @@ class Wordlift_Dashboard_Latest_News {
 	 */
 	public function render() {
 
-		wp_enqueue_script( 'wl-admin-dashboard', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift-admin-dashboard.js', array( 'jquery' ), '3.22.0', true );
+		wp_enqueue_script( 'wl-admin-dashboard', plugin_dir_url( __DIR__ ) . 'admin/js/wordlift-admin-dashboard.js', array( 'jquery' ), '3.22.0', true );
 
-		include( plugin_dir_path( __FILE__ ) . 'partials/wordlift-admin-news-widget.php' );
+		include plugin_dir_path( __FILE__ ) . 'partials/wordlift-admin-news-widget.php';
 	}
 
 	/**
@@ -89,7 +95,7 @@ class Wordlift_Dashboard_Latest_News {
 		// Get latest articles from cache
 		$feed_articles = $cache_sistem_lib->get_cache( $cache_id );
 		if ( false === $feed_articles ) {
-			// Check wordpress installation language to define articles rss url
+			// Check WordPress installation language to define articles rss url
 			$feed_uri = ( 'it_IT' === $locale ) ? 'https://wordlift.io/blog/it/feed/' : 'https://wordlift.io/blog/en/feed/';
 
 			// Get rss feed data, the response is cached by default for 12 hours
@@ -124,7 +130,6 @@ class Wordlift_Dashboard_Latest_News {
 	 *
 	 * @return string The URL with the `utm` parameter prepended by `&` or by `?`.
 	 * @since 3.19.0
-	 *
 	 */
 	private static function add_utm_parameter( $url ) {
 
@@ -160,14 +165,19 @@ class Wordlift_Dashboard_Latest_News {
 		/**
 		 * Filter name: wl_feature__enable__wordlift-news
 		 * Feature flag to enable / disable news widget.
+		 *
 		 * @since 3.30.0
 		 */
 		if ( apply_filters( 'wl_feature__enable__wordlift-news', true ) ) {
 
-			wp_add_dashboard_widget( 'wordlift-dashboard-latest-news-widget', 'Latest WordLift News', array(
-				$this,
-				'render',
-			) );
+			wp_add_dashboard_widget(
+				'wordlift-dashboard-latest-news-widget',
+				'Latest WordLift News',
+				array(
+					$this,
+					'render',
+				)
+			);
 		}
 	}
 

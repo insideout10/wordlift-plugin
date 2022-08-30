@@ -57,6 +57,7 @@ class Wordpress_Dataset_Content_Service implements Content_Service {
 
 	/**
 	 * Get a
+	 *
 	 * @throws Exception
 	 */
 	function get_by_entity_id_or_same_as( $uri ) {

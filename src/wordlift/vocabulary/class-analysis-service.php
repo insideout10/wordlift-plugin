@@ -6,7 +6,6 @@ use Wordlift\Api\Default_Api_Service;
 use Wordlift\Vocabulary\Cache\Cache;
 use Wordlift\Vocabulary\Data\Entity_List\Default_Entity_List;
 
-
 /**
  * @since 1.0.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
@@ -26,12 +25,11 @@ class Analysis_Service {
 	 */
 	private $log;
 
-
 	/**
 	 * Tag_Rest_Endpoint constructor.
 	 *
 	 * @param Default_Api_Service $api_service
-	 * @param Cache $cache_service
+	 * @param Cache               $cache_service
 	 */
 	public function __construct( $api_service, $cache_service ) {
 
@@ -42,7 +40,6 @@ class Analysis_Service {
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
 	}
-
 
 	/**
 	 * Check if entities are in cache, if not return the results from
@@ -73,7 +70,6 @@ class Analysis_Service {
 
 	}
 
-
 	/**
 	 * @param $entity_url string
 	 * Formats the entity url from https://foo.com/some/path to
@@ -87,16 +83,15 @@ class Analysis_Service {
 			return false;
 		}
 		if ( ! array_key_exists( 'scheme', $result )
-		     || ! array_key_exists( 'host', $result )
-		     || ! array_key_exists( 'path', $result ) ) {
+			 || ! array_key_exists( 'host', $result )
+			 || ! array_key_exists( 'path', $result ) ) {
 			return false;
 		}
 
-		return $result['scheme'] . "/" . $result['host'] . $result['path'];
+		return $result['scheme'] . '/' . $result['host'] . $result['path'];
 	}
 
 	private function get_meta( $entity_url ) {
-
 
 		$cache_results = $this->cache_service->get( $entity_url );
 
@@ -115,23 +110,22 @@ class Analysis_Service {
 		$response = wp_remote_get( $meta_url );
 
 		if ( is_wp_error( $response )
-		     || ! isset( $response['response']['code'] )
-		     || 2 !== (int) $response['response']['code'] / 100 ) {
+			 || ! isset( $response['response']['code'] )
+			 || 2 !== (int) $response['response']['code'] / 100 ) {
 			return false;
 		}
 
-		$this->log->debug( "Requesting entity data for url :" . $meta_url );
-		$this->log->debug( "Got entity meta data as : " );
+		$this->log->debug( 'Requesting entity data for url :' . $meta_url );
+		$this->log->debug( 'Got entity meta data as : ' );
 		$this->log->debug( var_export( $response, true ) );
 		if ( ! is_wp_error( $response ) ) {
 			$meta = json_decode( wp_remote_retrieve_body( $response ), true );
-			$this->log->debug( "Saved entity data to meta :" );
+			$this->log->debug( 'Saved entity data to meta :' );
 			$this->log->debug( var_export( $meta, true ) );
 			$this->cache_service->put( $entity_url, $meta );
 
 			return $meta;
 		}
-
 
 		return array();
 
@@ -149,7 +143,7 @@ class Analysis_Service {
 				$filtered_entities[] = $entity;
 			}
 		}
-		$this->log->debug( "Returning filtered entities as" );
+		$this->log->debug( 'Returning filtered entities as' );
 		$this->log->debug( var_export( $filtered_entities, true ) );
 
 		return $filtered_entities;
@@ -164,17 +158,18 @@ class Analysis_Service {
 	public function get_entities_by_search_query( $tag_name ) {
 		$response = $this->api_service->request(
 			'POST',
-			"/analysis/single",
+			'/analysis/single',
 			array( 'Content-Type' => 'application/json' ),
-			wp_json_encode( array(
-				"content"         => $tag_name,
-				"contentType"     => "text/plain",
-				"version"         => "1.0.0",
-				"contentLanguage" => "en",
-				"scope"           => "all",
-			) )
+			wp_json_encode(
+				array(
+					'content'         => $tag_name,
+					'contentType'     => 'text/plain',
+					'version'         => '1.0.0',
+					'contentLanguage' => 'en',
+					'scope'           => 'all',
+				)
+			)
 		);
-
 
 		if ( ! $response->is_success() ) {
 			return false;
@@ -186,11 +181,9 @@ class Analysis_Service {
 			return false;
 		}
 
-
 		$entities = $this->get_meta_for_entities( $response['entities'] );
 
 		return $entities;
 	}
-
 
 }

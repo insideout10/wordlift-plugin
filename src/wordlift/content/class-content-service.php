@@ -17,7 +17,6 @@ interface Content_Service {
 	 *
 	 * @return Content|null The found {@link Content} or null if not found.
 	 * @throws Exception if the URI is absolute and not within the dataset URI scope or the dataset URI isn't set.
-	 *
 	 */
 	function get_by_entity_id( $uri );
 
@@ -43,7 +42,7 @@ interface Content_Service {
 	 * Set the {@link Content}'s URI for the specified {@link Content_Id}.
 	 *
 	 * @param Content_Id $content_id An {@link Content_Id}.
-	 * @param string $uri The URI.
+	 * @param string     $uri The URI.
 	 *
 	 * @return void
 	 * @throws Exception if the URI is absolute and not within the dataset URI scope or the dataset URI isn't set.

@@ -31,10 +31,14 @@ class Wordlift_Context_Cards_Service {
 
 		if ( $show_context_cards ) {
 			wp_enqueue_script( 'wordlift-cloud' );
-			wp_localize_script( 'wordlift-cloud', '_wlCloudSettings', array(
-				'selector' => 'a.wl-entity-page-link',
-				'url'      => $context_cards_base_url
-			) );
+			wp_localize_script(
+				'wordlift-cloud',
+				'_wlCloudSettings',
+				array(
+					'selector' => 'a.wl-entity-page-link',
+					'url'      => $context_cards_base_url,
+				)
+			);
 		}
 
 		add_filter( 'wl_anchor_data_attributes', array( $this, 'anchor_data_attributes' ), 10, 2 );
@@ -50,17 +54,17 @@ class Wordlift_Context_Cards_Service {
 
 			$additional_attributes = array( 'post-type-template' => $post_type );
 
-			switch($post_type){
+			switch ( $post_type ) {
 				case 'product':
-					$product = wc_get_product( $post_id );
+					$product                                   = wc_get_product( $post_id );
 					$additional_attributes['template-payload'] = json_encode(
 						array(
 							'regular_price'   => $product->get_regular_price(),
 							'currency_symbol' => get_woocommerce_currency_symbol(),
-							'discount_pc'     => ($product->get_sale_price() && ($product->get_regular_price() > 0)) ? round( 1 - ( $product->get_sale_price() / $product->get_regular_price() ), 2 ) * 100 : 0,
+							'discount_pc'     => ( $product->get_sale_price() && ( $product->get_regular_price() > 0 ) ) ? round( 1 - ( $product->get_sale_price() / $product->get_regular_price() ), 2 ) * 100 : 0,
 							'average_rating'  => $product->get_average_rating(),
 							'rating_count'    => $product->get_rating_count(),
-							'rating_html'     => wc_get_rating_html( $product->get_average_rating(), $product->get_rating_count() )
+							'rating_html'     => wc_get_rating_html( $product->get_average_rating(), $product->get_rating_count() ),
 						)
 					);
 			}

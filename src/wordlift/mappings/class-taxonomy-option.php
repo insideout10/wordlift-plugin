@@ -6,11 +6,12 @@
  */
 
 namespace Wordlift\Mappings;
+
 /**
  * This class adds the taxonomy option to the edit mappings screen.
  * Class Taxonomy_Option
- * @package Wordlift\Mappings
  *
+ * @package Wordlift\Mappings
  */
 class Taxonomy_Option {
 
@@ -27,44 +28,50 @@ class Taxonomy_Option {
 
 	private function add_rule_field_one_options() {
 
-		add_filter( 'wl_mappings_rule_field_one_options', function ( $rule_field_one_options ) {
+		add_filter(
+			'wl_mappings_rule_field_one_options',
+			function ( $rule_field_one_options ) {
 
-			$rule_field_one_options[] = array(
-				'label'      => __( 'Taxonomy', 'wordlift' ),
-				'value'      => Taxonomy_Option::PARENT_VALUE,
-				// Left empty since these values are provided locally, not needed to be fetched from
-				// api.
-				'api_source' => ''
-			);
+				$rule_field_one_options[] = array(
+					'label'      => __( 'Taxonomy', 'wordlift' ),
+					'value'      => Taxonomy_Option::PARENT_VALUE,
+					// Left empty since these values are provided locally, not needed to be fetched from
+					// api.
+					'api_source' => '',
+				);
 
-			return $rule_field_one_options;
+				return $rule_field_one_options;
 
-		} );
+			}
+		);
 	}
 
 	private function add_rule_field_two_options() {
 
-		add_filter( 'wl_mappings_rule_field_two_options', function ( $rule_field_two_options ) {
+		add_filter(
+			'wl_mappings_rule_field_two_options',
+			function ( $rule_field_two_options ) {
 
-			$taxonomies = get_object_taxonomies( 'post', 'objects' );
+				$taxonomies = get_object_taxonomies( 'post', 'objects' );
 
-			$taxonomy_options = array();
+				$taxonomy_options = array();
 
-			foreach ( $taxonomies as $item ) {
-				/**
-				 * $item Taxonomy
-				 */
-				$taxonomy_options[] = array(
-					'label'        => __( $item->label, 'wordlift' ),
-					'value'        => $item->name,
-					// The value of parent option on rule field one.
-					'parent_value' => Taxonomy_Option::PARENT_VALUE
-				);
+				foreach ( $taxonomies as $item ) {
+					/**
+					 * $item Taxonomy
+					 */
+					$taxonomy_options[] = array(
+						'label'        => __( $item->label, 'wordlift' ),
+						'value'        => $item->name,
+						// The value of parent option on rule field one.
+						'parent_value' => Taxonomy_Option::PARENT_VALUE,
+					);
+				}
+
+				return array_merge( $rule_field_two_options, $taxonomy_options );
+
 			}
-
-			return array_merge( $rule_field_two_options, $taxonomy_options );
-
-		} );
+		);
 
 	}
 

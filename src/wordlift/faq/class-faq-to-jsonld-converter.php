@@ -32,20 +32,19 @@ class Faq_To_Jsonld_Converter {
 	 * @return array Returns the json ld array with the type set.
 	 */
 	public function set_faq_type( $jsonld ) {
-		if ( array_key_exists('@type', $jsonld)) {
-			if ( is_string($jsonld['@type'])) {
+		if ( array_key_exists( '@type', $jsonld ) ) {
+			if ( is_string( $jsonld['@type'] ) ) {
 				// If a plain string is present, create an array with previous items.
-				$jsonld['@type'] = array($jsonld['@type'], self::FAQ_JSONLD_TYPE);
+				$jsonld['@type'] = array( $jsonld['@type'], self::FAQ_JSONLD_TYPE );
 				return $jsonld;
 			}
 			// check if it is a array, then append the type.
-			if ( is_array($jsonld['@type']) && ! in_array(self::FAQ_JSONLD_TYPE, $jsonld['@type'])) {
-				array_push($jsonld['@type'], self::FAQ_JSONLD_TYPE);
+			if ( is_array( $jsonld['@type'] ) && ! in_array( self::FAQ_JSONLD_TYPE, $jsonld['@type'] ) ) {
+				array_push( $jsonld['@type'], self::FAQ_JSONLD_TYPE );
 				return $jsonld;
 			}
-		}
-		else {
-			$jsonld['@type'] = array(self::FAQ_JSONLD_TYPE);
+		} else {
+			$jsonld['@type'] = array( self::FAQ_JSONLD_TYPE );
 		}
 		return $jsonld;
 	}
@@ -56,16 +55,16 @@ class Faq_To_Jsonld_Converter {
 	 */
 	public function get_jsonld_for_faq( $jsonld, $post_id ) {
 
-		$faq_items = get_post_meta( $post_id, Faq_Rest_Controller::FAQ_META_KEY);
+		$faq_items = get_post_meta( $post_id, Faq_Rest_Controller::FAQ_META_KEY );
 		/**
 		 * Apply the FAQ mapping only if the FAQ items are present.
 		 */
-		if ( count($faq_items) > 0 ) {
+		if ( count( $faq_items ) > 0 ) {
 			$faq_data = $this->get_faq_data( $faq_items );
 			// Merge the FAQ data with jsonld.
-			$jsonld = array_merge( $jsonld, $faq_data);
+			$jsonld = array_merge( $jsonld, $faq_data );
 			// check if the @type is set on json ld
-			$jsonld = $this->set_faq_type($jsonld);
+			$jsonld = $this->set_faq_type( $jsonld );
 		}
 		return $jsonld;
 	}
@@ -78,7 +77,7 @@ class Faq_To_Jsonld_Converter {
 	private function get_faq_data( $faq_items ) {
 		$jsonld_data['mainEntity'] = array();
 		foreach ( $faq_items as $faq_item ) {
-			if ( 0 === strlen($faq_item['question']) || 0 === strlen($faq_item['answer']) ) {
+			if ( 0 === strlen( $faq_item['question'] ) || 0 === strlen( $faq_item['answer'] ) ) {
 				// Bail out if question or answer is not present
 				continue;
 			}

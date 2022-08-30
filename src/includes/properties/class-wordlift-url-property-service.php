@@ -24,7 +24,7 @@ class Wordlift_Url_Property_Service extends Wordlift_Simple_Property_Service {
 	/**
 	 * Get the URLs associated with the post.
 	 *
-	 * @param int $id The post id.
+	 * @param int    $id The post id.
 	 * @param string $meta_key The meta key.
 	 *
 	 * @return array An array of URLs.
@@ -43,29 +43,32 @@ class Wordlift_Url_Property_Service extends Wordlift_Simple_Property_Service {
 		$urls = array_filter( parent::get( $id, $meta_key, $type ) ?: array( '<permalink>' ) );
 
 		// Convert <permalink> in actual permalink values.
-		return array_map( function ( $item ) use ( $id, $type ) {
-			/*
-			 * If `<permalink>` get the production permalink.
-			 *
-			 * @since 3.20.0
-			 *
-			 * @see https://github.com/insideout10/wordlift-plugin/issues/850.
-			 */
+		return array_map(
+			function ( $item ) use ( $id, $type ) {
+				/*
+					* If `<permalink>` get the production permalink.
+					*
+					* @since 3.20.0
+					*
+					* @see https://github.com/insideout10/wordlift-plugin/issues/850.
+					*/
 
-			if ( '<permalink>' !== $item ) {
-				return $item;
-			}
+				if ( '<permalink>' !== $item ) {
+					  return $item;
+				}
 
-			// Permalinks.
-			switch ( $type ) {
-				case Object_Type_Enum::POST:
-					return Wordlift_Post_Adapter::get_production_permalink( $id );
-				case Object_Type_Enum::TERM:
-					return get_term_link( $id );
-				default:
-					return $item;
-			}
-		}, array_unique( $urls ) );
+				// Permalinks.
+				switch ( $type ) {
+					case Object_Type_Enum::POST:
+						return Wordlift_Post_Adapter::get_production_permalink( $id );
+					case Object_Type_Enum::TERM:
+						return get_term_link( $id );
+					default:
+						return $item;
+				}
+			},
+			array_unique( $urls )
+		);
 	}
 
 }

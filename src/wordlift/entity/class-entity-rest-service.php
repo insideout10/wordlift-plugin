@@ -1,6 +1,7 @@
 <?php
 /**
  * Assign the Entity type to the entities created via the block editor
+ *
  * @see https://github.com/insideout10/wordlift-plugin/issues/1304
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.29.0
@@ -23,10 +24,9 @@ class Entity_Rest_Service {
 
 		$this->entity_type_service = $entity_type_service;
 
-		add_action( "rest_insert_entity", array( $this, 'action_rest_insert_entity' ), 10, 3 );
+		add_action( 'rest_insert_entity', array( $this, 'action_rest_insert_entity' ), 10, 3 );
 
 	}
-
 
 	/**
 	 * @param $post \WP_Post

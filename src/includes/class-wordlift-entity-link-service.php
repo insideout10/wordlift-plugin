@@ -223,7 +223,6 @@ class Wordlift_Entity_Link_Service {
 				// Return true which means that the slug is already in use.
 				return true;
 			}
-
 		}
 
 		// Post slugs must be unique across all posts.

@@ -14,7 +14,6 @@
  * @since      3.0.0
  *
  * @deprecated use Wordlift_Log_Service::get_instance()->info( $log );
- *
  */
 function wl_write_log( $log ) {
 
@@ -72,7 +71,7 @@ add_action( 'admin_enqueue_scripts', 'wordlift_admin_enqueue_scripts' );
 /**
  * Hooked to *wp_kses_allowed_html* filter, adds microdata attributes.
  *
- * @param array $allowedtags The array with the currently configured elements and attributes.
+ * @param array  $allowedtags The array with the currently configured elements and attributes.
  * @param string $context The context.
  *
  * @return array An array which contains allowed microdata attributes.
@@ -83,14 +82,17 @@ function wordlift_allowed_html( $allowedtags, $context ) {
 		return $allowedtags;
 	}
 
-	return array_merge_recursive( $allowedtags, array(
-		'span' => array(
-			'itemscope' => true,
-			'itemtype'  => true,
-			'itemid'    => true,
-			'itemprop'  => true,
-		),
-	) );
+	return array_merge_recursive(
+		$allowedtags,
+		array(
+			'span' => array(
+				'itemscope' => true,
+				'itemtype'  => true,
+				'itemid'    => true,
+				'itemprop'  => true,
+			),
+		)
+	);
 }
 
 add_filter( 'wp_kses_allowed_html', 'wordlift_allowed_html', 10, 2 );
@@ -102,20 +104,19 @@ add_filter( 'wp_kses_allowed_html', 'wordlift_allowed_html', 10, 2 );
  *
  * @return array An array of image URLs.
  * @deprecated use Wordlift_Storage_Factory::get_instance()->post_images()->get( $post_id )
- *
  */
 function wl_get_image_urls( $post_id ) {
 
 	return Wordlift_Storage_Factory::get_instance()
-	                               ->post_images()
-	                               ->get( $post_id );
+								   ->post_images()
+								   ->get( $post_id );
 
 }
 
 /**
  * Get an attachment with the specified parent post ID and source URL.
  *
- * @param int $parent_post_id The parent post ID.
+ * @param int    $parent_post_id The parent post ID.
  * @param string $source_url The source URL.
  *
  * @return WP_Post|null A post instance or null if not found.
@@ -124,14 +125,16 @@ function wl_get_attachment_for_source_url( $parent_post_id, $source_url ) {
 
 	// wl_write_log( "wl_get_attachment_for_source_url [ parent post id :: $parent_post_id ][ source url :: $source_url ]" );
 
-	$posts = get_posts( array(
-		'post_type'      => 'attachment',
-		'posts_per_page' => 1,
-		'post_status'    => 'any',
-		'post_parent'    => $parent_post_id,
-		'meta_key'       => 'wl_source_url',
-		'meta_value'     => $source_url,
-	) );
+	$posts = get_posts(
+		array(
+			'post_type'      => 'attachment',
+			'posts_per_page' => 1,
+			'post_status'    => 'any',
+			'post_parent'    => $parent_post_id,
+			'meta_key'       => 'wl_source_url',
+			'meta_value'     => $source_url,
+		)
+	);
 
 	// Return the found post.
 	if ( 1 === count( $posts ) ) {
@@ -145,7 +148,7 @@ function wl_get_attachment_for_source_url( $parent_post_id, $source_url ) {
 /**
  * Set the source URL.
  *
- * @param int $post_id The post ID.
+ * @param int    $post_id The post ID.
  * @param string $source_url The source URL.
  */
 function wl_set_source_url( $post_id, $source_url ) {
@@ -164,7 +167,6 @@ function wl_set_source_url( $post_id, $source_url ) {
  * @uses       sanitize_title() to manage not ASCII chars
  * @deprecated use Wordlift_Uri_Service::get_instance()->sanitize_path();
  * @see        https://codex.wordpress.org/Function_Reference/sanitize_title
- *
  */
 function wl_sanitize_uri_path( $path, $char = '_' ) {
 
@@ -197,7 +199,7 @@ function wl_replace_item_id_with_uri( $content ) {
 
 			// Get the post bound to that item ID (looking both in the 'official' URI and in the 'same-as' .
 			$post = Wordlift_Entity_Service::get_instance()
-			                               ->get_entity_post_by_uri( $item_id );
+										   ->get_entity_post_by_uri( $item_id );
 
 			// If no entity is found, continue to the next one.
 			if ( null === $post ) {
@@ -225,48 +227,48 @@ function wl_replace_item_id_with_uri( $content ) {
 
 add_filter( 'content_save_pre', 'wl_replace_item_id_with_uri', 1, 1 );
 
-require_once( 'wordlift_entity_functions.php' );
+require_once 'wordlift_entity_functions.php';
 
 // add editor related methods.
-require_once( 'wordlift_editor.php' );
+require_once 'wordlift_editor.php';
 
 // add the WordLift entity custom type.
-require_once( 'wordlift_entity_type.php' );
+require_once 'wordlift_entity_type.php';
 
-require_once( 'modules/common/load.php' );
-require_once( 'modules/configuration/wordlift_configuration_settings.php' );
+require_once 'modules/common/load.php';
+require_once 'modules/configuration/wordlift_configuration_settings.php';
 
 // Load modules
-require_once( 'modules/analyzer/wordlift_analyzer.php' );
-require_once( 'modules/linked_data/wordlift_linked_data.php' );
-require_once( 'modules/acf4so/load.php' );
+require_once 'modules/analyzer/wordlift_analyzer.php';
+require_once 'modules/linked_data/wordlift_linked_data.php';
+require_once 'modules/acf4so/load.php';
 
 // Shortcodes
-require_once( 'shortcodes/class-wordlift-shortcode-rest.php' );
-require_once( 'shortcodes/wordlift_shortcode_chord.php' );
-require_once( 'shortcodes/wordlift_shortcode_geomap.php' );
-require_once( 'shortcodes/wordlift_shortcode_field.php' );
-require_once( 'shortcodes/wordlift_shortcode_faceted_search.php' );
-require_once( 'shortcodes/wordlift_shortcode_navigator.php' );
-require_once( 'shortcodes/class-wordlift-products-navigator-shortcode-rest.php' );
+require_once 'shortcodes/class-wordlift-shortcode-rest.php';
+require_once 'shortcodes/wordlift_shortcode_chord.php';
+require_once 'shortcodes/wordlift_shortcode_geomap.php';
+require_once 'shortcodes/wordlift_shortcode_field.php';
+require_once 'shortcodes/wordlift_shortcode_faceted_search.php';
+require_once 'shortcodes/wordlift_shortcode_navigator.php';
+require_once 'shortcodes/class-wordlift-products-navigator-shortcode-rest.php';
 
-require_once( 'widgets/wordlift_widget_geo.php' );
-require_once( 'widgets/class-wordlift-chord-widget.php' );
-require_once( 'widgets/wordlift_widget_timeline.php' );
+require_once 'widgets/wordlift_widget_geo.php';
+require_once 'widgets/class-wordlift-chord-widget.php';
+require_once 'widgets/wordlift_widget_timeline.php';
 
 // Add admin functions.
 // TODO: find a way to make 'admin' UI tests work.
-//if ( is_admin() ) {
+// if ( is_admin() ) {
 
-require_once( 'admin/wordlift_admin.php' );
-require_once( 'admin/wordlift_admin_edit_post.php' );
-require_once( 'admin/wordlift_admin_save_post.php' );
+require_once 'admin/wordlift_admin.php';
+require_once 'admin/wordlift_admin_edit_post.php';
+require_once 'admin/wordlift_admin_save_post.php';
 
 // add the entities meta box.
-require_once( 'admin/wordlift_admin_meta_box_entities.php' );
+require_once 'admin/wordlift_admin_meta_box_entities.php';
 
 // add the entity creation AJAX.
-require_once( 'admin/wordlift_admin_ajax_related_posts.php' );
+require_once 'admin/wordlift_admin_ajax_related_posts.php';
 
 // Load the wl_chord TinyMCE button and configuration dialog.
-require_once( 'admin/wordlift_admin_shortcodes.php' );
+require_once 'admin/wordlift_admin_shortcodes.php';

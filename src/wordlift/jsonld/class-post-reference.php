@@ -1,5 +1,6 @@
 <?php
 namespace Wordlift\Jsonld;
+
 use Wordlift\Object_Type_Enum;
 
 /**

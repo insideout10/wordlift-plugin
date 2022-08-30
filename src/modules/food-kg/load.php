@@ -15,7 +15,6 @@ use Wordlift\Modules\Food_Kg\Jsonld;
 use Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld;
 use Wordlift\Modules\Food_Kg\Preconditions;
 
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }

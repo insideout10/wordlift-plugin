@@ -1,6 +1,7 @@
 <?php
 
 namespace Wordlift\Widgets\Navigator;
+
 /**
  * @since 3.27.8
  * @author Naveen Muthusamy <naveen@wordlift.io>
@@ -11,35 +12,50 @@ class Navigator_Data {
 		if ( $post_types === array() ) {
 			$post_types = get_post_types();
 		}
-		$post_types = array_map( function ( $post_type ) {
-			return "'" . esc_sql( $post_type ) . "'";
-		}, $post_types );
+		$post_types = array_map(
+			function ( $post_type ) {
+				return "'" . esc_sql( $post_type ) . "'";
+			},
+			$post_types
+		);
 
 		return implode( ',', $post_types );
 	}
 
 	public static function post_navigator_get_results(
 		$post_id, $fields = array(
-		'ID',
-		'post_title',
-	), $order_by = 'ID DESC', $limit = 10, $offset = 0, $post_types = array()
+			'ID',
+			'post_title',
+		), $order_by = 'ID DESC', $limit = 10, $offset = 0, $post_types = array()
 	) {
 
 		$post_types = self::get_post_types_as_string( $post_types );
 		global $wpdb;
 
-		$select = implode( ', ', array_map( function ( $item ) {
-			return "p.$item AS $item";
-		}, (array) $fields ) );
+		$select = implode(
+			', ',
+			array_map(
+				function ( $item ) {
+					return "p.$item AS $item";
+				},
+				(array) $fields
+			)
+		);
 
-		$order_by = implode( ', ', array_map( function ( $item ) {
-			return "p.$item";
-		}, (array) $order_by ) );
-
+		$order_by = implode(
+			', ',
+			array_map(
+				function ( $item ) {
+					return "p.$item";
+				},
+				(array) $order_by
+			)
+		);
 
 		/** @noinspection SqlNoDataSourceInspection */
 		return $wpdb->get_results(
-			$wpdb->prepare( "
+			$wpdb->prepare(
+				"
 SELECT %4\$s, p2.ID as entity_id
  FROM {$wpdb->prefix}wl_relation_instances r1
     INNER JOIN {$wpdb->prefix}wl_relation_instances r2
@@ -72,34 +88,51 @@ SELECT %4\$s, p2.ID as entity_id
  ORDER BY %5\$s
  LIMIT %2\$d
  OFFSET %3\$d
-"
-				, $post_id, $limit, $offset, $select, $order_by )
+",
+				$post_id,
+				$limit,
+				$offset,
+				$select,
+				$order_by
+			)
 		);
 
 	}
 
-
 	public static function entity_navigator_get_results(
 		$post_id, $fields = array(
-		'ID',
-		'post_title',
-	), $order_by = 'ID DESC', $limit = 10, $offset = 0, $post_types = array()
+			'ID',
+			'post_title',
+		), $order_by = 'ID DESC', $limit = 10, $offset = 0, $post_types = array()
 	) {
 		global $wpdb;
 
-		$select = implode( ', ', array_map( function ( $item ) {
-			return "p.$item AS $item";
-		}, (array) $fields ) );
+		$select = implode(
+			', ',
+			array_map(
+				function ( $item ) {
+					return "p.$item AS $item";
+				},
+				(array) $fields
+			)
+		);
 
-		$order_by = implode( ', ', array_map( function ( $item ) {
-			return "p.$item";
-		}, (array) $order_by ) );
+		$order_by = implode(
+			', ',
+			array_map(
+				function ( $item ) {
+					return "p.$item";
+				},
+				(array) $order_by
+			)
+		);
 
 		$post_types = self::get_post_types_as_string( $post_types );
 
 		/** @noinspection SqlNoDataSourceInspection */
 		return $wpdb->get_results(
-			$wpdb->prepare( "
+			$wpdb->prepare(
+				"
 SELECT %4\$s, p2.ID as entity_id
  FROM {$wpdb->prefix}wl_relation_instances r1
 	-- get the ID of the post entity in common between the object and the subject 2. 
@@ -129,11 +162,15 @@ SELECT %4\$s, p2.ID as entity_id
  ORDER BY %5\$s
  LIMIT %2\$d
  OFFSET %3\$d
-"
-				, $post_id, $limit, $offset, $select, $order_by )
+",
+				$post_id,
+				$limit,
+				$offset,
+				$select,
+				$order_by
+			)
 		);
 	}
-
 
 }
 

@@ -11,6 +11,7 @@ namespace Wordlift\External_Plugin_Hooks\Recipe_Maker;
  * there are recipes referred in the post.
  *
  * Class Recipe_Maker_After_Get_Jsonld_Hook
+ *
  * @package Wordlift\External_Plugin_Hooks
  */
 class Recipe_Maker_After_Get_Jsonld_Hook {
@@ -59,7 +60,7 @@ class Recipe_Maker_After_Get_Jsonld_Hook {
 			$type = $value['@type'];
 			if ( $type === 'Recipe' ) {
 				$value['isPartOf'] = array(
-					'@id' => $post_jsonld_id
+					'@id' => $post_jsonld_id,
 				);
 				$jsonld[ $key ]    = $value;
 			}
@@ -70,6 +71,5 @@ class Recipe_Maker_After_Get_Jsonld_Hook {
 
 		return $jsonld;
 	}
-
 
 }

@@ -4,6 +4,7 @@ namespace Wordlift\Vocabulary\Data\Entity_List;
 
 /**
  * This class is created to support new multiple entity matches in db.
+ *
  * @since 3.30.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
@@ -33,13 +34,16 @@ class Default_Entity_List extends Entity_List {
 	 * @return array
 	 */
 	private static function extract_jsonld_values( $values ) {
-		return array_map( function ( $value ) {
-			if ( ! is_array($value) || ! array_key_exists( '@value', $value ) ) {
-				return $value;
-			}
+		return array_map(
+			function ( $value ) {
+				if ( ! is_array( $value ) || ! array_key_exists( '@value', $value ) ) {
+					  return $value;
+				}
 
-			return $value['@value'];
-		}, $values );
+				return $value['@value'];
+			},
+			$values
+		);
 	}
 
 	/**
@@ -83,7 +87,6 @@ class Default_Entity_List extends Entity_List {
 		delete_term_meta( $this->term_id, self::META_KEY );
 	}
 
-
 	public function remove_entity_by_id( $entity_id ) {
 		$entity_list = get_term_meta( $this->term_id, self::META_KEY );
 		foreach ( $entity_list as $key => $entity ) {
@@ -116,7 +119,6 @@ class Default_Entity_List extends Entity_List {
 		$this->save_entity_list( $entity_list );
 	}
 
-
 	/**
 	 * For now support only these properties.
 	 *
@@ -136,34 +138,36 @@ class Default_Entity_List extends Entity_List {
 		return $data;
 	}
 
-
 	public static function compact_jsonld( $entity_data ) {
 
 		if ( self::is_value_array( '@type', $entity_data ) ) {
-			$entity_data['@type'] = array_map( function ( $type ) {
-				return str_replace( "http://schema.org/", "", $type );
-			}, $entity_data['@type'] );
+			$entity_data['@type'] = array_map(
+				function ( $type ) {
+					return str_replace( 'http://schema.org/', '', $type );
+				},
+				$entity_data['@type']
+			);
 		}
 
 		if ( self::is_value_array( 'description', $entity_data ) ) {
 			$entity_data['description'] = self::extract_jsonld_values( $entity_data['description'] );
 		}
 
-
 		if ( self::is_value_array( 'name', $entity_data ) ) {
 			$entity_data['name'] = self::extract_jsonld_values( $entity_data['name'] );
 		}
 
-
 		if ( self::is_value_array( 'sameAs', $entity_data ) ) {
-			$entity_data['sameAs'] = array_map( function ( $sameas ) {
-				if ( ! is_array($sameas) || ! array_key_exists( '@id', $sameas ) ) {
-					return $sameas;
-				}
-				return $sameas['@id'];
-			}, $entity_data['sameAs'] );
+			$entity_data['sameAs'] = array_map(
+				function ( $sameas ) {
+					if ( ! is_array( $sameas ) || ! array_key_exists( '@id', $sameas ) ) {
+						  return $sameas;
+					}
+					return $sameas['@id'];
+				},
+				$entity_data['sameAs']
+			);
 		}
-
 
 		return $entity_data;
 	}

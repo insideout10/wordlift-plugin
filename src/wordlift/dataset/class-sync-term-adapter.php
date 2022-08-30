@@ -41,5 +41,4 @@ class Sync_Term_Adapter extends Abstract_Sync_Object_Adapter {
 		// @@todo
 	}
 
-
 }

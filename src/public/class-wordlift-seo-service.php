@@ -27,10 +27,15 @@ class Wordlift_Seo_Service {
 	function __construct() {
 
 		// If we are not on the admin, run the get_term filter for entity type terms.
-		add_filter( 'get_wl_entity_type', array(
-			$this,
+		add_filter(
 			'get_wl_entity_type',
-		), 10, 2 );
+			array(
+				$this,
+				'get_wl_entity_type',
+			),
+			10,
+			2
+		);
 
 	}
 

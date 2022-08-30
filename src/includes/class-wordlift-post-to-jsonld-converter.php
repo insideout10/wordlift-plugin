@@ -46,11 +46,10 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * Wordlift_Post_To_Jsonld_Converter constructor.
 	 *
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_User_Service $user_service A {@link Wordlift_User_Service} instance.
-	 * @param \Wordlift_Attachment_Service $attachment_service A {@link Wordlift_Attachment_Service} instance.
+	 * @param \Wordlift_User_Service        $user_service A {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Attachment_Service  $attachment_service A {@link Wordlift_Attachment_Service} instance.
 	 *
 	 * @since 3.10.0
-	 *
 	 */
 	public function __construct( $entity_type_service, $user_service, $attachment_service, $disable_convert_filters = false ) {
 		parent::__construct( $entity_type_service, $user_service, $attachment_service, Wordlift_Property_Getter_Factory::create() );
@@ -76,9 +75,9 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * Convert the provided {@link WP_Post} to a JSON-LD array. Any entity reference
 	 * found while processing the post is set in the $references array.
 	 *
-	 * @param int $post_id The post id.
+	 * @param int              $post_id The post id.
 	 * @param array<Reference> $references An array of entity references.
-	 * @param array $references_infos
+	 * @param array            $references_infos
 	 *
 	 * @return array A JSON-LD array.
 	 * @since 3.10.0
@@ -201,10 +200,14 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		 *
 		 * @api
 		 */
-		$ret_val = apply_filters( 'wl_post_jsonld_array', array(
-			'jsonld'     => $jsonld,
-			'references' => $references,
-		), $post_id );
+		$ret_val = apply_filters(
+			'wl_post_jsonld_array',
+			array(
+				'jsonld'     => $jsonld,
+				'references' => $references,
+			),
+			$post_id
+		);
 
 		$jsonld     = $ret_val['jsonld'];
 		$references = $ret_val['references'];
@@ -229,12 +232,11 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * The JSON-LD fragment is generated using the {@link WP_User}'s data or
 	 * the referenced entity if configured for the {@link WP_User}.
 	 *
-	 * @param int $author_id The author {@link WP_User}'s `id`.
+	 * @param int   $author_id The author {@link WP_User}'s `id`.
 	 * @param array $references An array of referenced entities.
 	 *
 	 * @return string|array A JSON-LD structure.
 	 * @since 3.14.0
-	 *
 	 */
 	public function get_author( $author_id, &$references ) {
 
@@ -275,7 +277,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * @param array $params The parameters array.
 	 *
 	 * @since 3.10.0
-	 *
 	 */
 	protected function set_publisher( &$params ) {
 
@@ -358,7 +359,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 *  of errors.
 	 * @since 3.19.2
 	 * @see https://github.com/insideout10/wordlift-plugin/issues/823 related issue.
-	 *
 	 */
 	private function get_publisher_logo( $post_id ) {
 
@@ -449,7 +449,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * @param $jsonld
 	 *
 	 * @return void
-	 *
 	 */
 	private function set_mentions_and_about( $references, $post, &$jsonld ) {
 
@@ -475,10 +474,12 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 				'@id' => Wordlift_Entity_Service::get_instance()->get_uri( $reference->get_id(), $reference->get_type() ),
 			);
 
-			$escaped_labels = array_map( function ( $value ) {
-				return preg_quote( $value, '/' );
-			}, $labels );
-
+			$escaped_labels = array_map(
+				function ( $value ) {
+					return preg_quote( $value, '/' );
+				},
+				$labels
+			);
 
 			$matches = false;
 
@@ -517,16 +518,19 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * @return Reference[]
 	 */
 	private function convert_references( $references ) {
-		return array_map( function ( $reference ) {
-			// Legacy code may still push numerical references to this
-			// $references variable, so convert it to post references.
-			if ( is_numeric( $reference ) ) {
-				return new Post_Reference( $reference );
-			}
+		return array_map(
+			function ( $reference ) {
+				// Legacy code may still push numerical references to this
+				// $references variable, so convert it to post references.
+				if ( is_numeric( $reference ) ) {
+					  return new Post_Reference( $reference );
+				}
 
-			return $reference;
+				return $reference;
 
-		}, $references );
+			},
+			$references
+		);
 	}
 
 }

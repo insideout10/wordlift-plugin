@@ -28,13 +28,12 @@ class Classic_Editor_Parser implements Parser {
 		}
 
 		$regex_matches = array_merge( $line_matches, $paragraph_matches );
-		$matches = array_map( array( $this, 'get_url_from_match' ),  $regex_matches);
+		$matches       = array_map( array( $this, 'get_url_from_match' ), $regex_matches );
 
 		$matches = array_values( array_unique( array_filter( $matches ) ) );
 
 		return array_map( array( $this, 'url_to_embedded_video_object' ), $matches );
 	}
-
 
 	/**
 	 * @param $url
@@ -42,11 +41,11 @@ class Classic_Editor_Parser implements Parser {
 	 * @return Embedded_Video
 	 */
 	private static function url_to_embedded_video_object( $url ) {
-		return Embedded_Video_Factory::get_embedded_video( trim($url) );
+		return Embedded_Video_Factory::get_embedded_video( trim( $url ) );
 	}
 
 	public static function get_url_from_match( $match ) {
-		return  array_key_exists( 0, $match ) ? $match[0] : false;
+		return array_key_exists( 0, $match ) ? $match[0] : false;
 	}
 
 }

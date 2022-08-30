@@ -25,7 +25,13 @@ class Ingredients_Taxonomy_Recipe_Lift_Strategy implements Recipe_Lift_Strategy 
 		/**
 		 * @var string[] $terms
 		 */
-		$terms       = get_terms( [ 'taxonomy' => 'wprm_ingredient', 'fields' => 'names', 'hide_empty' => false ] );
+		$terms       = get_terms(
+			array(
+				'taxonomy'   => 'wprm_ingredient',
+				'fields'     => 'names',
+				'hide_empty' => false,
+			)
+		);
 		$ingredients = $this->ingredients_client->ingredients( $terms );
 
 		foreach ( $ingredients as $key => $value ) {
@@ -46,6 +52,6 @@ class Ingredients_Taxonomy_Recipe_Lift_Strategy implements Recipe_Lift_Strategy 
 		 */
 		$count_terms        = count( $terms );
 		$count_lifted_terms = count( $ingredients );
-		$this->notices->queue( 'info', sprintf( __( 'WordLift detected WP Recipe Maker and, it lifted %d of %d ingredient(s).', 'wordlift' ), $count_lifted_terms, $count_terms ) );
+		$this->notices->queue( 'info', sprintf( __( 'WordLift detected WP Recipe Maker and, it lifted %1$d of %2$d ingredient(s).', 'wordlift' ), $count_lifted_terms, $count_terms ) );
 	}
 }

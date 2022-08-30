@@ -1,5 +1,6 @@
 <?php
 namespace Wordlift\Vocabulary\Data\Entity_List;
+
 /**
  * @since 3.30.0
  * @author Naveen Muthusamy <naveen@wordlift.io>

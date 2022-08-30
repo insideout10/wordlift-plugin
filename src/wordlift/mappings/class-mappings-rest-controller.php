@@ -143,73 +143,79 @@ class Mappings_REST_Controller {
 			)
 		);
 
-        // Register rest endpoint to get the terms.
-        register_rest_route(
-            WL_REST_ROUTE_DEFAULT_NAMESPACE,
-            'mappings/get_taxonomy_terms',
-            array(
-                'methods'             => WP_REST_Server::CREATABLE,
-                'callback'            => 'Wordlift\Mappings\Mappings_REST_Controller::get_taxonomy_terms_for_the_posted_taxonomy',
-                'permission_callback' => function () {
-                    return current_user_can( 'manage_options' );
-                },
-            )
-        );
+		// Register rest endpoint to get the terms.
+		register_rest_route(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
+			'mappings/get_taxonomy_terms',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => 'Wordlift\Mappings\Mappings_REST_Controller::get_taxonomy_terms_for_the_posted_taxonomy',
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
 	}
 
-    /**
-     * Get the taxonomy & terms
-     *
-     * @param WP_REST_Request $request {@link WP_REST_Request instance}.
-     *
-     * @return array The array of the taxonomies & terms.
-     */
-    public static function get_taxonomy_terms_for_the_posted_taxonomy( $request ) {
-        $taxonomy_terms = array();
-        $post_taxonomies = get_taxonomies( array(), 'objects' );
+	/**
+	 * Get the taxonomy & terms
+	 *
+	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
+	 *
+	 * @return array The array of the taxonomies & terms.
+	 */
+	public static function get_taxonomy_terms_for_the_posted_taxonomy( $request ) {
+		$taxonomy_terms  = array();
+		$post_taxonomies = get_taxonomies( array(), 'objects' );
 
-        foreach ( $post_taxonomies as $post_taxonomy ) {
-            $taxonomy_config = array(
-                'taxonomy' => $post_taxonomy->name,
-                'hide_empty' => false
-            );
+		foreach ( $post_taxonomies as $post_taxonomy ) {
+			$taxonomy_config = array(
+				'taxonomy'   => $post_taxonomy->name,
+				'hide_empty' => false,
+			);
 
-            $total_terms = wp_count_terms($taxonomy_config);
+			$total_terms = wp_count_terms( $taxonomy_config );
 
-            $post_taxonomy_terms = get_terms( $taxonomy_config );
+			$post_taxonomy_terms = get_terms( $taxonomy_config );
 
-            if ($total_terms) {
-                $group_taxonomy = array('parentValue' => 'post_taxonomy', 'group_name' => $post_taxonomy->label, 'group_options' => array());
+			if ( $total_terms ) {
+				$group_taxonomy = array(
+					'parentValue'   => 'post_taxonomy',
+					'group_name'    => $post_taxonomy->label,
+					'group_options' => array(),
+				);
 
-                foreach ($post_taxonomy_terms as $post_taxonomy_term) {
-                    array_push($group_taxonomy['group_options'],
-                        array(
-                            'label' => ' - ' . $post_taxonomy_term->name,
-                            'value' => $post_taxonomy_term->slug,
-                            'taxonomy' => 'post_taxonomy',
-                        )
-                    );
+				foreach ( $post_taxonomy_terms as $post_taxonomy_term ) {
+					array_push(
+						$group_taxonomy['group_options'],
+						array(
+							'label'    => ' - ' . $post_taxonomy_term->name,
+							'value'    => $post_taxonomy_term->slug,
+							'taxonomy' => 'post_taxonomy',
+						)
+					);
 
-                    $post_term_children = get_term_children($post_taxonomy_term->term_id, $post_taxonomy->name);
+					$post_term_children = get_term_children( $post_taxonomy_term->term_id, $post_taxonomy->name );
 
-                    foreach ($post_term_children as $post_term_child) {
-                        $child_term = get_term_by('id', $post_term_child, $post_taxonomy->name);
+					foreach ( $post_term_children as $post_term_child ) {
+						$child_term = get_term_by( 'id', $post_term_child, $post_taxonomy->name );
 
-                        array_push($group_taxonomy['group_options'],
-                            array(
-                                'label' => ' -- ' . $child_term->name,
-                                'value' => $child_term->slug,
-                                'taxonomy' => 'post_taxonomy',
-                            )
-                        );
-                    }
-                }
-                array_push($taxonomy_terms, $group_taxonomy);
-            }
-        }
+						array_push(
+							$group_taxonomy['group_options'],
+							array(
+								'label'    => ' -- ' . $child_term->name,
+								'value'    => $child_term->slug,
+								'taxonomy' => 'post_taxonomy',
+							)
+						);
+					}
+				}
+				array_push( $taxonomy_terms, $group_taxonomy );
+			}
+		}
 
-        return $taxonomy_terms;
-    }
+		return $taxonomy_terms;
+	}
 
 	/**
 	 * Get the terms for the posted taxonomy name.
@@ -223,16 +229,16 @@ class Mappings_REST_Controller {
 		if ( ! array_key_exists( 'taxonomy', $post_data ) ) {
 			return array(
 				'status'  => 'failure',
-				'message' => __( 'Request not valid, must post a taxonomy to get terms', 'wordlift' )
+				'message' => __( 'Request not valid, must post a taxonomy to get terms', 'wordlift' ),
 			);
 		} else {
 			$taxonomy = $post_data['taxonomy'];
-			$terms    = get_terms( $taxonomy, array( 'hide_empty' => false, ) );
+			$terms    = get_terms( $taxonomy, array( 'hide_empty' => false ) );
 			if ( is_wp_error( $terms ) ) {
 				// Return error response, if the taxonomy is not valid.
 				return array(
 					'status'  => 'failure',
-					'message' => __( 'Request not valid, must post a valid taxonomy', 'wordlift' )
+					'message' => __( 'Request not valid, must post a valid taxonomy', 'wordlift' ),
 				);
 			}
 
@@ -333,12 +339,12 @@ class Mappings_REST_Controller {
 
 			return array(
 				'status'  => 'success',
-				'message' => __( 'successfully deleted mapping items', 'wordlift' )
+				'message' => __( 'successfully deleted mapping items', 'wordlift' ),
 			);
 		} else {
 			return array(
 				'status'  => 'failure',
-				'message' => __( 'Unable to delete mapping items', 'wordlift' )
+				'message' => __( 'Unable to delete mapping items', 'wordlift' ),
 			);
 		}
 	}
@@ -360,7 +366,7 @@ class Mappings_REST_Controller {
 	 * Returns a array of rule ids for the rule group id
 	 *
 	 * @param Object $dbo Instance of {@link Mappings_DBO } class.
-	 * @param int $rule_group_id Primary key of rule group table.
+	 * @param int    $rule_group_id Primary key of rule group table.
 	 *
 	 * @return array A list of rule ids.
 	 */
@@ -378,8 +384,8 @@ class Mappings_REST_Controller {
 	 * Insert or update mapping item depends on data
 	 *
 	 * @param Object $dbo Instance of {@link Mappings_DBO } class.
-	 * @param int $rule_group_id Refers to a rule group which this rule belongs to.
-	 * @param array $rule_list Array of rule  items.
+	 * @param int    $rule_group_id Refers to a rule group which this rule belongs to.
+	 * @param array  $rule_list Array of rule  items.
 	 *
 	 * @return void
 	 */
@@ -411,8 +417,8 @@ class Mappings_REST_Controller {
 	 * Insert or update rule group list based on data
 	 *
 	 * @param Object $dbo Instance of {@link Mappings_DBO } class.
-	 * @param int $mapping_id Primary key of mapping table.
-	 * @param array $property_list { Array of property items }.
+	 * @param int    $mapping_id Primary key of mapping table.
+	 * @param array  $property_list { Array of property items }.
 	 *
 	 * @return void
 	 */
@@ -451,7 +457,7 @@ class Mappings_REST_Controller {
 	 * Returns a array of rule group ids for the mapping id
 	 *
 	 * @param Object $dbo Instance of {@link Mappings_DBO } class.
-	 * @param int $mapping_id Primary key of mapping table.
+	 * @param int    $mapping_id Primary key of mapping table.
 	 *
 	 * @return array $rule_group_ids A list of rule group ids.
 	 */
@@ -469,8 +475,8 @@ class Mappings_REST_Controller {
 	 * Insert or update rule group list
 	 *
 	 * @param Object $dbo Instance of {@link Mappings_DBO } class.
-	 * @param int $mapping_id Primary key of mapping table.
-	 * @param array $rule_group_list { Array of rule group items }.
+	 * @param int    $mapping_id Primary key of mapping table.
+	 * @param array  $rule_group_list { Array of rule group items }.
 	 *
 	 * @return void
 	 */
@@ -514,8 +520,8 @@ class Mappings_REST_Controller {
 		$dbo       = new Mappings_DBO();
 		// check if valid object is posted.
 		if ( array_key_exists( 'mapping_title', $post_data ) &&
-		     array_key_exists( 'rule_group_list', $post_data ) &&
-		     array_key_exists( 'property_list', $post_data ) ) {
+			 array_key_exists( 'rule_group_list', $post_data ) &&
+			 array_key_exists( 'property_list', $post_data ) ) {
 			// Do validation, remove all incomplete data.
 			$mapping_item = array();
 			if ( array_key_exists( 'mapping_id', $post_data ) ) {

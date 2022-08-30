@@ -34,7 +34,6 @@ class Wordpress_Post_Content_Service {
 				// Create the post content service that uses wl_entities.
 				self::$instance = Wordpress_Post_Content_Table_Service::get_instance();
 			}
-
 		}
 
 		return self::$instance;

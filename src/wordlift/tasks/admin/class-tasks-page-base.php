@@ -14,7 +14,6 @@ namespace Wordlift\Tasks\Admin;
 
 use Wordlift\Tasks\Task_Ajax_Adapters_Registry;
 use Wordlift\Wordpress\Submenu_Page_Base;
-use Wordlift\Wordpress\Page;
 
 abstract class Tasks_Page_Base extends Submenu_Page_Base {
 
@@ -42,12 +41,12 @@ abstract class Tasks_Page_Base extends Submenu_Page_Base {
 	 *
 	 * @param Task_Ajax_Adapters_Registry $task_ajax_adapters_registry
 	 *
-	 * @param string $version
-	 * @param string $menu_slug
-	 * @param string $page_title
-	 * @param string $capability
-	 * @param string|null $parent_slug
-	 * @param string|null $menu_title
+	 * @param string                      $version
+	 * @param string                      $menu_slug
+	 * @param string                      $page_title
+	 * @param string                      $capability
+	 * @param string|null                 $parent_slug
+	 * @param string|null                 $menu_title
 	 *
 	 * @since 1.0.0
 	 */
@@ -67,10 +66,16 @@ abstract class Tasks_Page_Base extends Submenu_Page_Base {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_style( $this->menu_slug, plugin_dir_url( __FILE__ ) . 'assets/tasks-page.css', array(), $this->version, 'all' );
-		wp_enqueue_script( $this->menu_slug, plugin_dir_url( __FILE__ ) . 'assets/tasks-page.js', array(
-			'jquery',
-			'wp-util'
-		), $this->version, true );
+		wp_enqueue_script(
+			$this->menu_slug,
+			plugin_dir_url( __FILE__ ) . 'assets/tasks-page.js',
+			array(
+				'jquery',
+				'wp-util',
+			),
+			$this->version,
+			true
+		);
 	}
 
 	/**
@@ -81,7 +86,7 @@ abstract class Tasks_Page_Base extends Submenu_Page_Base {
 	public function render() {
 
 		// Include the partial.
-		include( plugin_dir_path( __FILE__ ) . 'assets/tasks-page.php' );
+		include plugin_dir_path( __FILE__ ) . 'assets/tasks-page.php';
 
 	}
 

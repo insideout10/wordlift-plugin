@@ -32,14 +32,12 @@ class Wordlift_Autocomplete_Adapter {
 	 */
 	private $autocomplete_service;
 
-
 	/**
 	 * Wordlift_Autocomplete_Adapter constructor.
 	 *
 	 * @param Autocomplete_Service $autocomplete_service The {@link Autocomplete_Service} instance.
 	 *
 	 * @since 3.14.2
-	 *
 	 */
 	public function __construct( $autocomplete_service ) {
 		$this->autocomplete_service = $autocomplete_service;
@@ -58,9 +56,11 @@ class Wordlift_Autocomplete_Adapter {
 		if ( ! empty( $_REQUEST['query'] ) ) { // Input var okay.
 			$query = sanitize_text_field( wp_unslash( $_REQUEST['query'] ) ); // Input var okay.
 		} else {
-			wp_send_json_error( array(
-				'message' => __( 'The query param is empty.', 'wordlift' ),
-			) );
+			wp_send_json_error(
+				array(
+					'message' => __( 'The query param is empty.', 'wordlift' ),
+				)
+			);
 		}
 
 		// Get the exclude parameter.
@@ -77,15 +77,17 @@ class Wordlift_Autocomplete_Adapter {
 		$show_local_entities = false;
 
 		if ( isset( $_REQUEST['show_local_entities'] )
-		     && ! empty( $_REQUEST['show_local_entities'] ) ) // Make request.
-		{
+			 && ! empty( $_REQUEST['show_local_entities'] ) ) { // Make request.
 			$show_local_entities = filter_var( $_REQUEST['show_local_entities'], FILTER_VALIDATE_BOOLEAN );
 		}
 
 		// Add the filter to check if we need to show local entities or not.
-		add_filter( 'wl_show_local_entities', function ( $state ) use ( $show_local_entities ) {
-			return $show_local_entities;
-		} );
+		add_filter(
+			'wl_show_local_entities',
+			function ( $state ) use ( $show_local_entities ) {
+				return $show_local_entities;
+			}
+		);
 
 		$results = $this->autocomplete_service->query( $query, $scope, $exclude );
 

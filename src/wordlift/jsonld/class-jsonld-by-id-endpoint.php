@@ -38,7 +38,7 @@ class Jsonld_By_Id_Endpoint {
 	/**
 	 * Jsonld_Endpoint constructor.
 	 *
-	 * @param \Wordlift_Jsonld_Service $jsonld_service
+	 * @param \Wordlift_Jsonld_Service     $jsonld_service
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service
 	 */
 	public function __construct( $jsonld_service, $entity_uri_service ) {
@@ -46,7 +46,7 @@ class Jsonld_By_Id_Endpoint {
 		$this->jsonld_service     = $jsonld_service;
 		$this->entity_uri_service = $entity_uri_service;
 
-		add_action( 'rest_api_init', array( $this, 'register_routes', ) );
+		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
 
 	}
 
@@ -69,14 +69,24 @@ class Jsonld_By_Id_Endpoint {
 		$that = $this;
 
 		// Get the posts, filtering out those not found.
-		$posts = array_filter( array_map( function ( $item ) use ( $that ) {
-			return $that->entity_uri_service->get_entity( urldecode( $item ) );
-		}, $ids ) );
+		$posts = array_filter(
+			array_map(
+				function ( $item ) use ( $that ) {
+					return $that->entity_uri_service->get_entity( urldecode( $item ) );
+				},
+				$ids
+			)
+		);
 
 		// Get the posts' IDs and make the unique.
-		$post_ids = array_unique( array_map( function ( $item ) {
-			return $item->ID;
-		}, $posts ) );
+		$post_ids = array_unique(
+			array_map(
+				function ( $item ) {
+					return $item->ID;
+				},
+				$posts
+			)
+		);
 
 		// Get the JSON-LD.
 		$data = array();
@@ -94,36 +104,40 @@ class Jsonld_By_Id_Endpoint {
 
 	public function register_routes() {
 
-		register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld', array(
-			'methods'             => WP_REST_Server::READABLE,
-			'callback'            => array( $this, 'jsonld_by_id' ),
-			'permission_callback' => '__return_true',
-			'args'                => array(
-				'id'      => array(
-					'description'       => __( 'One ore more itemids (e.g. http://data.wordlift.io/wordlift).', 'wordlift' ),
-					// We expect an array of strings.
-					'type'              => 'array',
-					'items'             => array(
-						'type' => 'string'
-					),
-					'validate_callback' => function ( $values, $request, $param ) {
+		register_rest_route(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
+			'/jsonld',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'jsonld_by_id' ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'id'      => array(
+						'description'       => __( 'One ore more itemids (e.g. http://data.wordlift.io/wordlift).', 'wordlift' ),
+						// We expect an array of strings.
+						'type'              => 'array',
+						'items'             => array(
+							'type' => 'string',
+						),
+						'validate_callback' => function ( $values, $request, $param ) {
 
-						if ( ! is_array( $values ) ) {
-							return new WP_Error( 'rest_invalid_param', esc_html__( 'The id argument must be an array (try passing `id[]=...`.', 'wordlift' ), array( 'status' => 400 ) );
-						}
-
-						foreach ( $values as $value ) {
-							if ( 0 !== strpos( $value, 'http' ) ) {
-								return new WP_Error( 'rest_invalid_param', esc_html__( 'Ids must start with http.', 'wordlift' ), array( 'status' => 400 ) );
+							if ( ! is_array( $values ) ) {
+								return new WP_Error( 'rest_invalid_param', esc_html__( 'The id argument must be an array (try passing `id[]=...`.', 'wordlift' ), array( 'status' => 400 ) );
 							}
-						}
-					}
+
+							foreach ( $values as $value ) {
+								if ( 0 !== strpos( $value, 'http' ) ) {
+									return new WP_Error( 'rest_invalid_param', esc_html__( 'Ids must start with http.', 'wordlift' ), array( 'status' => 400 ) );
+								}
+							}
+						},
+					),
+					'website' => array(
+						'description' => __( 'Whether to include the WebSite markup.', 'wordlift' ),
+					),
 				),
-				'website' => array(
-					'description' => __( 'Whether to include the WebSite markup.', 'wordlift' ),
-				)
 			)
-		) );
+		);
 
 	}
 

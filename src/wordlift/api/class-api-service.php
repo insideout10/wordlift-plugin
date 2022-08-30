@@ -7,11 +7,11 @@ interface Api_Service {
 	/**
 	 * @param $method
 	 * @param $path
-	 * @param array $headers
-	 * @param null $body
-	 * @param null $timeout
-	 * @param null $user_agent
-	 * @param array $args
+	 * @param array  $headers
+	 * @param null   $body
+	 * @param null   $timeout
+	 * @param null   $user_agent
+	 * @param array  $args
 	 *
 	 * @return Response
 	 */
@@ -20,9 +20,9 @@ interface Api_Service {
 	/**
 	 * @param $path
 	 * @param array $headers
-	 * @param null $body
-	 * @param null $timeout
-	 * @param null $user_agent
+	 * @param null  $body
+	 * @param null  $timeout
+	 * @param null  $user_agent
 	 * @param array $args
 	 *
 	 * @return Response

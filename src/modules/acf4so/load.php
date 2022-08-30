@@ -8,20 +8,17 @@
  * @package wordlift
  */
 
-
 use Wordlift\Modules\Acf4so\Installer;
 use Wordlift\Modules\Acf4so\Notices;
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Wordlift\Modules\Acf4so\Module;
-
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WL_ACF4SO_DIR_NAME', dirname( __FILE__ ) );
+define( 'WL_ACF4SO_DIR_NAME', __DIR__ );
 
 function __wl_acf4so_load() {
 	// Autoloader for plugin itself.
@@ -29,8 +26,8 @@ function __wl_acf4so_load() {
 		require WL_ACF4SO_DIR_NAME . '/vendor/autoload.php';
 	}
 
-	if (  ! file_exists(ABSPATH . 'wp-admin/includes/plugin-install.php') ||
-	      ! file_exists( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' ) ) {
+	if ( ! file_exists( ABSPATH . 'wp-admin/includes/plugin-install.php' ) ||
+		  ! file_exists( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' ) ) {
 		return;
 	}
 
@@ -43,7 +40,6 @@ function __wl_acf4so_load() {
 
 	$container_builder->compile();
 
-
 	/**
 	 * @var $installer \Wordlift\Modules\Acf4so\Installer
 	 */
@@ -53,9 +49,9 @@ function __wl_acf4so_load() {
 	/**
 	 * @var $notices \Wordlift\Modules\Acf4so\Notices
 	 */
-	$notices = $container_builder->get(Notices::class );
+	$notices = $container_builder->get( Notices::class );
 	$notices->register_hooks();
-	
+
 }
 
 add_action( 'plugins_loaded', '__wl_acf4so_load' );

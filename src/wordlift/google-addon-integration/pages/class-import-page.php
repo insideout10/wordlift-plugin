@@ -6,7 +6,6 @@ use Wordlift_Admin_Page;
 
 class Import_Page extends Wordlift_Admin_Page {
 
-
 	/**
 	 * {@inheritdoc}
 	 */
@@ -36,15 +35,18 @@ class Import_Page extends Wordlift_Admin_Page {
 			\Wordlift::get_instance()->get_version()
 		);
 
-		wp_localize_script( 'wl-gaddon-import-page', '_wlGaddonImportSettings', array(
-			'restUrl'    => get_rest_url(),
-			'nonce'      => wp_create_nonce( 'wp_rest' ),
-			'entityUrls' => $this->get_entity_urls()
-		) );
+		wp_localize_script(
+			'wl-gaddon-import-page',
+			'_wlGaddonImportSettings',
+			array(
+				'restUrl'    => get_rest_url(),
+				'nonce'      => wp_create_nonce( 'wp_rest' ),
+				'entityUrls' => $this->get_entity_urls(),
+			)
+		);
 
 		parent::render();
 	}
-
 
 	/**
 	 * {@inheritdoc}
@@ -75,7 +77,7 @@ class Import_Page extends Wordlift_Admin_Page {
 			return array();
 		}
 
-		return explode( ",", $entities );
+		return explode( ',', $entities );
 	}
 
 }

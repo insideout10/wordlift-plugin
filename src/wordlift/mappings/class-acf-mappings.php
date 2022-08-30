@@ -23,9 +23,12 @@ class Acf_Mappings {
 	public function __construct() {
 
 		$that = $this;
-		add_action( 'plugins_loaded', function () use ( $that ) {
-			$that->add_acf_option_to_mappings_ui();
-		} );
+		add_action(
+			'plugins_loaded',
+			function () use ( $that ) {
+				$that->add_acf_option_to_mappings_ui();
+			}
+		);
 
 	}
 
@@ -35,7 +38,7 @@ class Acf_Mappings {
 			return array();
 		}
 
-		add_filter( 'wl_mappings_field_types', array( $this, 'wl_mappings_field_types', ) );
+		add_filter( 'wl_mappings_field_types', array( $this, 'wl_mappings_field_types' ) );
 	}
 
 	/**

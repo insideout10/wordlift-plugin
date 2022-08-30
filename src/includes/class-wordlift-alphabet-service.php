@@ -151,8 +151,8 @@ class Wordlift_Alphabet_Service {
 		}
 
 		return $letters + array(
-				'#' => array(),
-			);
+			'#' => array(),
+		);
 	}
 
 }

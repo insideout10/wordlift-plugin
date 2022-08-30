@@ -38,7 +38,7 @@ class Wordlift_Install_3_23_4 extends Wordlift_Install {
 		);
 
 		update_term_meta( $term['term_id'], '_wl_name', 'WebPage' );
-		update_term_meta( $term['term_id'], '_wl_uri', "http://schema.org/WebPage" );
+		update_term_meta( $term['term_id'], '_wl_uri', 'http://schema.org/WebPage' );
 
 	}
 

@@ -27,7 +27,7 @@ class Analysis_Response_Ops_Factory {
 	 * Analysis_Response_Ops constructor.
 	 *
 	 * @param Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service}.
-	 * @param Entity_Helper $entity_helper The {@link Entity_Helper}.
+	 * @param Entity_Helper               $entity_helper The {@link Entity_Helper}.
 	 *
 	 * @since 3.25.1
 	 */
@@ -53,7 +53,8 @@ class Analysis_Response_Ops_Factory {
 			$this->entity_uri_service,
 			$this->entity_helper,
 			$json,
-			$post_id );
+			$post_id
+		);
 	}
 
 	/**
@@ -70,7 +71,7 @@ class Analysis_Response_Ops_Factory {
 	public function create_with_response( $response, $post_id ) {
 
 		if ( ! isset( $response['body'] ) ) {
-			throw new \Exception( "`body` is required in response." );
+			throw new \Exception( '`body` is required in response.' );
 		}
 
 		return $this->create( json_decode( $response['body'] ), $post_id );

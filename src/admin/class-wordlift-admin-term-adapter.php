@@ -30,8 +30,8 @@ class Wordlift_Admin_Term_Adapter {
 	 */
 	public function __construct() {
 
-		add_action( 'registered_taxonomy', array( $this, 'add_action', ) );
-		add_action( 'edit_term', array( $this, 'edit_term', ), 10, 3 );
+		add_action( 'registered_taxonomy', array( $this, 'add_action' ) );
+		add_action( 'edit_term', array( $this, 'edit_term' ), 10, 3 );
 		$this->add_settings();
 
 	}
@@ -39,13 +39,17 @@ class Wordlift_Admin_Term_Adapter {
 	/**
 	 * Hook in to WordLift admin settings and add the term page specific
 	 * settings.
+	 *
 	 * @since 3.26.1
 	 */
 	public function add_settings() {
-		add_filter( 'wl_admin_settings', function ( $params ) {
-			$params['show_local_entities'] = true;
-			return $params;
-		} );
+		add_filter(
+			'wl_admin_settings',
+			function ( $params ) {
+				$params['show_local_entities'] = true;
+				return $params;
+			}
+		);
 	}
 
 	/**
@@ -55,49 +59,48 @@ class Wordlift_Admin_Term_Adapter {
 	 * @param string $taxonomy Current taxonomy slug.
 	 *
 	 * @since 3.20.0
-	 *
 	 */
 	public function edit_form_fields( $tag, $taxonomy ) {
 
-	    // If disabled via filter, return;
+		// If disabled via filter, return;
 		if ( ! apply_filters( 'wl_feature__enable__term-entity', true ) ) {
-		    return;
-        }
+			return;
+		}
 
 		global $wp_version;
 
 		// Enqueue the JavaScript app.
 		if ( version_compare( $wp_version, '5.0', '>=' ) ) {
-			$term_asset = include plugin_dir_path( dirname( __FILE__ ) ) . 'js/dist/term.asset.php';
-			wp_enqueue_script( 'wl-term', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/term.js', array_merge( array( 'wp-util' ), $term_asset['dependencies'] ), Wordlift::get_instance()->get_version(), true );
+			$term_asset = include plugin_dir_path( __DIR__ ) . 'js/dist/term.asset.php';
+			wp_enqueue_script( 'wl-term', plugin_dir_url( __DIR__ ) . 'js/dist/term.js', array_merge( array( 'wp-util' ), $term_asset['dependencies'] ), Wordlift::get_instance()->get_version(), true );
 		} else {
-			wp_enqueue_script( 'wl-term', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/term.full.js', array( 'wp-util' ), Wordlift::get_instance()->get_version(), true );
+			wp_enqueue_script( 'wl-term', plugin_dir_url( __DIR__ ) . 'js/dist/term.full.js', array( 'wp-util' ), Wordlift::get_instance()->get_version(), true );
 		}
 
-		wp_enqueue_style( 'wl-term', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/term.css', array(), Wordlift::get_instance()->get_version() );
+		wp_enqueue_style( 'wl-term', plugin_dir_url( __DIR__ ) . 'js/dist/term.css', array(), Wordlift::get_instance()->get_version() );
 
 		$values = get_term_meta( $tag->term_id, self::META_KEY );
 
 		/**
 		 * @since 3.31.3
-         * @see https://github.com/insideout10/wordlift-plugin/issues/1446
-         * This field should be hidden by default
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/1446
+		 * This field should be hidden by default
 		 */
 		if ( ! $values ) {
-		    return;
-        }
+			return;
+		}
 
 		?>
-        <tr class="form-field term-name-wrap">
-            <th scope="row"><label for="wl-entity-id"><?php esc_html_e( 'Entity', 'term entity', 'wordlift' ); ?></label></th>
-            <td>
+		<tr class="form-field term-name-wrap">
+			<th scope="row"><label for="wl-entity-id"><?php esc_html_e( 'Entity', 'term entity', 'wordlift' ); ?></label></th>
+			<td>
 				<?php foreach ( $values as $value ) { ?>
-                    <input type="text" name="wl_entity_id[]" value="<?php echo esc_attr( $value ); ?>"/>
+					<input type="text" name="wl_entity_id[]" value="<?php echo esc_attr( $value ); ?>"/>
 				<?php } ?>
-                <div id="wl-term-entity-id"></div>
-                <p class="description"><?php esc_html_e( 'The entity bound to the term.', 'wordlift' ); ?></p>
-            </td>
-        </tr>
+				<div id="wl-term-entity-id"></div>
+				<p class="description"><?php esc_html_e( 'The entity bound to the term.', 'wordlift' ); ?></p>
+			</td>
+		</tr>
 		<?php
 	}
 
@@ -111,7 +114,7 @@ class Wordlift_Admin_Term_Adapter {
 	public function add_action( $taxonomy ) {
 		/**
 		 * Filter wl_feature__enable__taxonomy_term_entity_mapping renamed to wl_feature__enable__term-entity.
-         **/
+		 */
 
 		add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_form_fields' ), 10, 2 );
 
@@ -140,7 +143,7 @@ class Wordlift_Admin_Term_Adapter {
 			return;
 		}
 
-        $entity_ids = array_map( 'esc_url_raw', wp_unslash( $_POST['wl_entity_id'] ) );
+		$entity_ids = array_map( 'esc_url_raw', wp_unslash( $_POST['wl_entity_id'] ) );
 		// Update.
 		//
 		// Only use mb_* functions when mbstring is available.
@@ -149,13 +152,21 @@ class Wordlift_Admin_Term_Adapter {
 		if ( extension_loaded( 'mbstring' ) ) {
 			mb_regex_encoding( 'UTF-8' );
 
-			$merged = array_reduce( $entity_ids, function ( $carry, $item ) {
-				return array_merge( $carry, mb_split( "\x{2063}", wp_unslash( $item ) ) );
-			}, array() );
+			$merged = array_reduce(
+				$entity_ids,
+				function ( $carry, $item ) {
+					return array_merge( $carry, mb_split( "\x{2063}", wp_unslash( $item ) ) );
+				},
+				array()
+			);
 		} else {
-			$merged = array_reduce( $entity_ids, function ( $carry, $item ) {
-				return array_merge( $carry, preg_split( "/\x{2063}/u", wp_unslash( $item ) ) );
-			}, array() );
+			$merged = array_reduce(
+				$entity_ids,
+				function ( $carry, $item ) {
+					return array_merge( $carry, preg_split( "/\x{2063}/u", wp_unslash( $item ) ) );
+				},
+				array()
+			);
 		}
 
 		delete_term_meta( $term_id, self::META_KEY );

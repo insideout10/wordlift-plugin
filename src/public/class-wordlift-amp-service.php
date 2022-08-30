@@ -32,6 +32,7 @@ class Wordlift_AMP_Service {
 
 	/**
 	 * Create a {@link Wordlift_AMP_Service} instance.
+	 *
 	 * @since 3.19.1
 	 *
 	 * @param \Wordlift_Jsonld_Service $jsonld_service
@@ -40,8 +41,8 @@ class Wordlift_AMP_Service {
 
 		$this->jsonld_service = $jsonld_service;
 
-		add_action( 'amp_init', array( $this, 'register_entity_cpt_with_amp_plugin', ) );
-		add_filter( 'amp_post_template_metadata', array( $this, 'amp_post_template_metadata', ), 99, 2 );
+		add_action( 'amp_init', array( $this, 'register_entity_cpt_with_amp_plugin' ) );
+		add_filter( 'amp_post_template_metadata', array( $this, 'amp_post_template_metadata' ), 99, 2 );
 
 	}
 
@@ -71,7 +72,7 @@ class Wordlift_AMP_Service {
 	 *
 	 * @since 3.19.1
 	 *
-	 * @param array $metadata Metadata.
+	 * @param array   $metadata Metadata.
 	 * @param WP_Post $post Post.
 	 *
 	 * @return array Return WordLift's generated JSON-LD.
@@ -85,11 +86,11 @@ class Wordlift_AMP_Service {
 	 * Check if current page is amp endpoint.
 	 *
 	 * @since 3.20.0
-	 * 
+	 *
 	 * @return bool
 	 */
 	public static function is_amp_endpoint() {
-		return function_exists('is_amp_endpoint') && is_amp_endpoint();
+		return function_exists( 'is_amp_endpoint' ) && is_amp_endpoint();
 	}
 
 }

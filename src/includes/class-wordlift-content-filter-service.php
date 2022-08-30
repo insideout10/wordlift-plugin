@@ -75,11 +75,10 @@ class Wordlift_Content_Filter_Service {
 	/**
 	 * Create a {@link Wordlift_Content_Filter_Service} instance.
 	 *
-	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Entity_Service     $entity_service The {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
 	 *
 	 * @since 3.8.0
-	 *
 	 */
 	protected function __construct( $entity_service, $entity_uri_service ) {
 
@@ -116,10 +115,9 @@ class Wordlift_Content_Filter_Service {
 	 *
 	 * @return string The filtered content.
 	 * @since 3.8.0
-	 *
 	 */
 	public function the_content( $content ) {
-		$this->log->trace( "Filtering content [ " . ( is_singular() ? 'yes' : 'no' ) . " ]..." );
+		$this->log->trace( 'Filtering content [ ' . ( is_singular() ? 'yes' : 'no' ) . ' ]...' );
 
 		// Links should be added only on the front end and not for RSS.
 		if ( is_feed() || is_admin() || is_search() ) {
@@ -144,10 +142,14 @@ class Wordlift_Content_Filter_Service {
 
 		// Replace each match of the entity tag with the entity link. If an error
 		// occurs fail silently returning the original content.
-		return preg_replace_callback( self::PATTERN, array(
-			$this,
-			'link',
-		), $content ) ?: $content;
+		return preg_replace_callback(
+			self::PATTERN,
+			array(
+				$this,
+				'link',
+			),
+			$content
+		) ?: $content;
 	}
 
 	/**
@@ -157,7 +159,6 @@ class Wordlift_Content_Filter_Service {
 	 *
 	 * @return string The replaced text with the link to the entity page.
 	 * @since 3.8.0
-	 *
 	 */
 	private function link( $matches ) {
 
@@ -166,14 +167,12 @@ class Wordlift_Content_Filter_Service {
 		$uri       = $matches[3];
 		$label     = $matches[4];
 
-
 		/**
 		 * If the entity is already linked, dont send query to the db.
 		 */
 		if ( $this->is_already_linked( $uri ) ) {
 			return $label;
 		}
-
 
 		$link = - 1 < strpos( $css_class, 'wl-link' );
 
@@ -193,7 +192,6 @@ class Wordlift_Content_Filter_Service {
 
 		$object_id   = $content->get_id();
 		$object_type = $content->get_object_type_enum();
-
 
 		$no_link = - 1 < strpos( $css_class, 'wl-no-link' );
 
@@ -221,16 +219,15 @@ class Wordlift_Content_Filter_Service {
 		}
 
 		return Link_Builder::create( $uri, $object_id )
-		                   ->label( $label )
-		                   ->href( $href )
-		                   ->generate_link();
+						   ->label( $label )
+						   ->href( $href )
+						   ->generate_link();
 	}
-
 
 	/**
 	 * Get a string to be used as a title attribute in links to a post
 	 *
-	 * @param int $post_id The post id of the post being linked.
+	 * @param int    $post_id The post id of the post being linked.
 	 * @param string $ignore_label A label to ignore.
 	 *
 	 * @return string    The title to be used in the link. An empty string when
@@ -241,7 +238,6 @@ class Wordlift_Content_Filter_Service {
 	 *
 	 * As of 3.32.0 this method is not used anywhere in the core, this should be removed
 	 * from tests and companion plugins.
-	 *
 	 */
 	function get_link_title( $post_id, $ignore_label, $object_type = Object_Type_Enum::POST ) {
 		return $this->object_link_provider->get_link_title( $post_id, $ignore_label, $object_type );
@@ -255,12 +251,11 @@ class Wordlift_Content_Filter_Service {
 	 *
 	 * @return array An array of URIs.
 	 * @since 3.14.2
-	 *
 	 */
 	public function get_entity_uris( $content ) {
 
 		$matches = array();
-		preg_match_all( Wordlift_Content_Filter_Service::PATTERN, $content, $matches );
+		preg_match_all( self::PATTERN, $content, $matches );
 
 		// We need to use `array_values` here in order to avoid further `json_encode`
 		// to turn it into an object (since if the 3rd match isn't found the index
@@ -269,7 +264,6 @@ class Wordlift_Content_Filter_Service {
 		// See https://github.com/insideout10/wordlift-plugin/issues/646.
 		return array_values( array_unique( $matches[3] ) );
 	}
-
 
 	/**
 	 * @param $entity_uri

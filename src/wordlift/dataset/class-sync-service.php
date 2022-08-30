@@ -9,7 +9,7 @@ use Wordlift\Object_Type_Enum;
 
 class Sync_Service {
 	const JSONLD_HASH = 'jsonld_hash';
-	const SYNCED_GMT = 'synced_gmt';
+	const SYNCED_GMT  = 'synced_gmt';
 
 	/**
 	 * @var \Wordlift_Log_Service
@@ -52,10 +52,10 @@ class Sync_Service {
 	/**
 	 * Constructor.
 	 *
-	 * @param Api_Service $api_service The {@link Api_Service} used to communicate with the remote APIs.
+	 * @param Api_Service                 $api_service The {@link Api_Service} used to communicate with the remote APIs.
 	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
-	 * @param Jsonld_Service $jsonld_service
-	 * @param \Wordlift_Entity_Service $entity_service
+	 * @param Jsonld_Service              $jsonld_service
+	 * @param \Wordlift_Entity_Service    $entity_service
 	 */
 	public function __construct( $api_service, $sync_object_adapter_factory, $jsonld_service, $entity_service ) {
 
@@ -68,15 +68,18 @@ class Sync_Service {
 		$this->batch_size                  = 10;
 
 		// You need to initialize this early, otherwise the Background Process isn't registered in AJAX calls.
-//		$this->sync_background_process = new Sync_Background_Process( $this );;
+		// $this->sync_background_process = new Sync_Background_Process( $this );;
 
 		// Exclude the JSONLD_HASH meta key from those that require a resync.
-		add_filter( 'wl_dataset__sync_hooks__ignored_meta_keys', function ( $args ) {
-			$args[] = Sync_Service::JSONLD_HASH;
-			$args[] = Sync_Service::SYNCED_GMT;
+		add_filter(
+			'wl_dataset__sync_hooks__ignored_meta_keys',
+			function ( $args ) {
+				$args[] = Sync_Service::JSONLD_HASH;
+				$args[] = Sync_Service::SYNCED_GMT;
 
-			return $args;
-		} );
+				return $args;
+			}
+		);
 
 		self::$instance = $this;
 	}
@@ -114,8 +117,9 @@ class Sync_Service {
 		}
 
 		$response = $this->api_service->request(
-			'DELETE', sprintf( '/middleware/dataset?uri=%s', rawurlencode( $uri ) ) );
-
+			'DELETE',
+			sprintf( '/middleware/dataset?uri=%s', rawurlencode( $uri ) )
+		);
 
 		// Update the sync date in case of success, otherwise log an error.
 		if ( ! $response->is_success() ) {
@@ -132,7 +136,7 @@ class Sync_Service {
 
 	/**
 	 * @param Sync_Object_Adapter[] $objects
-	 * @param bool $force Force synchronization even if the json-ld hash hasn't changed.
+	 * @param bool                  $force Force synchronization even if the json-ld hash hasn't changed.
 	 *
 	 * @return bool
 	 * @throws Exception
@@ -169,13 +173,15 @@ class Sync_Service {
 
 		$blocking = apply_filters( 'wl_feature__enable__sync-blocking', false );
 		$response = $this->api_service->request(
-			'POST', '/middleware/dataset/batch',
-			array( 'Content-Type' => 'application/json', ),
+			'POST',
+			'/middleware/dataset/batch',
+			array( 'Content-Type' => 'application/json' ),
 			// Put the payload in a JSON array w/o decoding/encoding again.
 			'[ ' . implode( ', ', $payloads ) . ' ]',
 			$blocking ? 60 : 0.001,
 			null,
-			array( 'blocking' => $blocking ) );
+			array( 'blocking' => $blocking )
+		);
 
 		// Update the sync date in case of success, otherwise log an error.
 		if ( $blocking && ! $response->is_success() ) {
@@ -187,12 +193,13 @@ class Sync_Service {
 			$object   = $hash[0];
 			$new_hash = $hash[1];
 
-			$object->set_values( array(
-				self::JSONLD_HASH => $new_hash,
-				self::SYNCED_GMT  => current_time( 'mysql', true ),
-			) );
+			$object->set_values(
+				array(
+					self::JSONLD_HASH => $new_hash,
+					self::SYNCED_GMT  => current_time( 'mysql', true ),
+				)
+			);
 		}
-
 
 		/**
 		 * Allow 3rd parties to run additional sync work.
@@ -211,8 +218,15 @@ class Sync_Service {
 	private function get_payload_as_string( $object ) {
 		$type             = $object->get_type();
 		$object_id        = $object->get_object_id();
-		$jsonld_as_string = wp_json_encode( apply_filters( 'wl_dataset__sync_service__sync_item__jsonld',
-			$this->jsonld_service->get( $type, $object_id ), $type, $object_id ), 64 ); // JSON_UNESCAPED_SLASHES
+		$jsonld_as_string = wp_json_encode(
+			apply_filters(
+				'wl_dataset__sync_service__sync_item__jsonld',
+				$this->jsonld_service->get( $type, $object_id ),
+				$type,
+				$object_id
+			),
+			64
+		); // JSON_UNESCAPED_SLASHES
 		$uri              = $this->entity_service->get_uri( $object_id, $type );
 
 		// Entity URL isn't set, bail out.
@@ -220,11 +234,14 @@ class Sync_Service {
 			return false;
 		}
 
-		return wp_json_encode( array(
-			'uri'     => $uri,
-			'model'   => $jsonld_as_string,
-			'private' => ! ( $object->is_public() && $object->is_published() ),
-		), 64 ); // JSON_UNESCAPED_SLASHES
+		return wp_json_encode(
+			array(
+				'uri'     => $uri,
+				'model'   => $jsonld_as_string,
+				'private' => ! ( $object->is_public() && $object->is_published() ),
+			),
+			64
+		); // JSON_UNESCAPED_SLASHES
 	}
 
 	/**
@@ -241,8 +258,10 @@ class Sync_Service {
 
 		// Make a request to the remote endpoint.
 		$response = $this->api_service->request(
-			'DELETE', '/middleware/dataset?uri=' . rawurlencode( $uri ),
-			array( 'Content-Type' => 'application/ld+json', ) );
+			'DELETE',
+			'/middleware/dataset?uri=' . rawurlencode( $uri ),
+			array( 'Content-Type' => 'application/ld+json' )
+		);
 
 	}
 

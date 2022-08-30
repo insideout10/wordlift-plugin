@@ -1,6 +1,7 @@
 <?php
 
 namespace Wordlift\Admin;
+
 /**
  * @since 3.30.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
@@ -46,7 +47,7 @@ class Admin_User_Option {
 				'type'    => array(),
 				'name'    => array(),
 				'checked' => array(),
-			)
+			),
 		);
 		echo wp_kses( $this->get_checkbox( $is_checked ), $allowed_html );
 	}

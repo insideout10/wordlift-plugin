@@ -24,7 +24,7 @@ class Filler_Posts_Util {
 				new Same_Category_Filler_Posts( $post_id ),
 				new Same_Post_Type_Filler_Posts( $post_id ),
 			);
-		} else if ( $post_type === 'product' || ( is_array( $post_type ) && in_array( 'product', $post_type ) ) ) {
+		} elseif ( $post_type === 'product' || ( is_array( $post_type ) && in_array( 'product', $post_type ) ) ) {
 			$this->sources = array(
 				new Same_Post_Type_Same_Category_Posts( $post_id, 'product' ),
 				new Same_Post_Type_Filler_Posts( $post_id, 'product' ),
@@ -36,19 +36,21 @@ class Filler_Posts_Util {
 		}
 	}
 
-
 	/**
 	 * @param $posts array<\WP_Post>
 	 *
 	 * @return array<int>
 	 */
 	private function extract_post_ids( $posts ) {
-		return array_map( function ( $post ) {
-			/**
-			 * @var $post \WP_Post
-			 */
-			return $post->ID;
-		}, $posts );
+		return array_map(
+			function ( $post ) {
+				/**
+				 * @var $post \WP_Post
+				 */
+				return $post->ID;
+			},
+			$posts
+		);
 	}
 
 	public function get_filler_posts( $filler_count, $post_ids_to_be_excluded ) {
@@ -86,13 +88,16 @@ class Filler_Posts_Util {
 	 * @return array $posts array<\WP_Post>
 	 */
 	private function add_additional_properties_to_filler_posts( $posts ) {
-		return array_map( function ( $post ) {
-			$post->thumbnail  = get_the_post_thumbnail_url( $post->ID, 'medium' );
-			$post->permalink  = get_permalink( $post->ID );
-			$post->post_title = html_entity_decode( $post->post_title, ENT_QUOTES, 'UTF-8' );
+		return array_map(
+			function ( $post ) {
+				$post->thumbnail  = get_the_post_thumbnail_url( $post->ID, 'medium' );
+				$post->permalink  = get_permalink( $post->ID );
+				$post->post_title = html_entity_decode( $post->post_title, ENT_QUOTES, 'UTF-8' );
 
-			return $post;
-		}, $posts );
+				return $post;
+			},
+			$posts
+		);
 	}
 
 	/**
@@ -115,17 +120,16 @@ class Filler_Posts_Util {
 					'permalink' => get_permalink( $post_obj->ID ),
 					'thumbnail' => ( $thumbnail ) ? $thumbnail : WL_DEFAULT_THUMBNAIL_PATH,
 					'title'     => $post_obj->post_title,
-					'srcset'    => Srcset_Util::get_srcset( $post_obj->ID, Srcset_Util::NAVIGATOR_WIDGET )
+					'srcset'    => Srcset_Util::get_srcset( $post_obj->ID, Srcset_Util::NAVIGATOR_WIDGET ),
 				),
 				'entity' => array(
-					'id' => 0
-				)
+					'id' => 0,
+				),
 			);
 		}
 
 		return $filler_response;
 	}
-
 
 	/**
 	 * Called by wordlift navigator, converts all the posts to response format.
@@ -154,7 +158,7 @@ class Filler_Posts_Util {
 					'discount_pc'     => ( $product->get_sale_price() && ( $product->get_regular_price() > 0 ) ) ? round( 1 - ( $product->get_sale_price() / $product->get_regular_price() ), 2 ) * 100 : 0,
 					'average_rating'  => $product->get_average_rating(),
 					'rating_count'    => $product->get_rating_count(),
-					'rating_html'     => wc_get_rating_html( $product->get_average_rating(), $product->get_rating_count() )
+					'rating_html'     => wc_get_rating_html( $product->get_average_rating(), $product->get_rating_count() ),
 				),
 				'entity'  => array(),
 			);

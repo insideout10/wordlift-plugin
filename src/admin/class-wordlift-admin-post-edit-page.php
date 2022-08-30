@@ -24,8 +24,8 @@ class Wordlift_Admin_Post_Edit_Page {
 	 * Constants to be used instead of text inside FAQ
 	 * helper methods.
 	 */
-	const GUTENBERG = 'gutenberg';
-	const TINY_MCE = 'tiny_mce';
+	const GUTENBERG       = 'gutenberg';
+	const TINY_MCE        = 'tiny_mce';
 	const FAQ_LIST_BOX_ID = 'wl-faq-meta-list-box';
 
 	/** Constant to be used for translation domain */
@@ -55,13 +55,12 @@ class Wordlift_Admin_Post_Edit_Page {
 	 * @param \Wordlift $plugin The {@link Wordlift} plugin instance.
 	 *
 	 * @since 3.11.0
-	 *
 	 */
 	function __construct( $plugin ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_scripts_gutenberg', ) );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_scripts_gutenberg' ) );
 
 		// Bail out if we're in the UX Builder editor.
 		if ( $this->is_ux_builder_editor() ) {
@@ -71,7 +70,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		}
 
 		// Define the callbacks.
-		$callback = array( $this, 'enqueue_scripts', );
+		$callback = array( $this, 'enqueue_scripts' );
 		// Set a hook to enqueue scripts only when the edit page is displayed.
 		add_action( 'admin_print_scripts-post.php', $callback );
 		add_action( 'admin_print_scripts-post-new.php', $callback );
@@ -88,16 +87,16 @@ class Wordlift_Admin_Post_Edit_Page {
 	function is_gutenberg_page() {
 		if ( function_exists( 'is_gutenberg_page' ) && is_gutenberg_page() ) {
 			// The Gutenberg plugin is on.
-			return TRUE;
+			return true;
 		}
 
 		$current_screen = get_current_screen();
 		if ( method_exists( $current_screen, 'is_block_editor' ) && $current_screen->is_block_editor() ) {
 			// Gutenberg page on 5+.
-			return TRUE;
+			return true;
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -112,7 +111,7 @@ class Wordlift_Admin_Post_Edit_Page {
 	private function is_ux_builder_editor() {
 
 		return function_exists( 'ux_builder_is_editor' )
-		       && ux_builder_is_editor();
+			   && ux_builder_is_editor();
 	}
 
 	/**
@@ -144,7 +143,6 @@ class Wordlift_Admin_Post_Edit_Page {
 			return;
 		}
 
-
 		/*
 		 * Enqueue the edit screen JavaScript. The `wordlift-admin.bundle.js` file
 		 * is scheduled to replace the older `wordlift-admin.min.js` once client-side
@@ -154,7 +152,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		 *
 		 * @since 3.20.0 edit.js has been migrated to the new webpack configuration.
 		 */
-		$script_name = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/edit';
+		$script_name = plugin_dir_url( __DIR__ ) . 'js/dist/edit';
 
 		/**
 		 * Scripts_Helper introduced.
@@ -182,11 +180,11 @@ class Wordlift_Admin_Post_Edit_Page {
 				*
 				* @since 3.19.6
 				*/
-				//				// Require Angular.
-				//				'wl-angular',
-				//				'wl-angular-geolocation',
-				//				'wl-angular-touch',
-				//				'wl-angular-animate',
+				// Require Angular.
+				// 'wl-angular',
+				// 'wl-angular-geolocation',
+				// 'wl-angular-touch',
+				// 'wl-angular-animate',
 				/**
 				 * We need the `wp.hooks` global to allow the edit.js script to send actions.
 				 *
@@ -208,12 +206,12 @@ class Wordlift_Admin_Post_Edit_Page {
 	private function load_faq_scripts_and_styles() {
 		wp_enqueue_style(
 			'wl-faq-metabox-style',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/faq.css',
+			plugin_dir_url( __DIR__ ) . 'js/dist/faq.css',
 			array()
 		);
 		Scripts_Helper::enqueue_based_on_wordpress_version(
 			'wl-faq-metabox-script',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/faq',
+			plugin_dir_url( __DIR__ ) . 'js/dist/faq',
 			array( 'wp-polyfill' ),
 			true
 		);
@@ -226,20 +224,20 @@ class Wordlift_Admin_Post_Edit_Page {
 	 */
 	public function get_faq_settings() {
 		return array(
-			'restUrl'                 => get_rest_url( NULL, WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faq' ),
+			'restUrl'                 => get_rest_url( null, WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faq' ),
 			'listBoxId'               => self::FAQ_LIST_BOX_ID,
 			'nonce'                   => wp_create_nonce( 'wp_rest' ),
 			'postId'                  => get_the_ID(),
 			// Translation for warning, error message.
-			'invalidTagMessage'       => sprintf( __( 'Invalid tags %s is present in answer', self::WORDLIFT_TEXT_DOMAIN ), "{INVALID_TAGS}" ),
-			'invalidWordCountMessage' => sprintf( __( 'Answer word count must not exceed %s words', self::WORDLIFT_TEXT_DOMAIN ), "{ANSWER_WORD_COUNT_WARNING_LIMIT}" ),
+			'invalidTagMessage'       => sprintf( __( 'Invalid tags %s is present in answer', self::WORDLIFT_TEXT_DOMAIN ), '{INVALID_TAGS}' ),
+			'invalidWordCountMessage' => sprintf( __( 'Answer word count must not exceed %s words', self::WORDLIFT_TEXT_DOMAIN ), '{ANSWER_WORD_COUNT_WARNING_LIMIT}' ),
 			'questionText'            => __( 'Question', self::WORDLIFT_TEXT_DOMAIN ),
 			'answerText'              => __( 'Answer', self::WORDLIFT_TEXT_DOMAIN ),
 			'addQuestionOrAnswerText' => __( 'Add Question / Answer', self::WORDLIFT_TEXT_DOMAIN ),
 			'addQuestionText'         => __( 'Add Question', self::WORDLIFT_TEXT_DOMAIN ),
 			'addAnswerText'           => __( 'Add Answer', self::WORDLIFT_TEXT_DOMAIN ),
 			'noFaqItemsText'          => __( 'Highlight a question in content, then click Add Question.', self::WORDLIFT_TEXT_DOMAIN ),
-			'updatingText'          => __( 'Updating...', self::WORDLIFT_TEXT_DOMAIN )
+			'updatingText'            => __( 'Updating...', self::WORDLIFT_TEXT_DOMAIN ),
 		);
 	}
 
@@ -256,9 +254,9 @@ class Wordlift_Admin_Post_Edit_Page {
 		if ( $editor === self::GUTENBERG ) {
 			Scripts_Helper::enqueue_based_on_wordpress_version(
 				'wl-faq-gutenberg-plugin',
-				plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/block-editor-faq-plugin',
+				plugin_dir_url( __DIR__ ) . 'js/dist/block-editor-faq-plugin',
 				array( 'wp-polyfill' ),
-				TRUE
+				true
 			);
 		}
 	}
@@ -271,11 +269,11 @@ class Wordlift_Admin_Post_Edit_Page {
 	public function enqueue_scripts_gutenberg() {
 		// Load FAQ settings. - Disabled for now
 		// $this->load_faq_scripts_and_styles();
-		//$this->load_faq_settings( self::GUTENBERG );
+		// $this->load_faq_settings( self::GUTENBERG );
 
 		wp_register_script(
 			'wl-block-editor',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/block-editor.js',
+			plugin_dir_url( __DIR__ ) . 'js/dist/block-editor.js',
 			array(
 				'react',
 				'wordlift',
@@ -288,32 +286,36 @@ class Wordlift_Admin_Post_Edit_Page {
 			),
 			$this->plugin->get_version()
 		);
-		wp_localize_script( 'wl-block-editor', '_wlBlockEditorSettings', array(
-			'root'  => esc_url_raw( rest_url() ),
-			'nonce' => wp_create_nonce( 'wp_rest' )
-		) );
+		wp_localize_script(
+			'wl-block-editor',
+			'_wlBlockEditorSettings',
+			array(
+				'root'  => esc_url_raw( rest_url() ),
+				'nonce' => wp_create_nonce( 'wp_rest' ),
+			)
+		);
 
 		/*
 		 * @since 3.25.1 The hook is used by the wp_localize_script to register the _wlEntityTypes global object.
 		 */
 		wp_enqueue_style(
 			'wl-block-editor',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/block-editor.css',
+			plugin_dir_url( __DIR__ ) . 'js/dist/block-editor.css',
 			array(),
 			$this->plugin->get_version()
 		);
 
 		wp_enqueue_script(
 			'wl-autocomplete-select',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/autocomplete-select.js',
+			plugin_dir_url( __DIR__ ) . 'js/dist/autocomplete-select.js',
 			array(),
 			$this->plugin->get_version(),
-			TRUE
+			true
 		);
 
 		wp_enqueue_style(
 			'wl-autocomplete-select',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/autocomplete-select.css',
+			plugin_dir_url( __DIR__ ) . 'js/dist/autocomplete-select.css',
 			array(),
 			$this->plugin->get_version()
 		);

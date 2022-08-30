@@ -38,7 +38,6 @@ class Wordlift_Publisher_Service {
 	 *
 	 * @return int The number of potential publishers.
 	 * @since 3.11.0
-	 *
 	 */
 	public function count() {
 
@@ -46,19 +45,21 @@ class Wordlift_Publisher_Service {
 		// or Organization.
 
 		// Get only the ids as all we need is the count.
-		$entities = get_posts( array(
-			'post_type'      => Wordlift_Entity_Service::valid_entity_post_types(),
-			'post_status'    => 'publish',
-			'posts_per_page' => - 1,
-			'tax_query'      => array(
-				array(
-					'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
-					'field'    => 'slug',
-					'terms'    => array( 'organization', 'person' ),
+		$entities = get_posts(
+			array(
+				'post_type'      => Wordlift_Entity_Service::valid_entity_post_types(),
+				'post_status'    => 'publish',
+				'posts_per_page' => - 1,
+				'tax_query'      => array(
+					array(
+						'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+						'field'    => 'slug',
+						'terms'    => array( 'organization', 'person' ),
+					),
 				),
-			),
-			'fields'         => 'ids',
-		) );
+				'fields'         => 'ids',
+			)
+		);
 
 		// Finally return the count.
 		return count( $entities );
@@ -71,7 +72,7 @@ class Wordlift_Publisher_Service {
 	 *
 	 * @since   3.15.0
 	 *
-	 * @param string $search The search string.
+	 * @param string   $search The search string.
 	 * @param WP_Query $wp_query The {@link WP_Query} instance.
 	 *
 	 * @return array|string An array of results.
@@ -110,68 +111,81 @@ class Wordlift_Publisher_Service {
 	 *
 	 * @return array An array of results in a select2 friendly format.
 	 * @since 3.11.0
-	 *
 	 */
 	public function query( $filter = '' ) {
 
 		// Search for the filter in the titles only.
-		add_filter( 'posts_search', array(
-			$this,
-			'limit_search_to_title',
-		), 10, 2 );
+		add_filter(
+			'posts_search',
+			array(
+				$this,
+				'limit_search_to_title',
+			),
+			10,
+			2
+		);
 
 		/*
 		 * Search for entities which are either a Person
 		 * or Organization. Sort the results by title in ascending order.
 		 */
-		$entities = get_posts( array(
-			'post_type'      => Wordlift_Entity_Service::valid_entity_post_types(),
-			'post_status'    => 'publish',
-			'posts_per_page' => - 1,
-			'tax_query'      => array(
-				array(
-					'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
-					'field'    => 'slug',
-					'terms'    => array( 'organization', 'person' ),
+		$entities = get_posts(
+			array(
+				'post_type'      => Wordlift_Entity_Service::valid_entity_post_types(),
+				'post_status'    => 'publish',
+				'posts_per_page' => - 1,
+				'tax_query'      => array(
+					array(
+						'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+						'field'    => 'slug',
+						'terms'    => array( 'organization', 'person' ),
+					),
 				),
-			),
-			's'              => $filter,
-			'orderby'        => 'title',
-			'order'          => 'ASC',
-		) );
+				's'              => $filter,
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+			)
+		);
 
 		// Remove the search filter added before the query.
-		remove_filter( 'posts_search', array(
-			$this,
-			'limit_search_to_title',
-		), 10, 2 );
+		remove_filter(
+			'posts_search',
+			array(
+				$this,
+				'limit_search_to_title',
+			),
+			10,
+			2
+		);
 
 		// Set a reference to ourselves to pass to the closure.
 		$publisher_service = $this;
 
 		// Map the results in a `Select2` compatible array.
-		return array_map( function ( $entity ) use ( $publisher_service ) {
-			$type     = wp_get_post_terms( $entity->ID, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
-			$thumb_id = get_post_thumbnail_id( $entity->ID );
+		return array_map(
+			function ( $entity ) use ( $publisher_service ) {
+				$type     = wp_get_post_terms( $entity->ID, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+				$thumb_id = get_post_thumbnail_id( $entity->ID );
 
-			return array(
-				'id'            => $entity->ID,
-				'text'          => $entity->post_title,
-				'type'          => $type[0]->name,
-				'thumbnail_url' => $publisher_service->get_attachment_image_url( $thumb_id ),
-			);
-		}, $entities );
+				return array(
+					'id'            => $entity->ID,
+					'text'          => $entity->post_title,
+					'type'          => $type[0]->name,
+					'thumbnail_url' => $publisher_service->get_attachment_image_url( $thumb_id ),
+				);
+			},
+			$entities
+		);
 	}
 
 	/**
 	 * Get the thumbnail's URL.
 	 *
-	 * @param int $attachment_id The attachment id.
+	 * @param int    $attachment_id The attachment id.
 	 * @param string $size The attachment size (default = 'thumbnail').
 	 *
 	 * @return string|bool The image URL or false if not found.
 	 * @since 3.11.0
-	 *
 	 */
 	public function get_attachment_image_url( $attachment_id, $size = 'thumbnail' ) {
 
@@ -188,7 +202,6 @@ class Wordlift_Publisher_Service {
 	 *
 	 * @return string $content metabox content with additional instructions.
 	 * @since  3.19.0
-	 *
 	 */
 	public function add_featured_image_instruction( $content ) {
 		// Get the current post ID.
@@ -196,7 +209,6 @@ class Wordlift_Publisher_Service {
 
 		// Get the publisher id.
 		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
-
 
 		// Bail if for some reason the post id is not set.
 		if (
@@ -219,12 +231,17 @@ class Wordlift_Publisher_Service {
 		if ( in_array( 'organization', $terms, true ) ) {
 			// Add the featured image description when the type is "Organization".
 
-			$link    = sprintf( '<a target="_blank" href="%s">%s</a>',
+			$link     = sprintf(
+				'<a target="_blank" href="%s">%s</a>',
 				esc_attr__( 'https://developers.google.com/search/docs/data-types/article#logo-guidelines', 'wordlift' ),
-				esc_html__( 'AMP logo guidelines', 'wordlift' ) );
-			$content .= sprintf( '<p>'
-			                     . esc_html_x( 'According to the %s, the logo should fit in a 60x600px rectangle, and either be exactly 60px high (preferred), or exactly 600px wide. For example, 450x45px would not be acceptable, even though it fits in the 600x60px rectangle. To comply with the guidelines, WordLift will automatically resize the Featured Image for structured data formats.', 'After "According to the" goes the link to the "AMP logo guidelines".', 'wordlift' )
-			                     . '</p>', $link );
+				esc_html__( 'AMP logo guidelines', 'wordlift' )
+			);
+			$content .= sprintf(
+				'<p>'
+								 . esc_html_x( 'According to the %s, the logo should fit in a 60x600px rectangle, and either be exactly 60px high (preferred), or exactly 600px wide. For example, 450x45px would not be acceptable, even though it fits in the 600x60px rectangle. To comply with the guidelines, WordLift will automatically resize the Featured Image for structured data formats.', 'After "According to the" goes the link to the "AMP logo guidelines".', 'wordlift' )
+								 . '</p>',
+				$link
+			);
 		}
 
 		// Finally return the content.

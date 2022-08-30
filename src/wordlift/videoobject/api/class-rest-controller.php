@@ -7,8 +7,8 @@
 namespace Wordlift\Videoobject\Api;
 
 use Wordlift\Videoobject\Background_Process\Videoobject_Background_Process;
-use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 use Wordlift\Videoobject\Data\Video\Video;
+use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 use WP_REST_Server;
 
 class Rest_Controller {
@@ -28,13 +28,16 @@ class Rest_Controller {
 
 	public function register_all_routes() {
 		$that = $this;
-		add_action( 'rest_api_init', function () use ( $that ) {
-			$that->register_get_all_videos_route();
-			$that->register_save_all_videos_route();
-			$that->register_get_sync_state_endpoint();
-			$that->register_background_process_start_endpoint();
-			$that->register_background_process_stop_endpoint();
-		} );
+		add_action(
+			'rest_api_init',
+			function () use ( $that ) {
+				$that->register_get_all_videos_route();
+				$that->register_save_all_videos_route();
+				$that->register_get_sync_state_endpoint();
+				$that->register_background_process_start_endpoint();
+				$that->register_background_process_stop_endpoint();
+			}
+		);
 	}
 
 	public function get_all_videos( $request ) {
@@ -60,7 +63,6 @@ class Rest_Controller {
 			$video_obj->from( (array) $video );
 			$storage->add_video( $post_id, $video_obj );
 		}
-
 
 	}
 
@@ -114,7 +116,6 @@ class Rest_Controller {
 		);
 	}
 
-
 	public function register_get_sync_state_endpoint() {
 		$that = $this;
 		register_rest_route(
@@ -149,7 +150,6 @@ class Rest_Controller {
 			)
 		);
 
-
 	}
 
 	public function register_background_process_stop_endpoint() {
@@ -169,6 +169,5 @@ class Rest_Controller {
 		);
 
 	}
-
 
 }

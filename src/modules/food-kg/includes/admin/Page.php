@@ -18,13 +18,19 @@ class Page {
 	}
 
 	public function register_hooks() {
-		add_action( 'admin_menu', [ $this, 'admin_menu' ] );
-		add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
+		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
 	public function admin_menu() {
-		add_submenu_page( 'wl_admin_menu', __( 'Ingredients', 'wordlift' ), __( 'Ingredients', 'wordlift' ),
-			'manage_options', 'wl_ingredients', [ $this, 'render' ] );
+		add_submenu_page(
+			'wl_admin_menu',
+			__( 'Ingredients', 'wordlift' ),
+			__( 'Ingredients', 'wordlift' ),
+			'manage_options',
+			'wl_ingredients',
+			array( $this, 'render' )
+		);
 	}
 
 	public function render() {

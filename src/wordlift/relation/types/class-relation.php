@@ -11,8 +11,6 @@
 
 namespace Wordlift\Relation\Types;
 
-use Wordlift\Object_Type_Enum;
-
 abstract class Relation {
 
 	/**
@@ -24,18 +22,20 @@ abstract class Relation {
 
 	/**
 	 * Represents a subject type.
+	 *
 	 * @var int {@link Object_Type_Enum}
 	 */
 	private $subject_type;
 
 	public function __construct( $id, $relation_type, $subject_type ) {
-		$this->id = $id;
+		$this->id            = $id;
 		$this->relation_type = $relation_type;
-		$this->subject_type = $subject_type;
+		$this->subject_type  = $subject_type;
 	}
 
 	/**
 	 * Return Object id.
+	 *
 	 * @return int
 	 */
 	public function get_object_id() {
@@ -54,9 +54,9 @@ abstract class Relation {
 		return $this->subject_type;
 	}
 
-
 	/**
 	 * Returns relation type.
+	 *
 	 * @return string Relation type {@link WL_WHAT_RELATION} etc.
 	 */
 	function get_relation_type() {

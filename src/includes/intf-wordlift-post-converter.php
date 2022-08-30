@@ -7,7 +7,6 @@
  *
  * @since   3.10.0
  * @package Wordlift
- *
  */
 
 /**
@@ -21,7 +20,7 @@ interface Wordlift_Post_Converter {
 	/**
 	 * Convert the specified post id.
 	 *
-	 * @param int $post_id The post id.
+	 * @param int   $post_id The post id.
 	 * @param array $references An array of posts referenced by the specified post.
 	 * @param array $references_infos
 	 *

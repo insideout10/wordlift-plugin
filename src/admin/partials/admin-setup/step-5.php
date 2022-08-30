@@ -1,12 +1,12 @@
 <!-- Pane 5 content -->
 <script type="text/html" id="page-4">
-    <h2 class="page-title">
+	<h2 class="page-title">
 		<?php esc_html_e( 'Country', 'wordlift' ); ?>
-    </h2>
+	</h2>
 
-    <p class="page-txt">
+	<p class="page-txt">
 		<?php esc_html_e( 'Each WordLift key can be used only in one language.', 'wordlift' ); ?>
-    </p>
+	</p>
 
 	<?php
 	// Get WP's locale.
@@ -18,7 +18,7 @@
 	$country  = isset( $parts[1] ) ? strtolower( $parts[1] ) : '';
 	?>
 
-    <br>
+	<br>
 
 	<?php
 	// Render country select element.
@@ -33,12 +33,12 @@
 	);
 	?>
 
-    <div class="btn-wrapper">
-        <input
-                type="button"
-                data-wl-next="wl-next"
-                class="wl-default-action"
-                value="<?php esc_attr_e( 'Next', 'wordlift' ); ?>"
-        >
-    </div>
+	<div class="btn-wrapper">
+		<input
+				type="button"
+				data-wl-next="wl-next"
+				class="wl-default-action"
+				value="<?php esc_attr_e( 'Next', 'wordlift' ); ?>"
+		>
+	</div>
 </script>

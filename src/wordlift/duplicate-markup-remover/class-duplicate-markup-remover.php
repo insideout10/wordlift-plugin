@@ -10,7 +10,7 @@ class Duplicate_Markup_Remover {
 			'totalTime',
 			'supply',
 			'tool',
-			'step'
+			'step',
 		),
 		'FAQPage' => array( 'mainEntity' ),
 		'Recipe'  => array(
@@ -22,14 +22,13 @@ class Duplicate_Markup_Remover {
 			'recipeIngredient',
 			'recipeInstructions',
 			'recipeYield',
-			'suitableForDiet'
+			'suitableForDiet',
 		),
 	);
 
 	public function __construct() {
 		add_filter( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 10, 2 );
 	}
-
 
 	/**
 	 * @param $jsonld array The final jsonld.
@@ -46,7 +45,6 @@ class Duplicate_Markup_Remover {
 		return $jsonld;
 	}
 
-
 	/**
 	 * @param array $jsonld
 	 *
@@ -54,8 +52,8 @@ class Duplicate_Markup_Remover {
 	 */
 	protected function should_alter_jsonld( $jsonld ) {
 		return ! is_array( $jsonld )
-		       || ! count( $jsonld ) > 1
-		       || ! array_key_exists( 0, $jsonld );
+			   || ! count( $jsonld ) > 1
+			   || ! array_key_exists( 0, $jsonld );
 	}
 
 	/**
@@ -64,7 +62,6 @@ class Duplicate_Markup_Remover {
 	 * @return array
 	 */
 	private function remove_type( $jsonld, $type_to_remove, $properties_to_remove ) {
-
 
 		if ( $this->should_alter_jsonld( $jsonld ) ) {
 			// Return early if there are no referenced entities.
@@ -107,7 +104,6 @@ class Duplicate_Markup_Remover {
 					unset( $value[ $property ] );
 				}
 			}
-
 		}
 
 		// Add the post jsonld to front of jsonld array.
@@ -115,7 +111,5 @@ class Duplicate_Markup_Remover {
 
 		return $jsonld;
 	}
-
-
 
 }

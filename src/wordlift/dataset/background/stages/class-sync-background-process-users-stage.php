@@ -25,13 +25,12 @@ class Sync_Background_Process_Users_Stage {
 
 		global $wpdb;
 		$in_post_type = $this->get_post_types_string();
-		$sql = "
+		$sql          = "
 			SELECT COUNT( DISTINCT post_author )
 			FROM $wpdb->posts
 			WHERE post_type IN ('$in_post_type')
 			AND post_status IN ( 'publish',  'future', 'draft', 'pending', 'private' )
 			";
-
 
 		return $wpdb->get_var( $sql );
 	}
@@ -40,7 +39,7 @@ class Sync_Background_Process_Users_Stage {
 
 		global $wpdb;
 		$in_post_type = $this->get_post_types_string();
-		$sql = "
+		$sql          = "
 			SELECT DISTINCT post_author
 			FROM $wpdb->posts
 			WHERE post_type IN ('$in_post_type')
@@ -57,7 +56,7 @@ class Sync_Background_Process_Users_Stage {
 	 * @return string
 	 */
 	protected function get_post_types_string() {
-		$post_types   = get_post_types( array( 'public' => true ) );
+		$post_types = get_post_types( array( 'public' => true ) );
 
 		return implode( "','", array_map( 'esc_sql', $post_types ) );
 	}

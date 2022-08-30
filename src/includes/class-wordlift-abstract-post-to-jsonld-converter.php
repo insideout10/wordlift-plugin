@@ -66,12 +66,11 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * Wordlift_Post_To_Jsonld_Converter constructor.
 	 *
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_User_Service $user_service A {@link Wordlift_User_Service} instance.
-	 * @param \Wordlift_Attachment_Service $attachment_service A {@link Wordlift_Attachment_Service} instance.
-	 * @param \Wordlift_Property_Getter $property_getter
+	 * @param \Wordlift_User_Service        $user_service A {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Attachment_Service  $attachment_service A {@link Wordlift_Attachment_Service} instance.
+	 * @param \Wordlift_Property_Getter     $property_getter
 	 *
 	 * @since 3.10.0
-	 *
 	 */
 	public function __construct( $entity_type_service, $user_service, $attachment_service, $property_getter ) {
 		$this->entity_type_service = $entity_type_service;
@@ -84,7 +83,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * Convert the provided {@link WP_Post} to a JSON-LD array. Any entity reference
 	 * found while processing the post is set in the $references array.
 	 *
-	 * @param int $post_id The post id.
+	 * @param int   $post_id The post id.
 	 * @param array $references An array of entity references.
 	 * @param array $references_infos
 	 *
@@ -113,8 +112,8 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 		 */
-		//		// Get the entity @type. We consider `post` BlogPostings.
-		//		$type = $this->entity_type_service->get( $post_id );
+		// Get the entity @type. We consider `post` BlogPostings.
+		// $type = $this->entity_type_service->get( $post_id );
 		$types = $this->entity_type_service->get_names( $post_id );
 		$type  = self::make_one( $types );
 
@@ -155,7 +154,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			if ( in_array( $type, array( 'Occupation', 'OccupationAggregationByEmployer' ) ) ) {
 				$jsonld['mainEntityOfPage'] = array(
 					'@type'        => 'WebPage',
-					'lastReviewed' => get_post_time( 'Y-m-d\TH:i:sP', true, $post, false )
+					'lastReviewed' => get_post_time( 'Y-m-d\TH:i:sP', true, $post, false ),
 				);
 			}
 		};
@@ -166,7 +165,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		// array so that the caller can do further processing, such as printing out
 		// more of those references.
 		$references_without_locations = Object_Relation_Service::get_instance()
-		                                                       ->get_references( $post_id, Object_Type_Enum::POST );
+															   ->get_references( $post_id, Object_Type_Enum::POST );
 
 		/*
 		 * Add the locations to the references.
@@ -177,24 +176,31 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		 */
 		// A reference to use in closure.
 		$entity_type_service = $this->entity_type_service;
-		$locations           = array_reduce( $references_without_locations, function ( $carry, $reference ) use ( $entity_type_service ) {
-			/**
-			 * @var $reference Reference
-			 */
-			// @see https://schema.org/location for the schema.org types using the `location` property.
-			if ( ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Action' )
-			     && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Event' )
-			     && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Organization' ) ) {
+		$locations           = array_reduce(
+			$references_without_locations,
+			function ( $carry, $reference ) use ( $entity_type_service ) {
+				/**
+				 * @var $reference Reference
+				 */
+				// @see https://schema.org/location for the schema.org types using the `location` property.
+				if ( ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Action' )
+				 && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Event' )
+				 && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Organization' ) ) {
 
-				return $carry;
-			}
-			$post_location_ids        = get_post_meta( $reference->get_id(), Wordlift_Schema_Service::FIELD_LOCATION );
-			$post_location_references = array_map( function ( $post_id ) {
-				return new Post_Reference( $post_id );
-			}, $post_location_ids );
+					return $carry;
+				}
+				$post_location_ids        = get_post_meta( $reference->get_id(), Wordlift_Schema_Service::FIELD_LOCATION );
+				$post_location_references = array_map(
+					function ( $post_id ) {
+						return new Post_Reference( $post_id );
+					},
+					$post_location_ids
+				);
 
-			return array_merge( $carry, $post_location_references );
-		}, array() );
+				return array_merge( $carry, $post_location_references );
+			},
+			array()
+		);
 
 		// Merge the references with the referenced locations if any.
 		$references = array_merge( $references_without_locations, $locations );
@@ -210,7 +216,6 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 *
 	 * @return string The property value without the context.
 	 * @since 3.10.0
-	 *
 	 */
 	public function relative_to_context( $value ) {
 
@@ -224,8 +229,8 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * Uses the cache service to store the results of this function for a day.
 	 *
 	 * @param $attachment_service Wordlift_Attachment_Service
-	 * @param WP_Post $post The target {@link WP_Post}.
-	 * @param array $jsonld The JSON-LD array.
+	 * @param WP_Post                                        $post The target {@link WP_Post}.
+	 * @param array                                          $jsonld The JSON-LD array.
 	 *
 	 * @since 3.10.0
 	 */
@@ -257,7 +262,8 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 
 		// Map the attachment ids to images' data structured for schema.org use.
 		$images_with_sizes = array_filter(
-			array_reduce( array_merge( $ids, $embeds, $gallery ),
+			array_reduce(
+				array_merge( $ids, $embeds, $gallery ),
 				function ( $carry, $item ) {
 					/*
 					* @todo: we're not sure that we're getting attachment data here, we
@@ -269,9 +275,12 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 						array( wp_get_attachment_image_src( $item, 'full' ) )
 					);
 
-					$sources_with_image = array_filter( $sources, function ( $source ) {
-						return ! empty( $source[0] );
-					} );
+					$sources_with_image = array_filter(
+						$sources,
+						function ( $source ) {
+							return ! empty( $source[0] );
+						}
+					);
 
 					// Get the attachment data.
 					// $attachment = wp_get_attachment_image_src( $item, 'full' );
@@ -282,7 +291,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 					// In some cases, you can delete the image from the database
 					// or from uploads dir, but the image id still exists as featured image
 					// or in [gallery] shortcode.
-					//					if ( empty( $attachment[0] ) ) {
+					// if ( empty( $attachment[0] ) ) {
 					if ( empty( $sources_with_image ) ) {
 						return $carry;
 					}
@@ -292,20 +301,26 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 						$carry,
 						$sources_with_image
 					);
-				}
+				},
 				// Initial array.
-				, array() )
+
+				array()
+			)
 		);
 
 		// Refactor data as per schema.org specifications.
-		$images = array_map( function ( $attachment ) {
-			return Wordlift_Abstract_Post_To_Jsonld_Converter::set_image_size(
-				array(
-					'@type' => 'ImageObject',
-					'url'   => $attachment[0],
-				), $attachment
-			);
-		}, $images_with_sizes );
+		$images = array_map(
+			function ( $attachment ) {
+				return Wordlift_Abstract_Post_To_Jsonld_Converter::set_image_size(
+					array(
+						'@type' => 'ImageObject',
+						'url'   => $attachment[0],
+					),
+					$attachment
+				);
+			},
+			$images_with_sizes
+		);
 
 		// Add images if present.
 		if ( 0 < count( $images ) ) {
@@ -325,7 +340,6 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 *  {@link Wordlift_Abstract_Post_To_Jsonld_Converter}.
 	 * @since  3.8.0
 	 * @access private
-	 *
 	 */
 	protected static function make_one( $value ) {
 
@@ -341,7 +355,6 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 *
 	 * @return array The enriched `ImageObject` array.
 	 * @since 3.14.0
-	 *
 	 */
 	public static function set_image_size( $image, $attachment ) {
 
@@ -360,19 +373,17 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		return $image;
 	}
 
-
 	/**
 	 * Add data to the JSON-LD using the `custom_fields` array which contains the definitions of property
 	 * for the post entity type.
 	 *
-	 * @param array $jsonld The JSON-LD array.
-	 * @param array $fields The entity types field array.
+	 * @param array   $jsonld The JSON-LD array.
+	 * @param array   $fields The entity types field array.
 	 * @param WP_Post $post The target {@link WP_Post} instance.
-	 * @param array $references The references array.
+	 * @param array   $references The references array.
 	 *
 	 * @since 3.20.0 This code moved from the above function `convert`, used for entity types defined in
 	 *  the {@link Wordlift_Schema_Service} class.
-	 *
 	 */
 	protected function process_type_custom_fields( &$jsonld, $fields, $post, &$references, &$references_infos ) {
 
@@ -396,24 +407,29 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			// Map the value to the property name.
 			// If we got an array with just one value, we return that one value.
 			// If we got a Wordlift_Property_Entity_Reference we get the URL.
-			$jsonld[ $name ] = self::make_one( array_map( function ( $item ) use ( $converter, &$references, &$references_infos ) {
+			$jsonld[ $name ] = self::make_one(
+				array_map(
+					function ( $item ) use ( $converter, &$references, &$references_infos ) {
 
-				if ( $item instanceof Wordlift_Property_Entity_Reference ) {
+						if ( $item instanceof Wordlift_Property_Entity_Reference ) {
 
-					$url = $item->get_url();
+							  $url = $item->get_url();
 
-					// The refactored converters require the entity id.
-					$references[] = $item->get_id();
+							  // The refactored converters require the entity id.
+							  $references[] = $item->get_id();
 
-					$references_infos[] = array( 'reference' => $item );
+							  $references_infos[] = array( 'reference' => $item );
 
-					return array(
-						'@id' => $url,
-					);
-				}
+							  return array(
+								  '@id' => $url,
+							  );
+						}
 
-				return $converter->relative_to_context( $item );
-			}, $value ) );
+						return $converter->relative_to_context( $item );
+					},
+					$value
+				)
+			);
 
 		}
 

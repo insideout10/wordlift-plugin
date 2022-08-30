@@ -18,12 +18,15 @@ use Wordlift\Object_Type_Enum;
  */
 function wl_core_check_relation_predicate_is_supported( $predicate ) {
 
-	return in_array( $predicate, array(
-		WL_WHAT_RELATION,
-		WL_WHEN_RELATION,
-		WL_WHERE_RELATION,
-		WL_WHO_RELATION,
-	) );
+	return in_array(
+		$predicate,
+		array(
+			WL_WHAT_RELATION,
+			WL_WHEN_RELATION,
+			WL_WHERE_RELATION,
+			WL_WHO_RELATION,
+		)
+	);
 }
 
 /**
@@ -52,11 +55,11 @@ function wl_core_get_relation_instances_table_name() {
 /**
  * Create a single relation instance if the given instance does not exist on the table
  *
- * @param int $subject_id The post ID | The entity post ID.
+ * @param int    $subject_id The post ID | The entity post ID.
  * @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
- * @param int $object_id The entity post ID.
- * @param int $subject_type Subject type ( post or comment or user or term ), defaults to {@link Object_Type_Enum::POST}
- * @param int $object_type Object type ( post or comment or user or term ), defaults to {@link Object_Type_Enum::POST}
+ * @param int    $object_id The entity post ID.
+ * @param int    $subject_type Subject type ( post or comment or user or term ), defaults to {@link Object_Type_Enum::POST}
+ * @param int    $object_type Object type ( post or comment or user or term ), defaults to {@link Object_Type_Enum::POST}
  *
  * @return integer|boolean Return then relation instance ID or false.
  * @uses   $wpdb->replace() to perform the query
@@ -107,7 +110,6 @@ function wl_core_add_relation_instance( $subject_id, $predicate, $object_id, $su
 	 * @param int $object_id The object {@link WP_Post} id.
 	 *
 	 * @since 3.16.0
-	 *
 	 */
 	do_action( 'wl_relation_added', $subject_id, $predicate, $object_id );
 
@@ -156,7 +158,6 @@ function wl_core_delete_relation_instances( $subject_id ) {
 	 * @param int $subject_id The subject {@link WP_Post} id.
 	 *
 	 * @since 3.16.0
-	 *
 	 */
 	do_action( 'wl_relation_deleted', $subject_id );
 
@@ -190,7 +191,7 @@ function wl_core_validate_filters_for_related( $filters ) {
 	return $filters;
 }
 
-///**
+// **
 // * Find all entities related to a given $subject_id
 // * If $predicate is omitted, $predicate filter is not applied
 // * @uses   wl_core_inner_get_related_entities() to perform the action
@@ -206,19 +207,19 @@ function wl_core_validate_filters_for_related( $filters ) {
 // *
 // * @return array Array of post entity objects.
 // */
-//function wl_core_get_related_entities( $subject_id, $filters = array() ) {
+// function wl_core_get_related_entities( $subject_id, $filters = array() ) {
 //
-//	$filters = wl_core_validate_filters_for_related( $filters );
+// $filters = wl_core_validate_filters_for_related( $filters );
 //
-//	return wl_core_inner_get_related_entities( "posts", $subject_id, $filters['predicate'], $filters['status'] );
-//}
+// return wl_core_inner_get_related_entities( "posts", $subject_id, $filters['predicate'], $filters['status'] );
+// }
 
 /**
  * Find all entity ids related to a given $subject_id.
  *
  * If $predicate is omitted, $predicate filter is not applied.
  *
- * @param int $subject_id The post ID | The entity post ID.
+ * @param int   $subject_id The post ID | The entity post ID.
  * @param array $filters Associative array formed like this:
  *                           <code>
  *                           $filters = array(
@@ -231,7 +232,6 @@ function wl_core_validate_filters_for_related( $filters ) {
  * @uses       wl_core_inner_get_related_entities() to perform the action
  *
  * @deprecated use Wordlift_Relation_Service::get_instance()->get_objects( $subject_id, 'ids', $predicate, $status );
- *
  */
 function wl_core_get_related_entity_ids( $subject_id, $filters = array() ) {
 
@@ -240,9 +240,9 @@ function wl_core_get_related_entity_ids( $subject_id, $filters = array() ) {
 
 	return Wordlift_Relation_Service::get_instance()->get_objects( $subject_id, 'ids', $predicate, $status );
 
-//	$filters = wl_core_validate_filters_for_related( $filters );
-//
-//	return wl_core_inner_get_related_entities( 'post_ids', $subject_id, $filters['predicate'], $filters['status'] );
+	// $filters = wl_core_validate_filters_for_related( $filters );
+	//
+	// return wl_core_inner_get_related_entities( 'post_ids', $subject_id, $filters['predicate'], $filters['status'] );
 }
 
 /**
@@ -250,24 +250,26 @@ function wl_core_get_related_entity_ids( $subject_id, $filters = array() ) {
  *
  * This function is deprecated and left for compatibility with 3rd parties.
  *
- * @param int $subject_id The {@link WP_Post}'s id.
+ * @param int   $subject_id The {@link WP_Post}'s id.
  * @param array $filters An array of filters.
  *
  * @return array An array of {@link WP_Post}s.
  * @deprecated use Wordlift_Relation_Service::get_instance()->get_objects()
- *
  */
 function wl_core_get_related_entities( $subject_id, $filters = array() ) {
 
 	$ids = wl_core_get_related_entity_ids( $subject_id, $filters );
 
-	return array_map( function ( $item ) {
-		return get_post( $item );
-	}, $ids );
+	return array_map(
+		function ( $item ) {
+			return get_post( $item );
+		},
+		$ids
+	);
 }
 
 //
-///**
+// **
 // * Find all entity ids related to a given $subject_id
 // * If $predicate is omitted, $predicate filter is not applied
 // * Do not use it directly. Use wl_core_get_related_entities or wl_core_get_related_entity_ids instead.
@@ -279,25 +281,25 @@ function wl_core_get_related_entities( $subject_id, $filters = array() ) {
 // *
 // * @return array Array of ids.
 // */
-//function wl_core_inner_get_related_entities( $get, $item_id, $predicate = null, $post_status = null ) {
+// function wl_core_inner_get_related_entities( $get, $item_id, $predicate = null, $post_status = null ) {
 //
-//	if ( $results = wl_core_get_posts( array(
-//		'get'            => $get,
-//		'post_type'      => 'entity',
-//		'post_status'    => $post_status,
-//		'related_to'     => $item_id,
-//		'as'             => 'object',
-//		'with_predicate' => $predicate,
-//	) )
-//	) {
-//		return $results;
-//	}
+// if ( $results = wl_core_get_posts( array(
+// 'get'            => $get,
+// 'post_type'      => 'entity',
+// 'post_status'    => $post_status,
+// 'related_to'     => $item_id,
+// 'as'             => 'object',
+// 'with_predicate' => $predicate,
+// ) )
+// ) {
+// return $results;
+// }
 //
-//	// If wl_core_get_posts return false then an empty array is returned
-//	return array();
-//}
+// If wl_core_get_posts return false then an empty array is returned
+// return array();
+// }
 
-///**
+// **
 // * Find all posts related to a given $object_id
 // * If $predicate is omitted, $predicate filter is not applied
 // * @uses   wl_core_get_related_posts() to perform the action
@@ -313,18 +315,18 @@ function wl_core_get_related_entities( $subject_id, $filters = array() ) {
 // *
 // * @return array Array of objects.
 // */
-//function wl_core_get_related_posts( $object_id, $filters = array() ) {
+// function wl_core_get_related_posts( $object_id, $filters = array() ) {
 //
-//	$filters = wl_core_validate_filters_for_related( $filters );
+// $filters = wl_core_validate_filters_for_related( $filters );
 //
-//	return wl_core_inner_get_related_posts( "posts", $object_id, $filters['predicate'], $filters['status'] );
-//}
+// return wl_core_inner_get_related_posts( "posts", $object_id, $filters['predicate'], $filters['status'] );
+// }
 
 /**
  * Find all post ids related to a given $object_id
  * If $predicate is omitted, $predicate filter is not applied
  *
- * @param int $object_id The entity ID or the post ID.
+ * @param int   $object_id The entity ID or the post ID.
  * @param array $filters Associative array formed like this:
  *                         <code>
  *                         $filters = array(
@@ -337,7 +339,6 @@ function wl_core_get_related_entities( $subject_id, $filters = array() ) {
  * @uses       wl_core_get_related_posts() to perform the action
  *
  * @deprecated use Wordlift_Relation_Service::get_instance()->get_article_subjects( $object_id, 'ids', $status );
- *
  */
 function wl_core_get_related_post_ids( $object_id, $filters = array() ) {
 
@@ -347,37 +348,38 @@ function wl_core_get_related_post_ids( $object_id, $filters = array() ) {
 	$predicate = isset( $filters['predicate'] ) ? $filters['predicate'] : null;
 
 	return $relation_service->get_article_subjects( $object_id, 'ids', $predicate, $status );
-//
-//	$filters = wl_core_validate_filters_for_related( $filters );
-//
-//	return wl_core_inner_get_related_posts( 'post_ids', $object_id, $filters['predicate'], $filters['status'] );
+	//
+	// $filters = wl_core_validate_filters_for_related( $filters );
+	//
+	// return wl_core_inner_get_related_posts( 'post_ids', $object_id, $filters['predicate'], $filters['status'] );
 }
-
 
 /**
  * Get the posts related to the specified entity {@link WP_Post}.
  *
  * This function is deprecated and left for compatibility with 3rd parties.
  *
- * @param int $subject_id The entity's {@link WP_Post}'s id. If a post/page id
- *                          is provided, then the entities bound to that post/page
- *                          are first loaded.
+ * @param int   $subject_id The entity's {@link WP_Post}'s id. If a post/page id
+ *                            is provided, then the entities bound to that post/page
+ *                            are first loaded.
  * @param array $filters An array of filters.
  *
  * @return array An array of {@link WP_Post}s.
  * @deprecated use Wordlift_Relation_Service::get_instance()->get_article_subjects()
- *
  */
 function wl_core_get_related_posts( $subject_id, $filters = array() ) {
 
 	$ids = wl_core_get_related_post_ids( $subject_id, $filters );
 
-	return array_map( function ( $item ) {
-		return get_post( $item );
-	}, $ids );
+	return array_map(
+		function ( $item ) {
+			return get_post( $item );
+		},
+		$ids
+	);
 }
 
-///**
+// **
 // * Find all posts related to a given $object_id
 // * If $predicate is omitted, $predicate filter is not applied
 // * Not use it directly. Use wl_core_get_related_posts or wl_core_get_related_posts_ids instead.
@@ -389,48 +391,49 @@ function wl_core_get_related_posts( $subject_id, $filters = array() ) {
 // *
 // * @return array Array of objects.
 // */
-//function wl_core_inner_get_related_posts( $get, $item_id, $predicate = null, $post_status = null ) {
+// function wl_core_inner_get_related_posts( $get, $item_id, $predicate = null, $post_status = null ) {
 //
-//	// Retrieve the post object
-//	$post = get_post( $item_id );
-//	if ( null === $post ) {
-//		return array();
-//	}
+// Retrieve the post object
+// $post = get_post( $item_id );
+// if ( null === $post ) {
+// return array();
+// }
 //
-//	if ( 'entity' === $post->post_type ) {
-//		if ( $results = wl_core_get_posts( array(
-//			'get'            => $get,
-//			'post_type'      => 'post',
-//			'post_status'    => $post_status,
-//			'related_to'     => $item_id,
-//			'as'             => 'subject',
-//			'with_predicate' => $predicate,
-//		) )
-//		) {
-//			return $results;
-//		}
-//	} else {
-//		if ( $results = wl_core_get_posts( array(
-//			'get'            => $get,
-//			'post_type'      => 'post',
-//			'post_status'    => $post_status,
-//			'post__not_in'   => array( $item_id ),
-//			'related_to__in' => wl_core_get_related_entity_ids( $post->ID ),
-//			'as'             => 'subject',
-//			'with_predicate' => $predicate,
-//		) )
-//		) {
-//			return $results;
-//		}
-//	}
+// if ( 'entity' === $post->post_type ) {
+// if ( $results = wl_core_get_posts( array(
+// 'get'            => $get,
+// 'post_type'      => 'post',
+// 'post_status'    => $post_status,
+// 'related_to'     => $item_id,
+// 'as'             => 'subject',
+// 'with_predicate' => $predicate,
+// ) )
+// ) {
+// return $results;
+// }
+// } else {
+// if ( $results = wl_core_get_posts( array(
+// 'get'            => $get,
+// 'post_type'      => 'post',
+// 'post_status'    => $post_status,
+// 'post__not_in'   => array( $item_id ),
+// 'related_to__in' => wl_core_get_related_entity_ids( $post->ID ),
+// 'as'             => 'subject',
+// 'with_predicate' => $predicate,
+// ) )
+// ) {
+// return $results;
+// }
+// }
 //
-//	// If wl_core_get_posts return false then an empty array is returned
-//	return array();
-//}
+// If wl_core_get_posts return false then an empty array is returned
+// return array();
+// }
 
 /**
  * Define a sql statement between wp_posts and wp_wl_relation_instances tables
  * It's used by wl_core_get_posts. Implements a subset of WpQuery object
+ *
  * @see https://codex.wordpress.org/Class_Reference/WP_Query
  * Arguments validation is delegated to wl_core_get_posts method.
  * Form the array like this:
@@ -502,7 +505,6 @@ function wl_core_sql_query_builder( $args ) {
 		);
 	}
 
-
 	// Use "p" as the table to match the initial join.
 	$tax_sql = get_tax_sql( $tax_query, 'p', 'ID' );
 
@@ -528,7 +530,7 @@ function wl_core_sql_query_builder( $args ) {
 
 	// Sql add post type filter
 	$post_types = Wordlift_Entity_Service::valid_entity_post_types();
-	$sql        .= " AND p.post_type IN ('" . join( "', '", esc_sql( $post_types ) ) . "') AND";
+	$sql       .= " AND p.post_type IN ('" . join( "', '", esc_sql( $post_types ) ) . "') AND";
 
 	// Sql add post status filter
 	if ( isset( $args['post_status'] ) && ! is_null( $args['post_status'] ) ) {
@@ -552,7 +554,7 @@ function wl_core_sql_query_builder( $args ) {
 	if ( isset( $args['related_to__in'] ) ) {
 		$sql .= " r.$filtering_column IN (" . implode( ',', $args['related_to__in'] ) . ')';
 		// The IDs used for filtering shouldn't be in the results.
-		$sql .= " AND p.ID NOT IN (" . implode( ',', $args['related_to__in'] ) . ')';
+		$sql .= ' AND p.ID NOT IN (' . implode( ',', $args['related_to__in'] ) . ')';
 	}
 	if ( isset( $args['post__not_in'] ) ) {
 		$sql .= ' AND r.' . $args['as'] . '_id NOT IN (' . implode( ',', $args['post__not_in'] ) . ')';
@@ -589,7 +591,7 @@ function wl_core_sql_query_builder( $args ) {
  * Perform a query on db depending on args
  * It's responsible for argument validations
  *
- * @param array $args Arguments to be used in the query builder.
+ * @param array  $args Arguments to be used in the query builder.
  *
  * @param string $returned_type
  *
@@ -601,13 +603,16 @@ function wl_core_sql_query_builder( $args ) {
 function wl_core_get_posts( $args, $returned_type = OBJECT ) {
 
 	// Merge given args with defaults args value
-	$args = array_merge( array(
-		'with_predicate' => null,
-		'as'             => 'subject',
-		'post_type'      => 'post',
-		'get'            => 'posts',
-		'post_status'    => null,
-	), $args );
+	$args = array_merge(
+		array(
+			'with_predicate' => null,
+			'as'             => 'subject',
+			'post_type'      => 'post',
+			'get'            => 'posts',
+			'post_status'    => null,
+		),
+		$args
+	);
 
 	// Arguments validation rules
 	// At least one between related_to and related_to__in has to be set
@@ -629,11 +634,11 @@ function wl_core_get_posts( $args, $returned_type = OBJECT ) {
 		) as $option_name
 	) {
 		if ( isset( $args[ $option_name ] ) ) {
-			if ( ! is_array( $args[ $option_name ] ) || 0 == count( array_filter( $args[ $option_name ], "is_numeric" ) ) ) {
+			if ( ! is_array( $args[ $option_name ] ) || 0 == count( array_filter( $args[ $option_name ], 'is_numeric' ) ) ) {
 				return false;
 			}
 			// Sanitize value removing non numeric values from the array
-			$args[ $option_name ] = array_filter( $args[ $option_name ], "is_numeric" );
+			$args[ $option_name ] = array_filter( $args[ $option_name ], 'is_numeric' );
 		}
 	}
 	// Performing validation rules
@@ -654,7 +659,7 @@ function wl_core_get_posts( $args, $returned_type = OBJECT ) {
 	// If ids are required, returns a one-dimensional array containing ids.
 	// Otherwise an array of associative arrays representing the post | relation object
 	if ( 'post_ids' == $args['get'] ) {
-		# See https://codex.wordpress.org/Class_Reference/wpdb#SELECT_a_Column
+		// See https://codex.wordpress.org/Class_Reference/wpdb#SELECT_a_Column
 		$results = $wpdb->get_col( $sql_statement );
 	} else {
 		$results = $wpdb->get_results( $sql_statement, $returned_type );

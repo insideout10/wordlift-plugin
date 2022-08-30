@@ -4,11 +4,9 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
-
 namespace Wordlift\Vocabulary\Jsonld;
 
 use Wordlift\Vocabulary\Data\Entity_List\Entity_List_Factory;
-
 
 class Jsonld_Utils {
 

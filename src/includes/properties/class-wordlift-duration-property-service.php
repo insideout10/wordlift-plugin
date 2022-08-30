@@ -25,9 +25,12 @@ class Wordlift_Duration_Property_Service extends Wordlift_Simple_Property_Servic
 	function get( $id, $meta_key, $type ) {
 
 		// Get the values and filter out the empty ones (or the ones with 00:00).
-		$values = array_filter( parent::get( $id, $meta_key, $type ), function ( $item ) {
-			return ! empty( $item ) && '00:00' !== $item;
-		} );
+		$values = array_filter(
+			parent::get( $id, $meta_key, $type ),
+			function ( $item ) {
+				return ! empty( $item ) && '00:00' !== $item;
+			}
+		);
 
 		/*
 		 * Map the value in the meta
@@ -35,9 +38,12 @@ class Wordlift_Duration_Property_Service extends Wordlift_Simple_Property_Servic
 		 * or an h:mm format.
 		 * Both needs to be adjusted to the iso format.
 		 */
-		return array_map( function ( $value ) {
-			return 'PT' . str_replace( ':', 'H', $value ) . 'M';
-		}, $values );
+		return array_map(
+			function ( $value ) {
+				return 'PT' . str_replace( ':', 'H', $value ) . 'M';
+			},
+			$values
+		);
 	}
 
 }

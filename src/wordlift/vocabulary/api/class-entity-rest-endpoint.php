@@ -16,25 +16,25 @@ use WP_REST_Server;
  */
 class Entity_Rest_Endpoint {
 
-	const SAME_AS_META_KEY = 'entity_same_as';
+	const SAME_AS_META_KEY           = 'entity_same_as';
 	const ALTERNATIVE_LABEL_META_KEY = '_wl_alt_label';
-	const DESCRIPTION_META_KEY = 'entity_description';
-	const TYPE_META_KEY = 'entity_type';
-	const EXTERNAL_ENTITY_META_KEY = '_wl_is_external';
-	const IGNORE_TAG_FROM_LISTING = '_wl_cmkg_ignore_tag_from_ui';
-
+	const DESCRIPTION_META_KEY       = 'entity_description';
+	const TYPE_META_KEY              = 'entity_type';
+	const EXTERNAL_ENTITY_META_KEY   = '_wl_is_external';
+	const IGNORE_TAG_FROM_LISTING    = '_wl_cmkg_ignore_tag_from_ui';
 
 	public function register_routes() {
 		$that = $this;
-		add_action( 'rest_api_init',
+		add_action(
+			'rest_api_init',
 			function () use ( $that ) {
 				$that->register_accept_route();
 				$that->register_undo_route();
 				$that->register_nomatch_route();
 				$that->register_reject_route();
-			} );
+			}
+		);
 	}
-
 
 	public function accept_entity( $request ) {
 		$data        = $request->get_params();
@@ -59,7 +59,6 @@ class Entity_Rest_Endpoint {
 		return $term_id;
 	}
 
-
 	public function mark_as_no_match( $request ) {
 		$data    = $request->get_params();
 		$term_id = (int) $data['term_id'];
@@ -67,7 +66,6 @@ class Entity_Rest_Endpoint {
 
 		return update_term_meta( $term_id, self::IGNORE_TAG_FROM_LISTING, 1 );
 	}
-
 
 	private function register_undo_route() {
 		register_rest_route(
@@ -107,7 +105,7 @@ class Entity_Rest_Endpoint {
 		$entity_data = (array) $data['entity'];
 		$entity      = Entity_List_Factory::get_instance( $term_id );
 
-		$entity_id = array_key_exists('@id', $entity_data )  ? $entity_data['@id'] : $entity_data['entityId'];
+		$entity_id = array_key_exists( '@id', $entity_data ) ? $entity_data['@id'] : $entity_data['entityId'];
 		$entity->remove_entity_by_id( $entity_id );
 		Ttl_Cache::flush_all();
 		return $term_id;
@@ -134,7 +132,6 @@ class Entity_Rest_Endpoint {
 			)
 		);
 	}
-
 
 	/**
 	 * @param $accept_route

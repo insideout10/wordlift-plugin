@@ -2,7 +2,6 @@
 /**
  * HTML for Webhook Settings Tab.
  * Added for feature request 1496
- *
  */
 settings_errors( 'wl_webhook_error' );
 ?>

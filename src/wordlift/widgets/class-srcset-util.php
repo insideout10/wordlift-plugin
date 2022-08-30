@@ -1,6 +1,7 @@
 <?php
 
 namespace Wordlift\Widgets;
+
 /**
  * @since 3.28.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
@@ -25,7 +26,7 @@ class Srcset_Util {
 			$srcset[] = $large . ' ' . $width . 'w';
 		}
 
-		$srcset_string = join( ",", $srcset );
+		$srcset_string = join( ',', $srcset );
 
 		/**
 		 * Filter name: wordlift_${widget_name}_thumbnail_srcset
@@ -41,7 +42,6 @@ class Srcset_Util {
 
 	}
 
-
 	private static function get_image_width( $post_id, $size ) {
 		$thumbnail_id = get_post_thumbnail_id( $post_id );
 		if ( ! $thumbnail_id ) {
@@ -54,6 +54,5 @@ class Srcset_Util {
 
 		return array_key_exists( 2, $data ) ? $data[2] : false;
 	}
-
 
 }

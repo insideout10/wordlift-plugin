@@ -36,7 +36,6 @@ class Taxonomy_Term_Rule_Validator implements Rule_Validator {
 		return $value;
 	}
 
-
 	public function get_label() {
 		return __( 'TaxonomyTerm', 'wordlift' );
 	}
@@ -51,12 +50,15 @@ class Taxonomy_Term_Rule_Validator implements Rule_Validator {
 			return false;
 		}
 		$terms = get_terms( $taxonomy, array( 'get' => 'all' ) );
-		$terms = array_map( function ( $term ) {
-			/**
-			 * @var $term \WP_Term
-			 */
-			return $term->term_id;
-		}, $terms );
+		$terms = array_map(
+			function ( $term ) {
+				/**
+				 * @var $term \WP_Term
+				 */
+				return $term->term_id;
+			},
+			$terms
+		);
 		if ( $operator === Rule_Validator::IS_EQUAL_TO ) {
 			// if we dont have term id, then skip the flow.
 			// If we are in term page, then we need to check if the current

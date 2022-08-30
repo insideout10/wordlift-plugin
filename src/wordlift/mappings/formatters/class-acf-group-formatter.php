@@ -5,6 +5,7 @@ namespace Wordlift\Mappings\Formatters;
 /**
  * This class formats the acf group data, and removes empty values.
  * Class Acf_Group_Formatter
+ *
  * @package Wordlift\Mappings\Formatters
  */
 class Acf_Group_Formatter {

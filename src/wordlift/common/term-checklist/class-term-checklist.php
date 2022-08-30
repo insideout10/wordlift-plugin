@@ -1,6 +1,7 @@
 <?php
 
 namespace Wordlift\Common\Term_Checklist;
+
 /**
  * @since 3.31.6
  * @author Naveen Muthusamy <naveen@wordlift.io>
@@ -18,8 +19,7 @@ class Term_Checklist {
 	 */
 	public static function render( $input_name, $terms, $selected_term_slugs ) {
 
-
-		$terms_html = "";
+		$terms_html = '';
 
 		$input_name = esc_html( $input_name );
 
@@ -28,8 +28,8 @@ class Term_Checklist {
 			/**
 			 * @var $term \WP_Term
 			 */
-			$term_name  = esc_html( $term->name );
-			$checked    = in_array( $term->slug, $selected_term_slugs ) ? 'checked' : '';
+			$term_name   = esc_html( $term->name );
+			$checked     = in_array( $term->slug, $selected_term_slugs ) ? 'checked' : '';
 			$terms_html .= "<li id=\"wl_entity_type-{$term->term_id}\">
 	<label class=\"selectit\">
 	<input value=\"{$term->slug}\" type=\"checkbox\" name=\"{$input_name}[]\" id=\"in-wl_entity_type-{$term->term_id}\" $checked>
@@ -41,6 +41,5 @@ class Term_Checklist {
 
 		return '<input type="text" id="wl_entity_type_search" placeholder="Search Entity Types.." /><ul id="wl-entity-type__ul">' . $terms_html . '</ul>';
 	}
-
 
 }

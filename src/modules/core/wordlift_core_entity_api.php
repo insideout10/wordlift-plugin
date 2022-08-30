@@ -5,7 +5,6 @@
  * @since 3.0.0
  */
 
-
 /**
  * Get a list of entities with the specified title.
  *
@@ -13,8 +12,8 @@
  *
  * @param      $title string The title to look for.
  *
- * @param bool $autocomplete
- * @param bool $include_alias
+ * @param bool                               $autocomplete
+ * @param bool                               $include_alias
  *
  * @return array An array of WP_Post instances.
  */
@@ -28,13 +27,13 @@ function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias =
 	}
 
 	// The title is a LIKE query.
-	$query = "SELECT DISTINCT p.ID AS id, p.post_title AS title, t.name AS schema_type_name, t.slug AS type_slug"
+	$query = 'SELECT DISTINCT p.ID AS id, p.post_title AS title, t.name AS schema_type_name, t.slug AS type_slug'
 			 . " FROM $wpdb->posts p, $wpdb->term_taxonomy tt, $wpdb->term_relationships tr, $wpdb->terms t"
-			 . "  WHERE p.post_title LIKE %s"
-			 . "   AND t.term_id = tt.term_id"
-			 . "   AND tt.taxonomy = %s"
-			 . "   AND tt.term_taxonomy_id = tr.term_taxonomy_id"
-			 . "   AND tr.object_id = p.ID"
+			 . '  WHERE p.post_title LIKE %s'
+			 . '   AND t.term_id = tt.term_id'
+			 . '   AND tt.taxonomy = %s'
+			 . '   AND tt.term_taxonomy_id = tr.term_taxonomy_id'
+			 . '   AND tr.object_id = p.ID'
 			 // Ensure we don't load entities from the trash, see https://github.com/insideout10/wordlift-plugin/issues/278.
 			 . "   AND p.post_status != 'trash'";
 
@@ -45,29 +44,34 @@ function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias =
 
 	if ( $include_alias ) {
 
-		$query .= " UNION"
+		$query .= ' UNION'
 				  . "  SELECT DISTINCT p.ID AS id, CONCAT( m.meta_value, ' (', p.post_title, ')' ) AS title, t.name AS schema_type_name, t.slug AS type_slug"
 				  . "  FROM $wpdb->posts p, $wpdb->term_taxonomy tt, $wpdb->term_relationships tr, $wpdb->terms t, $wpdb->postmeta m"
-				  . "   WHERE m.meta_key = %s AND m.meta_value LIKE %s"
-				  . "    AND m.post_id = p.ID"
-				  . "    AND t.term_id = tt.term_id"
-				  . "    AND tt.taxonomy = %s"
-				  . "    AND tt.term_taxonomy_id = tr.term_taxonomy_id"
-				  . "    AND tr.object_id = p.ID"
+				  . '   WHERE m.meta_key = %s AND m.meta_value LIKE %s'
+				  . '    AND m.post_id = p.ID'
+				  . '    AND t.term_id = tt.term_id'
+				  . '    AND tt.taxonomy = %s'
+				  . '    AND tt.term_taxonomy_id = tr.term_taxonomy_id'
+				  . '    AND tr.object_id = p.ID'
 				  // Ensure we don't load entities from the trash, see https://github.com/insideout10/wordlift-plugin/issues/278.
 				  . "    AND p.post_status != 'trash'";
 
-		$params = array_merge( $params, array(
-			Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY,
-			$title,
-			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
-		) );
+		$params = array_merge(
+			$params,
+			array(
+				Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY,
+				$title,
+				Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+			)
+		);
 	}
 
-	return $wpdb->get_results( $wpdb->prepare(
-		$query,
-		$params
-	) );
+	return $wpdb->get_results(
+		$wpdb->prepare(
+			$query,
+			$params
+		)
+	);
 }
 
 /**
@@ -90,7 +94,6 @@ function wl_entity_ajax_get_by_title() {
 	//
 	// See https://github.com/insideout10/wordlift-plugin/issues/438.
 	$title = sanitize_text_field( wp_unslash( $_POST['title'] ?: $_GET['title'] ) );
-
 
 	// Are we searching for a specific title or for a containing title?
 	$autocomplete = isset( $_GET['autocomplete'] );

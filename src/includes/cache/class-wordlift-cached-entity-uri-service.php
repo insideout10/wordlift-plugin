@@ -38,7 +38,6 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	 * @param \Wordlift_Cache_Service $cache_service
 	 *
 	 * @since 3.16.3
-	 *
 	 */
 	public function __construct( $cache_service ) {
 		parent::__construct();
@@ -48,9 +47,9 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 		// Add hooks for meta being added/modified/deleted.
 		$this->cache_service = $cache_service;
 
-		add_action( 'add_post_meta', array( $this, 'on_before_post_meta_add', ), 10, 3 );
-		add_action( 'update_post_meta', array( $this, 'on_before_post_meta_change', ), 10, 4 );
-		add_action( 'delete_post_meta', array( $this, 'on_before_post_meta_change', ), 10, 4 );
+		add_action( 'add_post_meta', array( $this, 'on_before_post_meta_add' ), 10, 3 );
+		add_action( 'update_post_meta', array( $this, 'on_before_post_meta_change' ), 10, 4 );
+		add_action( 'delete_post_meta', array( $this, 'on_before_post_meta_change' ), 10, 4 );
 
 	}
 
@@ -60,15 +59,17 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	 * @param array $uris Preload an array of URIs.
 	 *
 	 * @since 3.16.3
-	 *
 	 */
 	public function preload_uris( $uris ) {
 
 		// Filter the URIs which aren't yet cached.
 		$cache_service = $this->cache_service;
-		$uris_to_cache = array_filter( (array) $uris, function ( $item ) use ( $cache_service ) {
-			return ! $cache_service->has_cache( $item );
-		} );
+		$uris_to_cache = array_filter(
+			(array) $uris,
+			function ( $item ) use ( $cache_service ) {
+				return ! $cache_service->has_cache( $item );
+			}
+		);
 
 		// Preload the URIs.
 		parent::preload_uris( $uris_to_cache );
@@ -89,7 +90,6 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	 *
 	 * @return null|WP_Post The {@link WP_Post} or null if not found.
 	 * @since 3.16.3
-	 *
 	 */
 	public function get_entity( $uri ) {
 
@@ -121,11 +121,10 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	 * Set the cached URI for the specified {@link WP_Post}.
 	 *
 	 * @param string $uri The URI.
-	 * @param int $post_id The post ID.
+	 * @param int    $post_id The post ID.
 	 *
 	 * @since 3.16.3
 	 * @since 3.29.0 takes a post ID as input.
-	 *
 	 */
 	private function set_cache( $uri, $post_id ) {
 
@@ -140,7 +139,6 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	 * @param array $uris An array of URIs.
 	 *
 	 * @since 3.16.3
-	 *
 	 */
 	private function delete_cache( $uris ) {
 
@@ -160,12 +158,11 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	 * for all the associated URIs.
 	 *
 	 * @param int|array $meta_ids The {@link WP_Post} meta id(s).
-	 * @param int $post_id The {@link WP_Post} id.
-	 * @param string $meta_key The meta key.
-	 * @param mixed $meta_value The meta value(s).
+	 * @param int       $post_id The {@link WP_Post} id.
+	 * @param string    $meta_key The meta key.
+	 * @param mixed     $meta_value The meta value(s).
 	 *
 	 * @since 3.16.3
-	 *
 	 */
 	public function on_before_post_meta_change( $meta_ids, $post_id, $meta_key, $meta_value ) {
 
@@ -196,12 +193,11 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	 * Hook to meta add for a {@link WP_Post}, will cause the cache to
 	 * invalidate.
 	 *
-	 * @param int $post_id The {@link WP_Post} id.
+	 * @param int    $post_id The {@link WP_Post} id.
 	 * @param string $meta_key The meta key.
-	 * @param mixed $meta_value The meta value(s).
+	 * @param mixed  $meta_value The meta value(s).
 	 *
 	 * @since 3.16.3
-	 *
 	 */
 	public function on_before_post_meta_add( $post_id, $meta_key, $meta_value ) {
 

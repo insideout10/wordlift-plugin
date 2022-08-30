@@ -12,12 +12,13 @@ use Wordlift\Mappings\Jsonld_Converter;
 /**
  * This class fetch the data from  post meta or term meta based on the current page.
  * Class Meta_Data_Source
+ *
  * @package Wordlift\Mappings\Data_Source
  */
 class Meta_Data_Source implements Abstract_Data_Source {
 
 	/**
-	 * @param int $identifier Post id or term id
+	 * @param int      $identifier Post id or term id
 	 * @param $property
 	 * @param $type
 	 *

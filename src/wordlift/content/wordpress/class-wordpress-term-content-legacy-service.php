@@ -25,7 +25,6 @@ class Wordpress_Term_Content_Legacy_Service extends Abstract_Wordpress_Content_L
 		return self::$instance;
 	}
 
-
 	/**
 	 * @param string $uri The entity id, relative or absolute.
 	 *
@@ -39,19 +38,27 @@ class Wordpress_Term_Content_Legacy_Service extends Abstract_Wordpress_Content_L
 
 		$abs_uri = $this->make_absolute( $uri );
 
-		Assertions::starts_with( $abs_uri, $this->get_dataset_uri(),
-			sprintf( "URI `%s` must be within the dataset URI scope, `%s` provided.", $abs_uri, $this->get_dataset_uri() ) );
+		Assertions::starts_with(
+			$abs_uri,
+			$this->get_dataset_uri(),
+			sprintf( 'URI `%s` must be within the dataset URI scope, `%s` provided.', $abs_uri, $this->get_dataset_uri() )
+		);
 
 		global $wpdb;
 
-		$term_id = $wpdb->get_var( $wpdb->prepare( "
+		$term_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"
 			SELECT t.term_id 
 			FROM $wpdb->terms AS t 
 			INNER JOIN $wpdb->termmeta AS tm
 			    ON t.term_id = tm.term_id
 			WHERE tm.meta_key = 'entity_url' AND tm.meta_value = %s
 			LIMIT 1
-		", $abs_uri ) );
+		",
+				$abs_uri
+			)
+		);
 
 		if ( isset( $term_id ) ) {
 			return new Wordpress_Content( get_term( $term_id ) );
@@ -74,12 +81,17 @@ class Wordpress_Term_Content_Legacy_Service extends Abstract_Wordpress_Content_L
 
 		global $wpdb;
 
-		$term_id = $wpdb->get_var( $wpdb->prepare( "
+		$term_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"
 			SELECT tm.term_id
 			FROM $wpdb->termmeta tm
 			WHERE tm.meta_key IN ( 'entity_url', 'entity_same_as' ) AND tm.meta_value = %s
 			LIMIT 1
-		", $uri ) );
+		",
+				$uri
+			)
+		);
 
 		if ( isset( $term_id ) ) {
 			return new Wordpress_Content( get_term( $term_id ) );

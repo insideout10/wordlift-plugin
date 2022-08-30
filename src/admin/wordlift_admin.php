@@ -6,7 +6,7 @@
  */
 
 // Add the Admin menu.
-require_once( 'wordlift_admin_menu.php' );
+require_once 'wordlift_admin_menu.php';
 
 /**
  * Serialize an entity post.
@@ -48,7 +48,6 @@ function wl_serialize_entity( $entity ) {
  *
  * @return array mixed The post data array.
  * @since 1.0.0
- *
  */
 function wl_remove_text_annotations( $data ) {
 
@@ -66,7 +65,7 @@ function wl_remove_text_annotations( $data ) {
 
 	// @see https://github.com/insideout10/wordlift-plugin/issues/771
 	// Changing this:
-	//	$pattern = '/<(\w+)[^>]*\sclass=\\\"textannotation(?![^\\"]*\sdisambiguated)[^\\"]*\\\"[^>]*>([^<]+)<\/\1>/im';
+	// $pattern = '/<(\w+)[^>]*\sclass=\\\"textannotation(?![^\\"]*\sdisambiguated)[^\\"]*\\\"[^>]*>([^<]+)<\/\1>/im';
 	// to:
 	$pattern = '/<(\w+)[^>]*\sclass=\\\"textannotation(?![^\\"]*\sdisambiguated)[^\\"]*\\\"[^>]*>(.*?)<\/\1>/im';
 	// Remove the pattern while it is found (match nested annotations).
@@ -86,7 +85,6 @@ add_filter( 'wp_insert_post_data', 'wl_remove_text_annotations', '98', 1 );
  *
  * @return array The updated list of CSS classes.
  * @since 3.2.0
- *
  */
 function wl_admin_metaboxes_add_css_class( $classes = array() ) {
 

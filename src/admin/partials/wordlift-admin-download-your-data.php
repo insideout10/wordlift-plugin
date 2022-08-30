@@ -48,7 +48,7 @@
 		if ( ! Wordlift_Google_Analytics_Export_Service::is_postname_permalink_structure() ) {
 			$class_name .= ' wl-button-disabled';
 		}
-	?>
+		?>
 		<a href="<?php echo esc_url( admin_url( 'admin-ajax.php?action=wl_google_analytics_export' ) ); ?>"
 		   class="<?php echo esc_attr( $class_name ); ?>">
 				<?php esc_html_e( 'Google Analytics', 'wordlift' ); ?>

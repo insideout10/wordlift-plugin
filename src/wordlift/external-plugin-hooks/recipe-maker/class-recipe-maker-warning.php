@@ -5,6 +5,7 @@ namespace Wordlift\External_Plugin_Hooks\Recipe_Maker;
 /**
  * Add a warning to the post edit screen if the referenced Recipe's images are less than 1.200 x 1.200
  * see issue https://github.com/insideout10/wordlift-plugin/issues/1141
+ *
  * @since 3.27.2
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
@@ -54,16 +55,16 @@ class Recipe_Maker_Warning {
 		if ( count( $recipe_with_image_warnings ) > 0 ) {
 			// Show notification.
 			?>
-            <div class="notice notice-warning is-dismissible">
-                <p><?php echo wp_kses( __( 'The following recipes didnt have minimum image size of 1200 x 1200 px', 'wordlift' ), array() ); ?></p>
-                <ol>
+			<div class="notice notice-warning is-dismissible">
+				<p><?php echo wp_kses( __( 'The following recipes didnt have minimum image size of 1200 x 1200 px', 'wordlift' ), array() ); ?></p>
+				<ol>
 					<?php
 					foreach ( $recipe_with_image_warnings as $post_id ) {
-						echo "<li>" . esc_html( get_the_title( $post_id ) ) . "</li>";
+						echo '<li>' . esc_html( get_the_title( $post_id ) ) . '</li>';
 					}
 					?>
-                </ol>
-            </div>
+				</ol>
+			</div>
 			<?php
 		}
 
@@ -84,10 +85,10 @@ class Recipe_Maker_Warning {
 		$recipe_with_image_warnings = array();
 
 		foreach ( $recipe_ids as $recipe_id ) {
-			$recipe     = \WPRM_Recipe_Manager::get_recipe( $recipe_id );
-            if (  ! $recipe ) {
-                continue;
-            }
+			$recipe = \WPRM_Recipe_Manager::get_recipe( $recipe_id );
+			if ( ! $recipe ) {
+				continue;
+			}
 			$image_id   = $recipe->image_id();
 			$image_data = wp_get_attachment_image_src( $image_id, array( 1200, 1200 ) );
 			if ( ! is_array( $image_data ) ) {

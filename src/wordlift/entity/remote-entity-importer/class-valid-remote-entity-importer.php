@@ -20,17 +20,18 @@ class Valid_Remote_Entity_Importer implements Remote_Entity_Importer {
 		$this->entity = $entity;
 	}
 
-
 	public function import() {
 
 		$entity_type_service = Wordlift_Entity_Type_Service::get_instance();
 
-		$post_id = wp_insert_post( array(
-			'post_title'   => $this->entity->get_name(),
-			'post_content' => $this->entity->get_description(),
-			'post_status'  => 'draft',
-			'post_type'    => 'entity',
-		) );
+		$post_id = wp_insert_post(
+			array(
+				'post_title'   => $this->entity->get_name(),
+				'post_content' => $this->entity->get_description(),
+				'post_status'  => 'draft',
+				'post_type'    => 'entity',
+			)
+		);
 
 		foreach ( $this->entity->get_types() as $type ) {
 			$entity_type_service->set( $post_id, "http://schema.org/$type", false );

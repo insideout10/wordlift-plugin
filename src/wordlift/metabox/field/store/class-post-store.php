@@ -26,11 +26,9 @@ class Post_Store implements Store {
 		}
 	}
 
-
 	public static function delete_meta( $id, $meta_key ) {
 		delete_post_meta( $id, $meta_key );
 	}
-
 
 	public static function add_meta( $id, $meta_key, $meta_value, $is_unique ) {
 		add_post_meta( $id, $meta_key, $meta_value, $is_unique );

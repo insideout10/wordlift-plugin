@@ -83,7 +83,7 @@ class Url_To_Entity_Transform_Function implements Mappings_Transform_Function {
 			$references[] = $post->ID;
 		}
 
-		return array( "@id" => $data, );
+		return array( '@id' => $data );
 	}
 
 }

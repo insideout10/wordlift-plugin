@@ -7,7 +7,7 @@ use Wordlift\Admin\Top_Entities;
  */
 class Wordlift_Admin_Dashboard_V2 {
 
-	const TODAYS_TIP = 'wl_todays_tip_data';
+	const TODAYS_TIP       = 'wl_todays_tip_data';
 	const AVERAGE_POSITION = 'wl_search_rankings_average_position';
 
 	/**
@@ -19,7 +19,6 @@ class Wordlift_Admin_Dashboard_V2 {
 	 * Wordlift_Admin_Dashboard_V2 constructor.
 	 *
 	 * @since 3.20.0
-	 *
 	 */
 	public function __construct( $entity_service ) {
 
@@ -42,6 +41,7 @@ class Wordlift_Admin_Dashboard_V2 {
 		/**
 		 * Filter name: wl_feature__enable__wordlift-dashboard
 		 * Feature flag to enable / disable dashboard
+		 *
 		 * @since 3.30.0
 		 */
 		if ( apply_filters( 'wl_feature__enable__wordlift-dashboard', true ) ) {
@@ -61,17 +61,15 @@ class Wordlift_Admin_Dashboard_V2 {
 	 */
 	public function dashboard_setup_callback() {
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wordlift-admin-dashboard-v2.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/partials/wordlift-admin-dashboard-v2.php';
 
 	}
-
 
 	/**
 	 * Get the top entities.
 	 *
 	 * @return array|object|null An array of top entities.
 	 * @since 3.20.0
-	 *
 	 */
 	private function get_top_entities() {
 		/**
@@ -97,17 +95,17 @@ class Wordlift_Admin_Dashboard_V2 {
 		}
 		?>
 
-        <div id="wl-todays-tip" class="wl-dashboard__block wl-dashboard__block--todays-tip">
-            <header>
-                <h3><?php esc_html_e( "Today's Tip", 'wordlift' ); ?></h3>
-            </header>
-            <article>
-                <p><strong><?php echo esc_html( wp_strip_all_tags( $data['title'] ) ); ?></strong>
+		<div id="wl-todays-tip" class="wl-dashboard__block wl-dashboard__block--todays-tip">
+			<header>
+				<h3><?php esc_html_e( "Today's Tip", 'wordlift' ); ?></h3>
+			</header>
+			<article>
+				<p><strong><?php echo esc_html( wp_strip_all_tags( $data['title'] ) ); ?></strong>
 					<?php echo esc_html( wp_strip_all_tags( $data['excerpt'] ) ); ?>
-                    <a target="_blank"
-                       href="<?php echo esc_attr( $data['link'] ); ?>"><?php echo esc_html( __( 'Read more', 'wordlift' ) ); ?></a>
-                </p>
-        </div>
+					<a target="_blank"
+					   href="<?php echo esc_attr( $data['link'] ); ?>"><?php echo esc_html( __( 'Read more', 'wordlift' ) ); ?></a>
+				</p>
+		</div>
 		<?php
 
 	}
@@ -117,7 +115,6 @@ class Wordlift_Admin_Dashboard_V2 {
 	 *
 	 * @return array|false The today's tip data or false in case of error.
 	 * @since 3.20.0
-	 *
 	 */
 	private static function get_todays_tip_data() {
 
@@ -128,22 +125,22 @@ class Wordlift_Admin_Dashboard_V2 {
 
 		// If the transient isn't available, query the remote web site.
 		$url = WL_TODAYS_TIP_JSON_URL
-		       . ( 'it' === get_bloginfo( 'language' ) ? WL_TODAYS_TIP_JSON_URL_IT : WL_TODAYS_TIP_JSON_URL_EN );
+			   . ( 'it' === get_bloginfo( 'language' ) ? WL_TODAYS_TIP_JSON_URL_IT : WL_TODAYS_TIP_JSON_URL_EN );
 
 		$response = wp_remote_get( $url );
 
 		if ( is_wp_error( $response )
-		     || ! isset( $response['response']['code'] )
-		     || 2 !== (int) $response['response']['code'] / 100 ) {
+			 || ! isset( $response['response']['code'] )
+			 || 2 !== (int) $response['response']['code'] / 100 ) {
 			return false;
 		}
 
 		$json = json_decode( $response['body'], true );
 
 		if ( empty( $json )
-		     || ! isset( $json[0]['title']['rendered'] )
-		     || ! isset( $json[0]['excerpt']['rendered'] )
-		     || ! isset( $json[0]['link'] ) ) {
+			 || ! isset( $json[0]['title']['rendered'] )
+			 || ! isset( $json[0]['excerpt']['rendered'] )
+			 || ! isset( $json[0]['link'] ) ) {
 			return false;
 		}
 

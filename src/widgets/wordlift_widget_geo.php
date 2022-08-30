@@ -15,7 +15,7 @@ class WordLift_Geo_Widget extends WP_Widget {
 		parent::__construct(
 			'wl_geo_widget', // Base ID
 			__( 'Geo Widget', 'wordlift' ), // Name
-			array( 'description' => __( 'Geo Widget description', 'wordlift' ), ) // Args
+			array( 'description' => __( 'Geo Widget description', 'wordlift' ) ) // Args
 		);
 	}
 
@@ -47,8 +47,7 @@ class WordLift_Geo_Widget extends WP_Widget {
 	 *
 	 * @param array $instance The widget options
 	 */
-	public
-	function form(
+	public function form(
 		$instance
 	) {
 
@@ -58,12 +57,12 @@ class WordLift_Geo_Widget extends WP_Widget {
 			$title = __( 'New title', 'wordlift' );
 		}
 		?>
-        <p>
-            <label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:' ); ?></label>
-            <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
-                   name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text"
-                   value="<?php echo esc_attr( $title ); ?>">
-        </p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:' ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
+				   name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text"
+				   value="<?php echo esc_attr( $title ); ?>">
+		</p>
 		<?php
 
 	}
@@ -74,8 +73,7 @@ class WordLift_Geo_Widget extends WP_Widget {
 	 * @param array $new_instance The new options
 	 * @param array $old_instance The previous options
 	 */
-	public
-	function update(
+	public function update(
 		$new_instance, $old_instance
 	) {
 

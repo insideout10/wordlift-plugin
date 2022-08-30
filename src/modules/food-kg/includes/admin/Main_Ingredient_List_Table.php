@@ -3,7 +3,7 @@
 namespace Wordlift\Modules\Food_Kg\Admin;
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
 use WP_List_Table;
@@ -12,13 +12,12 @@ use WPRM_Recipe_Manager;
 class Main_Ingredient_List_Table extends WP_List_Table {
 
 	public function prepare_items() {
-		global $wpdb; //This is used only if making any database queries
+		global $wpdb; // This is used only if making any database queries
 
 		/**
 		 * First, lets decide how many records per page to show
 		 */
 		$per_page = 5;
-
 
 		/**
 		 * REQUIRED. Now we need to define our column headers. This includes a complete
@@ -50,16 +49,15 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 		$this->items = $wpdb->get_results( $wpdb->prepare( $sql ) );
 	}
 
-
 	public function no_items() {
 		esc_html_e( 'No main ingredients found.', 'wordlift' );
 	}
 
 	public function get_columns() {
-		return [
+		return array(
 			'post_title' => __( 'Name', 'wordlift' ),
 			'actions'    => '',
-		];
+		);
 	}
 
 	public function column_post_title( $item ) {
@@ -72,10 +70,15 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 	public function column_actions( $item ) {
 
 		$url = admin_url(
-			sprintf( 'admin.php?page=wl_ingredients&modal_window=true&id=%d&TB_iframe=true', $item->ID ) );
+			sprintf( 'admin.php?page=wl_ingredients&modal_window=true&id=%d&TB_iframe=true', $item->ID )
+		);
 
-		return sprintf( '<a href="%s" class="button alignright thickbox open-plugin-details-modal" data-title="%s" type="button">%s</a>',
-			$url, esc_attr( $item->post_title ), esc_html__( 'JSON-LD', 'wordlift' ) );
+		return sprintf(
+			'<a href="%s" class="button alignright thickbox open-plugin-details-modal" data-title="%s" type="button">%s</a>',
+			$url,
+			esc_attr( $item->post_title ),
+			esc_html__( 'JSON-LD', 'wordlift' )
+		);
 	}
 
 }

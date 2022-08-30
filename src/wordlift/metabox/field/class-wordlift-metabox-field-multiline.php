@@ -1,5 +1,6 @@
 <?php
 namespace Wordlift\Metabox\Field;
+
 /**
  * Metaxboxes: Multiline text Field.
  *
@@ -27,11 +28,11 @@ class Wordlift_Metabox_Field_Multiline extends Wl_Metabox_Field {
 		?>
 			<div class="wl-input-wrapper">
 				<textarea
-					id="<?php echo esc_attr( $this->meta_name ) ?>"
-					class="<?php echo esc_attr( $this->meta_name ) ?>"
+					id="<?php echo esc_attr( $this->meta_name ); ?>"
+					class="<?php echo esc_attr( $this->meta_name ); ?>"
 					name="wl_metaboxes[<?php echo esc_attr( $this->meta_name ); ?>][]"
 					style="width:88%"
-				><?php echo esc_textarea( $text ) ?></textarea>
+				><?php echo esc_textarea( $text ); ?></textarea>
 
 				<button class="button wl-remove-input wl-button" type="button">
 					<?php esc_html_e( 'Remove', 'wordlift' ); ?>

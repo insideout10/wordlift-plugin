@@ -21,9 +21,9 @@ defined( 'WORDLIFT_CACHE_DEFAULT_MAX_SIZE' ) || define( 'WORDLIFT_CACHE_DEFAULT_
 
 class Ttl_Cache_Cleaner {
 
-	const PATH = 0;
+	const PATH  = 0;
 	const MTIME = 1;
-	const SIZE = 2;
+	const SIZE  = 2;
 
 	/**
 	 * The max TTL in seconds.
@@ -78,7 +78,7 @@ class Ttl_Cache_Cleaner {
 		$files = $this->reduce( array(), Ttl_Cache::get_cache_folder() );
 
 		foreach ( $files as $file ) {
-			@unlink( $file[ Ttl_Cache_Cleaner::PATH ] );
+			@unlink( $file[ self::PATH ] );
 		}
 
 		$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( (string) $_REQUEST['action'] ) ) : '';// phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -99,46 +99,54 @@ class Ttl_Cache_Cleaner {
 		$original_count = count( $files );
 
 		// Sort by size ascending.
-		usort( $files, function ( $f1, $f2 ) {
-			if ( $f1[ Ttl_Cache_Cleaner::MTIME ] === $f2[ Ttl_Cache_Cleaner::MTIME ] ) {
-				return 0;
-			}
+		usort(
+			$files,
+			function ( $f1, $f2 ) {
+				if ( $f1[ Ttl_Cache_Cleaner::MTIME ] === $f2[ Ttl_Cache_Cleaner::MTIME ] ) {
+					return 0;
+				}
 
-			return ( $f1[ Ttl_Cache_Cleaner::MTIME ] < $f2[ Ttl_Cache_Cleaner::MTIME ] ) ? - 1 : 1;
-		} );
+				return ( $f1[ Ttl_Cache_Cleaner::MTIME ] < $f2[ Ttl_Cache_Cleaner::MTIME ] ) ? - 1 : 1;
+			}
+		);
 
 		// Start removing stale files.
 		for ( $i = 0; $i < count( $files ); $i ++ ) {
 			$file = $files[ $i ];
 			// Break if the mtime is within the range.
-			if ( $file[ Ttl_Cache_Cleaner::MTIME ] > $max_mtime ) {
+			if ( $file[ self::MTIME ] > $max_mtime ) {
 				break;
 			}
 
 			unset( $files[ $i ] );
-			@unlink( $file[ Ttl_Cache_Cleaner::PATH ] );
+			@unlink( $file[ self::PATH ] );
 		}
 
 		// Calculate the size.
-		$total_size = array_reduce( $files, function ( $carry, $item ) {
+		$total_size = array_reduce(
+			$files,
+			function ( $carry, $item ) {
 
-			return $carry + $item[ Ttl_Cache_Cleaner::SIZE ];
-		}, 0 );
-
+				return $carry + $item[ Ttl_Cache_Cleaner::SIZE ];
+			},
+			0
+		);
 
 		// Remove files until we're within the max size.
 		while ( $total_size > $this->max_size ) {
-			$file       = array_shift( $files );
-			$total_size -= $file[ Ttl_Cache_Cleaner::SIZE ];
-			@unlink( $file[ Ttl_Cache_Cleaner::PATH ] );
+			$file        = array_shift( $files );
+			$total_size -= $file[ self::SIZE ];
+			@unlink( $file[ self::PATH ] );
 		}
 
 		// Send back some stats.
-		wp_send_json_success( array(
-			'initial_count' => $original_count,
-			'current_count' => count( $files ),
-			'current_size'  => $total_size,
-		) );
+		wp_send_json_success(
+			array(
+				'initial_count' => $original_count,
+				'current_count' => count( $files ),
+				'current_size'  => $total_size,
+			)
+		);
 	}
 
 	private function reduce( $accumulator, $path ) {

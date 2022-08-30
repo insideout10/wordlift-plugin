@@ -31,7 +31,6 @@ class Wordlift_Publisher_Ajax_Adapter {
 	 * @param \Wordlift_Publisher_Service $publisher_service The {@link Wordlift_Publisher_Service} instance.
 	 *
 	 * @since 3.11.0
-	 *
 	 */
 	function __construct( $publisher_service ) {
 

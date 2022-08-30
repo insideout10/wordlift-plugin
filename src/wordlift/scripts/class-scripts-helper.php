@@ -29,7 +29,7 @@ class Scripts_Helper {
 	 *
 	 * @param string $handle The handle name.
 	 * @param string $script_name The full script URL without the `.js` extension.
-	 * @param array $dependencies An array of dependencies to be added only in WordPress > 5.0.
+	 * @param array  $dependencies An array of dependencies to be added only in WordPress > 5.0.
 	 */
 	public static function enqueue_based_on_wordpress_version( $handle, $script_name, $dependencies, $in_footer = false ) {
 		global $wp_version;

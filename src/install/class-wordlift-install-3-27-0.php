@@ -34,13 +34,15 @@ class Wordlift_Install_3_27_0 extends Wordlift_Install {
 		    AND post_name = ''
 		";
 
-		$posts_with_empty_post_name = $wpdb->get_results($empty_post_name_query, OBJECT);
+		$posts_with_empty_post_name = $wpdb->get_results( $empty_post_name_query, OBJECT );
 
-		foreach ($posts_with_empty_post_name as $post){
-			wp_update_post(array(
-				'ID' => $post->ID,
-				'post_name' => sanitize_title( $post->post_title )
-			));
+		foreach ( $posts_with_empty_post_name as $post ) {
+			wp_update_post(
+				array(
+					'ID'        => $post->ID,
+					'post_name' => sanitize_title( $post->post_title ),
+				)
+			);
 		}
 
 	}

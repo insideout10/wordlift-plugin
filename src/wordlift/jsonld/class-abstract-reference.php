@@ -1,6 +1,5 @@
 <?php
 namespace Wordlift\Jsonld;
-use Wordlift\Object_Type_Enum;
 
 /**
  * This class represents an abstract reference
@@ -35,11 +34,11 @@ abstract class Abstract_Reference implements Reference {
 	 * This function is necessary because array_unique can be applied
 	 * on the references, we prepend the id with the type, for example
 	 * post reference with post id 1 would be equal to {@link Object_Type_Enum::POST."_1"}
+	 *
 	 * @return string
 	 */
 	public function __toString() {
-		return $this->get_type() . "_" . $this->get_id();
+		return $this->get_type() . '_' . $this->get_id();
 	}
-
 
 }

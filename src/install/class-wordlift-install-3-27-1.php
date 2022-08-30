@@ -22,5 +22,4 @@ class Wordlift_Install_3_27_1 extends Wordlift_Install {
 		$procedure->run_procedure();
 	}
 
-
 }

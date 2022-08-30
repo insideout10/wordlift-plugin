@@ -18,7 +18,6 @@ use Wordlift\Mappings\Mappings_Transform_Function;
  */
 class Taxonomy_To_Terms_Transform_Function implements Mappings_Transform_Function {
 
-
 	/**
 	 * Taxonomy_To_Terms_Transform_Function constructor.
 	 */
@@ -63,7 +62,7 @@ class Taxonomy_To_Terms_Transform_Function implements Mappings_Transform_Functio
 	 */
 	public function transform_data( $data, $jsonld, &$references, $post_id ) {
 
-		$terms = wp_get_object_terms( $post_id, $data, array( 'fields' => 'names', ) );
+		$terms = wp_get_object_terms( $post_id, $data, array( 'fields' => 'names' ) );
 
 		if ( ! is_array( $terms ) || empty( $terms ) ) {
 			return null;

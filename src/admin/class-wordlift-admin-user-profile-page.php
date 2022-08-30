@@ -42,10 +42,9 @@ class Wordlift_Admin_User_Profile_Page {
 	 *
 	 * @param \Wordlift_Admin_Author_Element $author_element The person entity selection
 	 *                                                       element rendering the possible persons.
-	 * @param \Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_User_Service         $user_service The {@link Wordlift_User_Service} instance.
 	 *
 	 * @since 3.14.0
-	 *
 	 */
 	function __construct( $author_element, $user_service ) {
 
@@ -55,30 +54,35 @@ class Wordlift_Admin_User_Profile_Page {
 		/*
 		 * When an admin (or similar permissions) edits his own profile a
 		 * different action than the usual is being triggered.
-		 * It is too early in the wordpress boot to do user capabilities filtering
+		 * It is too early in the WordPress boot to do user capabilities filtering
 		 * here and it is deferred to the handler.
 		 */
 		add_action( 'show_user_profile', array( $this, 'edit_user_profile' ) );
 		add_action( 'edit_user_profile', array( $this, 'edit_user_profile' ) );
-		add_action( 'edit_user_profile_update', array(
-			$this,
+		add_action(
 			'edit_user_profile_update',
-		) );
-		add_action( 'personal_options_update', array(
-			$this,
-			'edit_user_profile_update',
-		) );
+			array(
+				$this,
+				'edit_user_profile_update',
+			)
+		);
+		add_action(
+			'personal_options_update',
+			array(
+				$this,
+				'edit_user_profile_update',
+			)
+		);
 
 	}
 
 	/**
 	 * Add a WordLift section in the user profile which lets
-	 * the admin to associate a wordpress user with a person entity.
+	 * the admin to associate a WordPress user with a person entity.
 	 *
 	 * @param WP_User $user The current WP_User object of the user being edited.
 	 *
 	 * @since 3.14.0
-	 *
 	 */
 	public function edit_user_profile( $user ) {
 
@@ -89,48 +93,50 @@ class Wordlift_Admin_User_Profile_Page {
 		}
 
 		?>
-        <h2><?php esc_html_e( 'WordLift', 'wordlift' ); ?></h2>
+		<h2><?php esc_html_e( 'WordLift', 'wordlift' ); ?></h2>
 
-        <table class="form-table">
-		    <?php if ( apply_filters( 'wl_feature__enable__user-author', true ) ) { ?>
-            <tr class="user-description-wrap">
-                <th><label
-                            for="wl_person"><?php esc_html_e( 'Author from the vocabulary', 'wordlift' ); ?></label>
-                </th>
-                <td>
+		<table class="form-table">
+			<?php if ( apply_filters( 'wl_feature__enable__user-author', true ) ) { ?>
+			<tr class="user-description-wrap">
+				<th><label
+							for="wl_person"><?php esc_html_e( 'Author from the vocabulary', 'wordlift' ); ?></label>
+				</th>
+				<td>
 					<?php
-					$this->author_element->render( array(
-						'id'             => 'wl_person',
-						'name'           => 'wl_person',
-						'current_entity' => $this->user_service->get_entity( $user->ID ),
-					) );
+					$this->author_element->render(
+						array(
+							'id'             => 'wl_person',
+							'name'           => 'wl_person',
+							'current_entity' => $this->user_service->get_entity( $user->ID ),
+						)
+					);
 					?>
-                    <p class="description"><?php esc_html_e( 'The entity, person or organization, from the vocabulary to associate with this author.', 'wordlift' ); ?></p>
-                </td>
-            </tr>
-		    <?php } ?>
+					<p class="description"><?php esc_html_e( 'The entity, person or organization, from the vocabulary to associate with this author.', 'wordlift' ); ?></p>
+				</td>
+			</tr>
+			<?php } ?>
 			<?php if ( $this->user_service->is_editor( $user->ID ) ) { ?>
-            <tr>
-                <th>
-                    <label
-                            for="wl_can_create_entities"><?php esc_html_e( 'Can create new entities', 'wordlift' ) ?></label>
-                </th>
-                <td>
-                    <input id="wl_can_create_entities"
-                           name="wl_can_create_entities"
-                           type="checkbox" <?php checked( $this->user_service->editor_can_create_entities( $user->ID ) ) ?>
-                </td>
+			<tr>
+				<th>
+					<label
+							for="wl_can_create_entities"><?php esc_html_e( 'Can create new entities', 'wordlift' ); ?></label>
+				</th>
+				<td>
+					<input id="wl_can_create_entities"
+						   name="wl_can_create_entities"
+						   type="checkbox" <?php checked( $this->user_service->editor_can_create_entities( $user->ID ) ); ?>
+				</td>
 				<?php } ?>
 				<?php
 				/**
 				 * Action name: wordlift_user_settings_page
 				 * An action to render the wordlift user settings.
-				 * @since 3.30.0
 				 *
+				 * @since 3.30.0
 				 */
 				do_action( 'wordlift_user_settings_page' );
 				?>
-        </table>
+		</table>
 		<?php
 	}
 
@@ -140,7 +146,6 @@ class Wordlift_Admin_User_Profile_Page {
 	 * @param int $user_id The user id of the user being saved.
 	 *
 	 * @since 3.14.0
-	 *
 	 */
 	public function edit_user_profile_update( $user_id ) {
 
@@ -167,11 +172,10 @@ class Wordlift_Admin_User_Profile_Page {
 	 * Link an entity (specified in the `$_POST` array) to the {@link WP_User}
 	 * with the specified `id`.
 	 *
-	 * @param int $user_id The {@link WP_User} `id`.
+	 * @param int   $user_id The {@link WP_User} `id`.
 	 * @param array $post The `$_POST` array.
 	 *
 	 * @since 3.14.0
-	 *
 	 */
 	private function link_entity( $user_id, $post ) {
 

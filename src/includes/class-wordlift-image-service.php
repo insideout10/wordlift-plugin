@@ -63,7 +63,7 @@ class Wordlift_Image_Service {
 	 *
 	 * @since 3.19.4
 	 *
-	 * @param int   $attachment_id The attachment id.
+	 * @param int $attachment_id The attachment id.
 	 *
 	 * @return array {
 	 * An array of image sources.
@@ -76,22 +76,25 @@ class Wordlift_Image_Service {
 	public static function get_sources( $attachment_id ) {
 
 		// Get the source for the specified image sizes.
-		$sources = array_map( function ( $ratio ) use ( $attachment_id ) {
+		$sources = array_map(
+			function ( $ratio ) use ( $attachment_id ) {
 
-			// Get the source of the specified ratio.
-			$source = wp_get_attachment_image_src( $attachment_id, "wl-$ratio" );
+				// Get the source of the specified ratio.
+				$source = wp_get_attachment_image_src( $attachment_id, "wl-$ratio" );
 
-			// Get the size for the specified ratio.
-			$size = Wordlift_Image_Service::$sizes[ $ratio ];
+				// Get the size for the specified ratio.
+				$size = Wordlift_Image_Service::$sizes[ $ratio ];
 
-			// Check that the source has an image, and the required size.
-			if ( empty( $source[0] ) || $size[0] !== $source[1] || $size[1] !== $source[2] ) {
-				return null;
-			}
+				// Check that the source has an image, and the required size.
+				if ( empty( $source[0] ) || $size[0] !== $source[1] || $size[1] !== $source[2] ) {
+					  return null;
+				}
 
-			// Return the source.
-			return $source;
-		}, array_keys( self::$sizes ) );
+				// Return the source.
+				return $source;
+			},
+			array_keys( self::$sizes )
+		);
 
 		// Filter unavailable sources.
 		$sources_1200 = array_filter( $sources );

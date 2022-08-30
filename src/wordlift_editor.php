@@ -53,7 +53,7 @@ function wordlift_filter_tiny_mce_before_init( $options ) {
 		$options['extended_valid_elements'] = '';
 	}
 
-	$options['extended_valid_elements'] .= ",span[*]";
+	$options['extended_valid_elements'] .= ',span[*]';
 
 	return $options;
 }

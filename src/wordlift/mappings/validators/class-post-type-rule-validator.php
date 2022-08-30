@@ -78,7 +78,6 @@ class Post_Type_Rule_Validator implements Rule_Validator {
 				return $post_type === $operand_2;
 
 			default:
-
 		}
 
 		return false;

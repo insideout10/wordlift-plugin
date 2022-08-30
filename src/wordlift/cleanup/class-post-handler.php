@@ -18,7 +18,6 @@ class Post_Handler {
 	 * Process post.
 	 *
 	 * @param int $post_id
-	 *
 	 */
 	public static function fix( $post_id ) {
 		// 3 cases:
@@ -41,10 +40,12 @@ class Post_Handler {
 			return;
 		}
 
-		wp_update_post( array(
-			'ID'           => $post_id,
-			'post_content' => $new_post_content
-		) );
+		wp_update_post(
+			array(
+				'ID'           => $post_id,
+				'post_content' => $new_post_content,
+			)
+		);
 
 	}
 

@@ -88,7 +88,7 @@ class Wordlift_ShareThis_Service {
 		global $post;
 
 		// Bail out if the global $post instance isn't set.
-		if ( !isset( $post ) ) {
+		if ( ! isset( $post ) ) {
 			return $content;
 		}
 

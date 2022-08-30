@@ -32,9 +32,9 @@ class Wordlift_Admin_Download_Your_Data_Page {
 		'n3',
 	);
 
-
 	/**
 	 * The list of headers allowed by the endpoint.
+	 *
 	 * @since 3.28.2
 	 * @var string[]
 	 */
@@ -42,7 +42,7 @@ class Wordlift_Admin_Download_Your_Data_Page {
 		'json' => 'application/ld+json',
 		'rdf'  => 'application/rdf+xml',
 		'n3'   => 'text/n3',
-		'ttl'  => 'text/turtle'
+		'ttl'  => 'text/turtle',
 	);
 
 	/**
@@ -72,7 +72,7 @@ class Wordlift_Admin_Download_Your_Data_Page {
 	public function page() {
 
 		// Include the partial.
-		include( plugin_dir_path( __FILE__ ) . 'partials/wordlift-admin-download-your-data.php' );
+		include plugin_dir_path( __FILE__ ) . 'partials/wordlift-admin-download-your-data.php';
 
 	}
 
@@ -109,11 +109,10 @@ class Wordlift_Admin_Download_Your_Data_Page {
 			wp_die( esc_html__( 'The format is not supported.', 'wordlift' ) );
 		}
 
-
 		$accept_header_format = $this->allowed_headers[ $suffix ];
 
 		$headers = array(
-			'Accept' => $accept_header_format
+			'Accept' => $accept_header_format,
 		);
 
 		$response = $default_api_service->get( '/dataset/export', $headers );
@@ -127,7 +126,6 @@ class Wordlift_Admin_Download_Your_Data_Page {
 			// Something is not working properly, so display error message.
 			wp_die( esc_html__( 'There was an error trying to connect to the server. Please try again later.', 'wordlift' ) );
 		}
-
 
 		// Get response body.
 		$body     = wp_remote_retrieve_body( $response );

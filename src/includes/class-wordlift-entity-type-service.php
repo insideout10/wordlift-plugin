@@ -41,7 +41,6 @@ class Wordlift_Entity_Type_Service {
 	 * Wordlift_Entity_Type_Service constructor.
 	 *
 	 * @since 3.7.0
-	 *
 	 */
 	protected function __construct() {
 
@@ -60,13 +59,16 @@ class Wordlift_Entity_Type_Service {
 	 */
 	private function prepare_post_types() {
 
-		add_action( 'init', function () {
-			// Add post type support for 'custom-fields' for all post types. Specifically needed in Gutenberg
-			$post_types = get_post_types();
-			foreach ( $post_types as $post_type ) {
-				add_post_type_support( $post_type, 'custom-fields' );
+		add_action(
+			'init',
+			function () {
+				// Add post type support for 'custom-fields' for all post types. Specifically needed in Gutenberg
+				$post_types = get_post_types();
+				foreach ( $post_types as $post_type ) {
+					add_post_type_support( $post_type, 'custom-fields' );
+				}
 			}
-		} );
+		);
 	}
 
 	/**
@@ -77,7 +79,6 @@ class Wordlift_Entity_Type_Service {
 	 * @var \Wordlift_Entity_Type_Service $instance The {@link Wordlift_Entity_Type_Service} singleton instance.
 	 */
 	private static $instance = null;
-
 
 	/**
 	 * Get the {@link Wordlift_Entity_Type_Service} singleton instance.
@@ -124,7 +125,6 @@ class Wordlift_Entity_Type_Service {
 	 *           assigned the `Article` entity type by default.
 	 *      c) the post is a custom post type then it is
 	 *          assigned the `WebPage` entity type by default.
-	 *
 	 */
 	public function get( $post_id ) {
 
@@ -195,11 +195,10 @@ class Wordlift_Entity_Type_Service {
 	 *
 	 * @return array|WP_Error An array of entity types ids or a {@link WP_Error}.
 	 * @since 3.20.0
-	 *
 	 */
 	public function get_ids( $post_id ) {
 
-		return wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'ids', ) );
+		return wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'ids' ) );
 	}
 
 	/**
@@ -209,27 +208,32 @@ class Wordlift_Entity_Type_Service {
 	 *
 	 * @return array|WP_Error An array of entity types camel case names or a {@link WP_Error}.
 	 * @since 3.20.0
-	 *
 	 */
 	public function get_names( $post_id ) {
 
 		$ids = $this->get_ids( $post_id );
 
 		// Filter out invalid terms (ones without _wl_name term meta)
-		return array_values( array_filter( array_map( function ( $id ) {
-			return get_term_meta( $id, '_wl_name', true );
-		}, $ids ) ) );
+		return array_values(
+			array_filter(
+				array_map(
+					function ( $id ) {
+						return get_term_meta( $id, '_wl_name', true );
+					},
+					$ids
+				)
+			)
+		);
 	}
 
 	/**
 	 * Set the main type for the specified entity post, given the type URI.
 	 *
-	 * @param int $post_id The post id.
+	 * @param int    $post_id The post id.
 	 * @param string $type_uri The type URI.
-	 * @param bool $replace Whether the provided type must replace the existing types, by default `true`.
+	 * @param bool   $replace Whether the provided type must replace the existing types, by default `true`.
 	 *
 	 * @since 3.8.0
-	 *
 	 */
 	public function set( $post_id, $type_uri, $replace = true ) {
 
@@ -289,7 +293,6 @@ class Wordlift_Entity_Type_Service {
 	 * @return false|WP_Term WP_Term instance on success. Will return false if `$taxonomy` does not exist
 	 *                             or `$term` was not found.
 	 * @since 3.20.0
-	 *
 	 */
 	private function get_term_by_slug( $slug ) {
 
@@ -304,25 +307,27 @@ class Wordlift_Entity_Type_Service {
 	 * @return false|WP_Term WP_Term instance on success. Will return false if `$taxonomy` does not exist
 	 *                             or `$term` was not found.
 	 * @since 3.20.0
-	 *
 	 */
 	public function get_term_by_uri( $uri ) {
 
-		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
-			'fields'     => 'all',
-			'get'        => 'all',
-			'number'     => 1,
-			'meta_query' => array(
-				array(
-					// Don't use a reference to Wordlift_Schemaorg_Class_Service, unless
-					// `WL_ALL_ENTITY_TYPES` is set to true.
-					'key'   => '_wl_uri',
-					'value' => $uri,
+		$terms = get_terms(
+			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+			array(
+				'fields'     => 'all',
+				'get'        => 'all',
+				'number'     => 1,
+				'meta_query' => array(
+					array(
+						// Don't use a reference to Wordlift_Schemaorg_Class_Service, unless
+						// `WL_ALL_ENTITY_TYPES` is set to true.
+						'key'   => '_wl_uri',
+						'value' => $uri,
+					),
 				),
-			),
-			'orderby'    => 'term_id',
-			'order'      => 'ASC',
-		) );
+				'orderby'    => 'term_id',
+				'order'      => 'ASC',
+			)
+		);
 
 		return is_array( $terms ) && ! empty( $terms ) ? $terms[0] : false;
 	}
@@ -331,12 +336,11 @@ class Wordlift_Entity_Type_Service {
 	 * Check whether an entity type is set for the {@link WP_Post} with the
 	 * specified id.
 	 *
-	 * @param int $post_id The {@link WP_Post}'s `id`.
+	 * @param int    $post_id The {@link WP_Post}'s `id`.
 	 * @param string $uri The entity type URI.
 	 *
 	 * @return bool True if an entity type is set otherwise false.
 	 * @since 3.15.0
-	 *
 	 */
 	public function has_entity_type( $post_id, $uri = null ) {
 
@@ -363,25 +367,28 @@ class Wordlift_Entity_Type_Service {
 	 *
 	 * @return array|WP_Error An array of entity types' terms or {@link WP_Error}.
 	 * @since 3.15.0
-	 *
 	 */
 	private function get_post_terms( $post_id ) {
 
-		return wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
-			'hide_empty' => false,
-			// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
-			// An issue has been opened with the AAM plugin author as well.
-			//
-			// see https://github.com/insideout10/wordlift-plugin/issues/334
-			// see https://wordpress.org/support/topic/idslug-not-working-anymore?replies=1#post-8806863
-			'fields'     => 'all',
-		) );
+		return wp_get_object_terms(
+			$post_id,
+			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+			array(
+				'hide_empty' => false,
+				// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
+				// An issue has been opened with the AAM plugin author as well.
+				//
+				// see https://github.com/insideout10/wordlift-plugin/issues/334
+				// see https://wordpress.org/support/topic/idslug-not-working-anymore?replies=1#post-8806863
+				'fields'     => 'all',
+			)
+		);
 	}
 
 	/**
 	 * Get an entity type term given its URI.
 	 *
-	 * @param int $post_id The {@link WP_Post} id.
+	 * @param int    $post_id The {@link WP_Post} id.
 	 * @param string $uri The entity type URI.
 	 *
 	 * @return bool True if the post has that type URI bound to it otherwise false.
@@ -414,7 +421,6 @@ class Wordlift_Entity_Type_Service {
 	 *
 	 * @return array An array of custom fields (see `custom_fields` in Wordlift_Schema_Service).
 	 * @since 3.25.2
-	 *
 	 */
 	public function get_custom_fields_for_post( $post_id ) {
 
@@ -422,15 +428,24 @@ class Wordlift_Entity_Type_Service {
 		$types = $this->get_ids( $post_id );
 
 		/** @var WP_Term[] $terms */
-		$terms = array_filter( array_map( function ( $item ) {
-			return get_term( $item );
-		}, $types ), function ( $item ) {
-			return isset( $item ) && is_a( $item, 'WP_Term' );
-		} );
+		$terms = array_filter(
+			array_map(
+				function ( $item ) {
+					return get_term( $item );
+				},
+				$types
+			),
+			function ( $item ) {
+				return isset( $item ) && is_a( $item, 'WP_Term' );
+			}
+		);
 
-		$term_slugs = array_map( function ( $item ) {
-			return $item->slug;
-		}, $terms );
+		$term_slugs = array_map(
+			function ( $item ) {
+				return $item->slug;
+			},
+			$terms
+		);
 
 		$term_slugs[] = 'thing';
 
@@ -444,7 +459,6 @@ class Wordlift_Entity_Type_Service {
 	 *
 	 * @return array An array of custom fields (see `custom_fields` in Wordlift_Schema_Service).
 	 * @since 3.32.0
-	 *
 	 */
 	public function get_custom_fields_for_term( $term_id ) {
 		$selected_entity_types   = get_term_meta( $term_id, 'wl_entity_type' );
@@ -453,7 +467,6 @@ class Wordlift_Entity_Type_Service {
 
 		return $this->get_custom_fields_by_term_slugs( $selected_entity_types );
 	}
-
 
 	/**
 	 * Determines whether a post type can be used for entities.
@@ -465,7 +478,6 @@ class Wordlift_Entity_Type_Service {
 	 *
 	 * @return bool Return true if the post type can be used for entities, otherwise false.
 	 * @since 3.15.0
-	 *
 	 */
 	public static function is_valid_entity_post_type( $post_type ) {
 
@@ -480,16 +492,20 @@ class Wordlift_Entity_Type_Service {
 	private function get_custom_fields_by_term_slugs( $term_slugs ) {
 		$schema_service = Wordlift_Schema_Service::get_instance();
 
-		return array_reduce( $term_slugs, function ( $carry, $item ) use ( $schema_service ) {
+		return array_reduce(
+			$term_slugs,
+			function ( $carry, $item ) use ( $schema_service ) {
 
-			$schema = $schema_service->get_schema( $item );
+				$schema = $schema_service->get_schema( $item );
 
-			if ( ! isset( $schema['custom_fields'] ) ) {
-				return $carry;
-			}
+				if ( ! isset( $schema['custom_fields'] ) ) {
+					return $carry;
+				}
 
-			return $carry + $schema['custom_fields'];
-		}, array() );
+				return $carry + $schema['custom_fields'];
+			},
+			array()
+		);
 	}
 
 }

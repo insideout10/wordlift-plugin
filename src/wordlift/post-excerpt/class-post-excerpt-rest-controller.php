@@ -52,7 +52,7 @@ class Post_Excerpt_Rest_Controller {
 		$post_id   = $data['post_id'];
 		$post_body = strip_shortcodes( $data['post_body'] );
 		/**
-		 * @param $post_body string The post content sent from wordpress editor.
+		 * @param $post_body string The post content sent from WordPress editor.
 		 * @param $post_id int The post id.
 		 *
 		 * @since 3.33.5
@@ -64,14 +64,14 @@ class Post_Excerpt_Rest_Controller {
 		if ( empty( $server_response ) || ! array_key_exists( 'post_excerpt', $server_response ) ) {
 			return array(
 				'status'  => 'error',
-				'message' => __( 'Unable to contact WordLift API', 'wordlift' )
+				'message' => __( 'Unable to contact WordLift API', 'wordlift' ),
 			);
 		} else {
 			return array(
 				'status'       => 'success',
 				'post_excerpt' => $server_response['post_excerpt'],
 				'from_cache'   => $server_response['from_cache'],
-				'message'      => __( 'Excerpt successfully generated.', 'wordlift' )
+				'message'      => __( 'Excerpt successfully generated.', 'wordlift' ),
 			);
 		}
 
@@ -89,7 +89,7 @@ class Post_Excerpt_Rest_Controller {
 	public static function get_post_excerpt_conditionally( $post_id, $post_body, $current_hash ) {
 		$previous_data   = get_post_meta( $post_id, self::POST_EXCERPT_META_KEY, true );
 		$server_response = null;
-		if ( $previous_data === "" ) {
+		if ( $previous_data === '' ) {
 			// There is no data in meta, so just fetch the data from remote server.
 			$server_response = self::get_post_excerpt_from_remote_server( $post_id, $post_body );
 		} else {
@@ -100,7 +100,7 @@ class Post_Excerpt_Rest_Controller {
 				// then return the previous value.
 				$server_response = array(
 					'post_excerpt' => $previous_data['post_excerpt'],
-					'from_cache'   => true
+					'from_cache'   => true,
 				);
 			} else {
 				// send the request to external API and then send the response.
@@ -124,7 +124,7 @@ class Post_Excerpt_Rest_Controller {
 		// The configuration is constant for now, it might be changing in future.
 		$configuration = array(
 			'ratio'      => 0.0005,
-			'min_length' => 60
+			'min_length' => 60,
 		);
 		// Construct the url with the configuration
 		$endpoint    = add_query_arg( $configuration, self::WORDLIFT_POST_EXCERPT_ENDPOINT );
@@ -164,7 +164,7 @@ class Post_Excerpt_Rest_Controller {
 
 			return array(
 				'post_excerpt' => $post_excerpt,
-				'from_cache'   => false
+				'from_cache'   => false,
 			);
 		}
 	}
@@ -182,7 +182,7 @@ class Post_Excerpt_Rest_Controller {
 		// hash the post body and save it.
 		$data = array(
 			'post_body_hash' => md5( $post_body ),
-			'post_excerpt'   => $post_excerpt
+			'post_excerpt'   => $post_excerpt,
 		);
 		update_post_meta( $post_id, self::POST_EXCERPT_META_KEY, $data );
 	}
@@ -196,13 +196,13 @@ class Post_Excerpt_Rest_Controller {
 			'required'          => true,
 			'validate_callback' => function ( $param, $request, $key ) {
 				return is_numeric( $param );
-			}
+			},
 		);
 		$post_body_validation_settings = array(
 			'required'          => true,
 			'validate_callback' => function ( $param, $request, $key ) {
 				return is_string( $param );
-			}
+			},
 		);
 		/**
 		 * Rest route for getting the excerpt from wordlift api.
@@ -218,8 +218,8 @@ class Post_Excerpt_Rest_Controller {
 				},
 				'args'                => array(
 					'post_id'   => $post_id_validation_settings,
-					'post_body' => $post_body_validation_settings
-				)
+					'post_body' => $post_body_validation_settings,
+				),
 			)
 		);
 	}

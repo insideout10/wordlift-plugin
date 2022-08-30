@@ -33,21 +33,24 @@ class Xml_Generator {
 		 * @since 3.31.6
 		 * Filter the query args, add support for all custom public post types.
 		 */
-		$video_sitemap_query_args = apply_filters( 'wl_videoobject_sitemap_query_args', array(
-			'fields'      => 'ids',
-			'numberposts' => - 1,
-			'post_type'   => get_post_types( array( 'public' => true ) ),
-			'meta_query'  => array(
-				array(
-					'key'     => Meta_Storage::META_KEY,
-					'compare' => 'EXISTS'
-				)
+		$video_sitemap_query_args = apply_filters(
+			'wl_videoobject_sitemap_query_args',
+			array(
+				'fields'      => 'ids',
+				'numberposts' => - 1,
+				'post_type'   => get_post_types( array( 'public' => true ) ),
+				'meta_query'  => array(
+					array(
+						'key'     => Meta_Storage::META_KEY,
+						'compare' => 'EXISTS',
+					),
+				),
 			)
-		) );
+		);
 
 		$posts = get_posts( $video_sitemap_query_args );
 
-		$all_posts_xml = "";
+		$all_posts_xml = '';
 
 		if ( ! $posts ) {
 			return $all_posts_xml;
@@ -61,7 +64,6 @@ class Xml_Generator {
 
 	}
 
-
 	/**
 	 * @param $post_id
 	 *
@@ -70,9 +72,9 @@ class Xml_Generator {
 	public static function get_xml_for_single_post( $post_id ) {
 		$videos = Video_Storage_Factory::get_storage()->get_all_videos( $post_id );
 		if ( ! $videos ) {
-			return "";
+			return '';
 		}
-		$single_post_xml = "";
+		$single_post_xml = '';
 		foreach ( $videos as $video ) {
 			$single_post_xml .= self::get_xml_for_single_video( $video, $post_id );
 		}
@@ -80,7 +82,6 @@ class Xml_Generator {
 		return $single_post_xml;
 
 	}
-
 
 	/**
 	 * @param $video Video
@@ -105,10 +106,10 @@ class Xml_Generator {
 			'player_loc'  => $video->embed_url,
 			'duration'    => self::iso8601_to_seconds( $video->duration ),
 			'view_count'  => $video->views,
-			'live'        => $video->is_live_video ? 'yes' : 'no'
+			'live'        => $video->is_live_video ? 'yes' : 'no',
 		);
 
-		$optional_data = "";
+		$optional_data = '';
 		foreach ( $optional_fields as $xml_key => $xml_value ) {
 			if ( $xml_value ) {
 				$optional_data .= "<video:${xml_key}>${xml_value}</video:${xml_key}>";

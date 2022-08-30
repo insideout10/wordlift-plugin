@@ -2,7 +2,6 @@
 
 namespace Wordlift\Entity\Remote_Entity_Importer;
 
-use Wordlift\Content\Wordpress\Wordpress_Content;
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 
 interface Remote_Entity_Importer {

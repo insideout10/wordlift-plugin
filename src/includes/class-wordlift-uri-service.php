@@ -66,7 +66,6 @@ class Wordlift_Uri_Service {
 	 * @param \wpdb $wpdb The global WordPress database connection.
 	 *
 	 * @since 3.6.0
-	 *
 	 */
 	public function __construct( $wpdb ) {
 
@@ -100,13 +99,12 @@ class Wordlift_Uri_Service {
 	 * @uses  sanitize_title() to manage not ASCII chars
 	 *
 	 * @see   https://codex.wordpress.org/Function_Reference/sanitize_title
-	 *
 	 */
 	public function sanitize_path( $path, $char = '_' ) {
 
 		// Ensure the path is ASCII.
 		// see https://github.com/insideout10/wordlift-plugin/issues/386
-//		$path_ascii = mb_convert_encoding( $path, 'ASCII' );
+		// $path_ascii = mb_convert_encoding( $path, 'ASCII' );
 
 		return sanitize_title( preg_replace( self::INVALID_CHARACTERS, $char, stripslashes( $path ) ) );
 	}
@@ -117,9 +115,9 @@ class Wordlift_Uri_Service {
 	 * numeric suffix is added. If a schema type is given entities with same label
 	 * and same type are overridden.
 	 *
-	 * @param string $title A post title.
-	 * @param string $post_type A post type. Default value is 'entity'
-	 * @param string $schema_type A schema org type.
+	 * @param string  $title A post title.
+	 * @param string  $post_type A post type. Default value is 'entity'
+	 * @param string  $schema_type A schema org type.
 	 * @param integer $increment_digit A digit used to call recursively the same function.
 	 *
 	 * @return string Returns an uri.
@@ -140,10 +138,11 @@ class Wordlift_Uri_Service {
 		 * @since 3.20.0
 		 */
 		$entity_slug = urldecode( wl_sanitize_uri_path( $title ) )
-		               . ( 0 === $increment_digit ? '' : '_' . $suffix_digit );
+					   . ( 0 === $increment_digit ? '' : '_' . $suffix_digit );
 
 		// Compose a candidate uri.
-		$new_entity_uri = sprintf( '%s/%s/%s',
+		$new_entity_uri = sprintf(
+			'%s/%s/%s',
 			untrailingslashit( wl_configuration_get_redlink_dataset_uri() ),
 			$post_type,
 			$entity_slug
@@ -177,8 +176,8 @@ class Wordlift_Uri_Service {
 
 	/**
 	 *
-	 * @param string $title A post title.
-	 * @param string $taxonomy A post type. Default value is 'entity'
+	 * @param string  $title A post title.
+	 * @param string  $taxonomy A post type. Default value is 'entity'
 	 * @param integer $increment_digit A digit used to call recursively the same function.
 	 *
 	 * @return string Returns an uri.
@@ -190,10 +189,11 @@ class Wordlift_Uri_Service {
 		$suffix_digit = $increment_digit + 1;
 
 		$entity_slug = urldecode( $title )
-		               . ( 0 === $increment_digit ? '' : '_' . $suffix_digit );
+					   . ( 0 === $increment_digit ? '' : '_' . $suffix_digit );
 
 		// Compose a candidate uri.
-		$new_entity_uri = sprintf( '%s/term/%s/%s',
+		$new_entity_uri = sprintf(
+			'%s/term/%s/%s',
 			Wordlift_Configuration_Service::get_instance()->get_dataset_uri(),
 			$taxonomy,
 			$entity_slug
@@ -211,10 +211,8 @@ class Wordlift_Uri_Service {
 			return $new_entity_uri;
 		}
 
-
 		// Otherwise the same function is called recursively
 		return $this->build_term_uri( $title, $taxonomy, ++ $increment_digit );
 	}
-
 
 }

@@ -25,7 +25,7 @@ class Jsonld_Article_Wrapper {
 		'LiveBlogPosting',
 		'DiscussionForumPosting',
 		'TechArticle',
-		'APIReference'
+		'APIReference',
 	);
 
 	/**
@@ -61,7 +61,7 @@ class Jsonld_Article_Wrapper {
 	public function after_get_jsonld( $jsonld, $post_id, $context ) {
 
 		if ( Jsonld_Context_Enum::PAGE !== $context || ! is_array( $jsonld ) || ! isset( $jsonld[0] )
-		     || ! is_array( $jsonld[0] ) ) {
+			 || ! is_array( $jsonld[0] ) ) {
 			return $jsonld;
 		}
 
@@ -81,7 +81,6 @@ class Jsonld_Article_Wrapper {
 		// Reset the type, since by default the type assigned via the Entity Type taxonomy is used.
 		$article_jsonld['@type'] = 'Article';
 		$article_jsonld['about'] = array( '@id' => $post_jsonld['@id'] );
-
 
 		// Copy over the URLs.
 		if ( isset( $post_jsonld['url'] ) ) {
@@ -106,7 +105,7 @@ class Jsonld_Article_Wrapper {
 
 	private function is_article( $schema_types ) {
 
-		$array_intersect = array_intersect( self::$article_types, ( array ) $schema_types );
+		$array_intersect = array_intersect( self::$article_types, (array) $schema_types );
 
 		return ! empty( $array_intersect );
 	}

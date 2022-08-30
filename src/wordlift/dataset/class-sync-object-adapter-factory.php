@@ -31,9 +31,12 @@ class Sync_Object_Adapter_Factory {
 	function create_many( $type, $object_ids ) {
 		$that = $this;
 
-		return array_map( function ( $item ) use ( $type, $that ) {
-			return $that->create( $type, $item );
-		}, (array) $object_ids );
+		return array_map(
+			function ( $item ) use ( $type, $that ) {
+				return $that->create( $type, $item );
+			},
+			(array) $object_ids
+		);
 	}
 
 }

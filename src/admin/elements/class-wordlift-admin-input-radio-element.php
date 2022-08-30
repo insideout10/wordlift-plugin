@@ -39,7 +39,6 @@ class Wordlift_Admin_Radio_Input_Element implements Wordlift_Admin_Element {
 	 * }
 	 * @return $this|Wordlift_Admin_Element
 	 * @since      3.13.0
-	 *
 	 */
 	public function render( $args ) {
 		/*
@@ -47,29 +46,40 @@ class Wordlift_Admin_Radio_Input_Element implements Wordlift_Admin_Element {
 		 * Name intentionally do not have a default as it has to be in SyncEvent
 		 * with form handling code
 		 */
-		$params = wp_parse_args( $args, array(
-			'id'          => uniqid( 'wl-input-' ),
-			'value'       => '',
-			'css_class'   => '',
-			'description' => '',
-		) );
+		$params = wp_parse_args(
+			$args,
+			array(
+				'id'          => uniqid( 'wl-input-' ),
+				'value'       => '',
+				'css_class'   => '',
+				'description' => '',
+			)
+		);
 
 		// Set the readonly and class attributes and the description.
 		$value = $params['value'];
 		?>
 
-        <input type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
-               name="<?php echo esc_attr( $params['name'] ); ?>"
-               value="yes" <?php if ( ! empty( $params['css_class'] ) ) { ?> class="<?php echo esc_attr( $params['css_class'] ) ?>" <?php } ?>
+		<input type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
+			   name="<?php echo esc_attr( $params['name'] ); ?>"
+			   value="yes" 
+			   <?php
+				if ( ! empty( $params['css_class'] ) ) {
+					?>
+					 class="<?php echo esc_attr( $params['css_class'] ); ?>" <?php } ?>
 			<?php checked( $value, 'yes' ); ?>
-        /> Yes
-        <input type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
-               name="<?php echo esc_attr( $params['name'] ); ?>"
-               value="no" <?php if ( ! empty( $params['css_class'] ) ) { ?> class="<?php echo esc_attr( $params['css_class'] ) ?>" <?php } ?>
+		/> Yes
+		<input type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
+			   name="<?php echo esc_attr( $params['name'] ); ?>"
+			   value="no" 
+			   <?php
+				if ( ! empty( $params['css_class'] ) ) {
+					?>
+					 class="<?php echo esc_attr( $params['css_class'] ); ?>" <?php } ?>
 			<?php checked( $value, 'no' ); ?>
-        /> No
+		/> No
 		<?php if ( ! empty( $params['description'] ) ) { ?>
-            <p><?php echo wp_kses( $params['description'], array( 'a' => array( 'href' => array() ) ) ); ?></p><?php } ?>
+			<p><?php echo wp_kses( $params['description'], array( 'a' => array( 'href' => array() ) ) ); ?></p><?php } ?>
 		<?php
 
 		return $this;

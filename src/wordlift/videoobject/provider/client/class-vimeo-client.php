@@ -15,33 +15,40 @@ class Vimeo_Client extends Singleton implements Client {
 
 	const VIMEO_URL_REGEX = '/https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/';
 
-
 	public function get_data( $video_urls ) {
 
-		$vimeo_ids = $this->get_video_ids($video_urls);
+		$vimeo_ids = $this->get_video_ids( $video_urls );
 
-		$vimeo_api_ids = array_map( function ( $item ) {
-			return '/videos/' . $item;
-		}, $vimeo_ids );
+		$vimeo_api_ids = array_map(
+			function ( $item ) {
+				return '/videos/' . $item;
+			},
+			$vimeo_ids
+		);
 
-		$ids = join( ",", $vimeo_api_ids );
+		$ids = join( ',', $vimeo_api_ids );
 
 		if ( ! $ids ) {
 			return array();
 		}
 
-		$api_url = $this->get_api_url() . "/videos/";
-		$api_url = add_query_arg( array(
-			'uris'   => $ids,
-			'fields' => 'name,description,link,uri,duration,release_time,pictures,stats'
-		), $api_url );
+		$api_url = $this->get_api_url() . '/videos/';
+		$api_url = add_query_arg(
+			array(
+				'uris'   => $ids,
+				'fields' => 'name,description,link,uri,duration,release_time,pictures,stats',
+			),
+			$api_url
+		);
 
-
-		$response = wp_remote_get( $api_url, array(
-			'headers' => array(
-				'Authorization' => 'bearer ' . $this->get_api_key()
+		$response = wp_remote_get(
+			$api_url,
+			array(
+				'headers' => array(
+					'Authorization' => 'bearer ' . $this->get_api_key(),
+				),
 			)
-		) );
+		);
 
 		self::$requests_sent += 1;
 
@@ -64,18 +71,23 @@ class Vimeo_Client extends Singleton implements Client {
 
 		$that = $this;
 
-		return array_filter( array_map( function ( $video_url ) use ( $that ) {
-			if ( ! $video_url ) {
-				return false;
-			}
-			preg_match( $that::VIMEO_URL_REGEX, $video_url, $matches );
+		return array_filter(
+			array_map(
+				function ( $video_url ) use ( $that ) {
+					if ( ! $video_url ) {
+						  return false;
+					}
+					preg_match( $that::VIMEO_URL_REGEX, $video_url, $matches );
 
-			if ( ! array_key_exists( 3, $matches ) ) {
-				return false;
-			}
+					if ( ! array_key_exists( 3, $matches ) ) {
+						return false;
+					}
 
-			return $matches[3];
+					return $matches[3];
 
-		}, $video_urls ) );
+				},
+				$video_urls
+			)
+		);
 	}
 }

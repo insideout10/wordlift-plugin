@@ -1,6 +1,7 @@
 <?php
 /**
  * This file provides a factory to choose a Occurrences strategy based on feature active.
+ *
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.32.6
  */
@@ -21,6 +22,5 @@ class Occurrences_Factory {
 		}
 		return Default_Strategy::get_instance();
 	}
-
 
 }

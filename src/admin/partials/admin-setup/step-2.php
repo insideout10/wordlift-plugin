@@ -6,7 +6,7 @@
 	<br>
 	<p class="page-txt">
 		<?php
-			esc_html_e( 'Help us improve our product by automatically sending diagnostic and usage data.', 'wordlift' ); 
+			esc_html_e( 'Help us improve our product by automatically sending diagnostic and usage data.', 'wordlift' );
 		?>
 	</p>
 	<input

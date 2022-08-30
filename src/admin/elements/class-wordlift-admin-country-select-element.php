@@ -23,7 +23,6 @@ class Wordlift_Admin_Country_Select_Element extends Wordlift_Admin_Select_Elemen
 	 * to allow front-end validation.
 	 *
 	 * @since 3.18.0
-	 *
 	 */
 	public function __construct() {
 		// Adds the country codes as data attribute to allow front-end validation.
@@ -50,13 +49,13 @@ class Wordlift_Admin_Country_Select_Element extends Wordlift_Admin_Select_Elemen
 
 		foreach ( $countries as $code => $label ) :
 			?>
-            <option
-                    value="<?php echo esc_attr( $code ); ?>"
+			<option
+					value="<?php echo esc_attr( $code ); ?>"
 				<?php echo selected( $code, $language, false ); ?>
-            >
+			>
 				<?php echo esc_html( $label ); ?>
-            </option>
-		<?php
+			</option>
+			<?php
 		endforeach;
 	}
 

@@ -29,7 +29,7 @@ class Wordlift_Post_Adapter {
 	private $post_id;
 
 	const TYPE_ENTITY_LINK = 0;
-	const TYPE_TERM_LINK = 1;
+	const TYPE_TERM_LINK   = 1;
 
 	/**
 	 * Create the {@link Wordlift_Post_Adatpter} instance.
@@ -37,7 +37,6 @@ class Wordlift_Post_Adapter {
 	 * @param integer $post_id the post ID of the post the adopter relates to.
 	 *
 	 * @since 3.14.0
-	 *
 	 */
 	public function __construct( $post_id ) {
 
@@ -52,7 +51,6 @@ class Wordlift_Post_Adapter {
 	 *
 	 * @return integer the number of words in the content after stripping shortcodes and html tags..
 	 * @since 3.14.0
-	 *
 	 */
 	public function word_count() {
 
@@ -94,7 +92,6 @@ class Wordlift_Post_Adapter {
 	 *
 	 * @return string The post permalink.
 	 * @since 3.20.0
-	 *
 	 */
 	public static function get_production_permalink( $post_id, $object_type = Object_Type_Enum::POST ) {
 
@@ -124,9 +121,7 @@ class Wordlift_Post_Adapter {
 		 * @since 3.20.0
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/850
-		 *
 		 */
-
 
 		$uris = $object_link_service->get_same_as_uris(
 			$post_id,
@@ -137,14 +132,16 @@ class Wordlift_Post_Adapter {
 		$terms = array();
 		if ( defined( 'WL_ENABLE_TERM_LINKING' ) && WL_ENABLE_TERM_LINKING ) {
 			// Try to find one term matching the entity.
-			$terms = get_terms( array(
-				'number'                 => 1,
-				'hide_empty'             => false,
-				'update_term_meta_cache' => false,
-				'meta_key'               => '_wl_entity_id',
-				'meta_value'             => $uris,
-				'meta_compare'           => 'IN',
-			) );
+			$terms = get_terms(
+				array(
+					'number'                 => 1,
+					'hide_empty'             => false,
+					'update_term_meta_cache' => false,
+					'meta_key'               => '_wl_entity_id',
+					'meta_value'             => $uris,
+					'meta_compare'           => 'IN',
+				)
+			);
 		}
 
 		$type = self::TYPE_ENTITY_LINK;
@@ -165,7 +162,6 @@ class Wordlift_Post_Adapter {
 		 * @param WP_Term $term The term if type is term link, otherwise null.
 		 *
 		 * @since 3.23.0 add the permalink type and term parameters.
-		 *
 		 */
 		return apply_filters( 'wl_production_permalink', $permalink, $post_id, $type, $term );
 	}
@@ -184,9 +180,15 @@ class Wordlift_Post_Adapter {
 			return;
 		}
 
-		return implode( ',', array_map( function ( $tag ) {
-			return $tag->name;
-		}, $tags ) );
+		return implode(
+			',',
+			array_map(
+				function ( $tag ) {
+					return $tag->name;
+				},
+				$tags
+			)
+		);
 	}
 
 	/**
@@ -232,7 +234,7 @@ class Wordlift_Post_Adapter {
 			if ( ! $post_language instanceof WP_Error ) {
 				$language = $post_language['locale'];
 			}
-		} else if ( function_exists( 'pll_get_post_language' ) ) {
+		} elseif ( function_exists( 'pll_get_post_language' ) ) {
 			// Polylang handling
 			$language = pll_get_post_language( $this->post_id, 'locale' );
 		} else {

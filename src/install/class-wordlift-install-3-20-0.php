@@ -55,8 +55,8 @@ class Wordlift_Install_3_20_0 extends Wordlift_Install {
 
 			// We don't use the references to the Wordlift_Schemaorg_Class_Service because it might not be
 			// loaded if the `WL_ALL_ENTITY_TYPES` constant isn't set.
-			$result_1 = update_term_meta( $term->term_id, '_wl_name', $name );
-			$result_2 = update_term_meta( $term->term_id, '_wl_uri', "http://schema.org/$name" );
+			update_term_meta( $term->term_id, '_wl_name', $name );
+			update_term_meta( $term->term_id, '_wl_uri', "http://schema.org/$name" );
 
 			// $this->log->debug( 'name :: ' . var_export( $result_1, true ) . ' URI :: ' . var_export( $result_2, true ) );
 

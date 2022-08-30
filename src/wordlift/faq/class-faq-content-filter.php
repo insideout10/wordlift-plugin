@@ -14,9 +14,10 @@ class Faq_Content_Filter {
 	 * Constants used for replacing the tags in the html string.
 	 */
 	const FAQ_QUESTION_TAG_NAME = 'wl-faq-question';
-	const FAQ_ANSWER_TAG_NAME = 'wl-faq-answer';
+	const FAQ_ANSWER_TAG_NAME   = 'wl-faq-answer';
 	/**
 	 * Replaces all the html tags inserted by Faq highlighting code in the front end
+	 *
 	 * @param $content string Post content
 	 * @return string String after replacing all the opening and closing tags.
 	 */
@@ -26,15 +27,15 @@ class Faq_Content_Filter {
 		 */
 		$faq_question_opening_tag = '<' . self::FAQ_QUESTION_TAG_NAME . '>';
 		$faq_question_closing_tag = '</' . self::FAQ_QUESTION_TAG_NAME . '>';
-		$content = preg_replace('/<wl-faq-question class=".+?">/m', '', $content );
-		$content = str_replace($faq_question_closing_tag, "", $content);
+		$content                  = preg_replace( '/<wl-faq-question class=".+?">/m', '', $content );
+		$content                  = str_replace( $faq_question_closing_tag, '', $content );
 		/**
 		 * Replace all the answer tags.
 		 */
 		$faq_answer_opening_tag = '<' . self::FAQ_ANSWER_TAG_NAME . '>';
 		$faq_answer_closing_tag = '</' . self::FAQ_ANSWER_TAG_NAME . '>';
-		$content = preg_replace('/<wl-faq-answer class=".+?">/m', '', $content );
-		$content = str_replace($faq_answer_closing_tag, "", $content);
+		$content                = preg_replace( '/<wl-faq-answer class=".+?">/m', '', $content );
+		$content                = str_replace( $faq_answer_closing_tag, '', $content );
 
 		/** Return all the replaced content */
 		return $content;

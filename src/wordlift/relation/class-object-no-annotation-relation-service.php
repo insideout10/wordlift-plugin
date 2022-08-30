@@ -16,7 +16,6 @@ use Wordlift\Object_Type_Enum;
 
 class Object_No_Annotation_Relation_Service extends Object_Relation_Service {
 
-
 	public function get_relations_from_content( $content, $subject_type, $local_entity_uris ) {
 		if ( ! $local_entity_uris ) {
 			return array();
@@ -37,11 +36,11 @@ class Object_No_Annotation_Relation_Service extends Object_Relation_Service {
 		return array_unique( array_filter( array_merge( $references_with_articles, $references_without_articles ) ) );
 	}
 
-
 	public function get_all_entities_references( $subject_id, $subject_type ) {
 		global $wpdb;
 		$table_name = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
-		$query      = $wpdb->prepare( "SELECT object_id FROM $table_name WHERE subject_id = %d AND object_type = %d AND subject_type = %d",
+		$query      = $wpdb->prepare(
+			"SELECT object_id FROM $table_name WHERE subject_id = %d AND object_type = %d AND subject_type = %d",
 			$subject_id,
 			Object_Type_Enum::POST,
 			$subject_type
@@ -49,11 +48,13 @@ class Object_No_Annotation_Relation_Service extends Object_Relation_Service {
 
 		$post_ids = $wpdb->get_col( $query );
 
-		return array_map( function ( $term_id ) {
-			return new Post_Reference( $term_id );
-		}, $post_ids );
+		return array_map(
+			function ( $term_id ) {
+				return new Post_Reference( $term_id );
+			},
+			$post_ids
+		);
 
 	}
-
 
 }

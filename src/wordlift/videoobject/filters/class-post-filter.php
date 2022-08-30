@@ -2,13 +2,6 @@
 
 namespace Wordlift\Videoobject\Filters;
 
-use Wordlift\Videoobject\Data\Embedded_Video\Embedded_Video;
-use Wordlift\Videoobject\Data\Video\Video;
-use Wordlift\Videoobject\Data\Video_Storage\Meta_Storage;
-use Wordlift\Videoobject\Data\Video_Storage\Storage;
-use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
-use Wordlift\Videoobject\Parser\Parser_Factory;
-use Wordlift\Videoobject\Provider\Provider_Factory;
 use Wordlift\Videoobject\Video_Processor;
 
 /**
@@ -22,7 +15,7 @@ class Post_Filter {
 	 */
 	private $video_processor;
 
-	public function __construct($video_processor) {
+	public function __construct( $video_processor ) {
 		$this->video_processor = $video_processor;
 	}
 
@@ -44,7 +37,5 @@ class Post_Filter {
 		$this->video_processor->process_video_urls( $post, $post_id );
 
 	}
-
-
 
 }

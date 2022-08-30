@@ -50,7 +50,6 @@ class Wordlift_Topic_Taxonomy_Service {
 	 * Create a Wordlift_Topic_Taxonomy_Service instance.
 	 *
 	 * @since 3.5.0
-	 *
 	 */
 	public function __construct() {
 
@@ -76,7 +75,6 @@ class Wordlift_Topic_Taxonomy_Service {
 	 * Just register the topic taxonomy.
 	 *
 	 * @since 3.5.0
-	 *
 	 */
 	public function init() {
 
@@ -107,15 +105,17 @@ class Wordlift_Topic_Taxonomy_Service {
 			'capabilities'      => $capabilities,
 			'hierarchical'      => true,
 			'show_admin_column' => false,
-			'show_ui'			=> false,
-			'rewrite'			=> array(
-				'slug'	=> self::TAXONOMY_SLUG,
+			'show_ui'           => false,
+			'rewrite'           => array(
+				'slug' => self::TAXONOMY_SLUG,
 			),
 		);
 
 		// Register taxonomy
 		register_taxonomy(
-			self::TAXONOMY_NAME, self::TAXONOMY_OBJECT_TYPE, $args
+			self::TAXONOMY_NAME,
+			self::TAXONOMY_OBJECT_TYPE,
+			$args
 		);
 
 	}
@@ -124,7 +124,6 @@ class Wordlift_Topic_Taxonomy_Service {
 	 * Get or create a taxonomy term from a given entity topic.
 	 *
 	 * @since 3.5.0
-	 *
 	 */
 	public function get_or_create_term_from_topic_entity( $topic ) {
 
@@ -139,19 +138,18 @@ class Wordlift_Topic_Taxonomy_Service {
 			$topic->post_title,
 			self::TAXONOMY_NAME,
 			array(
-				'slug'			=> $term_slug,
-				'description'	=> $topic->post_content,
+				'slug'        => $term_slug,
+				'description' => $topic->post_content,
 			)
 		);
 
-		return  (int) $result['term_id'];
+		return (int) $result['term_id'];
 	}
 
 	/**
 	 * Set a topic for a given post.
 	 *
 	 * @since 3.5.0
-	 *
 	 */
 	public function set_topic_for( $post_id, $topic_id ) {
 		// Retrieve the topic entity post
@@ -171,7 +169,6 @@ class Wordlift_Topic_Taxonomy_Service {
 	 * Unlink any topic for a given post.
 	 *
 	 * @since 3.5.0
-	 *
 	 */
 	public function unlink_topic_for( $post_id ) {
 		wp_delete_object_term_relationships( $post_id, self::TAXONOMY_NAME );

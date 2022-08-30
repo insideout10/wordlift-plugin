@@ -46,9 +46,9 @@ class Video_Sitemap {
 			return;
 		}
 
-		header( "Content-type: text/xml" );
+		header( 'Content-type: text/xml' );
 		// set 200 status code.
-		status_header(200);
+		status_header( 200 );
 
 		$xml = $this->sitemap_cache->get( self::XML_CACHE_KEY );
 
@@ -75,7 +75,7 @@ class Video_Sitemap {
 ';
 		$sitemap_body      = Xml_Generator::get_xml_for_all_posts_with_videos();
 
-		$sitemap_end_tag = "</urlset>";
+		$sitemap_end_tag = '</urlset>';
 
 		$xml = $sitemap_start_tag . $sitemap_body . $sitemap_end_tag;
 

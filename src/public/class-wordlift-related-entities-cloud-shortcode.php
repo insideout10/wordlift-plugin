@@ -38,10 +38,9 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 	 * Create a {@link Wordlift_Related_Entities_Cloud_Shortcode} instance.
 	 *
 	 * @param \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
-	 * @param \Wordlift_Entity_Service $entity_service
+	 * @param \Wordlift_Entity_Service   $entity_service
 	 *
 	 * @since 3.15.0
-	 *
 	 */
 	public function __construct( $relation_service, $entity_service ) {
 		parent::__construct();
@@ -72,42 +71,48 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 		 */
 
 		return '<div class="tagcloud wl-related-entities-cloud">' .
-		       wp_generate_tag_cloud( $tags, $atts ) .
-		       '</div>';
+			   wp_generate_tag_cloud( $tags, $atts ) .
+			   '</div>';
 	}
 
 	private function register_block_type() {
 
 		$scope = $this;
 
-		add_action( 'init', function () use ( $scope ) {
-			if ( ! function_exists( 'register_block_type' ) ) {
-				// Gutenberg is not active.
-				return;
+		add_action(
+			'init',
+			function () use ( $scope ) {
+				if ( ! function_exists( 'register_block_type' ) ) {
+					// Gutenberg is not active.
+					return;
+				}
+
+				register_block_type(
+					'wordlift/cloud',
+					array(
+						'editor_script'   => 'wl-block-editor',
+						'render_callback' => function ( $attributes ) use ( $scope ) {
+							$attr_code = '';
+							foreach ( $attributes as $key => $value ) {
+								$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
+							}
+
+							return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
+						},
+						'attributes'      => array(
+							'preview'     => array(
+								'type'    => 'boolean',
+								'default' => false,
+							),
+							'preview_src' => array(
+								'type'    => 'string',
+								'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/cloud.png',
+							),
+						),
+					)
+				);
 			}
-
-			register_block_type( 'wordlift/cloud', array(
-				'editor_script'   => 'wl-block-editor',
-				'render_callback' => function ( $attributes ) use ( $scope ) {
-					$attr_code = '';
-					foreach ( $attributes as $key => $value ) {
-						$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
-					}
-
-					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
-				},
-				'attributes'      => array(
-					'preview'     => array(
-						'type'    => 'boolean',
-						'default' => false,
-					),
-					'preview_src' => array(
-						'type'    => 'string',
-						'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/cloud.png',
-					),
-				),
-			) );
-		} );
+		);
 	}
 
 	/**
@@ -117,7 +122,6 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 	 * @return array    Array of tags. Empty array in case we re not in a context
 	 *                  of a post, or it has no related entities.
 	 * @since 3.11.0
-	 *
 	 */
 	public function get_related_entities_tags() {
 

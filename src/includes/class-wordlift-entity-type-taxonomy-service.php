@@ -63,7 +63,7 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 			'show_admin_column'  => apply_filters( 'wl_feature__enable__entity-types-taxonomy', true ),
 			'show_in_rest'       => apply_filters( 'wl_feature__enable__entity-types-taxonomy', true ),
 			'show_in_quick_edit' => false,
-			'publicly_queryable' => false
+			'publicly_queryable' => false,
 		);
 
 		/*
@@ -75,7 +75,7 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		if ( apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES ) ) {
 			$args['meta_box_cb'] = apply_filters( 'wl_feature__enable__entity-types-taxonomy', true ) ? array(
 				'Wordlift_Admin_Schemaorg_Taxonomy_Metabox',
-				'render'
+				'render',
 			) : false;
 		}
 
@@ -88,37 +88,46 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		/**
 		 * Register meta wl_entities_gutenberg for use in Gutenberg
 		 */
-		register_meta( 'post', 'wl_entities_gutenberg', array(
-			'show_in_rest' => true,
-			'single'       => true,
-			'type'         => 'string',
-		) );
+		register_meta(
+			'post',
+			'wl_entities_gutenberg',
+			array(
+				'show_in_rest' => true,
+				'single'       => true,
+				'type'         => 'string',
+			)
+		);
 
 		/**
 		 * Register meta _wl_alt_label for use in Gutenberg
 		 */
-//		register_meta( 'post', Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY, array(
-//			'object_subtype' => '',
-//			'show_in_rest'   => true,
-//			'single'         => false,
-//			'type'           => 'string',
-//			'auth_callback'  => function () {
-//				return current_user_can( 'edit_posts' );
-//			}
-//		) );
+		// register_meta( 'post', Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY, array(
+		// 'object_subtype' => '',
+		// 'show_in_rest'   => true,
+		// 'single'         => false,
+		// 'type'           => 'string',
+		// 'auth_callback'  => function () {
+		// return current_user_can( 'edit_posts' );
+		// }
+		// ) );
 
 		// see #1364: add custom fields support for CPTs that are valid entity post types in order to be able to
 		// query for synonyms in Block Editor.
-		add_filter( 'register_post_type_args', function ( $args, $post_type ) {
-			if ( in_array( $post_type, Wordlift_Entity_Service::valid_entity_post_types() ) ) {
-				if ( ! isset( $args['supports'] ) ) {
-					$args['supports'] = array();
+		add_filter(
+			'register_post_type_args',
+			function ( $args, $post_type ) {
+				if ( in_array( $post_type, Wordlift_Entity_Service::valid_entity_post_types() ) ) {
+					if ( ! isset( $args['supports'] ) ) {
+						$args['supports'] = array();
+					}
+					$args['supports'][] = 'custom-fields';
 				}
-				$args['supports'][] = 'custom-fields';
-			}
 
-			return $args;
-		}, 10, 2 );
+				return $args;
+			},
+			10,
+			2
+		);
 
 		// Add filter to change the metabox CSS class.
 		add_filter( 'postbox_classes_entity_wl_entity_typediv', 'wl_admin_metaboxes_add_css_class' );
@@ -133,6 +142,7 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 
 		/**
 		 * Exclude sitemap creation for wl_entity_type taxonomy in Yoast
+		 *
 		 * @since 3.30.1
 		 */
 		add_filter( 'wpseo_sitemap_exclude_taxonomy', array( $this, 'wpseo_sitemap_exclude_taxonomy' ), 10, 2 );
@@ -145,11 +155,11 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 	 * We check if our taxonomy is requested and whether a term has been returned. If no term has been returned we
 	 * preset `Article` for posts/pages and 'Thing' for everything else and we query the terms again.
 	 *
-	 * @param array $terms Array of terms for the given object or objects.
-	 * @param int[] $object_ids Array of object IDs for which terms were retrieved.
+	 * @param array    $terms Array of terms for the given object or objects.
+	 * @param int[]    $object_ids Array of object IDs for which terms were retrieved.
 	 * @param string[] $taxonomies Array of taxonomy names from which terms were retrieved.
-	 * @param array $args Array of arguments for retrieving terms for the given
-	 *                             object(s). See get_object_terms() for details.
+	 * @param array    $args Array of arguments for retrieving terms for the given
+	 *                                object(s). See get_object_terms() for details.
 	 *
 	 * @return array|WP_Error
 	 * @since 3.23.6
@@ -161,10 +171,10 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		// Check if this is a query for our entity type, that no terms have been found and that we have an article
 		// term to preset in case.
 		if ( ! taxonomy_exists( $entity_type )
-		     || array( $entity_type ) !== (array) $taxonomies
-		     || ! empty( $terms )
-		     || ! term_exists( 'article', $entity_type )
-		     || ! term_exists( 'thing', $entity_type ) ) {
+			 || array( $entity_type ) !== (array) $taxonomies
+			 || ! empty( $terms )
+			 || ! term_exists( 'article', $entity_type )
+			 || ! term_exists( 'thing', $entity_type ) ) {
 
 			// Return the input value.
 			return $terms;

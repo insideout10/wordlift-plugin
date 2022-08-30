@@ -72,7 +72,7 @@ class Wordlift_Schemaorg_Sync_Service {
 	public function load_from_file() {
 
 		// Load the file contents.
-		$contents = file_get_contents( dirname( __FILE__ ) . '/schema-classes.json' );
+		$contents = file_get_contents( __DIR__ . '/schema-classes.json' );
 
 		// Load the file contents.
 		return $this->load( $contents );

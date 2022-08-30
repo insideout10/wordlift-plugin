@@ -50,7 +50,6 @@ interface Task {
 	 * @param mixed $item Process the provided item.
 	 *
 	 * @since 1.0.0
-	 *
 	 */
 	function process_item( $item );
 

@@ -19,7 +19,7 @@ class Term_Jsonld {
 		if ( count( $entities ) > 0 ) {
 			$entity                     = array_shift( $entities );
 			$entity['@context']         = 'http://schema.org';
-			$entity['@id']              = get_term_link( $term_id ) . "/#id";
+			$entity['@id']              = get_term_link( $term_id ) . '/#id';
 			$entity['url']              = get_term_link( $term_id );
 			$entity['mainEntityOfPage'] = get_term_link( $term_id );
 			$jsonld_array['jsonld'][]   = $entity;

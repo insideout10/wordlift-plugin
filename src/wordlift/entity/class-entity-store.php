@@ -53,8 +53,8 @@ class Entity_Store {
 	/**
 	 * Create and persist an entity.
 	 *
-	 * @param array $params {
-	 *      The entity parameters.
+	 * @param array  $params {
+	 *       The entity parameters.
 	 *
 	 * @type string|array $labels A label, or an array of labels. The first label is set as post title.
 	 * @type string $description The entity description, stored in the post content.
@@ -68,33 +68,42 @@ class Entity_Store {
 	 */
 	public function create( $params, $post_status = 'draft' ) {
 
-		$args = wp_parse_args( $params, array(
-			'labels'      => array(),
-			'description' => '',
-			'same_as'     => array(),
-		) );
+		$args = wp_parse_args(
+			$params,
+			array(
+				'labels'      => array(),
+				'description' => '',
+				'same_as'     => array(),
+			)
+		);
 
 		// Use the first label as `post_title`.
 		$labels = (array) $args['labels'];
 		$label  = array_shift( $labels );
 
-		$post_id = wp_insert_post( array(
-			'post_type'    => Wordlift_Entity_Service::TYPE_NAME,
-			'post_status'  => $post_status,
-			'post_title'   => $label,
-			'post_name'    => sanitize_title( $label ),
-			'post_content' => $args['description'],
-		) );
+		$post_id = wp_insert_post(
+			array(
+				'post_type'    => Wordlift_Entity_Service::TYPE_NAME,
+				'post_status'  => $post_status,
+				'post_title'   => $label,
+				'post_name'    => sanitize_title( $label ),
+				'post_content' => $args['description'],
+			)
+		);
 
 		// Bail out if we've got an error.
 		if ( empty( $post_id ) || is_wp_error( $post_id ) ) {
-			throw new \Exception( "An error occurred while creating an entity." );
+			throw new \Exception( 'An error occurred while creating an entity.' );
 		}
 
 		Wordlift_Entity_Service::get_instance()
-		                       ->set_alternative_labels( $post_id, array_diff( $labels, array( $label ) ) );
-		$this->merge_post_meta( $post_id, \Wordlift_Schema_Service::FIELD_SAME_AS, (array) $args['same_as'],
-			(array) Wordpress_Content_Service::get_instance()->get_entity_id( Wordpress_Content_Id::create_post( $post_id ) ) );
+							   ->set_alternative_labels( $post_id, array_diff( $labels, array( $label ) ) );
+		$this->merge_post_meta(
+			$post_id,
+			\Wordlift_Schema_Service::FIELD_SAME_AS,
+			(array) $args['same_as'],
+			(array) Wordpress_Content_Service::get_instance()->get_entity_id( Wordpress_Content_Id::create_post( $post_id ) )
+		);
 
 		return $post_id;
 	}
@@ -113,20 +122,27 @@ class Entity_Store {
 	 */
 	public function update( $params ) {
 
-		$args = wp_parse_args( $params, array(
-			'ID'      => 0,
-			'labels'  => array(),
-			'same_as' => array(),
-		) );
+		$args = wp_parse_args(
+			$params,
+			array(
+				'ID'      => 0,
+				'labels'  => array(),
+				'same_as' => array(),
+			)
+		);
 
 		$post_id = $args['ID'];
 
 		// Save synonyms except title.
 		Wordlift_Entity_Service::get_instance()
-		                       ->append_alternative_labels( $post_id, array_diff( (array) $args['labels'], array( get_the_title( $post_id ) ) ) );
+							   ->append_alternative_labels( $post_id, array_diff( (array) $args['labels'], array( get_the_title( $post_id ) ) ) );
 
-		$this->merge_post_meta( $post_id, \Wordlift_Schema_Service::FIELD_SAME_AS, (array) $args['same_as'],
-			(array) Wordpress_Content_Service::get_instance()->get_entity_id( Wordpress_Content_Id::create_post( $post_id ) ) );
+		$this->merge_post_meta(
+			$post_id,
+			\Wordlift_Schema_Service::FIELD_SAME_AS,
+			(array) $args['same_as'],
+			(array) Wordpress_Content_Service::get_instance()->get_entity_id( Wordpress_Content_Id::create_post( $post_id ) )
+		);
 
 		return $post_id;
 	}
@@ -134,8 +150,8 @@ class Entity_Store {
 	/**
 	 * Merge the post meta.
 	 *
-	 * @param int $post_id The post ID.
-	 * @param string $meta_key The post meta key.
+	 * @param int          $post_id The post ID.
+	 * @param string       $meta_key The post meta key.
 	 * @param string|array $values One or more values to add.
 	 * @param string|array $exclusions An additional list of values to exclude.
 	 */

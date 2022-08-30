@@ -8,7 +8,6 @@
  */
 
 use Wordlift\Cache\Ttl_Cache;
-use Wordlift\Widgets\Navigator\Filler_Posts;
 use Wordlift\Widgets\Navigator\Filler_Posts\Filler_Posts_Util;
 use Wordlift\Widgets\Navigator\Navigator_Data;
 use Wordlift\Widgets\Srcset_Util;
@@ -26,7 +25,7 @@ function wl_shortcode_navigator_data() {
 	$cache_key = array( 'request_params' => $cache_key_params );
 
 	// Create the TTL cache and try to get the results.
-	$cache         = new Ttl_Cache( "navigator", 8 * 60 * 60 ); // 8 hours.
+	$cache         = new Ttl_Cache( 'navigator', 8 * 60 * 60 ); // 8 hours.
 	$cache_results = $cache->get( $cache_key );
 
 	// So that the endpoint can be used remotely
@@ -56,7 +55,6 @@ function wl_shortcode_navigator_data() {
  *
  * @return array
  * @since 3.22.6
- *
  */
 function wl_network_navigator_wp_json( $request ) {
 
@@ -66,7 +64,7 @@ function wl_network_navigator_wp_json( $request ) {
 	$cache_key = array( 'request_params' => $cache_key_params );
 
 	// Create the TTL cache and try to get the results.
-	$cache         = new Ttl_Cache( "network-navigator", 8 * 60 * 60 ); // 8 hours.
+	$cache         = new Ttl_Cache( 'network-navigator', 8 * 60 * 60 ); // 8 hours.
 	$cache_results = $cache->get( $cache_key );
 
 	if ( isset( $cache_results ) ) {
@@ -106,14 +104,14 @@ function _wl_navigator_get_data() {
 	$navigator_length    = isset( $_GET['limit'] ) ? intval( $_GET['limit'] ) : 4;
 	$navigator_offset    = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
 	$order_by            = isset( $_GET['sort'] ) ? sanitize_sql_orderby( wp_unslash( $_GET['sort'] ) ) : 'ID DESC';
-	$post_types          = isset( $_GET['post_types'] ) ? sanitize_text_field( wp_unslash( $_GET['post_types'] ) ): '';
+	$post_types          = isset( $_GET['post_types'] ) ? sanitize_text_field( wp_unslash( $_GET['post_types'] ) ) : '';
 	$post_types          = explode( ',', $post_types );
 	$existing_post_types = get_post_types();
 	$post_types          = array_values( array_intersect( $existing_post_types, $post_types ) );
 	$current_post_id     = (int) $_GET['post_id'];
 	$current_post        = get_post( $current_post_id );
 
-	$navigator_id =  sanitize_text_field( wp_unslash( $_GET['uniqid'] ) );
+	$navigator_id = sanitize_text_field( wp_unslash( $_GET['uniqid'] ) );
 
 	// Post ID has to match an existing item
 	if ( null === $current_post ) {
@@ -125,15 +123,29 @@ function _wl_navigator_get_data() {
 	// Determine navigator type and call respective _get_results
 	if ( get_post_type( $current_post_id ) === Wordlift_Entity_Service::TYPE_NAME ) {
 
-		$referencing_posts = Navigator_Data::entity_navigator_get_results( $current_post_id, array(
-			'ID',
-			'post_title',
-		), $order_by, $navigator_length, $navigator_offset, $post_types );
+		$referencing_posts = Navigator_Data::entity_navigator_get_results(
+			$current_post_id,
+			array(
+				'ID',
+				'post_title',
+			),
+			$order_by,
+			$navigator_length,
+			$navigator_offset,
+			$post_types
+		);
 	} else {
-		$referencing_posts = Navigator_Data::post_navigator_get_results( $current_post_id, array(
-			'ID',
-			'post_title',
-		), $order_by, $navigator_length, $navigator_offset, $post_types );
+		$referencing_posts = Navigator_Data::post_navigator_get_results(
+			$current_post_id,
+			array(
+				'ID',
+				'post_title',
+			),
+			$order_by,
+			$navigator_length,
+			$navigator_offset,
+			$post_types
+		);
 
 	}
 
@@ -158,7 +170,7 @@ function _wl_navigator_get_data() {
 				'permalink' => get_permalink( $referencing_post->ID ),
 				'title'     => html_entity_decode( $referencing_post->post_title, ENT_QUOTES, 'UTF-8' ),
 				'thumbnail' => $thumbnail,
-				'srcset'    => Srcset_Util::get_srcset( $referencing_post->ID, Srcset_Util::NAVIGATOR_WIDGET )
+				'srcset'    => Srcset_Util::get_srcset( $referencing_post->ID, Srcset_Util::NAVIGATOR_WIDGET ),
 			),
 			'entity' => array(
 				'id'        => $referencing_post->entity_id,
@@ -171,7 +183,6 @@ function _wl_navigator_get_data() {
 		$results[] = $result;
 	}
 
-
 	if ( count( $results ) < $navigator_length ) {
 		$results = apply_filters( 'wl_navigator_data_placeholder', $results, $navigator_id, $navigator_offset, $navigator_length );
 	}
@@ -179,9 +190,12 @@ function _wl_navigator_get_data() {
 	// Add filler posts if needed
 	$filler_count = $navigator_length - count( $results );
 	if ( $filler_count > 0 ) {
-		$referencing_post_ids = array_map( function ( $p ) {
-			return $p->ID;
-		}, $referencing_posts );
+		$referencing_post_ids = array_map(
+			function ( $p ) {
+				return $p->ID;
+			},
+			$referencing_posts
+		);
 		/**
 		 * @since 3.27.8
 		 * Filler posts are fetched using this util.
@@ -218,10 +232,16 @@ function _wl_network_navigator_get_data( $request ) {
 		wp_send_json_error( 'No valid entities provided' );
 	}
 
-	$referencing_posts = _wl_network_navigator_get_results( $entities, array(
-		'ID',
-		'post_title',
-	), $order_by, $navigator_length, $navigator_offset );
+	$referencing_posts = _wl_network_navigator_get_results(
+		$entities,
+		array(
+			'ID',
+			'post_title',
+		),
+		$order_by,
+		$navigator_length,
+		$navigator_offset
+	);
 
 	// loop over them and take the first one which is not already in the $related_posts
 	$results = array();
@@ -270,30 +290,49 @@ function _wl_network_navigator_get_data( $request ) {
 
 function _wl_network_navigator_get_results(
 	$entities, $fields = array(
-	'ID',
-	'post_title',
-), $order_by = 'ID DESC', $limit = 10, $offset = 0
+		'ID',
+		'post_title',
+	), $order_by = 'ID DESC', $limit = 10, $offset = 0
 ) {
 	global $wpdb;
 
-	$select = implode( ', ', array_map( function ( $item ) {
-		return "p.$item AS $item";
-	}, (array) $fields ) );
+	$select = implode(
+		', ',
+		array_map(
+			function ( $item ) {
+				return "p.$item AS $item";
+			},
+			(array) $fields
+		)
+	);
 
-	$order_by = implode( ', ', array_map( function ( $item ) {
-		return "p.$item";
-	}, (array) $order_by ) );
+	$order_by = implode(
+		', ',
+		array_map(
+			function ( $item ) {
+				return "p.$item";
+			},
+			(array) $order_by
+		)
+	);
 
-	$entities_in = implode( ',', array_map( function ( $item ) {
-		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( urldecode( $item ) );
-		if ( isset( $entity ) ) {
-			return $entity->ID;
-		}
-	}, $entities ) );
+	$entities_in = implode(
+		',',
+		array_map(
+			function ( $item ) {
+				$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( urldecode( $item ) );
+				if ( isset( $entity ) ) {
+					  return $entity->ID;
+				}
+			},
+			$entities
+		)
+	);
 
 	/** @noinspection SqlNoDataSourceInspection */
 	return $wpdb->get_results(
-		$wpdb->prepare( "
+		$wpdb->prepare(
+			"
 SELECT %3\$s, p2.ID as entity_id
  FROM {$wpdb->prefix}wl_relation_instances r1
 	-- get the ID of the post entity in common between the object and the subject 2. 
@@ -318,12 +357,15 @@ SELECT %3\$s, p2.ID as entity_id
  ORDER BY %4\$s
  LIMIT %1\$d
  OFFSET %2\$d
-"
-			, $limit, $offset, $select, $order_by )
+",
+			$limit,
+			$offset,
+			$select,
+			$order_by
+		)
 	);
 
 }
-
 
 /**
  * The Navigator Ajax function.
@@ -362,48 +404,70 @@ function wl_shortcode_navigator_wp_json() {
 /**
  * Adding `rest_api_init` action for amp backend of navigator
  */
-add_action( 'rest_api_init', function () {
-	register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/navigator', array(
-		'methods'             => 'GET',
-		'permission_callback' => '__return_true',
-		'callback'            => 'wl_shortcode_navigator_wp_json'
-	) );
-} );
+add_action(
+	'rest_api_init',
+	function () {
+		register_rest_route(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
+			'/navigator',
+			array(
+				'methods'             => 'GET',
+				'permission_callback' => '__return_true',
+				'callback'            => 'wl_shortcode_navigator_wp_json',
+			)
+		);
+	}
+);
 
 /**
  * Adding `rest_api_init` action for backend of network navigator
  */
-add_action( 'rest_api_init', function () {
-	register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/network-navigator', array(
-		'methods'             => 'GET',
-		'callback'            => 'wl_network_navigator_wp_json',
-		'permission_callback' => '__return_true',
-	) );
-} );
+add_action(
+	'rest_api_init',
+	function () {
+		register_rest_route(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
+			'/network-navigator',
+			array(
+				'methods'             => 'GET',
+				'callback'            => 'wl_network_navigator_wp_json',
+				'permission_callback' => '__return_true',
+			)
+		);
+	}
+);
 
 /**
  * Optimizations: disable unneeded plugins on Navigator AJAX call. WPSeo is slowing down the responses quite a bit.
  *
  * @since 2.2.0
  */
-add_action( 'plugins_loaded', function () {
-	$action = array_key_exists( 'action', $_REQUEST ) ? sanitize_text_field( wp_unslash( (string) $_REQUEST['action'] ) ) : '';
-	if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX || 'wl_navigator' !== $action ) {
-		return;
-	}
+add_action(
+	'plugins_loaded',
+	function () {
+		$action = array_key_exists( 'action', $_REQUEST ) ? sanitize_text_field( wp_unslash( (string) $_REQUEST['action'] ) ) : '';
+		if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX || 'wl_navigator' !== $action ) {
+			return;
+		}
 
-	remove_action( 'plugins_loaded', 'rocket_init' );
-	remove_action( 'plugins_loaded', 'wpseo_premium_init', 14 );
-	remove_action( 'plugins_loaded', 'wpseo_init', 14 );
-}, 0 );
+		remove_action( 'plugins_loaded', 'rocket_init' );
+		remove_action( 'plugins_loaded', 'wpseo_premium_init', 14 );
+		remove_action( 'plugins_loaded', 'wpseo_init', 14 );
+	},
+	0
+);
 
-add_action( 'init', function () {
-	$action = array_key_exists( 'action', $_REQUEST ) ? sanitize_text_field( wp_unslash( (string) $_REQUEST['action'] ) ) : '';
-	if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX || 'wl_navigator' !== $action ) {
-		return;
-	}
+add_action(
+	'init',
+	function () {
+		$action = array_key_exists( 'action', $_REQUEST ) ? sanitize_text_field( wp_unslash( (string) $_REQUEST['action'] ) ) : '';
+		if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX || 'wl_navigator' !== $action ) {
+			return;
+		}
 
-	remove_action( 'init', 'wp_widgets_init', 1 );
-	remove_action( 'init', 'gglcptch_init' );
-}, 0 );
+		remove_action( 'init', 'wp_widgets_init', 1 );
+		remove_action( 'init', 'gglcptch_init' );
+	},
+	0
+);
 

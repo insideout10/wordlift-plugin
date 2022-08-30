@@ -6,7 +6,6 @@
 
 namespace Wordlift\Videoobject\Jsonld;
 
-
 use Wordlift\Jsonld\Jsonld_Article_Wrapper;
 use Wordlift\Videoobject\Data\Video\Video;
 use Wordlift\Videoobject\Data\Video_Storage\Storage;
@@ -27,7 +26,6 @@ class Jsonld {
 		add_action( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 10, 3 );
 		$this->video_storage = $video_storage;
 	}
-
 
 	public function wl_after_get_jsonld( $jsonld, $post_id, $context ) {
 		if ( 0 === count( $jsonld ) ) {
@@ -116,7 +114,6 @@ class Jsonld {
 		return $jsonld;
 	}
 
-
 	/**
 	 * @param $post_id int Post id.
 	 *
@@ -156,9 +153,9 @@ class Jsonld {
 				$single_jsonld['interactionStatistic'] = array(
 					'@type'                => 'InteractionCounter',
 					'interactionType'      => array(
-						'@type' => 'http://schema.org/WatchAction'
+						'@type' => 'http://schema.org/WatchAction',
 					),
-					'userInteractionCount' => $video->views
+					'userInteractionCount' => $video->views,
 				);
 			}
 
@@ -167,7 +164,7 @@ class Jsonld {
 					'@type'           => 'BroadcastEvent',
 					'isLiveBroadcast' => true,
 					'startDate'       => $video->live_video_start_date,
-					'endDate'         => $video->live_video_end_date
+					'endDate'         => $video->live_video_end_date,
 				);
 			}
 
@@ -177,7 +174,6 @@ class Jsonld {
 		return $jsonld;
 	}
 
-
 	private function is_associative_array( $arr ) {
 		if ( array() === $arr ) {
 			return false;
@@ -185,6 +181,5 @@ class Jsonld {
 
 		return array_keys( $arr ) !== range( 0, count( $arr ) - 1 );
 	}
-
 
 }

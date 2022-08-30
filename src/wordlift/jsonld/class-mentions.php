@@ -201,37 +201,39 @@ class Mentions {
 			return $jsonld;
 		}
 
-
 		$type = $jsonld[0]['@type'];
-
 
 		if ( ! $this->entity_is_descendant_of_creative_work( $type ) && ! $this->entity_is_creative_work( $type ) ) {
 			return $jsonld;
 		}
 
 		$entity_references = Object_Relation_Service::get_instance()
-		                                            ->get_references( $post_id, Object_Type_Enum::POST );
+													->get_references( $post_id, Object_Type_Enum::POST );
 
+		$jsonld[0]['mentions'] = array_values(
+			array_filter(
+				array_map(
+					function ( $item ) {
+						$id = \Wordlift_Entity_Service::get_instance()->get_uri( $item->get_id() );
+						if ( ! $id ) {
+							  return false;
+						}
 
-		$jsonld[0]['mentions'] = array_values( array_filter( array_map( function ( $item ) {
-			$id = \Wordlift_Entity_Service::get_instance()->get_uri( $item->get_id() );
-			if ( ! $id ) {
-				return false;
-			}
+						return array( '@id' => $id );
 
-			return array( '@id' => $id );
-
-		}, $entity_references ) ) );
+					},
+					$entity_references
+				)
+			)
+		);
 
 		// Remove mentions if the count is zero.
 		if ( count( $jsonld[0]['mentions'] ) === 0 ) {
 			unset( $jsonld[0]['mentions'] );
 		}
 
-
 		return $jsonld;
 	}
-
 
 	private function entity_is_descendant_of_creative_work( $type ) {
 		if ( is_string( $type ) ) {

@@ -41,13 +41,21 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 		if ( extension_loaded( 'mbstring' ) ) {
 			mb_regex_encoding( 'UTF-8' );
 
-			$merged = array_reduce( (array) $values, function ( $carry, $item ) {
-				return array_merge( $carry, mb_split( "\x{2063}", wp_unslash( $item ) ) );
-			}, array() );
+			$merged = array_reduce(
+				(array) $values,
+				function ( $carry, $item ) {
+					return array_merge( $carry, mb_split( "\x{2063}", wp_unslash( $item ) ) );
+				},
+				array()
+			);
 		} else {
-			$merged = array_reduce( (array) $values, function ( $carry, $item ) {
-				return array_merge( $carry, preg_split( "/\x{2063}/u", wp_unslash( $item ) ) );
-			}, array() );
+			$merged = array_reduce(
+				(array) $values,
+				function ( $carry, $item ) {
+					return array_merge( $carry, preg_split( "/\x{2063}/u", wp_unslash( $item ) ) );
+				},
+				array()
+			);
 		}
 
 		// Convert all escaped special characters to their original.
@@ -74,7 +82,7 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 
 		// Add the select html fragment after the heading.
 		return parent::get_heading_html()
-		       . $this->get_select_html();
+			   . $this->get_select_html();
 	}
 
 	/**
@@ -86,8 +94,8 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 	private function get_select_html() {
 		// Return an element where the new Autocomplete Select will attach to.
 		return '<p>'
-		       . esc_html__( 'Use the search below to link this entity with equivalent entities in the linked data cloud.', 'wordlift' )
-		       . '<div id="wl-metabox-field-sameas"></div></p>';
+			   . esc_html__( 'Use the search below to link this entity with equivalent entities in the linked data cloud.', 'wordlift' )
+			   . '<div id="wl-metabox-field-sameas"></div></p>';
 	}
 
 	/**
@@ -97,8 +105,7 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 
 		$placeholder = esc_attr_x( 'Type here the URL of an equivalent entity from another dataset.', 'sameAs metabox input', 'wordlift' );
 
-		return
-			'<button type="button" class="wl-add-input wl-add-input--link">' . esc_html__( 'Click here to manually add URLs', 'wordlift' ) . '</button>'
+		return '<button type="button" class="wl-add-input wl-add-input--link">' . esc_html__( 'Click here to manually add URLs', 'wordlift' ) . '</button>'
 			. '<div style="display: none;"><div class="wl-input-wrapper">'
 			. "<input type='text' id='$this->meta_name' name='wl_metaboxes[$this->meta_name][]' placeholder='$placeholder' />"
 			. '<button type="button" class="wl-remove-input wl-remove-input--sameas"></button>'
@@ -158,17 +165,17 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 	public function html_input( $value ) {
 		@ob_start();
 		?>
-        <div class="wl-input-wrapper wl-input-wrapper-readonly">
-            <input
-                    type="text"
-                    readonly="readonly"
-                    id="<?php echo esc_attr( $this->meta_name ); ?>"
-                    name="wl_metaboxes[<?php echo esc_attr( $this->meta_name ); ?>][]"
-                    value="<?php echo esc_attr( $value ); ?>"
-            />
+		<div class="wl-input-wrapper wl-input-wrapper-readonly">
+			<input
+					type="text"
+					readonly="readonly"
+					id="<?php echo esc_attr( $this->meta_name ); ?>"
+					name="wl_metaboxes[<?php echo esc_attr( $this->meta_name ); ?>][]"
+					value="<?php echo esc_attr( $value ); ?>"
+			/>
 
-            <button class="wl-remove-input wl-remove-input--sameas"></button>
-        </div>
+			<button class="wl-remove-input wl-remove-input--sameas"></button>
+		</div>
 		<?php
 
 		$html = ob_get_clean();
@@ -185,15 +192,18 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 		$configuration_service = Wordlift_Configuration_Service::get_instance();
 		$dataset_uri           = $configuration_service->get_dataset_uri();
 
-		return array_filter( $urls, function ( $url ) use ( $dataset_uri ) {
-			$url_validation = filter_var( $url, FILTER_VALIDATE_URL );
-			if ( null === $dataset_uri ) {
-				return $url_validation;
-			}
+		return array_filter(
+			$urls,
+			function ( $url ) use ( $dataset_uri ) {
+				$url_validation = filter_var( $url, FILTER_VALIDATE_URL );
+				if ( null === $dataset_uri ) {
+					return $url_validation;
+				}
 
-			// URLs should not start with local dataset uri.
-			return $url_validation && ( empty( $dataset_uri ) || 0 !== strpos( $url, $dataset_uri ) );
-		} );
+				// URLs should not start with local dataset uri.
+				return $url_validation && ( empty( $dataset_uri ) || 0 !== strpos( $url, $dataset_uri ) );
+			}
+		);
 	}
 
 }

@@ -15,7 +15,7 @@ use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 class Wordlift_Redirect_Service {
 
 	const LOD_ENDPOINT = 'http://www.lodview.it';
-	const LOD_HOST = 'www.lodview.it';
+	const LOD_HOST     = 'www.lodview.it';
 
 	/**
 	 * The Log service.
@@ -50,7 +50,6 @@ class Wordlift_Redirect_Service {
 	 * @param Wordlift_Entity_Uri_Service $entity_uri_service The Entity service.
 	 *
 	 * @since 3.2.0
-	 *
 	 */
 	public function __construct( $entity_uri_service ) {
 
@@ -67,7 +66,6 @@ class Wordlift_Redirect_Service {
 	 *
 	 * @return \Wordlift_Redirect_Service The singleton instance of the Wordlift_Redirect_Service.
 	 * @since 3.2.0
-	 *
 	 */
 	public static function get_instance() {
 
@@ -83,29 +81,41 @@ class Wordlift_Redirect_Service {
 
 		// Check the `uri` parameter.
 		if ( ! ( $entity_uri = filter_input( INPUT_GET, 'uri', FILTER_VALIDATE_URL ) ) ) {
-			wp_die( esc_html__( 'Invalid URI.', 'wordlift' ), esc_html__( 'Invalid URI.', 'wordlift' ), array(
-				'response'  => 400,
-				'back_link' => true,
-			) );
+			wp_die(
+				esc_html__( 'Invalid URI.', 'wordlift' ),
+				esc_html__( 'Invalid URI.', 'wordlift' ),
+				array(
+					'response'  => 400,
+					'back_link' => true,
+				)
+			);
 		}
 
 		// Check the `to` parameter.
 		if ( ! ( $target = filter_input( INPUT_GET, 'to' ) ) ) {
-			wp_die( esc_html__( 'Invalid `to` parameter.', 'wordlift' ), esc_html__( 'Invalid `to` parameter.', 'wordlift' ), array(
-				'response'  => 400,
-				'back_link' => true,
-			) );
+			wp_die(
+				esc_html__( 'Invalid `to` parameter.', 'wordlift' ),
+				esc_html__( 'Invalid `to` parameter.', 'wordlift' ),
+				array(
+					'response'  => 400,
+					'back_link' => true,
+				)
+			);
 		}
 
 		/** @var Wordpress_Content $content */
 		$content = Wordpress_Content_Service::get_instance()
-		                                    ->get_by_entity_id_or_same_as( $entity_uri );
+											->get_by_entity_id_or_same_as( $entity_uri );
 
 		if ( ! isset( $content ) ) {
-			wp_die( esc_html__( 'Entity not found.', 'wordlift' ), esc_html__( 'Entity not found.', 'wordlift' ), array(
-				'response'  => 404,
-				'back_link' => true,
-			) );
+			wp_die(
+				esc_html__( 'Entity not found.', 'wordlift' ),
+				esc_html__( 'Entity not found.', 'wordlift' ),
+				array(
+					'response'  => 404,
+					'back_link' => true,
+				)
+			);
 		}
 
 		switch ( $target ) {
@@ -129,6 +139,7 @@ class Wordlift_Redirect_Service {
 
 	/**
 	 * Register custom allowed hosts.
+	 *
 	 * @see https://developer.wordpress.org/reference/functions/wp_safe_redirect/
 	 *
 	 * @since 3.2.0

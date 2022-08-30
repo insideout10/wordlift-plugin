@@ -8,11 +8,9 @@
 
 namespace Wordlift\No_Editor_Analysis;
 
-
 class Meta_Box {
 
 	const META_BOX_ID = 'wl-no-editor-analysis-meta-box';
-
 
 	public function init() {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
@@ -38,14 +36,12 @@ class Meta_Box {
 	}
 
 	public function render_meta_box() {
-		echo sprintf( "<div id='%s'></div><div id='%s'></div>",
+		echo sprintf(
+			"<div id='%s'></div><div id='%s'></div>",
 			esc_attr( 'wl-no-editor-analysis-meta-box-content' ),
 			// Div to store the entities.
 			esc_attr( 'wl-no-editor-analysis-meta-box-storage' )
 		);
 	}
-
-
-
 
 }

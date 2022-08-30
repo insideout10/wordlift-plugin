@@ -409,21 +409,23 @@ class Wordlift_Schema_Service {
 		 * @param array $schemas The array of schemas.
 		 *
 		 * @since  3.19.1
-		 *
 		 */
-		$this->schema = apply_filters( 'wl_schemas', array(
-			'article'        => $this->get_article_schema(),
-			'thing'          => $this->get_thing_schema(),
-			'creative-work'  => $this->get_creative_work_schema(),
-			'event'          => $this->get_event_schema(),
-			'organization'   => $this->get_organization_schema(),
-			'person'         => $this->get_person_schema(),
-			'place'          => $this->get_place_schema(),
-			'local-business' => $this->get_local_business_schema(),
-			'recipe'         => $this->get_recipe_schema(),
-			'web-page'       => $this->get_web_page_schema(),
-			'offer'          => $this->get_offer_schema(),
-		) );
+		$this->schema = apply_filters(
+			'wl_schemas',
+			array(
+				'article'        => $this->get_article_schema(),
+				'thing'          => $this->get_thing_schema(),
+				'creative-work'  => $this->get_creative_work_schema(),
+				'event'          => $this->get_event_schema(),
+				'organization'   => $this->get_organization_schema(),
+				'person'         => $this->get_person_schema(),
+				'place'          => $this->get_place_schema(),
+				'local-business' => $this->get_local_business_schema(),
+				'recipe'         => $this->get_recipe_schema(),
+				'web-page'       => $this->get_web_page_schema(),
+				'offer'          => $this->get_offer_schema(),
+			)
+		);
 
 		// Create a singleton instance of the Schema service, useful to provide static functions to global functions.
 		self::$instance = $this;
@@ -444,7 +446,6 @@ class Wordlift_Schema_Service {
 	 *
 	 * @return Wordlift_Schema_Service A reference to the Schema service.
 	 * @since 3.1.0
-	 *
 	 */
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {
@@ -462,7 +463,6 @@ class Wordlift_Schema_Service {
 	 *
 	 * @return null|array An array of field's properties or null if the field is not found.
 	 * @since 3.6.0
-	 *
 	 */
 	public function get_field( $key ) {
 
@@ -538,7 +538,7 @@ class Wordlift_Schema_Service {
 			'same_as'       => array( '*' ),
 			// set as default.
 			'custom_fields' => array(
-				self::FIELD_SAME_AS                            => array(
+				self::FIELD_SAME_AS => array(
 					'predicate'   => 'http://schema.org/sameAs',
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/Thing',
@@ -550,7 +550,7 @@ class Wordlift_Schema_Service {
 				),
 				// Add the schema:url property.
 				Wordlift_Schema_Url_Property_Service::META_KEY => Wordlift_Schema_Url_Property_Service::get_instance()
-				                                                                                      ->get_compat_definition(),
+																									  ->get_compat_definition(),
 			),
 			// {{sameAs}} not present in the microdata template,
 			// because it is treated separately in *wl_content_embed_item_microdata*

@@ -65,9 +65,12 @@ class Wordlift_Post_Related_Storage extends Wordlift_Storage {
 		$entity_service = $this->entity_service;
 
 		// Map the related posts' ids to URIs.
-		return array_map( function ( $item ) use ( $entity_service ) {
-			return $entity_service->get_uri( $item );
-		}, $related );
+		return array_map(
+			function ( $item ) use ( $entity_service ) {
+				return $entity_service->get_uri( $item );
+			},
+			$related
+		);
 	}
 
 }

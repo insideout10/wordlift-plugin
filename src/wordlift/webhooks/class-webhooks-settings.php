@@ -9,14 +9,17 @@ class Webhooks_Settings {
 
 	public function init() {
 
-		add_filter( 'wl_admin_page_tabs', function ( $tabs ) {
-			$tabs[] = array(
-				'slug'  => 'webhooksobject-settings',
-				'title' => __( 'Webhooks Settings', 'wordlift' )
-			);
+		add_filter(
+			'wl_admin_page_tabs',
+			function ( $tabs ) {
+				$tabs[] = array(
+					'slug'  => 'webhooksobject-settings',
+					'title' => __( 'Webhooks Settings', 'wordlift' ),
+				);
 
-			return $tabs;
-		} );
+				return $tabs;
+			}
+		);
 
 		// Registering the option group during setup
 		add_action( 'admin_init', array( &$this, 'wl_admin_register_setting' ) );
@@ -27,19 +30,34 @@ class Webhooks_Settings {
 	 */
 
 	public function wl_admin_register_setting() {
-		register_setting( 'wl_settings__webhooks', Webhooks_Loader::URLS_OPTION_NAME, array(
-			$this,
-			'sanitize_callback'
-		) );
-		add_settings_section( 'wl_settings__webhooks__general', __( 'Webhooks Settings', 'wordlift' ), function ( $args ) {
-            esc_html_e( 'Set one or more URLs that should be called when data is changed.', 'wordlift' );
-		}, 'wl_settings__webhooks' );
-		add_settings_field( 'wl_settings__webhooks__general__urls', __( 'URLs:', 'wordlift' ), function ( $args ) {
-			?>
-            <textarea id="wl_settings__webhooks__general__urls"
-                      name="wl_webhooks_urls"><?php echo esc_html( get_option( Webhooks_Loader::URLS_OPTION_NAME, '' ) ); ?></textarea>
-			<?php
-		}, 'wl_settings__webhooks', 'wl_settings__webhooks__general' );
+		register_setting(
+			'wl_settings__webhooks',
+			Webhooks_Loader::URLS_OPTION_NAME,
+			array(
+				$this,
+				'sanitize_callback',
+			)
+		);
+		add_settings_section(
+			'wl_settings__webhooks__general',
+			__( 'Webhooks Settings', 'wordlift' ),
+			function ( $args ) {
+				esc_html_e( 'Set one or more URLs that should be called when data is changed.', 'wordlift' );
+			},
+			'wl_settings__webhooks'
+		);
+		add_settings_field(
+			'wl_settings__webhooks__general__urls',
+			__( 'URLs:', 'wordlift' ),
+			function ( $args ) {
+				?>
+			<textarea id="wl_settings__webhooks__general__urls"
+					  name="wl_webhooks_urls"><?php echo esc_html( get_option( Webhooks_Loader::URLS_OPTION_NAME, '' ) ); ?></textarea>
+				<?php
+			},
+			'wl_settings__webhooks',
+			'wl_settings__webhooks__general'
+		);
 	}
 
 	/**
@@ -51,10 +69,16 @@ class Webhooks_Settings {
 	 */
 	function sanitize_callback( $values ) {
 
-		return implode( "\n", array_unique( array_filter(
-			explode( "\n", str_replace( array( "\r\n", "\r" ), "\n", $values ) ),
-			function ( $value ) {
-				return filter_var( $value, FILTER_VALIDATE_URL ) && preg_match( '@^https?://.*$@', $value );
-			} ) ) );
+		return implode(
+			"\n",
+			array_unique(
+				array_filter(
+					explode( "\n", str_replace( array( "\r\n", "\r" ), "\n", $values ) ),
+					function ( $value ) {
+						return filter_var( $value, FILTER_VALIDATE_URL ) && preg_match( '@^https?://.*$@', $value );
+					}
+				)
+			)
+		);
 	}
 }

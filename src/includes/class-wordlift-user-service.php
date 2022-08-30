@@ -53,7 +53,6 @@ class Wordlift_User_Service {
 	 * Create an instance of the User service.
 	 *
 	 * @since 3.1.7
-	 *
 	 */
 	protected function __construct() {
 
@@ -94,7 +93,6 @@ class Wordlift_User_Service {
 	 *
 	 * @return false|string The user's URI or false in case of failure.
 	 * @since 3.1.7
-	 *
 	 */
 	public function get_uri( $user_id ) {
 
@@ -126,7 +124,6 @@ class Wordlift_User_Service {
 	 *
 	 * @return bool|int  Meta ID if the key didn't exist, true on successful update, false on failure.
 	 * @since 3.14.0
-	 *
 	 */
 	public function set_entity( $user_id, $value ) {
 
@@ -142,7 +139,6 @@ class Wordlift_User_Service {
 	 *
 	 * @return string|false The entity {@link WP_Post} `id` or an empty string if not set or false if the object id is invalid
 	 * @since 3.14.0
-	 *
 	 */
 	public function get_entity( $user_id ) {
 
@@ -156,7 +152,6 @@ class Wordlift_User_Service {
 	 *
 	 * @return false|string The user's URI or false if not found.
 	 * @since 3.1.7
-	 *
 	 */
 	private function _get_uri( $user_id ) {
 
@@ -176,7 +171,6 @@ class Wordlift_User_Service {
 	 *
 	 * @return false|string The user's URI or false in case of failure.
 	 * @since 3.1.7
-	 *
 	 */
 	private function _build_uri( $user_id ) {
 
@@ -200,12 +194,11 @@ class Wordlift_User_Service {
 	/**
 	 * Store the URI in user's meta.
 	 *
-	 * @param int $user_id The user's id.
+	 * @param int    $user_id The user's id.
 	 * @param string $user_uri The user's uri.
 	 *
 	 * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.
 	 * @since 3.1.7
-	 *
 	 */
 	private function _set_uri( $user_id, $user_uri ) {
 
@@ -219,7 +212,6 @@ class Wordlift_User_Service {
 	 * @param integer $user_id The ID of the user
 	 *
 	 * @since 3.14.0
-	 *
 	 */
 	public function deny_editor_entity_create( $user_id ) {
 
@@ -240,7 +232,6 @@ class Wordlift_User_Service {
 	 * @param integer $user_id The ID of the user
 	 *
 	 * @since 3.14.0
-	 *
 	 */
 	public function allow_editor_entity_create( $user_id ) {
 
@@ -261,7 +252,6 @@ class Wordlift_User_Service {
 	 *
 	 * @return int bool True if editing is denied otherwise false.
 	 * @since 3.14.0
-	 *
 	 */
 	public function is_deny_editor_entity_create( $user_id ) {
 
@@ -276,7 +266,6 @@ class Wordlift_User_Service {
 	 *
 	 * @return bool True if the {@link WP_User} is an editor otherwise false.
 	 * @since 3.14.0
-	 *
 	 */
 	public function is_editor( $user_id ) {
 
@@ -294,7 +283,6 @@ class Wordlift_User_Service {
 	 *
 	 * @return bool    false if it is an editor that is denied from edit entities, true otherwise.
 	 * @since 3.14.0
-	 *
 	 */
 	public function editor_can_create_entities( $user_id ) {
 
@@ -320,7 +308,6 @@ class Wordlift_User_Service {
 	 *
 	 * @return array The capabilities array.
 	 * @since 3.14.0
-	 *
 	 */
 	public function has_cap( $allcaps, $cap, $args ) {
 		/*

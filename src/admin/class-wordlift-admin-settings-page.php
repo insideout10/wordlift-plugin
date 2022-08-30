@@ -75,15 +75,14 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	/**
 	 * Create a {@link Wordlift_Admin_Settings_Page} instance.
 	 *
-	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Admin_Input_Element $input_element A {@link Wordlift_Admin_Input_Element} element renderer.
+	 * @param \Wordlift_Entity_Service                $entity_service A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Admin_Input_Element           $input_element A {@link Wordlift_Admin_Input_Element} element renderer.
 	 * @param \Wordlift_Admin_Language_Select_Element $language_select_element A {@link Wordlift_Admin_Language_Select_Element} element renderer.
-	 * @param \Wordlift_Admin_Country_Select_Element $country_select_element A {@link Wordlift_Admin_Country_Select_Element} element renderer.
-	 * @param \Wordlift_Admin_Publisher_Element $publisher_element A {@link Wordlift_Admin_Publisher_Element} element renderer.
-	 * @param \Wordlift_Admin_Radio_Input_Element $radio_input_element A {@link Wordlift_Admin_Radio_Input_Element} element renderer.
+	 * @param \Wordlift_Admin_Country_Select_Element  $country_select_element A {@link Wordlift_Admin_Country_Select_Element} element renderer.
+	 * @param \Wordlift_Admin_Publisher_Element       $publisher_element A {@link Wordlift_Admin_Publisher_Element} element renderer.
+	 * @param \Wordlift_Admin_Radio_Input_Element     $radio_input_element A {@link Wordlift_Admin_Radio_Input_Element} element renderer.
 	 *
 	 * @since 3.11.0
-	 *
 	 */
 	public function __construct( $entity_service, $input_element, $language_select_element, $country_select_element, $publisher_element, $radio_input_element ) {
 
@@ -112,7 +111,8 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			$publisher_element = new Wordlift_Admin_Publisher_Element(
 				Wordlift_Publisher_Service::get_instance(),
 				new Wordlift_Admin_Tabs_Element(),
-				new Wordlift_Admin_Select2_Element() );
+				new Wordlift_Admin_Select2_Element()
+			);
 
 			self::$instance = new self(
 				Wordlift_Entity_Service::get_instance(),
@@ -120,7 +120,8 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 				new Wordlift_Admin_Language_Select_Element(),
 				new Wordlift_Admin_Country_Select_Element(),
 				$publisher_element,
-				new Wordlift_Admin_Radio_Input_Element() );
+				new Wordlift_Admin_Radio_Input_Element()
+			);
 		}
 
 		return self::$instance;
@@ -184,8 +185,8 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 		// JavaScript required for the settings page.
 		// @todo: try to move to the `wordlift-admin.bundle.js`.
-		wp_enqueue_script( 'wordlift-admin-settings-page', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/1/settings.js', array( 'wp-util' ) );
-		wp_enqueue_style( 'wordlift-admin-settings-page', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/1/settings.css' );
+		wp_enqueue_script( 'wordlift-admin-settings-page', plugin_dir_url( __DIR__ ) . 'admin/js/1/settings.js', array( 'wp-util' ) );
+		wp_enqueue_style( 'wordlift-admin-settings-page', plugin_dir_url( __DIR__ ) . 'admin/js/1/settings.css' );
 
 	}
 
@@ -218,7 +219,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::KEY . ']',
 			'value'       => Wordlift_Configuration_Service::get_instance()->get_key(),
 			'description' => __( 'Insert the <a href="https://www.wordlift.io/blogger">WordLift Key</a> you received via email.', 'wordlift' )
-			                 . ' [' . get_option( 'home' ) . ']',
+							 . ' [' . get_option( 'home' ) . ']',
 		);
 
 		// Before we were used to validate the key beforehand, but this means
@@ -256,22 +257,24 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		//
 		// It is now replaced by a filter to add the `readonly` flag to the
 		// input element when this is actually rendered.
-		add_filter( 'wl_admin_input_element_params', array(
-			$this,
-			'entity_path_input_element_params',
-		) );
+		add_filter(
+			'wl_admin_input_element_params',
+			array(
+				$this,
+				'entity_path_input_element_params',
+			)
+		);
 
 		// Add the `wl_entity_base_path` field.
 		add_settings_field(
 			'wl-entity-base-path',                                // ID used to identify the field throughout the theme
 			__( 'Entity Base Path', 'wordlift' ),                 // The label to the left of the option interface element
 			// The name of the function responsible for rendering the option interface
-			array( $this->input_element, 'render', ),
+			array( $this->input_element, 'render' ),
 			'wl_general_settings',                                // The page on which this option will be displayed
 			'wl_general_settings_section',                        // The name of the section to which this field belongs
 			$entity_base_path_args
 		);
-
 
 		$language_name = Wordlift_Languages::get_language_name(
 			Wordlift_Configuration_Service::get_instance()->get_language_code()
@@ -346,7 +349,6 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 *
 	 * @return array The updated array.
 	 * @since 3.17.0
-	 *
 	 */
 	public function entity_path_input_element_params( $args ) {
 
@@ -372,7 +374,6 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 *
 	 * @return array The sanitized input array.
 	 * @since 3.11.0
-	 *
 	 */
 	function sanitize_callback( $input ) {
 

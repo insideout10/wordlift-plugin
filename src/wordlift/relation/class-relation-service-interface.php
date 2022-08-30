@@ -12,28 +12,25 @@
 namespace Wordlift\Relation;
 
 use Wordlift\Jsonld\Reference;
-use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Types\Relation;
 
 interface  Relation_Service_Interface {
 
 	/**
 	 * @param $subject_id int
-	 * @param int $subject_type {@link Object_Type_Enum}
+	 * @param int            $subject_type {@link Object_Type_Enum}
 	 * @return array<Reference>
 	 */
 	public function get_references( $subject_id, $subject_type );
 
-
 	/**
 	 * @param $content string
-	 * @param int $subject_type {@link Object_Type_Enum}
-	 * @param array $internal_entity_uris An array of internal uri present for post.
+	 * @param int            $subject_type {@link Object_Type_Enum}
+	 * @param array          $internal_entity_uris An array of internal uri present for post.
 	 * @return array<Relation>
 	 * Extracts the relations from the post content.
 	 */
 	public function get_relations_from_content( $content, $subject_type, $local_entity_uris );
-
 
 	/**
 	 * @param $subject_type
@@ -42,6 +39,5 @@ interface  Relation_Service_Interface {
 	 * @return Relation[] | false[]
 	 */
 	public function get_relations_from_entity_uris( $subject_type, $entity_uris );
-
 
 }

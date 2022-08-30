@@ -25,7 +25,6 @@ function wl_get_entity_uri( $post_id ) {
  *
  * @return array An array of terms.
  * @since 3.0.0
- *
  */
 function wl_get_entity_rdf_types( $post_id ) {
 
@@ -35,7 +34,7 @@ function wl_get_entity_rdf_types( $post_id ) {
 /**
  * Set the types for the entity with the specified post ID.
  *
- * @param int $post_id The entity post ID.
+ * @param int   $post_id The entity post ID.
  * @param array $type_uris An array of type URIs.
  */
 function wl_set_entity_rdf_types( $post_id, $type_uris = array() ) {
@@ -57,7 +56,7 @@ function wl_set_entity_rdf_types( $post_id, $type_uris = array() ) {
 	}
 }
 
-///**
+// **
 // * Retrieve entity property constraints, starting from the schema.org's property name
 // * or from the WL_CUSTOM_FIELD_xxx name.
 // *
@@ -65,34 +64,34 @@ function wl_set_entity_rdf_types( $post_id, $type_uris = array() ) {
 // *
 // * @return array containing constraint(s) or null (in case of error or no constraint).
 // */
-//function wl_get_meta_constraints( $property_name ) {
+// function wl_get_meta_constraints( $property_name ) {
 //
-//	// Property name must be defined.
-//	if ( ! isset( $property_name ) || is_null( $property_name ) ) {
-//		return null;
-//	}
+// Property name must be defined.
+// if ( ! isset( $property_name ) || is_null( $property_name ) ) {
+// return null;
+// }
 //
-//	// store eventual schema name in  different variable
-//	$property_schema_name = wl_build_full_schema_uri_from_schema_slug( $property_name );
+// store eventual schema name in  different variable
+// $property_schema_name = wl_build_full_schema_uri_from_schema_slug( $property_name );
 //
-//	// Get WL taxonomy mapping.
-//	$types = wl_entity_taxonomy_get_custom_fields();
+// Get WL taxonomy mapping.
+// $types = wl_entity_taxonomy_get_custom_fields();
 //
-//	// Loop over types
-//	foreach ( $types as $type ) {
-//		// Loop over custom fields of this type
-//		foreach ( $type as $property => $field ) {
-//			if ( isset( $field['constraints'] ) && ! empty( $field['constraints'] ) ) {
-//				// Is this the property we are searhing for?
-//				if ( ( $property == $property_name ) || ( $field['predicate'] == $property_schema_name ) ) {
-//					return $field['constraints'];
-//				}
-//			}
-//		}
-//	}
+// Loop over types
+// foreach ( $types as $type ) {
+// Loop over custom fields of this type
+// foreach ( $type as $property => $field ) {
+// if ( isset( $field['constraints'] ) && ! empty( $field['constraints'] ) ) {
+// Is this the property we are searhing for?
+// if ( ( $property == $property_name ) || ( $field['predicate'] == $property_schema_name ) ) {
+// return $field['constraints'];
+// }
+// }
+// }
+// }
 //
-//	return null;
-//}
+// return null;
+// }
 
 /**
  * Retrieve entity type custom fields.
@@ -117,7 +116,7 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 		foreach ( $terms as $term ) {
 			// Get custom_fields
 			$term_options = Wordlift_Schema_Service::get_instance()
-			                                       ->get_schema( $term->slug );
+												   ->get_schema( $term->slug );
 
 			if ( ! isset( $term_options['uri'] ) || ! isset( $term_options['custom_fields'] ) ) {
 				continue;
@@ -143,28 +142,41 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
  * @return array
  */
 function wl_get_custom_fields_by_entity_type( $types ) {
-	$terms = array_filter( array_map( function ( $item ) {
-		return get_term( $item );
-	}, $types ), function ( $item ) {
-		return isset( $item ) && is_a( $item, 'WP_Term' );
-	} );
+	$terms = array_filter(
+		array_map(
+			function ( $item ) {
+				return get_term( $item );
+			},
+			$types
+		),
+		function ( $item ) {
+			return isset( $item ) && is_a( $item, 'WP_Term' );
+		}
+	);
 
-	$term_slugs = array_map( function ( $item ) {
-		return $item->slug;
-	}, $terms );
+	$term_slugs = array_map(
+		function ( $item ) {
+			return $item->slug;
+		},
+		$terms
+	);
 
 	$term_slugs[] = 'thing';
 
 	$schema_service = Wordlift_Schema_Service::get_instance();
 
-	return array_reduce( $term_slugs, function ( $carry, $item ) use ( $schema_service ) {
+	return array_reduce(
+		$term_slugs,
+		function ( $carry, $item ) use ( $schema_service ) {
 
-		$schema = $schema_service->get_schema( $item );
+			$schema = $schema_service->get_schema( $item );
 
-		if ( ! isset( $schema['custom_fields'] ) ) {
-			return $carry;
-		}
+			if ( ! isset( $schema['custom_fields'] ) ) {
+				return $carry;
+			}
 
-		return $carry + $schema['custom_fields'];
-	}, array() );
+			return $carry + $schema['custom_fields'];
+		},
+		array()
+	);
 }

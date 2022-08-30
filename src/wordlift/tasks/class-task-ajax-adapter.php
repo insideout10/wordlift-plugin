@@ -59,7 +59,7 @@ class Task_Ajax_Adapter {
 			// Start the task runner, 1 item at a time.
 			$task_runner->start( 1, $offset );
 		} catch ( Task_Another_Instance_Is_Running_Exception $e ) {
-			wp_send_json_error( "A task is already running." );
+			wp_send_json_error( 'A task is already running.' );
 		}
 
 	}

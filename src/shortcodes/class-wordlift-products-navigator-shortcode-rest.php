@@ -13,30 +13,30 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 				'post_id' => array(
 					'description' => __( 'Post ID for which Navigator has to be queried', 'wordlift' ),
 					'type'        => 'integer',
-					'required'    => true
+					'required'    => true,
 				),
 				'uniqid'  => array(
 					'description' => __( 'Navigator uniqueid', 'wordlift' ),
 					'type'        => 'string',
-					'required'    => true
+					'required'    => true,
 				),
 				'limit'   => array(
 					'default'           => 4,
 					'type'              => 'integer',
-					'sanitize_callback' => 'absint'
+					'sanitize_callback' => 'absint',
 				),
 				'offset'  => array(
 					'default'           => 0,
 					'type'              => 'integer',
-					'sanitize_callback' => 'absint'
+					'sanitize_callback' => 'absint',
 				),
 				'sort'    => array(
 					'default'           => 'ID DESC',
-					'sanitize_callback' => 'sanitize_sql_orderby'
+					'sanitize_callback' => 'sanitize_sql_orderby',
 				),
 				'amp'     => array(
-					'sanitize_callback' => 'rest_sanitize_boolean'
-				)
+					'sanitize_callback' => 'rest_sanitize_boolean',
+				),
 			)
 		);
 	}
@@ -60,21 +60,39 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 
 		// Determine navigator type and call respective get_*_results
 		if ( get_post_type( $post_id ) === Wordlift_Entity_Service::TYPE_NAME ) {
-			$referencing_posts = $this->get_entity_results( $post_id, array(
-				'ID',
-				'post_title',
-			), $order_by, $navigator_length, $navigator_offset );
+			$referencing_posts = $this->get_entity_results(
+				$post_id,
+				array(
+					'ID',
+					'post_title',
+				),
+				$order_by,
+				$navigator_length,
+				$navigator_offset
+			);
 		} else {
-			$referencing_posts = $this->get_post_results( $post_id, array(
-				'ID',
-				'post_title',
-			), $order_by, $navigator_length, $navigator_offset );
+			$referencing_posts = $this->get_post_results(
+				$post_id,
+				array(
+					'ID',
+					'post_title',
+				),
+				$order_by,
+				$navigator_length,
+				$navigator_offset
+			);
 		}
 
 		// Fetch directly referencing posts excluding referencing posts via entities
-		$directly_referencing_posts = $this->get_directly_referencing_posts( $post_id, array_map( function ( $referencing_post ) {
-			return $referencing_post->ID;
-		}, $referencing_posts ) );
+		$directly_referencing_posts = $this->get_directly_referencing_posts(
+			$post_id,
+			array_map(
+				function ( $referencing_post ) {
+					return $referencing_post->ID;
+				},
+				$referencing_posts
+			)
+		);
 
 		// Combine directly referencing posts and referencing posts via entities
 		$referencing_posts = array_merge( $directly_referencing_posts, $referencing_posts );
@@ -98,7 +116,7 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 					'discount_pc'     => ( $product->get_sale_price() && ( $product->get_regular_price() > 0 ) ) ? round( 1 - ( $product->get_sale_price() / $product->get_regular_price() ), 2 ) * 100 : 0,
 					'average_rating'  => $product->get_average_rating(),
 					'rating_count'    => $product->get_rating_count(),
-					'rating_html'     => wc_get_rating_html( $product->get_average_rating(), $product->get_rating_count() )
+					'rating_html'     => wc_get_rating_html( $product->get_average_rating(), $product->get_rating_count() ),
 				),
 				'entity'  => array(
 					'id'        => $referencing_post->entity_id,
@@ -116,18 +134,20 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 			$results = apply_filters( 'wl_products_navigator_data_placeholder', $results, $navigator_id, $navigator_offset, $navigator_length );
 		}
 
-
 		// Add filler posts if needed
 		$filler_count = $navigator_length - count( $results );
 		if ( $filler_count > 0 ) {
-			$referencing_post_ids = array_map( function ( $p ) {
-				return $p->ID;
-			}, $referencing_posts );
+			$referencing_post_ids = array_map(
+				function ( $p ) {
+					return $p->ID;
+				},
+				$referencing_posts
+			);
 			/**
 			 * @since 3.28.0
 			 * Filler posts are fetched using this util.
 			 */
-			$filler_posts_util    = new Filler_Posts_Util( $post_id, 'product' );
+			$filler_posts_util       = new Filler_Posts_Util( $post_id, 'product' );
 			$post_ids_to_be_excluded = array_merge( array( $post_id ), $referencing_post_ids );
 			$filler_posts            = $filler_posts_util->get_product_navigator_response( $filler_count, $post_ids_to_be_excluded );
 			$results                 = array_merge( $results, $filler_posts );
@@ -136,7 +156,7 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 		// Apply filters after fillers are added
 		foreach ( $results as $result_index => $result ) {
 			$results[ $result_index ]['product'] = apply_filters( 'wl_products_navigator_data_post', $result['product'], intval( $result['product']['id'] ), $navigator_id );
-			$results[ $result_index ]['entity'] = apply_filters( 'wl_products_navigator_data_entity', $result['entity'], intval( $result['entity']['id'] ), $navigator_id );
+			$results[ $result_index ]['entity']  = apply_filters( 'wl_products_navigator_data_entity', $result['entity'], intval( $result['entity']['id'] ), $navigator_id );
 		}
 
 		$results = apply_filters( 'wl_products_navigator_results', $results, $navigator_id );
@@ -155,20 +175,22 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 
 		$post__in = array_diff( $directly_referencing_post_ids, $referencing_post_ids );
 
-		$directly_referencing_posts = get_posts( array(
-			'meta_query'          => array(
-				array(
-					'key' => '_thumbnail_id'
+		$directly_referencing_posts = get_posts(
+			array(
+				'meta_query'          => array(
+					array(
+						'key' => '_thumbnail_id',
+					),
+					array(
+						'key'   => '_stock_status',
+						'value' => 'instock',
+					),
 				),
-				array(
-					'key'   => '_stock_status',
-					'value' => 'instock'
-				)
-			),
-			'post__in'            => $post__in,
-			'post_type'           => 'product',
-			'ignore_sticky_posts' => 1
-		) );
+				'post__in'            => $post__in,
+				'post_type'           => 'product',
+				'ignore_sticky_posts' => 1,
+			)
+		);
 
 		$results = array();
 
@@ -195,17 +217,30 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 	) {
 		global $wpdb;
 
-		$select = implode( ', ', array_map( function ( $item ) {
-			return "p.$item AS $item";
-		}, (array) $fields ) );
+		$select = implode(
+			', ',
+			array_map(
+				function ( $item ) {
+					return "p.$item AS $item";
+				},
+				(array) $fields
+			)
+		);
 
-		$order_by = implode( ', ', array_map( function ( $item ) {
-			return "p.$item";
-		}, (array) $order_by ) );
+		$order_by = implode(
+			', ',
+			array_map(
+				function ( $item ) {
+					return "p.$item";
+				},
+				(array) $order_by
+			)
+		);
 
 		/** @noinspection SqlNoDataSourceInspection */
 		return $wpdb->get_results(
-			$wpdb->prepare( "
+			$wpdb->prepare(
+				"
 SELECT %4\$s, p2.ID as entity_id
  FROM {$wpdb->prefix}wl_relation_instances r1
 	-- get the ID of the post entity in common between the object and the subject 2. 
@@ -237,8 +272,13 @@ SELECT %4\$s, p2.ID as entity_id
  ORDER BY %5\$s
  LIMIT %2\$d
  OFFSET %3\$d
-"
-				, $post_id, $limit, $offset, $select, $order_by )
+",
+				$post_id,
+				$limit,
+				$offset,
+				$select,
+				$order_by
+			)
 		);
 	}
 
@@ -254,17 +294,30 @@ SELECT %4\$s, p2.ID as entity_id
 	) {
 		global $wpdb;
 
-		$select = implode( ', ', array_map( function ( $item ) {
-			return "p.$item AS $item";
-		}, (array) $fields ) );
+		$select = implode(
+			', ',
+			array_map(
+				function ( $item ) {
+					return "p.$item AS $item";
+				},
+				(array) $fields
+			)
+		);
 
-		$order_by = implode( ', ', array_map( function ( $item ) {
-			return "p.$item";
-		}, (array) $order_by ) );
+		$order_by = implode(
+			', ',
+			array_map(
+				function ( $item ) {
+					return "p.$item";
+				},
+				(array) $order_by
+			)
+		);
 
 		/** @noinspection SqlNoDataSourceInspection */
 		return $wpdb->get_results(
-			$wpdb->prepare( "
+			$wpdb->prepare(
+				"
 SELECT %4\$s, p2.ID as entity_id
  FROM {$wpdb->prefix}wl_relation_instances r1
     INNER JOIN {$wpdb->prefix}wl_relation_instances r2
@@ -299,8 +352,13 @@ SELECT %4\$s, p2.ID as entity_id
  ORDER BY %5\$s
  LIMIT %2\$d
  OFFSET %3\$d
-"
-				, $post_id, $limit, $offset, $select, $order_by )
+",
+				$post_id,
+				$limit,
+				$offset,
+				$select,
+				$order_by
+			)
 		);
 	}
 

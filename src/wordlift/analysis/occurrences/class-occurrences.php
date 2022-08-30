@@ -1,6 +1,7 @@
 <?php
 /**
  * This file provides a interface to process the local entities.
+ *
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.32.6
  */

@@ -4,7 +4,6 @@
  * This file contains admin methods for the *wl_chord* and *wl_timeline* shortcode.
  */
 
-
 /**
  * Loads the buttons in TinyMCE.
  */

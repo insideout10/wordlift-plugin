@@ -16,15 +16,14 @@ use Wordlift\Modules\Common\Symfony\Component\Config\Definition\ScalarNode;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class ScalarNodeDefinition extends VariableNodeDefinition
-{
-    /**
-     * Instantiate a Node.
-     *
-     * @return ScalarNode The node
-     */
-    protected function instantiateNode()
-    {
-        return new ScalarNode($this->name, $this->parent);
-    }
+class ScalarNodeDefinition extends VariableNodeDefinition {
+
+	/**
+	 * Instantiate a Node.
+	 *
+	 * @return ScalarNode The node
+	 */
+	protected function instantiateNode() {
+		return new ScalarNode( $this->name, $this->parent );
+	}
 }

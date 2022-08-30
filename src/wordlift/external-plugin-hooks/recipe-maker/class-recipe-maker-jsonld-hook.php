@@ -10,6 +10,7 @@ namespace Wordlift\External_Plugin_Hooks\Recipe_Maker;
  * This class helps to remove the jsonld of wp recipe maker for the post and add the jsonld to
  * wordlift jsonld.
  * Class Recipe_Maker_Jsonld_Hook
+ *
  * @package Wordlift\External_Plugin_Hooks
  */
 class Recipe_Maker_Jsonld_Hook {
@@ -36,7 +37,6 @@ class Recipe_Maker_Jsonld_Hook {
 		$this->merge_recipe_jsonld();
 	}
 
-
 	private function merge_recipe_jsonld() {
 		// First we push all the linked recipes to references.
 		add_filter( 'wl_entity_jsonld_array', array( $this, 'wl_entity_jsonld_array' ), 10, 2 );
@@ -45,7 +45,6 @@ class Recipe_Maker_Jsonld_Hook {
 		// Then we merge the jsonld for every recipe.
 		add_filter( 'wl_entity_jsonld', array( $this, 'wl_entity_jsonld' ), 10, 3 );
 	}
-
 
 	public function wl_entity_jsonld_array( $arr, $post_id ) {
 
@@ -67,11 +66,10 @@ class Recipe_Maker_Jsonld_Hook {
 
 		return array(
 			'jsonld'     => $jsonld,
-			'references' => array_merge( $recipe_ids, $references )
+			'references' => array_merge( $recipe_ids, $references ),
 		);
 
 	}
-
 
 	public function wl_entity_jsonld( $jsonld, $post_id, $references ) {
 		$recipe_data = $this->process_single_recipe_item( $post_id );

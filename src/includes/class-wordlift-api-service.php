@@ -35,10 +35,9 @@ class Wordlift_Api_Service {
 	 * Create a {@link Wordlift_Api_Service} instance.
 	 *
 	 * @since 3.20.0
-	 *
 	 */
 	public function __construct() {
-		self::$instance = $this;
+		self::$instance        = $this;
 		$this->headers_service = Api_Headers_Service::get_instance();
 	}
 
@@ -47,14 +46,11 @@ class Wordlift_Api_Service {
 	 *
 	 * @return \Wordlift_Api_Service The {@link Wordlift_Api_Service} singleton instance.
 	 * @since 3.20.0
-	 *
 	 */
 	public static function get_instance() {
 
 		return self::$instance;
 	}
-
-
 
 	/**
 	 * Perform a `GET` request towards the requested path.
@@ -63,7 +59,6 @@ class Wordlift_Api_Service {
 	 *
 	 * @return array|WP_Error
 	 * @since 3.20.0
-	 *
 	 */
 	public function get( $path ) {
 
@@ -71,20 +66,23 @@ class Wordlift_Api_Service {
 		$url = Wordlift_Configuration_Service::get_instance()->get_api_url() . $path;
 
 		// Get the response value.
-		$response = wp_remote_get( $url, array(
-			'user-agent' => User_Agent::get_user_agent(),
-			'headers'    => array(
-				'X-Authorization' => Wordlift_Configuration_Service::get_instance()->get_key(),
-			) + $this->headers_service->get_wp_headers(),
-			/*
-			 * Increase the timeout from the default of 5 to 30 secs.
-			 *
-			 * @see https://github.com/insideout10/wordlift-plugin/issues/906
-			 *
-			 * @since 3.20.1
-			 */
-			'timeout'    => 30,
-		) );
+		$response = wp_remote_get(
+			$url,
+			array(
+				'user-agent' => User_Agent::get_user_agent(),
+				'headers'    => array(
+					'X-Authorization' => Wordlift_Configuration_Service::get_instance()->get_key(),
+				) + $this->headers_service->get_wp_headers(),
+				/*
+				* Increase the timeout from the default of 5 to 30 secs.
+				*
+				* @see https://github.com/insideout10/wordlift-plugin/issues/906
+				*
+				* @since 3.20.1
+				*/
+				'timeout'    => 30,
+			)
+		);
 
 		return self::get_message_or_error( $response );
 	}
@@ -92,17 +90,18 @@ class Wordlift_Api_Service {
 	/**
 	 * Perform a `POST` request towards the requested path.
 	 *
-	 * @param string $path The relative path.
+	 * @param string       $path The relative path.
 	 * @param array|object $body The request body (will be serialized to JSON).
 	 *
 	 * @return array|WP_Error
 	 * @since 3.20.0
-	 *
 	 */
 	public function post( $path, $body ) {
 
 		return $this->post_custom_content_type(
-			$path, json_encode( $body ), 'application/json; ' . get_bloginfo( 'charset' )
+			$path,
+			json_encode( $body ),
+			'application/json; ' . get_bloginfo( 'charset' )
 		);
 	}
 
@@ -116,22 +115,25 @@ class Wordlift_Api_Service {
 
 		// Get the response value.
 		$key      = Wordlift_Configuration_Service::get_instance()->get_key();
-		$response = wp_remote_post( $url, array(
-			'timeout'    => 60,
-			'user-agent' => User_Agent::get_user_agent(),
-			'headers'    => array(
-				'Content-Type'    => $content_type,
-				'X-Authorization' => $key,
-				'Authorization'   => "Key $key",
-				/*
-				 * This is required to avoid CURL receiving 502 Bad Gateway errors.
-				 *
-				 * @see https://stackoverflow.com/questions/30601075/curl-to-google-compute-load-balancer-gets-error-502
-				 */
-				'Expect'          => '',
-			) + $this->headers_service->get_wp_headers(),
-			'body'       => $body,
-		) );
+		$response = wp_remote_post(
+			$url,
+			array(
+				'timeout'    => 60,
+				'user-agent' => User_Agent::get_user_agent(),
+				'headers'    => array(
+					'Content-Type'    => $content_type,
+					'X-Authorization' => $key,
+					'Authorization'   => "Key $key",
+					/*
+					 * This is required to avoid CURL receiving 502 Bad Gateway errors.
+					 *
+					 * @see https://stackoverflow.com/questions/30601075/curl-to-google-compute-load-balancer-gets-error-502
+					 */
+					'Expect'          => '',
+				) + $this->headers_service->get_wp_headers(),
+				'body'       => $body,
+			)
+		);
 
 		return self::get_message_or_error( $response );
 	}
@@ -142,13 +144,16 @@ class Wordlift_Api_Service {
 		$url = Wordlift_Configuration_Service::get_instance()->get_api_url() . $path;
 
 		// Get the response value.
-		$response = wp_remote_request( $url, array(
-			'method'     => 'DELETE',
-			'user-agent' => User_Agent::get_user_agent(),
-			'headers'    => array(
-				'X-Authorization' => Wordlift_Configuration_Service::get_instance()->get_key(),
-			) + $this->headers_service->get_wp_headers(),
-		) );
+		$response = wp_remote_request(
+			$url,
+			array(
+				'method'     => 'DELETE',
+				'user-agent' => User_Agent::get_user_agent(),
+				'headers'    => array(
+					'X-Authorization' => Wordlift_Configuration_Service::get_instance()->get_key(),
+				) + $this->headers_service->get_wp_headers(),
+			)
+		);
 
 		return self::get_message_or_error( $response );
 	}
@@ -160,7 +165,6 @@ class Wordlift_Api_Service {
 	 *
 	 * @return string|object|WP_Error A {@link WP_Error} instance or the actual response content.
 	 * @since 3.20.0
-	 *
 	 */
 	private static function get_message_or_error( $response ) {
 
@@ -193,7 +197,6 @@ class Wordlift_Api_Service {
 	 *
 	 * @return array|mixed|object The decoded response or the original response body.
 	 * @since 3.20.0
-	 *
 	 */
 	private static function try_json_decode( $response ) {
 

@@ -36,11 +36,11 @@ class Rule_Validators_Registry {
 
 		// Check that a valid validator has been provided.
 		if ( ! ( $default instanceof Rule_Validator ) ) {
-			throw new Exception( "An invalid Rule_Validator was provided as default validator." );
+			throw new Exception( 'An invalid Rule_Validator was provided as default validator.' );
 		}
 
 		// Allow 3rd parties to register other validators.
-		$this->rule_validators = apply_filters( 'wl_mappings_rule_validators', array( '__default__' => $default, ) );
+		$this->rule_validators = apply_filters( 'wl_mappings_rule_validators', array( '__default__' => $default ) );
 
 	}
 

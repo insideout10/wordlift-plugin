@@ -32,7 +32,6 @@ class Wordlift_Attachment_Service {
 	 *
 	 * @return \Wordlift_Attachment_Service The singleton instance.
 	 * @since 3.20.0
-	 *
 	 */
 	public static function get_instance() {
 
@@ -52,7 +51,6 @@ class Wordlift_Attachment_Service {
 	 *
 	 * @return int|false Attachment ID on success, false on failure
 	 * @since 3.10.0
-	 *
 	 */
 	public function get_attachment_id( $url ) {
 
@@ -72,38 +70,40 @@ class Wordlift_Attachment_Service {
 		// See https://github.com/insideout10/wordlift-plugin/issues/689.
 		//
 		// Query for attachments with the specified filename.
-		$query = new WP_Query( array(
-			'post_type'           => 'attachment',
-			'post_status'         => 'inherit',
-			'fields'              => 'ids',
-			'meta_query'          => array(
-				array(
-					'value'   => $filename,
-					'compare' => '=',
-					'key'     => '_wp_attached_file',
+		$query = new WP_Query(
+			array(
+				'post_type'           => 'attachment',
+				'post_status'         => 'inherit',
+				'fields'              => 'ids',
+				'meta_query'          => array(
+					array(
+						'value'   => $filename,
+						'compare' => '=',
+						'key'     => '_wp_attached_file',
+					),
 				),
-			),
-			'posts_per_page'      => 1,
-			'ignore_sticky_posts' => true,
-		) );
+				'posts_per_page'      => 1,
+				'ignore_sticky_posts' => true,
+			)
+		);
 
 		// If there are no posts, return.
 		if ( $query->have_posts() ) {
 			return $query->posts[0];
-//			foreach ( $query->posts as $attachment_id ) {
-//
-//				// Get the attachment metadata, we need the filename.
-//				$metadata          = wp_get_attachment_metadata( $attachment_id );
-//				$original_filename = basename( $metadata['file'] );
-//
-//				// Get the cropped filenames, or an empty array in case there are no files.
-//				$sizes_filenames = isset( $metadata['sizes'] ) ? wp_list_pluck( $metadata['sizes'], 'file' ) : array();
-//
-//				// If the provided filename matches the attachment filename (or one of its resized images), return the id.
-//				if ( $original_filename === $filename || in_array( $filename, $sizes_filenames ) ) {
-//					return $attachment_id;
-//				}
-//			}
+			// foreach ( $query->posts as $attachment_id ) {
+			//
+			// Get the attachment metadata, we need the filename.
+			// $metadata          = wp_get_attachment_metadata( $attachment_id );
+			// $original_filename = basename( $metadata['file'] );
+			//
+			// Get the cropped filenames, or an empty array in case there are no files.
+			// $sizes_filenames = isset( $metadata['sizes'] ) ? wp_list_pluck( $metadata['sizes'], 'file' ) : array();
+			//
+			// If the provided filename matches the attachment filename (or one of its resized images), return the id.
+			// if ( $original_filename === $filename || in_array( $filename, $sizes_filenames ) ) {
+			// return $attachment_id;
+			// }
+			// }
 		}
 
 		// If we got here, we couldn't find any attachment.
@@ -117,7 +117,6 @@ class Wordlift_Attachment_Service {
 	 *
 	 * @return array An array of attachment ids.
 	 * @since 3.10.0
-	 *
 	 */
 	public function get_image_embeds( $content ) {
 
@@ -130,14 +129,20 @@ class Wordlift_Attachment_Service {
 
 		// Map the image URLs to attachment ids.
 		$that = $this;
-		$ids  = array_map( function ( $url ) use ( $that ) {
-			return $that->get_attachment_id( $url );
-		}, $images[1] );
+		$ids  = array_map(
+			function ( $url ) use ( $that ) {
+				return $that->get_attachment_id( $url );
+			},
+			$images[1]
+		);
 
 		// Filter out not found ids (i.e. id is false).
-		return array_filter( $ids, function ( $item ) {
-			return false !== $item;
-		} );
+		return array_filter(
+			$ids,
+			function ( $item ) {
+				return false !== $item;
+			}
+		);
 	}
 
 	/**
@@ -147,7 +152,6 @@ class Wordlift_Attachment_Service {
 	 *
 	 * @return array An array of attachment ids.
 	 * @since 3.10.0
-	 *
 	 */
 	public function get_gallery( $post ) {
 
@@ -162,8 +166,8 @@ class Wordlift_Attachment_Service {
 		$pattern = get_shortcode_regex();
 
 		if ( preg_match_all( '/' . $pattern . '/s', $post->post_content, $matches )
-		     && array_key_exists( 2, $matches )
-		     && in_array( 'gallery', $matches[2] )
+			 && array_key_exists( 2, $matches )
+			 && in_array( 'gallery', $matches[2] )
 		) {
 
 			$keys = array_keys( $matches[2], 'gallery' );

@@ -26,5 +26,4 @@ class Term_Data_Factory {
 		return new Default_Term_Data( $term, $entities );
 	}
 
-
 }

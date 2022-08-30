@@ -20,8 +20,8 @@ abstract class Abstract_Sync_Object_Adapter implements Sync_Object_Adapter {
 	/**
 	 * Sync_Object_Adapter constructor.
 	 *
-	 * @param int $type One of Object_Type_Enum.
-	 * @param int $object_id A post or term id.
+	 * @param int            $type One of Object_Type_Enum.
+	 * @param int            $object_id A post or term id.
 	 * @param Jsonld_Service
 	 *
 	 * @throws \Exception

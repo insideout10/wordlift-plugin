@@ -41,7 +41,6 @@ class Wordlift_Admin_Tabs_Element implements Wordlift_Admin_Element {
 	 *
 	 * @return \Wordlift_Admin_Element The element instance.
 	 * @since 3.11.0
-	 *
 	 */
 	public function render( $args ) {
 
@@ -49,34 +48,37 @@ class Wordlift_Admin_Tabs_Element implements Wordlift_Admin_Element {
 		wp_enqueue_script( 'jquery-ui-tabs' );
 
 		// Parse the arguments and merge with default values.
-		$params = wp_parse_args( $args, array(
-			'tabs'   => array(),
-			'active' => 0,
-		) );
+		$params = wp_parse_args(
+			$args,
+			array(
+				'tabs'   => array(),
+				'active' => 0,
+			)
+		);
 
 		// Following is the HTML code:
-		//  - the labels are printed, using the tab's `label`,
-		//  - the panels are printed, using the tab's `callback`.
+		// - the labels are printed, using the tab's `label`,
+		// - the panels are printed, using the tab's `callback`.
 		?>
-        <div
-                class="wl-tabs-element"
-                data-active="<?php echo esc_attr( $params['active'] ); ?>"
-        >
-            <ul class="nav-tab-wrapper">
+		<div
+				class="wl-tabs-element"
+				data-active="<?php echo esc_attr( $params['active'] ); ?>"
+		>
+			<ul class="nav-tab-wrapper">
 				<?php foreach ( $params['tabs'] as $index => $tab ) : ?>
-                    <li class="nav-tab">
-                        <a href="#tabs-<?php echo esc_html( $index + 1 ); ?>">
+					<li class="nav-tab">
+						<a href="#tabs-<?php echo esc_html( $index + 1 ); ?>">
 							<?php echo esc_html( $tab['label'] ); ?>
-                        </a>
-                    </li>
+						</a>
+					</li>
 				<?php endforeach; ?>
-            </ul>
+			</ul>
 			<?php foreach ( $params['tabs'] as $index => $tab ) : ?>
-                <div id="tabs-<?php echo esc_html( $index + 1 ); ?>">
+				<div id="tabs-<?php echo esc_html( $index + 1 ); ?>">
 					<?php call_user_func( $tab['callback'], $tab['args'] ); ?>
-                </div>
+				</div>
 			<?php endforeach; ?>
-        </div>
+		</div>
 
 		<?php
 

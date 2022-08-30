@@ -9,7 +9,6 @@
 namespace Wordlift\No_Editor_Analysis;
 
 use Wordlift\Common\Loader\Default_Loader;
-use Wordlift\Features\Feature_Utils;
 
 class Loader extends Default_Loader {
 

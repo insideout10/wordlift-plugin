@@ -37,17 +37,22 @@ class Wordlift_Http_Api {
 		add_action( 'init', array( $this, 'add_rewrite_endpoint' ) );
 		add_action( 'template_redirect', array( $this, 'template_redirect' ) );
 
-		//region SAMPLE ACTIONS.
-		add_action( 'admin_post_wl_hello_world', array(
-			$this,
-			'hello_world',
-		) );
-		add_action( 'admin_post_nopriv_wl_hello_world', array(
-			$this,
-			'nopriv_hello_world',
-		) );
-		//endregion
-
+		// region SAMPLE ACTIONS.
+		add_action(
+			'admin_post_wl_hello_world',
+			array(
+				$this,
+				'hello_world',
+			)
+		);
+		add_action(
+			'admin_post_nopriv_wl_hello_world',
+			array(
+				$this,
+				'nopriv_hello_world',
+			)
+		);
+		// endregion
 	}
 
 	/**
@@ -77,7 +82,7 @@ class Wordlift_Http_Api {
 			return;
 		}
 
-		$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( (string) $_REQUEST['action'] ) ): '';
+		$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( (string) $_REQUEST['action'] ) ) : '';
 		$this->do_action( $action );
 
 		exit;
@@ -90,7 +95,6 @@ class Wordlift_Http_Api {
 	 * @param string $action The action to execute.
 	 *
 	 * @since 3.15.3
-	 *
 	 */
 	private function do_action( $action ) {
 
@@ -155,9 +159,12 @@ class Wordlift_Http_Api {
 		// See https://github.com/insideout10/wordlift-plugin/issues/698.
 		if ( 'yes' !== get_option( 'wl_http_api' ) ) {
 			update_option( 'wl_http_api', 'yes' );
-			add_action( 'wp_loaded', function () {
-				flush_rewrite_rules();
-			} );
+			add_action(
+				'wp_loaded',
+				function () {
+					flush_rewrite_rules();
+				}
+			);
 		}
 
 	}

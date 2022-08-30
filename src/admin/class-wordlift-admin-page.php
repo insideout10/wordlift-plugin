@@ -32,7 +32,6 @@ abstract class Wordlift_Admin_Page {
 	 *
 	 * @return string The parent slug (default 'wl_admin_menu').
 	 * @since 3.11.0
-	 *
 	 */
 	protected function get_parent_slug() {
 
@@ -44,7 +43,6 @@ abstract class Wordlift_Admin_Page {
 	 *
 	 * @return string The capability (default 'manage_options').
 	 * @since 3.11.0
-	 *
 	 */
 	protected function get_capability() {
 
@@ -56,7 +54,6 @@ abstract class Wordlift_Admin_Page {
 	 *
 	 * @return string The page title.
 	 * @since 3.11.0
-	 *
 	 */
 	abstract function get_page_title();
 
@@ -65,7 +62,6 @@ abstract class Wordlift_Admin_Page {
 	 *
 	 * @return string The menu title.
 	 * @since 3.11.0
-	 *
 	 */
 	abstract function get_menu_title();
 
@@ -74,7 +70,6 @@ abstract class Wordlift_Admin_Page {
 	 *
 	 * @return string The menu slug.
 	 * @since 3.11.0
-	 *
 	 */
 	abstract function get_menu_slug();
 
@@ -83,7 +78,6 @@ abstract class Wordlift_Admin_Page {
 	 *
 	 * @return string The escaped url of the admin page
 	 * @since 3.14.0
-	 *
 	 */
 	function get_url() {
 
@@ -98,7 +92,6 @@ abstract class Wordlift_Admin_Page {
 	 *
 	 * @return string The partial file name.
 	 * @since 3.11.0
-	 *
 	 */
 	abstract function get_partial_name();
 
@@ -108,7 +101,6 @@ abstract class Wordlift_Admin_Page {
 	 *
 	 * @return false|string The resulting page's hook_suffix, or false if the user does not have the capability required.
 	 * @since 3.11.0
-	 *
 	 */
 	public function admin_menu() {
 		// Add the sub-menu page.
@@ -124,10 +116,13 @@ abstract class Wordlift_Admin_Page {
 		);
 
 		// Set a hook to enqueue scripts only when the settings page is displayed.
-		add_action( 'admin_print_scripts-' . $page, array(
-			$this,
-			'enqueue_scripts',
-		) );
+		add_action(
+			'admin_print_scripts-' . $page,
+			array(
+				$this,
+				'enqueue_scripts',
+			)
+		);
 
 		// Finally return the page hook_suffix.
 		return $page;
@@ -148,7 +143,7 @@ abstract class Wordlift_Admin_Page {
 	public function render() {
 
 		// Include the partial.
-		include( plugin_dir_path( __FILE__ ) . 'partials/' . $this->get_partial_name() );
+		include plugin_dir_path( __FILE__ ) . 'partials/' . $this->get_partial_name();
 
 	}
 

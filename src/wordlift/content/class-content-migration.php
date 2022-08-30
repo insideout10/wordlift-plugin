@@ -10,7 +10,7 @@ class Content_Migration {
 
 	public function migrate() {
 		if ( get_option( '_wl_content_migration__migrated' )
-		     || version_compare( get_option( 'wl_db_version', '0.0.0' ), '3.33.9', '<' ) ) {
+			 || version_compare( get_option( 'wl_db_version', '0.0.0' ), '3.33.9', '<' ) ) {
 			return;
 		}
 

@@ -35,6 +35,7 @@ class Webhooks_Manager {
 
 		/**
 		 * Allow 3rd parties to filter out the objects that we want to send via webhooks.
+		 *
 		 * @since 3.34.0
 		 * @var Sync_Object_Adapter[] $filtered_objects
 		 */
@@ -44,12 +45,19 @@ class Webhooks_Manager {
 			foreach ( $filtered_hashes as $hash ) {
 				$jsonld       = $hash[2];
 				$filtered_url = apply_filters( 'wl_webhooks__sync_many__url', $url, $hash );
-				wp_remote_request( $filtered_url, apply_filters( 'wl_webhooks__sync_many__args', array(
-					'blocking' => false,
-					'method'   => 'PUT',
-					'headers'  => array( 'content-type' => 'application/json; ' . get_bloginfo( 'charset' ) ),
-					'body'     => $jsonld
-				), $hash ) );
+				wp_remote_request(
+					$filtered_url,
+					apply_filters(
+						'wl_webhooks__sync_many__args',
+						array(
+							'blocking' => false,
+							'method'   => 'PUT',
+							'headers'  => array( 'content-type' => 'application/json; ' . get_bloginfo( 'charset' ) ),
+							'body'     => $jsonld,
+						),
+						$hash
+					)
+				);
 			}
 		}
 	}
@@ -58,7 +66,7 @@ class Webhooks_Manager {
 	 * Method to call up webhook with delete requested
 	 *
 	 * @param string $type
-	 * @param int $object_id
+	 * @param int    $object_id
 	 * @param string $uri
 	 */
 
@@ -76,10 +84,16 @@ class Webhooks_Manager {
 		foreach ( $urls as $template_url ) {
 			$url          = add_query_arg( array( 'uri' => $uri ), $template_url );
 			$filtered_url = apply_filters( 'wl_webhooks__sync_delete__url', $url, $type, $object_id, $uri );
-			wp_remote_request( $filtered_url, apply_filters( 'wl_webhooks__sync_delete__args', array(
-				'blocking' => false,
-				'method'   => 'DELETE',
-			) ) );
+			wp_remote_request(
+				$filtered_url,
+				apply_filters(
+					'wl_webhooks__sync_delete__args',
+					array(
+						'blocking' => false,
+						'method'   => 'DELETE',
+					)
+				)
+			);
 		}
 
 	}

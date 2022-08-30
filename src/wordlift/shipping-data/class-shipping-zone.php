@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Wordlift\Shipping_Data;
-
 
 use DateTime;
 use DateTimeZone;
@@ -49,7 +47,7 @@ class Shipping_Zone {
 	 * Shipping_Zone constructor.
 	 *
 	 * @param WC_Shipping_Zone $wc_shipping_zone
-	 * @param string $country_code
+	 * @param string           $country_code
 	 */
 	public function __construct( $wc_shipping_zone, $country_code ) {
 
@@ -84,7 +82,7 @@ class Shipping_Zone {
 				case 'postcode':
 					if ( '*' === substr( $zone_location->code, - 1 ) ) {
 						$this->postal_code_prefixes[] = $zone_location->code;
-					} else if ( - 1 < strpos( $zone_location->code, '...' ) ) {
+					} elseif ( - 1 < strpos( $zone_location->code, '...' ) ) {
 						$this->postal_code_ranges[] = $zone_location->code;
 					} else {
 						$this->postal_codes[] = $zone_location->code;
@@ -100,8 +98,10 @@ class Shipping_Zone {
 
 	private function load_methods() {
 
-		$this->methods = array_map( 'Wordlift\Shipping_Data\Shipping_Method::from_wc_shipping_method',
-			$this->wc_shipping_zone->get_shipping_methods( true ) );
+		$this->methods = array_map(
+			'Wordlift\Shipping_Data\Shipping_Method::from_wc_shipping_method',
+			$this->wc_shipping_zone->get_shipping_methods( true )
+		);
 
 	}
 
@@ -116,7 +116,7 @@ class Shipping_Zone {
 	}
 
 	/**
-	 * @param array $jsonld
+	 * @param array   $jsonld
 	 * @param Product $product
 	 */
 	public function add_offer_shipping_details( &$jsonld, $product ) {
@@ -144,37 +144,37 @@ class Shipping_Zone {
 	 * @param array $jsonld
 	 * @param Product $product
 	 */
-//	private function add_shipping_details_when_no_shipping_methods( &$jsonld, $product ) {
-//
-//		$offer_shipping_details = array( '@type' => 'OfferShippingDetails', );
-//
-//		$this->add_shipping_destination( $offer_shipping_details );
-//
-//		/*
-//		 * Use Case UC004
-//		 */
-//		$shipping_delivery_time = array( '@type' => 'ShippingDeliveryTime', );
-//		$product->add_handling_time( $offer_shipping_details['deliveryTime'] );
-//
-//		$this->add_cutoff_time( $shipping_delivery_time );
-//
-//		if ( 1 < count( $shipping_delivery_time ) ) {
-//			$offer_shipping_details['shippingDeliveryTime'] = $shipping_delivery_time;
-//		}
-//
-//		$jsonld['shippingDetails'][] = $offer_shipping_details;
-//
-//	}
+	// private function add_shipping_details_when_no_shipping_methods( &$jsonld, $product ) {
+	//
+	// $offer_shipping_details = array( '@type' => 'OfferShippingDetails', );
+	//
+	// $this->add_shipping_destination( $offer_shipping_details );
+	//
+	// *
+	// * Use Case UC004
+	// */
+	// $shipping_delivery_time = array( '@type' => 'ShippingDeliveryTime', );
+	// $product->add_handling_time( $offer_shipping_details['deliveryTime'] );
+	//
+	// $this->add_cutoff_time( $shipping_delivery_time );
+	//
+	// if ( 1 < count( $shipping_delivery_time ) ) {
+	// $offer_shipping_details['shippingDeliveryTime'] = $shipping_delivery_time;
+	// }
+	//
+	// $jsonld['shippingDetails'][] = $offer_shipping_details;
+	//
+	// }
 
 	/**
-	 * @param array $jsonld
-	 * @param Product $product
+	 * @param array           $jsonld
+	 * @param Product         $product
 	 * @param Shipping_Method $method
 	 */
 	private function add_shipping_details_with_shipping_method( &$jsonld, $product, $method = null ) {
 
-		$offer_shipping_details = array( '@type' => 'OfferShippingDetails', );
-		$shipping_delivery_time = array( '@type' => 'ShippingDeliveryTime', );
+		$offer_shipping_details = array( '@type' => 'OfferShippingDetails' );
+		$shipping_delivery_time = array( '@type' => 'ShippingDeliveryTime' );
 
 		$this->add_shipping_destination( $offer_shipping_details );
 
@@ -210,7 +210,7 @@ class Shipping_Zone {
 		}
 
 		if ( ! is_array( $jsonld['shippingDetails'] ) ||
-		     ( ! empty( $jsonld['shippingDetails'] ) && ! is_numeric( key( $jsonld['shippingDetails'] ) ) ) ) {
+			 ( ! empty( $jsonld['shippingDetails'] ) && ! is_numeric( key( $jsonld['shippingDetails'] ) ) ) ) {
 			$jsonld['shippingDetails'] = array( $jsonld['shippingDetails'] );
 		}
 
@@ -233,7 +233,6 @@ class Shipping_Zone {
 		$this->add_postal_code_range( $shipping_destination );
 
 		$shipping_details['shippingDestination'] = $shipping_destination;
-
 
 	}
 
@@ -297,7 +296,7 @@ class Shipping_Zone {
 		$wpsso_options = get_option( 'wpsso_options' );
 
 		if ( empty( $wpsso_options['wcsdt_shipdept_cutoff'] )
-		     || empty( $wpsso_options['wcsdt_shipdept_timezone'] ) ) {
+			 || empty( $wpsso_options['wcsdt_shipdept_timezone'] ) ) {
 			return;
 		}
 
@@ -324,8 +323,8 @@ class Shipping_Zone {
 			$key = $prefix . strtolower( $day );
 
 			if (
-				( empty( $wpsso_options["{$key}_open"] ) && empty( $wpsso_options["{$key}_close"] ) )
-				|| ( 'none' === $wpsso_options["{$key}_open"] && 'none' === $wpsso_options["{$key}_close"] )
+				( empty( $wpsso_options[ "{$key}_open" ] ) && empty( $wpsso_options[ "{$key}_close" ] ) )
+				|| ( 'none' === $wpsso_options[ "{$key}_open" ] && 'none' === $wpsso_options[ "{$key}_close" ] )
 			) {
 				continue;
 			}

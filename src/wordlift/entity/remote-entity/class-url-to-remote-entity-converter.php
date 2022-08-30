@@ -6,7 +6,6 @@ use Wordlift\Api\Default_Api_Service;
 
 class Url_To_Remote_Entity_Converter {
 
-
 	/**
 	 * @param $url
 	 *
@@ -18,6 +17,5 @@ class Url_To_Remote_Entity_Converter {
 
 		return Remote_Entity_Factory::from_response( $url, $response );
 	}
-
 
 }

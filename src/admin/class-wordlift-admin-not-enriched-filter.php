@@ -22,15 +22,22 @@ class Wordlift_Admin_Not_Enriched_Filter {
 		global $wpdb;
 
 		return $where .
-		       " AND {$wpdb->posts}.ID NOT IN ( SELECT DISTINCT subject_id FROM {$wpdb->prefix}wl_relation_instances )";
+			   " AND {$wpdb->posts}.ID NOT IN ( SELECT DISTINCT subject_id FROM {$wpdb->prefix}wl_relation_instances )";
 	}
 
 	public function view_edit( $views ) {
 		global $wpdb;
 
-		$url = add_query_arg( array( self::PARAMETER_NAME => 'no', 'post_type' => 'post', ), 'edit.php' );
+		$url = add_query_arg(
+			array(
+				self::PARAMETER_NAME => 'no',
+				'post_type'          => 'post',
+			),
+			'edit.php'
+		);
 
-		$not_enriched_count = $wpdb->get_var( "
+		$not_enriched_count = $wpdb->get_var(
+			"
 SELECT COUNT( 1 ) FROM $wpdb->posts p
  WHERE p.post_type = 'post'
    AND p.post_status <> 'trash' 
@@ -40,9 +47,9 @@ SELECT COUNT( 1 ) FROM $wpdb->posts p
 		);
 
 		$link = '<a href="'
-		        . esc_url( $url ) . '"'
-		        . ( $this->is_filter_active() ? ' class="current" aria-current="page"' : '' )
-		        . '>' . esc_html( __( 'Not enriched', 'wordlift' ) ) . '</a> (' . $not_enriched_count . ')';
+				. esc_url( $url ) . '"'
+				. ( $this->is_filter_active() ? ' class="current" aria-current="page"' : '' )
+				. '>' . esc_html( __( 'Not enriched', 'wordlift' ) ) . '</a> (' . $not_enriched_count . ')';
 
 		$views['wl_not_enriched'] = $link;
 

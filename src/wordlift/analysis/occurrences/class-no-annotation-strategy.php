@@ -1,6 +1,7 @@
 <?php
 /**
  * This file provides a default strategy to add the occurences in analysis service.
+ *
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.32.6
  */
@@ -20,7 +21,6 @@ class No_Annotation_Strategy extends Singleton implements Occurrences {
 	public static function get_instance() {
 		return parent::get_instance();
 	}
-
 
 	public function add_occurences_to_entities( $occurrences, $json, $post_id ) {
 

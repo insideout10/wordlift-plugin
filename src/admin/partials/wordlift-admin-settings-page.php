@@ -30,10 +30,10 @@ $current_tab = ( in_array( $input_tab, $valid_tabs, true ) )
 ?>
 
 <div class="wrap" id="wl-settings-page">
-    <h2><?php esc_html_e( 'WordLift Settings', 'wordlift' ); ?></h2>
-    <h2 class="nav-tab-wrapper">
-        <a class="nav-tab<?php echo 'general' === $current_tab ? ' nav-tab-active' : ''; ?>"
-           href="<?php echo esc_html( admin_url( 'admin.php?page=wl_configuration_admin_menu' ) ); ?>"><?php echo esc_html( __( 'General', 'wordlift' ) ); ?></a>
+	<h2><?php esc_html_e( 'WordLift Settings', 'wordlift' ); ?></h2>
+	<h2 class="nav-tab-wrapper">
+		<a class="nav-tab<?php echo 'general' === $current_tab ? ' nav-tab-active' : ''; ?>"
+		   href="<?php echo esc_html( admin_url( 'admin.php?page=wl_configuration_admin_menu' ) ); ?>"><?php echo esc_html( __( 'General', 'wordlift' ) ); ?></a>
 		<?php
 		foreach ( $admin_tabs as $admin_tab ) {
 			?>
@@ -44,6 +44,6 @@ $current_tab = ( in_array( $input_tab, $valid_tabs, true ) )
 		?>
 	</h2>
 
-	<?php require plugin_dir_path( dirname( __FILE__ ) ) . "partials/wordlift-admin-settings-$current_tab-page.php"; ?>
+	<?php require plugin_dir_path( __DIR__ ) . "partials/wordlift-admin-settings-$current_tab-page.php"; ?>
 
 </div>

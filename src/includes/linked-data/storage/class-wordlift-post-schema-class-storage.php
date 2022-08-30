@@ -40,9 +40,12 @@ class Wordlift_Post_Schema_Class_Storage extends Wordlift_Storage {
 		}
 
 		// Prepend the `schema.org` base URI.
-		$uris = array_map( function( $item ) {
-			return "http://schema.org/$item";
-		}, $names );
+		$uris = array_map(
+			function ( $item ) {
+				return "http://schema.org/$item";
+			},
+			$names
+		);
 
 		// Finally return the schema uri.
 		return 1 === count( $uris ) ? $uris[0] : $uris;

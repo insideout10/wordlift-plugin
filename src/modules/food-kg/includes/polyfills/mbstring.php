@@ -80,7 +80,7 @@ if ( ! function_exists( 'mb_detect_order' ) ) {
 	}
 }
 if ( ! function_exists( 'mb_parse_str' ) ) {
-	function mb_parse_str( $s, &$result = [] ) {
+	function mb_parse_str( $s, &$result = array() ) {
 		parse_str( $s, $result );
 	}
 }

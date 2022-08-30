@@ -17,41 +17,57 @@ class Videos_Data_Source extends Data_Source {
 	}
 
 	public function next() {
-		$this->log->debug( "Received video data source index as " . $this->get_state()->index );
-		$this->log->debug( "Count set to " . $this->get_batch_size() );
+		$this->log->debug( 'Received video data source index as ' . $this->get_state()->index );
+		$this->log->debug( 'Count set to ' . $this->get_batch_size() );
 
-		return get_posts( array(
-			'fields'      => 'ids',
-			'post_status' => 'any',
-			'numberposts' => $this->get_batch_size(),
-			'offset'      => $this->get_state()->index,
-			/**
-			 * @return array<string> An array of supported post types for the video import procedure.
-			 * @since 3.31.4
-			 * Filter name : wl_videoobject_procedure_post_types
-			 */
-			'post_type'   => array_unique( apply_filters( 'wl_videoobject_procedure_post_types', array(
-				'post',
-				'page'
-			) ) )
-		) );
+		return get_posts(
+			array(
+				'fields'      => 'ids',
+				'post_status' => 'any',
+				'numberposts' => $this->get_batch_size(),
+				'offset'      => $this->get_state()->index,
+				/**
+				* @return array<string> An array of supported post types for the video import procedure.
+				* @since 3.31.4
+				* Filter name : wl_videoobject_procedure_post_types
+				*/
+			'post_type'       => array_unique(
+				apply_filters(
+					'wl_videoobject_procedure_post_types',
+					array(
+						'post',
+						'page',
+					)
+				)
+			),
+			)
+		);
 	}
 
 	public function count() {
-		return count( get_posts( array(
-			'fields'      => 'ids',
-			'numberposts' => - 1,
-			'post_status' => 'any',
-			/**
-			 * @return array<string> An array of supported post types for the video import procedure.
-			 * @since 3.31.4
-			 * Filter name : wl_videoobject_procedure_post_types
-			 */
-			'post_type'   => array_unique( apply_filters( 'wl_videoobject_procedure_post_types', array(
-				'post',
-				'page'
-			) ) )
-		) ) );
+		return count(
+			get_posts(
+				array(
+					'fields'      => 'ids',
+					'numberposts' => - 1,
+					'post_status' => 'any',
+					/**
+					* @return array<string> An array of supported post types for the video import procedure.
+					* @since 3.31.4
+					* Filter name : wl_videoobject_procedure_post_types
+					*/
+					'post_type'   => array_unique(
+						apply_filters(
+							'wl_videoobject_procedure_post_types',
+							array(
+								'post',
+								'page',
+							)
+						)
+					),
+				)
+			)
+		);
 
 	}
 

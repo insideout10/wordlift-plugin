@@ -1,6 +1,7 @@
 <?php
 
 namespace Wordlift\Widgets;
+
 /**
  * @since ?.??.??
  * @author Naveen Muthusamy <naveen@wordlift.io>
@@ -24,27 +25,31 @@ class Async_Template_Decorator {
 	 */
 	public function __construct( $shortcode_instance ) {
 		$this->rest_url_name = $this->get_widget_name( $shortcode_instance );
-		$this->filter_name = str_replace('-', '_', $this->rest_url_name );
+		$this->filter_name   = str_replace( '-', '_', $this->rest_url_name );
 		add_action( 'rest_api_init', array( $this, 'register_template_route' ) );
 	}
 
 	public function register_template_route() {
 
-		register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, "/{$this->rest_url_name}/template/", array(
-			'methods'             => \WP_REST_Server::CREATABLE,
-			'callback'            => array( $this, 'get_template' ),
-			/**
-			 * We want this endpoint to be publicly accessible
-			 */
-			'permission_callback' => '__return_true',
-			'args'                => array(
-				'template_id' => array(
-					'validate_callback' => function ( $param, $request, $key ) {
-						return is_string( $param ) && $param;
-					},
+		register_rest_route(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
+			"/{$this->rest_url_name}/template/",
+			array(
+				'methods'             => \WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'get_template' ),
+				/**
+				 * We want this endpoint to be publicly accessible
+				 */
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'template_id' => array(
+						'validate_callback' => function ( $param, $request, $key ) {
+							return is_string( $param ) && $param;
+						},
+					),
 				),
 			)
-		) );
+		);
 	}
 
 	/**
@@ -71,7 +76,7 @@ class Async_Template_Decorator {
 	 * @return string
 	 */
 	private static function get_widget_name( $shortcode_instance ) {
-		$name =  str_replace( 'wl_', '', $shortcode_instance::SHORTCODE );
+		$name = str_replace( 'wl_', '', $shortcode_instance::SHORTCODE );
 		return str_replace( '_', '-', $name );
 	}
 

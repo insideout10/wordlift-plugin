@@ -48,11 +48,10 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	/**
 	 * Create a {@link Wordlift_Admin_Settings_Page} instance.
 	 *
-	 * @param \Wordlift_Admin_Input_Element $input_element An input element class to output input boxes in a settings form.
+	 * @param \Wordlift_Admin_Input_Element       $input_element An input element class to output input boxes in a settings form.
 	 * @param \Wordlift_Admin_Radio_Input_Element $radio_input_element A radio element input class for use in a settings form.
 	 *
 	 * @since 3.21.0
-	 *
 	 */
 	public function __construct( $input_element, $radio_input_element ) {
 
@@ -293,7 +292,6 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	 *
 	 * @return array The sanitized input array.
 	 * @since 3.21.0
-	 *
 	 */
 	public function sanitize_callback( $input ) {
 		if ( ! check_admin_referer( 'wl_analytics_settings-options' ) ) {
@@ -323,6 +321,5 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 		// return items added to the output for saving.
 		return $output;
 	}
-
 
 }

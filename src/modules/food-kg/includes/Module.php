@@ -4,7 +4,6 @@ namespace Wordlift\Modules\Food_Kg;
 
 use Wordlift\Api\Api_Service_Ext;
 
-
 class Module {
 
 	const RUN_EVENT = 'wl_food_kg__run';
@@ -20,7 +19,7 @@ class Module {
 	private $recipe_lift_strategy;
 
 	/**
-	 * @param Api_Service_Ext $api_service
+	 * @param Api_Service_Ext      $api_service
 	 * @param Recipe_Lift_Strategy $recipe_lift_strategy
 	 */
 	public function __construct( Api_Service_Ext $api_service, Recipe_Lift_Strategy $recipe_lift_strategy ) {
@@ -29,16 +28,16 @@ class Module {
 	}
 
 	public function register_hooks() {
-		add_action( 'wl_key_updated', [ $this, '__key_updated' ] );
-		add_action( self::RUN_EVENT, [ $this, '__run' ] );
-		add_action( 'wp_ajax_wl_food_kg__run', [ $this, '__run' ] );
+		add_action( 'wl_key_updated', array( $this, '__key_updated' ) );
+		add_action( self::RUN_EVENT, array( $this, '__run' ) );
+		add_action( 'wp_ajax_wl_food_kg__run', array( $this, '__run' ) );
 	}
 
 	public function __key_updated() {
 		try {
 			$me_response    = $this->api_service->me();
 			$has_food_kg    = isset( $me_response->networks )
-			                  && array_reduce( $me_response->networks, [ $this, '__has_food_kg' ], false );
+							  && array_reduce( $me_response->networks, array( $this, '__has_food_kg' ), false );
 			$next_scheduled = wp_next_scheduled( self::RUN_EVENT );
 
 			// We're connected to the Food KG, but not yet scheduled.
@@ -50,7 +49,6 @@ class Module {
 			if ( ! $has_food_kg && $next_scheduled ) {
 				wp_unschedule_event( $next_scheduled, self::RUN_EVENT );
 			}
-
 		} catch ( \Exception $e ) {
 
 		}

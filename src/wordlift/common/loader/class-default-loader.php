@@ -1,6 +1,7 @@
 <?php
 /**
  * This abstract class loads the feature to registry.
+ *
  * @since 3.31.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
@@ -24,16 +25,17 @@ abstract class Default_Loader implements Loader {
 
 	/**
 	 * Initialize all the dependencies needed by the feature inside this method.
+	 *
 	 * @return void
 	 */
-	public abstract function init_all_dependencies();
+	abstract public function init_all_dependencies();
 
-	protected abstract function get_feature_slug();
+	abstract protected function get_feature_slug();
 
 	/**
 	 * @return bool true if the feature wants to be enabled by default
 	 */
-	protected abstract function get_feature_default_value();
+	abstract protected function get_feature_default_value();
 
 	/**
 	 * Register feature to registry.
@@ -46,6 +48,5 @@ abstract class Default_Loader implements Loader {
 		);
 
 	}
-
 
 }

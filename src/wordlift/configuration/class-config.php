@@ -2,7 +2,6 @@
 
 namespace Wordlift\Configuration;
 
-
 class Config {
 	/**
 	 * @var \Wordlift_Admin_Setup
@@ -42,7 +41,7 @@ class Config {
 		 * before setting it, we should check if the url is null.
 		 */
 		if ( is_wp_error( $account_info )
-		     || wp_remote_retrieve_response_code( $account_info ) !== 200 ) {
+			 || wp_remote_retrieve_response_code( $account_info ) !== 200 ) {
 			return false;
 		}
 
@@ -56,7 +55,6 @@ class Config {
 		}
 
 		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( get_option( 'home' ) ) );
-
 
 		if ( $account_info_data['url'] === null ) {
 			return true;
@@ -72,19 +70,18 @@ class Config {
 		return true;
 	}
 
-
 	public function config() {
 
 		// Perform validation check for all the parameters.
 		$required_fields = array(
 			'diagnostic',
 			'vocabulary',
-// Don't ask for language from webapp.
-//			'language',
-			'country',
+			// Don't ask for language from webapp.
+			// 'language',
+				'country',
 			'publisherName',
 			'publisher',
-			'license'
+			'license',
 		);
 
 		header( 'Access-Control-Allow-Origin: *' );
@@ -107,7 +104,6 @@ class Config {
 			return;
 		}
 
-
 		// check if key is already configured, if yes then dont save settings.
 		if ( \Wordlift_Configuration_Service::get_instance()->get_key() ) {
 			wp_send_json_error( __( 'Key already configured.', 'wordlift' ), 403 );
@@ -117,7 +113,6 @@ class Config {
 		}
 
 		$this->admin_setup->save_configuration( $this->get_params() );
-
 
 		wp_send_json_success( __( 'Configuration Saved', 'wordlift' ) );
 	}
@@ -136,7 +131,7 @@ class Config {
 			'wl-country-code' => isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['country'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			'name'            => isset( $_POST['publisherName'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['publisherName'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			'user_type'       => isset( $_POST['publisher'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['publisher'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			'logo'            => $attachment_id
+			'logo'            => $attachment_id,
 		);
 
 		$diagnostic = isset( $_POST['diagnostic'] ) ? (bool) $_POST['diagnostic'] : false; // phpcs:ignore WordPress.Security.NonceVerification.Missing
@@ -169,14 +164,17 @@ class Config {
 
 		$upload_dir = wp_upload_dir();
 
-		$file_path = $upload_dir['path'] . DIRECTORY_SEPARATOR . md5( $image_string ) . "." . $image_ext;
+		$file_path = $upload_dir['path'] . DIRECTORY_SEPARATOR . md5( $image_string ) . '.' . $image_ext;
 
 		file_put_contents( $file_path, $image_decoded_string );
 
-		$attachment_id = wp_insert_attachment( array(
-			'post_status'    => 'inherit',
-			'post_mime_type' => "image/$image_ext"
-		), $file_path );
+		$attachment_id = wp_insert_attachment(
+			array(
+				'post_status'    => 'inherit',
+				'post_mime_type' => "image/$image_ext",
+			),
+			$file_path
+		);
 
 		// Generate the metadata for the attachment, and update the database record.
 		$attachment_data = wp_generate_attachment_metadata( $attachment_id, $file_path );

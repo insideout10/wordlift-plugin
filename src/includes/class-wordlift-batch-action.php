@@ -8,7 +8,6 @@
 
 class Wordlift_Batch_Action {
 
-
 	public static function process( $post_type, $offset, $query, $callback ) {
 
 		$posts_per_page = 10;
@@ -47,20 +46,23 @@ class Wordlift_Batch_Action {
 
 	private static function get_args( $post_type, $query ) {
 
-		return array_merge( array(
-			'fields'        => 'ids',
-			'post_type'     => $post_type,
-			'post_status'   => array(
-				'publish',
-				'future',
-				'draft',
-				'pending',
-				'private',
-				'auto-draft',
-				'inherit',
+		return array_merge(
+			array(
+				'fields'        => 'ids',
+				'post_type'     => $post_type,
+				'post_status'   => array(
+					'publish',
+					'future',
+					'draft',
+					'pending',
+					'private',
+					'auto-draft',
+					'inherit',
+				),
+				'cache_results' => false,
 			),
-			'cache_results' => false,
-		), $query );
+			$query
+		);
 	}
 
 }

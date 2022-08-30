@@ -93,11 +93,11 @@ class Wordlift_Schemaorg_Class_Service {
 
 		// Since we want to be compatible with WP 4.4, we use the pre-4.5.0 style when
 		// calling `get_terms`.
-		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'get' => 'all', ) );
+		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'get' => 'all' ) );
 
 		// PHP 5.3 compat.
-		$name_meta_key      = Wordlift_Schemaorg_Class_Service::NAME_META_KEY;
-		$parent_of_meta_key = Wordlift_Schemaorg_Class_Service::PARENT_OF_META_KEY;
+		$name_meta_key      = self::NAME_META_KEY;
+		$parent_of_meta_key = self::PARENT_OF_META_KEY;
 
 		$json = array_map(
 			function ( $term ) use ( $name_meta_key, $parent_of_meta_key ) {
@@ -112,15 +112,20 @@ class Wordlift_Schemaorg_Class_Service {
 					'name'        => $camel_case_name,
 					'dashname'    => $term->slug,
 					'description' => $term->description,
-					'children'    => array_map( function ( $child ) {
-						// Map the slug to the term id.
-						$child_term = get_term_by( 'slug', $child, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+					'children'    => array_map(
+						function ( $child ) {
+							// Map the slug to the term id.
+							$child_term = get_term_by( 'slug', $child, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
-						return array( 'id' => $child_term->term_id );
-					}, get_term_meta( $term->term_id, $parent_of_meta_key ) ),
+							return array( 'id' => $child_term->term_id );
+						},
+						get_term_meta( $term->term_id, $parent_of_meta_key )
+					),
 				);
 
-			}, $terms );
+			},
+			$terms
+		);
 
 		// Finally send the data.
 		wp_send_json_success( array( 'schemaClasses' => $json ) );

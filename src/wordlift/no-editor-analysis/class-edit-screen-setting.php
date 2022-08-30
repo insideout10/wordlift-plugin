@@ -1,6 +1,7 @@
 <?php
 
 namespace Wordlift\No_Editor_Analysis;
+
 /**
  *  This file adds the settings needed by js on post edit screen.
  *
@@ -17,6 +18,5 @@ class Edit_Screen_Setting {
 		$settings['analysis']['isNoEditorAnalysisActive'] = No_Editor_Analysis_Feature::can_no_editor_analysis_be_used( get_the_ID() );
 		return $settings;
 	}
-
 
 }

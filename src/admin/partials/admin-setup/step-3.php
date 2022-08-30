@@ -12,15 +12,18 @@
 			esc_html__( 'grab a key', 'wordlift' )
 		);
 
-		echo wp_kses( sprintf(
-			esc_html__(
-				'If you already purchased a plan, check your email, get the'
-				. ' activation key from your inbox and insert it in the'
-				. ' field below. Otherwise %s!',
-				'wordlift'
+		echo wp_kses(
+			sprintf(
+				esc_html__(
+					'If you already purchased a plan, check your email, get the'
+					. ' activation key from your inbox and insert it in the'
+					. ' field below. Otherwise %s!',
+					'wordlift'
+				),
+				$grab_a_key_link_html
 			),
-            $grab_a_key_link_html
-		), array( 'a' => array( 'href' => array() ) )  );
+			array( 'a' => array( 'href' => array() ) )
+		);
 		?>
 	</p>
 	<input
@@ -34,10 +37,10 @@
 		placeholder="<?php echo esc_attr_x( 'License Key', 'Input text placeholder', 'wordlift' ); ?>"
 	>
 	<div>
-        <p class="wl-val-key-error">
-            
-        </p>
-    </div>
+		<p class="wl-val-key-error">
+			
+		</p>
+	</div>
 	<div class="btn-wrapper">
 		<a id="btn-grab-a-key"
 			href="https://wordlift.io/pricing/?utm_campaign=wl_activation_grab_the_key"

@@ -40,8 +40,8 @@ class Rule_Groups_Validator {
 	/**
 	 * Check whether the specified post passes at least one group of rules.
 	 *
-	 * @param int $identifier The post id or term id.
-	 * @param array $rule_groups An array of rules' groups.
+	 * @param int                      $identifier The post id or term id.
+	 * @param array                    $rule_groups An array of rules' groups.
 	 * @param $type string Post or term
 	 *
 	 * @return bool Whether the post passes at least one rule group.
@@ -60,7 +60,6 @@ class Rule_Groups_Validator {
 				if ( ! $rule_validator->is_valid( $identifier, $rule_logic_field, $rule_field_one, $rule_field_two, $type ) ) {
 					continue 2;
 				}
-
 			}
 
 			// If we got here it means that all the rules have been validated (or the rules' group has no rules).

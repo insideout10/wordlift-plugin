@@ -33,7 +33,6 @@ class Wordlift_Admin_Settings_Page_Action_Link {
 	 * @param Wordlift_Admin_Settings_Page $settings_page The {@link Wordlift_Admin_Settings_Page} instance.
 	 *
 	 * @since  3.11.0
-	 *
 	 */
 	function __construct( $settings_page ) {
 
@@ -48,7 +47,6 @@ class Wordlift_Admin_Settings_Page_Action_Link {
 	 *
 	 * @return array An array of links including those added by the plugin.
 	 * @since 3.11.0
-	 *
 	 */
 	function action_links( $links ) {
 
@@ -58,9 +56,12 @@ class Wordlift_Admin_Settings_Page_Action_Link {
 		$url       = get_admin_url( null, $path );
 
 		// Add our own link to the list of links.
-		return array_merge( $links, array(
-			sprintf( "<a href='$url'>%s</a>", __( 'Settings', 'wordlift' ) ),
-		) );
+		return array_merge(
+			$links,
+			array(
+				sprintf( "<a href='$url'>%s</a>", __( 'Settings', 'wordlift' ) ),
+			)
+		);
 	}
 
 }

@@ -52,6 +52,7 @@ class Wordpress_Permalink_Content_Service implements Content_Service {
 
 	/**
 	 * Get a
+	 *
 	 * @throws Exception
 	 */
 	function get_by_entity_id_or_same_as( $uri ) {
@@ -63,7 +64,9 @@ class Wordpress_Permalink_Content_Service implements Content_Service {
 		// Otherwise look in sameAs.
 		global $wpdb;
 
-		$row = $wpdb->get_row( $wpdb->prepare( "
+		$row = $wpdb->get_row(
+			$wpdb->prepare(
+				"
 			SELECT content_type, content_id
 			FROM (
 			    SELECT %d AS content_type, post_id AS content_id
@@ -80,9 +83,14 @@ class Wordpress_Permalink_Content_Service implements Content_Service {
 			) _tmp_same_as 
 			LIMIT 1
 		",
-			Object_Type_Enum::POST, $uri,
-			Object_Type_Enum::TERM, $uri,
-			Object_Type_Enum::USER, $uri ) );
+				Object_Type_Enum::POST,
+				$uri,
+				Object_Type_Enum::TERM,
+				$uri,
+				Object_Type_Enum::USER,
+				$uri
+			)
+		);
 
 		if ( ! isset( $row ) ) {
 			return null;
@@ -139,11 +147,14 @@ class Wordpress_Permalink_Content_Service implements Content_Service {
 	 * @return bool|void
 	 */
 	function supports( $content_id ) {
-		return in_array( $content_id->get_type(), array(
-			Object_Type_Enum::POST,
-			Object_Type_Enum::TERM,
-			Object_Type_Enum::USER,
-		) );
+		return in_array(
+			$content_id->get_type(),
+			array(
+				Object_Type_Enum::POST,
+				Object_Type_Enum::TERM,
+				Object_Type_Enum::USER,
+			)
+		);
 	}
 
 	function delete( $content_id ) {

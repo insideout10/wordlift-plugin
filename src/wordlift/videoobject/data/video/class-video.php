@@ -52,7 +52,6 @@ class Video {
 	 */
 	public $views;
 
-
 	/**
 	 * All the live video properties.
 	 */
@@ -89,7 +88,7 @@ class Video {
 			'embedUrl'     => $this->embed_url,
 			'uploadDate'   => $this->upload_date,
 			'thumbnailUrl' => $this->thumbnail_urls,
-			'duration'     => $this->duration
+			'duration'     => $this->duration,
 		);
 
 	}

@@ -30,7 +30,6 @@ class Post_Relation_Service extends Singleton implements Relation_Service_Interf
 	 */
 	private $entity_service;
 
-
 	/**
 	 * @return Post_Relation_Service
 	 */
@@ -45,13 +44,15 @@ class Post_Relation_Service extends Singleton implements Relation_Service_Interf
 		$this->entity_service               = \Wordlift_Entity_Service::get_instance();
 	}
 
-
 	public function get_references( $subject_id, $subject_type ) {
 		$post_ids = $this->legacy_post_relation_service->get_objects( $subject_id, 'ids' );
 
-		return array_map( function ( $post_id ) {
-			return new Post_Reference( $post_id );
-		}, $post_ids );
+		return array_map(
+			function ( $post_id ) {
+				return new Post_Reference( $post_id );
+			},
+			$post_ids
+		);
 	}
 
 	public function get_relations_from_content( $content, $subject_type, $local_entity_uris ) {
@@ -69,13 +70,16 @@ class Post_Relation_Service extends Singleton implements Relation_Service_Interf
 	public function get_relations_from_entity_uris( $subject_type, $entity_uris ) {
 		$that = $this;
 
-		return array_map( function ( $entity_uri ) use ( $subject_type, $that ) {
-			$entity = $that->entity_uri_service->get_entity( $entity_uri );
-			if ( ! $entity ) {
-				return false;
-			}
+		return array_map(
+			function ( $entity_uri ) use ( $subject_type, $that ) {
+				$entity = $that->entity_uri_service->get_entity( $entity_uri );
+				if ( ! $entity ) {
+					  return false;
+				}
 
-			return new Post_Relation( $entity->ID, $that->entity_service->get_classification_scope_for( $entity->ID ), $subject_type );
-		}, $entity_uris );
+				return new Post_Relation( $entity->ID, $that->entity_service->get_classification_scope_for( $entity->ID ), $subject_type );
+			},
+			$entity_uris
+		);
 	}
 }

@@ -51,26 +51,38 @@ class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 		 * Name intentionally do not have a default as it has to be in SyncEvent
 		 * with form handling code
 		 */
-		$pre_params = wp_parse_args( $args, array(
-			'id'          => uniqid( 'wl-input-' ),
-			'value'       => '',
-			'readonly'    => false,
-			'css_class'   => '',
-			'description' => '',
-		) );
+		$pre_params = wp_parse_args(
+			$args,
+			array(
+				'id'          => uniqid( 'wl-input-' ),
+				'value'       => '',
+				'readonly'    => false,
+				'css_class'   => '',
+				'description' => '',
+			)
+		);
 		$params     = apply_filters( 'wl_admin_input_element_params', $pre_params );
 		// allow different types of input - default to 'text'.
 		$input_type = ! empty( $params['type'] ) ? $params['type'] : 'text';
 		?>
 
 		<input type="<?php echo esc_attr( $input_type ); ?>"
-		       id="<?php echo esc_attr( $params['id'] ); ?>"
-		       name="<?php echo esc_attr( $params['name'] ); ?>"
-		       value="<?php echo esc_attr( $params['value'] ); ?>"
-			<?php if ( ! empty( $params['readonly'] ) ) { ?> readonly="readonly" <?php } ?>
-            <?php if ( ! empty( $params['css_class'] ) ) { ?> class="<?php echo esc_attr( $params['css_class'] ) ?>" <?php } ?>
+			   id="<?php echo esc_attr( $params['id'] ); ?>"
+			   name="<?php echo esc_attr( $params['name'] ); ?>"
+			   value="<?php echo esc_attr( $params['value'] ); ?>"
+			<?php
+			if ( ! empty( $params['readonly'] ) ) {
+				?>
+				 readonly="readonly" <?php } ?>
+			<?php
+			if ( ! empty( $params['css_class'] ) ) {
+				?>
+				 class="<?php echo esc_attr( $params['css_class'] ); ?>" <?php } ?>
 		/>
-        <?php if ( ! empty( $params['description'] ) ) { ?><p><?php echo wp_kses( $params['description'], array( 'a' => array( 'href' => array() ) ) ); ?></p><?php } ?>
+		<?php
+		if ( ! empty( $params['description'] ) ) {
+			?>
+			<p><?php echo wp_kses( $params['description'], array( 'a' => array( 'href' => array() ) ) ); ?></p><?php } ?>
 
 		<?php
 

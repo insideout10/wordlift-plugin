@@ -1,6 +1,7 @@
 <?php
 
 namespace Wordlift\Videoobject\Provider\Client;
+
 /**
  * @since 3.30.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
@@ -17,10 +18,9 @@ class Client_Factory {
 	public static function get_client( $config ) {
 		if ( self::YOUTUBE === $config ) {
 			return Youtube_Client::get_instance();
-		} else if ( self::VIMEO === $config ) {
+		} elseif ( self::VIMEO === $config ) {
 			return Vimeo_Client::get_instance();
-		}
-		else if ( self::JWPLAYER === $config ) {
+		} elseif ( self::JWPLAYER === $config ) {
 			return Jw_Player_Client::get_instance();
 		}
 

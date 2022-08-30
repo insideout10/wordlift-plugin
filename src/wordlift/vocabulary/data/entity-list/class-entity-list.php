@@ -1,5 +1,6 @@
 <?php
 namespace Wordlift\Vocabulary\Data\Entity_List;
+
 /**
  * @since 3.30.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
@@ -22,6 +23,7 @@ abstract class Entity_List {
 
 	/**
 	 * Return a structure of jsonld data.
+	 *
 	 * @return array
 	 */
 	abstract  public function get_jsonld_data();
@@ -35,6 +37,7 @@ abstract class Entity_List {
 
 	/**
 	 * Clear the data on the meta.
+	 *
 	 * @return bool
 	 */
 	abstract public function clear_data();

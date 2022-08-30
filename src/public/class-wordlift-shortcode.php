@@ -11,7 +11,7 @@ abstract class Wordlift_Shortcode {
 	/**
 	 * The shortcode, set by extending classes.
 	 */
-	const SHORTCODE = NULL;
+	const SHORTCODE = null;
 
 	/**
 	 * Create a shortcode instance by registering the shortcode with the render
@@ -34,7 +34,7 @@ abstract class Wordlift_Shortcode {
 	 *
 	 * @return string The output html code.
 	 */
-	public abstract function render( $atts );
+	abstract public function render( $atts );
 
 	/**
 	 * Enqueue scripts. Called by the shortcode implementations in their render
@@ -46,11 +46,15 @@ abstract class Wordlift_Shortcode {
 
 		wp_enqueue_script( 'angularjs', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' );
 		wp_enqueue_script( 'angularjs-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js', array( 'angularjs' ) );
-		wp_enqueue_script( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-ui' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.js', array(
-			'jquery',
-			'angularjs',
-			'angularjs-touch'
-		) );
+		wp_enqueue_script(
+			'wordlift-ui',
+			dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-ui' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.js',
+			array(
+				'jquery',
+				'angularjs',
+				'angularjs-touch',
+			)
+		);
 
 	}
 

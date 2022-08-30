@@ -1,6 +1,7 @@
 <?php
 /**
  * Wordlift wrapper for wl_send_json function
+ *
  * @see https://codex.wordpress.org/Function_Reference/wp_send_json
  * Ensure output buffer is cleaned
  *

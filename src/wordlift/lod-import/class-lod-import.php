@@ -2,14 +2,11 @@
 
 namespace Wordlift\Lod_Import;
 
-use Wordlift\Api\Default_Api_Service;
 use Wordlift\Content\Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
-use Wordlift\Entity\Remote_Entity\Remote_Entity_Factory;
 use Wordlift\Entity\Remote_Entity\Url_To_Remote_Entity_Converter;
 use Wordlift\Entity\Remote_Entity_Importer\Remote_Entity_Importer_Factory;
 use Wordlift\Object_Type_Enum;
-use Wordlift_Entity_Type_Service;
 
 class Lod_Import {
 
@@ -22,7 +19,6 @@ class Lod_Import {
 	}
 
 	public function admin_menu() {
-
 
 		$callback = isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ? 'handle' : 'render';
 
@@ -38,18 +34,18 @@ class Lod_Import {
 
 	public function render() {
 		?>
-        <div class="wrap">
-            <h1><?php esc_html_e( 'LOD Import', 'wordlift' ); ?></h1>
-            <p><?php esc_html_e( 'Helpful stuff here', 'wordlift' ); ?></p>
-            <form method="post" novalidate="novalidate">
-                <div class="form-field">
-                    <label for="item-ids"><?php esc_html_e( 'Linked Data IDs', 'wordlift' ); ?></label>
-                    <textarea name="item-ids" id="item-ids" rows="5" cols="40"></textarea>
-                    <p><?php esc_html_e( 'The description is not prominent by default; however, some themes may show it.', 'wordlift' ); ?></p>
-                </div>
+		<div class="wrap">
+			<h1><?php esc_html_e( 'LOD Import', 'wordlift' ); ?></h1>
+			<p><?php esc_html_e( 'Helpful stuff here', 'wordlift' ); ?></p>
+			<form method="post" novalidate="novalidate">
+				<div class="form-field">
+					<label for="item-ids"><?php esc_html_e( 'Linked Data IDs', 'wordlift' ); ?></label>
+					<textarea name="item-ids" id="item-ids" rows="5" cols="40"></textarea>
+					<p><?php esc_html_e( 'The description is not prominent by default; however, some themes may show it.', 'wordlift' ); ?></p>
+				</div>
 				<?php submit_button( 'Import' ); ?>
-            </form>
-        </div>
+			</form>
+		</div>
 		<?php
 
 	}
@@ -57,7 +53,7 @@ class Lod_Import {
 	public function handle() {
 		if ( ! $item_ids = filter_input( INPUT_POST, 'item-ids' ) ) {
 			?>
-            <p class="notice notice-error">Please type stgh</p>
+			<p class="notice notice-error">Please type stgh</p>
 			<?php
 			return;
 		}

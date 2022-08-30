@@ -101,7 +101,6 @@ class Wordlift_Notice_Service {
 	 * @param string $message The message.
 	 *
 	 * @since 3.2.0
-	 *
 	 */
 	public function add( $class, $message ) {
 
@@ -115,7 +114,6 @@ class Wordlift_Notice_Service {
 	 * @param string $message The message to display.
 	 *
 	 * @since 3.2.0
-	 *
 	 */
 	public function add_update( $message ) {
 
@@ -129,7 +127,6 @@ class Wordlift_Notice_Service {
 	 * @param string $message The message to display.
 	 *
 	 * @since 3.2.0
-	 *
 	 */
 	public function add_update_nag( $message ) {
 
@@ -143,7 +140,6 @@ class Wordlift_Notice_Service {
 	 * @param string $message The message to display.
 	 *
 	 * @since 3.2.0
-	 *
 	 */
 	public function add_error( $message ) {
 
@@ -157,7 +153,6 @@ class Wordlift_Notice_Service {
 	 * @param string $message The message to display.
 	 *
 	 * @since 3.3.0
-	 *
 	 */
 	public function add_suggestion( $message ) {
 
@@ -173,10 +168,13 @@ class Wordlift_Notice_Service {
 	public function admin_notices() {
 
 		foreach ( $this->notices as $notice ) {
-			echo wp_kses( $notice, array(
-				'div' => array( 'class' => array() ),
-				'p'   => array()
-			) );
+			echo wp_kses(
+				$notice,
+				array(
+					'div' => array( 'class' => array() ),
+					'p'   => array(),
+				)
+			);
 		}
 
 	}
@@ -187,7 +185,6 @@ class Wordlift_Notice_Service {
 	 * @param string $message The message.
 	 *
 	 * @since 3.3.0
-	 *
 	 */
 	private function transform( $message ) {
 

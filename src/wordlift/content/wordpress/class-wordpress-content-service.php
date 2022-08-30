@@ -24,7 +24,6 @@ class Wordpress_Content_Service {
 			} else {
 				self::$instance = Wordpress_Permalink_Content_Service::get_instance();
 			}
-
 		}
 
 		return self::$instance;

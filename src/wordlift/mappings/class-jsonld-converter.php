@@ -21,9 +21,9 @@ class Jsonld_Converter {
 	/**
 	 * Enumerations for the field types.
 	 */
-	const FIELD_TYPE_TEXT_FIELD = 'text';
+	const FIELD_TYPE_TEXT_FIELD   = 'text';
 	const FIELD_TYPE_CUSTOM_FIELD = 'custom_field';
-	const FIELD_TYPE_ACF = 'acf';
+	const FIELD_TYPE_ACF          = 'acf';
 
 	/**
 	 * Mappings can be applied to either post
@@ -52,7 +52,7 @@ class Jsonld_Converter {
 	/**
 	 * Initialize all dependencies required.
 	 *
-	 * @param Mappings_Validator $validator A {@link Mappings_Validator} instance.
+	 * @param Mappings_Validator                    $validator A {@link Mappings_Validator} instance.
 	 * @param Mappings_Transform_Functions_Registry $transform_functions_registry
 	 */
 	public function __construct( $validator, $transform_functions_registry ) {
@@ -81,7 +81,7 @@ class Jsonld_Converter {
 	 * @type int[] $references An array of post ID referenced by the JSON-LD (will be expanded by the converter).
 	 * }
 	 *
-	 * @param int $term_id The Term ID.
+	 * @param int   $term_id The Term ID.
 	 *
 	 * @return array An array with the updated JSON-LD and references.
 	 */
@@ -94,7 +94,6 @@ class Jsonld_Converter {
 			'references' => $references,
 		);
 	}
-
 
 	/**
 	 * Hook to `wl_post_jsonld_array` and `wl_entity_jsonld_array`.
@@ -109,7 +108,7 @@ class Jsonld_Converter {
 	 * @type int[] $references An array of post ID referenced by the JSON-LD (will be expanded by the converter).
 	 * }
 	 *
-	 * @param int $post_id The post ID.
+	 * @param int   $post_id The post ID.
 	 *
 	 * @return array An array with the updated JSON-LD and references.
 	 */
@@ -127,9 +126,9 @@ class Jsonld_Converter {
 	/**
 	 * Returns JSON-LD data after applying transformation functions.
 	 *
-	 * @param array $jsonld The JSON-LD structure.
-	 * @param int $identifier The {@link WP_Post} id or {@link \WP_Term} id.
-	 * @param array $references An array of post references.
+	 * @param array  $jsonld The JSON-LD structure.
+	 * @param int    $identifier The {@link WP_Post} id or {@link \WP_Term} id.
+	 * @param array  $references An array of post references.
 	 *
 	 * @param string $type Post or term.
 	 *
@@ -195,7 +194,7 @@ class Jsonld_Converter {
 	 *
 	 * @param $identifier
 	 * @param $references
-	 * @param string $type Post or term.
+	 * @param string                  $type Post or term.
 	 *
 	 * @return array
 	 */
@@ -219,7 +218,7 @@ class Jsonld_Converter {
 			 */
 			while ( count( $keys ) > 0 ) {
 				$key = array_shift( $keys );
-				if ( $key === "" ) {
+				if ( $key === '' ) {
 					continue;
 				}
 				if ( ! array_key_exists( $key, $current_property_pointer ) ) {

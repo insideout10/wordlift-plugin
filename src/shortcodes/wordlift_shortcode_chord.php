@@ -17,26 +17,28 @@
 function wl_shortcode_chord_most_referenced_entity_id() {
 	// Get the last 20 articles by post date.
 	// For each article get the entities they reference.
-	$post_ids = get_posts( array(
-		'numberposts' => 20,
-		'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
-		'fields'      => 'ids', // Only get post IDs.
-		'post_status' => 'publish',
-		'tax_query'   => array(
-			'relation' => 'OR',
-			array(
-				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
-				'operator' => 'NOT EXISTS',
+	$post_ids = get_posts(
+		array(
+			'numberposts' => 20,
+			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
+			'fields'      => 'ids', // Only get post IDs.
+			'post_status' => 'publish',
+			'tax_query'   => array(
+				'relation' => 'OR',
+				array(
+					'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+					'operator' => 'NOT EXISTS',
+				),
+				array(
+					'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+					'field'    => 'slug',
+					'terms'    => 'article',
+				),
 			),
-			array(
-				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
-				'field'    => 'slug',
-				'terms'    => 'article',
-			),
-		),
-		'orderby'     => 'post_date',
-		'order'       => 'DESC',
-	) );
+			'orderby'     => 'post_date',
+			'order'       => 'DESC',
+		)
+	);
 
 	if ( empty( $post_ids ) ) {
 		return null;
@@ -60,14 +62,13 @@ function wl_shortcode_chord_most_referenced_entity_id() {
 /**
  * Recursive function used to retrieve related content starting from a post ID.
  *
- * @param int $entity_id The entity post ID.
- * @param int $depth Max number of nesting levels in output.
+ * @param int   $entity_id The entity post ID.
+ * @param int   $depth Max number of nesting levels in output.
  * @param array $related An existing array of related entities.
- * @param int $max_size Max number of items.
+ * @param int   $max_size Max number of items.
  *
  * @return array
  * @uses wl_core_get_related_post_ids() to get the list of post ids that reference an entity.
- *
  */
 function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = null, $max_size = 9 ) {
 
@@ -77,7 +78,7 @@ function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = nu
 		}
 	}
 
-	wl_write_log( "wl_shortcode_chord_get_relations [ post id :: $entity_id ][ depth :: $depth ][ related? :: " . ( is_null( $related ) ? 'yes' : 'no' ) . " ]" );
+	wl_write_log( "wl_shortcode_chord_get_relations [ post id :: $entity_id ][ depth :: $depth ][ related? :: " . ( is_null( $related ) ? 'yes' : 'no' ) . ' ]' );
 
 	// Create a related array which will hold entities and relations.
 	if ( is_null( $related ) ) {
@@ -88,16 +89,22 @@ function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = nu
 	}
 
 	// Get related entities
-	$related_entity_ids = wl_core_get_related_entity_ids( $entity_id, array(
-		'status' => 'publish',
-	) );
+	$related_entity_ids = wl_core_get_related_entity_ids(
+		$entity_id,
+		array(
+			'status' => 'publish',
+		)
+	);
 
 	// If the current node is an entity, add related posts too
 	$related_post_ids = ( Wordlift_Entity_Service::get_instance()
-	                                             ->is_entity( $entity_id ) ) ?
-		wl_core_get_related_post_ids( $entity_id, array(
-			'status' => 'publish',
-		) ) :
+												 ->is_entity( $entity_id ) ) ?
+		wl_core_get_related_post_ids(
+			$entity_id,
+			array(
+				'status' => 'publish',
+			)
+		) :
 		array();
 
 	// Merge results and remove duplicated entries
@@ -139,53 +146,59 @@ function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = nu
 function wl_shortcode_chord_get_graph( $data ) {
 
 	// Refactor the entities array in order to provide entities relevant data (uri, url, label, type, css_class).
-	array_walk( $data['entities'], function ( &$item ) {
-		$post = get_post( $item );
+	array_walk(
+		$data['entities'],
+		function ( &$item ) {
+			$post = get_post( $item );
 
-		// Skip non-existing posts.
-		if ( is_null( $post ) ) {
-			wl_write_log( "wl_shortcode_chord_get_graph : post not found [ post id :: $item ]" );
+			// Skip non-existing posts.
+			if ( is_null( $post ) ) {
+				wl_write_log( "wl_shortcode_chord_get_graph : post not found [ post id :: $item ]" );
 
-			return $item;
-		}
-
-		// Get the entity taxonomy bound to this post (if there's no taxonomy, no stylesheet will be set).
-		$term = Wordlift_Entity_Type_Service::get_instance()->get( $item );
-
-		// The following log may create a circular loop.
-		// wl_write_log( "wl_shortcode_chord_get_graph [ post id :: $post->ID ][ term :: " . var_export( $term, true ) . " ]" );
-
-		// TODO: get all images
-		$thumbnail    = null;
-		$thumbnail_id = get_post_thumbnail_id( $post->ID );
-		if ( '' !== $thumbnail_id && 0 !== $thumbnail_id ) {
-			$attachment = wp_get_attachment_image_src( $thumbnail_id );
-			if ( false !== $attachment ) {
-				$thumbnail = esc_attr( $attachment[0] );
+				return $item;
 			}
+
+			// Get the entity taxonomy bound to this post (if there's no taxonomy, no stylesheet will be set).
+			$term = Wordlift_Entity_Type_Service::get_instance()->get( $item );
+
+			// The following log may create a circular loop.
+			// wl_write_log( "wl_shortcode_chord_get_graph [ post id :: $post->ID ][ term :: " . var_export( $term, true ) . " ]" );
+
+			// TODO: get all images
+			$thumbnail    = null;
+			$thumbnail_id = get_post_thumbnail_id( $post->ID );
+			if ( '' !== $thumbnail_id && 0 !== $thumbnail_id ) {
+				$attachment = wp_get_attachment_image_src( $thumbnail_id );
+				if ( false !== $attachment ) {
+					$thumbnail = esc_attr( $attachment[0] );
+				}
+			}
+
+			$entity = array(
+				'uri'        => wl_get_entity_uri( $item ),
+				'url'        => get_permalink( $item ),
+				'label'      => $post->post_title,
+				'type'       => $post->post_type,
+				'thumbnails' => array( $thumbnail ),
+				'css_class'  => ( isset( $term['css_class'] ) ? $term['css_class'] : '' ),
+			);
+
+			$item = $entity;
 		}
-
-		$entity = array(
-			'uri'        => wl_get_entity_uri( $item ),
-			'url'        => get_permalink( $item ),
-			'label'      => $post->post_title,
-			'type'       => $post->post_type,
-			'thumbnails' => array( $thumbnail ),
-			'css_class'  => ( isset( $term['css_class'] ) ? $term['css_class'] : '' ),
-		);
-
-		$item = $entity;
-	} );
+	);
 
 	// Refactor the relations.
-	array_walk( $data['relations'], function ( &$item ) {
-		$relation = array(
-			's' => wl_get_entity_uri( $item[0] ),
-			'o' => wl_get_entity_uri( $item[1] ),
-		);
+	array_walk(
+		$data['relations'],
+		function ( &$item ) {
+			$relation = array(
+				's' => wl_get_entity_uri( $item[0] ),
+				'o' => wl_get_entity_uri( $item[1] ),
+			);
 
-		$item = $relation;
-	} );
+			$item = $relation;
+		}
+	);
 
 	// Return the JSON representation.
 	return $data;
@@ -199,8 +212,8 @@ function wl_shortcode_chord_get_graph( $data ) {
  */
 function wl_shortcode_chord_ajax() {
 
-	$post_id =  isset( $_REQUEST['post_id']) ? (int) $_REQUEST['post_id'] : 0 ;
-	$depth   =  isset( $_REQUEST['depth']) ? (int) $_REQUEST['depth'] : 2;
+	$post_id = isset( $_REQUEST['post_id'] ) ? (int) $_REQUEST['post_id'] : 0;
+	$depth   = isset( $_REQUEST['depth'] ) ? (int) $_REQUEST['depth'] : 2;
 
 	$relations = wl_shortcode_chord_get_relations( $post_id, $depth );
 	$graph     = wl_shortcode_chord_get_graph( $relations );

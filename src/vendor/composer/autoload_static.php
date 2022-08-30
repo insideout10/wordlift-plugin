@@ -4,21 +4,24 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit30c84c47a44576eaa4b38cc478d5e11b
-{
-    public static $classMap = array (
-        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'WP_Async_Request' => __DIR__ . '/..' . '/deliciousbrains/wp-background-processing/classes/wp-async-request.php',
-        'WP_Background_Process' => __DIR__ . '/..' . '/deliciousbrains/wp-background-processing/classes/wp-background-process.php',
-        'Wordlift_Plugin_WP_Async_Request' => __DIR__ . '/../..' . '/ext/dependencies/deliciousbrains/wp-background-processing/classes/wp-async-request.php',
-        'Wordlift_Plugin_WP_Background_Process' => __DIR__ . '/../..' . '/ext/dependencies/deliciousbrains/wp-background-processing/classes/wp-background-process.php',
-    );
+class ComposerStaticInit30c84c47a44576eaa4b38cc478d5e11b {
 
-    public static function getInitializer(ClassLoader $loader)
-    {
-        return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit30c84c47a44576eaa4b38cc478d5e11b::$classMap;
+	public static $classMap = array(
+		'Composer\\InstalledVersions'           => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+		'WP_Async_Request'                      => __DIR__ . '/..' . '/deliciousbrains/wp-background-processing/classes/wp-async-request.php',
+		'WP_Background_Process'                 => __DIR__ . '/..' . '/deliciousbrains/wp-background-processing/classes/wp-background-process.php',
+		'Wordlift_Plugin_WP_Async_Request'      => __DIR__ . '/../..' . '/ext/dependencies/deliciousbrains/wp-background-processing/classes/wp-async-request.php',
+		'Wordlift_Plugin_WP_Background_Process' => __DIR__ . '/../..' . '/ext/dependencies/deliciousbrains/wp-background-processing/classes/wp-background-process.php',
+	);
 
-        }, null, ClassLoader::class);
-    }
+	public static function getInitializer( ClassLoader $loader ) {
+		return \Closure::bind(
+			function () use ( $loader ) {
+				$loader->classMap = ComposerStaticInit30c84c47a44576eaa4b38cc478d5e11b::$classMap;
+
+			},
+			null,
+			ClassLoader::class
+		);
+	}
 }

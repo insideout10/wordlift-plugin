@@ -40,14 +40,14 @@ class Sync_Hooks_Wordpress_Ontology {
 				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'customType' ] = $post->post_type;
 				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'title' ]      = $post->post_title;
 				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'status' ]     = $post->post_status;
-				$content                                                       = has_blocks( $post ) ?
+				$content = has_blocks( $post ) ?
 					do_blocks( $post->post_content ) : do_shortcode( $post->post_content );
-				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'content' ]    = $content;
-				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'permalink' ]  = get_permalink( $post );
-				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'sticky' ]     = is_sticky( $post->ID );
+				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'content' ]   = $content;
+				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'permalink' ] = get_permalink( $post );
+				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'sticky' ]    = is_sticky( $post->ID );
 
 				$taxonomies = get_post_taxonomies( $post );
-				$_tmp_terms = [];
+				$_tmp_terms = array();
 				foreach ( $taxonomies as $taxonomy ) {
 					$terms = wp_get_post_terms( $post->ID, $taxonomy );
 					/** @var \WP_Term $term */
@@ -62,7 +62,6 @@ class Sync_Hooks_Wordpress_Ontology {
 				break;
 
 			default:
-
 		}
 
 		return $jsonld;

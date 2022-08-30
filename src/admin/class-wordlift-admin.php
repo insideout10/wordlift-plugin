@@ -74,13 +74,12 @@ class Wordlift_Admin {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @param string $plugin_name The name of this plugin.
-	 * @param string $version The version of this plugin.
+	 * @param string                  $plugin_name The name of this plugin.
+	 * @param string                  $version The version of this plugin.
 	 * @param Wordlift_Notice_Service $notice_service The notice service.
-	 * @param Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
+	 * @param Wordlift_User_Service   $user_service The {@link Wordlift_User_Service} instance.
 	 *
 	 * @since  1.0.0
-	 *
 	 */
 	public function __construct( $plugin_name, $version, $notice_service, $user_service ) {
 
@@ -129,11 +128,11 @@ class Wordlift_Admin {
 			 */
 			if ( apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES ) ) {
 
-				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-schemaorg-taxonomy-metabox.php';
+				require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-schemaorg-taxonomy-metabox.php';
 				/*
 				 * The `Mappings` admin page.
 				 */
-				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-mappings-page.php';
+				require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-mappings-page.php';
 
 				new Wordlift_Admin_Mappings_Page();
 
@@ -142,20 +141,18 @@ class Wordlift_Admin {
 				 *
 				 * @since 3.20.0
 				 */
-				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-sync-batch-operation.php';
+				require_once plugin_dir_path( __DIR__ ) . 'includes/schemaorg/class-wordlift-schemaorg-sync-batch-operation.php';
 
 				$this->sync_batch_operation_ajax_adapter = new Wordlift_Batch_Operation_Ajax_Adapter( new Wordlift_Schemaorg_Sync_Batch_Operation(), 'wl_schemaorg_sync' );
 
 			}
-
-
 
 			/*
 			 * Add the {@link Wordlift_Admin_Term_Adapter}.
 			 *
 			 * @since 3.20.0
 			 */
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-term-adapter.php';
+			require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-term-adapter.php';
 			new Wordlift_Admin_Term_Adapter();
 
 			/*
@@ -179,12 +176,11 @@ class Wordlift_Admin {
 		// Add the Mappings' REST Controller.
 		new Mappings_REST_Controller();
 
-
 		$features_registry->register_feature_from_slug(
 			'mappings',
 			( defined( 'WL_ENABLE_MAPPINGS' ) && WL_ENABLE_MAPPINGS ),
-			array( $this, 'init_mappings' ) );
-
+			array( $this, 'init_mappings' )
+		);
 
 		// Set the singleton instance.
 		self::$instance = $this;
@@ -198,9 +194,9 @@ class Wordlift_Admin {
 	 */
 	private static function require_files() {
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-latest-news.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-v2.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-not-enriched-filter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-dashboard-latest-news.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-dashboard-v2.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-not-enriched-filter.php';
 
 	}
 
@@ -209,7 +205,6 @@ class Wordlift_Admin {
 	 *
 	 * @return Wordlift_Admin The singleton instance.
 	 * @since 3.19.4
-	 *
 	 */
 	public static function get_instance() {
 
@@ -218,14 +213,14 @@ class Wordlift_Admin {
 
 	public static function is_gutenberg() {
 		if ( function_exists( 'is_gutenberg_page' ) &&
-		     is_gutenberg_page()
+			 is_gutenberg_page()
 		) {
 			// The Gutenberg plugin is on.
 			return true;
 		}
 		$current_screen = get_current_screen();
 		if ( method_exists( $current_screen, 'is_block_editor' ) &&
-		     $current_screen->is_block_editor()
+			 $current_screen->is_block_editor()
 		) {
 			// Gutenberg page on 5+.
 			return true;
@@ -276,12 +271,17 @@ class Wordlift_Admin {
 		}
 
 		// Enqueue the admin scripts.
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/1/admin.js', array(
-			'jquery',
-			'underscore',
-			'backbone',
-		), $this->version, false );
-
+		wp_enqueue_script(
+			$this->plugin_name,
+			plugin_dir_url( __FILE__ ) . 'js/1/admin.js',
+			array(
+				'jquery',
+				'underscore',
+				'backbone',
+			),
+			$this->version,
+			false
+		);
 
 		$params = $this->get_params();
 
@@ -292,6 +292,7 @@ class Wordlift_Admin {
 
 	/**
 	 * Return the settings array by applying filters.
+	 *
 	 * @return array
 	 */
 	public function get_params() {
@@ -302,33 +303,33 @@ class Wordlift_Admin {
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/839
 		 */
-		$autocomplete_scope = $can_edit_wordlift_entities ? WL_AUTOCOMPLETE_SCOPE : "local";
+		$autocomplete_scope = $can_edit_wordlift_entities ? WL_AUTOCOMPLETE_SCOPE : 'local';
 
 		// Set the basic params.
 		$params = array(
 			// @todo scripts in admin should use wp.post.
-			'ajax_url'              => admin_url( 'admin-ajax.php' ),
+			'ajax_url'                     => admin_url( 'admin-ajax.php' ),
 			// @todo remove specific actions from settings.
-			'action'                => 'entity_by_title',
-			'datasetUri'            => Wordlift_Configuration_Service::get_instance()->get_dataset_uri(),
-			'language'              => Wordlift_Configuration_Service::get_instance()->get_language_code(),
-			'link_by_default'       => Wordlift_Configuration_Service::get_instance()->is_link_by_default(),
+			'action'                       => 'entity_by_title',
+			'datasetUri'                   => Wordlift_Configuration_Service::get_instance()->get_dataset_uri(),
+			'language'                     => Wordlift_Configuration_Service::get_instance()->get_language_code(),
+			'link_by_default'              => Wordlift_Configuration_Service::get_instance()->is_link_by_default(),
 			// Whether the current user is allowed to create new entities.
 			//
 			// @see https://github.com/insideout10/wordlift-plugin/issues/561
 			// @see https://github.com/insideout10/wordlift-plugin/issues/1267
-			'can_create_entities'   => apply_filters( 'wl_feature__enable__dataset', true ) ? ( $can_edit_wordlift_entities ? 'yes' : 'no' ) : 'no',
-			'l10n'                  => array(
-				'You already published an entity with the same name'                 => __( 'You already published an entity with the same name: ', 'wordlift' ),
-				'logo_selection_title'                                               => __( 'WordLift Choose Logo', 'wordlift' ),
-				'logo_selection_button'                                              => array( 'text' => __( 'Choose Logo', 'wordlift' ) ),
-				'Type at least 3 characters to search...'                            => _x( 'Type at least 3 characters to search...', 'Autocomplete Select', 'wordlift' ),
-				'No results found for your search.'                                  => _x( 'No results found: try changing or removing some words.', 'Autocomplete Select', 'wordlift' ),
+			'can_create_entities'          => apply_filters( 'wl_feature__enable__dataset', true ) ? ( $can_edit_wordlift_entities ? 'yes' : 'no' ) : 'no',
+			'l10n'                         => array(
+				'You already published an entity with the same name' => __( 'You already published an entity with the same name: ', 'wordlift' ),
+				'logo_selection_title'                    => __( 'WordLift Choose Logo', 'wordlift' ),
+				'logo_selection_button'                   => array( 'text' => __( 'Choose Logo', 'wordlift' ) ),
+				'Type at least 3 characters to search...' => _x( 'Type at least 3 characters to search...', 'Autocomplete Select', 'wordlift' ),
+				'No results found for your search.'       => _x( 'No results found: try changing or removing some words.', 'Autocomplete Select', 'wordlift' ),
 				'Please wait while we look for entities in the linked data cloud...' => _x( 'Please wait while we look for entities in the linked data cloud...', 'Autocomplete Select', 'wordlift' ),
-				'Add keywords to track'                                              => __( 'Add Keywords to track', 'wordlift' ),
+				'Add keywords to track'                   => __( 'Add Keywords to track', 'wordlift' ),
 			),
-			'wl_autocomplete_nonce' => wp_create_nonce( 'wl_autocomplete' ),
-			'autocomplete_scope'    => $autocomplete_scope,
+			'wl_autocomplete_nonce'        => wp_create_nonce( 'wl_autocomplete' ),
+			'autocomplete_scope'           => $autocomplete_scope,
 			/**
 			 * Allow 3rd parties to define the default editor id. This turns useful if 3rd parties load
 			 * or change the TinyMCE id.
@@ -340,9 +341,8 @@ class Wordlift_Admin {
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/848
 			 *
 			 * @since 3.19.4
-			 *
 			 */
-			'default_editor_id'     => apply_filters( 'wl_default_editor_id', 'content' ),
+			'default_editor_id'            => apply_filters( 'wl_default_editor_id', 'content' ),
 
 			'analysis'                     => array( '_wpnonce' => wp_create_nonce( 'wl_analyze' ) ),
 			/**
@@ -366,7 +366,7 @@ class Wordlift_Admin {
 			'can_add_synonyms'             => apply_filters( 'wl_feature__enable__add-synonyms', true ),
 			'show_classification_sidebar'  => apply_filters( 'wl_feature__enable__classification-sidebar', true ),
 			// By default the videoobject should not show.
-			'show_videoobject'             => apply_filters( 'wl_feature__enable__videoobject', false )
+			'show_videoobject'             => apply_filters( 'wl_feature__enable__videoobject', false ),
 		);
 
 		// Set post-related values if there's a current post.
@@ -390,7 +390,6 @@ class Wordlift_Admin {
 			if ( apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES ) ) {
 				$params['properties'] = Wordlift_Schemaorg_Property_Service::get_instance()->get_all( $post->ID );
 			}
-
 		}
 
 		return $params;
@@ -398,6 +397,7 @@ class Wordlift_Admin {
 
 	/**
 	 * Initialize the mappings.
+	 *
 	 * @return void
 	 */
 	public function init_mappings() {
@@ -410,7 +410,5 @@ class Wordlift_Admin {
 		$taxonomy_option->add_taxonomy_option();
 		new Edit_Mappings_Page( new Mappings_Transform_Functions_Registry() );
 	}
-
-
 
 }

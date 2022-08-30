@@ -1,5 +1,6 @@
 <?php
 namespace Wordlift\Videoobject\Provider\Client;
+
 /**
  * @since 3.31.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
@@ -21,22 +22,24 @@ interface Client {
 	public static function get_api_key();
 	/**
 	 * Returns the option where the api key is stored.
+	 *
 	 * @return string
 	 */
 	public static function get_api_key_option_name();
 
 	/**
 	 * The api base url.
+	 *
 	 * @return string
 	 */
 	public function get_api_url();
 
-
 	/**
 	 * Get video ids from URLs.
+	 *
 	 * @param $video_urls array<string>
 	 * @return array<string>
 	 */
-	public function get_video_ids(  $video_urls  );
+	public function get_video_ids( $video_urls  );
 
 }

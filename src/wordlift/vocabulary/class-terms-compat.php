@@ -18,5 +18,4 @@ class Terms_Compat {
 		return get_taxonomies( array( 'public' => true ) );
 	}
 
-
 }

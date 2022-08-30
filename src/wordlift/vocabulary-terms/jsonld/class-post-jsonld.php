@@ -1,6 +1,7 @@
 <?php
 /**
  * This class adds the terms associated with the posts to the posts.
+ *
  * @since 3.32.3
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
@@ -34,7 +35,7 @@ class Post_Jsonld {
 
 		return array(
 			'jsonld'     => $jsonld,
-			'references' => array_merge( $references, $term_references )
+			'references' => array_merge( $references, $term_references ),
 		);
 	}
 
@@ -64,18 +65,23 @@ class Post_Jsonld {
 		}
 
 		// Convert everything to the Term Reference.
-		return array_filter( array_map( function ( $term ) {
-			/**
-			 * @var WP_Term $term
-			 */
-			if ( Wordpress_Term_Content_Legacy_Service::get_instance()
-			                                          ->get_entity_id( Wordpress_Content_Id::create_term( $term->term_id ) )
-			) {
-				return new Term_Reference( $term->term_id );
-			}
+		return array_filter(
+			array_map(
+				function ( $term ) {
+					/**
+					 * @var WP_Term $term
+					 */
+					if ( Wordpress_Term_Content_Legacy_Service::get_instance()
+													  ->get_entity_id( Wordpress_Content_Id::create_term( $term->term_id ) )
+					) {
+						  return new Term_Reference( $term->term_id );
+					}
 
-			return false;
-		}, $terms ) );
+					return false;
+				},
+				$terms
+			)
+		);
 
 	}
 
@@ -87,13 +93,15 @@ class Post_Jsonld {
 
 		$existing_mentions = array_key_exists( 'mentions', $jsonld ) ? $jsonld['mentions'] : array();
 
-
-		$term_mentions = array_map( function ( $term_reference ) {
-			return array(
-				'@id' => Wordpress_Term_Content_Legacy_Service::get_instance()
-				                                              ->get_entity_id( Wordpress_Content_Id::create_term( $term_reference->get_id() ) )
-			);
-		}, $term_references );
+		$term_mentions = array_map(
+			function ( $term_reference ) {
+				return array(
+					'@id' => Wordpress_Term_Content_Legacy_Service::get_instance()
+															  ->get_entity_id( Wordpress_Content_Id::create_term( $term_reference->get_id() ) ),
+				);
+			},
+			$term_references
+		);
 
 		return array_merge( $existing_mentions, $term_mentions );
 	}

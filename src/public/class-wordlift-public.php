@@ -47,7 +47,6 @@ class Wordlift_Public {
 	 * @param string $version The version of this plugin.
 	 *
 	 * @since    1.0.0
-	 *
 	 */
 	public function __construct( $plugin_name, $version ) {
 
@@ -82,20 +81,18 @@ class Wordlift_Public {
 		 * @param bool $include Whether to include or not font-awesome (default true).
 		 *
 		 * @since 3.19.3
-		 *
 		 */
 		$deps = apply_filters( 'wl_include_font_awesome', true )
 			? array( 'wordlift-font-awesome' )
 			: array();
-		wp_register_style( 'wordlift-font-awesome', plugin_dir_url( dirname( __FILE__ ) ) . 'css/wordlift-font-awesome' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.css', array(), $this->version, 'all' );
-		wp_register_style( 'wordlift-ui', plugin_dir_url( dirname( __FILE__ ) ) . 'css/wordlift-ui' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.css', $deps, $this->version, 'all' );
+		wp_register_style( 'wordlift-font-awesome', plugin_dir_url( __DIR__ ) . 'css/wordlift-font-awesome' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.css', array(), $this->version, 'all' );
+		wp_register_style( 'wordlift-ui', plugin_dir_url( __DIR__ ) . 'css/wordlift-ui' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.css', $deps, $this->version, 'all' );
 
 		// You need to re-enable the enqueue_styles in `class-wordlift.php` to make this effective.
 		//
 		// @see https://github.com/insideout10/wordlift-plugin/issues/821
 		//
 		// wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wordlift-public.css', array(), $this->version, 'all' );
-
 	}
 
 	/**
@@ -137,9 +134,13 @@ class Wordlift_Public {
 		$show_version         = apply_filters( 'wl_disable_version_js', $show_version_default );
 
 		if ( $show_version ) {
-			wp_localize_script( $this->plugin_name, 'wordlift', array(
-				'version' => $this->version,
-			) );
+			wp_localize_script(
+				$this->plugin_name,
+				'wordlift',
+				array(
+					'version' => $this->version,
+				)
+			);
 		}
 
 		/*
@@ -156,13 +157,18 @@ class Wordlift_Public {
 		 *
 		 * @since 3.27.4
 		 */
-		add_filter( 'script_loader_tag', function ( $tag, $handle ) {
-			if ( 'wordlift-cloud' !== $handle ) {
-				return $tag;
-			}
+		add_filter(
+			'script_loader_tag',
+			function ( $tag, $handle ) {
+				if ( 'wordlift-cloud' !== $handle ) {
+					return $tag;
+				}
 
-			return str_replace( ' src', ' defer="defer" src', $tag );
-		}, 10, 2 );
+				return str_replace( ' src', ' defer="defer" src', $tag );
+			},
+			10,
+			2
+		);
 		wp_register_script( 'wordlift-cloud', self::get_cloud_js_url(), $deps, Wordlift::get_instance()->get_version(), true );
 
 	}
@@ -172,7 +178,6 @@ class Wordlift_Public {
 	 *
 	 * @return array An array with the settings.
 	 * @since 3.19.1
-	 *
 	 */
 	public static function get_settings() {
 
@@ -180,7 +185,7 @@ class Wordlift_Public {
 		$settings = array(
 			'ajaxUrl'    => admin_url( 'admin-ajax.php' ),
 			'apiUrl'     => get_home_url( null, 'wl-api/' ),
-			'jsonld_url' => rest_url( '/wordlift/v1/jsonld/' )
+			'jsonld_url' => rest_url( '/wordlift/v1/jsonld/' ),
 		);
 
 		// If we're in a single page, then print out the post id.
@@ -200,7 +205,7 @@ class Wordlift_Public {
 		// `page`, `post` and `entity` by default) and on the home page.
 		//
 		// @see https://github.com/insideout10/wordlift-plugin/issues/733
-		//	$jsonld_enabled = is_home() || is_front_page() || Wordlift_Entity_Type_Service::is_valid_entity_post_type( get_post_type() );
+		// $jsonld_enabled = is_home() || is_front_page() || Wordlift_Entity_Type_Service::is_valid_entity_post_type( get_post_type() );
 
 		// Add the JSON-LD enabled flag, when set to false, the JSON-LD won't
 		// be loaded.
@@ -221,11 +226,10 @@ class Wordlift_Public {
 	 * @see https://github.com/insideout10/wordlift-plugin/issues/842.
 	 *
 	 * @since 3.19.4
-	 *
 	 */
 	public static function get_public_js_url() {
 
-		return plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/bundle.js';
+		return plugin_dir_url( __DIR__ ) . 'js/dist/bundle.js';
 	}
 
 	/**
@@ -237,7 +241,7 @@ class Wordlift_Public {
 	 */
 	public static function get_cloud_js_url() {
 
-		return plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/wordlift-cloud.js';
+		return plugin_dir_url( __DIR__ ) . 'js/dist/wordlift-cloud.js';
 	}
 
 	/**

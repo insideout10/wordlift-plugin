@@ -1,5 +1,6 @@
 <?php
 namespace Wordlift\Videoobject\Parser;
+
 use Wordlift\Videoobject\Data\Embedded_Video\Embedded_Video;
 
 /**

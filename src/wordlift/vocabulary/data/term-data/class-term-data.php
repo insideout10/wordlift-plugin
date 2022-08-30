@@ -10,6 +10,7 @@ interface Term_Data {
 
 	/**
 	 * Should return an array which can be used by ui components.
+	 *
 	 * @return array
 	 */
 	public function get_data();

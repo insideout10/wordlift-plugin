@@ -1,5 +1,6 @@
 <?php
 namespace Wordlift\Metabox\Field;
+
 use Wordlift_Entity_Service;
 
 /**
@@ -48,11 +49,13 @@ class Wl_Metabox_Field_uri extends Wl_Metabox_Field {
 		if ( $absent_from_db && ! $name_is_uri ) {
 
 			// ...we create a new entity!
-			$new_entity_id = wp_insert_post( array(
-				'post_status' => 'publish',
-				'post_type'   => Wordlift_Entity_Service::TYPE_NAME,
-				'post_title'  => $value,
-			) );
+			$new_entity_id = wp_insert_post(
+				array(
+					'post_status' => 'publish',
+					'post_type'   => Wordlift_Entity_Service::TYPE_NAME,
+					'post_title'  => $value,
+				)
+			);
 
 			$type = 'http://schema.org/' . ( isset( $this->expected_uri_type ) ? $this->expected_uri_type[0] : 'Thing' );
 
@@ -72,7 +75,6 @@ class Wl_Metabox_Field_uri extends Wl_Metabox_Field {
 	 *
 	 * @return bool True if the entity exists otherwise false.
 	 * @since 3.15.0
-	 *
 	 */
 	private function exists( $value ) {
 
@@ -130,8 +132,7 @@ class Wl_Metabox_Field_uri extends Wl_Metabox_Field {
 		} else {
 			// @todo: we cannot be so sure this is a URI.
 			// It is an URI
-			$entity = Wordlift_Entity_Service
-				::get_instance()
+			$entity = Wordlift_Entity_Service::get_instance()
 				->get_entity_post_by_uri( $default_entity_identifier );
 		}
 
@@ -152,26 +153,26 @@ class Wl_Metabox_Field_uri extends Wl_Metabox_Field {
 		// that contains the raw value (i.e. the uri or entity id).
 		@ob_start();
 		?>
-        <div class="wl-input-wrapper wl-autocomplete-wrapper">
-            <input
-                    type="text"
-                    class="<?php echo esc_attr( $this->meta_name ); ?> wl-autocomplete"
-                    value="<?php echo esc_attr( $label ); ?>"
-                    style="width:88%"
-            />
-            <input
-                    type="hidden"
-                    class="<?php echo esc_attr( $this->meta_name ); ?>"
-                    name="wl_metaboxes[<?php echo esc_attr( $this->meta_name ); ?>][]"
-                    value="<?php echo esc_attr( $value ); ?>"
-            />
+		<div class="wl-input-wrapper wl-autocomplete-wrapper">
+			<input
+					type="text"
+					class="<?php echo esc_attr( $this->meta_name ); ?> wl-autocomplete"
+					value="<?php echo esc_attr( $label ); ?>"
+					style="width:88%"
+			/>
+			<input
+					type="hidden"
+					class="<?php echo esc_attr( $this->meta_name ); ?>"
+					name="wl_metaboxes[<?php echo esc_attr( $this->meta_name ); ?>][]"
+					value="<?php echo esc_attr( $value ); ?>"
+			/>
 
-            <button class="button wl-remove-input wl-button" type="button">
+			<button class="button wl-remove-input wl-button" type="button">
 				<?php esc_html_e( 'Remove', 'wordlift' ); ?>
-            </button>
+			</button>
 
-            <div class="wl-input-notice"></div>
-        </div>
+			<div class="wl-input-notice"></div>
+		</div>
 		<?php
 		$html = ob_get_clean();
 

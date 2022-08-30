@@ -41,12 +41,15 @@ class Wordlift_Related_Entities_Cloud_Widget extends Wordlift_Widget {
 		$instance['title'] = ! empty( $instance['title'] ) ? esc_attr( $instance['title'] ) : '';
 		?>
 
-		<p><label for="<?php echo esc_attr( $title_id ); ?>"><?php
-				esc_html_e( 'Title:' ); ?></label>
+		<p><label for="<?php echo esc_attr( $title_id ); ?>">
+								  <?php
+									esc_html_e( 'Title:' );
+									?>
+				</label>
 			<input type="text" class="widefat"
-			       id="<?php echo esc_attr( $title_id ); ?>"
-			       name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>"
-			       value="<?php echo esc_attr( $instance['title'] ); ?>" />
+				   id="<?php echo esc_attr( $title_id ); ?>"
+				   name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>"
+				   value="<?php echo esc_attr( $instance['title'] ); ?>" />
 		</p>
 
 		<?php

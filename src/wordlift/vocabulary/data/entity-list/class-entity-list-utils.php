@@ -1,6 +1,7 @@
 <?php
 
 namespace Wordlift\Vocabulary\Data\Entity_List;
+
 /**
  * This class helps to return the entities which are selected in the ui
  * by the user, this is used to provide the data for widget rendered
@@ -10,7 +11,6 @@ namespace Wordlift\Vocabulary\Data\Entity_List;
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 class Entity_List_Utils {
-
 
 	/**
 	 * @param $term_id int Term id.
@@ -34,7 +34,6 @@ class Entity_List_Utils {
 		return $entities;
 	}
 
-
 	/**
 	 * @param $term_id
 	 *
@@ -57,7 +56,6 @@ class Entity_List_Utils {
 				$active_entity_ids[] = array_pop( $sameas );
 			}
 		}
-
 
 		return $active_entity_ids;
 	}

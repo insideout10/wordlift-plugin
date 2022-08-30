@@ -1,6 +1,6 @@
 <?php
 /**
- * This class represents the post row on relation table ( this represents the wordpress
+ * This class represents the post row on relation table ( this represents the WordPress
  * type post, not to be confused with post_type )
  *
  * @author Naveen Muthusamy <naveen@wordlift.io>
@@ -14,8 +14,8 @@ namespace Wordlift\Relation\Types;
 
 use Wordlift\Object_Type_Enum;
 
-class Term_Relation extends Relation  {
-	
+class Term_Relation extends Relation {
+
 	function get_object_type() {
 		return Object_Type_Enum::TERM;
 	}

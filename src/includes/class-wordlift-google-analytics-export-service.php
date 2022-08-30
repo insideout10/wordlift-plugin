@@ -71,7 +71,6 @@ class Wordlift_Google_Analytics_Export_Service {
 		return $parsed['path'];
 	}
 
-
 	/**
 	 * Check if the current permalink structure is set to "Post name".
 	 *

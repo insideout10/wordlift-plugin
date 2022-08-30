@@ -48,7 +48,6 @@ class Wordlift_Timeline_Service {
 	 * Create a Wordlift_Timeline_Service instance.
 	 *
 	 * @since 3.1.0
-	 *
 	 */
 	public function __construct() {
 
@@ -63,7 +62,6 @@ class Wordlift_Timeline_Service {
 	 *
 	 * @return \Wordlift_Timeline_Service The singleton instance of the Wordlift_Timeline_Service.
 	 * @since 3.1.0
-	 *
 	 */
 	public static function get_instance() {
 
@@ -94,7 +92,6 @@ class Wordlift_Timeline_Service {
 	 * @since 3.1.0
 	 *
 	 * @uses  wl_core_get_related_entity_ids() to retrieve the entities referenced by the specified post.
-	 *
 	 */
 	public function get_events( $post_id = null ) {
 
@@ -160,7 +157,6 @@ class Wordlift_Timeline_Service {
 	 *
 	 * @return array|string An array of timeline events or an empty string if no posts are provided.
 	 * @since 3.1.0
-	 *
 	 */
 	public function to_json( $posts ) {
 
@@ -189,66 +185,69 @@ class Wordlift_Timeline_Service {
 		$timeline = array();
 
 		// Populate the arrays.
-		$timeline['events'] = array_map( function ( $item ) use ( &$timeline, &$event_index, &$start_at_slide, &$now, $display_images_as, $excerpt_length ) {
+		$timeline['events'] = array_map(
+			function ( $item ) use ( &$timeline, &$event_index, &$start_at_slide, &$now, $display_images_as, $excerpt_length ) {
 
-			// Get the start and end dates.
-			// We have to remove double quotes from date to make timeline work properly
-			$start_date = strtotime( str_replace( '"', '', get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_START, true ) ) );
-			$end_date   = strtotime( str_replace( '"', '',get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_END, true ) ) );
+				// Get the start and end dates.
+				// We have to remove double quotes from date to make timeline work properly
+				$start_date = strtotime( str_replace( '"', '', get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_START, true ) ) );
+				$end_date   = strtotime( str_replace( '"', '', get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_END, true ) ) );
 
-			// Set the starting slide.
-			$event_index ++;
-			if ( 0 === $start_at_slide && $now >= $start_date && $now <= $end_date ) {
-				$start_at_slide = $event_index;
-			}
-
-			// Load thumbnail
-			$thumbnail_id = get_post_thumbnail_id( $item->ID );
-			if ( '' !== $thumbnail_id && 0 !== $thumbnail_id
-			     && false !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) )
-			) {
-
-				// Set the thumbnail URL.
-				if ( 'background' === $display_images_as ) {
-					$date['background'] = array( 'url' => $attachment[0] );
-					$date['media']      = array( 'thumbnail' => $attachment[0] );
-				} else {
-					$date['media'] = array(
-						'url'       => $attachment[0],
-						'thumbnail' => $attachment[0],
-					);
+				// Set the starting slide.
+				$event_index ++;
+				if ( 0 === $start_at_slide && $now >= $start_date && $now <= $end_date ) {
+					  $start_at_slide = $event_index;
 				}
-			}
 
-			// Set the start/end dates by converting them to TimelineJS required format.
-			$date['start_date'] = Wordlift_Timeline_Service::date( $start_date );
-			$date['end_date']   = Wordlift_Timeline_Service::date( $end_date );
+				// Load thumbnail
+				$thumbnail_id = get_post_thumbnail_id( $item->ID );
+				if ( '' !== $thumbnail_id && 0 !== $thumbnail_id
+				&& false !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) )
+				) {
 
-			setup_postdata( $GLOBALS['post'] = $item );
+					// Set the thumbnail URL.
+					if ( 'background' === $display_images_as ) {
+						 $date['background'] = array( 'url' => $attachment[0] );
+						 $date['media']      = array( 'thumbnail' => $attachment[0] );
+					} else {
+						$date['media'] = array(
+							'url'       => $attachment[0],
+							'thumbnail' => $attachment[0],
+						);
+					}
+				}
 
-			$more_link_text = sprintf(
-				'<span aria-label="%1$s">%2$s</span>',
-				sprintf(
-				/* translators: %s: Name of current post */
-					__( 'Continue reading %s' ),
-					the_title_attribute( array( 'echo' => false ) )
-				),
-				__( '(more&hellip;)' )
-			);
+				// Set the start/end dates by converting them to TimelineJS required format.
+				$date['start_date'] = Wordlift_Timeline_Service::date( $start_date );
+				$date['end_date']   = Wordlift_Timeline_Service::date( $end_date );
 
-			// Set the event text only with the headline (see https://github.com/insideout10/wordlift-plugin/issues/352).
-			$date['text'] = array(
-				'headline' => '<a href="' . get_permalink( $item->ID ) . '">' . $item->post_title . '</a>',
-			);
+				setup_postdata( $GLOBALS['post'] = $item );
 
-			// If we have an excerpt, set it.
-			if ( 0 < $excerpt_length ) {
-				$date['text']['text'] = sprintf( '%s <a href="%s">%s</a>', get_the_excerpt(), get_permalink(), $more_link_text );
-			}
+				$more_link_text = sprintf(
+					'<span aria-label="%1$s">%2$s</span>',
+					sprintf(
+					/* translators: %s: Name of current post */
+						__( 'Continue reading %s' ),
+						the_title_attribute( array( 'echo' => false ) )
+					),
+					__( '(more&hellip;)' )
+				);
 
-			return $date;
+				// Set the event text only with the headline (see https://github.com/insideout10/wordlift-plugin/issues/352).
+				$date['text'] = array(
+					'headline' => '<a href="' . get_permalink( $item->ID ) . '">' . $item->post_title . '</a>',
+				);
 
-		}, $posts );
+				// If we have an excerpt, set it.
+				if ( 0 < $excerpt_length ) {
+					$date['text']['text'] = sprintf( '%s <a href="%s">%s</a>', get_the_excerpt(), get_permalink(), $more_link_text );
+				}
+
+				return $date;
+
+			},
+			$posts
+		);
 
 		// Finally remove the excerpt filter.
 		remove_filter( 'excerpt_length', array( $this, 'excerpt_length' ) );
@@ -268,7 +267,6 @@ class Wordlift_Timeline_Service {
 	 *
 	 * @return string An empty string.
 	 * @since 3.7.0
-	 *
 	 */
 	public function excerpt_more( $excerpt_more ) {
 
@@ -283,13 +281,11 @@ class Wordlift_Timeline_Service {
 	 *
 	 * @return int The number of words for the preset.
 	 * @since 3.7.0
-	 *
 	 */
 	public function excerpt_length( $length ) {
 
 		return $this->excerpt_length;
 	}
-
 
 	/**
 	 * Convert the date to a date array.
@@ -298,7 +294,6 @@ class Wordlift_Timeline_Service {
 	 *
 	 * @return array An array containing year, month and day values.
 	 * @since 3.7.0
-	 *
 	 */
 	public static function date( $value ) {
 
@@ -316,29 +311,30 @@ class Wordlift_Timeline_Service {
 	 *
 	 * @return array An array of post IDs.
 	 * @since 3.1.0
-	 *
 	 */
 	public function get_all_related_to_last_50_published_posts() {
 
 		// Global timeline. Get entities from the latest posts.
-		$latest_posts_ids = get_posts( array(
-			'numberposts' => 50,
-			'fields'      => 'ids', //only get post IDs
-			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
-			'tax_query'   => array(
-				'relation' => 'OR',
-				array(
-					'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
-					'operator' => 'NOT EXISTS',
+		$latest_posts_ids = get_posts(
+			array(
+				'numberposts' => 50,
+				'fields'      => 'ids', // only get post IDs
+				'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
+				'tax_query'   => array(
+					'relation' => 'OR',
+					array(
+						'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+						'operator' => 'NOT EXISTS',
+					),
+					array(
+						'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+						'field'    => 'slug',
+						'terms'    => 'article',
+					),
 				),
-				array(
-					'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
-					'field'    => 'slug',
-					'terms'    => 'article',
-				),
-			),
-			'post_status' => 'publish',
-		) );
+				'post_status' => 'publish',
+			)
+		);
 
 		if ( empty( $latest_posts_ids ) ) {
 			// There are no posts.
@@ -348,9 +344,15 @@ class Wordlift_Timeline_Service {
 		// Collect entities related to latest posts
 		$entity_ids = array();
 		foreach ( $latest_posts_ids as $id ) {
-			$entity_ids = array_merge( $entity_ids, wl_core_get_related_entity_ids( $id, array(
-				'status' => 'publish',
-			) ) );
+			$entity_ids = array_merge(
+				$entity_ids,
+				wl_core_get_related_entity_ids(
+					$id,
+					array(
+						'status' => 'publish',
+					)
+				)
+			);
 		}
 
 		return $entity_ids;

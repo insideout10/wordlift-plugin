@@ -19,12 +19,15 @@ class Wordlift_Double_Property_Service extends Wordlift_Simple_Property_Service 
 	/**
 	 * @inheritdoc
 	 */
-	function get( $id, $meta_key, $type) {
+	function get( $id, $meta_key, $type ) {
 
 		// Map the result to a numeric value when possible.
-		return array_map( function ( $value ) {
-			return is_numeric( $value ) ? (double) $value : $value;
-		}, parent::get( $id, $meta_key, $type ) );
+		return array_map(
+			function ( $value ) {
+				return is_numeric( $value ) ? (float) $value : $value;
+			},
+			parent::get( $id, $meta_key, $type )
+		);
 	}
 
 }

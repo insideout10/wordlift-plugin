@@ -76,7 +76,7 @@ class Post_Id_To_Entity_Transform_Function implements Mappings_Transform_Functio
 
 			// Get the entity by URI.
 			$entity_url = Wordpress_Content_Service::get_instance()
-			                                       ->get_entity_id( Wordpress_Content_Id::create_post( $target_post_id ) );
+												   ->get_entity_id( Wordpress_Content_Id::create_post( $target_post_id ) );
 
 			// No entity URL.
 			if ( empty( $entity_url ) ) {
@@ -88,7 +88,7 @@ class Post_Id_To_Entity_Transform_Function implements Mappings_Transform_Functio
 			// Add the entity among the references using the post ID.
 			$references[] = (int) $target_post_id;
 
-			$ret_val[] = array( "@id" => $entity_url, );
+			$ret_val[] = array( '@id' => $entity_url );
 		}
 
 		return $ret_val;

@@ -1,6 +1,7 @@
 <?php
 /**
  * This class runs after the entity type is changed.
+ *
  * @since 3.32.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
@@ -35,8 +36,7 @@ class Entity_Type_Change_Handler {
 		$this->entity_type_service = $entity_type_service;
 
 		// Takes a performance toll, do we really need it?
-		//	add_action( 'set_object_terms', array( $this, 'set_object_terms' ), 10, 4 );
-
+		// add_action( 'set_object_terms', array( $this, 'set_object_terms' ), 10, 4 );
 	}
 
 	public function set_object_terms( $object_id, $terms, $tt_ids, $taxonomy ) {
@@ -44,7 +44,6 @@ class Entity_Type_Change_Handler {
 		if ( $taxonomy !== Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) {
 			return;
 		}
-
 
 		if ( count( $terms ) !== 1 ) {
 			// Unable to determine which entity type or multiple entity types.
@@ -69,6 +68,5 @@ class Entity_Type_Change_Handler {
 		$this->entity_service->set_alternative_labels( $object_id, array() );
 
 	}
-
 
 }

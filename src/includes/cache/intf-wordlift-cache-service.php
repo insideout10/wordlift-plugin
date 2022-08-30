@@ -49,7 +49,6 @@ interface Wordlift_Cache_Service {
 	 */
 	function set_cache( $id, $contents );
 
-
 	/**
 	 * Delete the cache for the specified `id`.
 	 *

@@ -14,7 +14,6 @@ namespace Wordlift\Relation;
 
 use Wordlift\Common\Singleton;
 use Wordlift\Jsonld\Reference;
-use Wordlift\Relation\Types\Relation;
 
 class Object_Relation_Service extends Singleton implements Relation_Service_Interface {
 
@@ -62,13 +61,11 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 		return array_unique( array_merge( $post_references, $term_references ) );
 	}
 
-
 	public function get_relations_from_content( $content, $subject_type, $local_entity_uris ) {
 		$post_relations = $this->post_relation_service->get_relations_from_content( $content, $subject_type, $local_entity_uris );
 		$term_relations = $this->term_relation_service->get_relations_from_content( $content, $subject_type, $local_entity_uris );
-		return array_filter( array_merge( $post_relations, $term_relations) );
+		return array_filter( array_merge( $post_relations, $term_relations ) );
 	}
-
 
 	public static function get_entity_uris( $content ) {
 		// Remove quote escapes.
@@ -92,6 +89,6 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 	public function get_relations_from_entity_uris( $subject_type, $entity_uris ) {
 		$post_relations = $this->post_relation_service->get_relations_from_entity_uris( $subject_type, $entity_uris );
 		$term_relations = $this->term_relation_service->get_relations_from_entity_uris( $subject_type, $entity_uris );
-		return array_filter( array_merge( $post_relations, $term_relations) );
+		return array_filter( array_merge( $post_relations, $term_relations ) );
 	}
 }

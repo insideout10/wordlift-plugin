@@ -14,7 +14,12 @@ class Ingredients_Modal_Page_Delegate implements Page_Delegate {
 		wp_enqueue_style( 'wl-food-kg-jsonld', plugin_dir_url( __FILE__ ) . '/partials/jsonld.css' );
 
 		// Enqueue code editor and settings for manipulating HTML.
-		$settings = wp_enqueue_code_editor( array( 'type' => 'application/ld+json', 'minHeight' => '100%' ) );
+		$settings = wp_enqueue_code_editor(
+			array(
+				'type'      => 'application/ld+json',
+				'minHeight' => '100%',
+			)
+		);
 
 		wp_add_inline_script(
 			'code-editor',

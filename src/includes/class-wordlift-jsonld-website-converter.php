@@ -20,7 +20,6 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 	 *
 	 * @return array A JSON-LD array.
 	 * @since 3.14.0
-	 *
 	 */
 	public function create_schema() {
 
@@ -50,7 +49,6 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 		 * @since 3.14.0
 		 *
 		 * @api
-		 *
 		 */
 		return apply_filters( 'wl_website_jsonld', $jsonld );
 	}
@@ -61,7 +59,6 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 	 * @param array $params The parameters array.
 	 *
 	 * @since 3.14.0
-	 *
 	 */
 	private function set_search_action( &$params ) {
 		/**

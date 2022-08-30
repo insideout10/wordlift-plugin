@@ -14,22 +14,20 @@ namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\C
  * @method $this public()
  * @method $this private()
  */
-trait PublicTrait
-{
-    /**
-     * @return $this
-     */
-    protected final function setPublic()
-    {
-        $this->definition->setPublic(\true);
-        return $this;
-    }
-    /**
-     * @return $this
-     */
-    protected final function setPrivate()
-    {
-        $this->definition->setPublic(\false);
-        return $this;
-    }
+trait PublicTrait {
+
+	/**
+	 * @return $this
+	 */
+	final protected function setPublic() {
+		$this->definition->setPublic( \true );
+		return $this;
+	}
+	/**
+	 * @return $this
+	 */
+	final protected function setPrivate() {
+		$this->definition->setPublic( \false );
+		return $this;
+	}
 }

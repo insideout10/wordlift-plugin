@@ -27,12 +27,14 @@ interface Content {
 
 	/**
 	 * Get the permalink.
+	 *
 	 * @return string
 	 */
 	function get_permalink();
 
 	/**
 	 * Get the edit link.
+	 *
 	 * @return string
 	 */
 	function get_edit_link();

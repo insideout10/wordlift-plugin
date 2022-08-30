@@ -16,12 +16,14 @@ abstract class Data_Source {
 
 	/**
 	 * A list of item ids.
+	 *
 	 * @return int[]
 	 */
 	abstract public function next();
 
 	/**
 	 * The count of total items which needs to be processed.
+	 *
 	 * @return int[]
 	 */
 	abstract public function count();
@@ -29,10 +31,10 @@ abstract class Data_Source {
 	/**
 	 * A numerical value indicating how many items should be processed per
 	 * background call.
+	 *
 	 * @return int
 	 */
 	abstract public function get_batch_size();
-
 
 	public function get_state() {
 		try {

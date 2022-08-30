@@ -6,9 +6,6 @@
 
 namespace Wordlift\Videoobject\Data\Video_Storage;
 
-
-use Wordlift\Cache\Ttl_Cache;
-
 class Meta_Storage implements Storage {
 
 	const META_KEY = '_wl_video_object_videos';
@@ -22,7 +19,6 @@ class Meta_Storage implements Storage {
 		add_post_meta( $post_id, self::META_KEY, $video );
 	}
 
-
 	public function get_all_videos( $post_id ) {
 
 		return get_post_meta( $post_id, self::META_KEY );
@@ -35,15 +31,21 @@ class Meta_Storage implements Storage {
 		 * Fires when the video storage gets updated
 		 */
 		do_action( 'wordlift_videoobject_video_storage_updated' );
-		$videos_to_be_removed_ids = array_map( function ( $video ) {
-			return $video->id;
-		}, $videos_to_be_removed );
+		$videos_to_be_removed_ids = array_map(
+			function ( $video ) {
+				return $video->id;
+			},
+			$videos_to_be_removed
+		);
 
 		$present_videos = $this->get_all_videos( $post_id );
 
-		$filtered_videos = array_filter( $present_videos, function ( $video ) use ( $videos_to_be_removed_ids ) {
-			return ! in_array( $video->id, $videos_to_be_removed_ids );
-		} );
+		$filtered_videos = array_filter(
+			$present_videos,
+			function ( $video ) use ( $videos_to_be_removed_ids ) {
+				return ! in_array( $video->id, $videos_to_be_removed_ids );
+			}
+		);
 
 		// Remove all existing videos.
 		$this->remove_all_videos( $post_id );
@@ -52,7 +54,6 @@ class Meta_Storage implements Storage {
 		foreach ( $filtered_videos as $video ) {
 			$this->add_video( $post_id, $video );
 		}
-
 
 	}
 

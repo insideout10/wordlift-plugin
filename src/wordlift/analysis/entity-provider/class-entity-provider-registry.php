@@ -35,7 +35,8 @@ class Entity_Provider_Registry {
 				new Post_Entity_Provider(
 					Wordlift_Entity_Uri_Service::get_instance(),
 					Wordlift_Entity_Type_Service::get_instance(),
-					new Wordlift_Post_Image_Storage() ),
+					new Wordlift_Post_Image_Storage()
+				),
 				new Term_Entity_Provider(),
 			);
 
@@ -52,7 +53,6 @@ class Entity_Provider_Registry {
 
 		$this->entity_providers[] = $provider;
 	}
-
 
 	/**
 	 * @param $uri
@@ -74,6 +74,5 @@ class Entity_Provider_Registry {
 
 		return false;
 	}
-
 
 }

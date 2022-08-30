@@ -76,7 +76,6 @@ class Wordlift_Schema_Location_Property_Service extends Wordlift_Property_Servic
 	 *
 	 * @return array|NULL The schema:url value or NULL if not set.
 	 * @since 3.7.0
-	 *
 	 */
 	public function get( $post_id ) {
 

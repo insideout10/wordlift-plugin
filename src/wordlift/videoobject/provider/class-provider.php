@@ -1,5 +1,6 @@
 <?php
 namespace Wordlift\Videoobject\Provider;
+
 use Wordlift\Videoobject\Data\Embedded_Video\Embedded_Video;
 use Wordlift\Videoobject\Data\Video\Video;
 

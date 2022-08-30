@@ -46,7 +46,6 @@ class Wordlift_Deactivator_Feedback {
 	 *
 	 * @return  bool `true` if we have permissions, false otherwise.
 	 * @version 3.19.0
-	 *
 	 */
 	private function has_permission_to_show_popup() {
 		// Get the current page.
@@ -75,7 +74,6 @@ class Wordlift_Deactivator_Feedback {
 	 *
 	 * @return  void
 	 * @version 3.19.0
-	 *
 	 */
 	public function render_feedback_popup() {
 		// Bail if we don't have permissions to show the popup.
@@ -91,7 +89,6 @@ class Wordlift_Deactivator_Feedback {
 	 *
 	 * @return  void
 	 * @version 3.19.0
-	 *
 	 */
 	public function enqueue_popup_scripts() {
 		// Bail if we don't have permissions to show the popup.
@@ -99,8 +96,8 @@ class Wordlift_Deactivator_Feedback {
 			return;
 		}
 
-		wp_enqueue_style( 'wordlift-admin-feedback-popup', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/css/wordlift-admin-feedback-popup.css', array() );
-		wp_enqueue_script( 'wordlift-admin-feedback-popup', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift-admin-feedback-popup.js', array( 'jquery' ) );
+		wp_enqueue_style( 'wordlift-admin-feedback-popup', plugin_dir_url( __DIR__ ) . 'admin/css/wordlift-admin-feedback-popup.css', array() );
+		wp_enqueue_script( 'wordlift-admin-feedback-popup', plugin_dir_url( __DIR__ ) . 'admin/js/wordlift-admin-feedback-popup.js', array( 'jquery' ) );
 	}
 
 	/**
@@ -109,7 +106,6 @@ class Wordlift_Deactivator_Feedback {
 	 *
 	 * @return  void
 	 * @version 3.19.0
-	 *
 	 */
 	public function wl_deactivation_feedback() {
 		// Bail if the nonce is not valid.
@@ -126,7 +122,7 @@ class Wordlift_Deactivator_Feedback {
 			wp_send_json_success();
 		}
 
-		$plugin_data = get_plugin_data( plugin_dir_path( dirname( __FILE__ ) ) . 'wordlift.php', false, false );
+		$plugin_data = get_plugin_data( plugin_dir_path( __DIR__ ) . 'wordlift.php', false, false );
 
 		// Prepare the options.
 		$options = array(

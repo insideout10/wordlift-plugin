@@ -36,14 +36,19 @@ class Wordpress_User_Content_Legacy_Service extends Abstract_Wordpress_Content_L
 
 		global $wpdb;
 
-		$user_id = $wpdb->get_var( $wpdb->prepare( "
+		$user_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"
 			SELECT u.ID 
 			FROM $wpdb->users AS u
 			INNER JOIN $wpdb->usermeta AS um
 			    ON u.ID = um.user_id
 			WHERE um.meta_key = 'entity_url' AND um.meta_value = %s
 			LIMIT 1
-		", $abs_uri ) );
+		",
+				$abs_uri
+			)
+		);
 
 		if ( isset( $user_id ) ) {
 			return new Wordpress_Content( get_userdata( $user_id ) );
@@ -66,14 +71,19 @@ class Wordpress_User_Content_Legacy_Service extends Abstract_Wordpress_Content_L
 
 		global $wpdb;
 
-		$user_id = $wpdb->get_var( $wpdb->prepare( "
+		$user_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"
 			SELECT u.ID 
 			FROM $wpdb->users AS u
 			INNER JOIN $wpdb->usermeta AS um
 			    ON u.ID = um.user_id
 			WHERE um.meta_key IN ( 'entity_url', 'entity_same_as' ) AND um.meta_value = %s
 			LIMIT 1
-		", $uri ) );
+		",
+				$uri
+			)
+		);
 
 		if ( isset( $user_id ) ) {
 			return new Wordpress_Content( get_userdata( $user_id ) );

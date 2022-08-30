@@ -3,29 +3,27 @@
 namespace Wordlift\Modules\Food_Kg\Admin;
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
 use WP_List_Table;
 
 class Ingredients_List_Table extends WP_List_Table {
 
-
-//	public function __construct() {
-//		parent::__construct( [
-//			'singular' => 'ingredient',
-//			'plural'   => 'ingredients',
-//			'ajax'     => false,
-//		] );
-//	}
+	// public function __construct() {
+	// parent::__construct( [
+	// 'singular' => 'ingredient',
+	// 'plural'   => 'ingredients',
+	// 'ajax'     => false,
+	// ] );
+	// }
 	public function prepare_items() {
-		global $wpdb; //This is used only if making any database queries
+		global $wpdb; // This is used only if making any database queries
 
 		/**
 		 * First, lets decide how many records per page to show
 		 */
 		$per_page = 5;
-
 
 		/**
 		 * REQUIRED. Now we need to define our column headers. This includes a complete
@@ -60,16 +58,15 @@ class Ingredients_List_Table extends WP_List_Table {
 		$this->items = $wpdb->get_results( $wpdb->prepare( $sql, 'wprm_ingredient' ) );
 	}
 
-
 	public function no_items() {
 		esc_html_e( 'No ingredients found.', 'wordlift' );
 	}
 
 	public function get_columns() {
-		return [
+		return array(
 			'name'    => __( 'Name', 'wordlift' ),
 			'actions' => '',
-		];
+		);
 	}
 
 	public function column_name( $item ) {
@@ -79,10 +76,15 @@ class Ingredients_List_Table extends WP_List_Table {
 	public function column_actions( $item ) {
 
 		$url = admin_url(
-			sprintf( 'admin.php?page=wl_ingredients&modal_window=true&term_id=%d&TB_iframe=true', $item->term_id ) );
+			sprintf( 'admin.php?page=wl_ingredients&modal_window=true&term_id=%d&TB_iframe=true', $item->term_id )
+		);
 
-		return sprintf( '<a href="%s" class="button alignright thickbox open-plugin-details-modal" data-title="%s" type="button">%s</a>',
-			$url, esc_attr( $item->name ), esc_html__( 'JSON-LD', 'wordlift' ) );
+		return sprintf(
+			'<a href="%s" class="button alignright thickbox open-plugin-details-modal" data-title="%s" type="button">%s</a>',
+			$url,
+			esc_attr( $item->name ),
+			esc_html__( 'JSON-LD', 'wordlift' )
+		);
 	}
 
 }

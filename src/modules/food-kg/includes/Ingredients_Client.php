@@ -23,7 +23,7 @@ class Ingredients_Client {
 	public function ingredients( $names ) {
 
 		$request_body = implode( "\n", $names );
-		$response     = $this->api_service->request( 'POST', '/thirdparty/cafemedia/food-kg/ingredients', [ 'content-type' => 'text/plain' ], $request_body );
+		$response     = $this->api_service->request( 'POST', '/thirdparty/cafemedia/food-kg/ingredients', array( 'content-type' => 'text/plain' ), $request_body );
 
 		return Ingredients::create_from_string( $response->get_body() );
 	}
@@ -37,10 +37,15 @@ class Ingredients_Client {
 	 */
 	public function main_ingredient( $input ) {
 
-		$response = $this->api_service->request( 'POST', '/thirdparty/cafemedia/food-kg/ingredients/main', [
-			'accept'       => 'application/ld+json',
-			'content-type' => 'text/plain'
-		], $input );
+		$response = $this->api_service->request(
+			'POST',
+			'/thirdparty/cafemedia/food-kg/ingredients/main',
+			array(
+				'accept'       => 'application/ld+json',
+				'content-type' => 'text/plain',
+			),
+			$input
+		);
 
 		return $response->get_body();
 	}

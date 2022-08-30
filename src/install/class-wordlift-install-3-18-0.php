@@ -26,10 +26,13 @@ class Wordlift_Install_3_18_0 extends Wordlift_Install {
 	public function __construct() {
 		parent::__construct();
 
-		add_action( 'wl_async_wl_push_references', array(
-			$this,
-			'push_references',
-		) );
+		add_action(
+			'wl_async_wl_push_references',
+			array(
+				$this,
+				'push_references',
+			)
+		);
 	}
 
 	/**
@@ -46,7 +49,6 @@ class Wordlift_Install_3_18_0 extends Wordlift_Install {
 	 *
 	 * @return void
 	 * @since 3.18.0
-	 *
 	 */
 	public function push_references() {
 		// Get relations.
@@ -64,7 +66,6 @@ class Wordlift_Install_3_18_0 extends Wordlift_Install {
 			if ( $entity_service->is_entity( $post->ID ) ) {
 				continue;
 			}
-
 		}
 
 	}
@@ -74,7 +75,6 @@ class Wordlift_Install_3_18_0 extends Wordlift_Install {
 	 *
 	 * @return void
 	 * @since 3.18.0
-	 *
 	 */
 	public function add_offer_entity_type() {
 		// Check whether the `offer` term exists.
@@ -102,7 +102,6 @@ class Wordlift_Install_3_18_0 extends Wordlift_Install {
 	 *
 	 * @return void
 	 * @since 3.18.0
-	 *
 	 */
 	public function add_editors_read_wordlift_entity_capability() {
 		// Get the editor roles.

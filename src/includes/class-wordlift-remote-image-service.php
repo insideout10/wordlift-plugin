@@ -22,7 +22,7 @@ class Wordlift_Remote_Image_Service {
 
 		// Required for REST API calls
 		if ( ! function_exists( 'WP_Filesystem' ) ) {
-			require_once( ABSPATH . 'wp-admin/includes/file.php' );
+			require_once ABSPATH . 'wp-admin/includes/file.php';
 		}
 
 		// Load `WP_Filesystem`.
@@ -34,9 +34,13 @@ class Wordlift_Remote_Image_Service {
 		$parts = wp_parse_url( $url );
 
 		// Get the bare filename (filename w/o the extension).
-		$basename = str_replace( DIRECTORY_SEPARATOR, '_', rawurldecode(
-			pathinfo( $parts['path'], PATHINFO_FILENAME )
-		) );
+		$basename = str_replace(
+			DIRECTORY_SEPARATOR,
+			'_',
+			rawurldecode(
+				pathinfo( $parts['path'], PATHINFO_FILENAME )
+			)
+		);
 
 		// Get the base dir.
 		$wp_upload_dir = wp_upload_dir();
@@ -52,19 +56,22 @@ class Wordlift_Remote_Image_Service {
 		// Create custom directory and bail on failure.
 		if ( ! wp_mkdir_p( $upload_dir ) ) {
 			Wordlift_Log_Service::get_logger( 'Wordlift_Remote_Image_Service' )
-			                    ->warn( "save_image_from_url : failed creating upload dir $upload_dir \n" );
+								->warn( "save_image_from_url : failed creating upload dir $upload_dir \n" );
 
 			return new WP_Error( 'image_error', "save_image_from_url : failed creating upload dir $upload_dir \n" );
 		};
 
-		$response = wp_remote_get( $url, array(
-			'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36'
-		) );
+		$response = wp_remote_get(
+			$url,
+			array(
+				'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
+			)
+		);
 
 		// Bail if the response is not set.
 		if ( self::is_response_error( $response ) ) {
 			Wordlift_Log_Service::get_logger( 'Wordlift_Remote_Image_Service' )
-			                    ->warn( "save_image_from_url : failed to fetch the response from: $url\nThe response was:\n" . var_export( $response, true ) );
+								->warn( "save_image_from_url : failed to fetch the response from: $url\nThe response was:\n" . var_export( $response, true ) );
 
 			return new WP_Error( 'image_error', "save_image_from_url : failed to fetch the response from: $url\nThe response was:\n" . var_export( $response, true ) );
 		}
@@ -108,7 +115,6 @@ class Wordlift_Remote_Image_Service {
 	 * @return string|bool The file extension on success and
 	 * false on fail or if the content type is not supported.
 	 * @since 3.18.0
-	 *
 	 */
 	private static function get_extension_from_content_type( $content_type ) {
 
@@ -138,8 +144,8 @@ class Wordlift_Remote_Image_Service {
 	private static function is_response_error( $response ) {
 
 		return ( is_wp_error( $response )
-		         || 200 !== (int) $response['response']['code']
-		         || ! isset( $response['body'] )
+				 || 200 !== (int) $response['response']['code']
+				 || ! isset( $response['body'] )
 		);
 	}
 

@@ -40,7 +40,7 @@ class Wordlift_Property_Factory {
 	 *
 	 * @since 3.7.0
 	 *
-	 * @param string $meta_key WordPress' meta key.
+	 * @param string                     $meta_key WordPress' meta key.
 	 * @param \Wordlift_Property_Service $property_service A {@link Wordlift_Property_Service} instance.
 	 */
 	public function register( $meta_key, $property_service ) {

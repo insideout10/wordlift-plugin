@@ -31,15 +31,15 @@ class Product {
 
 		$option = get_option( 'wpsso_options' );
 
-		if ( empty( $option["wcsdt_handling_c{$shipping_class_id}_unit_code"] )
-		     || empty( $option["wcsdt_handling_c{$shipping_class_id}_minimum"] )
-		     || empty( $option["wcsdt_handling_c{$shipping_class_id}_maximum"] ) ) {
+		if ( empty( $option[ "wcsdt_handling_c{$shipping_class_id}_unit_code" ] )
+			 || empty( $option[ "wcsdt_handling_c{$shipping_class_id}_minimum" ] )
+			 || empty( $option[ "wcsdt_handling_c{$shipping_class_id}_maximum" ] ) ) {
 			return;
 		}
 
-		$unit_code = $option["wcsdt_handling_c{$shipping_class_id}_unit_code"];
-		$minimum   = $option["wcsdt_handling_c{$shipping_class_id}_minimum"];
-		$maximum   = $option["wcsdt_handling_c{$shipping_class_id}_maximum"];
+		$unit_code = $option[ "wcsdt_handling_c{$shipping_class_id}_unit_code" ];
+		$minimum   = $option[ "wcsdt_handling_c{$shipping_class_id}_minimum" ];
+		$maximum   = $option[ "wcsdt_handling_c{$shipping_class_id}_maximum" ];
 
 		if ( 'HUR' === $unit_code ) {
 			$minimum = floor( $minimum / 24.0 );
@@ -55,7 +55,6 @@ class Product {
 	}
 
 	private function get_handling_time() {
-
 
 	}
 

@@ -25,7 +25,7 @@ class Match_Terms {
 	public function __construct( $term_count ) {
 
 		$this->term_count = $term_count;
-		add_action( 'admin_menu', array( $this, 'admin_menu', ) );
+		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 
 	}
 
@@ -34,17 +34,13 @@ class Match_Terms {
 		add_submenu_page(
 			'wl_admin_menu',
 			__( 'Match Terms', 'wordlift' ),
-			__( 'Match Terms', 'wordlift' ) . " " . Badge_Generator::generate_html($number),
+			__( 'Match Terms', 'wordlift' ) . ' ' . Badge_Generator::generate_html( $number ),
 			'manage_options',
 			'wl-vocabulary-match-terms',
 			array( $this, 'submenu_page_callback' )
 		);
 		remove_submenu_page( 'wl_admin_menu', 'wl_admin_menu' );
 	}
-
-
-
-
 
 	public function submenu_page_callback() {
 
@@ -55,8 +51,10 @@ class Match_Terms {
 			true
 		);
 
-		wp_enqueue_style( 'wl-vocabulary-reconcile-script',
-			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . "js/dist/vocabulary.full.css" );
+		wp_enqueue_style(
+			'wl-vocabulary-reconcile-script',
+			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/vocabulary.full.css'
+		);
 		wp_localize_script( 'wl-vocabulary-reconcile-script', '_wlVocabularyMatchTermsConfig', Api_Config::get_api_config() );
 		echo "<div id='wl_cmkg_reconcile_progress' class='wrap'></div>";
 		echo "<div id='wl_cmkg_table' class='wrap'></div>";

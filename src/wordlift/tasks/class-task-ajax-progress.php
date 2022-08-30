@@ -57,7 +57,6 @@ class Task_Ajax_Progress implements Task_Progress {
 	 * @param string $action The AJAX action.
 	 *
 	 * @since 1.0.0
-	 *
 	 */
 	public function __construct( $action ) {
 
@@ -89,13 +88,15 @@ class Task_Ajax_Progress implements Task_Progress {
 	 * {@inheritDoc}
 	 */
 	function finish() {
-		wp_send_json_success( array(
-			'count'    => $this->count,
-			'index'    => $this->index,
-			// $this->index is zero based.
-			'complete' => $this->index >= $this->count - 1,
-			'nonce'    => wp_create_nonce( $this->action ),
-		) );
+		wp_send_json_success(
+			array(
+				'count'    => $this->count,
+				'index'    => $this->index,
+				// $this->index is zero based.
+				'complete' => $this->index >= $this->count - 1,
+				'nonce'    => wp_create_nonce( $this->action ),
+			)
+		);
 	}
 
 }

@@ -3,7 +3,6 @@
 namespace Wordlift\Metabox\Field;
 
 use Wordlift\Metabox\Field\Store\Store_Factory;
-use Wordlift\Metabox\Wl_Abstract_Metabox;
 use Wordlift_Log_Service;
 use Wordlift_Schema_Service;
 
@@ -102,11 +101,10 @@ class Wl_Metabox_Field implements Field {
 	 */
 	protected $id;
 
-
 	/**
 	 * Create a {@link Wl_Metabox_Field} instance.
 	 *
-	 * @param array $args An array of parameters.
+	 * @param array                                       $args An array of parameters.
 	 * @param $id int The id of the item
 	 * @param $type int The type of the item, POST or TERM.
 	 */
@@ -167,8 +165,6 @@ class Wl_Metabox_Field implements Field {
 		// Save early the post id to avoid other plugins messing up with it.
 		//
 		// See https://github.com/insideout10/wordlift-plugin/issues/665.
-
-
 	}
 
 	/**
@@ -325,7 +321,7 @@ class Wl_Metabox_Field implements Field {
 
 		// print data loaded from DB.
 		$count = 0;
-		$html  .= $this->get_stored_values_html( $count );
+		$html .= $this->get_stored_values_html( $count );
 
 		// Print the empty <input> to add new values.
 		if ( 0 === $count ) { // } || $count < $this->cardinality ) { DO NOT print empty inputs unless requested by the editor since fields might support empty strings.
@@ -361,7 +357,6 @@ class Wl_Metabox_Field implements Field {
 	 *
 	 * @return string The html fragment.
 	 * @since 3.15.0
-	 *
 	 */
 	protected function get_stored_values_html( &$count ) {
 
@@ -403,7 +398,6 @@ class Wl_Metabox_Field implements Field {
 	 *
 	 * @return string The add button html code.
 	 * @since 3.15.0
-	 *
 	 */
 	protected function get_add_button_html( $count ) {
 
@@ -426,7 +420,6 @@ class Wl_Metabox_Field implements Field {
 	 *
 	 * @return string The add button html code.
 	 * @since 3.15.0
-	 *
 	 */
 	protected function get_add_custom_button_html( $count, $label, $class = '' ) {
 
@@ -449,19 +442,19 @@ class Wl_Metabox_Field implements Field {
 	public function html_input( $value ) {
 		@ob_start();
 		?>
-        <div class="wl-input-wrapper">
-            <input
-                    type="text"
-                    id="<?php echo esc_attr( $this->meta_name ); ?>"
-                    name="wl_metaboxes[<?php echo esc_attr( $this->meta_name ) ?>][]"
-                    value="<?php echo esc_attr( $value ); ?>"
-                    style="width:88%"
-            />
+		<div class="wl-input-wrapper">
+			<input
+					type="text"
+					id="<?php echo esc_attr( $this->meta_name ); ?>"
+					name="wl_metaboxes[<?php echo esc_attr( $this->meta_name ); ?>][]"
+					value="<?php echo esc_attr( $value ); ?>"
+					style="width:88%"
+			/>
 
-            <button class="button wl-remove-input wl-button" type="button">
+			<button class="button wl-remove-input wl-button" type="button">
 				<?php esc_html_e( 'Remove', 'wordlift' ); ?>
-            </button>
-        </div>
+			</button>
+		</div>
 		<?php
 		$html = ob_get_clean();
 

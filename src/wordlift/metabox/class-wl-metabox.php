@@ -1,6 +1,7 @@
 <?php
 
 namespace Wordlift\Metabox;
+
 use Wordlift\Object_Type_Enum;
 
 /**
@@ -52,6 +53,5 @@ class Wl_Metabox extends Wl_Abstract_Metabox {
 	public function save_form( $post_id ) {
 		$this->save_form_data( $post_id, Object_Type_Enum::POST );
 	}
-
 
 }

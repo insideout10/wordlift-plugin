@@ -28,7 +28,7 @@ class Wordlift_Post_Excerpt_Helper {
 	 *
 	 * Since anyone can hook on the excerpt generation filters, and
 	 * amend it with non textual content, we play it self and generate
-	 * the excerpt ourselves, mimicking the way wordpress core does it.
+	 * the excerpt ourselves, mimicking the way WordPress core does it.
 	 *
 	 * @since 3.10.0
 	 *

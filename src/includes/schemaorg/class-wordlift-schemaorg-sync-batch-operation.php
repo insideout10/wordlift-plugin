@@ -41,7 +41,6 @@ class Wordlift_Schemaorg_Sync_Batch_Operation implements Wordlift_Batch_Operatio
 	 * @type int $remaining The remaining number of elements to process.
 	 * }
 	 * @since 3.20.0
-	 *
 	 */
 	public function process( $offset = 0, $limit = 10 ) {
 
@@ -100,7 +99,6 @@ class Wordlift_Schemaorg_Sync_Batch_Operation implements Wordlift_Batch_Operatio
 	 *
 	 * @return int The number of elements that would be affected.
 	 * @since 3.20.0
-	 *
 	 */
 	public function count() {
 
@@ -119,12 +117,11 @@ class Wordlift_Schemaorg_Sync_Batch_Operation implements Wordlift_Batch_Operatio
 	 *
 	 * @return array An array of schema classes.
 	 * @since 3.20.0
-	 *
 	 */
 	private function get_schema_classes() {
 
 		// Load the file contents.
-		$contents = file_get_contents( dirname( __FILE__ ) . '/schema-classes.json' );
+		$contents = file_get_contents( __DIR__ . '/schema-classes.json' );
 
 		// Decode the JSON contents.
 		$json = json_decode( $contents, true );

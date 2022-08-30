@@ -18,7 +18,6 @@ use Wordlift\Relation\Object_Relation_Factory;
  * @param int $post_id The post id.
  *
  * @since 3.0.0
- *
  */
 function wl_linked_data_save_post( $post_id ) {
 
@@ -49,7 +48,7 @@ function wl_linked_data_save_post( $post_id ) {
 	$is_no_editor_analysis_enabled = Wordlift\No_Editor_Analysis\No_Editor_Analysis_Feature::can_no_editor_analysis_be_used( $post_id );
 	// Bail out if it's not an entity.
 	if ( ! $is_editor_supported
-	     && ! $is_no_editor_analysis_enabled ) {
+		 && ! $is_no_editor_analysis_enabled ) {
 		$log->debug( "Skipping $post_id, because $post_type doesn't support the editor (content)." );
 
 		return;
@@ -59,7 +58,6 @@ function wl_linked_data_save_post( $post_id ) {
 	 * Only process valid post types
 	 *
 	 * @since 3.25.6
-	 *
 	 */
 	$supported_types = Wordlift_Entity_Service::valid_entity_post_types();
 
@@ -88,7 +86,6 @@ add_action( 'save_post', 'wl_linked_data_save_post' );
  * @param int $post_id The post id being saved.
  *
  * @since 3.0.0
- *
  */
 function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
@@ -121,14 +118,13 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	// Save all the selected internal entity uris to this variable.
 	$internal_entity_uris = array();
 
-
 	// Save the entities coming with POST data.
 	if ( isset( $_POST['wl_entities'] ) ) {
 		$data              = filter_var_array( $_POST, array( 'wl_entities' => array( 'flags' => FILTER_REQUIRE_ARRAY ) ) );
 		$entities_via_post = $data['wl_entities'];
 		wl_write_log( "[ post id :: $post_id ][ POST(wl_entities) :: " );
 		wl_write_log( json_encode( $entities_via_post ) );
-		wl_write_log( "]" );
+		wl_write_log( ']' );
 
 		foreach ( $entities_via_post as $entity_uri => $entity ) {
 
@@ -175,7 +171,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			$entities_uri_mapping[ $entity_uri ] = $uri;
 
 		}
-
 	}
 
 	// Replace tmp uris in content post if needed
@@ -198,21 +193,23 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		 * content, so add the slashes to prevent back slash getting
 		 * removed.
 		 */
-		wp_update_post( array(
-			'ID'           => $post->ID,
-			'post_content' => addslashes( $updated_post_content ),
-		) );
+		wp_update_post(
+			array(
+				'ID'           => $post->ID,
+				'post_content' => addslashes( $updated_post_content ),
+			)
+		);
 	}
 
 	// Reset previously saved instances.
 	wl_core_delete_relation_instances( $post_id );
 
 	$relations = Object_Relation_Factory::get_instance( $post_id )
-	                                    ->get_relations_from_content(
-		                                    $updated_post_content,
-		                                    Object_Type_Enum::POST,
-		                                    $internal_entity_uris
-	                                    );
+										->get_relations_from_content(
+											$updated_post_content,
+											Object_Type_Enum::POST,
+											$internal_entity_uris
+										);
 
 	// Save relation instances
 	foreach ( $relations as $relation ) {
@@ -292,7 +289,7 @@ function wl_save_entity( $entity_data ) {
 
 	// Required for REST API calls
 	if ( ! function_exists( 'wp_crop_image' ) ) {
-		require_once( ABSPATH . 'wp-admin/includes/image.php' );
+		require_once ABSPATH . 'wp-admin/includes/image.php';
 	}
 
 	$log = Wordlift_Log_Service::get_logger( 'wl_save_entity' );
@@ -317,7 +314,7 @@ function wl_save_entity( $entity_data ) {
 
 	// Check whether an entity already exists with the provided URI.
 	$uri = $entity_data['uri'];
-	if ( isset ( $uri ) && null !== $post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri ) ) {
+	if ( isset( $uri ) && null !== $post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri ) ) {
 		$log->debug( "Post already exists for URI $uri." );
 
 		return $post;
@@ -349,17 +346,23 @@ function wl_save_entity( $entity_data ) {
 	// is created when saving a post.
 	global $wpseo_metabox, $seo_ultimate;
 	if ( isset( $wpseo_metabox ) ) {
-		remove_action( 'wp_insert_post', array(
-			$wpseo_metabox,
-			'save_postdata',
-		) );
+		remove_action(
+			'wp_insert_post',
+			array(
+				$wpseo_metabox,
+				'save_postdata',
+			)
+		);
 	}
 
 	if ( isset( $seo_ultimate ) ) {
-		remove_action( 'save_post', array(
-			$seo_ultimate,
-			'save_postmeta_box',
-		) );
+		remove_action(
+			'save_post',
+			array(
+				$seo_ultimate,
+				'save_postmeta_box',
+			)
+		);
 	}
 
 	// The fact that we're calling here wp_insert_post is causing issues with plugins (and ourselves too) that hook to
@@ -372,7 +375,6 @@ function wl_save_entity( $entity_data ) {
 	$save_post_filters = is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] : $wp_filter['save_post']->callbacks;
 	is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] = array() : $wp_filter['save_post']->remove_all_filters();
 
-
 	$log->trace( 'Going to insert new post...' );
 
 	// create or update the post.
@@ -380,25 +382,33 @@ function wl_save_entity( $entity_data ) {
 
 	// Setting the alternative labels for this entity.
 	Wordlift_Entity_Service::get_instance()
-	                       ->set_alternative_labels( $post_id, $synonyms );
+						   ->set_alternative_labels( $post_id, $synonyms );
 
 	// Restore all the existing filters.
 	is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] = $save_post_filters : $wp_filter['save_post']->callbacks = $save_post_filters;
 
 	// If Yoast is installed and active, we restore the Yoast save_postdata hook (https://github.com/insideout10/wordlift-plugin/issues/156)
 	if ( isset( $wpseo_metabox ) ) {
-		add_action( 'wp_insert_post', array(
-			$wpseo_metabox,
-			'save_postdata',
-		) );
+		add_action(
+			'wp_insert_post',
+			array(
+				$wpseo_metabox,
+				'save_postdata',
+			)
+		);
 	}
 
 	// If SEO Ultimate is installed, add back the hook we removed a few lines above.
 	if ( isset( $seo_ultimate ) ) {
-		add_action( 'save_post', array(
-			$seo_ultimate,
-			'save_postmeta_box',
-		), 10, 2 );
+		add_action(
+			'save_post',
+			array(
+				$seo_ultimate,
+				'save_postmeta_box',
+			),
+			10,
+			2
+		);
 	}
 
 	// TODO: handle errors.
@@ -419,9 +429,9 @@ function wl_save_entity( $entity_data ) {
 
 	// Add the uri to the sameAs data if it's not a local URI.
 	if ( isset( $uri ) && preg_match( '@https?://.*@', $uri ) &&
-	     $wl_uri !== $uri &&
-	     // Only remote entities
-	     0 !== strpos( $uri, Wordlift_Configuration_Service::get_instance()->get_dataset_uri() )
+		 $wl_uri !== $uri &&
+		 // Only remote entities
+		 0 !== strpos( $uri, Wordlift_Configuration_Service::get_instance()->get_dataset_uri() )
 	) {
 		array_push( $same_as, $uri );
 	}

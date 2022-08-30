@@ -42,7 +42,6 @@ class Wordlift_Entity_Uri_Service {
 	 * Create a {@link Wordlift_Entity_Uri_Service} instance.
 	 *
 	 * @since 3.16.3
-	 *
 	 */
 	protected function __construct() {
 
@@ -84,7 +83,7 @@ class Wordlift_Entity_Uri_Service {
 	 * Try to find a post when the content service doesn't find it.
 	 *
 	 * @param WP_Post|null $post
-	 * @param string $uri
+	 * @param string       $uri
 	 *
 	 * @return false|int
 	 */
@@ -101,7 +100,6 @@ class Wordlift_Entity_Uri_Service {
 	 * @param array $uris An array of URIs.
 	 *
 	 * @since 3.16.3
-	 *
 	 */
 	public function preload_uris( $uris ) {
 
@@ -130,25 +128,29 @@ class Wordlift_Entity_Uri_Service {
 
 		// Populate the array. We reinitialize the array on purpose because
 		// we don't want these data to long live.
-		$this->uri_to_post = array_reduce( $posts, function ( $carry, $item ) {
-			$uris = get_post_meta( $item, Wordlift_Schema_Service::FIELD_SAME_AS );
+		$this->uri_to_post = array_reduce(
+			$posts,
+			function ( $carry, $item ) {
+				$uris = get_post_meta( $item, Wordlift_Schema_Service::FIELD_SAME_AS );
 
-			$uri = Wordpress_Content_Service::get_instance()
-			                                ->get_entity_id( Wordpress_Content_Id::create_post( $item ) );
+				$uri = Wordpress_Content_Service::get_instance()
+											->get_entity_id( Wordpress_Content_Id::create_post( $item ) );
 
-			if ( isset( $uri ) ) {
-				$uris[] = $uri;
-			}
+				if ( isset( $uri ) ) {
+					$uris[] = $uri;
+				}
 
-			return $carry
-			       // Get the URI related to the post and fill them with the item id.
-			       + array_fill_keys( $uris, $item );
-		}, array() );
+				return $carry
+				   // Get the URI related to the post and fill them with the item id.
+				   + array_fill_keys( $uris, $item );
+			},
+			array()
+		);
 
 		// Add the not found URIs.
 		$this->uri_to_post += array_fill_keys( $uris, null );
 
-		$this->log->debug( count( $this->uri_to_post ) . " URI(s) preloaded." );
+		$this->log->debug( count( $this->uri_to_post ) . ' URI(s) preloaded.' );
 
 	}
 
@@ -170,7 +172,6 @@ class Wordlift_Entity_Uri_Service {
 	 *
 	 * @return WP_Post|null A WP_Post instance or null if not found.
 	 * @since 3.2.0
-	 *
 	 */
 	public function get_entity( $uri ) {
 
@@ -193,7 +194,6 @@ class Wordlift_Entity_Uri_Service {
 	 *
 	 * @return true if the uri internal to the current dataset otherwise false.
 	 * @since 3.16.3
-	 *
 	 */
 	public function is_internal( $uri ) {
 
@@ -219,7 +219,7 @@ class Wordlift_Entity_Uri_Service {
 
 		// Bail out if we don't have the required parameters, or if the type is not a valid entity.
 		if ( ! is_array( $data ) || ! isset( $data['id'] ) || ! isset( $data['type'] )
-		     || ! Wordlift_Entity_Type_Service::is_valid_entity_post_type( $data['type'] ) ) {
+			 || ! Wordlift_Entity_Type_Service::is_valid_entity_post_type( $data['type'] ) ) {
 			return $result;
 		}
 
@@ -255,10 +255,12 @@ class Wordlift_Entity_Uri_Service {
 
 		// Try to parse WooCommerce non-pretty product URL
 		if ( $parsed_query['product'] ) {
-			$posts = get_posts( array(
-				'name'      => $parsed_query['product'],
-				'post_type' => 'product'
-			) );
+			$posts = get_posts(
+				array(
+					'name'      => $parsed_query['product'],
+					'post_type' => 'product',
+				)
+			);
 			if ( count( $posts ) > 0 ) {
 				return $posts[0]->ID;
 			}

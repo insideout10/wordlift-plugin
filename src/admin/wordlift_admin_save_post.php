@@ -20,7 +20,7 @@
  *
  * @param string $new_status The new post status
  * @param string $old_status The old post status
- * @param array $post An array with the post data
+ * @param array  $post An array with the post data
  */
 function wl_transition_post_status( $new_status, $old_status, $post ) {
 
@@ -35,7 +35,7 @@ function wl_transition_post_status( $new_status, $old_status, $post ) {
 
 	// when a post is published, then all the referenced entities must be published.
 	if ( 'publish' !== $old_status && 'publish' === $new_status
-	     && apply_filters( 'wl_feature__enable__entity-auto-publish', true ) ) {
+		 && apply_filters( 'wl_feature__enable__entity-auto-publish', true ) ) {
 
 		foreach ( wl_core_get_related_entity_ids( $post->ID ) as $entity_id ) {
 			wl_update_post_status( $entity_id, 'publish' );
@@ -45,7 +45,6 @@ function wl_transition_post_status( $new_status, $old_status, $post ) {
 
 // hook save events.
 add_action( 'transition_post_status', 'wl_transition_post_status', 10, 3 );
-
 
 /**
  * Delete the specified post from the triple store.
@@ -64,7 +63,7 @@ function rl_delete_post( $post ) {
 /**
  * Update the status of a post.
  *
- * @param int $post_id The post ID
+ * @param int    $post_id The post ID
  * @param string $status The new status
  */
 function wl_update_post_status( $post_id, $status ) {

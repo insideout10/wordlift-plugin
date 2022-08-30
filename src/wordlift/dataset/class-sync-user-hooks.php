@@ -54,9 +54,12 @@ class Sync_User_Hooks extends Abstract_Sync_Hooks {
 
 	public function changed_user_meta( $meta_id, $user_id, $meta_key ) {
 
-		if ( in_array( $meta_key,
-			apply_filters( 'wl_dataset__sync_user_hooks__ignored_meta_keys',
-				apply_filters( 'wl_dataset__sync_hooks__ignored_meta_keys',
+		if ( in_array(
+			$meta_key,
+			apply_filters(
+				'wl_dataset__sync_user_hooks__ignored_meta_keys',
+				apply_filters(
+					'wl_dataset__sync_hooks__ignored_meta_keys',
 					array(
 						'rich_editing',
 						'comment_shortcuts',
@@ -67,7 +70,10 @@ class Sync_User_Hooks extends Abstract_Sync_Hooks {
 						'wptests_user_level',
 						'dismissed_wp_pointers',
 						'entity_url',
-					) ) ) ) ) {
+					)
+				)
+			)
+		) ) {
 			return;
 		}
 
@@ -95,8 +101,11 @@ class Sync_User_Hooks extends Abstract_Sync_Hooks {
 
 	public function do_delete( $user_id ) {
 		try {
-			$this->sync_service->delete_one( Object_Type_Enum::USER, $user_id,
-				Wordpress_User_Content_Legacy_Service::get_instance()->get_entity_id( Wordpress_Content_Id::create_user( $user_id ) ) );
+			$this->sync_service->delete_one(
+				Object_Type_Enum::USER,
+				$user_id,
+				Wordpress_User_Content_Legacy_Service::get_instance()->get_entity_id( Wordpress_Content_Id::create_user( $user_id ) )
+			);
 		} catch ( \Exception $e ) {
 			$this->log->error( "An error occurred while trying to delete user $user_id: " . $e->getMessage(), $e );
 		}

@@ -11,7 +11,6 @@ use Wordlift\Vocabulary_Terms\Hooks\Term_Save;
 use Wordlift\Vocabulary_Terms\Jsonld\Jsonld_Generator;
 use Wordlift\Vocabulary_Terms\Jsonld\Post_Jsonld;
 
-
 class Vocabulary_Terms_Loader extends Default_Loader {
 	/**
 	 * @var \Wordlift_Entity_Type_Service
@@ -22,19 +21,17 @@ class Vocabulary_Terms_Loader extends Default_Loader {
 	 */
 	private $property_getter;
 
-
 	/**
 	 * Vocabulary_Terms_Loader constructor.
 	 *
 	 * @param $entity_type_service \Wordlift_Entity_Type_Service
-	 * @param \Wordlift_Property_Getter $property_getter
+	 * @param \Wordlift_Property_Getter                         $property_getter
 	 */
 	public function __construct( $entity_type_service, $property_getter ) {
 		parent::__construct();
 		$this->entity_type_service = $entity_type_service;
 		$this->property_getter     = $property_getter;
 	}
-
 
 	public function init_all_dependencies() {
 		new Entity_Type();
@@ -54,6 +51,5 @@ class Vocabulary_Terms_Loader extends Default_Loader {
 	protected function get_feature_default_value() {
 		return false;
 	}
-
 
 }

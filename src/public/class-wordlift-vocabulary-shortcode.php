@@ -48,7 +48,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	 *
 	 * @since 3.16.0
 	 */
-	public function __construct( ) {
+	public function __construct() {
 		parent::__construct();
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
@@ -66,10 +66,10 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	private static function are_requirements_satisfied() {
 
 		return function_exists( 'mb_strlen' ) &&
-		       function_exists( 'mb_substr' ) &&
-		       function_exists( 'mb_strtolower' ) &&
-		       function_exists( 'mb_strtoupper' ) &&
-		       function_exists( 'mb_convert_case' );
+			   function_exists( 'mb_substr' ) &&
+			   function_exists( 'mb_strtolower' ) &&
+			   function_exists( 'mb_strtoupper' ) &&
+			   function_exists( 'mb_convert_case' );
 	}
 
 	/**
@@ -106,7 +106,8 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 				'order'   => 'DESC',
 				// Allow to specify the category ID.
 				'cat'     => '',
-			), $atts
+			),
+			$atts
 		);
 
 		// Get the posts. Note that if a `type` is specified before, then the
@@ -144,28 +145,31 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 			//
 			// Order the translations alphabetically.
 			// asort( $translations );
-			uasort( $translations, function ( $a, $b ) {
-				if ( mb_strtolower( $a ) === mb_strtolower( $b )
-				     || mb_strtoupper( $a ) === mb_strtoupper( $b ) ) {
-					return 0;
-				}
+			uasort(
+				$translations,
+				function ( $a, $b ) {
+					if ( mb_strtolower( $a ) === mb_strtolower( $b )
+					 || mb_strtoupper( $a ) === mb_strtoupper( $b ) ) {
+						return 0;
+					}
 
-				return ( mb_strtolower( $a ) < mb_strtolower( $b ) ) ? - 1 : 1;
-			} );
+					return ( mb_strtolower( $a ) < mb_strtolower( $b ) ) ? - 1 : 1;
+				}
+			);
 			$sections .= $this->get_section( $item, $translations, $vocabulary_id );
 		}
 
 		// Return HTML template.
 		ob_start();
 		?>
-        <div class='wl-vocabulary'>
-            <nav class='wl-vocabulary-alphabet-nav'>
+		<div class='wl-vocabulary'>
+			<nav class='wl-vocabulary-alphabet-nav'>
 				<?php echo $header; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-            </nav>
-            <div class='wl-vocabulary-grid'>
+			</nav>
+			<div class='wl-vocabulary-grid'>
 				<?php echo $sections; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-            </div>
-        </div>
+			</div>
+		</div>
 		<?php
 		$html = ob_get_clean();
 
@@ -177,54 +181,60 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 
 		$scope = $this;
 
-		add_action( 'init', function () use ( $scope ) {
-			if ( ! function_exists( 'register_block_type' ) ) {
-				// Gutenberg is not active.
-				return;
+		add_action(
+			'init',
+			function () use ( $scope ) {
+				if ( ! function_exists( 'register_block_type' ) ) {
+					// Gutenberg is not active.
+					return;
+				}
+
+				register_block_type(
+					'wordlift/vocabulary',
+					array(
+						'editor_script'   => 'wl-block-editor',
+						'render_callback' => function ( $attributes ) use ( $scope ) {
+							$attr_code = '';
+							foreach ( $attributes as $key => $value ) {
+								$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
+							}
+
+							return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
+						},
+						'attributes'      => array(
+							'type'        => array(
+								'type'    => 'string',
+								'default' => 'all',
+							),
+							'limit'       => array(
+								'type'    => 'number',
+								'default' => 100,
+							),
+							'orderby'     => array(
+								'type'    => 'string',
+								'default' => 'post_date',
+							),
+							'order'       => array(
+								'type'    => 'string',
+								'default' => 'DESC',
+							),
+							'cat'         => array(
+								'type'    => 'string',
+								'default' => '',
+							),
+							'preview'     => array(
+								'type'    => 'boolean',
+								'default' => false,
+							),
+							'preview_src' => array(
+								'type'    => 'string',
+								'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/vocabulary.png',
+							),
+						),
+					)
+				);
 			}
-
-			register_block_type( 'wordlift/vocabulary', array(
-				'editor_script'   => 'wl-block-editor',
-				'render_callback' => function ( $attributes ) use ( $scope ) {
-					$attr_code = '';
-					foreach ( $attributes as $key => $value ) {
-						$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
-					}
-
-					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
-				},
-				'attributes' => array(
-					'type' => array(
-						'type'    => 'string',
-						'default' => 'all'
-					),
-					'limit' => array(
-						'type'    => 'number',
-						'default' => 100
-					),
-					'orderby' => array(
-						'type'    => 'string',
-						'default' => 'post_date'
-					),
-					'order' => array(
-						'type'    => 'string',
-						'default' => 'DESC'
-					),
-					'cat' => array(
-						'type'    => 'string',
-						'default' => ''
-					),
-					'preview'     => array(
-						'type'    => 'boolean',
-						'default' => false,
-					),
-					'preview_src' => array(
-						'type'    => 'string',
-						'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/vocabulary.png',
-					),
-				)
-			) );
-		} );
+		);
 	}
 
 	/**
@@ -257,7 +267,11 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 					</ul>
 				</div>
 			</div>
-		', $vocabulary_id, esc_attr( $letter ), esc_html( $letter ), $this->format_posts_as_list( $posts )
+		',
+			$vocabulary_id,
+			esc_attr( $letter ),
+			esc_html( $letter ),
+			$this->format_posts_as_list( $posts )
 		);
 	}
 
@@ -273,9 +287,11 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	private function format_posts_as_list( $posts ) {
 
 		return array_reduce(
-			array_keys( $posts ), function ( $carry, $item ) use ( $posts ) {
-			return $carry . sprintf( '<li><a href="%s">%s</a></li>', esc_attr( get_permalink( $item ) ), esc_html( $posts[ $item ] ) );
-		}, ''
+			array_keys( $posts ),
+			function ( $carry, $item ) use ( $posts ) {
+				return $carry . sprintf( '<li><a href="%s">%s</a></li>', esc_attr( get_permalink( $item ) ), esc_html( $posts[ $item ] ) );
+			},
+			''
 		);
 	}
 
@@ -345,7 +361,8 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	/**
 	 * Get the title without accents.
 	 * If the post is not of type `entity`, use first synonym if synonyms exists.
-     * @see https://github.com/insideout10/wordlift-plugin/issues/1096
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/1096
 	 *
 	 * @since 3.27.0
 	 *

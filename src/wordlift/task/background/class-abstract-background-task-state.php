@@ -25,7 +25,6 @@ abstract class Abstract_Background_Task_State implements Background_Task_State {
 		$count       = get_option( $this->context->get_option_prefix() . 'count', array( 0 ) );
 		$last_update = get_option( $this->context->get_option_prefix() . 'updated' );
 
-
 		return new Background_Task_Info( $this->state, $started, $offset, $count, $last_update );
 	}
 

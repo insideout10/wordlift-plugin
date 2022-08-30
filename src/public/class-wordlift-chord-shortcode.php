@@ -31,10 +31,13 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 
 		// Hook to the `amp_post_template_css` to hide ourselves when in AMP
 		// rendering.
-		add_action( 'amp_post_template_css', array(
-			$this,
+		add_action(
 			'amp_post_template_css',
-		) );
+			array(
+				$this,
+				'amp_post_template_css',
+			)
+		);
 		$this->register_block_type();
 
 	}
@@ -49,13 +52,16 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 	public function render( $atts ) {
 
 		// extract attributes and set default values.
-		$chord_atts = shortcode_atts( array(
-			'width'      => '100%',
-			'height'     => '500px',
-			'main_color' => '000',
-			'depth'      => 2,
-			'global'     => false,
-		), $atts );
+		$chord_atts = shortcode_atts(
+			array(
+				'width'      => '100%',
+				'height'     => '500px',
+				'main_color' => '000',
+				'depth'      => 2,
+				'global'     => false,
+			),
+			$atts
+		);
 
 		if ( $chord_atts['global'] ) {
 
@@ -77,7 +83,7 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 		// Use the registered style which define an optional dependency to font-awesome.
 		//
 		// @see https://github.com/insideout10/wordlift-plugin/issues/699
-		//		wp_enqueue_style( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );
+		// wp_enqueue_style( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );
 		wp_enqueue_style( 'wordlift-ui' );
 
 		// Adding javascript code.
@@ -85,10 +91,14 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 
 		$this->enqueue_scripts();
 
-		wp_localize_script( 'wordlift-ui', 'wl_chord_params', array(
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'action'   => 'wl_chord',
-		) );
+		wp_localize_script(
+			'wordlift-ui',
+			'wl_chord_params',
+			array(
+				'ajax_url' => admin_url( 'admin-ajax.php' ),
+				'action'   => 'wl_chord',
+			)
+		);
 
 		// Escaping atts.
 		$esc_class  = esc_attr( 'wl-chord' );
@@ -121,54 +131,60 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 
 		$scope = $this;
 
-		add_action( 'init', function () use ( $scope ) {
-			if ( ! function_exists( 'register_block_type' ) ) {
-				// Gutenberg is not active.
-				return;
+		add_action(
+			'init',
+			function () use ( $scope ) {
+				if ( ! function_exists( 'register_block_type' ) ) {
+					// Gutenberg is not active.
+					return;
+				}
+
+				register_block_type(
+					'wordlift/chord',
+					array(
+						'editor_script'   => 'wl-block-editor',
+						'render_callback' => function ( $attributes ) use ( $scope ) {
+							$attr_code = '';
+							foreach ( $attributes as $key => $value ) {
+								$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
+							}
+
+							return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
+						},
+						'attributes'      => array(
+							'width'       => array(
+								'type'    => 'string',
+								'default' => '100%',
+							),
+							'height'      => array(
+								'type'    => 'string',
+								'default' => '500px',
+							),
+							'main_color'  => array(
+								'type'    => 'string',
+								'default' => '000',
+							),
+							'depth'       => array(
+								'type'    => 'number',
+								'default' => 2,
+							),
+							'global'      => array(
+								'type'    => 'boolean',
+								'default' => false,
+							),
+							'preview'     => array(
+								'type'    => 'boolean',
+								'default' => false,
+							),
+							'preview_src' => array(
+								'type'    => 'string',
+								'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/chord.png',
+							),
+						),
+					)
+				);
 			}
-
-			register_block_type( 'wordlift/chord', array(
-				'editor_script'   => 'wl-block-editor',
-				'render_callback' => function ( $attributes ) use ( $scope ) {
-					$attr_code = '';
-					foreach ( $attributes as $key => $value ) {
-						$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
-					}
-
-					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
-				},
-				'attributes'      => array(
-					'width'      => array(
-						'type'    => 'string',
-						'default' => '100%',
-					),
-					'height'     => array(
-						'type'    => 'string',
-						'default' => '500px',
-					),
-					'main_color' => array(
-						'type'    => 'string',
-						'default' => '000',
-					),
-					'depth'      => array(
-						'type'    => 'number',
-						'default' => 2,
-					),
-					'global'     => array(
-						'type'    => 'boolean',
-						'default' => false,
-					),
-					'preview'     => array(
-						'type'    => 'boolean',
-						'default' => false,
-					),
-					'preview_src'     => array(
-						'type'    => 'string',
-						'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/chord.png',
-					),
-				),
-			) );
-		} );
+		);
 	}
 
 	/**

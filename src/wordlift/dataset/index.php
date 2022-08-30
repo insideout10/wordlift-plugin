@@ -44,5 +44,4 @@ if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
 		new Sync_Background_Process_Wpjson_Endpoint( $sync_background_process );
 		new Sync_Page();
 	}
-
 }

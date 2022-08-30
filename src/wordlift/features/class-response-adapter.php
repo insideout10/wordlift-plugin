@@ -4,7 +4,7 @@ namespace Wordlift\Features;
 
 class Response_Adapter {
 	const WL_FEATURES = '_wl_features';
-	const WL_1 = 'wl1';
+	const WL_1        = 'wl1';
 
 	function __construct() {
 
@@ -13,7 +13,7 @@ class Response_Adapter {
 
 		// Initialize from `$_ENV`: this is currently required for Unit Tests, since `tests/bootstrap.php` loads WordLift
 		// before it can actually query the enabled features via HTTP (mock), which would prevent files from being included.
-//		$this->init_from_env();
+		// $this->init_from_env();
 
 		// Register the `wl_features__enable__{feature-name}` filters.
 		$this->register_filters();
@@ -57,9 +57,7 @@ class Response_Adapter {
 				 */
 				do_action( "wl_feature__change__${feature_slug}", $new_value, $old_value, $feature_slug );
 			}
-
 		}
-
 
 		if ( isset( $updated_features ) ) {
 
@@ -88,15 +86,22 @@ class Response_Adapter {
 	}
 
 	private function init_from_env() {
-		$features = array_reduce( array_filter( array_keys( $_ENV ), function ( $key ) {
-			return preg_match( '~^WL_FEATURES__.*~', $key );
-		} ), function ( $features, $env ) {
-			$name              = strtolower( str_replace( '_', '-', substr( $env, strlen( 'WL_FEATURES__' ) ) ) );
-			$value             = wp_validate_boolean( getenv( $env ) );
-			$features[ $name ] = $value;
+		$features = array_reduce(
+			array_filter(
+				array_keys( $_ENV ),
+				function ( $key ) {
+					return preg_match( '~^WL_FEATURES__.*~', $key );
+				}
+			),
+			function ( $features, $env ) {
+				$name              = strtolower( str_replace( '_', '-', substr( $env, strlen( 'WL_FEATURES__' ) ) ) );
+				$value             = wp_validate_boolean( getenv( $env ) );
+				$features[ $name ] = $value;
 
-			return $features;
-		}, array() );
+				return $features;
+			},
+			array()
+		);
 
 		update_option( self::WL_FEATURES, (array) $features, true );
 	}

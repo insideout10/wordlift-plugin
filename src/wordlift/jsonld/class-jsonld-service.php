@@ -33,9 +33,9 @@ class Jsonld_Service {
 	/**
 	 * Jsonld_Service constructor.
 	 *
-	 * @param Wordlift_Jsonld_Service $legacy_jsonld_service
+	 * @param Wordlift_Jsonld_Service      $legacy_jsonld_service
 	 * @param Wordlift_Term_JsonLd_Adapter $term_jsonld_adapter
-	 * @param Jsonld_User_Service $jsonld_user_service
+	 * @param Jsonld_User_Service          $jsonld_user_service
 	 *
 	 * @throws Exception
 	 */
@@ -60,9 +60,9 @@ class Jsonld_Service {
 	/**
 	 * Get the JSON-LD structure for the specified type and id.
 	 *
-	 * @param int $type The requested type, one of 'HOMEPAGE', 'POST' or 'TERM'. Default 'POST'.
+	 * @param int      $type The requested type, one of 'HOMEPAGE', 'POST' or 'TERM'. Default 'POST'.
 	 * @param int|null $id The id. Default `null`.
-	 * @param int $context A context for the JSON-LD generation, valid values in Jsonld_Context_Enum.
+	 * @param int      $context A context for the JSON-LD generation, valid values in Jsonld_Context_Enum.
 	 *
 	 * @return array The JSON-LD structure.
 	 * @throws Exception Throws an exception if the type isn't recognized.

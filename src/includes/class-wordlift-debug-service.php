@@ -61,13 +61,15 @@ class Wordlift_Debug_Service {
 		$uri       = $this->entity_service->get_uri( $post_id );
 		$build_uri = $this->uri_service->build_uri( $post->post_title, $post->post_type );
 
-		wp_send_json_success( array(
-			'uri'               => $uri,
-			'post_title'        => sprintf( '%s (%s)', $post->post_title, mb_detect_encoding( $post->post_title ) ),
-			'post_title_ascii'  => mb_convert_encoding( $post->post_title, 'ASCII' ),
-			'build_uri'         => $build_uri,
-			'build_uri_convert' => mb_convert_encoding( $build_uri, 'ASCII' ),
-		) );
+		wp_send_json_success(
+			array(
+				'uri'               => $uri,
+				'post_title'        => sprintf( '%s (%s)', $post->post_title, mb_detect_encoding( $post->post_title ) ),
+				'post_title_ascii'  => mb_convert_encoding( $post->post_title, 'ASCII' ),
+				'build_uri'         => $build_uri,
+				'build_uri_convert' => mb_convert_encoding( $build_uri, 'ASCII' ),
+			)
+		);
 
 	}
 

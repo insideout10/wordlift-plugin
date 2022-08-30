@@ -55,11 +55,14 @@ class Background_Task_Started_State extends Abstract_Background_Task_State {
 		$offset = get_option( $this->context->get_option_prefix() . 'offset' );
 		$count  = get_option( $this->context->get_option_prefix() . 'count' );
 
-		$this->task->tick( $value, array(
-			'offset'     => $offset,
-			'count'      => $count,
-			'batch_size' => $this->batch_size,
-		) );
+		$this->task->tick(
+			$value,
+			array(
+				'offset'     => $offset,
+				'count'      => $count,
+				'batch_size' => $this->batch_size,
+			)
+		);
 
 		update_option( $this->context->get_option_prefix() . 'updated', time(), true );
 

@@ -2,8 +2,6 @@
 
 namespace Wordlift\Dataset;
 
-use Wordlift\Object_Type_Enum;
-
 interface Sync_Object_Adapter {
 
 	/**

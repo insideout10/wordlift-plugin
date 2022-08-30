@@ -1,6 +1,6 @@
 <?php
 
-require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
 /**
  * @since 3.36.0

@@ -9,7 +9,7 @@ class Jsonld_Context_Enum {
 	const PAGE = 1;
 	/** Carousel. */
 	const CAROUSEL = 2;
-	const FAQ = 3;
+	const FAQ      = 3;
 	/** REST services. */
 	const REST = 3;
 

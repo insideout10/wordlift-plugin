@@ -40,7 +40,6 @@ class Wordlift_Schemaorg_Property_Service {
 	 *
 	 * @return \Wordlift_Schemaorg_Property_Service The singleton instance.
 	 * @since 3.20.0
-	 *
 	 */
 	public static function get_instance() {
 
@@ -60,7 +59,6 @@ class Wordlift_Schemaorg_Property_Service {
 	 *  `type` and a `value` and optionally a `language`.
 	 * }
 	 * @since 3.20.0
-	 *
 	 */
 	public function get_all( $post_id ) {
 
@@ -102,7 +100,6 @@ class Wordlift_Schemaorg_Property_Service {
 	 *
 	 * @return array An array of meta keys.
 	 * @since 3.20.0
-	 *
 	 */
 	public function get_keys( $post_id ) {
 
@@ -113,9 +110,14 @@ class Wordlift_Schemaorg_Property_Service {
 		$post_meta_keys = array_unique( array_keys( $post_meta ) );
 
 		// Get only the `_wl_prop` keys. `array_values` resets the indexes.
-		$prop_keys = array_values( array_filter( $post_meta_keys, function ( $item ) {
-			return 0 === strpos( $item, Wordlift_Schemaorg_Property_Service::PREFIX );
-		} ) );
+		$prop_keys = array_values(
+			array_filter(
+				$post_meta_keys,
+				function ( $item ) {
+					return 0 === strpos( $item, Wordlift_Schemaorg_Property_Service::PREFIX );
+				}
+			)
+		);
 
 		return $prop_keys;
 	}

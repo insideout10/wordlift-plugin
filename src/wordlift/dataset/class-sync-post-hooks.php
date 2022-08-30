@@ -25,7 +25,7 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 	/**
 	 * Sync_Post_Hooks constructor.
 	 *
-	 * @param Sync_Service $sync_service
+	 * @param Sync_Service                $sync_service
 	 * @param Sync_Object_Adapter_Factory $sync_object_factory
 	 */
 	function __construct( $sync_service, $sync_object_factory ) {
@@ -59,7 +59,6 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 		// Get sticky posts changes.
 		add_action( 'update_option_sticky_posts', array( $this, 'sticky_posts' ), 10, 3 );
 
-
 	}
 
 	public function save_post( $post_id ) {
@@ -84,15 +83,21 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 
 	public function changed_post_meta( $meta_id, $post_id, $meta_key, $_meta_value ) {
 
-		if ( in_array( $meta_key,
-				apply_filters( 'wl_dataset__sync_post_hooks__ignored_meta_keys',
-					apply_filters( 'wl_dataset__sync_hooks__ignored_meta_keys',
-						array(
-							'_pingme',
-							'_encloseme',
-							'entity_url',
-						) ) ) )
-		     || ! in_array( get_post_type( $post_id ), \Wordlift_Entity_Service::valid_entity_post_types() )
+		if ( in_array(
+			$meta_key,
+			apply_filters(
+				'wl_dataset__sync_post_hooks__ignored_meta_keys',
+				apply_filters(
+					'wl_dataset__sync_hooks__ignored_meta_keys',
+					array(
+						'_pingme',
+						'_encloseme',
+						'entity_url',
+					)
+				)
+			)
+		)
+			 || ! in_array( get_post_type( $post_id ), \Wordlift_Entity_Service::valid_entity_post_types() )
 		) {
 			return;
 		}
@@ -111,10 +116,12 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 			if ( ! isset( $post ) ) {
 				return;
 			}
-			$this->sync_service->sync_many( array(
-				$this->sync_object_factory->create( Object_Type_Enum::POST, $post_id ),
-				$this->sync_object_factory->create( Object_Type_Enum::USER, $post->post_author )
-			) );
+			$this->sync_service->sync_many(
+				array(
+					$this->sync_object_factory->create( Object_Type_Enum::POST, $post_id ),
+					$this->sync_object_factory->create( Object_Type_Enum::USER, $post->post_author ),
+				)
+			);
 		} catch ( \Exception $e ) {
 			$this->log->error( "An error occurred while trying to sync post $post_id: " . $e->getMessage(), $e );
 		}
@@ -127,8 +134,11 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 
 	public function do_delete( $post_id ) {
 		try {
-			$this->sync_service->delete_one( Object_Type_Enum::POST, $post_id,
-				Wordpress_Content_Service::get_instance()->get_entity_id( Wordpress_Content_Id::create_post( $post_id ) ) );
+			$this->sync_service->delete_one(
+				Object_Type_Enum::POST,
+				$post_id,
+				Wordpress_Content_Service::get_instance()->get_entity_id( Wordpress_Content_Id::create_post( $post_id ) )
+			);
 		} catch ( \Exception $e ) {
 			$this->log->error( "An error occurred while trying to delete post $post_id: " . $e->getMessage(), $e );
 		}

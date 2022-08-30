@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Wordlift\Shipping_Data;
-
 
 use WC_Shipping_Zones;
 
@@ -53,7 +51,7 @@ class Shipping_Zones {
 	}
 
 	/**
-	 * @param array $jsonld
+	 * @param array   $jsonld
 	 * @param Product $product
 	 */
 	public function add_offer_shipping_details( &$jsonld, $product ) {
@@ -71,7 +69,7 @@ class Shipping_Zones {
 
 		foreach ( $wc_shipping_zones as $wc_shipping_zone ) {
 			if ( ! isset( $wc_shipping_zone->type )
-			     || ( 'country' !== $wc_shipping_zone->type && 'state' !== $wc_shipping_zone->type ) ) {
+				 || ( 'country' !== $wc_shipping_zone->type && 'state' !== $wc_shipping_zone->type ) ) {
 				continue;
 			}
 

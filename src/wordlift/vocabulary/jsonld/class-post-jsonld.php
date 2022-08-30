@@ -7,12 +7,9 @@
 namespace Wordlift\Vocabulary\Jsonld;
 
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
-use Wordlift\Vocabulary\Data\Entity_List\Entity_List_Factory;
 use Wordlift\Vocabulary\Terms_Compat;
 
 class Post_Jsonld {
-
-
 
 	public function enhance_post_jsonld() {
 		add_filter( 'wl_post_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 2 );
@@ -28,7 +25,7 @@ class Post_Jsonld {
 
 		return array(
 			'jsonld'     => $jsonld,
-			'references' => $references
+			'references' => $references,
 		);
 
 	}
@@ -81,15 +78,18 @@ class Post_Jsonld {
 	 */
 	public static function add_additional_attrs( $term, $entities ) {
 
-		return array_map( function ( $entity ) use ( $term ) {
-			$entity['@id'] = get_term_link( $term->term_id ) . '#id';
-			if ( ! empty( $term->description ) ) {
-				$entity['description'] = $term->description;
-			}
+		return array_map(
+			function ( $entity ) use ( $term ) {
+				$entity['@id'] = get_term_link( $term->term_id ) . '#id';
+				if ( ! empty( $term->description ) ) {
+					  $entity['description'] = $term->description;
+				}
 
-			return $entity;
+				return $entity;
 
-		}, $entities );
+			},
+			$entities
+		);
 
 	}
 

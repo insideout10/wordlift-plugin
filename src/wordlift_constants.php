@@ -50,7 +50,6 @@ defined( 'WL_ALL_ENTITY_TYPES' ) || define( 'WL_ALL_ENTITY_TYPES', false );
  *
  * @return string The path to the temp directory for the specific site.
  * @since 3.16.0
- *
  */
 function wl_temp_dir() {
 	$tempdir         = get_temp_dir();

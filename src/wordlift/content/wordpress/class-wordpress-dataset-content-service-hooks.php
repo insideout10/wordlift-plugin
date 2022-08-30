@@ -36,7 +36,6 @@ class Wordpress_Dataset_Content_Service_Hooks {
 		self::set_entity_id( Wordpress_Content_Id::create_term( $term_id ) );
 	}
 
-
 	public static function delete_term( $term_id ) {
 		self::delete( Wordpress_Content_Id::create_term( $term_id ) );
 	}
@@ -67,7 +66,6 @@ class Wordpress_Dataset_Content_Service_Hooks {
 				$content_service->set_entity_id( $content_id, $rel_uri );
 			}
 		} catch ( Exception $e ) {
-			//
 		}
 	}
 

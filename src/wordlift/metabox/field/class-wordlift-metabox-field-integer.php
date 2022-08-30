@@ -1,5 +1,6 @@
 <?php
 namespace Wordlift\Metabox\Field;
+
 /**
  * Metaxboxes: Integer Field.
  *
@@ -29,7 +30,7 @@ class Wordlift_Metabox_Field_Integer extends Wl_Metabox_Field {
 					type="number"
 					id="<?php echo esc_attr( $this->meta_name ); ?>"
 					class="<?php echo esc_attr( $this->meta_name ); ?>"
-					value="<?php echo esc_attr( $text ) ?>"
+					value="<?php echo esc_attr( $text ); ?>"
 					name="wl_metaboxes[<?php echo esc_attr( $this->meta_name ); ?>][]"
 					style="width:88%"
 					min="0"

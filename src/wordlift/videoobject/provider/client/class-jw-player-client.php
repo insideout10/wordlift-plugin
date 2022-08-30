@@ -20,7 +20,7 @@ class Jw_Player_Client extends Singleton implements Client {
 			if ( is_wp_error( $data ) ) {
 				continue;
 			}
-			$json_body  = wp_remote_retrieve_body( $data );
+			$json_body = wp_remote_retrieve_body( $data );
 
 			$video_data = json_decode( $json_body, true );
 			if ( ! $video_data ) {
@@ -36,9 +36,12 @@ class Jw_Player_Client extends Singleton implements Client {
 
 	public function get_video_ids( $video_urls ) {
 
-		return array_filter( $video_urls, function ( $item ) {
-			return strpos( $item, 'https://cdn.jwplayer.com/v2/media/', 0 ) !== false;
-		} );
+		return array_filter(
+			$video_urls,
+			function ( $item ) {
+				return strpos( $item, 'https://cdn.jwplayer.com/v2/media/', 0 ) !== false;
+			}
+		);
 
 	}
 
@@ -53,6 +56,5 @@ class Jw_Player_Client extends Singleton implements Client {
 	public function get_api_url() {
 		// Method not implemented, since we dont need api key
 	}
-
 
 }

@@ -22,7 +22,7 @@ class Entity_Helper {
 	 * Entity_Helper constructor.
 	 *
 	 * @param Wordlift_Entity_Uri_Service $entity_uri_service
-	 * @param Wordlift_Entity_Service $entity_service
+	 * @param Wordlift_Entity_Service     $entity_service
 	 */
 	protected function __construct( $entity_uri_service, $entity_service ) {
 
@@ -57,9 +57,12 @@ class Entity_Helper {
 
 		// Filter only the external URIs.
 		$entity_uri_service = $this->entity_uri_service;
-		$external_uris      = array_filter( $uris, function ( $item ) use ( $entity_uri_service ) {
-			return ! $entity_uri_service->is_internal( $item );
-		} );
+		$external_uris      = array_filter(
+			$uris,
+			function ( $item ) use ( $entity_uri_service ) {
+				return ! $entity_uri_service->is_internal( $item );
+			}
+		);
 
 		// Preload the URIs.
 		$entity_uri_service->preload_uris( $external_uris );

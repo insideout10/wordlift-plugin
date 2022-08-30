@@ -11,29 +11,32 @@ use Wordlift\Videoobject\Data\Video\Video;
 
 class Youtube extends Api_Provider {
 
-
 	const YT_API_FIELD_NAME = '__wl_video_object_youtube_api_key';
 
 	private static function get_thumbnails( $api_thumbnail_data ) {
-		return array_map( function ( $item ) {
-			return $item['url'];
+		return array_map(
+			function ( $item ) {
+				return $item['url'];
 
-		}, $api_thumbnail_data );
+			},
+			$api_thumbnail_data
+		);
 	}
 
-
 	public function get_videos_data( $videos ) {
-		$urls = array_map( function ( $video ) {
-			/**
-			 * @param $video Video
-			 */
-			return $video->get_url();
-		}, $videos );
+		$urls = array_map(
+			function ( $video ) {
+				/**
+				 * @param $video Video
+				 */
+				return $video->get_url();
+			},
+			$videos
+		);
 
 		return $this->get_data( $urls );
 
 	}
-
 
 	/**
 	 * @param $video_urls
@@ -49,7 +52,6 @@ class Youtube extends Api_Provider {
 
 		return $this->parse_youtube_video_data_from_response( $response_body );
 	}
-
 
 	/**
 	 * @param $response_body string
@@ -109,12 +111,12 @@ class Youtube extends Api_Provider {
 		}
 
 		if ( array_key_exists( 'statistics', $video_data )
-		     && array_key_exists( 'viewCount', $video_data['statistics'] ) ) {
+			 && array_key_exists( 'viewCount', $video_data['statistics'] ) ) {
 			$video->views = $video_data['statistics']['viewCount'];
 		}
 
 		if ( array_key_exists( 'liveStreamingDetails', $video_data ) &&
-		     array_key_exists( 'scheduledStartTime', $video_data['liveStreamingDetails'] ) ) {
+			 array_key_exists( 'scheduledStartTime', $video_data['liveStreamingDetails'] ) ) {
 			$video->is_live_video         = true;
 			$video->live_video_start_date = $video_data['liveStreamingDetails']['scheduledStartTime'];
 			try {
@@ -136,6 +138,5 @@ class Youtube extends Api_Provider {
 		return $video;
 
 	}
-
 
 }

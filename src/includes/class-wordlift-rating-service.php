@@ -115,7 +115,6 @@ class Wordlift_Rating_Service {
 	 * Create a {@link Wordlift_Rating_Service} instance.
 	 *
 	 * @since 3.10.0
-	 *
 	 */
 	protected function __construct() {
 
@@ -143,7 +142,6 @@ class Wordlift_Rating_Service {
 	 *
 	 * @return array An array representing the rating obj.
 	 * @since 3.3.0
-	 *
 	 */
 	public function set_rating_for( $post_id ) {
 
@@ -171,16 +169,14 @@ class Wordlift_Rating_Service {
 		return $rating;
 	}
 
-
 	/**
 	 * Get or calculate rating for a given entity
 	 *
-	 * @param int $post_id The entity post id.
+	 * @param int          $post_id The entity post id.
 	 * @param     $force_reload $warnings_needed If true, detailed warnings collection is provided with the rating obj.
 	 *
 	 * @return array An array representing the rating obj.
 	 * @since 3.3.0
-	 *
 	 */
 	public function get_rating_for( $post_id, $force_reload = false ) {
 
@@ -230,7 +226,6 @@ class Wordlift_Rating_Service {
 	 *
 	 * @return array An array representing the rating obj.
 	 * @since 3.3.0
-	 *
 	 */
 	private function calculate_rating_for( $post_id ) {
 
@@ -277,7 +272,8 @@ class Wordlift_Rating_Service {
 		global $wpdb;
 
 		$query = $wpdb->prepare(
-			"SELECT DISTINCT (meta_key) FROM $wpdb->postmeta  WHERE post_id = %d", $post->ID
+			"SELECT DISTINCT (meta_key) FROM $wpdb->postmeta  WHERE post_id = %d",
+			$post->ID
 		);
 
 		// Check intersection between available meta keys and expected ones
@@ -318,7 +314,6 @@ class Wordlift_Rating_Service {
 	 *
 	 * @return string The input HTML code.
 	 * @since 3.3.0
-	 *
 	 */
 	private function convert_raw_score_to_traffic_light( $score ) {
 		// RATING_MAX : $score = 3 : x
@@ -337,14 +332,12 @@ class Wordlift_Rating_Service {
 	 *
 	 * @return string The input HTML code.
 	 * @since 3.3.0
-	 *
 	 */
 	public function convert_raw_score_to_percentage( $score ) {
 
 		// RATING_MAX : $score = 100 : x
 		return round( ( $score * 100 ) / self::RATING_MAX, 0, PHP_ROUND_HALF_UP );
 	}
-
 
 	/**
 	 * Add admin notices for the current entity depending on the current rating.

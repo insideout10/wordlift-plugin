@@ -39,29 +39,45 @@ class Background_Task_Route {
 	public function register() {
 		Assertions::starts_with( $this->route_name, '/', 'The route name must start with a slash.' );
 
-		register_rest_route( self::VERSION_STRING, $this->route_name, array(
-			'methods'             => WP_REST_Server::CREATABLE,
-			'callback'            => array( $this->background_task, 'start' ),
-			'permission_callback' => array( $this, 'permission_callback' ),
-		) );
+		register_rest_route(
+			self::VERSION_STRING,
+			$this->route_name,
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this->background_task, 'start' ),
+				'permission_callback' => array( $this, 'permission_callback' ),
+			)
+		);
 
-		register_rest_route( self::VERSION_STRING, $this->route_name, array(
-			'methods'             => WP_REST_Server::READABLE,
-			'callback'            => array( $this->background_task, 'get_info' ),
-			'permission_callback' => array( $this, 'permission_callback' ),
-		) );
+		register_rest_route(
+			self::VERSION_STRING,
+			$this->route_name,
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this->background_task, 'get_info' ),
+				'permission_callback' => array( $this, 'permission_callback' ),
+			)
+		);
 
-		register_rest_route( self::VERSION_STRING, $this->route_name, array(
-			'methods'             => WP_REST_Server::DELETABLE,
-			'callback'            => array( $this->background_task, 'stop' ),
-			'permission_callback' => array( $this, 'permission_callback' ),
-		) );
+		register_rest_route(
+			self::VERSION_STRING,
+			$this->route_name,
+			array(
+				'methods'             => WP_REST_Server::DELETABLE,
+				'callback'            => array( $this->background_task, 'stop' ),
+				'permission_callback' => array( $this, 'permission_callback' ),
+			)
+		);
 
-		register_rest_route( self::VERSION_STRING, $this->route_name, array(
-			'methods'             => 'PUT',
-			'callback'            => array( $this->background_task, 'resume' ),
-			'permission_callback' => array( $this, 'permission_callback' ),
-		) );
+		register_rest_route(
+			self::VERSION_STRING,
+			$this->route_name,
+			array(
+				'methods'             => 'PUT',
+				'callback'            => array( $this->background_task, 'resume' ),
+				'permission_callback' => array( $this, 'permission_callback' ),
+			)
+		);
 
 	}
 

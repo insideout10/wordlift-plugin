@@ -1,5 +1,6 @@
 <?php
 namespace Wordlift\Jsonld;
+
 /**
  * This interface represents a reference
  *

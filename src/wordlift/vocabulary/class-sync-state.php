@@ -28,7 +28,7 @@ class Sync_State {
 	}
 
 	public function increment_index( $count ) {
-		$this->index       += $count;
+		$this->index      += $count;
 		$this->last_update = time();
 
 		return $this;
@@ -47,7 +47,7 @@ class Sync_State {
 			'index'       => $this->index,
 			'count'       => $this->count,
 			'last_update' => $this->last_update,
-			'state'       => $this->state
+			'state'       => $this->state,
 		);
 	}
 

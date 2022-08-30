@@ -7,8 +7,6 @@
  * @subpackage Wordlift/public
  */
 
-use Wordlift\Widgets\Srcset_Util;
-
 /**
  * Define the {@link Wordlift_Navigator_Shortcode} class which provides the
  * `wl_navigator` implementation.
@@ -41,25 +39,31 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 
 		$scope = $this;
 
-		add_action( 'init', function () use ( $scope ) {
-			if ( ! function_exists( 'register_block_type' ) ) {
-				// Gutenberg is not active.
-				return;
+		add_action(
+			'init',
+			function () use ( $scope ) {
+				if ( ! function_exists( 'register_block_type' ) ) {
+					// Gutenberg is not active.
+					return;
+				}
+
+				register_block_type(
+					'wordlift/navigator',
+					array(
+						'editor_script'   => 'wl-block-editor',
+						'render_callback' => function ( $attributes ) use ( $scope ) {
+							$attr_code = '';
+							foreach ( $attributes as $key => $value ) {
+								$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
+							}
+
+							return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
+						},
+						'attributes'      => $scope->get_navigator_block_attributes(),
+					)
+				);
 			}
-
-			register_block_type( 'wordlift/navigator', array(
-				'editor_script'   => 'wl-block-editor',
-				'render_callback' => function ( $attributes ) use ( $scope ) {
-					$attr_code = '';
-					foreach ( $attributes as $key => $value ) {
-						$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
-					}
-
-					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
-				},
-				'attributes'      => $scope->get_navigator_block_attributes(),
-			) );
-		} );
+		);
 	}
 
 	/**
@@ -70,21 +74,23 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 	 *
 	 * @return array $shortcode_atts
 	 * @since      3.20.0
-	 *
 	 */
 	private function make_shortcode_atts( $atts ) {
 
 		// Extract attributes and set default values.
-		$shortcode_atts = shortcode_atts( array(
-			'title'       => __( 'Related articles', 'wordlift' ),
-			'limit'       => 4,
-			'offset'      => 0,
-			'template_id' => '',
-			'post_id'     => '',
-			'uniqid'      => uniqid( 'wl-navigator-widget-' ),
-			'order_by'    => 'ID DESC',
-			'post_types'  => '',
-		), $atts );
+		$shortcode_atts = shortcode_atts(
+			array(
+				'title'       => __( 'Related articles', 'wordlift' ),
+				'limit'       => 4,
+				'offset'      => 0,
+				'template_id' => '',
+				'post_id'     => '',
+				'uniqid'      => uniqid( 'wl-navigator-widget-' ),
+				'order_by'    => 'ID DESC',
+				'post_types'  => '',
+			),
+			$atts
+		);
 
 		return $shortcode_atts;
 	}
@@ -96,7 +102,6 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 	 *
 	 * @return string Shortcode HTML for web
 	 * @since 3.20.0
-	 *
 	 */
 	private function web_shortcode( $atts ) {
 
@@ -116,15 +121,19 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		$sort         = esc_attr( sanitize_sql_orderby( sanitize_text_field( $shortcode_atts['order_by'] ) ) );
 		$navigator_id = ! empty( $shortcode_atts['uniqid'] ) ? esc_attr( sanitize_text_field( $shortcode_atts['uniqid'] ) ) : uniqid( 'wl-navigator-widget-' );
 
-		$rest_url = $post ? admin_url( 'admin-ajax.php?' . build_query( array(
-				'action'     => 'wl_navigator',
-				'uniqid'     => $navigator_id,
-				'post_id'    => $post->ID,
-				'limit'      => $limit,
-				'offset'     => $offset,
-				'sort'       => $sort,
-				'post_types' => $shortcode_atts['post_types']
-			) ) ) : false;
+		$rest_url = $post ? admin_url(
+			'admin-ajax.php?' . build_query(
+				array(
+					'action'     => 'wl_navigator',
+					'uniqid'     => $navigator_id,
+					'post_id'    => $post->ID,
+					'limit'      => $limit,
+					'offset'     => $offset,
+					'sort'       => $sort,
+					'post_types' => $shortcode_atts['post_types'],
+				)
+			)
+		) : false;
 
 		// avoid building the widget when no valid $rest_url
 		if ( ! $rest_url ) {
@@ -154,7 +163,6 @@ HTML;
 	 *
 	 * @return string Shortcode HTML for amp
 	 * @since 3.20.0
-	 *
 	 */
 	private function amp_shortcode( $atts ) {
 		// attributes extraction and boolean filtering
@@ -175,13 +183,17 @@ HTML;
 
 		$permalink_structure = get_option( 'permalink_structure' );
 		$delimiter           = empty( $permalink_structure ) ? '&' : '?';
-		$rest_url            = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/navigator' . $delimiter . build_query( array(
-				'uniqid'  => $navigator_id,
-				'post_id' => $post->ID,
-				'limit'   => $limit,
-				'offset'  => $offset,
-				'sort'    => $sort
-			) ) ) : false;
+		$rest_url            = $post ? rest_url(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE . '/navigator' . $delimiter . build_query(
+				array(
+					'uniqid'  => $navigator_id,
+					'post_id' => $post->ID,
+					'limit'   => $limit,
+					'offset'  => $offset,
+					'sort'    => $sort,
+				)
+			)
+		) : false;
 
 		// avoid building the widget when no valid $rest_url
 		if ( ! $rest_url ) {
@@ -193,8 +205,8 @@ HTML;
 		$rest_url = str_replace( array( 'http:', 'https:' ), '', $rest_url );
 
 		if ( empty( $template_id ) ) {
-			$template_id = "template-" . $navigator_id;
-			wp_enqueue_style( 'wordlift-amp-custom', plugin_dir_url( dirname( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css' );
+			$template_id = 'template-' . $navigator_id;
+			wp_enqueue_style( 'wordlift-amp-custom', plugin_dir_url( __DIR__ ) . '/css/wordlift-amp-custom.min.css' );
 		}
 
 		return <<<HTML
@@ -276,7 +288,7 @@ HTML;
 			'post_types'  => array(
 				'type'    => 'string',
 				'default' => '',
-			)
+			),
 		);
 	}
 

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Wordlift\Shipping_Data;
-
 
 class Free_Shipping_Shipping_Method extends Shipping_Method {
 
@@ -40,6 +38,5 @@ class Free_Shipping_Shipping_Method extends Shipping_Method {
 		);
 
 	}
-
 
 }

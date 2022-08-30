@@ -32,7 +32,6 @@ class Term_Store implements Store {
 		delete_term_meta( $id, $meta_key );
 	}
 
-
 	public static function add_meta( $id, $meta_key, $meta_value, $is_unique ) {
 		add_term_meta( $id, $meta_key, $meta_value, $is_unique );
 	}

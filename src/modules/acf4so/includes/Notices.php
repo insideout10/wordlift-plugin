@@ -14,7 +14,7 @@ class Notices {
 	}
 
 	public function register_hooks() {
-		add_action( 'admin_notices', [ $this, 'admin_notices' ] );
+		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 	}
 
 	public function admin_notices() {
@@ -53,13 +53,15 @@ class Notices {
 
 	}
 
-
 	private function display_notice( $message, $button_text ) {
 
 		$kses_options                 = array(
 			'p'      => array(),
 			'b'      => array(),
-			'button' => array( 'class' => array(), 'onclick' => array() )
+			'button' => array(
+				'class'   => array(),
+				'onclick' => array(),
+			),
 		);
 		$installation_success_message = __(
 			'</p>WordLift: <b>Advanced Custom Fields for Schema.org</b> plugin installed and activated.</p>',
@@ -67,44 +69,47 @@ class Notices {
 		);
 
 		$installing_message          = __( 'Installing <span class="spinner is-active"></span>', 'wordlift' );
-		$installation_failed_message = __( '<p>Wordlift: Advanced Custom Fields for Schema.org</b> Installation failed, please retry or contact support@wordlift.io</p>' .
-		                                   '<button class="button action" onclick="wordliftInstallAcf4so(this)">Retry</button>', 'wordlift' );
+		$installation_failed_message = __(
+			'<p>Wordlift: Advanced Custom Fields for Schema.org</b> Installation failed, please retry or contact support@wordlift.io</p>' .
+										   '<button class="button action" onclick="wordliftInstallAcf4so(this)">Retry</button>',
+			'wordlift'
+		);
 
 		?>
 
-        <script>
-            window.addEventListener("load", function () {
-                const pluginInstallationNotice = document.getElementById("wordlift_acf4so_plugin_installation_notice")
-                const installPlugin = (ajaxUrl) => fetch(`${ajaxUrl}?action=wl_install_and_activate_advanced-custom-fields-for-schema-org`)
-                    .then(response => response.ok ? response.json() : Promise.reject())
-                const ajaxUrl = "<?php echo esc_html( parse_url( admin_url( 'admin-ajax.php' ), PHP_URL_PATH ) ); ?>"
-                window.wordliftInstallAcf4so = function (installBtn) {
-                    installBtn.innerHTML = `<?php echo wp_kses( $installing_message, array( 'span' => array( 'class' => array() ) ) ) ?>`
-                    installPlugin(ajaxUrl)
-                        .catch(e => {
-                            pluginInstallationNotice.innerHTML = `<?php echo wp_kses( $installation_failed_message, $kses_options); ?>`
-                        })
-                        .then(() => {
-                            pluginInstallationNotice.innerHTML = `<?php echo wp_kses( $installation_success_message, $kses_options); ?>`
-                            pluginInstallationNotice.classList.remove('notice-error')
-                            pluginInstallationNotice.classList.add('notice-success')
-                        })
+		<script>
+			window.addEventListener("load", function () {
+				const pluginInstallationNotice = document.getElementById("wordlift_acf4so_plugin_installation_notice")
+				const installPlugin = (ajaxUrl) => fetch(`${ajaxUrl}?action=wl_install_and_activate_advanced-custom-fields-for-schema-org`)
+					.then(response => response.ok ? response.json() : Promise.reject())
+				const ajaxUrl = "<?php echo esc_html( parse_url( admin_url( 'admin-ajax.php' ), PHP_URL_PATH ) ); ?>"
+				window.wordliftInstallAcf4so = function (installBtn) {
+					installBtn.innerHTML = `<?php echo wp_kses( $installing_message, array( 'span' => array( 'class' => array() ) ) ); ?>`
+					installPlugin(ajaxUrl)
+						.catch(e => {
+							pluginInstallationNotice.innerHTML = `<?php echo wp_kses( $installation_failed_message, $kses_options ); ?>`
+						})
+						.then(() => {
+							pluginInstallationNotice.innerHTML = `<?php echo wp_kses( $installation_success_message, $kses_options ); ?>`
+							pluginInstallationNotice.classList.remove('notice-error')
+							pluginInstallationNotice.classList.add('notice-success')
+						})
 
-                };
-            })
-        </script>
+				};
+			})
+		</script>
 
 
-        <div class="notice notice-error" id="wordlift_acf4so_plugin_installation_notice">
-            <p>
+		<div class="notice notice-error" id="wordlift_acf4so_plugin_installation_notice">
+			<p>
 				<?php echo wp_kses( $message, array( 'b' => array() ) ); ?>
-                <button class="button action right" onclick="wordliftInstallAcf4so(this)">
+				<button class="button action right" onclick="wordliftInstallAcf4so(this)">
 					<?php esc_html_e( $button_text ); ?>
 
-                </button>
-            </p>
-            <br/>
-        </div>
+				</button>
+			</p>
+			<br/>
+		</div>
 		<?php
 	}
 
@@ -113,7 +118,7 @@ class Notices {
 	 */
 	private function is_package_type_supported() {
 		return apply_filters( 'wl_feature__enable__entity-types-professional', false ) ||
-		       apply_filters( 'wl_feature__enable__entity-types-business', false );
+			   apply_filters( 'wl_feature__enable__entity-types-business', false );
 	}
 
 }

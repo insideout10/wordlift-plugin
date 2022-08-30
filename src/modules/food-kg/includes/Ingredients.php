@@ -22,7 +22,6 @@ class Ingredients implements Iterator, Countable {
 	 */
 	private $i;
 
-
 	/**
 	 * @param string $body
 	 *
@@ -30,7 +29,7 @@ class Ingredients implements Iterator, Countable {
 	 */
 	public static function create_from_string( $body ) {
 		$lines = preg_split( '/\R/', $body );
-		$keys  = $data = [];
+		$keys  = $data = array();
 		foreach ( $lines as $line ) {
 			if ( preg_match( '@(^.+)\t(\{.*})$@', $line, $matches ) ) {
 				$keys[] = $matches[1];

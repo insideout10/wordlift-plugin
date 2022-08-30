@@ -39,10 +39,9 @@ class Wordlift_Term_JsonLd_Adapter {
 	 * Wordlift_Term_JsonLd_Adapter constructor.
 	 *
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
-	 * @param \Wordlift_Post_Converter $post_id_to_jsonld_converter The {@link Wordlift_Post_Converter} instance.
+	 * @param \Wordlift_Post_Converter     $post_id_to_jsonld_converter The {@link Wordlift_Post_Converter} instance.
 	 *
 	 * @since 3.20.0
-	 *
 	 */
 	public function __construct( $entity_uri_service, $post_id_to_jsonld_converter ) {
 
@@ -110,9 +109,12 @@ class Wordlift_Term_JsonLd_Adapter {
 		global $wp_query;
 
 		if ( ! is_null( $wp_query->posts ) ) {
-			return array_map( function ( $post ) {
-				return $post->ID;
-			}, $wp_query->posts );
+			return array_map(
+				function ( $post ) {
+					return $post->ID;
+				},
+				$wp_query->posts
+			);
 		}
 
 		if ( is_null( $id ) ) {
@@ -131,7 +133,6 @@ class Wordlift_Term_JsonLd_Adapter {
 	 */
 	public function wp_head() {
 		$query_object = get_queried_object();
-
 
 		// Check if it is a term page.
 		if ( ! $query_object instanceof WP_Term ) {
@@ -184,7 +185,7 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		$result = array(
 			'jsonld'     => array_merge( $jsonld_array, $entities_jsonld_array ),
-			'references' => array()
+			'references' => array(),
 		);
 
 		/**
@@ -235,9 +236,12 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		$wordlift_jsonld_service = Wordlift_Jsonld_Service::get_instance();
 
-		$local_entity_ids = array_filter( $entity_ids, function ( $uri ) use ( $entity_uri_service ) {
-			return $entity_uri_service->is_internal( $uri );
-		} );
+		$local_entity_ids = array_filter(
+			$entity_ids,
+			function ( $uri ) use ( $entity_uri_service ) {
+				return $entity_uri_service->is_internal( $uri );
+			}
+		);
 
 		// Bail out if there are no entities.
 		if ( empty( $local_entity_ids ) ) {
@@ -251,7 +255,6 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		return $entities_jsonld;
 	}
-
 
 	/**
 	 * @param $references
@@ -279,6 +282,5 @@ class Wordlift_Term_JsonLd_Adapter {
 		return $references_jsonld;
 
 	}
-
 
 }

@@ -39,7 +39,6 @@ class Vocabulary_Loader {
 		$entity_rest_endpoint = new Entity_Rest_Endpoint();
 		$entity_rest_endpoint->register_routes();
 
-
 		$post_jsonld = new Post_Jsonld();
 		$post_jsonld->enhance_post_jsonld();
 
@@ -51,14 +50,12 @@ class Vocabulary_Loader {
 
 		$analysis_background_service = new Analysis_Background_Service( $analysis_service );
 
-
 		new Tag_Created_Hook( $analysis_background_service );
 
 		new Background_Analysis_Endpoint( $analysis_background_service, $cache_service );
 
 		$reconcile_progress_endpoint = new Reconcile_Progress_Endpoint();
 		$reconcile_progress_endpoint->register_routes();
-
 
 		$term_page_hook = new Term_Page_Hook( $term_data_factory );
 		$term_page_hook->connect_hook();

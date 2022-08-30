@@ -82,7 +82,7 @@ use Wordlift\Widgets\Async_Template_Decorator;
  */
 class Wordlift {
 
-	//<editor-fold desc="## FIELDS">
+	// <editor-fold desc="## FIELDS">
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -304,6 +304,7 @@ class Wordlift {
 
 	/**
 	 * The Faq Content filter service
+	 *
 	 * @since  3.26.0
 	 * @access private
 	 * @var Faq_Content_Filter $faq_content_filter_service A {@link Faq_Content_Filter} instance.
@@ -568,7 +569,6 @@ class Wordlift {
 	 * @since  3.16.0
 	 * @access protected
 	 * @var  \Wordlift_Cached_Post_Converter $cached_postid_to_jsonld_converter The {@link Wordlift_Cached_Post_Converter} instance.
-	 *
 	 */
 	protected $cached_postid_to_jsonld_converter;
 
@@ -608,13 +608,14 @@ class Wordlift {
 
 	/**
 	 * A singleton instance of features registry.
+	 *
 	 * @since 3.30.0
 	 * @var Features_Registry
 	 */
 	private $features_registry;
 
 	private $analytics_settings_page;
-	//</editor-fold>
+	// </editor-fold>
 
 	// Experimental code added by Nishit for feature request 1496
 	private $webhook_loader;
@@ -639,10 +640,14 @@ class Wordlift {
 		$this->set_locale();
 
 		$that = $this;
-		add_action( 'plugins_loaded', function () use ( $that ) {
-			$that->define_admin_hooks( $that );
-			$that->define_public_hooks( $that );
-		}, 4 );
+		add_action(
+			'plugins_loaded',
+			function () use ( $that ) {
+				$that->define_admin_hooks( $that );
+				$that->define_public_hooks( $that );
+			},
+			4
+		);
 
 		// If we're in `WP_CLI` load the related files.
 		if ( class_exists( 'WP_CLI' ) ) {
@@ -656,7 +661,6 @@ class Wordlift {
 	 *
 	 * @return Wordlift The {@link Wordlift} singleton instance.
 	 * @since 3.11.2
-	 *
 	 */
 	public static function get_instance() {
 
@@ -686,328 +690,328 @@ class Wordlift {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-loader.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-loader.php';
 
 		// The class responsible for plugin uninstall.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-deactivator-feedback.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-deactivator-feedback.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-i18n.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-i18n.php';
 
 		/**
 		 * WordLift's supported languages.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-languages.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-languages.php';
 
 		/**
 		 * WordLift's supported countries.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-countries.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-countries.php';
 
 		/**
 		 * Provide support functions to sanitize data.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sanitizer.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-sanitizer.php';
 
 		/** Services. */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-log-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-http-api.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-redirect-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-configuration-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-post-type-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-link-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-image-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-log-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-http-api.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-redirect-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-configuration-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-entity-post-type-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-entity-type-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-entity-link-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-relation-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-image-service.php';
 
 		/**
 		 * The Schema service.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-schema-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-schema-service.php';
 
 		/**
 		 * The schema:url property service.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-property-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-schema-url-property-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-property-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-schema-url-property-service.php';
 
 		/**
 		 * The UI service.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-ui-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-ui-service.php';
 
 		/**
 		 * The Entity Types Taxonomy service.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-taxonomy-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-entity-type-taxonomy-service.php';
 
 		/**
 		 * The Entity service.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-uri-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-entity-uri-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-entity-service.php';
 
 		// Add the entity rating service.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-rating-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-rating-service.php';
 
 		/**
 		 * The User service.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-user-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-user-service.php';
 
 		/**
 		 * The Timeline service.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-timeline-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-timeline-service.php';
 
 		/**
 		 * The Topic Taxonomy service.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-topic-taxonomy-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-topic-taxonomy-service.php';
 
 		/**
 		 * The WordLift URI service.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-uri-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-property-factory.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sample-data-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-uri-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-property-factory.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-sample-data-service.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/properties/class-wordlift-property-getter-factory.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-attachment-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/properties/class-wordlift-property-getter-factory.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-attachment-service.php';
 
 		/**
 		 * Load the converters.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/intf-wordlift-post-converter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-abstract-post-to-jsonld-converter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-postid-to-jsonld-converter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-post-to-jsonld-converter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-to-jsonld-converter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-website-converter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/intf-wordlift-post-converter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-abstract-post-to-jsonld-converter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-postid-to-jsonld-converter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-entity-post-to-jsonld-converter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-post-to-jsonld-converter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-jsonld-website-converter.php';
 
 		/**
 		 * Load cache-related files.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/cache/require.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/cache/require.php';
 
 		/**
 		 * Load the content filter.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-content-filter-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-content-filter-service.php';
 
 		/*
 		 * Load the excerpt helper.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-excerpt-helper.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-post-excerpt-helper.php';
 
 		/**
 		 * Load the JSON-LD service to publish entities using JSON-LD.s
 		 *
 		 * @since 3.8.0
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-jsonld-service.php';
 
 		// The Publisher Service and the AJAX adapter.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-publisher-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-publisher-ajax-adapter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-publisher-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-publisher-ajax-adapter.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-adapter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-post-adapter.php';
 
 		/**
 		 * Load the WordLift key validation service.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-key-validation-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-key-validation-service.php';
 
 		// Load the `Wordlift_Category_Taxonomy_Service` class definition.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-category-taxonomy-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-category-taxonomy-service.php';
 
 		// Load the `Wordlift_Entity_Page_Service` class definition.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-page-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-entity-page-service.php';
 
 		/** Linked Data. */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-storage.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-meta-storage.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-property-storage.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-taxonomy-storage.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-schema-class-storage.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-author-storage.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-meta-uri-storage.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-image-storage.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-related-storage.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-url-property-storage.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-storage-factory.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/linked-data/storage/class-wordlift-storage.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/linked-data/storage/class-wordlift-post-meta-storage.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/linked-data/storage/class-wordlift-post-property-storage.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/linked-data/storage/class-wordlift-post-taxonomy-storage.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/linked-data/storage/class-wordlift-post-schema-class-storage.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/linked-data/storage/class-wordlift-post-author-storage.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/linked-data/storage/class-wordlift-post-meta-uri-storage.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/linked-data/storage/class-wordlift-post-image-storage.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/linked-data/storage/class-wordlift-post-related-storage.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/linked-data/storage/class-wordlift-url-property-storage.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/linked-data/storage/class-wordlift-storage-factory.php';
 
 		/** Services. */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-google-analytics-export-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-api-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-google-analytics-export-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-api-service.php';
 
 		/** Adapters. */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-newrelic-adapter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sample-data-ajax-adapter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-adapter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-wprocket-adapter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-tinymce-adapter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-newrelic-adapter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-sample-data-ajax-adapter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-entity-type-adapter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-wprocket-adapter.php';
 
 		/** Autocomplete. */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-adapter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-autocomplete-adapter.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-remote-image-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-remote-image-service.php';
 
 		/** Analytics */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/analytics/class-wordlift-analytics-connect.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/analytics/class-wordlift-analytics-connect.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin.php';
 
 		/**
 		 * The class to customize the entity list admin page.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-entity-list.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-entity-list.php';
 
 		/**
 		 * The Entity Types Taxonomy Walker (transforms checkboxes into radios).
 		 */
 		global $wp_version;
 		if ( version_compare( $wp_version, '5.3', '<' ) ) {
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-types-taxonomy-walker.php';
+			require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-entity-types-taxonomy-walker.php';
 		} else {
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-types-taxonomy-walker-5-3.php';
+			require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-entity-types-taxonomy-walker-5-3.php';
 		}
 
 		/**
 		 * The Notice service.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-notice-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-notice-service.php';
 
 		/**
 		 * The PrimaShop adapter.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-primashop-adapter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-primashop-adapter.php';
 
 		/**
 		 * The WordLift Dashboard service.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-dashboard.php';
 
 		/**
 		 * The admin 'Install wizard' page.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-setup.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-setup.php';
 
 		/**
 		 * The WordLift entity type list admin page controller.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-entity-taxonomy-list-page.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-entity-taxonomy-list-page.php';
 
 		/**
 		 * The WordLift entity type settings admin page controller.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-type-settings.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-entity-type-settings.php';
 
 		/**
 		 * The admin 'Download Your Data' page.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-download-your-data-page.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-download-your-data-page.php';
 
 		/**
 		 * The admin 'WordLift Settings' page.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/intf-wordlift-admin-element.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-input-element.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-input-radio-element.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-select-element.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-select2-element.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-language-select-element.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-country-select-element.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-tabs-element.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-author-element.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-publisher-element.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-page.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-analytics-page.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page-action-link.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-analytics-page-action-link.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/elements/intf-wordlift-admin-element.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/elements/class-wordlift-admin-input-element.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/elements/class-wordlift-admin-input-radio-element.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/elements/class-wordlift-admin-select-element.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/elements/class-wordlift-admin-select2-element.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/elements/class-wordlift-admin-language-select-element.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/elements/class-wordlift-admin-country-select-element.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/elements/class-wordlift-admin-tabs-element.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/elements/class-wordlift-admin-author-element.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/elements/class-wordlift-admin-publisher-element.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-page.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-settings-page.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-settings-analytics-page.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-settings-page-action-link.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-settings-analytics-page-action-link.php';
 
 		/** Admin Pages */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-user-profile-page.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-type-admin-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-user-profile-page.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-entity-type-admin-service.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-public.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-public.php';
 
 		/**
 		 * The shortcode abstract class.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-shortcode.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-shortcode.php';
 
 		/**
 		 * The Timeline shortcode.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-timeline-shortcode.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-timeline-shortcode.php';
 
 		/**
 		 * The Navigator shortcode.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-navigator-shortcode.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-navigator-shortcode.php';
 
 		/**
 		 * The Products Navigator shortcode.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-products-navigator-shortcode.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-products-navigator-shortcode.php';
 
 		/**
 		 * The chord shortcode.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-chord-shortcode.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-chord-shortcode.php';
 
 		/**
 		 * The geomap shortcode.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-geomap-shortcode.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-geomap-shortcode.php';
 
 		/**
 		 * The entity cloud shortcode.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-related-entities-cloud-shortcode.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-related-entities-cloud-shortcode.php';
 
 		/**
 		 * The entity glossary shortcode.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-alphabet-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-vocabulary-shortcode.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-alphabet-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-vocabulary-shortcode.php';
 
 		/**
 		 * Faceted Search shortcode.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-faceted-search-shortcode.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-faceted-search-shortcode.php';
 
 		/**
 		 * The ShareThis service.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-sharethis-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-sharethis-service.php';
 
 		/**
 		 * The SEO service.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-seo-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-seo-service.php';
 
 		/**
 		 * The AMP service.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-amp-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-amp-service.php';
 
 		/** Widgets */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-widget.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-related-entities-cloud-widget.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-context-cards.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-widget.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-related-entities-cloud-widget.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-context-cards.php';
 
 		/*
 		 * Batch Operations. They're similar to Batch Actions but do not require working on post types.
@@ -1016,8 +1020,8 @@ class Wordlift {
 		 *
 		 * @since 3.20.0
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch/intf-wordlift-batch-operation.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch/class-wordlift-batch-operation-ajax-adapter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/batch/intf-wordlift-batch-operation.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/batch/class-wordlift-batch-operation-ajax-adapter.php';
 
 		/*
 		 * Schema.org Services.
@@ -1025,9 +1029,9 @@ class Wordlift {
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 		 */
 		if ( apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES ) ) {
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-sync-service.php';
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-property-service.php';
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-class-service.php';
+			require_once plugin_dir_path( __DIR__ ) . 'includes/schemaorg/class-wordlift-schemaorg-sync-service.php';
+			require_once plugin_dir_path( __DIR__ ) . 'includes/schemaorg/class-wordlift-schemaorg-property-service.php';
+			require_once plugin_dir_path( __DIR__ ) . 'includes/schemaorg/class-wordlift-schemaorg-class-service.php';
 			new Wordlift_Schemaorg_Sync_Service();
 			$schemaorg_property_service = Wordlift_Schemaorg_Property_Service::get_instance();
 			new Wordlift_Schemaorg_Class_Service();
@@ -1049,7 +1053,7 @@ class Wordlift {
 		new Wordlift_Http_Api();
 
 		// Load the Install Service.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-service.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-service.php';
 		$this->install_service = new Wordlift_Install_Service();
 		$this->notice_service  = new Wordlift_Notice_Service();
 		$this->user_service    = Wordlift_User_Service::get_instance();
@@ -1059,378 +1063,382 @@ class Wordlift {
 		$this->entity_types_taxonomy_service = new Wordlift_Entity_Type_Taxonomy_Service();
 		// Create an entity type service instance. It'll be later bound to the init action.
 		$this->entity_post_type_service = new Wordlift_Entity_Post_Type_Service(
-			Wordlift_Entity_Service::TYPE_NAME, Wordlift_Configuration_Service::get_instance()->get_entity_base_path() );
+			Wordlift_Entity_Service::TYPE_NAME,
+			Wordlift_Configuration_Service::get_instance()->get_entity_base_path()
+		);
 		/* WordPress Admin. */
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();
 		// create an instance of the entity type setting admin page controller.
 		$this->entity_type_settings_admin_page = new Wordlift_Admin_Entity_Type_Settings();
 
-
 		$that = $this;
-		add_action( 'plugins_loaded', function () use ( &$that, $schemaorg_property_service ) {
-
-			/** Services. */
-			// Create the configuration service.
-			$api_service = new Wordlift_Api_Service();
-
-			// Create an entity link service instance. It'll be later bound to the post_type_link and pre_get_posts actions.
-			$that->entity_link_service = new Wordlift_Entity_Link_Service( $that->entity_post_type_service, Wordlift_Configuration_Service::get_instance()->get_entity_base_path() );
-
-			$schema_url_property_service = new Wordlift_Schema_Url_Property_Service();
-
-			$that->entity_uri_service = Wordlift_Entity_Uri_Service::get_instance();
-
-			// Create a new instance of the Redirect service.
-			$that->redirect_service = new Wordlift_Redirect_Service( $that->entity_uri_service );
-
-			// Create a new instance of the Timeline service and Timeline shortcode.
-			$that->timeline_service = new Wordlift_Timeline_Service();
-
-			$that->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
-
-			// Create an instance of the ShareThis service, later we hook it to the_content and the_excerpt filters.
-			$that->sharethis_service = new Wordlift_ShareThis_Service();
-
-			// Create an instance of the PrimaShop adapter.
-			$that->primashop_adapter = new Wordlift_PrimaShop_Adapter();
-
-			$uri_service = new Wordlift_Uri_Service( $GLOBALS['wpdb'] );
-
-			// Create the entity rating service.
-			$that->rating_service = Wordlift_Rating_Service::get_instance();
-
-			// Create entity list customization (wp-admin/edit.php).
-			$that->entity_list_service = new Wordlift_Entity_List_Service( $that->rating_service );
-
-			// Create an instance of the Publisher Service and the AJAX Adapter.
-			$that->publisher_service = Wordlift_Publisher_Service::get_instance();
-			$that->property_factory  = new Wordlift_Property_Factory( $schema_url_property_service );
-			$that->property_factory->register( Wordlift_Schema_Url_Property_Service::META_KEY, $schema_url_property_service );
-
-			$attachment_service = Wordlift_Attachment_Service::get_instance();
-
-			// Instantiate the JSON-LD service.
-			$property_getter                       = Wordlift_Property_Getter_Factory::create();
-			$that->post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( Wordlift_Entity_Type_Service::get_instance(), $that->user_service, $attachment_service );
-			$that->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( Wordlift_Entity_Type_Service::get_instance(), $that->user_service, $attachment_service, $property_getter, $schemaorg_property_service, $that->post_to_jsonld_converter );
-			$that->postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $that->entity_post_to_jsonld_converter, $that->post_to_jsonld_converter );
-			$that->jsonld_website_converter        = new Wordlift_Website_Jsonld_Converter( Wordlift_Entity_Type_Service::get_instance(), $that->user_service, $attachment_service );
-
-			$jsonld_cache                            = new Ttl_Cache( 'jsonld', 86400 );
-			$that->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter( $that->postid_to_jsonld_converter, $jsonld_cache );
-			/*
-			 * Load the `Wordlift_Term_JsonLd_Adapter`.
-			 *
-			 * @see https://github.com/insideout10/wordlift-plugin/issues/892
-			 *
-			 * @since 3.20.0
-			 */
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-term-jsonld-adapter.php';
-
-			$term_jsonld_adapter  = new Wordlift_Term_JsonLd_Adapter( $that->entity_uri_service, $that->cached_postid_to_jsonld_converter );
-			$that->jsonld_service = new Wordlift_Jsonld_Service( Wordlift_Entity_Service::get_instance(), $that->cached_postid_to_jsonld_converter, $that->jsonld_website_converter, $term_jsonld_adapter );
-
-			$jsonld_service = new Jsonld_Service(
-				$that->jsonld_service,
-				$term_jsonld_adapter,
-				new Jsonld_User_Service( $that->user_service ) );
-			new Jsonld_Endpoint( $jsonld_service, $that->entity_uri_service );
-
-			// Prints the JSON-LD in the head.
-			new Jsonld_Adapter( $that->jsonld_service );
-
-			new Jsonld_By_Id_Endpoint( $that->jsonld_service, $that->entity_uri_service );
-
-			/**
-			 * @since 3.37.1
-			 * Add mentions property to the entity.
-			 */
-			new Mentions();
-
-			$that->key_validation_service = new Wordlift_Key_Validation_Service();
-			$that->content_filter_service = Wordlift_Content_Filter_Service::get_instance();
-			// Creating Faq Content filter service.
-			$that->faq_content_filter_service = new Faq_Content_Filter();
-			$that->sample_data_service        = Wordlift_Sample_Data_Service::get_instance();
-			$that->sample_data_ajax_adapter   = new Wordlift_Sample_Data_Ajax_Adapter( $that->sample_data_service );
-
-			$that->loader->add_action( 'enqueue_block_editor_assets', $that, 'add_wl_enabled_blocks' );
-			$that->loader->add_action( 'admin_enqueue_scripts', $that, 'add_wl_enabled_blocks' );
-
-			/**
-			 * Filter: wl_feature__enable__blocks.
-			 *
-			 * @param bool whether the blocks needed to be registered, defaults to true.
-			 *
-			 * @return bool
-			 * @since 3.27.6
-			 */
-			if ( apply_filters( 'wl_feature__enable__blocks', true ) ) {
-				// Initialize the short-codes.
-				new Async_Template_Decorator( new Wordlift_Navigator_Shortcode() );
-				new Wordlift_Chord_Shortcode();
-				new Wordlift_Geomap_Shortcode();
-				new Wordlift_Timeline_Shortcode();
-				new Wordlift_Related_Entities_Cloud_Shortcode( Wordlift_Relation_Service::get_instance(), Wordlift_Entity_Service::get_instance() );
-				new Wordlift_Vocabulary_Shortcode();
-				new Async_Template_Decorator( new Wordlift_Faceted_Search_Shortcode() );
-			}
-
-			new Wordlift_Products_Navigator_Shortcode();
-
-
-			// Initialize the Context Cards Service
-			$that->context_cards_service = new Wordlift_Context_Cards_Service();
-
-			// Initialize the SEO service.
-			new Wordlift_Seo_Service();
-
-			// Initialize the AMP service.
-			new Wordlift_AMP_Service( $that->jsonld_service );
-
-			/** Services. */
-			$that->google_analytics_export_service = new Wordlift_Google_Analytics_Export_Service();
-			new Wordlift_Image_Service();
-
-			/** Adapters. */
-			$that->entity_type_adapter    = new Wordlift_Entity_Type_Adapter( Wordlift_Entity_Type_Service::get_instance() );
-			$that->publisher_ajax_adapter = new Wordlift_Publisher_Ajax_Adapter( $that->publisher_service );
-			$that->tinymce_adapter        = new Wordlift_Tinymce_Adapter( $that );
-
-			/*
-			 * Exclude our public js from WP-Rocket.
-			 *
-			 * @since 3.19.4
-			 *
-			 * @see https://github.com/insideout10/wordlift-plugin/issues/842.
-			 */
-			new Wordlift_WpRocket_Adapter();
-
-			/** WordPress Admin UI. */
-
-			// UI elements.
-			$that->input_element           = new Wordlift_Admin_Input_Element();
-			$that->radio_input_element     = new Wordlift_Admin_Radio_Input_Element();
-			$that->select2_element         = new Wordlift_Admin_Select2_Element();
-			$that->language_select_element = new Wordlift_Admin_Language_Select_Element();
-			$that->country_select_element  = new Wordlift_Admin_Country_Select_Element();
-			$tabs_element                  = new Wordlift_Admin_Tabs_Element();
-			$that->publisher_element       = new Wordlift_Admin_Publisher_Element( $that->publisher_service, $tabs_element, $that->select2_element );
-			$that->author_element          = new Wordlift_Admin_Author_Element( $that->publisher_service, $that->select2_element );
-
-			$that->settings_page             = Wordlift_Admin_Settings_Page::get_instance();
-			$that->settings_page_action_link = new Wordlift_Admin_Settings_Page_Action_Link( $that->settings_page );
-
-			$that->analytics_settings_page             = new Wordlift_Admin_Settings_Analytics_Page( $that->input_element, $that->radio_input_element );
-			$that->analytics_settings_page_action_link = new Wordlift_Admin_Settings_Analytics_Page_Action_Link( $that->analytics_settings_page );
-			$that->analytics_connect                   = new Wordlift_Analytics_Connect();
-
-			// Pages.
-			/*
-			 * Call the `wl_can_see_classification_box` filter to determine whether we can display the classification box.
-			 *
-			 * @since 3.20.3
-			 *
-			 * @see https://github.com/insideout10/wordlift-plugin/issues/914
-			 */
-			if ( apply_filters( 'wl_can_see_classification_box', true ) ) {
-				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-post-edit-page.php';
-				new Wordlift_Admin_Post_Edit_Page( $that );
-			}
-			new Wordlift_Entity_Type_Admin_Service();
-
-			/** Widgets */
-			$that->related_entities_cloud_widget = new Wordlift_Related_Entities_Cloud_Widget();
-
-			// Create an instance of the install wizard.
-			$that->admin_setup = new Wordlift_Admin_Setup( $that->key_validation_service, Wordlift_Entity_Service::get_instance(), $that->language_select_element, $that->country_select_element );
-
-			$that->category_taxonomy_service = new Wordlift_Category_Taxonomy_Service( $that->entity_post_type_service );
-
-			// User Profile.
-			new Wordlift_Admin_User_Profile_Page( $that->author_element, $that->user_service );
-
-			$that->entity_page_service = new Wordlift_Entity_Page_Service();
-
-			// Load the debug service if WP is in debug mode.
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-debug-service.php';
-				new Wordlift_Debug_Service( Wordlift_Entity_Service::get_instance(), $uri_service );
-			}
-
-			// Remote Image Service.
-			new Wordlift_Remote_Image_Service();
-
-			/*
-			 * Provides mappings between post types and entity types.
-			 *
-			 * @since 3.20.0
-			 *
-			 * @see https://github.com/insideout10/wordlift-plugin/issues/852.
-			 */
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-batch-action.php';
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/mapping/class-wordlift-mapping-service.php';
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/mapping/class-wordlift-mapping-ajax-adapter.php';
-
-			// Create an instance of the Mapping Service and assign it to the Ajax Adapter.
-			new Wordlift_Mapping_Ajax_Adapter( new Wordlift_Mapping_Service( Wordlift_Entity_Type_Service::get_instance() ) );
-
-			/*
-			 * Load the Mappings JSON-LD post processing.
-			 *
-			 * @since 3.25.0
-			 */
-
-			$mappings_dbo           = new Mappings_DBO();
-			$default_rule_validator = new Taxonomy_Rule_Validator();
-			new Post_Type_Rule_Validator();
-			// Taxonomy term rule validator for validating rules for term pages.
-			new Taxonomy_Term_Rule_Validator();
-			new Post_Taxonomy_Term_Rule_Validator();
-			$rule_validators_registry = new Rule_Validators_Registry( $default_rule_validator );
-			$rule_groups_validator    = new Rule_Groups_Validator( $rule_validators_registry );
-			$mappings_validator       = new Mappings_Validator( $mappings_dbo, $rule_groups_validator );
-
-			new Url_To_Entity_Transform_Function( $that->entity_uri_service );
-			new Taxonomy_To_Terms_Transform_Function();
-			new Post_Id_To_Entity_Transform_Function();
-			$mappings_transform_functions_registry = new Mappings_Transform_Functions_Registry();
-
-			/**
-			 * @since 3.27.1
-			 * Intiailize the acf group data formatter.
-			 */
-			new Acf_Group_Formatter();
-			new Jsonld_Converter( $mappings_validator, $mappings_transform_functions_registry );
-
-			/**
-			 * @since 3.26.0
-			 * Initialize the Faq JSON LD converter here - disabled.
-			 */
-			// new Faq_To_Jsonld_Converter();
-			/*
-			 * Use the Templates Ajax Endpoint to load HTML templates for the legacy Angular app via admin-ajax.php
-			 * end-point.
-			 *
-			 * @see https://github.com/insideout10/wordlift-plugin/issues/834
-			 * @since 3.24.4
-			 */
-			new Templates_Ajax_Endpoint();
-			// Call this static method to register FAQ routes to rest api - disabled
-			//Faq_Rest_Controller::register_routes();
-
-			$that->storage_factory = new Wordlift_Storage_Factory( Wordlift_Entity_Service::get_instance(), $that->user_service, $property_getter );
-
-			/** WL Autocomplete. */
-			$autocomplete_service       = new All_Autocomplete_Service( array(
-				new Local_Autocomplete_Service(),
-				new Linked_Data_Autocomplete_Service( Entity_Helper::get_instance(), $that->entity_uri_service, Wordlift_Entity_Service::get_instance() ),
-			) );
-			$that->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $autocomplete_service );
-
-			/**
-			 * @since 3.27.2
-			 * Integrate the recipe maker jsonld & set recipe
-			 * as default entity type to the wprm_recipe CPT.
-			 */
-			new Recipe_Maker_Post_Type_Hook();
-			$recipe_maker_validation_service = new Recipe_Maker_Validation_Service();
-			new Recipe_Maker_Jsonld_Hook( $attachment_service, $recipe_maker_validation_service );
-			new Recipe_Maker_After_Get_Jsonld_Hook( $recipe_maker_validation_service );
-			new Recipe_Maker_Jsonld_Swap( $recipe_maker_validation_service, $that->jsonld_service );
-			new Recipe_Maker_Warning( $recipe_maker_validation_service );
-
-
-			new Duplicate_Markup_Remover();
-
-			/**
-			 * @since 3.27.8
-			 * @see https://github.com/insideout10/wordlift-plugin/issues/1248
-			 */
-			new Key_Validation_Notice( $that->key_validation_service, Wordlift_Configuration_Service::get_instance() );
-			/**
-			 * @since 3.28.0
-			 * @see https://github.com/insideout10/wordlift-plugin/issues?q=assignee%3Anaveen17797+is%3Aopen
-			 */
-			new Entity_No_Index_Flag();
-
-			/**
-			 * @since 3.29.0
-			 * @see https://github.com/insideout10/wordlift-plugin/issues/1304
-			 */
-			new Entity_Rest_Service( Wordlift_Entity_Type_Service::get_instance() );
-
-			/**
-			 * Expand author in to references.
-			 * @since 3.30.0
-			 * @see https://github.com/insideout10/wordlift-plugin/issues/1318
-			 */
-
-
-			if ( apply_filters( 'wl_feature__enable__article-wrapper', false ) ) {
-				new Jsonld_Article_Wrapper( Wordlift_Post_To_Jsonld_Converter::get_instance(), $that->cached_postid_to_jsonld_converter );
-			}
-
-
-			if ( apply_filters( 'wl_feature__enable__match-terms', false ) ) {
-				$vocabulary_loader = new Vocabulary_Loader();
-				$vocabulary_loader->init_vocabulary();
-			}
-
-			/**
-			 *Added for feature request 1496 (Webhooks)
-			 */
-			if ( apply_filters( 'wl_feature__enable__webhooks', false ) ) {
-				$that->webhook_loader = new Webhooks_Loader();
-				$that->webhook_loader->init();
-			}
-
-			/**
-			 * @since 3.30.0
-			 * Add a checkbox to user option screen for wordlift admin.
-			 */
-			$wordlift_admin_checkbox = new Admin_User_Option();
-			$wordlift_admin_checkbox->connect_hook();
-
-			/**
-			 * @since 3.31.0
-			 * Init loader class for videoobject.
-			 */
-			$videoobject_loader = new Loader();
-			$videoobject_loader->init_feature();
-
-			/**
-			 * @since 3.35.0
-			 */
-			$google_addon_integration_loader = new \Wordlift\Google_Addon_Integration\Loader();
-			$google_addon_integration_loader->init_feature();
-
-			/**
-			 * @since 3.31.5
-			 * Create configuration endpoint for webapp to configure.
-			 */
-			new Config( $that->admin_setup, $that->key_validation_service );
-			/**
-			 * @since 3.31.7
-			 * Remove duplicate videoobject.
-			 */
-			new Videoobject_Duplicate_Remover();
-			$synonym_loader = new \Wordlift\Synonym\Loader();
-			$synonym_loader->init_feature();
-			/**
-			 * @since 3.32.0
-			 * Create loader for vocabulary terms.
-			 */
-			$vocabulary_terms_loader = new Vocabulary_Terms_Loader( Wordlift_Entity_Type_Service::get_instance(), $property_getter );
-			$vocabulary_terms_loader->init_feature();
-
-			new Entity_Type_Change_Handler(
-				Wordlift_Entity_Service::get_instance(),
-				Wordlift_Entity_Type_Service::get_instance()
-			);
-
-		}, 3 );
-
+		add_action(
+			'plugins_loaded',
+			function () use ( &$that, $schemaorg_property_service ) {
+
+				/** Services. */
+				// Create the configuration service.
+				$api_service = new Wordlift_Api_Service();
+
+				// Create an entity link service instance. It'll be later bound to the post_type_link and pre_get_posts actions.
+				$that->entity_link_service = new Wordlift_Entity_Link_Service( $that->entity_post_type_service, Wordlift_Configuration_Service::get_instance()->get_entity_base_path() );
+
+				$schema_url_property_service = new Wordlift_Schema_Url_Property_Service();
+
+				$that->entity_uri_service = Wordlift_Entity_Uri_Service::get_instance();
+
+				// Create a new instance of the Redirect service.
+				$that->redirect_service = new Wordlift_Redirect_Service( $that->entity_uri_service );
+
+				// Create a new instance of the Timeline service and Timeline shortcode.
+				$that->timeline_service = new Wordlift_Timeline_Service();
+
+				$that->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
+
+				// Create an instance of the ShareThis service, later we hook it to the_content and the_excerpt filters.
+				$that->sharethis_service = new Wordlift_ShareThis_Service();
+
+				// Create an instance of the PrimaShop adapter.
+				$that->primashop_adapter = new Wordlift_PrimaShop_Adapter();
+
+				$uri_service = new Wordlift_Uri_Service( $GLOBALS['wpdb'] );
+
+				// Create the entity rating service.
+				$that->rating_service = Wordlift_Rating_Service::get_instance();
+
+				// Create entity list customization (wp-admin/edit.php).
+				$that->entity_list_service = new Wordlift_Entity_List_Service( $that->rating_service );
+
+				// Create an instance of the Publisher Service and the AJAX Adapter.
+				$that->publisher_service = Wordlift_Publisher_Service::get_instance();
+				$that->property_factory  = new Wordlift_Property_Factory( $schema_url_property_service );
+				$that->property_factory->register( Wordlift_Schema_Url_Property_Service::META_KEY, $schema_url_property_service );
+
+				$attachment_service = Wordlift_Attachment_Service::get_instance();
+
+				// Instantiate the JSON-LD service.
+				$property_getter                       = Wordlift_Property_Getter_Factory::create();
+				$that->post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( Wordlift_Entity_Type_Service::get_instance(), $that->user_service, $attachment_service );
+				$that->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( Wordlift_Entity_Type_Service::get_instance(), $that->user_service, $attachment_service, $property_getter, $schemaorg_property_service, $that->post_to_jsonld_converter );
+				$that->postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $that->entity_post_to_jsonld_converter, $that->post_to_jsonld_converter );
+				$that->jsonld_website_converter        = new Wordlift_Website_Jsonld_Converter( Wordlift_Entity_Type_Service::get_instance(), $that->user_service, $attachment_service );
+
+				$jsonld_cache                            = new Ttl_Cache( 'jsonld', 86400 );
+				$that->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter( $that->postid_to_jsonld_converter, $jsonld_cache );
+				/*
+				* Load the `Wordlift_Term_JsonLd_Adapter`.
+				*
+				* @see https://github.com/insideout10/wordlift-plugin/issues/892
+				*
+				* @since 3.20.0
+				*/
+				require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-term-jsonld-adapter.php';
+
+				$term_jsonld_adapter  = new Wordlift_Term_JsonLd_Adapter( $that->entity_uri_service, $that->cached_postid_to_jsonld_converter );
+				$that->jsonld_service = new Wordlift_Jsonld_Service( Wordlift_Entity_Service::get_instance(), $that->cached_postid_to_jsonld_converter, $that->jsonld_website_converter, $term_jsonld_adapter );
+
+				$jsonld_service = new Jsonld_Service(
+					$that->jsonld_service,
+					$term_jsonld_adapter,
+					new Jsonld_User_Service( $that->user_service )
+				);
+				new Jsonld_Endpoint( $jsonld_service, $that->entity_uri_service );
+
+				// Prints the JSON-LD in the head.
+				new Jsonld_Adapter( $that->jsonld_service );
+
+				new Jsonld_By_Id_Endpoint( $that->jsonld_service, $that->entity_uri_service );
+
+				/**
+				 * @since 3.37.1
+				 * Add mentions property to the entity.
+				 */
+				new Mentions();
+
+				$that->key_validation_service = new Wordlift_Key_Validation_Service();
+				$that->content_filter_service = Wordlift_Content_Filter_Service::get_instance();
+				// Creating Faq Content filter service.
+				$that->faq_content_filter_service = new Faq_Content_Filter();
+				$that->sample_data_service        = Wordlift_Sample_Data_Service::get_instance();
+				$that->sample_data_ajax_adapter   = new Wordlift_Sample_Data_Ajax_Adapter( $that->sample_data_service );
+
+				$that->loader->add_action( 'enqueue_block_editor_assets', $that, 'add_wl_enabled_blocks' );
+				$that->loader->add_action( 'admin_enqueue_scripts', $that, 'add_wl_enabled_blocks' );
+
+				/**
+				 * Filter: wl_feature__enable__blocks.
+				 *
+				 * @param bool whether the blocks needed to be registered, defaults to true.
+				 *
+				 * @return bool
+				 * @since 3.27.6
+				 */
+				if ( apply_filters( 'wl_feature__enable__blocks', true ) ) {
+					// Initialize the short-codes.
+					new Async_Template_Decorator( new Wordlift_Navigator_Shortcode() );
+					new Wordlift_Chord_Shortcode();
+					new Wordlift_Geomap_Shortcode();
+					new Wordlift_Timeline_Shortcode();
+					new Wordlift_Related_Entities_Cloud_Shortcode( Wordlift_Relation_Service::get_instance(), Wordlift_Entity_Service::get_instance() );
+					new Wordlift_Vocabulary_Shortcode();
+					new Async_Template_Decorator( new Wordlift_Faceted_Search_Shortcode() );
+				}
+
+				new Wordlift_Products_Navigator_Shortcode();
+
+				// Initialize the Context Cards Service
+				$that->context_cards_service = new Wordlift_Context_Cards_Service();
+
+				// Initialize the SEO service.
+				new Wordlift_Seo_Service();
+
+				// Initialize the AMP service.
+				new Wordlift_AMP_Service( $that->jsonld_service );
+
+				/** Services. */
+				$that->google_analytics_export_service = new Wordlift_Google_Analytics_Export_Service();
+				new Wordlift_Image_Service();
+
+				/** Adapters. */
+				$that->entity_type_adapter    = new Wordlift_Entity_Type_Adapter( Wordlift_Entity_Type_Service::get_instance() );
+				$that->publisher_ajax_adapter = new Wordlift_Publisher_Ajax_Adapter( $that->publisher_service );
+				$that->tinymce_adapter        = new Wordlift_Tinymce_Adapter( $that );
+
+				/*
+				* Exclude our public js from WP-Rocket.
+				*
+				* @since 3.19.4
+				*
+				* @see https://github.com/insideout10/wordlift-plugin/issues/842.
+				*/
+				new Wordlift_WpRocket_Adapter();
+
+				/** WordPress Admin UI. */
+
+				// UI elements.
+				$that->input_element           = new Wordlift_Admin_Input_Element();
+				$that->radio_input_element     = new Wordlift_Admin_Radio_Input_Element();
+				$that->select2_element         = new Wordlift_Admin_Select2_Element();
+				$that->language_select_element = new Wordlift_Admin_Language_Select_Element();
+				$that->country_select_element  = new Wordlift_Admin_Country_Select_Element();
+				$tabs_element                  = new Wordlift_Admin_Tabs_Element();
+				$that->publisher_element       = new Wordlift_Admin_Publisher_Element( $that->publisher_service, $tabs_element, $that->select2_element );
+				$that->author_element          = new Wordlift_Admin_Author_Element( $that->publisher_service, $that->select2_element );
+
+				$that->settings_page             = Wordlift_Admin_Settings_Page::get_instance();
+				$that->settings_page_action_link = new Wordlift_Admin_Settings_Page_Action_Link( $that->settings_page );
+
+				$that->analytics_settings_page             = new Wordlift_Admin_Settings_Analytics_Page( $that->input_element, $that->radio_input_element );
+				$that->analytics_settings_page_action_link = new Wordlift_Admin_Settings_Analytics_Page_Action_Link( $that->analytics_settings_page );
+				$that->analytics_connect                   = new Wordlift_Analytics_Connect();
+
+				// Pages.
+				/*
+				* Call the `wl_can_see_classification_box` filter to determine whether we can display the classification box.
+				*
+				* @since 3.20.3
+				*
+				* @see https://github.com/insideout10/wordlift-plugin/issues/914
+				*/
+				if ( apply_filters( 'wl_can_see_classification_box', true ) ) {
+					require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-post-edit-page.php';
+					new Wordlift_Admin_Post_Edit_Page( $that );
+				}
+				new Wordlift_Entity_Type_Admin_Service();
+
+				/** Widgets */
+				$that->related_entities_cloud_widget = new Wordlift_Related_Entities_Cloud_Widget();
+
+				// Create an instance of the install wizard.
+				$that->admin_setup = new Wordlift_Admin_Setup( $that->key_validation_service, Wordlift_Entity_Service::get_instance(), $that->language_select_element, $that->country_select_element );
+
+				$that->category_taxonomy_service = new Wordlift_Category_Taxonomy_Service( $that->entity_post_type_service );
+
+				// User Profile.
+				new Wordlift_Admin_User_Profile_Page( $that->author_element, $that->user_service );
+
+				$that->entity_page_service = new Wordlift_Entity_Page_Service();
+
+				// Load the debug service if WP is in debug mode.
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-debug-service.php';
+					new Wordlift_Debug_Service( Wordlift_Entity_Service::get_instance(), $uri_service );
+				}
+
+				// Remote Image Service.
+				new Wordlift_Remote_Image_Service();
+
+				/*
+				* Provides mappings between post types and entity types.
+				*
+				* @since 3.20.0
+				*
+				* @see https://github.com/insideout10/wordlift-plugin/issues/852.
+				*/
+				require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-batch-action.php';
+				require_once plugin_dir_path( __DIR__ ) . 'includes/mapping/class-wordlift-mapping-service.php';
+				require_once plugin_dir_path( __DIR__ ) . 'includes/mapping/class-wordlift-mapping-ajax-adapter.php';
+
+				// Create an instance of the Mapping Service and assign it to the Ajax Adapter.
+				new Wordlift_Mapping_Ajax_Adapter( new Wordlift_Mapping_Service( Wordlift_Entity_Type_Service::get_instance() ) );
+
+				/*
+				* Load the Mappings JSON-LD post processing.
+				*
+				* @since 3.25.0
+				*/
+
+				$mappings_dbo           = new Mappings_DBO();
+				$default_rule_validator = new Taxonomy_Rule_Validator();
+				new Post_Type_Rule_Validator();
+				// Taxonomy term rule validator for validating rules for term pages.
+				new Taxonomy_Term_Rule_Validator();
+				new Post_Taxonomy_Term_Rule_Validator();
+				$rule_validators_registry = new Rule_Validators_Registry( $default_rule_validator );
+				$rule_groups_validator    = new Rule_Groups_Validator( $rule_validators_registry );
+				$mappings_validator       = new Mappings_Validator( $mappings_dbo, $rule_groups_validator );
+
+				new Url_To_Entity_Transform_Function( $that->entity_uri_service );
+				new Taxonomy_To_Terms_Transform_Function();
+				new Post_Id_To_Entity_Transform_Function();
+				$mappings_transform_functions_registry = new Mappings_Transform_Functions_Registry();
+
+				/**
+				 * @since 3.27.1
+				 * Intiailize the acf group data formatter.
+				 */
+				new Acf_Group_Formatter();
+				new Jsonld_Converter( $mappings_validator, $mappings_transform_functions_registry );
+
+				/**
+				 * @since 3.26.0
+				 * Initialize the Faq JSON LD converter here - disabled.
+				 */
+				// new Faq_To_Jsonld_Converter();
+				/*
+				* Use the Templates Ajax Endpoint to load HTML templates for the legacy Angular app via admin-ajax.php
+				* end-point.
+				*
+				* @see https://github.com/insideout10/wordlift-plugin/issues/834
+				* @since 3.24.4
+				*/
+				new Templates_Ajax_Endpoint();
+				// Call this static method to register FAQ routes to rest api - disabled
+				// Faq_Rest_Controller::register_routes();
+
+				$that->storage_factory = new Wordlift_Storage_Factory( Wordlift_Entity_Service::get_instance(), $that->user_service, $property_getter );
+
+				/** WL Autocomplete. */
+				$autocomplete_service       = new All_Autocomplete_Service(
+					array(
+						new Local_Autocomplete_Service(),
+						new Linked_Data_Autocomplete_Service( Entity_Helper::get_instance(), $that->entity_uri_service, Wordlift_Entity_Service::get_instance() ),
+					)
+				);
+				$that->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $autocomplete_service );
+
+				/**
+				 * @since 3.27.2
+				 * Integrate the recipe maker jsonld & set recipe
+				 * as default entity type to the wprm_recipe CPT.
+				 */
+				new Recipe_Maker_Post_Type_Hook();
+				$recipe_maker_validation_service = new Recipe_Maker_Validation_Service();
+				new Recipe_Maker_Jsonld_Hook( $attachment_service, $recipe_maker_validation_service );
+				new Recipe_Maker_After_Get_Jsonld_Hook( $recipe_maker_validation_service );
+				new Recipe_Maker_Jsonld_Swap( $recipe_maker_validation_service, $that->jsonld_service );
+				new Recipe_Maker_Warning( $recipe_maker_validation_service );
+
+				new Duplicate_Markup_Remover();
+
+				/**
+				 * @since 3.27.8
+				 * @see https://github.com/insideout10/wordlift-plugin/issues/1248
+				 */
+				new Key_Validation_Notice( $that->key_validation_service, Wordlift_Configuration_Service::get_instance() );
+				/**
+				 * @since 3.28.0
+				 * @see https://github.com/insideout10/wordlift-plugin/issues?q=assignee%3Anaveen17797+is%3Aopen
+				 */
+				new Entity_No_Index_Flag();
+
+				/**
+				 * @since 3.29.0
+				 * @see https://github.com/insideout10/wordlift-plugin/issues/1304
+				 */
+				new Entity_Rest_Service( Wordlift_Entity_Type_Service::get_instance() );
+
+				/**
+				 * Expand author in to references.
+				 *
+				 * @since 3.30.0
+				 * @see https://github.com/insideout10/wordlift-plugin/issues/1318
+				 */
+
+				if ( apply_filters( 'wl_feature__enable__article-wrapper', false ) ) {
+					new Jsonld_Article_Wrapper( Wordlift_Post_To_Jsonld_Converter::get_instance(), $that->cached_postid_to_jsonld_converter );
+				}
+
+				if ( apply_filters( 'wl_feature__enable__match-terms', false ) ) {
+					$vocabulary_loader = new Vocabulary_Loader();
+					$vocabulary_loader->init_vocabulary();
+				}
+
+				/**
+				 *Added for feature request 1496 (Webhooks)
+				 */
+				if ( apply_filters( 'wl_feature__enable__webhooks', false ) ) {
+					$that->webhook_loader = new Webhooks_Loader();
+					$that->webhook_loader->init();
+				}
+
+				/**
+				 * @since 3.30.0
+				 * Add a checkbox to user option screen for wordlift admin.
+				 */
+				$wordlift_admin_checkbox = new Admin_User_Option();
+				$wordlift_admin_checkbox->connect_hook();
+
+				/**
+				 * @since 3.31.0
+				 * Init loader class for videoobject.
+				 */
+				$videoobject_loader = new Loader();
+				$videoobject_loader->init_feature();
+
+				/**
+				 * @since 3.35.0
+				 */
+				$google_addon_integration_loader = new \Wordlift\Google_Addon_Integration\Loader();
+				$google_addon_integration_loader->init_feature();
+
+				/**
+				 * @since 3.31.5
+				 * Create configuration endpoint for webapp to configure.
+				 */
+				new Config( $that->admin_setup, $that->key_validation_service );
+				/**
+				 * @since 3.31.7
+				 * Remove duplicate videoobject.
+				 */
+				new Videoobject_Duplicate_Remover();
+				$synonym_loader = new \Wordlift\Synonym\Loader();
+				$synonym_loader->init_feature();
+				/**
+				 * @since 3.32.0
+				 * Create loader for vocabulary terms.
+				 */
+				$vocabulary_terms_loader = new Vocabulary_Terms_Loader( Wordlift_Entity_Type_Service::get_instance(), $property_getter );
+				$vocabulary_terms_loader->init_feature();
+
+				new Entity_Type_Change_Handler(
+					Wordlift_Entity_Service::get_instance(),
+					Wordlift_Entity_Type_Service::get_instance()
+				);
+
+			},
+			3
+		);
 
 		new Entity_Type_Setter();
 		$no_editor_analysis_loader = new \Wordlift\No_Editor_Analysis\Loader();
@@ -1463,8 +1471,7 @@ class Wordlift {
 	 * @access   private
 	 */
 	private function define_admin_hooks( $that ) {
-		$plugin_admin = new
-		Wordlift_Admin(
+		$plugin_admin = new Wordlift_Admin(
 			$that->get_plugin_name(),
 			$that->get_version(),
 			$that->notice_service,
@@ -1538,11 +1545,14 @@ class Wordlift {
 		 * @return bool
 		 * @since 3.27.6
 		 */
-		$that->features_registry->register_feature_from_slug( 'settings-download', true, array(
-			$that,
-			'register_screens'
-		) );
-
+		$that->features_registry->register_feature_from_slug(
+			'settings-download',
+			true,
+			array(
+				$that,
+				'register_screens',
+			)
+		);
 
 		// Hook the admin-ajax.php?action=wl_download_your_data&out=xyz links.
 		$that->loader->add_action( 'wp_ajax_wl_download_your_data', $that->download_your_data_page, 'download_your_data', 10 );
@@ -1611,12 +1621,12 @@ class Wordlift {
 		/**
 		 * Disabling Faq temporarily.
 		 * Load the tinymce editor button on the tool bar.
+		 *
 		 * @since 3.26.0
 		 */
-		//$that->loader->add_filter( 'tiny_mce_before_init', $that->faq_tinymce_adapter, 'register_custom_tags' );
-		//$that->loader->add_filter( 'mce_buttons', $that->faq_tinymce_adapter, 'register_faq_toolbar_button', 10, 1 );
-		//$that->loader->add_filter( 'mce_external_plugins', $that->faq_tinymce_adapter, 'register_faq_tinymce_plugin', 10, 1 );
-
+		// $that->loader->add_filter( 'tiny_mce_before_init', $that->faq_tinymce_adapter, 'register_custom_tags' );
+		// $that->loader->add_filter( 'mce_buttons', $that->faq_tinymce_adapter, 'register_faq_toolbar_button', 10, 1 );
+		// $that->loader->add_filter( 'mce_external_plugins', $that->faq_tinymce_adapter, 'register_faq_tinymce_plugin', 10, 1 );
 
 		$that->loader->add_action( 'wp_ajax_wl_sample_data_create', $that->sample_data_ajax_adapter, 'create' );
 		$that->loader->add_action( 'wp_ajax_wl_sample_data_delete', $that->sample_data_ajax_adapter, 'delete' );
@@ -1630,14 +1640,20 @@ class Wordlift {
 		Post_Excerpt_Rest_Controller::register_routes();
 
 		// Handle the autocomplete request.
-		add_action( 'wp_ajax_wl_autocomplete', array(
-			$that->autocomplete_adapter,
-			'wl_autocomplete',
-		) );
-		add_action( 'wp_ajax_nopriv_wl_autocomplete', array(
-			$that->autocomplete_adapter,
-			'wl_autocomplete',
-		) );
+		add_action(
+			'wp_ajax_wl_autocomplete',
+			array(
+				$that->autocomplete_adapter,
+				'wl_autocomplete',
+			)
+		);
+		add_action(
+			'wp_ajax_nopriv_wl_autocomplete',
+			array(
+				$that->autocomplete_adapter,
+				'wl_autocomplete',
+			)
+		);
 
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {
@@ -1648,24 +1664,31 @@ class Wordlift {
 
 		add_action( 'admin_footer', array( $deactivator_feedback, 'render_feedback_popup' ) );
 		add_action( 'admin_enqueue_scripts', array( $deactivator_feedback, 'enqueue_popup_scripts' ) );
-		add_action( 'wp_ajax_wl_deactivation_feedback', array(
-			$deactivator_feedback,
-			'wl_deactivation_feedback'
-		) );
+		add_action(
+			'wp_ajax_wl_deactivation_feedback',
+			array(
+				$deactivator_feedback,
+				'wl_deactivation_feedback',
+			)
+		);
 
 		/**
 		 * Always allow the `wordlift/classification` block.
 		 *
 		 * @since 3.23.0
 		 */
-		add_filter( 'allowed_block_types', function ( $value ) {
+		add_filter(
+			'allowed_block_types',
+			function ( $value ) {
 
-			if ( true === $value ) {
-				return $value;
-			}
+				if ( true === $value ) {
+					return $value;
+				}
 
-			return array_merge( (array) $value, array( 'wordlift/classification' ) );
-		}, PHP_INT_MAX );
+				return array_merge( (array) $value, array( 'wordlift/classification' ) );
+			},
+			PHP_INT_MAX
+		);
 
 		/**
 		 * @since 3.27.7
@@ -1805,6 +1828,7 @@ class Wordlift {
 
 		/**
 		 * Filter name: wl_feature__enable__product-navigator
+		 *
 		 * @since 3.32.3
 		 */
 		if ( apply_filters( 'wl_feature__enable__product-navigator', true ) ) {
@@ -1813,15 +1837,18 @@ class Wordlift {
 
 		if ( apply_filters( 'wl_feature__enable__blocks', true ) ) {
 			// To intimate JS
-			$enabled_blocks = array_merge( $enabled_blocks, array(
-				'wordlift/navigator',
-				'wordlift/chord',
-				'wordlift/geomap',
-				'wordlift/timeline',
-				'wordlift/cloud',
-				'wordlift/vocabulary',
-				'wordlift/faceted-search'
-			) );
+			$enabled_blocks = array_merge(
+				$enabled_blocks,
+				array(
+					'wordlift/navigator',
+					'wordlift/chord',
+					'wordlift/geomap',
+					'wordlift/timeline',
+					'wordlift/cloud',
+					'wordlift/vocabulary',
+					'wordlift/faceted-search',
+				)
+			);
 		}
 
 		wp_localize_script( 'wl_enabled_blocks', 'wlEnabledBlocks', $enabled_blocks );

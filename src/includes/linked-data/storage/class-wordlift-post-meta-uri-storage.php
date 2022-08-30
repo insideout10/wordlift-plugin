@@ -59,9 +59,12 @@ class Wordlift_Post_Meta_Uri_Storage extends Wordlift_Post_Meta_Storage {
 
 		$entity_service = $this->entity_service;
 
-		return array_map( function ( $item ) use ( $entity_service ) {
-			return $entity_service->get_uri( $item );
-		}, $values );
+		return array_map(
+			function ( $item ) use ( $entity_service ) {
+				return $entity_service->get_uri( $item );
+			},
+			$values
+		);
 	}
 
 }

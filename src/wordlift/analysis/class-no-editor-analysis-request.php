@@ -23,9 +23,12 @@ class No_Editor_Analysis_Request {
 
 		$permalink = get_permalink( $this->post_id );
 
-		$post_content_response = wp_remote_get( $permalink, array(
-			'timeout'     => 30,
-		));
+		$post_content_response = wp_remote_get(
+			$permalink,
+			array(
+				'timeout' => 30,
+			)
+		);
 
 		$page_body = wp_remote_retrieve_body( $post_content_response );
 

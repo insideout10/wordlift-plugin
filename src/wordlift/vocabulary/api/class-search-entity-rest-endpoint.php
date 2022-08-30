@@ -14,7 +14,6 @@ class Search_Entity_Rest_Endpoint {
 	 */
 	private $analysis_service;
 
-
 	/**
 	 * @var Cache
 	 */
@@ -37,12 +36,12 @@ class Search_Entity_Rest_Endpoint {
 					'entity' => array(
 						'validate_callback' => function ( $param ) {
 							return is_string( $param );
-						}
+						},
 					),
 				),
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
-				}
+				},
 			)
 		);
 
@@ -56,17 +55,17 @@ class Search_Entity_Rest_Endpoint {
 					'entity_data' => array(
 						'validate_callback' => function ( $param ) {
 							return is_array( $param );
-						}
+						},
 					),
 					'term_id'     => array(
 						'validate_callback' => function ( $param ) {
 							return is_numeric( $param );
-						}
-					)
+						},
+					),
 				),
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
-				}
+				},
 			)
 		);
 	}
@@ -104,21 +103,21 @@ class Search_Entity_Rest_Endpoint {
 			$label                   = $entity_data['label'];
 			$types                   = $entity_data['types'];
 			$autocomplete_entities[] = array(
-				"id"           => $entity_data["entityId"],
-				"labels"       => array( $label ),
-				"descriptions" => array( $entity_data['description'] ),
-				"types"        => $types,
-				"urls"         => array( $entity_id ),
-				"images"       => array(),
-				"sameAss"      => $entity_data['sameAs'],
-				"scope"        => "cloud",
-				"description"  => $entity_data['description'],
-				"mainType"     => $entity_data['mainType'],
-				"label"        => $label,
-				"displayTypes" => $types,
-				"value"        => $entity_id,
-				"confidence"   => $entity_data["confidence"],
-				"meta"         => $entity_data["meta"]
+				'id'           => $entity_data['entityId'],
+				'labels'       => array( $label ),
+				'descriptions' => array( $entity_data['description'] ),
+				'types'        => $types,
+				'urls'         => array( $entity_id ),
+				'images'       => array(),
+				'sameAss'      => $entity_data['sameAs'],
+				'scope'        => 'cloud',
+				'description'  => $entity_data['description'],
+				'mainType'     => $entity_data['mainType'],
+				'label'        => $label,
+				'displayTypes' => $types,
+				'value'        => $entity_id,
+				'confidence'   => $entity_data['confidence'],
+				'meta'         => $entity_data['meta'],
 			);
 		}
 

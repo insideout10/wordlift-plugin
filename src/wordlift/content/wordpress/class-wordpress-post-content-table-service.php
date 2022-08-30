@@ -50,11 +50,16 @@ class Wordpress_Post_Content_Table_Service extends Abstract_Wordpress_Content_Se
 		$rel_uri = $this->make_relative( $uri );
 
 		global $wpdb;
-		$row = $wpdb->get_row( $wpdb->prepare( "
+		$row = $wpdb->get_row(
+			$wpdb->prepare(
+				"
 			SELECT content_type, content_id
 			FROM {$wpdb->prefix}wl_entities
 			WHERE rel_uri = %s
-		", $rel_uri ) );
+		",
+				$rel_uri
+			)
+		);
 
 		if ( ! isset( $row ) || Object_Type_Enum::POST !== (int) $row->content_type ) {
 			return null;
@@ -87,7 +92,7 @@ class Wordpress_Post_Content_Table_Service extends Abstract_Wordpress_Content_Se
 					'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
 					'value'   => $uri,
 					'compare' => '=',
-				)
+				),
 			),
 		);
 
@@ -113,18 +118,24 @@ class Wordpress_Post_Content_Table_Service extends Abstract_Wordpress_Content_Se
 		Assertions::equals( $content_id->get_type(), Object_Type_Enum::POST, '`content_id` must be of type post.' );
 
 		global $wpdb;
-		$rel_uri = $wpdb->get_var( $wpdb->prepare( "
+		$rel_uri = $wpdb->get_var(
+			$wpdb->prepare(
+				"
 			SELECT rel_uri
 			FROM {$wpdb->prefix}wl_entities
 			WHERE content_id = %d AND content_type = %d
-		", $content_id->get_id(), $content_id->get_type() ) );
+		",
+				$content_id->get_id(),
+				$content_id->get_type()
+			)
+		);
 
 		return $rel_uri ? $this->make_absolute( $rel_uri ) : null;
 	}
 
 	/**
 	 * @param Wordpress_Content_Id $content_id
-	 * @param string $uri
+	 * @param string               $uri
 	 *
 	 * @return void
 	 * @throws Exception
@@ -140,11 +151,19 @@ class Wordpress_Post_Content_Table_Service extends Abstract_Wordpress_Content_Se
 		$rel_url = $this->make_relative( $uri );
 
 		global $wpdb;
-		$wpdb->query( $wpdb->prepare( "
+		$wpdb->query(
+			$wpdb->prepare(
+				"
 			INSERT INTO {$wpdb->prefix}wl_entities( content_id, content_type, rel_uri, rel_uri_hash )
 			VALUES( %d, %d, %s, SHA1( %s ) )
 			ON DUPLICATE KEY UPDATE rel_uri = VALUES( rel_uri ), rel_uri_hash = SHA1( VALUES( rel_uri ) );
-		", $content_id->get_id(), $content_id->get_type(), $rel_url, $rel_url ) );
+		",
+				$content_id->get_id(),
+				$content_id->get_type(),
+				$rel_url,
+				$rel_url
+			)
+		);
 	}
 
 	/**
@@ -164,9 +183,15 @@ class Wordpress_Post_Content_Table_Service extends Abstract_Wordpress_Content_Se
 	function delete( $content_id ) {
 		global $wpdb;
 
-		$wpdb->query( $wpdb->prepare( "
+		$wpdb->query(
+			$wpdb->prepare(
+				"
 			DELETE FROM {$wpdb->prefix}wl_entities
 			WHERE content_id = %d AND content_type = %d
-		", $content_id->get_id(), $content_id->get_type() ) );
+		",
+				$content_id->get_id(),
+				$content_id->get_type()
+			)
+		);
 	}
 }

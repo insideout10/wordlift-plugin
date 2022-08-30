@@ -10,7 +10,6 @@ use Wordlift\Jsonld\Jsonld_Context_Enum;
 
 class Recipe_Maker_Jsonld_Swap {
 
-
 	/**
 	 * @var Recipe_Maker_Validation_Service
 	 */
@@ -57,7 +56,7 @@ class Recipe_Maker_Jsonld_Swap {
 		$post_jsonld = $this->jsonld_service->get_jsonld( false, $post_id, Jsonld_Context_Enum::PAGE );
 
 		if ( 0 === count( $post_jsonld ) || ! array_key_exists( 'mentions', $post_jsonld[0] )
-		     || 0 === count( $post_jsonld[0]['mentions'] ) ) {
+			 || 0 === count( $post_jsonld[0]['mentions'] ) ) {
 			// Even if we don't have mentions return the metadata.
 			return $metadata;
 		}
@@ -66,6 +65,5 @@ class Recipe_Maker_Jsonld_Swap {
 
 		return $metadata;
 	}
-
 
 }

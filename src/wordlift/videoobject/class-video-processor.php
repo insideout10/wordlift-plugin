@@ -3,13 +3,11 @@
 namespace Wordlift\Videoobject;
 
 use Wordlift\Videoobject\Data\Embedded_Video\Embedded_Video;
-use Wordlift\Videoobject\Data\Video\Video;
 use Wordlift\Videoobject\Data\Video_Storage\Storage;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 use Wordlift\Videoobject\Parser\Parser_Factory;
 use Wordlift\Videoobject\Provider\Client\Client;
 use Wordlift\Videoobject\Provider\Client\Client_Factory;
-use Wordlift\Videoobject\Provider\Client\Youtube_Client;
 use Wordlift\Videoobject\Provider\Provider_Factory;
 
 class Video_Processor {
@@ -23,7 +21,7 @@ class Video_Processor {
 		$this->api_clients = array(
 			Client_Factory::get_client( Client_Factory::YOUTUBE ),
 			Client_Factory::get_client( Client_Factory::VIMEO ),
-			Client_Factory::get_client( Client_Factory::JWPLAYER )
+			Client_Factory::get_client( Client_Factory::JWPLAYER ),
 		);
 	}
 
@@ -45,7 +43,6 @@ class Video_Processor {
 
 	}
 
-
 	private function get_video_ids( $video_urls ) {
 		$clients   = $this->api_clients;
 		$video_ids = array();
@@ -58,7 +55,6 @@ class Video_Processor {
 
 		return array_unique( $video_ids );
 	}
-
 
 	/**
 	 * @param $storage Storage
@@ -75,18 +71,21 @@ class Video_Processor {
 	/**
 	 * @param Storage $storage
 	 * @param $post_id
-	 * @param array $embedded_videos
+	 * @param array   $embedded_videos
 	 *
 	 * @return array An array of videos which exist on storage, not on post content.
 	 */
 	private function get_videos_to_be_deleted( Storage $storage, $post_id, array $embedded_videos ) {
 		$videos_in_store     = $storage->get_all_videos( $post_id );
-		$embedded_video_urls = array_map( function ( $embedded_video ) {
-			/**
-			 * @var $embedded_video Embedded_Video
-			 */
-			return $embedded_video->get_url();
-		}, $embedded_videos );
+		$embedded_video_urls = array_map(
+			function ( $embedded_video ) {
+				/**
+				 * @var $embedded_video Embedded_Video
+				 */
+				return $embedded_video->get_url();
+			},
+			$embedded_videos
+		);
 
 		/**
 		 * Previously we are checking if the captured url is content_url to delete it from the storage
@@ -97,17 +96,22 @@ class Video_Processor {
 
 		$that = $this;
 
-		return array_filter( $videos_in_store, function ( $video ) use ( $embedded_video_ids, $embedded_video_urls, $that ) {
-			/**
-			 * If the video id doesnt exist on the content then we need to return it
-			 * in order to delete that video.
-			 */
-			return count( array_intersect(
-					$that->get_video_ids( array( $video->id ) ),
-					$embedded_video_ids
-				) ) === 0;
+		return array_filter(
+			$videos_in_store,
+			function ( $video ) use ( $embedded_video_ids, $embedded_video_urls, $that ) {
+				/**
+				 * If the video id doesnt exist on the content then we need to return it
+				 * in order to delete that video.
+				 */
+				return count(
+					array_intersect(
+						$that->get_video_ids( array( $video->id ) ),
+						$embedded_video_ids
+					)
+				) === 0;
 
-		} );
+			}
+		);
 	}
 
 	/**
@@ -166,24 +170,32 @@ class Video_Processor {
 	 */
 	private function get_videos_without_existing_data( $storage, $post_id, $embedded_videos ) {
 		$videos_in_store     = $storage->get_all_videos( $post_id );
-		$video_urls_in_store = array_map( function ( $video ) {
-			return $video->id;
-		}, $videos_in_store );
+		$video_urls_in_store = array_map(
+			function ( $video ) {
+				return $video->id;
+			},
+			$videos_in_store
+		);
 
 		$video_ids_in_store = $this->get_video_ids( $video_urls_in_store );
 
 		$that = $this;
 
-		return array_filter( $embedded_videos, function ( $embedded_video ) use ( $video_ids_in_store, $that ) {
-			/**
-			 * If the video id exist on content, not on storage then
-			 * we need to fetch the data.
-			 */
-			return count( array_intersect(
-					$that->get_video_ids( array( $embedded_video->get_url() ) ),
-					$video_ids_in_store
-				) ) === 0;
-		} );
+		return array_filter(
+			$embedded_videos,
+			function ( $embedded_video ) use ( $video_ids_in_store, $that ) {
+				/**
+				 * If the video id exist on content, not on storage then
+				 * we need to fetch the data.
+				 */
+				return count(
+					array_intersect(
+						$that->get_video_ids( array( $embedded_video->get_url() ) ),
+						$video_ids_in_store
+					)
+				) === 0;
+			}
+		);
 	}
 
 	/**
@@ -192,17 +204,20 @@ class Video_Processor {
 	 * @return array
 	 */
 	private function get_youtube_videos( $embedded_videos ) {
-		return array_filter( $embedded_videos, function ( $embedded_video ) {
-			/**
-			 * it should have youtube.com or youtu.be in the url
-			 *
-			 * @param $embedded_video Embedded_Video
-			 */
-			$video_url = $embedded_video->get_url();
+		return array_filter(
+			$embedded_videos,
+			function ( $embedded_video ) {
+				/**
+				 * it should have youtube.com or youtu.be in the url
+				 *
+				 * @param $embedded_video Embedded_Video
+				 */
+				$video_url = $embedded_video->get_url();
 
-			return strpos( $video_url, "youtube.com" ) !== false ||
-			       strpos( $video_url, "youtu.be" ) !== false;
-		} );
+				return strpos( $video_url, 'youtube.com' ) !== false ||
+				   strpos( $video_url, 'youtu.be' ) !== false;
+			}
+		);
 	}
 
 	/**
@@ -211,30 +226,35 @@ class Video_Processor {
 	 * @return array
 	 */
 	private function get_vimeo_videos( $embedded_videos ) {
-		return array_filter( $embedded_videos, function ( $embedded_video ) {
-			/**
-			 * it should have vimeo.com in the url
-			 *
-			 * @param $embedded_video Embedded_Video
-			 */
-			$video_url = $embedded_video->get_url();
+		return array_filter(
+			$embedded_videos,
+			function ( $embedded_video ) {
+				/**
+				 * it should have vimeo.com in the url
+				 *
+				 * @param $embedded_video Embedded_Video
+				 */
+				$video_url = $embedded_video->get_url();
 
-			return strpos( $video_url, "vimeo.com" ) !== false;
-		} );
+				return strpos( $video_url, 'vimeo.com' ) !== false;
+			}
+		);
 	}
 
 	private function get_jw_player_videos( $embedded_videos ) {
-		return array_filter( $embedded_videos, function ( $embedded_video ) {
-			/**
-			 * it should have vimeo.com in the url
-			 *
-			 * @param $embedded_video Embedded_Video
-			 */
-			$video_url = $embedded_video->get_url();
+		return array_filter(
+			$embedded_videos,
+			function ( $embedded_video ) {
+				/**
+				 * it should have vimeo.com in the url
+				 *
+				 * @param $embedded_video Embedded_Video
+				 */
+				$video_url = $embedded_video->get_url();
 
-			return strpos( $video_url, 'https://cdn.jwplayer.com/v2/media/', 0 ) !== false;
-		} );
+				return strpos( $video_url, 'https://cdn.jwplayer.com/v2/media/', 0 ) !== false;
+			}
+		);
 	}
-
 
 }
