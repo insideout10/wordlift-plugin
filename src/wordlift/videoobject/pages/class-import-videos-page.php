@@ -35,7 +35,8 @@ class Import_Videos_Page {
 			'wl-videos-sync-page',
 			plugin_dir_url( __FILE__ ) . 'assets/videoobject-import-page.js',
 			array( 'wp-api' ),
-			\Wordlift::get_instance()->get_version()
+			WORDLIFT_VERSION,
+			false
 		);
 		wp_localize_script(
 			'wl-videos-sync-page',

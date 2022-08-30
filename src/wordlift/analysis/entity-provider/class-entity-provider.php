@@ -4,5 +4,6 @@ namespace Wordlift\Analysis\Entity_Provider;
 
 interface Entity_Provider {
 
-	function get_entity( $uri );
+	public function get_entity( $uri );
+
 }

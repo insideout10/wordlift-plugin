@@ -129,7 +129,9 @@ class Youtube extends Api_Provider {
 				// we add 1 day to start date
 				$end_date->add( new DateInterval( 'P1D' ) );
 				$video->live_video_end_date = $end_date->format( 'c' );
+			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			} catch ( \Exception $e ) {
+				// No need to do anything here.
 			}
 		}
 

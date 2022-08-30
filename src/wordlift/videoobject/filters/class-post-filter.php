@@ -20,7 +20,7 @@ class Post_Filter {
 	}
 
 	public function init() {
-		add_action( 'save_post', array( $this, 'save_post' ), 10, 3 );
+		add_action( 'save_post', array( $this, 'save_post' ), 10, 2 );
 	}
 
 	/**
@@ -28,7 +28,7 @@ class Post_Filter {
 	 * @param $post \WP_Post
 	 * @param $update bool
 	 */
-	public function save_post( $post_id, $post, $update ) {
+	public function save_post( $post_id, $post ) {
 
 		if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
 			return;

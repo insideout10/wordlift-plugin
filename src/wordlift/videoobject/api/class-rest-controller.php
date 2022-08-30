@@ -78,6 +78,7 @@ class Rest_Controller {
 				},
 				'args'                => array(
 					'post_id' => array(
+						// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 						'validate_callback' => function ( $param, $request, $key ) {
 							return is_numeric( $param ) && $param;
 						},
@@ -100,12 +101,14 @@ class Rest_Controller {
 				},
 				'args'                => array(
 					'post_id' => array(
+						// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 						'validate_callback' => function ( $param, $request, $key ) {
 							return is_numeric( $param ) && $param;
 						},
 						'required'          => true,
 					),
 					'videos'  => array(
+						// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 						'validate_callback' => function ( $param, $request, $key ) {
 							return is_array( $param ) && $param;
 						},

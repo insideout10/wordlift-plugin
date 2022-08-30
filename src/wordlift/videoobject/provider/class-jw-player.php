@@ -56,7 +56,7 @@ class Jw_Player extends Api_Provider {
 					);
 
 					$video->duration    = 'PT' . (int) $playlist_item_data['duration'] . 'S';
-					$video->upload_date = date( 'c', (int) $playlist_item_data['pubdate'] );
+					$video->upload_date = gmdate( 'c', (int) $playlist_item_data['pubdate'] );
 
 					$video_content_urls_data = array_filter(
 						$playlist_item_data['sources'],

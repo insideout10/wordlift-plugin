@@ -31,7 +31,6 @@ class Entity_Type {
 	 */
 	public function render_ui( $term ) {
 
-		$entity_types_text     = __( 'Entity Types', 'wordlift' );
 		$selected_entity_types = get_term_meta( $term->term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		/**
@@ -116,7 +115,9 @@ class Entity_Type {
 		);
 		wp_enqueue_style(
 			'wl-vocabulary-term',
-			plugin_dir_url( dirname( __DIR__ ) ) . '/js/dist/vocabulary-term.css'
+			plugin_dir_url( dirname( __DIR__ ) ) . '/js/dist/vocabulary-term.css',
+			array(),
+			WORDLIFT_VERSION
 		);
 	}
 

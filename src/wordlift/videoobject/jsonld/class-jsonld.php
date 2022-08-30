@@ -22,12 +22,12 @@ class Jsonld {
 	 * @param $video_storage Storage
 	 */
 	public function __construct( $video_storage ) {
-		add_action( 'wl_post_jsonld', array( $this, 'wl_post_jsonld' ), 10, 3 );
-		add_action( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 10, 3 );
+		add_action( 'wl_post_jsonld', array( $this, 'wl_post_jsonld' ), 10, 2 );
+		add_action( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 10, 2 );
 		$this->video_storage = $video_storage;
 	}
 
-	public function wl_after_get_jsonld( $jsonld, $post_id, $context ) {
+	public function wl_after_get_jsonld( $jsonld, $post_id ) {
 		if ( 0 === count( $jsonld ) ) {
 			return $jsonld;
 		}
@@ -92,7 +92,7 @@ class Jsonld {
 		return array_merge( $existing_video_data, $new_video_data );
 	}
 
-	public function wl_post_jsonld( $jsonld, $post_id, $references ) {
+	public function wl_post_jsonld( $jsonld, $post_id ) {
 
 		$video_jsonld = $this->get_videos_jsonld( $post_id );
 		if ( count( $video_jsonld ) === 0 ) {

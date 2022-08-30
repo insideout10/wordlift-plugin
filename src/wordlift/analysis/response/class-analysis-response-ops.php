@@ -103,10 +103,15 @@ class Analysis_Response_Ops {
 
 		// Set the internal uri in the annotation for the entityMatch in annotations.
 		if ( isset( $this->json->annotations ) ) {
+			// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 			foreach ( $this->json->annotations as $key => $annotation ) {
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				if ( isset( $annotation->entityMatches ) ) {
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 					foreach ( $annotation->entityMatches as $match ) {
+						// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 						if ( isset( $match->entityId ) && isset( $mappings[ $match->entityId ] ) ) {
+							// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 							$match->entityId = $mappings[ $match->entityId ];
 						}
 					}
@@ -158,15 +163,18 @@ class Analysis_Response_Ops {
 				$item_id       = $matches[2][ $i ][0];
 				$text          = $matches[3][ $i ][0];
 
-				$annotation               = new StdClass();
+				$annotation = new StdClass();
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				$annotation->annotationId = $annotation_id;
 				$annotation->start        = $start;
 				$annotation->end          = $end;
 				$annotation->text         = $text;
 
-				$entity_match                = new StdClass();
-				$entity_match->confidence    = 100;
-				$entity_match->entityId      = $item_id;
+				$entity_match             = new StdClass();
+				$entity_match->confidence = 100;
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				$entity_match->entityId = $item_id;
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				$annotation->entityMatches[] = $entity_match;
 
 				$carry['annotations'][ $annotation_id ] = $annotation;
@@ -241,8 +249,10 @@ class Analysis_Response_Ops {
 		// Populating the local entities object
 		$entities = array();
 		foreach ( $this->json->annotations as $annotation ) {
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			foreach ( $annotation->entityMatches as $entity_matches ) {
 
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				$entity_id         = $this->entity_uri_service->get_post_id_from_url( $entity_matches->entityId );
 				$serialized_entity = wl_serialize_entity( $entity_id );
 
@@ -250,6 +260,7 @@ class Analysis_Response_Ops {
 					$serialized_entity['entityId'] = $serialized_entity['id'];
 					unset( $serialized_entity['id'] );
 
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 					$entities[ $entity_matches->entityId ] = $serialized_entity;
 				}
 			}
@@ -258,8 +269,11 @@ class Analysis_Response_Ops {
 		// Adding occurrences and annotations data structures required by the client-side code.
 		foreach ( $entities as $entity_id => $entity ) {
 			foreach ( $this->json->annotations as $annotation ) {
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				if ( $annotation->entityMatches[0]->entityId === $entity_id ) {
-					$entities[ $entity_id ]['occurrences'][]                                  = $annotation->annotationId;
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+					$entities[ $entity_id ]['occurrences'][] = $annotation->annotationId;
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 					$entities[ $entity_id ]['annotations'][ $annotation->annotationId ]['id'] = $annotation->annotationId;
 				}
 			}
@@ -352,20 +366,25 @@ class Analysis_Response_Ops {
 		if ( isset( $this->json->annotations ) ) {
 			foreach ( $this->json->annotations as $annotation_key => &$annotation_data ) {
 
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				if ( ! isset( $annotation_data->entityMatches ) ) {
 					continue;
 				}
 
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				foreach ( $annotation_data->entityMatches as $entity_match_key => $entity_match_data ) {
 
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 					$entity_uri = $entity_match_data->entityId;
 
-					if ( ! in_array( $entity_uri, $excluded_uris ) ) {
+					if ( ! in_array( $entity_uri, $excluded_uris, true ) ) {
 						continue;
 					}
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 					unset( $annotation_data->entityMatches[ $entity_match_key ] );
 				}
 
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				if ( count( $annotation_data->entityMatches ) === 0 ) {
 					// Remove the annotation if we have zero empty annotation matches.
 					unset( $this->json->annotations->{$annotation_key} );

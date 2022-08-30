@@ -13,7 +13,7 @@ class Youtube_Client extends Singleton implements Client {
 
 	const YOUTUBE_REGEX = '/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/m';
 
-	static $requests_sent = 0;
+	public static $requests_sent = 0;
 
 	public static function get_api_key_option_name() {
 		return '__wl_video_object_youtube_api_key';
@@ -40,7 +40,7 @@ class Youtube_Client extends Singleton implements Client {
 
 		$response = wp_remote_get( $url );
 
-		self::$requests_sent += 1;
+		++ self::$requests_sent;
 
 		return wp_remote_retrieve_body( $response );
 	}

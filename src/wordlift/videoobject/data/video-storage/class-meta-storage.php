@@ -43,6 +43,7 @@ class Meta_Storage implements Storage {
 		$filtered_videos = array_filter(
 			$present_videos,
 			function ( $video ) use ( $videos_to_be_removed_ids ) {
+				// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 				return ! in_array( $video->id, $videos_to_be_removed_ids );
 			}
 		);
