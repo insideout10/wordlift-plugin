@@ -117,6 +117,7 @@ class Ttl_Cache {
 		if ( file_exists( $filename ) && $this->ttl >= time() - filemtime( $filename ) ) {
 			$this->log->trace( "Cache HIT.\n" );
 
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 			return json_decode( file_get_contents( $filename ), true );
 		}
 
@@ -131,8 +132,11 @@ class Ttl_Cache {
 
 		// Cache.
 		if ( file_exists( $filename ) ) {
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			@unlink( $filename );
 		}
+
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged,WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 		@file_put_contents( $filename, wp_json_encode( $data ) );
 
 	}
@@ -143,6 +147,7 @@ class Ttl_Cache {
 
 		// Delete.
 		if ( file_exists( $filename ) ) {
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			@unlink( $filename );
 		}
 
@@ -153,6 +158,7 @@ class Ttl_Cache {
 		$files = glob( $this->cache_dir . DIRECTORY_SEPARATOR . '*' );
 		foreach ( $files as $file ) { // iterate files
 			if ( is_file( $file ) ) {
+				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 				@unlink( $file );
 			}
 		}
@@ -184,7 +190,7 @@ class Ttl_Cache {
 	private function get_filename( $key ) {
 
 		// Create a hash and a path to the cache file.
-		$hash     = md5( json_encode( $key ) );
+		$hash     = md5( wp_json_encode( $key ) );
 		$filename = $this->get_path( $hash );
 
 		return $filename;

@@ -64,7 +64,7 @@ class Entity_Store {
 	 * @param string $post_status The post status, by default `draft`.
 	 *
 	 * @return int|\WP_Error
-	 * @throws \Exception
+	 * @throws \Exception when an error occurs.
 	 */
 	public function create( $params, $post_status = 'draft' ) {
 
@@ -163,6 +163,7 @@ class Entity_Store {
 		);
 
 		foreach ( (array) $values as $value ) {
+			// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 			if ( ! in_array( $value, $existing ) ) {
 				add_post_meta( $post_id, $meta_key, $value );
 			}

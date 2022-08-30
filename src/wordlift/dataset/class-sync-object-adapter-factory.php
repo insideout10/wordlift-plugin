@@ -11,7 +11,7 @@ class Sync_Object_Adapter_Factory {
 	 * @param int $object_id The object id.
 	 *
 	 * @return Sync_Object_Adapter
-	 * @throws \Exception
+	 * @throws xception when an error occurs.
 	 */
 	function create( $type, $object_id ) {
 

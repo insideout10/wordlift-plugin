@@ -11,6 +11,7 @@ use Wordlift\Common\Singleton;
 
 class Default_Strategy extends Singleton implements Occurrences {
 
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function add_occurences_to_entities( $occurrences, $json, $post_id ) {
 
 		foreach ( $json->entities as $id => $entity ) {

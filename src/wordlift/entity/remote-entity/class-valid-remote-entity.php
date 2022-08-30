@@ -35,19 +35,19 @@ class Valid_Remote_Entity implements Remote_Entity {
 		$this->same_as     = $same_as;
 	}
 
-	function get_name() {
+	public function get_name() {
 		return $this->name;
 	}
 
-	function get_description() {
+	public function get_description() {
 		return $this->description;
 	}
 
-	function get_same_as() {
+	public function get_same_as() {
 		return $this->same_as;
 	}
 
-	function get_types() {
+	public function get_types() {
 		return $this->types;
 	}
 }

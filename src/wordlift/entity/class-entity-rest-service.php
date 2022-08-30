@@ -42,7 +42,7 @@ class Entity_Rest_Service {
 
 		$entity_types = $request->get_param( 'wlEntityMainType' );
 
-		if ( $entity_types === null ) {
+		if ( null === $entity_types ) {
 			// Return early if entity types not set.
 			return;
 		}

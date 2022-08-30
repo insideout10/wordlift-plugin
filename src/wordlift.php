@@ -36,6 +36,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+define( 'WORDLIFT_VERSION', '3.37.2' );
+
 /**
  * Filter to disable WLP on any request, defaults to true.
  *

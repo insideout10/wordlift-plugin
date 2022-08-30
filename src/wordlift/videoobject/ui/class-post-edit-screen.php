@@ -25,7 +25,9 @@ class Post_Edit_Screen {
 		);
 		wp_enqueue_style(
 			'wl-videoobject',
-			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . '/js/dist/videoobject.css'
+			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . '/js/dist/videoobject.css',
+			array(),
+			WORDLIFT_VERSION
 		);
 		wp_localize_script(
 			'wl-videoobject',

@@ -13,11 +13,11 @@ class Entity_Uri_Generator {
 		switch ( $object_type_enum ) {
 			case Object_Type_Enum::POST:
 				$post = get_post( $id );
-				if ( ! isset( $post ) || in_array( $post->post_status, array( 'auto-draft', 'inherit' ) ) ) {
+				if ( ! isset( $post ) || in_array( $post->post_status, array( 'auto-draft', 'inherit' ), true ) ) {
 					return null;
 				}
 
-				$slug = $post->post_name ?: sanitize_title( $post->post_title ) . '-' . $post->ID;
+				$slug = $post->post_name ? $post->post_name : sanitize_title( $post->post_title ) . '-' . $post->ID;
 
 				return self::ensure_unique( $post->post_type . '/' . $slug );
 
@@ -45,7 +45,7 @@ class Entity_Uri_Generator {
 	}
 
 	/**
-	 * @throws Exception
+	 * @throws Exception when an error occurs.
 	 */
 	private static function ensure_unique( $rel_uri ) {
 		for ( $try_rel_uri = $rel_uri, $i = 2; $i < 100; $i ++ ) {

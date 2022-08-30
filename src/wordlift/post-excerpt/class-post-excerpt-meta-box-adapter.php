@@ -53,6 +53,7 @@ final class Post_Excerpt_Meta_Box_Adapter {
 		$post_type = get_post_type();
 
 		// Bail out if feature is turned off
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( ! apply_filters( 'wl_feature__enable__post-excerpt', true ) ) {
 			return;
 		}
@@ -79,7 +80,7 @@ final class Post_Excerpt_Meta_Box_Adapter {
 		 * different set of metaboxes, so to prevent overwriting our
 		 * callback with null, this check is necessary.
 		 */
-		if ( $callback !== null && $callback !== array( $this, 'print_wordlift_custom_post_excerpt_box' ) ) {
+		if ( null !== $callback && array( $this, 'print_wordlift_custom_post_excerpt_box' ) !== $callback ) {
 			$this->wordpress_excerpt_callback = $callback;
 			$this->remove_default_post_excerpt_meta_box();
 			$this->add_custom_post_excerpt_meta_box();
@@ -136,6 +137,7 @@ final class Post_Excerpt_Meta_Box_Adapter {
 	private function add_custom_post_excerpt_meta_box() {
 		add_meta_box(
 			self::POST_EXCERPT_META_BOX_KEY,
+			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault
 			__( 'Excerpt' ),
 			array( $this, 'print_wordlift_custom_post_excerpt_box' ),
 			// Mimic the settings of the default metabox.
@@ -155,7 +157,8 @@ final class Post_Excerpt_Meta_Box_Adapter {
 		wp_enqueue_style(
 			'wl-post-excerpt',
 			plugin_dir_url( dirname( __DIR__ ) ) . 'js/dist/post-excerpt.css',
-			array()
+			array(),
+			WORDLIFT_VERSION
 		);
 		wp_localize_script(
 			'wl-post-excerpt',

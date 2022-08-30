@@ -56,7 +56,7 @@ class Jsonld_By_Id_Endpoint {
 	 * @param \WP_REST_Request $request The incoming {@link \WP_REST_Request}.
 	 *
 	 * @return WP_REST_Response The outgoing {@link WP_REST_Response}.
-	 * @throws \Exception
+	 * @throws xception when an error occurs.
 	 */
 	public function jsonld_by_id( $request ) {
 

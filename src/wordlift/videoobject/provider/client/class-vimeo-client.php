@@ -11,7 +11,7 @@ use Wordlift\Common\Singleton;
  */
 class Vimeo_Client extends Singleton implements Client {
 
-	static $requests_sent = 0;
+	public static $requests_sent = 0;
 
 	const VIMEO_URL_REGEX = '/https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/';
 
@@ -50,7 +50,7 @@ class Vimeo_Client extends Singleton implements Client {
 			)
 		);
 
-		self::$requests_sent += 1;
+		++ self::$requests_sent;
 
 		return wp_remote_retrieve_body( $response );
 	}

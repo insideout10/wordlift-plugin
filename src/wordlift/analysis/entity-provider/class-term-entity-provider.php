@@ -39,7 +39,7 @@ class Term_Entity_Provider implements Entity_Provider {
 		// @todo: For now we dont support images
 		// $images = $this->post_image_storage->get( $term_entity->ID );
 		$same_as = get_term_meta( $term_id, 'entity_same_as' );
-		$same_as = $same_as ?: array();
+		$same_as = $same_as ? $same_as : array();
 
 		return (object) array(
 			'id'          => $uri,

@@ -25,7 +25,7 @@ class Video_Processor {
 		);
 	}
 
-	private function get_data_for_videos( $embedded_videos, $post_id ) {
+	private function get_data_for_videos( $embedded_videos ) {
 
 		$youtube_videos   = $this->get_youtube_videos( $embedded_videos );
 		$youtube_provider = Provider_Factory::get_provider( Provider_Factory::YOUTUBE );
@@ -98,9 +98,9 @@ class Video_Processor {
 
 		return array_filter(
 			$videos_in_store,
-			function ( $video ) use ( $embedded_video_ids, $embedded_video_urls, $that ) {
+			function ( $video ) use ( $embedded_video_ids, $that ) {
 				/**
-				 * If the video id doesnt exist on the content then we need to return it
+				 * If the video id doesn't exist on the content then we need to return it
 				 * in order to delete that video.
 				 */
 				return count(
@@ -150,7 +150,7 @@ class Video_Processor {
 			return;
 		}
 
-		$videos = $this->get_data_for_videos( $embedded_videos, $post_id );
+		$videos = $this->get_data_for_videos( $embedded_videos );
 
 		if ( ! $videos ) {
 			return;

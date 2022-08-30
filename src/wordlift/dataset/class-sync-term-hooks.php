@@ -107,7 +107,7 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 	/**
 	 * @param $term \WP_Term
 	 *
-	 * @throws \Exception
+	 * @throws xception when an error occurs.
 	 */
 	public function delete_term( $term_id ) {
 		$args = array(
