@@ -72,7 +72,7 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 		 */
 
 		return '<div class="tagcloud wl-related-entities-cloud">' .
-		       wp_generate_tag_cloud( $tags ) .
+		       wp_generate_tag_cloud( $tags, $atts ) .
 		       '</div>';
 	}
 
