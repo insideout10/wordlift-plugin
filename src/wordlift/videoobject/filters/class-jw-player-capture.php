@@ -21,10 +21,13 @@ class Jw_Player_Capture {
 		// we cant reliably determine count for external plugin without
 		// this method.
 		global $wpdb;
-		$post_meta_table_name = $wpdb->postmeta;
-		$query_template       = "SELECT meta_value FROM $post_meta_table_name WHERE meta_key LIKE %s AND post_id=%d";
-		$query                = $wpdb->prepare( $query_template, '_jwppp-video-url-%', $post_id );
-		$video_ids            = $wpdb->get_col( $query );
+		$video_ids = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT meta_value FROM {$wpdb->postmeta} WHERE meta_key LIKE %s AND post_id=%d",
+				'_jwppp-video-url-%',
+				$post_id
+			)
+		);
 		if ( ! $video_ids ) {
 			return $embedded_videos;
 		}

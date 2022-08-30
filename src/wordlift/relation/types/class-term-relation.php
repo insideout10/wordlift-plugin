@@ -16,7 +16,7 @@ use Wordlift\Object_Type_Enum;
 
 class Term_Relation extends Relation {
 
-	function get_object_type() {
+	public function get_object_type() {
 		return Object_Type_Enum::TERM;
 	}
 }

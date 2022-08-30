@@ -38,7 +38,7 @@ class Post_Adapter {
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
 		add_action( 'init', array( $this, 'init' ) );
-		add_filter( 'wp_insert_post_data', array( $this, 'wp_insert_post_data' ), 10, 2 );
+		add_filter( 'wp_insert_post_data', array( $this, 'wp_insert_post_data' ), 10 );
 
 	}
 
@@ -86,20 +86,14 @@ class Post_Adapter {
 	 * }
 	 *
 	 * @param array $data An array of slashed post data.
-	 * @param array $postarr An array of sanitized, but otherwise unmodified post data.
 	 *
 	 * @return array The data array.
 	 */
-	public function wp_insert_post_data( $data, $postarr ) {
+	public function wp_insert_post_data( $data ) {
 		$post_status = $data['post_status'];
 		if ( 'auto-draft' === $post_status || 'inherit' === $post_status ) {
 			return $data;
 		}
-
-		$this->log->trace(
-			"The following data has been received by `wp_insert_post_data`:\n"
-						   . var_export( $data, true )
-		);
 
 		try {
 			$entities = $this->parse_content( wp_unslash( $data['post_content'] ) );
@@ -121,6 +115,7 @@ class Post_Adapter {
 				}
 
 				// If 'entity auto publish' is false, we set the status to `draft` by default.
+				// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 				$post_status = apply_filters( 'wl_feature__enable__entity-auto-publish', true )
 					? $data['post_status'] : 'draft';
 				$this->create_or_update_entity( $entity, $post_status );
@@ -139,15 +134,11 @@ class Post_Adapter {
 	 * @param string $post_content The post content.
 	 *
 	 * @return array An array of entities' structures.
-	 * @throws \Exception
+	 * @throws \Exception when an error occurs.
 	 */
 	private function parse_content( $post_content ) {
 
 		$all_blocks = parse_blocks( $post_content );
-		$this->log->trace(
-			"The following blocks have been parsed while in `wp_insert_post`:\n"
-						   . var_export( $all_blocks, true )
-		);
 
 		$blocks = array_filter(
 			$all_blocks,
@@ -162,10 +153,6 @@ class Post_Adapter {
 		}
 
 		$block = current( $blocks );
-		$this->log->trace(
-			"The following block has been found while in `wp_insert_post`:\n"
-						   . var_export( $block, true )
-		);
 
 		// Bail out if the entities array is empty.
 		if ( empty( $block['attrs'] ) && empty( $block['attrs']['entities'] ) ) {
@@ -240,7 +227,7 @@ class Post_Adapter {
 				// Bail out if occurrences->$item->text isn't set or its contents are already
 				// in `$carry`.
 				if ( ! isset( $annotations[ $item ]['text'] )
-				 || in_array( $annotations[ $item ]['text'], $carry ) ) {
+				 || in_array( $annotations[ $item ]['text'], $carry, true ) ) {
 					return $carry;
 				}
 
@@ -272,7 +259,7 @@ class Post_Adapter {
 	 * @param       $string $post_status The post status, default 'draft'.
 	 *
 	 * @return int|\WP_Error
-	 * @throws \Exception
+	 * @throws \Exception when an error occurs.
 	 */
 	private function create_or_update_entity( $entity, $post_status = 'draft' ) {
 
@@ -280,11 +267,6 @@ class Post_Adapter {
 		$uris = $this->get_entity_uris( $entity );
 
 		$post = $this->get_first_matching_entity_by_uri( $uris );
-
-		$this->log->trace(
-			'Entity' . ( empty( $post ) ? ' not' : '' ) . " found with the following URIs:\n"
-						   . var_export( $uris, true )
-		);
 
 		// Get the labels.
 		$labels = $this->get_labels( $entity );
@@ -334,8 +316,8 @@ class Post_Adapter {
 			// Set the post status, we need to set that in order to support entities
 			// created using rest endpoint on block editor, so that they get published
 			// when the post is published.
-			// Once the entity is published dont update the post status.
-			if ( $post->post_status !== 'publish' ) {
+			// Once the entity is published don't update the post status.
+			if ( 'publish' !== $post->post_status ) {
 				wp_update_post(
 					array(
 						'ID'          => $post->ID,

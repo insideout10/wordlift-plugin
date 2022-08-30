@@ -30,13 +30,6 @@ class Post_Relation_Service extends Singleton implements Relation_Service_Interf
 	 */
 	private $entity_service;
 
-	/**
-	 * @return Post_Relation_Service
-	 */
-	public static function get_instance() {
-		return parent::get_instance();
-	}
-
 	public function __construct() {
 		parent::__construct();
 		$this->legacy_post_relation_service = \Wordlift_Relation_Service::get_instance();
@@ -44,6 +37,7 @@ class Post_Relation_Service extends Singleton implements Relation_Service_Interf
 		$this->entity_service               = \Wordlift_Entity_Service::get_instance();
 	}
 
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function get_references( $subject_id, $subject_type ) {
 		$post_ids = $this->legacy_post_relation_service->get_objects( $subject_id, 'ids' );
 
@@ -55,6 +49,7 @@ class Post_Relation_Service extends Singleton implements Relation_Service_Interf
 		);
 	}
 
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function get_relations_from_content( $content, $subject_type, $local_entity_uris ) {
 		$entity_uris = Object_Relation_Service::get_entity_uris( $content );
 

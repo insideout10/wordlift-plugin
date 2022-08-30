@@ -187,8 +187,7 @@ EOF;
 		);
 
 		$post_adapter->wp_insert_post_data(
-			$data,
-			array()
+			$data
 		);
 
 		// we should have 1 entity in table.
@@ -201,8 +200,7 @@ EOF;
 
 		// Save again.
 		$post_adapter->wp_insert_post_data(
-			$data,
-			array()
+			$data
 		);
 
 		// we should have 1 entity in table, there should be no duplication.

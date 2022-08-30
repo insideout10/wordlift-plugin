@@ -39,13 +39,6 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 	}
 
 	/**
-	 * @return Object_Relation_Service
-	 */
-	public static function get_instance() {
-		return parent::get_instance();
-	}
-
-	/**
 	 * @param $subject_id int
 	 *
 	 * @return array<Reference>

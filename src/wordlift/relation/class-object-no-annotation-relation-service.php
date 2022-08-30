@@ -38,15 +38,14 @@ class Object_No_Annotation_Relation_Service extends Object_Relation_Service {
 
 	public function get_all_entities_references( $subject_id, $subject_type ) {
 		global $wpdb;
-		$table_name = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
-		$query      = $wpdb->prepare(
-			"SELECT object_id FROM $table_name WHERE subject_id = %d AND object_type = %d AND subject_type = %d",
-			$subject_id,
-			Object_Type_Enum::POST,
-			$subject_type
+		$post_ids = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT object_id FROM {$wpdb->prefix}wl_relation_instances WHERE subject_id = %d AND object_type = %d AND subject_type = %d",
+				$subject_id,
+				Object_Type_Enum::POST,
+				$subject_type
+			)
 		);
-
-		$post_ids = $wpdb->get_col( $query );
 
 		return array_map(
 			function ( $term_id ) {

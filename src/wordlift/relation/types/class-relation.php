@@ -45,12 +45,12 @@ abstract class Relation {
 	/**
 	 * @return int Represents the {@link Object_Type_Enum}
 	 */
-	abstract function get_object_type();
+	abstract public function get_object_type();
 
 	/**
 	 * @return int Represents the {@link Object_Type_Enum}
 	 */
-	function get_subject_type() {
+	public function get_subject_type() {
 		return $this->subject_type;
 	}
 
@@ -59,7 +59,7 @@ abstract class Relation {
 	 *
 	 * @return string Relation type {@link WL_WHAT_RELATION} etc.
 	 */
-	function get_relation_type() {
+	public function get_relation_type() {
 		return $this->relation_type;
 	}
 

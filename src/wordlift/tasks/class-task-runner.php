@@ -24,6 +24,6 @@ interface Task_Runner {
 	 * @return mixed
 	 * @since 1.0.0
 	 */
-	function start( $limit = 0, $offset = 0 );
+	public function start( $limit = 0, $offset = 0 );
 
 }
