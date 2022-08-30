@@ -9,21 +9,22 @@ class Sync_Background_Process_Stopped_State extends Abstract_Sync_Background_Pro
 	 */
 	private $context;
 
-	function __construct( $context ) {
+	public function __construct( $context ) {
 		parent::__construct( Sync_Background_Process::STATE_STOPPED );
 
 		$this->context = $context;
 	}
 
-	function enter() {
+	public function enter() {
 		$this->context->set_state( Sync_Background_Process::STATE_STOPPED );
 	}
 
-	function leave() {
+	public function leave() {
 		$this->context->set_state( null );
 	}
 
-	function task( $item ) {
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public function task( $item ) {
 
 		$this->context->cancel_process();
 

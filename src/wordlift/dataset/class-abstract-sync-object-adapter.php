@@ -24,9 +24,9 @@ abstract class Abstract_Sync_Object_Adapter implements Sync_Object_Adapter {
 	 * @param int            $object_id A post or term id.
 	 * @param Jsonld_Service
 	 *
-	 * @throws xception when an error occurs.
+	 * @throws \Exception when an error occurs.
 	 */
-	function __construct( $type, $object_id ) {
+	public function __construct( $type, $object_id ) {
 
 		$this->type      = filter_var( $type, FILTER_VALIDATE_INT );
 		$this->object_id = filter_var( $object_id, FILTER_VALIDATE_INT );
@@ -40,11 +40,11 @@ abstract class Abstract_Sync_Object_Adapter implements Sync_Object_Adapter {
 
 	}
 
-	function get_type() {
+	public function get_type() {
 		return $this->type;
 	}
 
-	function get_object_id() {
+	public function get_object_id() {
 		return $this->object_id;
 	}
 

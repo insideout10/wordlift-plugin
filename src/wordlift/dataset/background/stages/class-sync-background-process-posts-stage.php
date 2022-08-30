@@ -18,11 +18,11 @@ class Sync_Background_Process_Posts_Stage {
 	 *
 	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
 	 */
-	function __construct( $sync_object_adapter_factory ) {
+	public function __construct( $sync_object_adapter_factory ) {
 		$this->sync_object_adapter_factory = $sync_object_adapter_factory;
 	}
 
-	function count() {
+	public function count() {
 
 		$post_types = get_post_types( array( 'public' => true ) );
 

@@ -121,7 +121,7 @@ class Jsonld_Endpoint {
 	 * }
 	 *
 	 * @return WP_REST_Response
-	 * @throws xception when an error occurs.
+	 * @throws \Exception when an error occurs.
 	 */
 	public function jsonld_using_post_id( $request ) {
 
@@ -144,7 +144,7 @@ class Jsonld_Endpoint {
 	 * }
 	 *
 	 * @return WP_REST_Response
-	 * @throws xception when an error occurs.
+	 * @throws \Exception when an error occurs.
 	 */
 	public function jsonld_using_item_id( $request ) {
 
@@ -189,7 +189,7 @@ class Jsonld_Endpoint {
 	 * @param WP_REST_Request $request
 	 *
 	 * @return WP_REST_Response
-	 * @throws xception when an error occurs.
+	 * @throws \Exception when an error occurs.
 	 */
 	public function jsonld_using_post_meta( $request ) {
 

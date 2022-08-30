@@ -4,9 +4,9 @@ namespace Wordlift\Dataset\Background;
 
 interface Sync_Background_Process_State {
 
-	function enter();
+	public function enter();
 
-	function leave();
+	public function leave();
 
 	/**
 	 * Task
@@ -20,13 +20,13 @@ interface Sync_Background_Process_State {
 	 *
 	 * @return mixed
 	 */
-	function task( $item );
+	public function task( $item );
 
-	function get_info();
+	public function get_info();
 
 	/**
 	 * Try to resume an interrupted task.
 	 */
-	function resume();
+	public function resume();
 
 }

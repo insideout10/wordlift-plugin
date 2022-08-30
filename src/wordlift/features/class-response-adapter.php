@@ -6,7 +6,7 @@ class Response_Adapter {
 	const WL_FEATURES = '_wl_features';
 	const WL_1        = 'wl1';
 
-	function __construct() {
+	public function __construct() {
 
 		// Filter responses from the API calls to update the enabled features.
 		add_filter( 'wl_api_service__response', array( $this, 'response' ), 10, 1 );
@@ -23,7 +23,7 @@ class Response_Adapter {
 
 	}
 
-	function response( $response ) {
+	public function response( $response ) {
 
 		$headers = wp_remote_retrieve_headers( $response );
 
@@ -32,6 +32,7 @@ class Response_Adapter {
 			return $response;
 		}
 		$wl1_as_base64_string = $headers[ self::WL_1 ];
+		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
 		$wl1                  = json_decode( base64_decode( $wl1_as_base64_string ), true );
 
 		$updated_features = $wl1['features'];
@@ -72,7 +73,7 @@ class Response_Adapter {
 	/**
 	 * Registers the feature filters.
 	 */
-	function register_filters() {
+	public function register_filters() {
 
 		foreach ( (array) get_option( self::WL_FEATURES, array() ) as $name => $enabled ) {
 			// Remove previous filters.

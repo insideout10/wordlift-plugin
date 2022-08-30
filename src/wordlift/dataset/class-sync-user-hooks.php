@@ -22,7 +22,7 @@ class Sync_User_Hooks extends Abstract_Sync_Hooks {
 	 *
 	 * @param Sync_Service $sync_service
 	 */
-	function __construct( Sync_Service $sync_service ) {
+	public function __construct( Sync_Service $sync_service ) {
 		parent::__construct();
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
@@ -73,6 +73,7 @@ class Sync_User_Hooks extends Abstract_Sync_Hooks {
 					)
 				)
 			)
+			, true
 		) ) {
 			return;
 		}

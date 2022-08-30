@@ -17,11 +17,11 @@ class Sync_Background_Process_Terms_Stage {
 	 *
 	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
 	 */
-	function __construct( $sync_object_adapter_factory ) {
+	public function __construct( $sync_object_adapter_factory ) {
 		$this->sync_object_adapter_factory = $sync_object_adapter_factory;
 	}
 
-	function count() {
+	public function count() {
 
 		$taxonomies    = get_taxonomies( array( 'public' => true ) );
 		$in_taxonomies = implode( "','", array_map( 'esc_sql', $taxonomies ) );
@@ -36,7 +36,7 @@ class Sync_Background_Process_Terms_Stage {
 		return $wpdb->get_var( $sql );
 	}
 
-	function get_sync_object_adapters( $offset, $limit ) {
+	public function get_sync_object_adapters( $offset, $limit ) {
 
 		$taxonomies    = get_taxonomies( array( 'public' => true ) );
 		$in_taxonomies = implode( "','", array_map( 'esc_sql', $taxonomies ) );

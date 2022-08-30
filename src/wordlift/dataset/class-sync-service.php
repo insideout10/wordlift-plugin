@@ -2,7 +2,6 @@
 
 namespace Wordlift\Dataset;
 
-use Exception;
 use Wordlift\Api\Api_Service;
 use Wordlift\Jsonld\Jsonld_Service;
 use Wordlift\Object_Type_Enum;
@@ -93,7 +92,7 @@ class Sync_Service {
 	 * @param int $object_id
 	 *
 	 * @return array|false
-	 * @throws Exception
+	 * @throws \Exception when an error occurs.
 	 */
 	public function sync_one( $type, $object_id ) {
 
@@ -139,7 +138,7 @@ class Sync_Service {
 	 * @param bool                  $force Force synchronization even if the json-ld hash hasn't changed.
 	 *
 	 * @return bool
-	 * @throws Exception
+	 * @throws \Exception when an error occurs.
 	 */
 	public function sync_many( $objects, $force = false ) {
 
@@ -171,6 +170,7 @@ class Sync_Service {
 			return false;
 		}
 
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		$blocking = apply_filters( 'wl_feature__enable__sync-blocking', false );
 		$response = $this->api_service->request(
 			'POST',
@@ -213,7 +213,7 @@ class Sync_Service {
 	 * @param Sync_Object_Adapter $object
 	 *
 	 * @return false|string
-	 * @throws Exception
+	 * @throws \Exception when an error occurs.
 	 */
 	private function get_payload_as_string( $object ) {
 		$type             = $object->get_type();
@@ -257,7 +257,7 @@ class Sync_Service {
 		}
 
 		// Make a request to the remote endpoint.
-		$response = $this->api_service->request(
+		$this->api_service->request(
 			'DELETE',
 			'/middleware/dataset?uri=' . rawurlencode( $uri ),
 			array( 'Content-Type' => 'application/ld+json' )

@@ -10,7 +10,7 @@ interface Plugin {
 
 	/**
 	 * @return string
-	 * @throws xception when an error occurs.
+	 * @throws \Exception when an error occurs.
 	 */
 	function get_zip_url();
 

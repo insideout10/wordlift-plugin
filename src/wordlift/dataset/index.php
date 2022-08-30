@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Register the Dataset JSON Endpoint.
+// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
 
 	$sync_object_adapter_factory = new Sync_Object_Adapter_Factory();
@@ -25,6 +26,7 @@ if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
 	new Sync_Post_Hooks( $sync_service, $sync_object_adapter_factory );
 	new Sync_User_Hooks( $sync_service );
 
+	// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	if ( apply_filters( 'wl_feature__enable__no-vocabulary-terms', false ) ) {
 		new Sync_Term_Hooks( $sync_service, $sync_object_adapter_factory );
 	}
@@ -34,10 +36,12 @@ if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
 	 */
 	new Sync_Hooks_Entity_Relation( Wordlift_Entity_Service::get_instance() );
 
+	// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	if ( apply_filters( 'wl_feature__enable__wordpress-ontology', false ) ) {
 		new Sync_Hooks_Wordpress_Ontology();
 	}
 
+	// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	if ( apply_filters( 'wl_feature__enable__sync-background', false ) ) {
 		// Set up the sync background process.
 		$sync_background_process = new Sync_Background_Process( $sync_service, $sync_object_adapter_factory );

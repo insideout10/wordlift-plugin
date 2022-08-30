@@ -6,11 +6,11 @@ abstract class Abstract_Sync_Background_Process_State implements Sync_Background
 
 	private $state;
 
-	function __construct( $state ) {
+	public function __construct( $state ) {
 		$this->state = $state;
 	}
 
-	function get_info() {
+	public function get_info() {
 		$started     = get_option( '_wl_sync_background_process_started' );
 		$offset      = get_option( '_wl_sync_background_process_offset' );
 		$stage       = get_option( '_wl_sync_background_process_stage' );
@@ -29,7 +29,7 @@ abstract class Abstract_Sync_Background_Process_State implements Sync_Background
 		return new Sync_Background_Process_Info( $this->state, $started, $index, $total_count, $last_update );
 	}
 
-	function resume() {
+	public function resume() {
 		// do nothing.
 	}
 

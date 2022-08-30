@@ -25,10 +25,10 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 	/**
 	 * Sync_Post_Hooks constructor.
 	 *
-	 * @param Sync_Service                $sync_service
+	 * @param Sync_Service $sync_service
 	 * @param Sync_Object_Adapter_Factory $sync_object_factory
 	 */
-	function __construct( $sync_service, $sync_object_factory ) {
+	public function __construct( $sync_service, $sync_object_factory ) {
 		parent::__construct();
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
@@ -57,13 +57,13 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 		// Save the post when its untrashed.
 		add_action( 'untrashed_post', array( $this, 'save_post' ) );
 		// Get sticky posts changes.
-		add_action( 'update_option_sticky_posts', array( $this, 'sticky_posts' ), 10, 3 );
+		add_action( 'update_option_sticky_posts', array( $this, 'sticky_posts' ), 10, 2 );
 
 	}
 
 	public function save_post( $post_id ) {
 
-		if ( ! in_array( get_post_type( $post_id ), \Wordlift_Entity_Service::valid_entity_post_types() ) ) {
+		if ( ! in_array( get_post_type( $post_id ), \Wordlift_Entity_Service::valid_entity_post_types(), true ) ) {
 			return;
 		}
 
@@ -71,7 +71,7 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 
 	}
 
-	public function sticky_posts( $old_value, $value, $option ) {
+	public function sticky_posts( $old_value, $value ) {
 		foreach ( $old_value as $post_id ) {
 			$this->sync( $post_id );
 		}
@@ -81,23 +81,25 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 		}
 	}
 
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function changed_post_meta( $meta_id, $post_id, $meta_key, $_meta_value ) {
 
 		if ( in_array(
-			$meta_key,
-			apply_filters(
-				'wl_dataset__sync_post_hooks__ignored_meta_keys',
-				apply_filters(
-					'wl_dataset__sync_hooks__ignored_meta_keys',
-					array(
-						'_pingme',
-						'_encloseme',
-						'entity_url',
-					)
-				)
-			)
-		)
-			 || ! in_array( get_post_type( $post_id ), \Wordlift_Entity_Service::valid_entity_post_types() )
+			     $meta_key,
+			     apply_filters(
+				     'wl_dataset__sync_post_hooks__ignored_meta_keys',
+				     apply_filters(
+					     'wl_dataset__sync_hooks__ignored_meta_keys',
+					     array(
+						     '_pingme',
+						     '_encloseme',
+						     'entity_url',
+					     )
+				     )
+			     ),
+				true
+		     )
+		     || ! in_array( get_post_type( $post_id ), \Wordlift_Entity_Service::valid_entity_post_types(), true )
 		) {
 			return;
 		}
