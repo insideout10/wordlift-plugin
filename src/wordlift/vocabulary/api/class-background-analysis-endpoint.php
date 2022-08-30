@@ -117,18 +117,18 @@ class Background_Analysis_Endpoint {
 		$this->background_service->cancel();
 		// clear the flags and restart again.
 		global $wpdb;
-		$query = "
-DELETE FROM $wpdb->termmeta WHERE meta_key=%s OR meta_key=%s
-";
+
 		// Remove the flags, if the tag is already accepted we wont remove that ui flag.
-		$query = $wpdb->prepare(
-			$query,
-			array(
-				Analysis_Background_Service::ANALYSIS_DONE_FLAG,
-				Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM,
+
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM $wpdb->termmeta WHERE meta_key=%s OR meta_key=%s",
+				array(
+					Analysis_Background_Service::ANALYSIS_DONE_FLAG,
+					Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM,
+				)
 			)
 		);
-		$wpdb->query( $query );
 		// clear the cache
 		$this->cache_service->flush_all();
 		$this->background_service->start();
