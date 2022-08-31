@@ -32,7 +32,7 @@ class Local_Autocomplete_Service extends Abstract_Autocomplete_Service {
 				. '  ON t.term_id = tt.term_id AND t.name != %s'
 				. " LEFT OUTER JOIN {$wpdb->postmeta} pm"
 				. '  ON pm.meta_key = %s AND pm.post_id = p.ID'
-				. " WHERE p.post_type IN ( '" . implode( "', '", array_map( 'esc_sql', Wordlift_Entity_Service::valid_entity_post_types() ) ) . "' )" // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				. " WHERE p.post_type IN ( '" . implode( "', '", array_map( 'esc_sql', Wordlift_Entity_Service::valid_entity_post_types() ) ) . "' )" // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQLPlaceholders.QuotedDynamicPlaceholderGeneration
 				. "  AND p.post_status IN ( 'publish', 'draft', 'private', 'future' ) "
 				. '  AND ( p.post_title LIKE %s OR pm.meta_value LIKE %s )'
 				. ' LIMIT %d',
