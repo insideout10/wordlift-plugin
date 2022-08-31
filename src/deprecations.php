@@ -260,15 +260,15 @@ require_once 'widgets/wordlift_widget_timeline.php';
 // TODO: find a way to make 'admin' UI tests work.
 // if ( is_admin() ) {
 
-require_once 'admin/wordlift_admin.php';
+require_once 'admin/wordlift-admin.php';
 require_once 'admin/wordlift-admin-edit-post.php';
-require_once 'admin/wordlift_admin_save_post.php';
+require_once 'admin/wordlift-admin-save-post.php';
 
 // add the entities meta box.
-require_once 'admin/wordlift_admin_meta_box_entities.php';
+require_once 'admin/wordlift-admin-meta-box-entities.php';
 
 // add the entity creation AJAX.
 require_once 'admin/wordlift-admin-ajax-related-posts.php';
 
 // Load the wl_chord TinyMCE button and configuration dialog.
-require_once 'admin/wordlift_admin_shortcodes.php';
+require_once 'admin/wordlift-admin-shortcodes.php';

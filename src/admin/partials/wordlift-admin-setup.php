@@ -30,7 +30,7 @@
 		),
 		WORDLIFT_VERSION
 	);
-	wp_enqueue_script( 'wordlift-admin-setup', plugin_dir_url( __DIR__ ) . 'js/1/setup.js', array( 'jquery' ), WORDLIFT_VERSION );
+	wp_enqueue_script( 'wordlift-admin-setup', plugin_dir_url( __DIR__ ) . 'js/1/setup.js', array( 'jquery' ), WORDLIFT_VERSION, false );
 
 	// Get wp_permalink structure
 	$permalink_structure = get_option( 'permalink_structure' );
@@ -40,7 +40,7 @@
 		'wordlift-admin-setup',
 		'_wlAdminSetup',
 		array(
-			'ajaxUrl'   => parse_url( self_admin_url( 'admin-ajax.php' ), PHP_URL_PATH ),
+			'ajaxUrl'   => wp_parse_url( self_admin_url( 'admin-ajax.php' ), PHP_URL_PATH ),
 			'action'    => 'wl_validate_key',
 			'permalink' => $permalink_structure,
 			'media'     => array(

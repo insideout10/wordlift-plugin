@@ -46,7 +46,7 @@ class Wordlift_Admin_User_Profile_Page {
 	 *
 	 * @since 3.14.0
 	 */
-	function __construct( $author_element, $user_service ) {
+	public function __construct( $author_element, $user_service ) {
 
 		$this->author_element = $author_element;
 		$this->user_service   = $user_service;
@@ -96,7 +96,9 @@ class Wordlift_Admin_User_Profile_Page {
 		<h2><?php esc_html_e( 'WordLift', 'wordlift' ); ?></h2>
 
 		<table class="form-table">
-			<?php if ( apply_filters( 'wl_feature__enable__user-author', true ) ) { ?>
+			<?php
+           // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+            if ( apply_filters( 'wl_feature__enable__user-author', true ) ) { ?>
 			<tr class="user-description-wrap">
 				<th><label
 							for="wl_person"><?php esc_html_e( 'Author from the vocabulary', 'wordlift' ); ?></label>

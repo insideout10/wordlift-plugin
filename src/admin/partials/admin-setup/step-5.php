@@ -22,6 +22,7 @@
 
 	<?php
 	// Render country select element.
+    // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 	$country_select->render(
 		array(
 			'id'     => 'wl-country-code',

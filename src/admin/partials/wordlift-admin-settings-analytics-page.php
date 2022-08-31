@@ -23,6 +23,7 @@
 			<li>
 				<?php
 				printf(
+                        /* translators: 1: Variables, 2: Data Layer Variable. */
 					esc_html__( 'Visit the GTM dashboard and head to the %1$s menu. Add a new user-defined variable of type %2$s for each of the following items:', 'wordlift' ),
 					'<b>Variables</b>',
 					'<i>Data Layer Variable</i>'
@@ -44,7 +45,8 @@
 			<li>
 				<?php
 				printf(
-					esc_html__( 'Create another variable to pass along the 2 custom dimensions with the type %1$s. For each of the 2 items set the following:', 'wordlift' ),
+				/* translators: 1: Google Analytics Settings. */
+				esc_html__( 'Create another variable to pass along the 2 custom dimensions with the type %1$s. For each of the 2 items set the following:', 'wordlift' ),
 					'<i>Google Analytics Settings</i>'
 				);
 				?>
@@ -53,7 +55,8 @@
 					<li>
 						<?php
 						printf(
-							esc_html__( 'Set the values of each one to the %1$s and the %2$s respectively.', 'wordlift' ),
+						/* translators: 1: wl_index_uri, 2: wl_index_type. */
+						esc_html__( 'Set the values of each one to the %1$s and the %2$s respectively.', 'wordlift' ),
 							'<i>wl_index_uri</i> - <i>wl_event_uri</i>',
 							'<i>wl_index_type</i> - <i>wl_event_type</i>'
 						);
@@ -64,7 +67,8 @@
 			<li>
 				<?php
 				printf(
-					esc_html__( 'Go to the %1$s menu and create a new trigger of the type: %2$s.', 'wordlift' ),
+				/* translators: 1: Triggers, 2: Custom Events. */
+				esc_html__( 'Go to the %1$s menu and create a new trigger of the type: %2$s.', 'wordlift' ),
 					'<b>Triggers</b>',
 					'<i>Custom Event</i>'
 				);
@@ -74,7 +78,8 @@
 
 						<?php
 						printf(
-							esc_html__( 'In the %1$s field input %2$s.', 'wordlift' ),
+						/* translators: 1: Event name, 2: Mentions. */
+						esc_html__( 'In the %1$s field input %2$s.', 'wordlift' ),
 							'<i>Event name</i>',
 							'<i>Mentions</i>'
 						);
@@ -84,7 +89,8 @@
 
 						<?php
 						printf(
-							esc_html__( 'Set this to fire on %1$s and in the filter set:', 'wordlift' ),
+						/* translators: 1: Some Custom Events. */
+						esc_html__( 'Set this to fire on %1$s and in the filter set:', 'wordlift' ),
 							'<i>Some Custom Events</i>'
 						);
 						?>
@@ -97,7 +103,8 @@
 			<li>
 				<?php
 				printf(
-					esc_html__( 'Go to the %1$s menu and create a new tag.', 'wordlift' ),
+				/* translators: 1: Tags. */
+				esc_html__( 'Go to the %1$s menu and create a new tag.', 'wordlift' ),
 					'<b>Tags</b>'
 				);
 				?>
@@ -106,7 +113,8 @@
 
 						<?php
 						printf(
-							esc_html__( 'In the tag configuration section choose %1$s. Assuming you have used variable names that match those mentioned enter:', 'wordlift' ),
+						/* translators: 1: Google Analytics. */
+						esc_html__( 'In the tag configuration section choose %1$s. Assuming you have used variable names that match those mentioned enter:', 'wordlift' ),
 							'<i>Google Analytics - Universal Analytics</i>'
 						);
 						?>
@@ -114,7 +122,8 @@
 							<li>
 								<?php
 								printf(
-									esc_html__( 'Set the %1$s to %2$s.', 'wordlift' ),
+								/* translators: 1: Track Type, 2: Event. */
+								esc_html__( 'Set the %1$s to %2$s.', 'wordlift' ),
 									'Track Type',
 									'<i>Event</i>'
 								);
@@ -123,7 +132,8 @@
 							<li>
 								<?php
 								printf(
-									esc_html__( 'Set Category to %1$s.', 'wordlift' ),
+								/* translators: 1: wl_event_category. */
+								esc_html__( 'Set Category to %1$s.', 'wordlift' ),
 									'<i>{{wl_event_category}}</i>'
 								);
 								?>
@@ -131,7 +141,8 @@
 							<li>
 								<?php
 								printf(
-									esc_html__( 'Set Action to %1$s.', 'wordlift' ),
+								/* translators: 1: wl_event_action. */
+								esc_html__( 'Set Action to %1$s.', 'wordlift' ),
 									'<i>{{wl_event_action}}</i>'
 								);
 								?>
@@ -139,7 +150,8 @@
 							<li>
 								<?php
 								printf(
-									esc_html__( 'Set Label to %1$s.', 'wordlift' ),
+								/* translators: 1: wl_event_label. */
+								esc_html__( 'Set Label to %1$s.', 'wordlift' ),
 									'<i>{{wl_event_label}}</i>'
 								);
 								?>
@@ -147,7 +159,8 @@
 							<li>
 								<?php
 								printf(
-									esc_html__( 'Set Value to %1$s.', 'wordlift' ),
+								/* translators: 1: wl_event_value. */
+								esc_html__( 'Set Value to %1$s.', 'wordlift' ),
 									'<i>{{wl_event_value}}</i>'
 								);
 								?>
@@ -155,7 +168,8 @@
 							<li>
 								<?php
 								printf(
-									esc_html__( 'Set Non-Interaction Hit to %1$s.', 'wordlift' ),
+								/* translators: 1: True. */
+								esc_html__( 'Set Non-Interaction Hit to %1$s.', 'wordlift' ),
 									'<i>True</i>'
 								);
 								?>
@@ -163,7 +177,8 @@
 							<li>
 								<?php
 								printf(
-									esc_html__( 'Set the %1$s dropdown to the settings object for the Google Analytics tracking.', 'wordlift' ),
+								/* translators: 1: Google Analytics Settings. */
+								esc_html__( 'Set the %1$s dropdown to the settings object for the Google Analytics tracking.', 'wordlift' ),
 									'<i>Google Analytics Settings</i>'
 								);
 								?>

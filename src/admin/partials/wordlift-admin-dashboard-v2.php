@@ -217,8 +217,10 @@ Wordlift_Admin_Dashboard_V2::get_todays_tip_block();
 
 <?php
 $configuration_service = Wordlift_Configuration_Service::get_instance();
+// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 $country_code          = $configuration_service->get_country_code();
 
+// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 $top_entities = $this->get_top_entities();
 if ( ! empty( $top_entities ) ) {
 	?>
@@ -243,6 +245,7 @@ if ( ! empty( $top_entities ) ) {
 			</div>
 			<?php
 			$i = 0;
+			// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 			foreach ( $this->get_top_entities() as $post ) {
 				$permalink    = get_permalink( $post->ID );
 				$title        = $post->post_title;
@@ -302,7 +305,9 @@ $dashboard_service = Wordlift_Dashboard_Service::get_instance();
 			<h3><?php esc_html_e( 'Created entities', 'wordlift' ); ?></h3>
 		</header>
 		<div class="wl-dashboard__block__body">
-			<a href="<?php echo esc_url( $vocabulary_url ); ?>"><?php echo esc_html( $this->entity_service->count() ); ?></a>
+			<a href="<?php echo esc_url( $vocabulary_url ); ?>"><?php
+				// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
+                echo esc_html( $this->entity_service->count() ); ?></a>
 			<a href="<?php echo esc_url( $vocabulary_url ); ?>"><?php echo esc_html( _x( 'Vocabulary', 'Dashboard', 'wordlift' ) ); ?></a>
 		</div>
 	</div>

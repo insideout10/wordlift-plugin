@@ -12,6 +12,7 @@ $reasons = array(
 		'text'    => esc_html__( 'It was too complicated and unclear to me', 'wordlift' ),
 		'message' => array(
 			'text' => sprintf(
+                /* translators: %s: Too complicate reason. */
 				esc_html__( 'Need help? We are ready to answer your questions. %s', 'wordlift' ),
 				$too_complicate_reason_label
 			),
@@ -74,7 +75,7 @@ $reasons = array(
 
 				<ul>
 					<?php foreach ( $reasons as $reason ) : ?>
-						<li class="wl-reason-item <?php echo ( $reason['id'] === 'I_DONT_USE_IT' ) ? 'selected' : ''; ?>">
+						<li class="wl-reason-item <?php echo ( 'I_DONT_USE_IT' === $reason['id'] ) ? 'selected' : ''; ?>">
 							<label>
 								<input
 										type="radio"
@@ -93,7 +94,7 @@ $reasons = array(
 								<div class="additional-info <?php echo ( ! empty( $reason['message']['field'] ) ) ? 'has-field' : ''; ?>">
 									<?php
 									if ( ! empty( $reason['message']['field'] ) ) {
-										if ( $reason['message']['field'] === 'text' ) {
+										if ( 'text' === $reason['message']['field'] ) {
 											echo '<input type="text" name="wl-details" class="wl-details"/>';
 										} else {
 											echo '<textarea name="wl-details" class="wl-details"></textarea>';
@@ -113,6 +114,7 @@ $reasons = array(
 					<?php
 					echo wp_kses(
 						sprintf(
+                                /* translators: %s: link to the download your data page. */
 							__( 'Important notice: Uninstalling the plugin will delete your vocabulary.<br>Maybe you would like to <a href="%s" target="_blank">download your data</a> first.', 'wordlift' ),
 							add_query_arg( array( 'page' => 'wl_download_your_data' ), admin_url( 'admin.php' ) )
 						),
