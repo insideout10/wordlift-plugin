@@ -543,7 +543,7 @@ function wl_core_sql_query_builder( $args ) {
 	// If we look for posts related as subject this means that
 	// related_to is reference for an object: object_id is the filtering column
 
-	$filtering_column = ( 'object' == $args['as'] ) ? 'subject_id' : 'object_id';
+	$filtering_column = ( 'object' === $args['as'] ) ? 'subject_id' : 'object_id';
 
 	if ( isset( $args['related_to'] ) ) {
 		$sql .= $wpdb->prepare( " r.$filtering_column = %d", $args['related_to'] );
@@ -634,7 +634,7 @@ function wl_core_get_posts( $args, $returned_type = OBJECT ) {
 		) as $option_name
 	) {
 		if ( isset( $args[ $option_name ] ) ) {
-			if ( ! is_array( $args[ $option_name ] ) || 0 == count( array_filter( $args[ $option_name ], 'is_numeric' ) ) ) {
+			if ( ! is_array( $args[ $option_name ] ) || 0 === count( array_filter( $args[ $option_name ], 'is_numeric' ) ) ) {
 				return false;
 			}
 			// Sanitize value removing non numeric values from the array
@@ -658,7 +658,7 @@ function wl_core_get_posts( $args, $returned_type = OBJECT ) {
 
 	// If ids are required, returns a one-dimensional array containing ids.
 	// Otherwise an array of associative arrays representing the post | relation object
-	if ( 'post_ids' == $args['get'] ) {
+	if ( 'post_ids' === $args['get'] ) {
 		// See https://codex.wordpress.org/Class_Reference/wpdb#SELECT_a_Column
 		$results = $wpdb->get_col( $sql_statement ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	} else {

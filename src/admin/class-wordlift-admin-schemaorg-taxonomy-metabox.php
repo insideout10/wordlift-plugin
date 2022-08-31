@@ -78,7 +78,7 @@ class Wordlift_Admin_Schemaorg_Taxonomy_Metabox {
 
 			<div id="<?php echo esc_attr( $tax_name ); ?>-legacy" class="tabs-panel" style="display: none;">
 				<?php
-				$name = ( $tax_name == 'category' ) ? 'post_category' : 'tax_input[' . $tax_name . ']';
+				$name = ( $tax_name === 'category' ) ? 'post_category' : 'tax_input[' . $tax_name . ']';
 				echo "<input type='hidden' name='{$name}[]' value='0' />"; // Allows for an empty term set to be sent. 0 is an invalid Term ID and will be ignored by empty() checks.
 				?>
 				<ul id="<?php echo esc_attr( $tax_name ); ?>checklist"

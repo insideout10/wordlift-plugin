@@ -75,7 +75,7 @@ abstract class Wordlift_Shortcode_REST {
 	public function rest_callback( WP_REST_Request $request ) {
 
 		// Respond from origin if TTL is 0
-		if ( static::CACHE_TTL == 0 ) {
+		if ( static::CACHE_TTL === 0 ) {
 
 			$data     = $this->get_data( $request );
 			$response = rest_ensure_response( $data );

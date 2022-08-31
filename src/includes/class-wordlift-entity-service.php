@@ -277,7 +277,7 @@ class Wordlift_Entity_Service {
 		// the $post_id in the save_post call matches the post id set in the request.
 		//
 		// If this is not the current post being saved or if it's not an entity, return.
-		if ( ! isset( $_REQUEST['post_ID'] ) || $_REQUEST['post_ID'] != $post_id || ! $this->is_entity( $post_id ) ) {
+		if ( ! isset( $_REQUEST['post_ID'] ) || $_REQUEST['post_ID'] !== $post_id || ! $this->is_entity( $post_id ) ) {
 			return;
 		}
 

@@ -53,7 +53,7 @@ $mapping_service = Wordlift_Mapping_Service::get_instance();
 
 	foreach ( $mappings as $key => $value ) {
 		// Continue if this is the nonce.
-		if ( '_nonce' == $key ) {
+		if ( '_nonce' === $key ) {
 			continue;
 		}
 
