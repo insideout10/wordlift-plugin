@@ -14,7 +14,7 @@
 
 		echo wp_kses(
 			sprintf(
-                    /* translators: %s: Link to Grab a Key. */
+					/* translators: %s: Link to Grab a Key. */
 				esc_html__(
 					'If you already purchased a plan, check your email, get the activation key from your inbox and insert it in the field below. Otherwise %s!',
 					'wordlift'

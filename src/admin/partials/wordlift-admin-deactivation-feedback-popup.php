@@ -12,7 +12,7 @@ $reasons = array(
 		'text'    => esc_html__( 'It was too complicated and unclear to me', 'wordlift' ),
 		'message' => array(
 			'text' => sprintf(
-                /* translators: %s: Too complicate reason. */
+				/* translators: %s: Too complicate reason. */
 				esc_html__( 'Need help? We are ready to answer your questions. %s', 'wordlift' ),
 				$too_complicate_reason_label
 			),
@@ -114,7 +114,7 @@ $reasons = array(
 					<?php
 					echo wp_kses(
 						sprintf(
-                                /* translators: %s: link to the download your data page. */
+								/* translators: %s: link to the download your data page. */
 							__( 'Important notice: Uninstalling the plugin will delete your vocabulary.<br>Maybe you would like to <a href="%s" target="_blank">download your data</a> first.', 'wordlift' ),
 							add_query_arg( array( 'page' => 'wl_download_your_data' ), admin_url( 'admin.php' ) )
 						),

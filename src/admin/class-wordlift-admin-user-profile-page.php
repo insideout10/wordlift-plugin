@@ -98,7 +98,8 @@ class Wordlift_Admin_User_Profile_Page {
 		<table class="form-table">
 			<?php
            // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-            if ( apply_filters( 'wl_feature__enable__user-author', true ) ) { ?>
+			if ( apply_filters( 'wl_feature__enable__user-author', true ) ) {
+				?>
 			<tr class="user-description-wrap">
 				<th><label
 							for="wl_person"><?php esc_html_e( 'Author from the vocabulary', 'wordlift' ); ?></label>

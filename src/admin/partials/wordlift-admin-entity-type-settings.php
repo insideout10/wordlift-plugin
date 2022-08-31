@@ -31,13 +31,17 @@ $term_settings = ! is_null( $settings ) ? $settings : array(
 		  action="<?php echo esc_html( admin_url( 'admin.php?page=wl_entity_type_settings' ) ); ?>"
 		  class="validate">
 		<input type="hidden" name="tag_ID"
-			   value="<?php
+			   value="
+			   <?php
 			   // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
-               echo esc_attr( $term_id ); ?>" />
+				echo esc_attr( $term_id );
+				?>
+			   " />
 		<input type="hidden" name="action" value="wl_edit_entity_type_term" />
 		<?php
 		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
-        wp_nonce_field( 'update-entity_type_term_' . $term_id ); ?>
+		wp_nonce_field( 'update-entity_type_term_' . $term_id );
+		?>
 		<table class="form-table">
 			<tr class="form-field form-required term-name-wrap">
 				<th scope="row">
