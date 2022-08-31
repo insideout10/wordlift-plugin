@@ -22,7 +22,7 @@ function wl_shortcode_faceted_search( $request ) {
 
 	// Create the cache key.
 	$cache_key = array(
-		'request_params' => $_GET,
+		'request_params' => $_GET, //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	);
 
 	// Create the TTL cache and try to get the results.
@@ -58,17 +58,17 @@ function wl_shortcode_faceted_search( $request ) {
  */
 function wl_shortcode_faceted_search_origin( $request ) {
 	// Post ID must be defined.
-	if ( ! isset( $_GET['post_id'] ) ) { // WPCS: input var ok; CSRF ok.
+	if ( ! isset( $request['post_id'] ) ) { // WPCS: input var ok; CSRF ok.
 		wp_die( 'No post_id given' );
 
 		return;
 	}
 
-	$current_post_id = (int) $_GET['post_id']; // WPCS: input var ok; CSRF ok.
+	$current_post_id = (int) $request['post_id']; // WPCS: input var ok; CSRF ok.
 	$current_post    = get_post( $current_post_id );
-	$faceted_id      = isset( $_GET['uniqid'] ) ? sanitize_text_field( wp_unslash( (string) $_GET['uniqid'] ) ) : '';
+	$faceted_id      = isset( $request['uniqid'] ) ? sanitize_text_field( wp_unslash( (string) $request['uniqid'] ) ) : '';
 
-	$post_types          = isset( $_GET['post_types'] ) ? sanitize_text_field( wp_unslash( (string) $_GET['post_types'] ) ) : '';
+	$post_types          = isset( $request['post_types'] ) ? sanitize_text_field( wp_unslash( (string) $request['post_types'] ) ) : '';
 	$post_types          = explode( ',', $post_types );
 	$existing_post_types = get_post_types();
 	$post_types          = array_values( array_intersect( $existing_post_types, $post_types ) );
@@ -101,16 +101,16 @@ function wl_shortcode_faceted_search_origin( $request ) {
 		}
 	}
 
-	$limit = ( isset( $_GET['limit'] ) ) ? (int) $_GET['limit'] : 4;  // WPCS: input var ok; CSRF ok.
-	$amp   = ( isset( $_GET['amp'] ) ) ? true : false;
+	$limit = ( isset( $request['limit'] ) ) ? (int) $request['limit'] : 4;  // WPCS: input var ok; CSRF ok.
+	$amp   = ( isset( $request['amp'] ) ) ? true : false;
 
 	/**
 	 * see https://github.com/insideout10/wordlift-plugin/issues/1181
 	 * The ordering should be descending by date on default.
 	 */
 	$order_by = 'DESC';
-	if ( isset( $_GET['sort'] ) && is_string( $_GET['sort'] ) ) {
-		$order_by = sanitize_sql_orderby( wp_unslash( (string) $_GET['sort'] ) );
+	if ( isset( $request['sort'] ) && is_string( $request['sort'] ) ) {
+		$order_by = sanitize_sql_orderby( wp_unslash( (string) $request['sort'] ) );
 	}
 
 	$referencing_posts = Wordlift_Relation_Service::get_instance()->get_article_subjects(
