@@ -186,7 +186,7 @@ abstract class WP_Background_Process extends WP_Async_Request {
 		global $wpdb;
 
 		$table  = $wpdb->options;
-		$column = 'option_name';
+		$column = '';
 
 		if ( is_multisite() ) {
 			$table  = $wpdb->sitemeta;
@@ -197,11 +197,7 @@ abstract class WP_Background_Process extends WP_Async_Request {
 
 		$count = $wpdb->get_var(
 			$wpdb->prepare(
-				"
-			SELECT COUNT(*)
-			FROM {$table}
-			WHERE {$column} LIKE %s
-		",
+				"SELECT COUNT(*) FROM {$table} WHERE {$column} LIKE %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$key
 			)
 		);
@@ -277,13 +273,7 @@ abstract class WP_Background_Process extends WP_Async_Request {
 
 		$query = $wpdb->get_row(
 			$wpdb->prepare(
-				"
-			SELECT *
-			FROM {$table}
-			WHERE {$column} LIKE %s
-			ORDER BY {$key_column} ASC
-			LIMIT 1
-		",
+				"SELECT * FROM {$table} WHERE {$column} LIKE %s ORDER BY {$key_column} ASC LIMIT 1", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$key
 			)
 		);

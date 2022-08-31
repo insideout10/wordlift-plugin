@@ -53,11 +53,7 @@ class Sync_Post_Adapter extends Abstract_Sync_Object_Adapter {
 
 		$wpdb->query(
 			$wpdb->prepare(
-				"
-			INSERT INTO {$wpdb->prefix}wl_entities( content_id, content_type, $field_names )
-			VALUES ( %d, %d, $field_values )
-			ON DUPLICATE KEY UPDATE $update_stmt;
-		",
+				"INSERT INTO {$wpdb->prefix}wl_entities( content_id, content_type, $field_names ) VALUES ( %d, %d, $field_values ) ON DUPLICATE KEY UPDATE $update_stmt;", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$this->post_id,
 				Object_Type_Enum::POST
 			)

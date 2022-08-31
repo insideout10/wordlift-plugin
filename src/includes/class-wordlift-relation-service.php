@@ -325,12 +325,7 @@ class Wordlift_Relation_Service {
 		$actual_fields = self::fields( $fields );
 
 		$sql = $wpdb->prepare(
-			"
-			SELECT p.$actual_fields
-			FROM {$this->relation_table} r
-			INNER JOIN $wpdb->posts p
-				ON p.id = r.object_id
-			"
+			"SELECT p.$actual_fields FROM {$this->relation_table} r INNER JOIN $wpdb->posts p ON p.id = r.object_id" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			// Add the status clause.
 			. self::and_status( $status ) // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			. self::inner_join_is_not_article() // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
@@ -455,7 +450,7 @@ class Wordlift_Relation_Service {
 		return $wpdb->get_results(
 			"
 			SELECT subject_id, GROUP_CONCAT( DISTINCT object_id ORDER BY object_id SEPARATOR ',' ) AS object_ids
-			FROM $this->relation_table
+			FROM {$wpdb->prefix}wl_relation_instances
 			GROUP BY subject_id
 			"
 		);
