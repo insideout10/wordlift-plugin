@@ -51,7 +51,7 @@ class Navigator_Data {
 				(array) $order_by
 			)
 		);
-
+// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		/** @noinspection SqlNoDataSourceInspection */
 		return $wpdb->get_results(
 			$wpdb->prepare(
@@ -96,7 +96,7 @@ SELECT %4\$s, p2.ID as entity_id
 				$order_by
 			)
 		);
-
+// phpcs:enable
 	}
 
 	public static function entity_navigator_get_results(
@@ -128,7 +128,7 @@ SELECT %4\$s, p2.ID as entity_id
 		);
 
 		$post_types = self::get_post_types_as_string( $post_types );
-
+// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		/** @noinspection SqlNoDataSourceInspection */
 		return $wpdb->get_results(
 			$wpdb->prepare(
@@ -171,6 +171,6 @@ SELECT %4\$s, p2.ID as entity_id
 			)
 		);
 	}
-
+// phpcs:enable
 }
 

@@ -65,11 +65,7 @@ class Sync_Post_Adapter extends Abstract_Sync_Object_Adapter {
 
 		return $wpdb->get_var(
 			$wpdb->prepare(
-				"
-			SELECT $key
-			FROM {$wpdb->prefix}wl_entities
-			WHERE content_id = %d AND content_type = %d
-		",
+				"SELECT $key FROM {$wpdb->prefix}wl_entities WHERE content_id = %d AND content_type = %d",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$this->post_id,
 				Object_Type_Enum::POST
 			)
