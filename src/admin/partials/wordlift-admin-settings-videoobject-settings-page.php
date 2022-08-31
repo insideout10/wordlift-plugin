@@ -3,25 +3,27 @@
 use Wordlift\Videoobject\Provider\Client\Vimeo_Client;
 use Wordlift\Videoobject\Provider\Client\Youtube_Client;
 
-if ( isset( $_POST['wordlift_videoobject_youtube_api_key'] )
-	 || isset( $_POST['wordlift_videoobject_vimeo_api_key'] ) ) {
 
-	/**
-	 * @todo: does this fields need to be encrypted before saving ?
-	 */
-	$youtube_api_key = sanitize_text_field( wp_unslash( (string) $_POST['wordlift_videoobject_youtube_api_key'] ) );
-	$vimeo_api_key   = sanitize_text_field( wp_unslash( (string) $_POST['wordlift_videoobject_vimeo_api_key'] ) );
+if (  isset( $_POST['submit'] ) && wp_verify_nonce( $_POST['wordlift_videoobject_settings_nonce'], 'wordlift_videoobject_settings' ) ) {
 
-	if ( $youtube_api_key ) {
-		update_option( Youtube_Client::get_api_key_option_name(), $youtube_api_key );
+	if ( isset( $_POST['wordlift_videoobject_youtube_api_key'] ) || isset( $_POST['wordlift_videoobject_vimeo_api_key'] ) ) {
+
+		/**
+		 * @todo: does this fields need to be encrypted before saving ?
+		 */
+		$youtube_api_key = sanitize_text_field( wp_unslash( (string) $_POST['wordlift_videoobject_youtube_api_key'] ) );
+		$vimeo_api_key   = sanitize_text_field( wp_unslash( (string) $_POST['wordlift_videoobject_vimeo_api_key'] ) );
+
+		if ( $youtube_api_key ) {
+			update_option( Youtube_Client::get_api_key_option_name(), $youtube_api_key );
+		}
+
+		if ( $vimeo_api_key ) {
+			update_option( Vimeo_Client::get_api_key_option_name(), $vimeo_api_key );
+		}
 	}
 
-	if ( $vimeo_api_key ) {
-		update_option( Vimeo_Client::get_api_key_option_name(), $vimeo_api_key );
-	}
-}
 
-if ( isset( $_POST['submit'] ) ) {
 	if ( isset( $_POST['wl_enable_video_sitemap'] ) ) {
 		update_option( '_wl_video_sitemap_generation', 1 );
 		// flush the rewrite rules.
@@ -32,7 +34,6 @@ if ( isset( $_POST['submit'] ) ) {
 		flush_rewrite_rules();
 	}
 }
-
 ?>
 <h1><?php esc_html_e( 'API Settings', 'wordlift' ); ?></h1>
 <p><?php esc_html_e( 'To let WordLift access metadata from YouTube or Vimeo you will need to add here your API Key.', 'wordlift' ); ?></p>
@@ -99,8 +100,9 @@ if ( isset( $_POST['submit'] ) ) {
 		}
 		?>
 	</p>
-
+	<?php wp_nonce_field( 'wordlift_videoobject_settings', 'wordlift_videoobject_settings_nonce', false ); ?>
 	<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary"
 							 value="Save Changes">
 	</p>
 </form>
+

@@ -101,6 +101,7 @@ class Wordlift_Admin_Term_Adapter {
 				<p class="description"><?php esc_html_e( 'The entity bound to the term.', 'wordlift' ); ?></p>
 			</td>
 		</tr>
+		<?php wp_nonce_field( 'wordlift_term_entity_edit', 'wordlift_term_entity', false, true ); ?>
 		<?php
 	}
 
@@ -128,6 +129,10 @@ class Wordlift_Admin_Term_Adapter {
 	 * @param int $term_id The term id.
 	 */
 	public function edit_term( $term_id ) {
+
+		if ( ! wp_verify_nonce( $_REQUEST['wordlift_term_entity'], 'wordlift_term_entity_edit' ) ) {
+			return;
+		}
 
 		// Bail if the action isn't related to the term currently being edited.
 		if ( ! isset( $_POST['tag_ID'] ) || $term_id !== (int) $_POST['tag_ID'] ) {
