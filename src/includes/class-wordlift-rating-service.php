@@ -321,7 +321,7 @@ class Wordlift_Rating_Service {
 		$rating = round( ( $score * 3 ) / self::RATING_MAX, 0, PHP_ROUND_HALF_UP );
 
 		// If rating is 0, return 1, otherwise return rating
-		return ( 0 == $rating ) ? 1 : $rating;
+		return ( 0 === $rating ) ? 1 : $rating;
 
 	}
 

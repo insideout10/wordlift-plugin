@@ -328,7 +328,7 @@ function _wl_network_navigator_get_results(
 			$entities
 		)
 	);
-
+// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder
 	/** @noinspection SqlNoDataSourceInspection */
 	return $wpdb->get_results(
 		$wpdb->prepare(
@@ -364,7 +364,7 @@ SELECT %3\$s, p2.ID as entity_id
 			$order_by
 		)
 	);
-
+// phpcs:enable
 }
 
 /**

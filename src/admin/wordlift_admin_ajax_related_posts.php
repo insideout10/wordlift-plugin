@@ -32,7 +32,7 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 	Wordlift_Log_Service::get_logger( 'wordlift_ajax_related_posts' )->trace( "Going to find posts related to current with post id: $post_id ..." );
 
 	// Extract filtering conditions
-	$filtering_entity_uris = ( null == $http_raw_data ) ? file_get_contents( 'php://input' ) : $http_raw_data;
+	$filtering_entity_uris = ( null === $http_raw_data ) ? file_get_contents( 'php://input' ) : $http_raw_data;
 	$filtering_entity_uris = json_decode( $filtering_entity_uris );
 
 	$content_service      = Wordpress_Content_Service::get_instance();

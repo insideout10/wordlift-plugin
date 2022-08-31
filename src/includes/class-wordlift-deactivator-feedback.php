@@ -96,8 +96,8 @@ class Wordlift_Deactivator_Feedback {
 			return;
 		}
 
-		wp_enqueue_style( 'wordlift-admin-feedback-popup', plugin_dir_url( __DIR__ ) . 'admin/css/wordlift-admin-feedback-popup.css', array() );
-		wp_enqueue_script( 'wordlift-admin-feedback-popup', plugin_dir_url( __DIR__ ) . 'admin/js/wordlift-admin-feedback-popup.js', array( 'jquery' ) );
+		wp_enqueue_style( 'wordlift-admin-feedback-popup', plugin_dir_url( __DIR__ ) . 'admin/css/wordlift-admin-feedback-popup.css', array(), WORDLIFT_VERSION );
+		wp_enqueue_script( 'wordlift-admin-feedback-popup', plugin_dir_url( __DIR__ ) . 'admin/js/wordlift-admin-feedback-popup.js', array( 'jquery' ), WORDLIFT_VERSION );
 	}
 
 	/**

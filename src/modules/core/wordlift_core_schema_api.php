@@ -37,8 +37,8 @@ function wl_schema_get_value( $post_id, $property_name ) {
 	$term_mapping = wl_entity_taxonomy_get_custom_fields( $post_id );
 	// Search for the required meta value (by constant name or schema name)
 	foreach ( $term_mapping as $wl_constant => $property_info ) {
-		$found_constant  = ( $wl_constant == $property_name );
-		$found_predicate = ( isset( $property_info['predicate'] ) && $property_info['predicate'] == $property_schema_name );
+		$found_constant  = ( $wl_constant === $property_name );
+		$found_predicate = ( isset( $property_info['predicate'] ) && $property_info['predicate'] === $property_schema_name );
 		if ( $found_constant || $found_predicate ) {
 			return get_post_meta( $post_id, $wl_constant );
 		}
@@ -71,7 +71,7 @@ function wl_schema_set_value( $post_id, $property_name, $property_value ) {
 
 	// Find the name of the custom-field managing the schema property
 	foreach ( $accepted_fields as $wl_constant => $field ) {
-		if ( $field['predicate'] == $property_name ) {
+		if ( $field['predicate'] === $property_name ) {
 
 			// Deal with single values
 			if ( ! is_array( $property_value ) ) {

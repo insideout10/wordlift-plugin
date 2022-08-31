@@ -115,7 +115,7 @@ class Wordlift_Google_Analytics_Export_Service {
 		$items = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT
-					CONCAT( '%s', p.post_name, '/' ) AS 'post_name',
+					CONCAT( %s, p.post_name, '/' ) AS 'post_name',
 					p1.post_name AS 'entity_name',
 					t.slug AS 'entity_type'
 				FROM {$wpdb->prefix}posts p

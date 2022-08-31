@@ -185,8 +185,8 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 		// JavaScript required for the settings page.
 		// @todo: try to move to the `wordlift-admin.bundle.js`.
-		wp_enqueue_script( 'wordlift-admin-settings-page', plugin_dir_url( __DIR__ ) . 'admin/js/1/settings.js', array( 'wp-util' ) );
-		wp_enqueue_style( 'wordlift-admin-settings-page', plugin_dir_url( __DIR__ ) . 'admin/js/1/settings.css' );
+		wp_enqueue_script( 'wordlift-admin-settings-page', plugin_dir_url( __DIR__ ) . 'admin/js/1/settings.js', array( 'wp-util' ), WORDLIFT_VERSION );
+		wp_enqueue_style( 'wordlift-admin-settings-page', plugin_dir_url( __DIR__ ) . 'admin/js/1/settings.css', array(), WORDLIFT_VERSION );
 
 	}
 

@@ -207,7 +207,8 @@ class Wordlift_Admin_Post_Edit_Page {
 		wp_enqueue_style(
 			'wl-faq-metabox-style',
 			plugin_dir_url( __DIR__ ) . 'js/dist/faq.css',
-			array()
+			array(),
+			WORDLIFT_VERSION
 		);
 		Scripts_Helper::enqueue_based_on_wordpress_version(
 			'wl-faq-metabox-script',

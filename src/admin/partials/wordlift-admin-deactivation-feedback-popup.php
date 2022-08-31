@@ -74,7 +74,7 @@ $reasons = array(
 
 				<ul>
 					<?php foreach ( $reasons as $reason ) : ?>
-						<li class="wl-reason-item <?php echo ( $reason['id'] == 'I_DONT_USE_IT' ) ? 'selected' : ''; ?>">
+						<li class="wl-reason-item <?php echo ( $reason['id'] === 'I_DONT_USE_IT' ) ? 'selected' : ''; ?>">
 							<label>
 								<input
 										type="radio"
