@@ -65,7 +65,7 @@ class Wordlift_Entity_Type_Admin_Service {
 	 *
 	 * @since 3.15.0
 	 */
-	function set_filters_to_hide_entity_type_from_lists() {
+	public function set_filters_to_hide_entity_type_from_lists() {
 
 		// Bail out if the user can edit entities.
 		if ( current_user_can( 'edit_wordlift_entity' ) ) {

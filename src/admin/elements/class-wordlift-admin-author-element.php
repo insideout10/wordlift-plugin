@@ -40,12 +40,12 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 	/**
 	 * Create a {@link Wordlift_Admin_Person_Element} instance.
 	 *
-	 * @since 3.14.0
-	 *
 	 * @param \Wordlift_Publisher_Service     $publisher_service The {@link Wordlift_Publisher_Service} instance.
 	 * @param \Wordlift_Admin_Select2_Element $select_element The {@link Wordlift_Admin_Select_Element} instance.
+	 *
+	 * @since 3.14.0
 	 */
-	function __construct( $publisher_service, $select_element ) {
+	public function __construct( $publisher_service, $select_element ) {
 
 		$this->publisher_service = $publisher_service;
 
@@ -77,7 +77,7 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 			$data,
 			array(
 				'id'            => '0',
-				'text'          => __( '<em>(none)</em>', 'wordlift' ),
+				'text'          => '<em>' . __( '(none)', 'wordlift' ) . '</em>',
 				'type'          => '',
 				'thumbnail_url' => plugin_dir_url( __DIR__ ) . 'images/pixel.png',
 			)
@@ -91,18 +91,17 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 	/**
 	 * Render the `select` using the provided parameters.
 	 *
-	 * @since 3.14.0
-	 *
 	 * @param array $params The array of parameters from the `render` function.
 	 * @param int   $current_post_id The currently selected {@link WP_Post} `id`.
 	 * @param array $data An array of Select2 options.
 	 *
 	 * @return \Wordlift_Admin_Author_Element $this Return this element.
+	 * @since 3.14.0
 	 */
 	protected function do_render( $params, $current_post_id, $data ) {
 
 		// Queue the script which will initialize the select and style it.
-		wp_enqueue_script( 'wl-author-element', plugin_dir_url( __DIR__ ) . 'js/1/author.js', array( 'wordlift-select2' ), WORDLIFT_VERSION );
+		wp_enqueue_script( 'wl-author-element', plugin_dir_url( __DIR__ ) . 'js/1/author.js', array( 'wordlift-select2' ), WORDLIFT_VERSION, false );
 		wp_enqueue_style( 'wl-author-element', plugin_dir_url( __DIR__ ) . 'js/1/author.css', array(), WORDLIFT_VERSION );
 
 		// Prepare the URLs for entities which don't have logos.
@@ -128,7 +127,7 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 				// Data attributes.
 				'data'    => array(
 					// The list of available options.
-					'wl-select2-data'               => json_encode( $data ),
+					'wl-select2-data'               => wp_json_encode( $data ),
 					// The HTML template for each option.
 					'wl-select2-template-result'    => "<div class='wl-select2-result'><span class='wl-select2-thumbnail' style='background-image: url( <%- obj.thumbnail_url || ( 'Organization' === obj.type ? '$organization_thumbnail_url' : '$person_thumbnail_url' ) %> );'>&nbsp;</span><span class='wl-select2'><%- obj.text %></span><span class='wl-select2-type'><%- obj.type %></span></div>",
 					// The HTML template for the selected option.

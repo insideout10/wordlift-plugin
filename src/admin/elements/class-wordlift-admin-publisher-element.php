@@ -42,7 +42,7 @@ class Wordlift_Admin_Publisher_Element extends Wordlift_Admin_Author_Element {
 	 *
 	 * @since 3.11.0
 	 */
-	function __construct( $publisher_service, $tabs_element, $select_element ) {
+	public function __construct( $publisher_service, $tabs_element, $select_element ) {
 		parent::__construct( $publisher_service, $select_element );
 
 		$this->publisher_service = $publisher_service;
@@ -130,6 +130,7 @@ class Wordlift_Admin_Publisher_Element extends Wordlift_Admin_Author_Element {
 	 *
 	 * @since 3.11.0
 	 */
+    // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function create( $params ) {
 		?>
 		<p>

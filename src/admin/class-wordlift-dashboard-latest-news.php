@@ -43,8 +43,6 @@ class Wordlift_Dashboard_Latest_News {
 
 	/**
 	 * Return latest news html.
-	 *
-	 * @return string Articles html markup.
 	 */
 	public function render() {
 
@@ -89,7 +87,7 @@ class Wordlift_Dashboard_Latest_News {
 		// Init cache class
 		$cache_sistem_lib = new Wordlift_File_Cache_Service( WL_TEMP_DIR . 'articles/' );
 		$locale           = get_locale();
-		$cache_id         = 'news_' . date( 'Y_m_d' ) . '_' . $locale;
+		$cache_id         = 'news_' . gmdate( 'Y_m_d' ) . '_' . $locale;
 		$posts_data       = array();
 
 		// Get latest articles from cache
@@ -103,6 +101,7 @@ class Wordlift_Dashboard_Latest_News {
 			if ( ! is_wp_error( $feed ) ) {
 				// Build an array of requested $articles_number, starting with element 0
 				$feed_articles = $feed->get_items( 0, $articles_number );
+				// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 				foreach ( $feed_articles as $key => $item ) {
 					$data = array(
 						// fetch_feed will return the title html decoded.
@@ -144,8 +143,6 @@ class Wordlift_Dashboard_Latest_News {
 	 * Ajax call for more latest news.
 	 *
 	 * @uses  https://codex.wordpress.org/Function_Reference/wp_send_json_success
-	 *
-	 * @return string JSON obj with articles data.
 	 */
 	public function ajax_get_latest_news() {
 		// Get wordlift articles
@@ -168,6 +165,7 @@ class Wordlift_Dashboard_Latest_News {
 		 *
 		 * @since 3.30.0
 		 */
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( apply_filters( 'wl_feature__enable__wordlift-news', true ) ) {
 
 			wp_add_dashboard_widget(

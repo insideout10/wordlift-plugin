@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignore WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * This file provides methods and functions to generate entities meta-boxes in the admin UI.
  *
@@ -41,6 +42,7 @@ function wl_admin_add_entities_meta_box( $post_type, $post ) {
 		return;
 	}
 
+	// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	if ( ! apply_filters( 'wl_feature__enable__classification-sidebar', true ) ) {
 		return;
 	}
@@ -111,6 +113,7 @@ function wl_entities_box_content_scripts() {
 	$post = get_post();
 
 	// Angularjs edit-post widget classification boxes configuration.
+	// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 	$classification_boxes = unserialize( WL_CORE_POST_CLASSIFICATION_BOXES );
 
 	// Array to store all related entities ids.
@@ -118,8 +121,6 @@ function wl_entities_box_content_scripts() {
 
 	// Add selected entities to classification_boxes.
 	foreach ( $classification_boxes as $i => $box ) {
-		// Build the proper relation name.
-		$relation_name = $box['id'];
 
 		// Get the entity referenced from the post content.
 		/*
@@ -209,7 +210,7 @@ function wl_entities_box_content_scripts() {
 	// Current language.
 	$current_language            = $configuration_service->get_language_code();
 	$wordlift_timeline_shortcode = new Wordlift_Timeline_Shortcode();
-	$timelinejs_default_options  = json_encode( $wordlift_timeline_shortcode->get_timelinejs_default_options(), JSON_PRETTY_PRINT );
+	$timelinejs_default_options  = wp_json_encode( $wordlift_timeline_shortcode->get_timelinejs_default_options(), JSON_PRETTY_PRINT );
 	$addslashes_post_author      = addslashes( $post_author );
 
 	$metabox_settings = array(

@@ -48,7 +48,8 @@ class Wordlift_Admin_Select2_Element extends Wordlift_Admin_Select_Element {
 				'jquery',
 				'underscore',
 			),
-			'4.0.3'
+			'4.0.3',
+			false
 		);
 		wp_enqueue_style( 'wordlift-select2', plugin_dir_url( __DIR__ ) . 'js/select2/css/select2' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.css', array(), '4.0.3' );
 	}

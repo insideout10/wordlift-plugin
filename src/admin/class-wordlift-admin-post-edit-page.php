@@ -56,7 +56,7 @@ class Wordlift_Admin_Post_Edit_Page {
 	 *
 	 * @since 3.11.0
 	 */
-	function __construct( $plugin ) {
+	public function __construct( $plugin ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
@@ -84,7 +84,7 @@ class Wordlift_Admin_Post_Edit_Page {
 	 * @return bool True if G'berg is used otherwise false.
 	 * @since 3.22.3
 	 */
-	function is_gutenberg_page() {
+	public function is_gutenberg_page() {
 		if ( function_exists( 'is_gutenberg_page' ) && is_gutenberg_page() ) {
 			// The Gutenberg plugin is on.
 			return true;
@@ -139,6 +139,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		}
 
 		// Bail out if classification sidebar is not enabled via hook
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( ! apply_filters( 'wl_feature__enable__classification-sidebar', true ) ) {
 			return;
 		}
@@ -230,15 +231,17 @@ class Wordlift_Admin_Post_Edit_Page {
 			'nonce'                   => wp_create_nonce( 'wp_rest' ),
 			'postId'                  => get_the_ID(),
 			// Translation for warning, error message.
-			'invalidTagMessage'       => sprintf( __( 'Invalid tags %s is present in answer', self::WORDLIFT_TEXT_DOMAIN ), '{INVALID_TAGS}' ),
-			'invalidWordCountMessage' => sprintf( __( 'Answer word count must not exceed %s words', self::WORDLIFT_TEXT_DOMAIN ), '{ANSWER_WORD_COUNT_WARNING_LIMIT}' ),
-			'questionText'            => __( 'Question', self::WORDLIFT_TEXT_DOMAIN ),
-			'answerText'              => __( 'Answer', self::WORDLIFT_TEXT_DOMAIN ),
-			'addQuestionOrAnswerText' => __( 'Add Question / Answer', self::WORDLIFT_TEXT_DOMAIN ),
-			'addQuestionText'         => __( 'Add Question', self::WORDLIFT_TEXT_DOMAIN ),
-			'addAnswerText'           => __( 'Add Answer', self::WORDLIFT_TEXT_DOMAIN ),
-			'noFaqItemsText'          => __( 'Highlight a question in content, then click Add Question.', self::WORDLIFT_TEXT_DOMAIN ),
-			'updatingText'            => __( 'Updating...', self::WORDLIFT_TEXT_DOMAIN ),
+			/** translators: %s: The invalid tag. */
+			'invalidTagMessage'       => sprintf( __( 'Invalid tags %s is present in answer', 'wordlift' ), '{INVALID_TAGS}' ),
+			/** translators: %s: The word count limit warning. */
+			'invalidWordCountMessage' => sprintf( __( 'Answer word count must not exceed %s words', 'wordlift' ), '{ANSWER_WORD_COUNT_WARNING_LIMIT}' ),
+			'questionText'            => __( 'Question', 'wordlift' ),
+			'answerText'              => __( 'Answer', 'wordlift' ),
+			'addQuestionOrAnswerText' => __( 'Add Question / Answer', 'wordlift' ),
+			'addQuestionText'         => __( 'Add Question', 'wordlift' ),
+			'addAnswerText'           => __( 'Add Answer', 'wordlift' ),
+			'noFaqItemsText'          => __( 'Highlight a question in content, then click Add Question.', 'wordlift' ),
+			'updatingText'            => __( 'Updating...', 'wordlift' ),
 		);
 	}
 
@@ -252,7 +255,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		wp_localize_script( 'wl-faq-metabox-script', '_wlFaqSettings', $this->get_faq_settings() );
 
 		// Enqueue the FAQ style
-		if ( $editor === self::GUTENBERG ) {
+		if ( self::GUTENBERG === $editor ) {
 			Scripts_Helper::enqueue_based_on_wordpress_version(
 				'wl-faq-gutenberg-plugin',
 				plugin_dir_url( __DIR__ ) . 'js/dist/block-editor-faq-plugin',
@@ -285,7 +288,8 @@ class Wordlift_Admin_Post_Edit_Page {
 				'wp-plugins',
 				'wp-edit-post',
 			),
-			$this->plugin->get_version()
+			$this->plugin->get_version(),
+			false
 		);
 		wp_localize_script(
 			'wl-block-editor',

@@ -1,3 +1,8 @@
+<?php
+/**
+ * The Google Add-on import.
+ */
+?>
 <style>
 	html,body {
 		background-color: #E5F1FF;

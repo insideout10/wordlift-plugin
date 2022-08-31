@@ -6,7 +6,7 @@
  */
 
 // Add the Admin menu.
-require_once 'wordlift_admin_menu.php';
+require_once 'wordlift-admin-menu.php';
 
 /**
  * Serialize an entity post.

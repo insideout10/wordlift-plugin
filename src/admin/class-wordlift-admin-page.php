@@ -55,7 +55,7 @@ abstract class Wordlift_Admin_Page {
 	 * @return string The page title.
 	 * @since 3.11.0
 	 */
-	public abstract function get_page_title();
+	abstract public function get_page_title();
 
 	/**
 	 * Get the menu title. Will be translated.
@@ -63,7 +63,7 @@ abstract class Wordlift_Admin_Page {
 	 * @return string The menu title.
 	 * @since 3.11.0
 	 */
-	public abstract function get_menu_title();
+	abstract public function get_menu_title();
 
 	/**
 	 * Get the menu slug.
@@ -71,7 +71,7 @@ abstract class Wordlift_Admin_Page {
 	 * @return string The menu slug.
 	 * @since 3.11.0
 	 */
-	public abstract function get_menu_slug();
+	abstract public function get_menu_slug();
 
 	/**
 	 * Get the page url.
@@ -93,7 +93,7 @@ abstract class Wordlift_Admin_Page {
 	 * @return string The partial file name.
 	 * @since 3.11.0
 	 */
-	public abstract function get_partial_name();
+	abstract public function get_partial_name();
 
 	/**
 	 * The `admin_menu` callback. Will call {@link add_submenu_page} to add the

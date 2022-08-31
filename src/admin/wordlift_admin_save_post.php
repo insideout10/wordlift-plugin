@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignore WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * This file gathers functions to execute when the post (any type) is saved or updated.
  *
@@ -35,6 +36,7 @@ function wl_transition_post_status( $new_status, $old_status, $post ) {
 
 	// when a post is published, then all the referenced entities must be published.
 	if ( 'publish' !== $old_status && 'publish' === $new_status
+	     // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		 && apply_filters( 'wl_feature__enable__entity-auto-publish', true ) ) {
 
 		foreach ( wl_core_get_related_entity_ids( $post->ID ) as $entity_id ) {
@@ -68,19 +70,16 @@ function rl_delete_post( $post ) {
  */
 function wl_update_post_status( $post_id, $status ) {
 
-	wl_write_log( "wl_update_post_status [ post ID :: $post_id ][ status :: $status ]" );
-
 	global $wpdb;
 
-	if ( ! $post = get_post( $post_id ) ) {
+	$post = get_post( $post_id );
+	if ( ! $post ) {
 		return;
 	}
 
 	if ( $status === $post->post_status ) {
 		return;
 	}
-
-	wl_write_log( "wl_update_post_status, old and new post status do not match [ post ID :: $post_id ][ new status :: $status ][ old status :: $post->post_status ]." );
 
 	$wpdb->update( $wpdb->posts, array( 'post_status' => $status ), array( 'ID' => $post->ID ) );
 

@@ -83,7 +83,7 @@ class Wordlift_Dashboard_Service {
 		$enriched_posts_title   = __( 'enriched posts', 'wordlift' );
 		$enriched_posts_caption = sprintf(
 			wp_kses(
-			    /* translators: 1: Percentage of annotated posts, 2: Link to the edit screen, 3: Number of annotated posts, 4: Total posts. */
+				/* translators: 1: Percentage of annotated posts, 2: Link to the edit screen, 3: Number of annotated posts, 4: Total posts. */
 				__( '%1$s, of your <a href="%2$s">posts</a> are annotated. This means %3$s annotated posts on %4$s.', 'wordlift' ),
 				array( 'a' => array( 'href' => array() ) )
 			),
@@ -96,6 +96,7 @@ class Wordlift_Dashboard_Service {
 		$rating_title   = __( 'average entity rating', 'wordlift' );
 		$rating_caption = sprintf(
 			wp_kses(
+					/* translators: 1: The entities count, 2: The link to the vocabulary, 3: The average rating. */
 				__( 'You have %1$s entities in your <a href="%2$s">vocabulary</a> with an average rating of %3$s.', 'wordlift' ),
 				array( 'a' => array( 'href' => array() ) )
 			),
@@ -107,6 +108,7 @@ class Wordlift_Dashboard_Service {
 		$graph_title   = __( 'triples in your graph', 'wordlift' );
 		$graph_caption = sprintf(
 			wp_kses(
+					/* translators: 1: The percentage of the graph size compared to Wikidata, 2: The link to Wikidata. */
 				__( 'Your graphs size corresponds to %1$s of <a href="%2$s">Wikidata</a>.', 'wordlift' ),
 				array( 'a' => array( 'href' => array() ) )
 			),

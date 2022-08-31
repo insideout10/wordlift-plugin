@@ -26,12 +26,11 @@ class Wordlift_PrimaShop_Adapter {
 	 *
 	 * @since 3.2.3
 	 *
-	 * @param array  $meta The meta array.
-	 * @param string $ype The post type.
+	 * @param array $meta The meta array.
 	 *
 	 * @return array A meta array.
 	 */
-	function prima_metabox_entity_header_args( $meta, $ype ) {
+	public function prima_metabox_entity_header_args( $meta ) {
 
 		return apply_filters( 'prima_metabox_post_header_args', $meta, 'post' );
 	}

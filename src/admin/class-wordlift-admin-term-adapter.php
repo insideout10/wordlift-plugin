@@ -125,7 +125,7 @@ class Wordlift_Admin_Term_Adapter {
 	 *
 	 * @since 3.20.0
 	 *
-	 * @param int    $term_id The term id.
+	 * @param int $term_id The term id.
 	 */
 	public function edit_term( $term_id ) {
 

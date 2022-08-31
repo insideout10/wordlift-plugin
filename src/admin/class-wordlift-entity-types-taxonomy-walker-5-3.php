@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignore WordPress.Files.FileName.InvalidClassFileName
 /**
  * Walkers: Entity Types Taxonomy Walker.
  *
@@ -36,7 +37,7 @@ class Wordlift_Entity_Types_Taxonomy_Walker extends Walker_Category_Checklist {
 	 *
 	 * @return array An array of arguments, with this walker in case the taxonomy is the Entity Type taxonomy.
 	 */
-	function terms_checklist_args( $args ) {
+	public function terms_checklist_args( $args ) {
 
 		if ( ! isset( $args['taxonomy'] ) || Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME !== $args['taxonomy'] ) {
 			return $args;
