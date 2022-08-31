@@ -87,7 +87,7 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 		wp_enqueue_style( 'wordlift-ui' );
 
 		// Adding javascript code.
-		wp_enqueue_script( 'd3', dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/d3/d3.min.js' );
+		wp_enqueue_script( 'd3', dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/d3/d3.min.js', array(), WORDLIFT_VERSION );
 
 		$this->enqueue_scripts();
 
