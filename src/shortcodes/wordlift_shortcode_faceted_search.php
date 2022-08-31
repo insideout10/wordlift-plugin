@@ -204,7 +204,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 
 		wl_write_log( "Going to find related entities for the current post [ post ID :: $current_post_id ] [ query :: $query ]" );
 
-		$entities = $wpdb->get_results( $query, OBJECT ); // No cache ok.
+		$entities = $wpdb->get_results( $query, OBJECT ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 		wl_write_log( 'Entities found ' . count( $entities ) );
 

@@ -232,14 +232,13 @@ class Wordlift_Dashboard_Service {
 		// Prepare interaction with db
 		global $wpdb;
 		// Retrieve Wordlift relation instances table name
-		$table_name = wl_core_get_relation_instances_table_name();
+		// $table_name = wl_core_get_relation_instances_table_name();
 		// Calculate sql statement
-		$sql_statement = "
-    		SELECT COUNT(distinct(p.id)) FROM $wpdb->posts as p JOIN $table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND p.post_status = 'publish';
-";
 
 		// Perform the query
-		return (int) $wpdb->get_var( $sql_statement );
+		return (int) $wpdb->get_var(
+			"SELECT COUNT(distinct(p.id)) FROM $wpdb->posts as p JOIN {$wpdb->prefix}wl_relation_instances as r ON p.id = r.subject_id AND p.post_type = 'post' AND p.post_status = 'publish'"
+		);
 
 	}
 
@@ -255,13 +254,16 @@ class Wordlift_Dashboard_Service {
 
 		// Prepare interaction with db
 		global $wpdb;
-		$query = $wpdb->prepare(
-			"SELECT AVG(meta_value) FROM $wpdb->postmeta where meta_key = %s",
-			Wordlift_Rating_Service::RATING_RAW_SCORE_META_KEY
-		);
 
 		// Perform the query.
-		return $this->rating_service->convert_raw_score_to_percentage( $wpdb->get_var( $query ) );
+		return $this->rating_service->convert_raw_score_to_percentage(
+			$wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT AVG(meta_value) FROM $wpdb->postmeta where meta_key = %s",
+					Wordlift_Rating_Service::RATING_RAW_SCORE_META_KEY
+				)
+			)
+		);
 	}
 
 }
