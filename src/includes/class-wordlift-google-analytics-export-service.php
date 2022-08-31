@@ -36,7 +36,7 @@ class Wordlift_Google_Analytics_Export_Service {
 		@ob_end_clean();
 
 		// Generate unique filename using current timestamp.
-		$filename = 'wl-ga-export-' . date( 'Y-m-d-H-i-s' ) . '.csv';
+		$filename = 'wl-ga-export-' . gmdate( 'Y-m-d-H-i-s' ) . '.csv';
 
 		// Add proper file headers.
 		header( "Content-Disposition: attachment; filename=$filename" );

@@ -32,7 +32,7 @@ class Wordlift_Publisher_Ajax_Adapter {
 	 *
 	 * @since 3.11.0
 	 */
-	function __construct( $publisher_service ) {
+	public function __construct( $publisher_service ) {
 
 		$this->publisher_service = $publisher_service;
 

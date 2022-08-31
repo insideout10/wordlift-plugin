@@ -23,7 +23,7 @@ class Wordlift_NewRelic_Adapter {
 	 *
 	 * @since 3.11.3
 	 */
-	static function ignore_apdex() {
+	public static function ignore_apdex() {
 
 		// Ensure PHP agent and the function are available.
 		if ( extension_loaded( 'newrelic' ) && function_exists( 'newrelic_ignore_apdex' ) ) {

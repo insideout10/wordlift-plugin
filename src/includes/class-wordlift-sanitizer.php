@@ -1,7 +1,5 @@
 <?php
 
-/**
- */
 class Wordlift_Sanitizer {
 
 	/**
@@ -19,7 +17,7 @@ class Wordlift_Sanitizer {
 		//
 		// see also http://stackoverflow.com/questions/2137080/php-filter-var-filter-validate-url
 
-		if ( ! is_null( $value ) && $value !== '' ) {
+		if ( ! is_null( $value ) && '' !== $value ) {
 			return $value;
 		}
 

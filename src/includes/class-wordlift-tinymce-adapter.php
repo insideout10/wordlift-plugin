@@ -42,7 +42,7 @@ class Wordlift_Tinymce_Adapter {
 	 * @return array The modified plugins array.
 	 * @since 3.12.0
 	 */
-	function mce_external_plugins( $plugins ) {
+	public function mce_external_plugins( $plugins ) {
 
 		/**
 		 * Bail out if you are on Media Library

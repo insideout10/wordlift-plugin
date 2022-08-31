@@ -167,10 +167,10 @@ class Wordlift_Attachment_Service {
 
 		if ( preg_match_all( '/' . $pattern . '/s', $post->post_content, $matches )
 			 && array_key_exists( 2, $matches )
-			 && in_array( 'gallery', $matches[2] )
+			 && in_array( 'gallery', $matches[2], true )
 		) {
 
-			$keys = array_keys( $matches[2], 'gallery' );
+			$keys = array_keys( $matches[2], 'gallery', true );
 
 			foreach ( $keys as $key ) {
 				$atts = shortcode_parse_atts( $matches[3][ $key ] );

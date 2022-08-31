@@ -1,6 +1,5 @@
 <?php
 
-// Require the Wordlift_Property_Not_Found class.
 use Wordlift\Object_Type_Enum;
 
 require_once 'class-wordlift-property-not-found.php';

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Provides functions to draw the UI.
  *

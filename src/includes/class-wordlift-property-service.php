@@ -14,7 +14,6 @@
  */
 abstract class Wordlift_Property_Service {
 
-	// TODO: check that this is relative to the extending class.
 	protected static $instance;
 
 	public function __construct() {

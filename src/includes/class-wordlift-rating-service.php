@@ -145,6 +145,7 @@ class Wordlift_Rating_Service {
 	 */
 	public function set_rating_for( $post_id ) {
 
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( ! apply_filters( 'wl_feature__enable__entity-rating', true ) ) {
 			return;
 		}
@@ -281,7 +282,7 @@ class Wordlift_Rating_Service {
 		);
 
 		// If each expected key is contained in available keys array ...
-		( in_array( Wordlift_Schema_Service::FIELD_SAME_AS, $available_meta_keys ) ) ?
+		( in_array( Wordlift_Schema_Service::FIELD_SAME_AS, $available_meta_keys, true ) ) ?
 			$score ++ :
 			array_push( $warnings, __( 'There are no sameAs configured for this entity.', 'wordlift' ) );
 

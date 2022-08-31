@@ -70,9 +70,11 @@ class Wordlift_Remote_Image_Service {
 
 		// Bail if the response is not set.
 		if ( self::is_response_error( $response ) ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
 			Wordlift_Log_Service::get_logger( 'Wordlift_Remote_Image_Service' )
 								->warn( "save_image_from_url : failed to fetch the response from: $url\nThe response was:\n" . var_export( $response, true ) );
 
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
 			return new WP_Error( 'image_error', "save_image_from_url : failed to fetch the response from: $url\nThe response was:\n" . var_export( $response, true ) );
 		}
 
@@ -84,6 +86,7 @@ class Wordlift_Remote_Image_Service {
 
 		// Bail if the content type is not supported.
 		if ( empty( $extension ) ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
 			return new WP_Error( 'image_error', "Unsupported content type [ $content_type ]:\n" . var_export( $response, true ) );
 		}
 
@@ -103,7 +106,8 @@ class Wordlift_Remote_Image_Service {
 		);
 	}
 
-	static function _return_direct() {
+	public static function _return_direct() {
+		// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 		return 'direct';
 	}
 

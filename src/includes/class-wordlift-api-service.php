@@ -100,7 +100,7 @@ class Wordlift_Api_Service {
 
 		return $this->post_custom_content_type(
 			$path,
-			json_encode( $body ),
+			wp_json_encode( $body ),
 			'application/json; ' . get_bloginfo( 'charset' )
 		);
 	}
@@ -111,6 +111,7 @@ class Wordlift_Api_Service {
 		$url = apply_filters( 'wl_api_service_api_url_path', Wordlift_Configuration_Service::get_instance()->get_api_url() . $path );
 
 		// Give some time for the operation to complete, more than the time we give to the HTTP operation to complete.
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@set_time_limit( 90 );
 
 		// Get the response value.
@@ -175,6 +176,7 @@ class Wordlift_Api_Service {
 
 		// `code` not set or not numeric.
 		$code    = wp_remote_retrieve_response_code( $response );
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		$message = @wp_remote_retrieve_response_message( $response );
 
 		if ( empty( $code ) || ! is_numeric( $code ) ) {

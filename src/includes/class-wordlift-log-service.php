@@ -10,8 +10,8 @@ class Wordlift_Log_Service {
 	const MESSAGE_TEMPLATE = '%-6s [%-40.40s] %s';
 
 	const ERROR = 4;
-	const WARN  = 3;
-	const INFO  = 2;
+	const WARN = 3;
+	const INFO = 2;
 	const DEBUG = 1;
 	const TRACE = 0;
 
@@ -67,7 +67,11 @@ class Wordlift_Log_Service {
 	 */
 	public static function get_instance() {
 
-		return self::$instance ?: self::$instance = new Wordlift_Log_Service( 'ROOT' );
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new Wordlift_Log_Service( 'ROOT' );
+		}
+
+		return self::$instance;
 	}
 
 	public static function get_logger( $class_name ) {
@@ -95,7 +99,7 @@ class Wordlift_Log_Service {
 
 		// Bail out if WordLift log level isn't defined, and WP debug is disabled.
 		if ( ! defined( 'WL_LOG_LEVEL' ) && $level < self::ERROR
-			 && ( ! defined( 'WP_DEBUG' ) || false === WP_DEBUG ) ) {
+		     && ( ! defined( 'WP_DEBUG' ) || false === WP_DEBUG ) ) {
 			return;
 		}
 
@@ -111,10 +115,12 @@ class Wordlift_Log_Service {
 		}
 
 		// Finally log the message.
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 		error_log( sprintf( self::MESSAGE_TEMPLATE, self::$levels[ $level ], $this->class_name, is_array( $message ) ? implode( ', ', $message ) : $message ) );
 
 	}
 
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function error( $message, $exception = null ) {
 
 		$this->log( self::ERROR, $message );

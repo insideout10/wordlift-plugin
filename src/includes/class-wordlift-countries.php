@@ -330,6 +330,7 @@ class Wordlift_Countries {
 	 * @return array An Array having two maps, country_code_language_map and country_code_name_map.
 	 */
 	public static function parse_country_code_json_file_to_array( $file_name ) {
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$json_file_contents = file_get_contents( $file_name );
 		$decoded_array      = json_decode( $json_file_contents, true );
 		// decoded array would be null if the json_decode parses
@@ -454,7 +455,7 @@ class Wordlift_Countries {
 				empty( self::$codes[ $key ] ) ||
 
 				// Or if the language code exists for current country.
-				! empty( $lang ) && in_array( $lang, self::$codes[ $key ] )
+				! empty( $lang ) && in_array( $lang, self::$codes[ $key ], true )
 			) {
 				self::$countries[ $lang_key ][ $key ] = self::format_country_code( $key );
 			}

@@ -52,7 +52,7 @@ class Wordlift_Post_Image_Storage extends Wordlift_Storage {
 		foreach ( $images as $attachment_id => $attachment ) {
 			$image_url = wp_get_attachment_url( $attachment_id );
 			// Ensure the URL isn't collected already.
-			if ( ! in_array( $image_url, $image_urls ) ) {
+			if ( ! in_array( $image_url, $image_urls, true ) ) {
 				array_push( $image_urls, $image_url );
 			}
 		}

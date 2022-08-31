@@ -161,8 +161,8 @@ class Wordlift_Entity_Service {
 	 *
 	 * @param integer $post_id An entity post id.
 	 *
-	 * @param string $default The default classification scope, `what` if not
-	 *                          provided.
+	 * @param string  $default The default classification scope, `what` if not
+	 *                           provided.
 	 *
 	 * @return string Returns a classification scope (e.g. 'what').
 	 * @since 3.5.0
@@ -261,7 +261,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @since 3.2.0
 	 *
-	 * @param int $post_id Post ID.
+	 * @param int     $post_id Post ID.
 	 * @param WP_Post $post Post object.
 	 */
 	public function save_post( $post_id, $post ) {
@@ -302,7 +302,7 @@ class Wordlift_Entity_Service {
 	/**
 	 * Set the alternative labels.
 	 *
-	 * @param int $post_id The post id.
+	 * @param int   $post_id The post id.
 	 * @param array $alt_labels An array of labels.
 	 *
 	 * @since 3.2.0
@@ -424,7 +424,7 @@ class Wordlift_Entity_Service {
 		$dataset_uri     = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
 
 		if ( ! isset( $entity_id ) ||
-		     ( ! empty( $dataset_uri ) && 0 !== strpos( $entity_id, $dataset_uri ) ) ) {
+			 ( ! empty( $dataset_uri ) && 0 !== strpos( $entity_id, $dataset_uri ) ) ) {
 			$rel_uri = Entity_Uri_Generator::create_uri( $type, $object_id );
 			try {
 				$content_service->set_entity_id( new Wordpress_Content_Id( $object_id, $type ), $rel_uri );
@@ -512,18 +512,18 @@ class Wordlift_Entity_Service {
 		);
 
 		return $args + array(
-				'post_type' => self::valid_entity_post_types(),
-				/*
-				 * Ensure compatibility with Polylang.
-				 *
-				 * @see https://github.com/insideout10/wordlift-plugin/issues/855.
-				 * @see https://wordpress.org/support/topic/parse_query-filter-adds-language-taxonomy-to-query/.
-				 *
-				 * @since 3.19.5
-				 */
-				'lang'      => '',
-				'tax_query' => $tax_query,
-			);
+			'post_type' => self::valid_entity_post_types(),
+			/*
+			 * Ensure compatibility with Polylang.
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/855.
+			 * @see https://wordpress.org/support/topic/parse_query-filter-adds-language-taxonomy-to-query/.
+			 *
+			 * @since 3.19.5
+			 */
+			'lang'      => '',
+			'tax_query' => $tax_query,
+		);
 	}
 
 	/**
@@ -531,7 +531,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @param string $name The entity name.
 	 * @param string $type_uri The entity's type URI.
-	 * @param null $logo The entity logo id (or NULL if none).
+	 * @param null   $logo The entity logo id (or NULL if none).
 	 * @param string $status The post status, by default 'publish'.
 	 *
 	 * @return int|WP_Error The entity post id or a {@link WP_Error} in case the `wp_insert_post` call fails.
@@ -570,7 +570,7 @@ class Wordlift_Entity_Service {
 	 * Get the entities related to the one with the specified id. By default only
 	 * published entities will be returned.
 	 *
-	 * @param int $id The post id.
+	 * @param int    $id The post id.
 	 * @param string $post_status The target post status (default = publish).
 	 *
 	 * @return array An array of post ids.

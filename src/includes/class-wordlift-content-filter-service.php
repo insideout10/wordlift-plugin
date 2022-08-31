@@ -75,7 +75,7 @@ class Wordlift_Content_Filter_Service {
 	/**
 	 * Create a {@link Wordlift_Content_Filter_Service} instance.
 	 *
-	 * @param \Wordlift_Entity_Service     $entity_service The {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
 	 *
 	 * @since 3.8.0
@@ -142,14 +142,16 @@ class Wordlift_Content_Filter_Service {
 
 		// Replace each match of the entity tag with the entity link. If an error
 		// occurs fail silently returning the original content.
-		return preg_replace_callback(
+		$maybe_content = preg_replace_callback(
 			self::PATTERN,
 			array(
 				$this,
 				'link',
 			),
 			$content
-		) ?: $content;
+		);
+
+		return $maybe_content ? $maybe_content : $content;
 	}
 
 	/**
@@ -219,15 +221,15 @@ class Wordlift_Content_Filter_Service {
 		}
 
 		return Link_Builder::create( $uri, $object_id )
-						   ->label( $label )
-						   ->href( $href )
-						   ->generate_link();
+		                   ->label( $label )
+		                   ->href( $href )
+		                   ->generate_link();
 	}
 
 	/**
 	 * Get a string to be used as a title attribute in links to a post
 	 *
-	 * @param int    $post_id The post id of the post being linked.
+	 * @param int $post_id The post id of the post being linked.
 	 * @param string $ignore_label A label to ignore.
 	 *
 	 * @return string    The title to be used in the link. An empty string when
@@ -239,7 +241,7 @@ class Wordlift_Content_Filter_Service {
 	 * As of 3.32.0 this method is not used anywhere in the core, this should be removed
 	 * from tests and companion plugins.
 	 */
-	function get_link_title( $post_id, $ignore_label, $object_type = Object_Type_Enum::POST ) {
+	public function get_link_title( $post_id, $ignore_label, $object_type = Object_Type_Enum::POST ) {
 		return $this->object_link_provider->get_link_title( $post_id, $ignore_label, $object_type );
 	}
 
@@ -271,7 +273,7 @@ class Wordlift_Content_Filter_Service {
 	 * @return bool
 	 */
 	private function is_already_linked( $entity_uri ) {
-		return in_array( $entity_uri, $this->linked_entity_uris );
+		return in_array( $entity_uri, $this->linked_entity_uris, true );
 	}
 
 }

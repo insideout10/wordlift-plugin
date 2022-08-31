@@ -171,11 +171,11 @@ class Wordlift_Timeline_Service {
 		// The number of words for the excerpt (by default 55, as WordPress).
 		$excerpt_length       = isset( $_REQUEST['excerpt_length'] ) && is_numeric( $_REQUEST['excerpt_length'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['excerpt_length'] ) ) : 55;
 		$this->excerpt_length = $excerpt_length;
-		add_filter( 'excerpt_length', array( $this, 'excerpt_length' ) );
+		add_filter( 'excerpt_length', array( $this, 'excerpt_length' ), 10, 0 );
 
 		// Add a filter to remove the [...] after excerpts, since we're adding
 		// a link to the post itself.
-		add_filter( 'excerpt_more', array( $this, 'excerpt_more' ) );
+		add_filter( 'excerpt_more', array( $this, 'excerpt_more' ), 10, 0 );
 
 		// Prepare for the starting slide data. The starting slide will be the one where *now* is between *start/end* dates.
 		$start_at_slide = 0;
@@ -207,11 +207,13 @@ class Wordlift_Timeline_Service {
 
 				// Load thumbnail
 				$thumbnail_id = get_post_thumbnail_id( $item->ID );
+				$attachment   = wp_get_attachment_image_src( $thumbnail_id );
 				if ( '' !== (string) $thumbnail_id && 0 !== $thumbnail_id
-				&& false !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) )
+				&& false !== $attachment
 				) {
 
 					// Set the thumbnail URL.
+					// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 					if ( 'background' === $display_images_as ) {
 						 $date['background'] = array( 'url' => $attachment[0] );
 						 $date['media']      = array( 'thumbnail' => $attachment[0] );
@@ -233,10 +235,10 @@ class Wordlift_Timeline_Service {
 					'<span aria-label="%1$s">%2$s</span>',
 					sprintf(
 					/* translators: %s: Name of current post */
-						__( 'Continue reading %s' ),
+						__( 'Continue reading %s', 'wordlift' ),
 						the_title_attribute( array( 'echo' => false ) )
 					),
-					__( '(more&hellip;)' )
+					__( '(more&hellip;)', 'wordlift' )
 				);
 
 				// Set the event text only with the headline (see https://github.com/insideout10/wordlift-plugin/issues/352).
@@ -245,6 +247,7 @@ class Wordlift_Timeline_Service {
 				);
 
 				// If we have an excerpt, set it.
+				// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 				if ( 0 < $excerpt_length ) {
 					$date['text']['text'] = sprintf( '%s <a href="%s">%s</a>', get_the_excerpt(), get_permalink(), $more_link_text );
 				}
@@ -269,12 +272,10 @@ class Wordlift_Timeline_Service {
 	 * This function filters {@link excerpt_more} by removing it, since we're
 	 * adding the 'read more' link. This filter is set by {@see to_json}.
 	 *
-	 * @param string $excerpt_more The excerpt more preset.
-	 *
 	 * @return string An empty string.
 	 * @since 3.7.0
 	 */
-	public function excerpt_more( $excerpt_more ) {
+	public function excerpt_more() {
 
 		return '';
 	}
@@ -283,12 +284,10 @@ class Wordlift_Timeline_Service {
 	 * A filter for the excerpt length, set by the `to_json` function, to tailor
 	 * how many words to return according to the client setting.
 	 *
-	 * @param int $length The preset number of words.
-	 *
 	 * @return int The number of words for the preset.
 	 * @since 3.7.0
 	 */
-	public function excerpt_length( $length ) {
+	public function excerpt_length() {
 
 		return $this->excerpt_length;
 	}
@@ -304,9 +303,9 @@ class Wordlift_Timeline_Service {
 	public static function date( $value ) {
 
 		return array(
-			'year'  => (int) date( 'Y', $value ),
-			'month' => (int) date( 'm', $value ),
-			'day'   => (int) date( 'd', $value ),
+			'year'  => (int) gmdate( 'Y', $value ),
+			'month' => (int) gmdate( 'm', $value ),
+			'day'   => (int) gmdate( 'd', $value ),
 
 		);
 	}

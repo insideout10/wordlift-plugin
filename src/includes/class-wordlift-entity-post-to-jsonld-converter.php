@@ -101,6 +101,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 		 */
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES ) ) {
 			$this->process_post_properties( $jsonld, $post_id );
 		}

@@ -24,7 +24,7 @@
  * @subpackage Wordlift/includes
  * @author     WordLift <hello@wordlift.io>
  */
-class Wordlift_i18n {
+class Wordlift_I18n {
 
 	/**
 	 * The domain specified for this plugin.

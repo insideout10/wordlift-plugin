@@ -68,7 +68,7 @@ class Wordlift_Entity_Post_Type_Service {
 
 		// We cannot assign an empty slug to the register_post_type function, therefore if the slug is empty we default
 		// to the type name.
-		$this->slug = $slug ?: $post_type;
+		$this->slug = $slug ? $slug : $post_type;
 
 		self::$instance = $this;
 

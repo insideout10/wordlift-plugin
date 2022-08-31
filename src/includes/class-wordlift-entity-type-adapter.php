@@ -87,11 +87,10 @@ class Wordlift_Entity_Type_Adapter {
 	 *
 	 * @param int     $post_id The {@link WP_Post}'s id.
 	 * @param WP_Post $post The {@link WP_Post} instance.
-	 * @param bool    $update Whether it's an update.
 	 *
 	 * @since 3.15.0
 	 */
-	public function save_post( $post_id, $post, $update ) {
+	public function save_post( $post_id, $post ) {
 
 		if ( ! Wordlift_Entity_Type_Service::is_valid_entity_post_type( $post->post_type ) ) {
 			$this->log->debug( "Ignoring `{$post->post_type}` post type." );

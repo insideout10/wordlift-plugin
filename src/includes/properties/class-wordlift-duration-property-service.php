@@ -22,7 +22,7 @@ class Wordlift_Duration_Property_Service extends Wordlift_Simple_Property_Servic
 	/**
 	 * {@inheritdoc}
 	 */
-	function get( $id, $meta_key, $type ) {
+	public function get( $id, $meta_key, $type ) {
 
 		// Get the values and filter out the empty ones (or the ones with 00:00).
 		$values = array_filter(

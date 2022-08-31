@@ -19,7 +19,7 @@ class Wordlift_Double_Property_Service extends Wordlift_Simple_Property_Service 
 	/**
 	 * @inheritdoc
 	 */
-	function get( $id, $meta_key, $type ) {
+	public function get( $id, $meta_key, $type ) {
 
 		// Map the result to a numeric value when possible.
 		return array_map(

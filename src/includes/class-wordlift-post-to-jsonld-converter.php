@@ -85,7 +85,8 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	public function convert( $post_id, &$references = array(), &$references_infos = array() ) {
 
 		// Get the post instance.
-		if ( null === $post = get_post( $post_id ) ) {
+		$post = get_post( $post_id );
+		if ( null === $post ) {
 			// Post not found.
 			return null;
 		}
@@ -281,12 +282,14 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	protected function set_publisher( &$params ) {
 
 		// If the publisher id isn't set don't do anything.
-		if ( null === $publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id() ) {
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+		if ( null === $publisher_id ) {
 			return;
 		}
 
 		// Get the post instance.
-		if ( null === $post = get_post( $publisher_id ) ) {
+		$post = get_post( $publisher_id );
+		if ( null === $post ) {
 			// Publisher not found.
 			return;
 		}
@@ -457,7 +460,8 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		}
 
 		// Prepare the `about` and `mentions` array.
-		$about = $mentions = array();
+		$mentions = array();
+		$about    = array();
 
 		// If the entity is in the title, then it should be an `about`.
 		foreach ( $references as $reference ) {

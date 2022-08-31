@@ -97,7 +97,7 @@ class Wordlift_Deactivator_Feedback {
 		}
 
 		wp_enqueue_style( 'wordlift-admin-feedback-popup', plugin_dir_url( __DIR__ ) . 'admin/css/wordlift-admin-feedback-popup.css', array(), WORDLIFT_VERSION );
-		wp_enqueue_script( 'wordlift-admin-feedback-popup', plugin_dir_url( __DIR__ ) . 'admin/js/wordlift-admin-feedback-popup.js', array( 'jquery' ), WORDLIFT_VERSION );
+		wp_enqueue_script( 'wordlift-admin-feedback-popup', plugin_dir_url( __DIR__ ) . 'admin/js/wordlift-admin-feedback-popup.js', array( 'jquery' ), WORDLIFT_VERSION, false );
 	}
 
 	/**
@@ -144,7 +144,7 @@ class Wordlift_Deactivator_Feedback {
 			Wordlift_Configuration_Service::get_instance()->get_deactivation_feedback_url(),
 			array(
 				'method'  => 'POST',
-				'body'    => json_encode( $options ),
+				'body'    => wp_json_encode( $options ),
 				'headers' => array( 'Content-Type' => 'application/json; charset=utf-8' ),
 			)
 		);

@@ -785,7 +785,7 @@ class Wordlift {
 		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-postid-to-jsonld-converter.php';
 		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-entity-post-to-jsonld-converter.php';
 		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-post-to-jsonld-converter.php';
-		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-jsonld-website-converter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-website-jsonld-converter.php';
 
 		/**
 		 * Load cache-related files.
@@ -1454,7 +1454,7 @@ class Wordlift {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Wordlift_i18n();
+		$plugin_i18n = new Wordlift_I18n();
 		$plugin_i18n->set_domain( $this->get_plugin_name() );
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
@@ -1751,7 +1751,7 @@ class Wordlift {
 		$that->loader->add_action( 'pre_get_posts', $that->entity_page_service, 'pre_get_posts', 10, 1 );
 
 		// This hook have to run before the rating service, as otherwise the post might not be a proper entity when rating is done.
-		$that->loader->add_action( 'save_post', $that->entity_type_adapter, 'save_post', 9, 3 );
+		$that->loader->add_action( 'save_post', $that->entity_type_adapter, 'save_post', 9, 2 );
 
 		// Analytics Script Frontend.
 		if ( apply_filters( 'wl_feature__enable__analytics', true ) && Wordlift_Configuration_Service::get_instance()->is_analytics_enable() ) {

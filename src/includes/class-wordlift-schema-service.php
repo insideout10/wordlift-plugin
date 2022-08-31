@@ -468,6 +468,7 @@ class Wordlift_Schema_Service {
 
 		// Parse each schema's fields until we find the one we're looking for, then
 		// return its properties.
+		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		foreach ( $this->schema as $_ => $schema ) {
 
 			if ( ! isset( $schema['custom_fields'] ) ) {
@@ -514,6 +515,7 @@ class Wordlift_Schema_Service {
 	 */
 	public function get_schema_by_uri( $uri ) {
 
+		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		foreach ( $this->schema as $name => $schema ) {
 			if ( $schema['uri'] === $uri ) {
 				return $schema;

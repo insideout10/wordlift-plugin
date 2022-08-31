@@ -173,7 +173,7 @@ class Wordlift_Entity_Type_Service {
 		}
 
 		// If it's a page or post return `Article`.
-		if ( in_array( $post_type, array( 'post', 'page' ) ) ) {
+		if ( in_array( $post_type, array( 'post', 'page' ), true ) ) {
 			$this->log->debug( "Post $post_id has no terms, and it's a `post` type, returning `Article`." );
 
 			// Return "Article" schema type for posts.
