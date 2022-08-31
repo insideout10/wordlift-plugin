@@ -20,14 +20,15 @@
 	wp_enqueue_media();
 
 	// Enqueue styles and scripts.
-	wp_enqueue_style( 'wl-font-awesome', plugin_dir_url( dirname( __DIR__ ) ) . 'css/font-awesome.min.css' );
+	wp_enqueue_style( 'wl-font-awesome', plugin_dir_url( dirname( __DIR__ ) ) . 'css/font-awesome.min.css', array(), WORDLIFT_VERSION );
 	wp_enqueue_style(
 		'wordlift-admin-setup',
 		plugin_dir_url( __DIR__ ) . 'css/wordlift-admin-setup.css',
 		array(
 			'wp-admin',
 			'wl-font-awesome',
-		)
+		),
+		WORDLIFT_VERSION
 	);
 	wp_enqueue_script( 'wordlift-admin-setup', plugin_dir_url( __DIR__ ) . 'js/1/setup.js', array( 'jquery' ) );
 

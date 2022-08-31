@@ -156,8 +156,8 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 		);
 
 		// Load the TimelineJS stylesheets and scripts.
-		wp_enqueue_style( 'timelinejs', dirname( plugin_dir_url( __FILE__ ) ) . '/timelinejs/css/timeline.css' );
-		wp_enqueue_script( 'timelinejs', dirname( plugin_dir_url( __FILE__ ) ) . '/timelinejs/js/timeline' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '-min' : '' ) . '.js' );
+		wp_enqueue_style( 'timelinejs', dirname( plugin_dir_url( __FILE__ ) ) . '/timelinejs/css/timeline.css', array(), WORDLIFT_VERSION );
+		wp_enqueue_script( 'timelinejs', dirname( plugin_dir_url( __FILE__ ) ) . '/timelinejs/js/timeline' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '-min' : '' ) . '.js', array(), WORDLIFT_VERSION );
 
 		// Enqueue the scripts for the timeline.
 		$this->enqueue_scripts();
