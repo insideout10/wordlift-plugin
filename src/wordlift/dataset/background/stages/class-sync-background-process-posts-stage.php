@@ -35,7 +35,7 @@ class Sync_Background_Process_Posts_Stage {
 				AND post_status IN ( 'publish',  'future', 'draft', 'pending', 'private' )
 			";
 
-		return $wpdb->get_var( $sql );
+		return $wpdb->get_var( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	}
 
 	/**
@@ -59,7 +59,7 @@ class Sync_Background_Process_Posts_Stage {
 			LIMIT %d, %d
 			";
 
-		$ids = $wpdb->get_col( $wpdb->prepare( $sql, $offset, $limit ) );
+		$ids = $wpdb->get_col( $wpdb->prepare( $sql, $offset, $limit ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 		return $this->sync_object_adapter_factory
 			->create_many( Object_Type_Enum::POST, array_map( 'intval', $ids ) );
