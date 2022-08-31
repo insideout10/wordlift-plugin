@@ -309,6 +309,10 @@ class Wl_Abstract_Metabox {
 
 		$this->log->trace( "Saving form data for entity post $id..." );
 
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'update-post_' . $id ) ) {
+			return;
+		}
+
 		// Skip saving if the save is called for a different post.
 		if ( isset( $_POST['post_ID'] ) && (int) $_POST['post_ID'] !== $id && Object_Type_Enum::POST === $type ) {
 			$this->log->debug( '`wl_metaboxes`, skipping because the post id from request doesnt match the id from filter.' );

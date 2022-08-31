@@ -124,13 +124,14 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		$rest_url = $post ? admin_url(
 			'admin-ajax.php?' . build_query(
 				array(
-					'action'     => 'wl_navigator',
-					'uniqid'     => $navigator_id,
-					'post_id'    => $post->ID,
-					'limit'      => $limit,
-					'offset'     => $offset,
-					'sort'       => $sort,
-					'post_types' => $shortcode_atts['post_types'],
+					'action'             => 'wl_navigator',
+					'uniqid'             => $navigator_id,
+					'post_id'            => $post->ID,
+					'limit'              => $limit,
+					'offset'             => $offset,
+					'sort'               => $sort,
+					'post_types'         => $shortcode_atts['post_types'],
+					'wl_navigator_nonce' => wp_create_nonce( 'wl_navigator' ),
 				)
 			)
 		) : false;
@@ -186,11 +187,12 @@ HTML;
 		$rest_url            = $post ? rest_url(
 			WL_REST_ROUTE_DEFAULT_NAMESPACE . '/navigator' . $delimiter . build_query(
 				array(
-					'uniqid'  => $navigator_id,
-					'post_id' => $post->ID,
-					'limit'   => $limit,
-					'offset'  => $offset,
-					'sort'    => $sort,
+					'uniqid'             => $navigator_id,
+					'post_id'            => $post->ID,
+					'limit'              => $limit,
+					'offset'             => $offset,
+					'sort'               => $sort,
+					'wl_navigator_nonce' => wp_create_nonce( 'wl_navigator' ),
 				)
 			)
 		) : false;

@@ -86,6 +86,10 @@ function wl_network_navigator_wp_json( $request ) {
 
 function _wl_navigator_get_data() {
 
+	if ( isset( $_GET['wl_navigator_nonce'] ) && ! wp_verify_nonce( $_GET['wl_navigator_nonce'], 'wl_navigator' ) ) {
+		return array();
+	}
+
 	// Post ID must be defined
 	if ( ! isset( $_GET['post_id'] ) ) {
 		wp_send_json_error( 'No post_id given' );
