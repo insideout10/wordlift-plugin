@@ -51,10 +51,10 @@ class Navigator_Data {
 				(array) $order_by
 			)
 		);
-// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder
 		/** @noinspection SqlNoDataSourceInspection */
 		return $wpdb->get_results(
-			$wpdb->prepare(
+			$wpdb->prepare( // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
 				"
 SELECT %4\$s, p2.ID as entity_id
  FROM {$wpdb->prefix}wl_relation_instances r1
@@ -128,7 +128,7 @@ SELECT %4\$s, p2.ID as entity_id
 		);
 
 		$post_types = self::get_post_types_as_string( $post_types );
-// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder
 		/** @noinspection SqlNoDataSourceInspection */
 		return $wpdb->get_results(
 			$wpdb->prepare(
