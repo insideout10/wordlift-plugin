@@ -32,7 +32,6 @@ abstract class Wordlift_Shortcode {
 	 *
 	 * @return string The output html code.
 	 * @since 3.5.4
-	 *
 	 */
 	abstract public function render( $atts );
 

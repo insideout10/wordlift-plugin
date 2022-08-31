@@ -48,7 +48,7 @@ function wl_linked_data_save_post( $post_id ) {
 	$is_no_editor_analysis_enabled = Wordlift\No_Editor_Analysis\No_Editor_Analysis_Feature::can_no_editor_analysis_be_used( $post_id );
 	// Bail out if it's not an entity.
 	if ( ! $is_editor_supported
-	     && ! $is_no_editor_analysis_enabled ) {
+		 && ! $is_no_editor_analysis_enabled ) {
 		$log->debug( "Skipping $post_id, because $post_type doesn't support the editor (content)." );
 
 		return;
@@ -206,11 +206,11 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	wl_core_delete_relation_instances( $post_id );
 
 	$relations = Object_Relation_Factory::get_instance( $post_id )
-	                                    ->get_relations_from_content(
-		                                    $updated_post_content,
-		                                    Object_Type_Enum::POST,
-		                                    $internal_entity_uris
-	                                    );
+										->get_relations_from_content(
+											$updated_post_content,
+											Object_Type_Enum::POST,
+											$internal_entity_uris
+										);
 
 	// Save relation instances
 	foreach ( $relations as $relation ) {
@@ -387,7 +387,7 @@ function wl_save_entity( $entity_data ) {
 
 	// Setting the alternative labels for this entity.
 	Wordlift_Entity_Service::get_instance()
-	                       ->set_alternative_labels( $post_id, $synonyms );
+						   ->set_alternative_labels( $post_id, $synonyms );
 
 	// Restore all the existing filters.
 	is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] = $save_post_filters : $wp_filter['save_post']->callbacks = $save_post_filters;
@@ -434,9 +434,9 @@ function wl_save_entity( $entity_data ) {
 
 	// Add the uri to the sameAs data if it's not a local URI.
 	if ( isset( $uri ) && preg_match( '@https?://.*@', $uri ) &&
-	     $wl_uri !== $uri &&
-	     // Only remote entities
-	     0 !== strpos( $uri, Wordlift_Configuration_Service::get_instance()->get_dataset_uri() )
+		 $wl_uri !== $uri &&
+		 // Only remote entities
+		 0 !== strpos( $uri, Wordlift_Configuration_Service::get_instance()->get_dataset_uri() )
 	) {
 		array_push( $same_as, $uri );
 	}

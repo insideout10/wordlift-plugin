@@ -6,7 +6,7 @@ class Ingredients_Modal_Page_Delegate implements Page_Delegate {
 	public function render() {
 		$term_id = filter_input( INPUT_GET, 'term_id', FILTER_SANITIZE_NUMBER_INT );
 		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		$value   = get_term_meta( $term_id, '_wl_jsonld', true );
+		$value = get_term_meta( $term_id, '_wl_jsonld', true );
 
 		include WL_FOOD_KG_DIR_PATH . '/includes/admin/partials/jsonld.php';
 	}

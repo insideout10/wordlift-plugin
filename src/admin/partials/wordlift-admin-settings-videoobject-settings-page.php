@@ -3,8 +3,7 @@
 use Wordlift\Videoobject\Provider\Client\Vimeo_Client;
 use Wordlift\Videoobject\Provider\Client\Youtube_Client;
 
-
-if (  isset( $_POST['submit'] ) && wp_verify_nonce( $_POST['wordlift_videoobject_settings_nonce'], 'wordlift_videoobject_settings' ) ) {
+if ( isset( $_POST['submit'] ) && wp_verify_nonce( $_POST['wordlift_videoobject_settings_nonce'], 'wordlift_videoobject_settings' ) ) {
 
 	if ( isset( $_POST['wordlift_videoobject_youtube_api_key'] ) || isset( $_POST['wordlift_videoobject_vimeo_api_key'] ) ) {
 
@@ -22,7 +21,6 @@ if (  isset( $_POST['submit'] ) && wp_verify_nonce( $_POST['wordlift_videoobject
 			update_option( Vimeo_Client::get_api_key_option_name(), $vimeo_api_key );
 		}
 	}
-
 
 	if ( isset( $_POST['wl_enable_video_sitemap'] ) ) {
 		update_option( '_wl_video_sitemap_generation', 1 );

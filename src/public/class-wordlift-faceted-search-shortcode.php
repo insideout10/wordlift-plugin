@@ -7,8 +7,6 @@
  * @subpackage Wordlift/public
  */
 
-use Wordlift\Widgets\Srcset_Util;
-
 /**
  * Define the {@link Wordlift_Faceted_Search_Shortcode} class which provides the
  * `wl_faceted_search` implementation.
