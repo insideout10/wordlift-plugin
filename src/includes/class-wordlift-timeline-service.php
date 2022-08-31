@@ -107,7 +107,7 @@ class Wordlift_Timeline_Service {
 		}
 
 		// If there's no entities, return an empty array right away.
-		if ( 0 === sizeof( $ids ) ) {
+		if ( 0 === count( $ids ) ) {
 			$this->log->trace( "No events found [ post id :: $post_id ]" );
 
 			return array();
@@ -169,7 +169,8 @@ class Wordlift_Timeline_Service {
 		$display_images_as = isset( $_REQUEST['display_images_as'] ) ? sanitize_text_field( wp_unslash( (string) $_REQUEST['display_images_as'] ) ) : 'media';
 
 		// The number of words for the excerpt (by default 55, as WordPress).
-		$this->excerpt_length = $excerpt_length = isset( $_REQUEST['excerpt_length'] ) && is_numeric( $_REQUEST['excerpt_length'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['excerpt_length'] ) ) : 55;
+		$excerpt_length       = isset( $_REQUEST['excerpt_length'] ) && is_numeric( $_REQUEST['excerpt_length'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['excerpt_length'] ) ) : 55;
+		$this->excerpt_length = $excerpt_length;
 		add_filter( 'excerpt_length', array( $this, 'excerpt_length' ) );
 
 		// Add a filter to remove the [...] after excerpts, since we're adding
@@ -188,20 +189,25 @@ class Wordlift_Timeline_Service {
 		$timeline['events'] = array_map(
 			function ( $item ) use ( &$timeline, &$event_index, &$start_at_slide, &$now, $display_images_as, $excerpt_length ) {
 
+				$date = array();
+
 				// Get the start and end dates.
 				// We have to remove double quotes from date to make timeline work properly
 				$start_date = strtotime( str_replace( '"', '', get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_START, true ) ) );
 				$end_date   = strtotime( str_replace( '"', '', get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_END, true ) ) );
 
 				// Set the starting slide.
+				// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 				$event_index ++;
+				// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 				if ( 0 === $start_at_slide && $now >= $start_date && $now <= $end_date ) {
+					  // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 					  $start_at_slide = $event_index;
 				}
 
 				// Load thumbnail
 				$thumbnail_id = get_post_thumbnail_id( $item->ID );
-				if ( '' !== $thumbnail_id && 0 !== $thumbnail_id
+				if ( '' !== (string) $thumbnail_id && 0 !== $thumbnail_id
 				&& false !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) )
 				) {
 

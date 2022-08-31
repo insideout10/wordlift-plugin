@@ -177,9 +177,10 @@ class Wordlift_Entity_Service {
 		$entity_type_arr = Wordlift_Entity_Type_Service::get_instance()->get( $post_id );
 		$entity_type     = str_replace( 'wl-', '', $entity_type_arr['css_class'] );
 		// Retrieve classification boxes configuration
+		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 		$classification_boxes = unserialize( WL_CORE_POST_CLASSIFICATION_BOXES );
 		foreach ( $classification_boxes as $cb ) {
-			if ( in_array( $entity_type, $cb['registeredTypes'] ) ) {
+			if ( in_array( $entity_type, $cb['registeredTypes'], true ) ) {
 				return $cb['id'];
 			}
 		}
@@ -262,9 +263,8 @@ class Wordlift_Entity_Service {
 	 *
 	 * @param int     $post_id Post ID.
 	 * @param WP_Post $post Post object.
-	 * @param bool    $update Whether this is an existing post being updated or not.
 	 */
-	public function save_post( $post_id, $post, $update ) {
+	public function save_post( $post_id, $post ) {
 
 		// Avoid doing anything if post is autosave or a revision.
 		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
@@ -277,7 +277,7 @@ class Wordlift_Entity_Service {
 		// the $post_id in the save_post call matches the post id set in the request.
 		//
 		// If this is not the current post being saved or if it's not an entity, return.
-		if ( ! isset( $_REQUEST['post_ID'] ) || $_REQUEST['post_ID'] != $post_id || ! $this->is_entity( $post_id ) ) {
+		if ( ! isset( $_REQUEST['post_ID'] ) || $_REQUEST['post_ID'] !== (string)$post_id || ! $this->is_entity( $post_id ) ) {
 			return;
 		}
 
@@ -367,7 +367,7 @@ class Wordlift_Entity_Service {
 	 * @since 3.12.0
 	 */
 	public function get_labels( $post_id, $object_type = Object_Type_Enum::POST ) {
-		if ( $object_type === Object_Type_Enum::POST ) {
+		if ( Object_Type_Enum::POST === $object_type ) {
 			return array_merge( (array) get_the_title( $post_id ), $this->get_alternative_labels( $post_id ) );
 		}
 
@@ -390,6 +390,7 @@ class Wordlift_Entity_Service {
 		}
 
 		// If disabled by filter, return.
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( ! apply_filters( 'wl_feature__enable__add-synonyms', true ) ) {
 			return;
 		}
@@ -531,6 +532,7 @@ class Wordlift_Entity_Service {
 	public function create( $name, $type_uri, $logo = null, $status = 'publish' ) {
 
 		// Create an entity for the publisher.
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		$post_id = @wp_insert_post(
 			array(
 				'post_type'    => self::TYPE_NAME,
@@ -600,7 +602,7 @@ class Wordlift_Entity_Service {
 	 * @return array Array containing the names of the valid post types.
 	 * @since 3.15.0
 	 */
-	static function valid_entity_post_types() {
+	public static function valid_entity_post_types() {
 
 		// Ignore builtins in the call to avoid getting attachments.
 		$post_types = array( 'post', 'page', self::TYPE_NAME, 'product' );

@@ -55,9 +55,11 @@ class Wordlift_Entity_Page_Service {
 		if ( is_tax( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, 'event' ) ) {
 
 			// Update the query to use the start time meta and desc order.
-			$meta_query = array( array(
-				'key' => Wordlift_Schema_Service::FIELD_DATE_START,
-			) );
+			$meta_query = array(
+				array(
+					'key' => Wordlift_Schema_Service::FIELD_DATE_START,
+				),
+			);
 			$query->set( 'meta_query', $meta_query );
 			$query->set( 'orderby', 'meta_value' );
 			$query->set( 'order', 'DESC' );

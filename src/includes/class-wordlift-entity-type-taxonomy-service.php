@@ -76,6 +76,7 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		 */
 		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES ) ) {
+			// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 			$args['meta_box_cb'] = apply_filters( 'wl_feature__enable__entity-types-taxonomy', true ) ? array(
 				'Wordlift_Admin_Schemaorg_Taxonomy_Metabox',
 				'render',
@@ -213,7 +214,7 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 	}
 
 	public function wpseo_sitemap_exclude_taxonomy( $exclude, $tax ) {
-		if ( $tax === self::TAXONOMY_NAME ) {
+		if ( self::TAXONOMY_NAME === $tax ) {
 			return true;
 		}
 

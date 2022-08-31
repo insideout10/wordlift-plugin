@@ -84,6 +84,7 @@ class Wordlift_Autocomplete_Adapter {
 		// Add the filter to check if we need to show local entities or not.
 		add_filter(
 			'wl_show_local_entities',
+			// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 			function ( $state ) use ( $show_local_entities ) {
 				return $show_local_entities;
 			}

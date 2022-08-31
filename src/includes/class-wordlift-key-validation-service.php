@@ -202,9 +202,9 @@ class Wordlift_Key_Validation_Service {
 	public function wl_key_update_notice() {
 		if ( get_transient( 'wl-key-error-msg' ) ) {
 			?>
-            <div class="updated notice is-dismissible error">
-                <p><?php esc_html( get_transient( 'wl-key-error-msg' ) ); ?></p>
-            </div>
+			<div class="updated notice is-dismissible error">
+				<p><?php esc_html( get_transient( 'wl-key-error-msg' ) ); ?></p>
+			</div>
 			<?php
 		}
 	}

@@ -1505,7 +1505,7 @@ class Wordlift {
 
 		// Hook save_post to the entity service to update custom fields (such as alternate labels).
 		// We have a priority of 9 because we want to be executed before data is sent to Redlink.
-		$that->loader->add_action( 'save_post', Wordlift_Entity_Service::get_instance(), 'save_post', 9, 3 );
+		$that->loader->add_action( 'save_post', Wordlift_Entity_Service::get_instance(), 'save_post', 9, 2 );
 		$that->loader->add_action( 'save_post', $that->rating_service, 'set_rating_for', 20, 1 );
 
 		$that->loader->add_action( 'edit_form_before_permalink', Wordlift_Entity_Service::get_instance(), 'edit_form_before_permalink', 10, 1 );

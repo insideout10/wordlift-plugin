@@ -80,7 +80,8 @@ class Wordlift_Redirect_Service {
 	public function ajax_redirect() {
 
 		// Check the `uri` parameter.
-		if ( ! ( $entity_uri = filter_input( INPUT_GET, 'uri', FILTER_VALIDATE_URL ) ) ) {
+		$entity_uri = filter_input( INPUT_GET, 'uri', FILTER_VALIDATE_URL );
+		if ( ! $entity_uri ) {
 			wp_die(
 				esc_html__( 'Invalid URI.', 'wordlift' ),
 				esc_html__( 'Invalid URI.', 'wordlift' ),
@@ -92,7 +93,8 @@ class Wordlift_Redirect_Service {
 		}
 
 		// Check the `to` parameter.
-		if ( ! ( $target = filter_input( INPUT_GET, 'to' ) ) ) {
+		$target = filter_input( INPUT_GET, 'to' );
+		if ( ! $target ) {
 			wp_die(
 				esc_html__( 'Invalid `to` parameter.', 'wordlift' ),
 				esc_html__( 'Invalid `to` parameter.', 'wordlift' ),
@@ -123,7 +125,7 @@ class Wordlift_Redirect_Service {
 				$redirect_url = $content->get_edit_link();
 				break;
 			case 'lod':
-				$redirect_url = self::LOD_ENDPOINT . '/lodview/?IRI=' . urlencode( $entity_uri );
+				$redirect_url = self::LOD_ENDPOINT . '/lodview/?IRI=' . rawurlencode( $entity_uri );
 				break;
 			case 'permalink':
 				$redirect_url = $content->get_permalink();

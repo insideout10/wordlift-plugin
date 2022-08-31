@@ -9,7 +9,7 @@ namespace Wordlift\Vocabulary\Data\Entity_List;
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 class Default_Entity_List extends Entity_List {
-	
+
 	const META_KEY = '_wl_vocabulary_entity_match_for_term';
 
 	/**

@@ -555,7 +555,7 @@ class Wordlift_Configuration_Service {
 		 * Remove the trailing slash returned from the new platform api.
 		 */
 		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-		$dataset_uri  = untrailingslashit( $json->datasetURI );
+		$dataset_uri = untrailingslashit( $json->datasetURI );
 		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$package_type = isset( $json->packageType ) ? $json->packageType : null;
 
