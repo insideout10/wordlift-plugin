@@ -231,12 +231,13 @@ class Wordlift_Admin_Setup {
 			$this->save_configuration( $_POST );
 
 			// Redirect to the admin's page.
-			wp_redirect( admin_url() );
-
-			exit;
+			wp_safe_redirect( admin_url() );
+			exit();
 		}
 
+        // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$language_select = $this->language_select_element;
+		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$country_select  = $this->country_select_element;
 
 		include plugin_dir_path( __DIR__ ) . 'admin/partials/wordlift-admin-setup.php';

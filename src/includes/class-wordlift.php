@@ -866,7 +866,7 @@ class Wordlift {
 		/**
 		 * The class to customize the entity list admin page.
 		 */
-		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-entity-list.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-entity-list-service.php';
 
 		/**
 		 * The Entity Types Taxonomy Walker (transforms checkboxes into radios).
@@ -906,7 +906,7 @@ class Wordlift {
 		/**
 		 * The WordLift entity type settings admin page controller.
 		 */
-		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-entity-type-settings.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-entity-type-settings.php';
 
 		/**
 		 * The admin 'Download Your Data' page.
@@ -918,7 +918,7 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( __DIR__ ) . 'admin/elements/intf-wordlift-admin-element.php';
 		require_once plugin_dir_path( __DIR__ ) . 'admin/elements/class-wordlift-admin-input-element.php';
-		require_once plugin_dir_path( __DIR__ ) . 'admin/elements/class-wordlift-admin-input-radio-element.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/elements/class-wordlift-admin-radio-input-element.php';
 		require_once plugin_dir_path( __DIR__ ) . 'admin/elements/class-wordlift-admin-select-element.php';
 		require_once plugin_dir_path( __DIR__ ) . 'admin/elements/class-wordlift-admin-select2-element.php';
 		require_once plugin_dir_path( __DIR__ ) . 'admin/elements/class-wordlift-admin-language-select-element.php';
@@ -1534,7 +1534,7 @@ class Wordlift {
 
 		// Hook the PrimaShop adapter to <em>prima_metabox_entity_header_args</em> in order to add header support for
 		// entities.
-		$that->loader->add_filter( 'prima_metabox_entity_header_args', $that->primashop_adapter, 'prima_metabox_entity_header_args', 10, 2 );
+		$that->loader->add_filter( 'prima_metabox_entity_header_args', $that->primashop_adapter, 'prima_metabox_entity_header_args', 10 );
 
 		/**
 		 * Filter: wl_feature__enable__settings-download.

@@ -70,10 +70,12 @@ class Wordlift_Admin_Country_Select_Element extends Wordlift_Admin_Select_Elemen
 		$html = '';
 
 		// Check whether the required params are set.
-		if ( ! empty( $_POST['lang'] ) && ! empty( $_POST['value'] ) ) { // WPCS: CSRF, input var, sanitization ok.
+        // phpcs:ignore Standard.Category.SniffName.ErrorCode
+		if ( ! empty( $_POST['lang'] ) && ! empty( $_POST['value'] ) ) {
 			ob_start();
 			// Get the new options.
-			$this->render_options( $_POST ); // WPCS: CSRF, input var, sanitization ok.
+			// phpcs:ignore Standard.Category.SniffName.ErrorCode
+			$this->render_options( $_POST );
 
 			$html = ob_get_clean();
 		}
@@ -94,7 +96,7 @@ class Wordlift_Admin_Country_Select_Element extends Wordlift_Admin_Select_Elemen
 	 */
 	public function add_country_codes_data( $attributes ) {
 		// Add the country codes.
-		$attributes['country-codes'] = json_encode( Wordlift_Countries::get_codes() );
+		$attributes['country-codes'] = wp_json_encode( Wordlift_Countries::get_codes() );
 
 		// Return the attributes.
 		return $attributes;

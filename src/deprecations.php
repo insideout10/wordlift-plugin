@@ -261,14 +261,14 @@ require_once 'widgets/wordlift_widget_timeline.php';
 // if ( is_admin() ) {
 
 require_once 'admin/wordlift_admin.php';
-require_once 'admin/wordlift_admin_edit_post.php';
+require_once 'admin/wordlift-admin-edit-post.php';
 require_once 'admin/wordlift_admin_save_post.php';
 
 // add the entities meta box.
 require_once 'admin/wordlift_admin_meta_box_entities.php';
 
 // add the entity creation AJAX.
-require_once 'admin/wordlift_admin_ajax_related_posts.php';
+require_once 'admin/wordlift-admin-ajax-related-posts.php';
 
 // Load the wl_chord TinyMCE button and configuration dialog.
 require_once 'admin/wordlift_admin_shortcodes.php';

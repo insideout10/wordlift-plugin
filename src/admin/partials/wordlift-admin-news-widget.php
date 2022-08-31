@@ -1,4 +1,6 @@
-<?php $articles = $this->get_last_wordlift_articles(); ?>
+<?php
+// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
+$articles = $this->get_last_wordlift_articles(); ?>
 <div id='news_container'>
 	<?php if ( ! empty( $articles['posts_data'] ) ) { ?>
 		<?php foreach ( $articles['posts_data'] as $key => $item ) { ?>

@@ -174,6 +174,6 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 	 *
 	 * @return Prints the select options.
 	 */
-	abstract function render_options( $params );
+	public abstract function render_options( $params );
 
 }

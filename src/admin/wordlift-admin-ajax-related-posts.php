@@ -3,7 +3,6 @@
  * Ajax: Related Posts.
  *
  * @since   3.0.0
- * @package Wordlift
  * @package Wordlift/admin
  */
 

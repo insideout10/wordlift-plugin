@@ -97,6 +97,7 @@ class Wordlift_Entity_List_Service {
 	public function register_custom_columns( $columns ) {
 
 		// Bail out if custom columns disabled via hook
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( ! apply_filters( 'wl_feature__enable__custom-columns', true ) ) {
 			return $columns;
 		}
@@ -147,9 +148,19 @@ class Wordlift_Entity_List_Service {
 				);
 
 				if ( ! $thumb ) {
-					$thumb = "<img src='" . WL_DEFAULT_THUMBNAIL_PATH . "' width='" . self::THUMB_SIZE . "' />";
+					$thumb = sprintf( '<img src="%s" width="%d">', WL_DEFAULT_THUMBNAIL_PATH, self::THUMB_SIZE );
 				}
-				echo "<a href='" . esc_url( $edit_link ) . "'>$thumb</a>";
+
+				echo wp_kses(
+					sprintf( '<a href="%s">%s</a>', esc_url( $edit_link ), $thumb ),
+					array(
+						'a'   => array( 'href' => array() ),
+						'img' => array(
+							'src'   => array(),
+							'width' => array(),
+						),
+					)
+				);
 				break;
 
 			case 'wl_column_rating':
@@ -216,7 +227,7 @@ class Wordlift_Entity_List_Service {
 			WL_WHEN_RELATION,
 		);
 
-		if ( ! in_array( $requested_w, $all_w ) ) {
+		if ( ! in_array( $requested_w, $all_w, true ) ) {
 			return $clauses;
 		}
 
@@ -277,7 +288,7 @@ class Wordlift_Entity_List_Service {
 	 *
 	 * @since 3.15.0
 	 */
-	function load_edit() {
+	public function load_edit() {
 
 		// Return safely if get_current_screen() is not defined (yet).
 		if ( false === function_exists( 'get_current_screen' ) ) {
@@ -305,12 +316,12 @@ class Wordlift_Entity_List_Service {
 		 */
 		add_action(
 			'wp',
-			function ( $wp_object ) {
+			function () {
 				global $post_type;
 				$post_type = Wordlift_Entity_Service::TYPE_NAME;
 			},
 			10,
-			1
+			0
 		);
 
 	}

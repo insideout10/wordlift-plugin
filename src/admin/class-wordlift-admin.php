@@ -194,7 +194,7 @@ class Wordlift_Admin {
 	 */
 	private static function require_files() {
 
-		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-dashboard-latest-news.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-dashboard-latest-news.php';
 		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-dashboard-v2.php';
 		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-not-enriched-filter.php';
 

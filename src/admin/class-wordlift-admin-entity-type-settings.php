@@ -110,7 +110,7 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 *
 	 * @since 3.11.0
 	 */
-	function admin_notice() {
+	public function admin_notice() {
 		if ( isset( $_GET['message'] ) && ( '1' === $_GET['message'] ) ) {
 			?>
 			<div class="notice notice-success is-dismissible">
@@ -127,13 +127,13 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 *
 	 * @since 3.11.0
 	 */
-	function validate_proper_term() {
+	public function validate_proper_term() {
 
 		// Validate capabilities.
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die(
-				'<h1>' . esc_html__( 'Cheatin&#8217; uh?' ) . '</h1>' .
-				'<p>' . esc_html__( 'Sorry, you are not allowed to edit this item.' ) . '</p>',
+				'<h1>' . esc_html__( 'Cheatin&#8217; uh?', 'default' ) . '</h1>' .
+				'<p>' . esc_html__( 'Sorry, you are not allowed to edit this item.', 'default' ) . '</p>',
 				403
 			);
 		}
@@ -153,7 +153,7 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 *
 	 * @since 3.11.0
 	 */
-	function handle_form_submission() {
+	public function handle_form_submission() {
 
 		$term_id = isset( $_POST['tag_ID'] ) ? (int) $_POST['tag_ID'] : 0;
 
@@ -173,8 +173,8 @@ class Wordlift_Admin_Entity_Type_Settings {
 		// Redirect back to the term settings page and indicate a save was done.
 		$url = admin_url( "admin.php?page=wl_entity_type_settings&tag_ID=$term->term_id&message=1" );
 
-		wp_redirect( $url );
-		exit;
+		wp_safe_redirect( $url );
+		exit();
 
 	}
 
@@ -185,10 +185,11 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 *
 	 * @since 3.11.0
 	 */
-	function render() {
+	public function render() {
 
 		// Set variables used by the partial
 		$term_id  = isset( $_REQUEST['tag_ID'] ) ? absint( $_REQUEST['tag_ID'] ) : 0;
+        // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$settings = $this->get_setting( $term_id );
 
 		include plugin_dir_path( __DIR__ ) . 'admin/partials/wordlift-admin-entity-type-settings.php';
@@ -204,7 +205,7 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 *
 	 * @since 3.11.0
 	 */
-	function set_setting( $term_id, $title, $description ) {
+	public function set_setting( $term_id, $title, $description ) {
 
 		$settings             = get_option( 'wl_entity_type_settings', array() );
 		$settings[ $term_id ] = array(
@@ -229,7 +230,7 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 *            }
 	 * @since 3.11.0
 	 */
-	function get_setting( $term_id ) {
+	public function get_setting( $term_id ) {
 
 		$settings = get_option( 'wl_entity_type_settings', array() );
 
