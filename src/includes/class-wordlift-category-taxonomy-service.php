@@ -75,12 +75,12 @@ class Wordlift_Category_Taxonomy_Service {
 		// are already associated with other post types.
 		//
 		// If `post_type` isn't set, WP assumes `post` by default.
-		$post_types        = $query->get( 'post_type' );
+		$post_types = $query->get( 'post_type' );
 		$post_types = (array) ( $post_types ? $post_types : 'post' );
 
 		// Add the entities post type only if the post post type is used in the query
 		// since we only want `entities` to appear alongside posts.
-		if ( in_array( 'post', $post_types, true) ) {
+		if ( in_array( 'post', $post_types, true ) ) {
 			$post_types[] = $this->entity_post_type_service->get_post_type();
 		}
 

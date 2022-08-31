@@ -130,7 +130,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	/**
 	 * @inheritdoc
 	 */
-	function get_parent_slug() {
+	public function get_parent_slug() {
 
 		return 'wl_admin_menu';
 	}
@@ -138,7 +138,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	/**
 	 * @inheritdoc
 	 */
-	function get_capability() {
+	public function get_capability() {
 
 		return 'manage_options';
 	}
@@ -146,7 +146,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	/**
 	 * @inheritdoc
 	 */
-	function get_page_title() {
+	public function get_page_title() {
 
 		return 'WordLift Settings';
 	}
@@ -154,7 +154,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	/**
 	 * @inheritdoc
 	 */
-	function get_menu_title() {
+	public function get_menu_title() {
 
 		return 'Settings';
 	}
@@ -162,7 +162,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	/**
 	 * @inheritdoc
 	 */
-	function get_menu_slug() {
+	public function get_menu_slug() {
 
 		return 'wl_configuration_admin_menu';
 	}
@@ -170,7 +170,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	/**
 	 * @inheritdoc
 	 */
-	function get_partial_name() {
+	public function get_partial_name() {
 
 		return 'wordlift-admin-settings-page.php';
 	}
@@ -185,7 +185,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 		// JavaScript required for the settings page.
 		// @todo: try to move to the `wordlift-admin.bundle.js`.
-		wp_enqueue_script( 'wordlift-admin-settings-page', plugin_dir_url( __DIR__ ) . 'admin/js/1/settings.js', array( 'wp-util' ), WORDLIFT_VERSION );
+		wp_enqueue_script( 'wordlift-admin-settings-page', plugin_dir_url( __DIR__ ) . 'admin/js/1/settings.js', array( 'wp-util' ), WORDLIFT_VERSION, false );
 		wp_enqueue_style( 'wordlift-admin-settings-page', plugin_dir_url( __DIR__ ) . 'admin/js/1/settings.css', array(), WORDLIFT_VERSION );
 
 	}
@@ -197,7 +197,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 *
 	 * @since 3.11.0
 	 */
-	function admin_init() {
+	public function admin_init() {
 		// Register WordLift's general settings, providing our own sanitize callback
 		// which will also check whether the user filled the WL Publisher form.
 		register_setting(
@@ -276,14 +276,10 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			$entity_base_path_args
 		);
 
-		$language_name = Wordlift_Languages::get_language_name(
-			Wordlift_Configuration_Service::get_instance()->get_language_code()
-		);
-
 		// Add the `country_code` field.
 		add_settings_field(
 			'wl-country-code',
-			_x( 'Country', 'wordlift' ),
+			__( 'Country', 'wordlift' ),
 			array( $this->country_select_element, 'render' ),
 			'wl_general_settings',
 			'wl_general_settings_section',
@@ -375,13 +371,15 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 * @return array The sanitized input array.
 	 * @since 3.11.0
 	 */
-	function sanitize_callback( $input ) {
+	public function sanitize_callback( $input ) {
 
 		// Check whether a publisher name has been set.
-		if ( isset( $_POST['wl_publisher'] ) && ! empty( $_POST['wl_publisher']['name'] ) ) { // WPCS: CSRF, input var, sanitization ok.
-			$name         = isset( $_POST['wl_publisher']['name'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['wl_publisher']['name'] ) ) : '';
-			$type         = isset( $_POST['wl_publisher']['type'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['wl_publisher']['type'] ) ) : '';
-			$thumbnail_id = isset( $_POST['wl_publisher']['thumbnail_id'] ) ? $_POST['wl_publisher']['thumbnail_id'] : null; // WPCS: CSRF, input var, sanitization ok.
+		// phpcs:ignore Standard.Category.SniffName.ErrorCode
+		if ( isset( $_POST['wl_publisher'] ) && ! empty( $_POST['wl_publisher']['name'] ) ) {
+			$name = isset( $_POST['wl_publisher']['name'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['wl_publisher']['name'] ) ) : '';
+			$type = isset( $_POST['wl_publisher']['type'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['wl_publisher']['type'] ) ) : '';
+			// phpcs:ignore Standard.Category.SniffName.ErrorCode
+			$thumbnail_id = isset( $_POST['wl_publisher']['thumbnail_id'] ) ? $_POST['wl_publisher']['thumbnail_id'] : null;
 
 			// Set the type URI, either http://schema.org/Person or http://schema.org/Organization.
 			$type_uri = sprintf( 'http://schema.org/%s', 'organization' === $type ? 'Organization' : 'Person' );

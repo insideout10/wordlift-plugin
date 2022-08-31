@@ -75,7 +75,7 @@ class Wordlift_Content_Filter_Service {
 	/**
 	 * Create a {@link Wordlift_Content_Filter_Service} instance.
 	 *
-	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Entity_Service     $entity_service The {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
 	 *
 	 * @since 3.8.0
@@ -221,15 +221,15 @@ class Wordlift_Content_Filter_Service {
 		}
 
 		return Link_Builder::create( $uri, $object_id )
-		                   ->label( $label )
-		                   ->href( $href )
-		                   ->generate_link();
+						   ->label( $label )
+						   ->href( $href )
+						   ->generate_link();
 	}
 
 	/**
 	 * Get a string to be used as a title attribute in links to a post
 	 *
-	 * @param int $post_id The post id of the post being linked.
+	 * @param int    $post_id The post id of the post being linked.
 	 * @param string $ignore_label A label to ignore.
 	 *
 	 * @return string    The title to be used in the link. An empty string when

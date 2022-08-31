@@ -1,6 +1,4 @@
 <?php
-/**
- */
 
 class Wordlift_Admin_Not_Enriched_Filter {
 

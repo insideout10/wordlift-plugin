@@ -121,6 +121,7 @@ class Wordlift_Schemaorg_Sync_Batch_Operation implements Wordlift_Batch_Operatio
 	private function get_schema_classes() {
 
 		// Load the file contents.
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$contents = file_get_contents( __DIR__ . '/schema-classes.json' );
 
 		// Decode the JSON contents.

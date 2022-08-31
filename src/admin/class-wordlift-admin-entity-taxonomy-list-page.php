@@ -43,7 +43,7 @@ class Wordlift_Admin_Entity_Taxonomy_List_Page {
 	 * @return array  $actions An array of action links to be displayed. Default
 	 *                        'Edit', 'Quick Edit', 'Delete', and 'View'.
 	 */
-	function wl_entity_type_row_actions( $actions, $term ) {
+	public function wl_entity_type_row_actions( $actions, $term ) {
 
 		$url               = admin_url( "admin.php?page=wl_entity_type_settings&tag_ID=$term->term_id" );
 		$actions['wl-seo'] = '<a href="' . esc_url( $url ) . '">' . __( 'SEO Settings', 'wordlift' ) . '</a>';
@@ -66,14 +66,12 @@ class Wordlift_Admin_Entity_Taxonomy_List_Page {
 	 *
 	 * @param array  $caps    The user's current capabilities.
 	 * @param string $cap     Capability name.
-	 * @param int    $user_id The user ID.
-	 * @param array  $args    Adds the context to the cap. Typically the object ID.
 	 *
 	 * @return array    Array containing the do_not_allow capability for super admin
 	 *                  when editing and deleting entity type terms capabilities
 	 *                    are being "approved"
 	 */
-	function restrict_super_admin( $caps, $cap, $user_id, $args ) {
+	public function restrict_super_admin( $caps, $cap ) {
 
 		switch ( $cap ) {
 			case 'wl_entity_type_edit_term':
@@ -99,12 +97,10 @@ class Wordlift_Admin_Entity_Taxonomy_List_Page {
 	 *
 	 * @param array  $caps    The user's current capabilities.
 	 * @param string $cap     Capability name.
-	 * @param int    $user_id The user ID.
-	 * @param array  $args    Adds the context to the cap. Typically the object ID.
 	 *
 	 * @return array    Array containing the manage_options capability
 	 */
-	function enable_admin_access_pre_47( $caps, $cap, $user_id, $args ) {
+	public function enable_admin_access_pre_47( $caps, $cap ) {
 
 		// Bail out if we're not dealing with the `wl_entity_type_edit_term`
 		// capability.
@@ -132,9 +128,7 @@ class Wordlift_Admin_Entity_Taxonomy_List_Page {
 		}
 
 		// Give permission to the user.
-		$mapped[] = 'manage_options';
-
-		return $mapped;
+		return array( 'manage_options' );
 	}
 
 }

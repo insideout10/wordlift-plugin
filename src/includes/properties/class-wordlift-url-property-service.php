@@ -40,7 +40,7 @@ class Wordlift_Url_Property_Service extends Wordlift_Simple_Property_Service {
 		 *
 		 * @since 3.21.1
 		 */
-		$urls = parent::get( $id, $meta_key, $type ) ;
+		$urls = parent::get( $id, $meta_key, $type );
 		$urls = array_filter( $urls ? $urls : array( '<permalink>' ) );
 
 		// Convert <permalink> in actual permalink values.

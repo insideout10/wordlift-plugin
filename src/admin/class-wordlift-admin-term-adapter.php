@@ -31,7 +31,7 @@ class Wordlift_Admin_Term_Adapter {
 	public function __construct() {
 
 		add_action( 'registered_taxonomy', array( $this, 'add_action' ) );
-		add_action( 'edit_term', array( $this, 'edit_term' ), 10, 3 );
+		add_action( 'edit_term', array( $this, 'edit_term' ), 10 );
 		$this->add_settings();
 
 	}
@@ -56,13 +56,13 @@ class Wordlift_Admin_Term_Adapter {
 	 * Add the form fields to the entity edit screen.
 	 *
 	 * @param object $tag Current taxonomy term object.
-	 * @param string $taxonomy Current taxonomy slug.
 	 *
 	 * @since 3.20.0
 	 */
-	public function edit_form_fields( $tag, $taxonomy ) {
+	public function edit_form_fields( $tag ) {
 
 		// If disabled via filter, return;
+        // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( ! apply_filters( 'wl_feature__enable__term-entity', true ) ) {
 			return;
 		}
@@ -92,7 +92,7 @@ class Wordlift_Admin_Term_Adapter {
 
 		?>
 		<tr class="form-field term-name-wrap">
-			<th scope="row"><label for="wl-entity-id"><?php esc_html_e( 'Entity', 'term entity', 'wordlift' ); ?></label></th>
+			<th scope="row"><label for="wl-entity-id"><?php echo esc_html_x( 'Entity', 'term entity', 'wordlift' ); ?></label></th>
 			<td>
 				<?php foreach ( $values as $value ) { ?>
 					<input type="text" name="wl_entity_id[]" value="<?php echo esc_attr( $value ); ?>"/>
@@ -116,7 +116,7 @@ class Wordlift_Admin_Term_Adapter {
 		 * Filter wl_feature__enable__taxonomy_term_entity_mapping renamed to wl_feature__enable__term-entity.
 		 */
 
-		add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_form_fields' ), 10, 2 );
+		add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_form_fields' ), 10 );
 
 	}
 
@@ -126,10 +126,8 @@ class Wordlift_Admin_Term_Adapter {
 	 * @since 3.20.0
 	 *
 	 * @param int    $term_id The term id.
-	 * @param int    $tt_id The term taxonomy id.
-	 * @param string $taxonomy The taxonomy.
 	 */
-	public function edit_term( $term_id, $tt_id, $taxonomy ) {
+	public function edit_term( $term_id ) {
 
 		// Bail if the action isn't related to the term currently being edited.
 		if ( ! isset( $_POST['tag_ID'] ) || $term_id !== (int) $_POST['tag_ID'] ) {

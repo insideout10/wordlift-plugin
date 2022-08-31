@@ -175,7 +175,7 @@ class Wordlift_Api_Service {
 		}
 
 		// `code` not set or not numeric.
-		$code    = wp_remote_retrieve_response_code( $response );
+		$code = wp_remote_retrieve_response_code( $response );
 		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		$message = @wp_remote_retrieve_response_message( $response );
 

@@ -40,7 +40,6 @@ class Wordlift_UI_Service {
 	 * @param string $element_id The button element id.
 	 * @param string $label The button (translated) label.
 	 *
-	 * @return string The button HTML code.
 	 * @since 3.2.0
 	 */
 	public static function print_button( $element_id, $label ) {
@@ -77,7 +76,6 @@ class Wordlift_UI_Service {
 	 * @param string $element_id The element id.
 	 * @param string $body The element content.
 	 *
-	 * @return string øThe HTML code.
 	 * @since 3.2.0
 	 */
 	public static function print_template( $element_id, $body ) {

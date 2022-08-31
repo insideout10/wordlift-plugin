@@ -10,8 +10,8 @@ class Wordlift_Log_Service {
 	const MESSAGE_TEMPLATE = '%-6s [%-40.40s] %s';
 
 	const ERROR = 4;
-	const WARN = 3;
-	const INFO = 2;
+	const WARN  = 3;
+	const INFO  = 2;
 	const DEBUG = 1;
 	const TRACE = 0;
 
@@ -99,7 +99,7 @@ class Wordlift_Log_Service {
 
 		// Bail out if WordLift log level isn't defined, and WP debug is disabled.
 		if ( ! defined( 'WL_LOG_LEVEL' ) && $level < self::ERROR
-		     && ( ! defined( 'WP_DEBUG' ) || false === WP_DEBUG ) ) {
+			 && ( ! defined( 'WP_DEBUG' ) || false === WP_DEBUG ) ) {
 			return;
 		}
 

@@ -891,7 +891,7 @@ class Wordlift {
 		/**
 		 * The WordLift Dashboard service.
 		 */
-		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-dashboard.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-dashboard-service.php';
 
 		/**
 		 * The admin 'Install wizard' page.
@@ -1613,7 +1613,7 @@ class Wordlift {
 		// page  on WordPress versions before 4.7.
 		global $wp_version;
 		if ( version_compare( $wp_version, '4.7', '<' ) ) {
-			$that->loader->add_filter( 'map_meta_cap', $that->entity_type_admin_page, 'enable_admin_access_pre_47', 10, 4 );
+			$that->loader->add_filter( 'map_meta_cap', $that->entity_type_admin_page, 'enable_admin_access_pre_47', 10, 2 );
 		}
 
 		/** Adapters. */
@@ -1657,7 +1657,7 @@ class Wordlift {
 
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {
-			$that->loader->add_filter( 'map_meta_cap', $that->entity_type_admin_page, 'restrict_super_admin', 10, 4 );
+			$that->loader->add_filter( 'map_meta_cap', $that->entity_type_admin_page, 'restrict_super_admin', 10, 2 );
 		}
 
 		$deactivator_feedback = new Wordlift_Deactivator_Feedback();

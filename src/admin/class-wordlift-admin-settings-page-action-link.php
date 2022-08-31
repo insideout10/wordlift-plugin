@@ -34,7 +34,7 @@ class Wordlift_Admin_Settings_Page_Action_Link {
 	 *
 	 * @since  3.11.0
 	 */
-	function __construct( $settings_page ) {
+	public function __construct( $settings_page ) {
 
 		$this->settings_page = $settings_page;
 
@@ -48,7 +48,7 @@ class Wordlift_Admin_Settings_Page_Action_Link {
 	 * @return array An array of links including those added by the plugin.
 	 * @since 3.11.0
 	 */
-	function action_links( $links ) {
+	public function action_links( $links ) {
 
 		// Get the menu slug from the page, then prepare the path, hence the url.
 		$menu_slug = $this->settings_page->get_menu_slug();

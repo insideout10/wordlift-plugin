@@ -90,6 +90,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * @return array A JSON-LD array.
 	 * @since 3.10.0
 	 */
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function convert( $post_id, &$references = array(), &$references_infos = array() ) {
 
 		// Get the post instance.
@@ -151,7 +152,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			 *
 			 * @since 3.27.7
 			 */
-			if ( in_array( $type, array( 'Occupation', 'OccupationAggregationByEmployer' ) ) ) {
+			if ( in_array( $type, array( 'Occupation', 'OccupationAggregationByEmployer' ), true ) ) {
 				$jsonld['mainEntityOfPage'] = array(
 					'@type'        => 'WebPage',
 					'lastReviewed' => get_post_time( 'Y-m-d\TH:i:sP', true, $post, false ),
@@ -203,6 +204,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		);
 
 		// Merge the references with the referenced locations if any.
+		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$references = array_merge( $references_without_locations, $locations );
 
 		return $jsonld;
@@ -251,6 +253,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		// See https://github.com/insideout10/wordlift-plugin/issues/689.
 		//
 		// Get the embeds, removing existing ids.
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( apply_filters( 'wl_feature__enable__image-embeds', false ) ) {
 			$embeds = array_diff( $attachment_service->get_image_embeds( $post->post_content ), $ids );
 		} else {
@@ -416,8 +419,10 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 							  $url = $item->get_url();
 
 							  // The refactored converters require the entity id.
+							// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 							  $references[] = $item->get_id();
 
+							// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 							  $references_infos[] = array( 'reference' => $item );
 
 							  return array(

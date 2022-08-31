@@ -75,14 +75,15 @@ class Wordlift_Dashboard_Service {
 	/**
 	 * Return stats layout
 	 *
-	 * @return string Dashboard widget html markup
 	 * @since 3.4.0
 	 */
+    // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function dashboard_widget_callback( $post ) {
 		$caption_kses           = array( 'a' => array( 'href' => array() ) );
 		$enriched_posts_title   = __( 'enriched posts', 'wordlift' );
 		$enriched_posts_caption = sprintf(
 			wp_kses(
+			    /* translators: 1: Percentage of annotated posts, 2: Link to the edit screen, 3: Number of annotated posts, 4: Total posts. */
 				__( '%1$s, of your <a href="%2$s">posts</a> are annotated. This means %3$s annotated posts on %4$s.', 'wordlift' ),
 				array( 'a' => array( 'href' => array() ) )
 			),
@@ -159,7 +160,6 @@ class Wordlift_Dashboard_Service {
 	/**
 	 * Return stats
 	 *
-	 * @return string markup
 	 * @since 3.4.0
 	 */
 	public function add_dashboard_widgets() {
@@ -179,8 +179,6 @@ class Wordlift_Dashboard_Service {
 	 * @uses  https://codex.wordpress.org/Function_Reference/set_transient
 	 *
 	 * @since 3.4.0
-	 *
-	 * @return string JSON obj with all available stats.
 	 */
 	public function ajax_get_stats() {
 
@@ -194,11 +192,12 @@ class Wordlift_Dashboard_Service {
 
 		if ( ! $stats ) {
 			// Calculate stats
-			$stats = array(
+			$count_triples = $this->count_triples();
+			$stats         = array(
 				'entities'        => $this->entity_service->count(),
 				'posts'           => $this->count_posts(),
 				'annotated_posts' => $this->count_annotated_posts(),
-				'triples'         => $this->count_triples() ?: '-',
+				'triples'         => $count_triples ? $count_triples : '-',
 				'rating'          => $this->average_entities_rating(),
 			);
 			// Cache stats results trough transient

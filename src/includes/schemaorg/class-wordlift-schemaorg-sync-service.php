@@ -72,6 +72,7 @@ class Wordlift_Schemaorg_Sync_Service {
 	public function load_from_file() {
 
 		// Load the file contents.
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$contents = file_get_contents( __DIR__ . '/schema-classes.json' );
 
 		// Load the file contents.

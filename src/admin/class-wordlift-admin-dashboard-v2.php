@@ -2,9 +2,6 @@
 
 use Wordlift\Admin\Top_Entities;
 
-/**
- *
- */
 class Wordlift_Admin_Dashboard_V2 {
 
 	const TODAYS_TIP       = 'wl_todays_tip_data';
@@ -44,6 +41,7 @@ class Wordlift_Admin_Dashboard_V2 {
 		 *
 		 * @since 3.30.0
 		 */
+        // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( apply_filters( 'wl_feature__enable__wordlift-dashboard', true ) ) {
 			wp_add_dashboard_widget(
 				'wl-dashboard-v2',
@@ -87,6 +85,7 @@ class Wordlift_Admin_Dashboard_V2 {
 	 */
 	public static function get_todays_tip_block() {
 
+        // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		$data = @self::get_todays_tip_data();
 
 		// Unable to get data from the local cache, nor from the remote URL.

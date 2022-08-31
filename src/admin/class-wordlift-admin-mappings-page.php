@@ -19,7 +19,7 @@ class Wordlift_Admin_Mappings_Page extends Wordlift_Admin_Page {
 	/**
 	 * {@inheritdoc}
 	 */
-	function get_page_title() {
+	public function get_page_title() {
 
 		return __( 'Schema.org Types', 'wordlift' );
 	}
@@ -27,7 +27,7 @@ class Wordlift_Admin_Mappings_Page extends Wordlift_Admin_Page {
 	/**
 	 * {@inheritdoc}
 	 */
-	function get_menu_title() {
+	public function get_menu_title() {
 
 		return __( 'Schema.org Types', 'wordlift' );
 	}
@@ -35,7 +35,7 @@ class Wordlift_Admin_Mappings_Page extends Wordlift_Admin_Page {
 	/**
 	 * {@inheritdoc}
 	 */
-	function get_menu_slug() {
+	public function get_menu_slug() {
 
 		return 'wl_mappings';
 	}
@@ -43,8 +43,7 @@ class Wordlift_Admin_Mappings_Page extends Wordlift_Admin_Page {
 	/**
 	 * {@inheritdoc}
 	 */
-
-	function get_partial_name() {
+	public function get_partial_name() {
 
 		return 'wordlift-admin-mappings-page.php';
 	}

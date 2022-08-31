@@ -60,7 +60,9 @@ class Wordlift_Property_Factory {
 	 */
 	public function get( $meta_key ) {
 
-		return $this->property_services[ $meta_key ] ?: $this->default_property_service;
+		$service = $this->property_services[ $meta_key ];
+
+		return $service ? $service : $this->default_property_service;
 	}
 
 }
