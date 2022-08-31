@@ -197,11 +197,7 @@ abstract class Wordlift_Plugin_WP_Background_Process extends Wordlift_Plugin_WP_
 
 		$count = $wpdb->get_var(
 			$wpdb->prepare(
-				"
-			SELECT COUNT(*)
-			FROM {$table}
-			WHERE {$column} LIKE %s
-		",
+				"SELECT COUNT(*) FROM {$table} WHERE {$column} LIKE %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$key
 			)
 		);
@@ -277,13 +273,7 @@ abstract class Wordlift_Plugin_WP_Background_Process extends Wordlift_Plugin_WP_
 
 		$query = $wpdb->get_row(
 			$wpdb->prepare(
-				"
-			SELECT *
-			FROM {$table}
-			WHERE {$column} LIKE %s
-			ORDER BY {$key_column} ASC
-			LIMIT 1
-		",
+				"SELECT * FROM {$table} WHERE {$column} LIKE %s ORDER BY {$key_column} ASC LIMIT 1", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$key
 			)
 		);
