@@ -74,8 +74,11 @@ class Wordpress_Dataset_Content_Service implements Content_Service {
 
 	public function get_entity_id( $content_id ) {
 		foreach ( $this->delegates as $delegate ) {
+			if ( ! $delegate->supports( $content_id ) ) {
+				continue;
+			}
 			$uri = $delegate->get_entity_id( $content_id );
-			if ( $delegate->supports( $content_id ) && $uri ) {
+			if ( $uri ) {
 				return $uri;
 			}
 		}
