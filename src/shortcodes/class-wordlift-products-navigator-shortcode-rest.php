@@ -236,7 +236,7 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 				(array) $order_by
 			)
 		);
-
+// phpcs:disable WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder
 		/** @noinspection SqlNoDataSourceInspection */
 		return $wpdb->get_results(
 			$wpdb->prepare(
@@ -281,7 +281,7 @@ SELECT %4\$s, p2.ID as entity_id
 			)
 		);
 	}
-
+// phpcs:enable
 	private function get_post_results(
 		$post_id,
 		$fields = array(
@@ -313,7 +313,7 @@ SELECT %4\$s, p2.ID as entity_id
 				(array) $order_by
 			)
 		);
-
+// phpcs:disable WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
 		/** @noinspection SqlNoDataSourceInspection */
 		return $wpdb->get_results(
 			$wpdb->prepare(
@@ -361,5 +361,5 @@ SELECT %4\$s, p2.ID as entity_id
 			)
 		);
 	}
-
+// phpcs:enable
 }

@@ -328,7 +328,7 @@ function _wl_network_navigator_get_results(
 			$entities
 		)
 	);
-// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder
 	/** @noinspection SqlNoDataSourceInspection */
 	return $wpdb->get_results(
 		$wpdb->prepare(
