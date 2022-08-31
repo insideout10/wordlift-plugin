@@ -25,7 +25,8 @@ function wl_core_check_relation_predicate_is_supported( $predicate ) {
 			WL_WHEN_RELATION,
 			WL_WHERE_RELATION,
 			WL_WHO_RELATION,
-		)
+		),
+		true
 	);
 }
 
@@ -36,6 +37,7 @@ function wl_core_check_relation_predicate_is_supported( $predicate ) {
  */
 function wl_core_get_validation_rules() {
 
+	// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 	return unserialize( WL_CORE_GET_POSTS_VALIDATION_RULES );
 }
 
@@ -644,7 +646,7 @@ function wl_core_get_posts( $args, $returned_type = OBJECT ) {
 	// Performing validation rules
 	foreach ( wl_core_get_validation_rules() as $option_name => $accepted_values ) {
 		if ( isset( $args[ $option_name ] ) && ! is_null( $args[ $option_name ] ) ) {
-			if ( ! in_array( $args[ $option_name ], $accepted_values ) ) {
+			if ( ! in_array( $args[ $option_name ], $accepted_values, true ) ) {
 				return false;
 			}
 		}

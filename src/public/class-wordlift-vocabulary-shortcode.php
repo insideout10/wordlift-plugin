@@ -307,6 +307,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	private function get_posts( $atts ) {
 		// The default arguments for the query.
 		$args = array(
+            // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page
 			'posts_per_page'         => intval( $atts['limit'] ),
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,

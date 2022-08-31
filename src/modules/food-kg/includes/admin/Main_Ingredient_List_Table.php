@@ -15,11 +15,6 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 		global $wpdb; // This is used only if making any database queries
 
 		/**
-		 * First, lets decide how many records per page to show
-		 */
-		$per_page = 5;
-
-		/**
 		 * REQUIRED. Now we need to define our column headers. This includes a complete
 		 * array of columns to be displayed (slugs & titles), a list of columns
 		 * to keep hidden, and a list of columns that are sortable. Each of these

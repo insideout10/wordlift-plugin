@@ -1,5 +1,4 @@
-<?php
-// phpcs:ignore WordPress.Files.FileName.InvalidClassFileName
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName
 /**
  * Walkers: Entity Types Taxonomy Walker.
  *

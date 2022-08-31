@@ -911,7 +911,7 @@ class Wordlift {
 		/**
 		 * The admin 'Download Your Data' page.
 		 */
-		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-download-your-data-page.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-download-your-data-page.php';
 
 		/**
 		 * The admin 'WordLift Settings' page.
@@ -1006,7 +1006,7 @@ class Wordlift {
 		/** Widgets */
 		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-widget.php';
 		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-related-entities-cloud-widget.php';
-		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-context-cards.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-wordlift-context-cards-service.php';
 
 		/*
 		 * Batch Operations. They're similar to Batch Actions but do not require working on post types.

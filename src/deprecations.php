@@ -230,26 +230,26 @@ add_filter( 'content_save_pre', 'wl_replace_item_id_with_uri', 1, 1 );
 require_once 'wordlift_entity_functions.php';
 
 // add editor related methods.
-require_once 'wordlift_editor.php';
+require_once 'wordlift-editor.php';
 
 // add the WordLift entity custom type.
-require_once 'wordlift_entity_type.php';
+require_once 'wordlift-entity-type.php';
 
 require_once 'modules/common/load.php';
-require_once 'modules/configuration/wordlift_configuration_settings.php';
+require_once 'modules/configuration/wordlift-configuration-settings.php';
 
 // Load modules
 require_once 'modules/analyzer/wordlift_analyzer.php';
-require_once 'modules/linked_data/wordlift_linked_data.php';
+require_once 'modules/linked_data/wordlift-linked-data.php';
 require_once 'modules/acf4so/load.php';
 
 // Shortcodes
 require_once 'shortcodes/class-wordlift-shortcode-rest.php';
-require_once 'shortcodes/wordlift_shortcode_chord.php';
-require_once 'shortcodes/wordlift_shortcode_geomap.php';
-require_once 'shortcodes/wordlift_shortcode_field.php';
-require_once 'shortcodes/wordlift_shortcode_faceted_search.php';
-require_once 'shortcodes/wordlift_shortcode_navigator.php';
+require_once 'shortcodes/wordlift-shortcode-chord.php';
+require_once 'shortcodes/wordlift-shortcode-geomap.php';
+require_once 'shortcodes/wordlift-shortcode-field.php';
+require_once 'shortcodes/wordlift-shortcode-faceted-search.php';
+require_once 'shortcodes/wordlift-shortcode-navigator.php';
 require_once 'shortcodes/class-wordlift-products-navigator-shortcode-rest.php';
 
 require_once 'widgets/wordlift_widget_geo.php';

@@ -28,11 +28,11 @@ abstract class Wordlift_Shortcode {
 	/**
 	 * Render the shortcode.
 	 *
-	 * @since 3.5.4
-	 *
 	 * @param array $atts An array of shortcode attributes as set by the editor.
 	 *
 	 * @return string The output html code.
+	 * @since 3.5.4
+	 *
 	 */
 	abstract public function render( $atts );
 
@@ -44,8 +44,8 @@ abstract class Wordlift_Shortcode {
 	 */
 	protected function enqueue_scripts() {
 
-		wp_enqueue_script( 'angularjs', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js', array(), WORDLIFT_VERSION );
-		wp_enqueue_script( 'angularjs-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js', array( 'angularjs' ), WORDLIFT_VERSION );
+		wp_enqueue_script( 'angularjs', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js', array(), WORDLIFT_VERSION, false );
+		wp_enqueue_script( 'angularjs-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js', array( 'angularjs' ), WORDLIFT_VERSION, false );
 		wp_enqueue_script(
 			'wordlift-ui',
 			dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-ui' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.js',
@@ -54,7 +54,8 @@ abstract class Wordlift_Shortcode {
 				'angularjs',
 				'angularjs-touch',
 			),
-			WORDLIFT_VERSION
+			WORDLIFT_VERSION,
+			false
 		);
 
 	}

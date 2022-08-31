@@ -10,20 +10,8 @@ use WP_List_Table;
 
 class Ingredients_List_Table extends WP_List_Table {
 
-	// public function __construct() {
-	// parent::__construct( [
-	// 'singular' => 'ingredient',
-	// 'plural'   => 'ingredients',
-	// 'ajax'     => false,
-	// ] );
-	// }
 	public function prepare_items() {
 		global $wpdb; // This is used only if making any database queries
-
-		/**
-		 * First, lets decide how many records per page to show
-		 */
-		$per_page = 5;
 
 		/**
 		 * REQUIRED. Now we need to define our column headers. This includes a complete

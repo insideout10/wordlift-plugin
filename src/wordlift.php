@@ -57,7 +57,7 @@ require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 wordlift_plugin_autoload_register();
 
 // Include WordLift constants.
-require_once 'wordlift_constants.php';
+require_once 'wordlift-constants.php';
 
 // Load modules.
 require_once 'modules/core/wordlift_core.php';
@@ -194,6 +194,7 @@ function run_wordlift() {
 
 	add_action(
 		'plugins_loaded',
+		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		function () use ( $plugin ) {
 
 			new Wordlift_Products_Navigator_Shortcode_REST();
@@ -226,7 +227,7 @@ run_wordlift();
 /**
  * Register our autoload routine.
  *
- * @throws Exception
+ * @throws Exception when an error occurs.
  * @since 3.21.2
  */
 function wordlift_plugin_autoload_register() {
@@ -260,7 +261,7 @@ function wordlift_plugin_autoload_register() {
 
 }
 
-function wl_block_categories( $categories, $post ) {
+function wl_block_categories( $categories ) {
 	return array_merge(
 		$categories,
 		array(
@@ -272,15 +273,17 @@ function wl_block_categories( $categories, $post ) {
 	);
 }
 
-// This function is created temporarily to handle the legacy library,
-// this has to be removed when removing the legacy fields from the ui.
+/**
+ * This function is created temporarily to handle the legacy library,
+ * this has to be removed when removing the legacy fields from the ui.
+ */
 function wl_enqueue_leaflet( $in_footer = false ) {
 	// Leaflet.
 	wp_enqueue_style( 'wl-leaflet', plugin_dir_url( __FILE__ ) . 'js/leaflet/leaflet.css', array(), '1.6.0' );
 	wp_enqueue_script( 'wl-leaflet', plugin_dir_url( __FILE__ ) . 'js/leaflet/leaflet.js', array(), '1.6.0', $in_footer );
 }
 
-add_filter( 'block_categories', 'wl_block_categories', 10, 2 );
+add_filter( 'block_categories', 'wl_block_categories', 10 );
 
 // Temporary fix for a typo in WooCommerce Extension.
 add_filter(

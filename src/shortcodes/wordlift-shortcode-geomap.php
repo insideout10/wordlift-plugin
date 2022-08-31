@@ -110,6 +110,7 @@ function wl_shortcode_geomap_format_results( $results, $post_id = null ) {
 			$thumbnail_html = ( $thumbnail_url ? "<img src='$thumbnail_url' width='100%'>" : '' );
 
 			// Related posts.
+			// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 			$subjects            = wl_shortcode_geomap_get_subjects( $item->ID, $post_id );
 			$subjects_inner_html = array_reduce(
 				$subjects,
@@ -132,6 +133,7 @@ function wl_shortcode_geomap_format_results( $results, $post_id = null ) {
 				'coordinates' => $coordinates,
 			);
 
+			// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 			$boundaries[] = array( $longitude, $latitude );
 
 			return array(

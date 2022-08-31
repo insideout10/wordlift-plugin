@@ -51,7 +51,7 @@ function wl_shortcode_chord_most_referenced_entity_id() {
 
 	$famous_entities = array_count_values( $entities );
 	arsort( $famous_entities );
-	if ( sizeof( $famous_entities ) >= 1 ) {
+	if ( count( $famous_entities ) >= 1 ) {
 		return key( $famous_entities );
 	} else {
 		return $post_ids[0];
@@ -122,7 +122,7 @@ function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = nu
 
 		$related['relations'][] = array( $entity_id, $related_id );
 
-		if ( ! in_array( $related_id, $related['entities'] ) ) {
+		if ( ! in_array( $related_id, $related['entities'], true ) ) {
 			// Found new related entity!
 			$related['entities'][] = $related_id;
 

@@ -4,8 +4,8 @@ namespace Wordlift\Modules\Food_Kg\Admin;
 
 interface Page_Delegate {
 
-	function render();
+	public function render();
 
-	function admin_enqueue_scripts();
+	public function admin_enqueue_scripts();
 
 }

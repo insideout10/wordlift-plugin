@@ -48,7 +48,7 @@ function wl_linked_data_save_post( $post_id ) {
 	$is_no_editor_analysis_enabled = Wordlift\No_Editor_Analysis\No_Editor_Analysis_Feature::can_no_editor_analysis_be_used( $post_id );
 	// Bail out if it's not an entity.
 	if ( ! $is_editor_supported
-		 && ! $is_no_editor_analysis_enabled ) {
+	     && ! $is_no_editor_analysis_enabled ) {
 		$log->debug( "Skipping $post_id, because $post_type doesn't support the editor (content)." );
 
 		return;
@@ -62,7 +62,7 @@ function wl_linked_data_save_post( $post_id ) {
 	$supported_types = Wordlift_Entity_Service::valid_entity_post_types();
 
 	// Bail out if it's not a valid entity.
-	if ( ! in_array( $post_type, $supported_types ) && ! $is_no_editor_analysis_enabled ) {
+	if ( ! in_array( $post_type, $supported_types, true ) && ! $is_no_editor_analysis_enabled ) {
 		$log->debug( "Skipping $post_id, because $post_type is not a valid entity." );
 
 		return;
@@ -123,7 +123,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		$data              = filter_var_array( $_POST, array( 'wl_entities' => array( 'flags' => FILTER_REQUIRE_ARRAY ) ) );
 		$entities_via_post = $data['wl_entities'];
 		wl_write_log( "[ post id :: $post_id ][ POST(wl_entities) :: " );
-		wl_write_log( json_encode( $entities_via_post ) );
+		wl_write_log( wp_json_encode( $entities_via_post ) );
 		wl_write_log( ']' );
 
 		foreach ( $entities_via_post as $entity_uri => $entity ) {
@@ -157,7 +157,8 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 				$existing_entity = wl_save_entity( $entity );
 			} else {
 				// Existing entity, update post status.
-				if ( $existing_entity instanceof WP_Post && $existing_entity->post_status !== 'publish' ) {
+				if ( $existing_entity instanceof WP_Post && 'publish' !== $existing_entity->post_status ) {
+					// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 					$post_status = apply_filters( 'wl_feature__enable__entity-auto-publish', true )
 						? $post->post_status : 'draft';
 					wl_update_post_status( $existing_entity->ID, $post_status );
@@ -205,11 +206,11 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	wl_core_delete_relation_instances( $post_id );
 
 	$relations = Object_Relation_Factory::get_instance( $post_id )
-										->get_relations_from_content(
-											$updated_post_content,
-											Object_Type_Enum::POST,
-											$internal_entity_uris
-										);
+	                                    ->get_relations_from_content(
+		                                    $updated_post_content,
+		                                    Object_Type_Enum::POST,
+		                                    $internal_entity_uris
+	                                    );
 
 	// Save relation instances
 	foreach ( $relations as $relation ) {
@@ -257,7 +258,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			if ( $entity ) {
 				add_post_meta( $post->ID, $field, $entity->ID, true );
 				// Set also the topic taxonomy
-				if ( $field === Wordlift_Schema_Service::FIELD_TOPIC ) {
+				if ( Wordlift_Schema_Service::FIELD_TOPIC === $field ) {
 					Wordlift_Topic_Taxonomy_Service::get_instance()->set_topic_for( $post->ID, $entity );
 				}
 			}
@@ -314,13 +315,17 @@ function wl_save_entity( $entity_data ) {
 
 	// Check whether an entity already exists with the provided URI.
 	$uri = $entity_data['uri'];
-	if ( isset( $uri ) && null !== $post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri ) ) {
-		$log->debug( "Post already exists for URI $uri." );
+	if ( isset( $uri ) ) {
+		$post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri );
+		if ( isset( $post ) ) {
+			$log->debug( "Post already exists for URI $uri." );
 
-		return $post;
+			return $post;
+		}
 	}
 
 	// Prepare properties of the new entity.
+	// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	$post_status = apply_filters( 'wl_feature__enable__entity-auto-publish', true ) && is_numeric( $related_post_id )
 		? get_post_status( $related_post_id ) : 'draft';
 
@@ -382,7 +387,7 @@ function wl_save_entity( $entity_data ) {
 
 	// Setting the alternative labels for this entity.
 	Wordlift_Entity_Service::get_instance()
-						   ->set_alternative_labels( $post_id, $synonyms );
+	                       ->set_alternative_labels( $post_id, $synonyms );
 
 	// Restore all the existing filters.
 	is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] = $save_post_filters : $wp_filter['save_post']->callbacks = $save_post_filters;
@@ -429,9 +434,9 @@ function wl_save_entity( $entity_data ) {
 
 	// Add the uri to the sameAs data if it's not a local URI.
 	if ( isset( $uri ) && preg_match( '@https?://.*@', $uri ) &&
-		 $wl_uri !== $uri &&
-		 // Only remote entities
-		 0 !== strpos( $uri, Wordlift_Configuration_Service::get_instance()->get_dataset_uri() )
+	     $wl_uri !== $uri &&
+	     // Only remote entities
+	     0 !== strpos( $uri, Wordlift_Configuration_Service::get_instance()->get_dataset_uri() )
 	) {
 		array_push( $same_as, $uri );
 	}

@@ -43,7 +43,7 @@ class Wordlift_Related_Entities_Cloud_Widget extends Wordlift_Widget {
 
 		<p><label for="<?php echo esc_attr( $title_id ); ?>">
 								  <?php
-									esc_html_e( 'Title:' );
+									esc_html_e( 'Title:', 'wordlift' );
 									?>
 				</label>
 			<input type="text" class="widefat"
@@ -60,6 +60,7 @@ class Wordlift_Related_Entities_Cloud_Widget extends Wordlift_Widget {
 	/**
 	 * @inheritdoc
 	 */
+    // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function update( $new_instance, $old_instance ) {
 
 		return array( 'title' => sanitize_text_field( $new_instance['title'] ) );

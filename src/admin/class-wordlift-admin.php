@@ -95,8 +95,10 @@ class Wordlift_Admin {
 		if ( empty( $dataset_uri ) ) {
 			$settings_page = Wordlift_Admin_Settings_Page::get_instance();
 			if ( empty( $key ) ) {
+				/* translators: %s: The link to the settings page. */
 				$error = sprintf( esc_html__( "WordLift's key isn't set, please open the %s to set WordLift's key.", 'wordlift' ), '<a href="' . $settings_page->get_url() . '">' . esc_html__( 'settings page', 'wordlift' ) . '</a>' );
 			} else {
+				/* translators: %s: The link to the settings page. */
 				$error = sprintf( esc_html__( "WordLift's dataset URI is not configured: please open the %s to set WordLift's key again.", 'wordlift' ), '<a href="' . $settings_page->get_url() . '">' . esc_html__( 'settings page', 'wordlift' ) . '</a>' );
 			}
 			$notice_service->add_error( $error );
@@ -126,6 +128,7 @@ class Wordlift_Admin {
 			 *
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 			 */
+			// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 			if ( apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES ) ) {
 
 				require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-schemaorg-taxonomy-metabox.php';
@@ -363,7 +366,9 @@ class Wordlift_Admin {
 			 *
 			 * @since 3.30.0
 			 */
+			// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 			'can_add_synonyms'             => apply_filters( 'wl_feature__enable__add-synonyms', true ),
+			// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 			'show_classification_sidebar'  => apply_filters( 'wl_feature__enable__classification-sidebar', true ),
 			// By default the videoobject should not show.
 			'show_videoobject'             => apply_filters( 'wl_feature__enable__videoobject', false ),
@@ -387,6 +392,7 @@ class Wordlift_Admin {
 			 *
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 			 */
+			// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 			if ( apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES ) ) {
 				$params['properties'] = Wordlift_Schemaorg_Property_Service::get_instance()->get_all( $post->ID );
 			}

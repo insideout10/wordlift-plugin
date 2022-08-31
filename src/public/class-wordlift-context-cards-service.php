@@ -22,8 +22,6 @@ class Wordlift_Context_Cards_Service {
 		if ( is_front_page() && is_home() ) {
 			// Default homepage - force hide
 			$show_context_cards = false;
-		} elseif ( is_front_page() ) {
-			// Static homepage - do nothing
 		} elseif ( is_home() ) {
 			// Blog page - force hide
 			$show_context_cards = false;
@@ -50,14 +48,14 @@ class Wordlift_Context_Cards_Service {
 		$post_type         = get_post_type( $post_id );
 		$enabled_templates = apply_filters( 'wl_context_cards_enabled_templates', array( 'product' ) );
 
-		if ( in_array( $post_type, $supported_types ) && in_array( $post_type, $enabled_templates ) ) {
+		if ( in_array( $post_type, $supported_types, true ) && in_array( $post_type, $enabled_templates, true ) ) {
 
 			$additional_attributes = array( 'post-type-template' => $post_type );
 
 			switch ( $post_type ) {
 				case 'product':
 					$product                                   = wc_get_product( $post_id );
-					$additional_attributes['template-payload'] = json_encode(
+					$additional_attributes['template-payload'] = wp_json_encode(
 						array(
 							'regular_price'   => $product->get_regular_price(),
 							'currency_symbol' => get_woocommerce_currency_symbol(),

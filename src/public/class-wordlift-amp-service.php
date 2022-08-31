@@ -37,7 +37,7 @@ class Wordlift_AMP_Service {
 	 *
 	 * @param \Wordlift_Jsonld_Service $jsonld_service
 	 */
-	function __construct( $jsonld_service ) {
+	public function __construct( $jsonld_service ) {
 
 		$this->jsonld_service = $jsonld_service;
 
@@ -51,7 +51,7 @@ class Wordlift_AMP_Service {
 	 *
 	 * @since 3.12.0
 	 */
-	function register_entity_cpt_with_amp_plugin() {
+	public function register_entity_cpt_with_amp_plugin() {
 
 		if ( ! defined( 'AMP_QUERY_VAR' ) ) {
 			return;
@@ -77,7 +77,7 @@ class Wordlift_AMP_Service {
 	 *
 	 * @return array Return WordLift's generated JSON-LD.
 	 */
-	function amp_post_template_metadata( $metadata, $post ) {
+	public function amp_post_template_metadata( $metadata, $post ) {
 
 		return $this->jsonld_service->get_jsonld( false, $post->ID );
 	}

@@ -99,7 +99,7 @@ class Wordlift_Term_JsonLd_Adapter {
 				'url'      => apply_filters( 'wl_carousel_post_list_item_url', get_permalink( $post_id ), $post_id ),
 			);
 			array_push( $post_jsonld['itemListElement'], $result );
-			$position += 1;
+			++$position;
 		}
 
 		return $post_jsonld;
@@ -228,6 +228,7 @@ class Wordlift_Term_JsonLd_Adapter {
 	 *
 	 * @return array
 	 */
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	private function get_entity_jsonld( $term_id, $context ) {
 
 		// The `_wl_entity_id` are URIs.

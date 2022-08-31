@@ -161,6 +161,7 @@ class Wordlift_Geomap_Shortcode extends Wordlift_Shortcode {
 	 *
 	 * @since 3.13.0
 	 */
+    // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function amp_post_template_css( $amp_template ) {
 
 		// Hide the `wl-geomap` when in AMP.

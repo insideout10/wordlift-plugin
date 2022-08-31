@@ -14,12 +14,12 @@ class Ingredients_Taxonomy_Recipe_Lift_Strategy implements Recipe_Lift_Strategy 
 	 */
 	private $notices;
 
-	function __construct( Ingredients_Client $ingredients_client, Notices $notices ) {
+	public function __construct( Ingredients_Client $ingredients_client, Notices $notices ) {
 		$this->ingredients_client = $ingredients_client;
 		$this->notices            = $notices;
 	}
 
-	function run() {
+	public function run() {
 		$this->notices->queue( 'info', __( 'WordLift detected WP Recipe Maker and, it is lifting the ingredients...', 'wordlift' ) );
 
 		/**
@@ -52,6 +52,7 @@ class Ingredients_Taxonomy_Recipe_Lift_Strategy implements Recipe_Lift_Strategy 
 		 */
 		$count_terms        = count( $terms );
 		$count_lifted_terms = count( $ingredients );
+		/* translators: 1: The number of lifted ingredients, 2: The total number of ingredients. */
 		$this->notices->queue( 'info', sprintf( __( 'WordLift detected WP Recipe Maker and, it lifted %1$d of %2$d ingredient(s).', 'wordlift' ), $count_lifted_terms, $count_terms ) );
 	}
 }

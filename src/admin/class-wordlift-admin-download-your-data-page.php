@@ -90,9 +90,6 @@ class Wordlift_Admin_Download_Your_Data_Page {
 			ob_end_clean();
 		}
 
-		// Get WL's key.
-		$key = Wordlift_Configuration_Service::get_instance()->get_key();
-
 		// Use json suffix by default.
 		$suffix = 'json';
 
@@ -130,7 +127,7 @@ class Wordlift_Admin_Download_Your_Data_Page {
 		// Get response body.
 		$body     = wp_remote_retrieve_body( $response );
 		$type     = wp_remote_retrieve_header( $response, 'content-type' );
-		$filename = 'dataset-' . date( 'Y-m-d-H-i-s' ) . '.' . $suffix;
+		$filename = 'dataset-' . gmdate( 'Y-m-d-H-i-s' ) . '.' . $suffix;
 
 		// Add proper file headers.
 		header( "Content-Disposition: attachment; filename=$filename" );

@@ -87,7 +87,7 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 		wp_enqueue_style( 'wordlift-ui' );
 
 		// Adding javascript code.
-		wp_enqueue_script( 'd3', dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/d3/d3.min.js', array(), WORDLIFT_VERSION );
+		wp_enqueue_script( 'd3', dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/d3/d3.min.js', array(), WORDLIFT_VERSION, false );
 
 		$this->enqueue_scripts();
 
@@ -194,6 +194,7 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 	 *
 	 * @since 3.14.0
 	 */
+    // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function amp_post_template_css( $amp_template ) {
 
 		// Hide the `wl-chord` when in AMP.

@@ -157,7 +157,7 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 
 		// Load the TimelineJS stylesheets and scripts.
 		wp_enqueue_style( 'timelinejs', dirname( plugin_dir_url( __FILE__ ) ) . '/timelinejs/css/timeline.css', array(), WORDLIFT_VERSION );
-		wp_enqueue_script( 'timelinejs', dirname( plugin_dir_url( __FILE__ ) ) . '/timelinejs/js/timeline' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '-min' : '' ) . '.js', array(), WORDLIFT_VERSION );
+		wp_enqueue_script( 'timelinejs', dirname( plugin_dir_url( __FILE__ ) ) . '/timelinejs/js/timeline' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '-min' : '' ) . '.js', array(), WORDLIFT_VERSION, false );
 
 		// Enqueue the scripts for the timeline.
 		$this->enqueue_scripts();
@@ -246,7 +246,7 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 							),
 							'timelinejs_options' => array(
 								'type'    => 'string', // https://timeline.knightlab.com/docs/options.html
-								'default' => json_encode( $scope->get_timelinejs_default_options(), JSON_PRETTY_PRINT ),
+								'default' => wp_json_encode( $scope->get_timelinejs_default_options(), JSON_PRETTY_PRINT ),
 							),
 							'preview'            => array(
 								'type'    => 'boolean',
@@ -276,7 +276,7 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 		$locale = substr( get_locale(), 0, 2 );
 
 		// Check that the specified locale is supported otherwise use English.
-		return in_array( $locale, self::$supported_locales ) ? $locale : 'en';
+		return in_array( $locale, self::$supported_locales, true ) ? $locale : 'en';
 	}
 
 }

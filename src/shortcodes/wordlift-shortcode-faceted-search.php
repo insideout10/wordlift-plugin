@@ -56,15 +56,18 @@ function wl_shortcode_faceted_search( $request ) {
  * @return array $results
  * @since        3.26.0
  */
+// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 function wl_shortcode_faceted_search_origin( $request ) {
 	// Post ID must be defined.
-	if ( ! isset( $_GET['post_id'] ) ) { // WPCS: input var ok; CSRF ok.
+	// phpcs:ignore Standard.Category.SniffName.ErrorCode
+	if ( ! isset( $_GET['post_id'] ) ) {
 		wp_die( 'No post_id given' );
 
 		return;
 	}
 
-	$current_post_id = (int) $_GET['post_id']; // WPCS: input var ok; CSRF ok.
+	// phpcs:ignore Standard.Category.SniffName.ErrorCode
+	$current_post_id = (int) $_GET['post_id'];
 	$current_post    = get_post( $current_post_id );
 	$faceted_id      = isset( $_GET['uniqid'] ) ? sanitize_text_field( wp_unslash( (string) $_GET['uniqid'] ) ) : '';
 
@@ -101,7 +104,8 @@ function wl_shortcode_faceted_search_origin( $request ) {
 		}
 	}
 
-	$limit = ( isset( $_GET['limit'] ) ) ? (int) $_GET['limit'] : 4;  // WPCS: input var ok; CSRF ok.
+	// phpcs:ignore Standard.Category.SniffName.ErrorCode
+	$limit = ( isset( $_GET['limit'] ) ) ? (int) $_GET['limit'] : 4;
 	$amp   = ( isset( $_GET['amp'] ) ) ? true : false;
 
 	/**

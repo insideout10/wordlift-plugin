@@ -20,6 +20,7 @@ class Preconditions {
 	private function has_prerequisites() {
 		return defined( 'WPRM_VERSION' )
 			   && class_exists( 'WP_Recipe_Maker' )
+		       // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 			   && apply_filters( 'wl_feature__enable__food-kg', false );
 	}
 
@@ -30,6 +31,7 @@ class Preconditions {
 		if ( ! $check ) {
 			$this->notices->queue(
 				'warning',
+				/* translators: %s: Detected WP Recipe Maker version. */
 				sprintf( __( 'WordLift Food KG support requires WP Recipe Maker 8.1-8.3, %s found.', 'wordlift' ), WPRM_VERSION )
 			);
 		}

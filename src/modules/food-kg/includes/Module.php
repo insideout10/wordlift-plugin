@@ -49,8 +49,9 @@ class Module {
 			if ( ! $has_food_kg && $next_scheduled ) {
 				wp_unschedule_event( $next_scheduled, self::RUN_EVENT );
 			}
+		// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 		} catch ( \Exception $e ) {
-
+			// Do nothing.
 		}
 	}
 
