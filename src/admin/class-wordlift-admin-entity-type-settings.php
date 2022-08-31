@@ -66,13 +66,13 @@ class Wordlift_Admin_Entity_Type_Settings {
 		 * This has to be done before any output happens in order to be able to
 		 * display proper "die" error messages and redirect.
 		 */
-		if ( isset( $_GET['page'] ) && ( 'wl_entity_type_settings' === $_GET['page'] ) ) {
+		if ( isset( $_GET['page'] ) && ( 'wl_entity_type_settings' === $_GET['page'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 			// Validate inputs. Do not return on invalid parameters or capabilities.
 			$this->validate_proper_term();
 
 			// If proper form submission, handle it and redirect back to the settings page.
-			if ( isset( $_POST['action'] ) && ( 'wl_edit_entity_type_term' === $_POST['action'] ) ) {
+			if ( isset( $_POST['action'] ) && ( 'wl_edit_entity_type_term' === $_POST['action'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Missing
 				$this->handle_form_submission();
 			}
 			/**
@@ -111,7 +111,7 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 * @since 3.11.0
 	 */
 	public function admin_notice() {
-		if ( isset( $_GET['message'] ) && ( '1' === $_GET['message'] ) ) {
+		if ( isset( $_GET['message'] ) && ( '1' === $_GET['message'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			?>
 			<div class="notice notice-success is-dismissible">
 				<p><?php esc_html_e( 'Settings saved', 'wordlift' ); ?></p>
@@ -139,7 +139,7 @@ class Wordlift_Admin_Entity_Type_Settings {
 		}
 
 		// Get the term id and the actual term.
-		$term_id = isset( $_REQUEST['tag_ID'] ) ? (int) $_REQUEST['tag_ID'] : 0;
+		$term_id = isset( $_REQUEST['tag_ID'] ) ? (int) $_REQUEST['tag_ID'] : 0; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		if ( ! term_exists( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) ) {
 			wp_die( esc_html__( 'You attempted to edit an entity type term that doesn&#8217;t exist.', 'wordlift' ) );
@@ -188,7 +188,7 @@ class Wordlift_Admin_Entity_Type_Settings {
 	public function render() {
 
 		// Set variables used by the partial
-		$term_id = isset( $_REQUEST['tag_ID'] ) ? absint( $_REQUEST['tag_ID'] ) : 0;
+		$term_id = isset( $_REQUEST['tag_ID'] ) ? absint( $_REQUEST['tag_ID'] ) : 0; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
         // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$settings = $this->get_setting( $term_id );
 
