@@ -57,12 +57,12 @@ require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 wordlift_plugin_autoload_register();
 
 // Include WordLift constants.
-require_once 'wordlift-constants.php';
+require_once plugin_dir_path( __FILE__ ) . 'wordlift-constants.php';
 
 // Load modules.
-require_once 'modules/core/wordlift_core.php';
+require_once plugin_dir_path( __FILE__ ) . 'modules/core/wordlift-core.php';
 
-require_once 'deprecations.php';
+require_once plugin_dir_path( __FILE__ ) . 'deprecations.php';
 
 // Load early to enable/disable features.
 require_once plugin_dir_path( __FILE__ ) . 'wordlift/features/index.php';
@@ -237,7 +237,7 @@ function wordlift_plugin_autoload_register() {
 
 			// Bail out if these are not our classes.
 			if ( 0 !== strpos( $class_name, 'Wordlift\\' ) ) {
-				  return false;
+				return false;
 			}
 
 			$class_name_lc = strtolower( str_replace( '_', '-', $class_name ) );

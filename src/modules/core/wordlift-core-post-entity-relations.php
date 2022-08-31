@@ -535,7 +535,7 @@ function wl_core_sql_query_builder( $args ) {
 	$sql       .= " AND p.post_type IN ('" . join( "', '", esc_sql( $post_types ) ) . "') AND";
 
 	// Sql add post status filter
-	if ( isset( $args['post_status'] ) && ! is_null( $args['post_status'] ) ) {
+	if ( isset( $args['post_status'] ) && $args['post_status'] !== null ) {
 		$sql .= $wpdb->prepare( ' p.post_status = %s AND', $args['post_status'] );
 	}
 
@@ -645,7 +645,7 @@ function wl_core_get_posts( $args, $returned_type = OBJECT ) {
 	}
 	// Performing validation rules
 	foreach ( wl_core_get_validation_rules() as $option_name => $accepted_values ) {
-		if ( isset( $args[ $option_name ] ) && ! is_null( $args[ $option_name ] ) ) {
+		if ( isset( $args[ $option_name ] ) && ( $args[ $option_name ] ) !== null ) {
 			if ( ! in_array( $args[ $option_name ], $accepted_values, true ) ) {
 				return false;
 			}

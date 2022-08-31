@@ -71,7 +71,7 @@ function wl_analyze_content( $data, $content_type ) {
 
 	$post_id = isset( $_REQUEST['postId'] ) ? intval( $_REQUEST['postId'] ) : 0;
 
-	if ( $request_body === null ) {
+	if ( null === $request_body ) {
 		/**
 		 * @since 3.27.7
 		 *

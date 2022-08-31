@@ -227,7 +227,7 @@ function wl_replace_item_id_with_uri( $content ) {
 
 add_filter( 'content_save_pre', 'wl_replace_item_id_with_uri', 1, 1 );
 
-require_once 'wordlift_entity_functions.php';
+require_once 'wordlift-entity-functions.php';
 
 // add editor related methods.
 require_once 'wordlift-editor.php';
@@ -239,7 +239,7 @@ require_once 'modules/common/load.php';
 require_once 'modules/configuration/wordlift-configuration-settings.php';
 
 // Load modules
-require_once 'modules/analyzer/wordlift_analyzer.php';
+require_once 'modules/analyzer/wordlift-analyzer.php';
 require_once 'modules/linked_data/wordlift-linked-data.php';
 require_once 'modules/acf4so/load.php';
 
@@ -252,9 +252,9 @@ require_once 'shortcodes/wordlift-shortcode-faceted-search.php';
 require_once 'shortcodes/wordlift-shortcode-navigator.php';
 require_once 'shortcodes/class-wordlift-products-navigator-shortcode-rest.php';
 
-require_once 'widgets/wordlift_widget_geo.php';
+require_once 'widgets/class-wordlift-geo-widget.php';
 require_once 'widgets/class-wordlift-chord-widget.php';
-require_once 'widgets/wordlift_widget_timeline.php';
+require_once 'widgets/class-wordlift-timeline-widget.php';
 
 // Add admin functions.
 // TODO: find a way to make 'admin' UI tests work.

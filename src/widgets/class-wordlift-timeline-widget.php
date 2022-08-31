@@ -20,6 +20,7 @@ class Wordlift_Timeline_Widget extends WP_Widget {
 	 * @param array $args
 	 * @param array $instance
 	 */
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function widget( $args, $instance ) {
 		// outputs the content of the widget
 		echo do_shortcode( '[wl_timeline global=true]' );
@@ -30,6 +31,7 @@ class Wordlift_Timeline_Widget extends WP_Widget {
 	 *
 	 * @param array $instance The widget options
 	 */
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function form( $instance ) {
 		// outputs the options form on admin
 	}
@@ -40,6 +42,7 @@ class Wordlift_Timeline_Widget extends WP_Widget {
 	 * @param array $new_instance The new options
 	 * @param array $old_instance The previous options
 	 */
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function update( $new_instance, $old_instance ) {
 		// processes widget options to be saved
 	}

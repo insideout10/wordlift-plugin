@@ -39,7 +39,7 @@ class Wl_Metabox_Field_uri extends Wl_Metabox_Field {
 		// entity or when the editor types a string in the input box, we try to
 		// find an entity with that title and, if not found, we create that entity.
 		$absent_from_db = is_numeric( $value )
-			? is_null( get_post( $value ) )
+			? get_post( $value ) === null
 			: ! $this->exists( $value );
 
 		// Is it an URI?
@@ -108,7 +108,7 @@ class Wl_Metabox_Field_uri extends Wl_Metabox_Field {
 		// The containing <div> contains info on cardinality and expected types.
 		$html = "<div class='wl-field' data-cardinality='$this->cardinality'";
 
-		if ( isset( $this->expected_uri_type ) && ! is_null( $this->expected_uri_type ) ) {
+		if ( isset( $this->expected_uri_type ) && $this->expected_uri_type !== null ) {
 
 			if ( is_array( $this->expected_uri_type ) ) {
 				$html .= " data-expected-types='" . implode( ',', $this->expected_uri_type ) . "'";
@@ -140,12 +140,12 @@ class Wl_Metabox_Field_uri extends Wl_Metabox_Field {
 		// Bail out if an entity id has been provided by the entity is not found.
 		//
 		// See https://github.com/insideout10/wordlift-plugin/issues/818
-		if ( ! empty( $default_entity_identifier ) && is_null( $entity ) ) {
+		if ( ! empty( $default_entity_identifier ) && $entity === null ) {
 			return '';
 		}
 
-		$label = is_null( $entity ) ? '' : $entity->post_title;
-		$value = is_null( $entity ) ? '' : $entity->ID;
+		$label = $entity === null ? '' : $entity->post_title;
+		$value = $entity === null ? '' : $entity->ID;
 
 		// Write saved value in page
 		// The <input> tags host the meta value.

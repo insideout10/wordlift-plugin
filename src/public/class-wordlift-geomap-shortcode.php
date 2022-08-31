@@ -58,7 +58,7 @@ class Wordlift_Geomap_Shortcode extends Wordlift_Shortcode {
 		// Get id of the post
 		$post_id = get_the_ID();
 
-		if ( $geomap_atts['global'] || is_null( $post_id ) ) {
+		if ( $geomap_atts['global'] || $post_id === null ) {
 			// Global geomap
 			$geomap_id = 'wl_geomap_global';
 			$post_id   = null;

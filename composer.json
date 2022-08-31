@@ -14,13 +14,8 @@
     "issues": "https://github.com/insideout10/wordlift-plugin/issues"
   },
   "require-dev": {
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
-    "phpcompatibility/php-compatibility": "^9.3",
-    "phpunit/phpunit": "^4|^5|^6|^7|^8|^9",
-    "squizlabs/php_codesniffer": "^3.5",
-    "wp-coding-standards/wpcs": "^2.2",
-    "wp-phpunit/wp-phpunit": "^5.8",
-    "yoast/phpunit-polyfills": "^1.0"
+    "wp-phpunit/wp-phpunit": "^5.4",
+    "automattic/jetpack-codesniffer": "^2.1"
   },
   "require": {
     "composer/installers": "~1.0",

@@ -102,7 +102,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 
 		// Get the post URI @id.
 		$id = Wordlift_Entity_Service::get_instance()->get_uri( $post->ID );
-		if ( is_null( $id ) ) {
+		if ( $id === null ) {
 			$id = 'get_uri returned null, dataset is ' . wl_configuration_get_redlink_dataset_uri();
 		}
 

@@ -1,62 +1,87 @@
 <?xml version="1.0"?>
-<ruleset name="WordPress Coding Standards for WordLift Plugin">
-	<description>Sniffs for WordPress plugins</description>
+<ruleset name="wordlift-plugin">
+    <description>Check WordLift plugin.</description>
 
-	<rule ref="PHPCompatibility"/>
-	<config name="testVersion" value="5.6-"/>
+	<rule ref="Jetpack">
+		<exclude name="Generic.Commenting.DocComment.LongNotCapital" />
+		<exclude name="Generic.Commenting.DocComment.MissingShort" />
+		<exclude name="Generic.Commenting.DocComment.ShortNotCapital" />
+		<exclude name="Squiz.Commenting.BlockComment.HasEmptyLineBefore" />
+		<exclude name="Squiz.Commenting.BlockComment.NoEmptyLineBefore" />
+		<exclude name="Squiz.Commenting.ClassComment.Missing" />
+		<exclude name="Squiz.Commenting.ClassComment.SpacingAfter" />
+		<exclude name="Squiz.Commenting.ClassComment.WrongStyle" />
+		<exclude name="Squiz.Commenting.FileComment.Missing" />
+		<exclude name="Squiz.Commenting.FileComment.MissingPackageTag" />
+		<exclude name="Squiz.Commenting.FileComment.SpacingAfterComment" />
+		<exclude name="Squiz.Commenting.FileComment.SpacingAfterOpen" />
+		<exclude name="Squiz.Commenting.FunctionComment.Missing" />
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamComment" />
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamName" />
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamTag" />
+		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
+		<exclude name="Squiz.Commenting.FunctionComment.ParamNameNoMatch" />
+		<exclude name="Squiz.Commenting.FunctionComment.ThrowsNotCapital" />
+		<exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
+		<exclude name="Squiz.Commenting.VariableComment.Missing" />
+		<exclude name="Squiz.Commenting.VariableComment.MissingVar" />
+		<exclude name="Squiz.PHP.CommentedOutCode.Found" />
+		<exclude name="WordPress.WhiteSpace.PrecisionAlignment.Found" />
+		<exclude name="WordPressVIPMinimum.Files.IncludingFile.NotAbsolutePath" />
+	</rule>
 
-	<rule ref="WordPress-Core"/>
-	<rule ref="WordPress-Docs"/>
-	<rule ref="WordPress.WP.I18n"/>
+    <rule ref="Jetpack.Functions.I18n">
+		<properties>
+			<property name="text_domain" value="wordlift,default" />
+		</properties>
+	</rule>
+
+	<rule ref="PHPCompatibility.FunctionNameRestrictions.ReservedFunctionNames.FunctionDoubleUnderscore">
+		<exclude-pattern>*/modules/**/*</exclude-pattern>
+		<exclude-pattern>*/modules/**/includes/*</exclude-pattern>
+	</rule>
+
+	<rule ref="PHPCompatibility.FunctionNameRestrictions.ReservedFunctionNames.MethodDoubleUnderscore">
+		<exclude-pattern>*/modules/**/*</exclude-pattern>
+		<exclude-pattern>*/modules/**/includes/*</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
+		<exclude-pattern>*/modules/**/includes/*</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.Files.FileName.NotHyphenatedLowercase">
+		<exclude-pattern>*/modules/**/includes/*</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.ValidFunctionName.FunctionDoubleUnderscore">
+		<exclude-pattern>*/modules/**/*</exclude-pattern>
+		<exclude-pattern>*/modules/**/includes/*</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.ValidFunctionName.MethodDoubleUnderscore">
+		<exclude-pattern>*/modules/**/*</exclude-pattern>
+		<exclude-pattern>*/modules/**/includes/*</exclude-pattern>
+	</rule>
+
 	<config name="text_domain" value="wordlift,default"/>
 
-	<arg value="ps"/>
+	<!-- Check for cross-version support for PHP 5.6 and higher. -->
+	<rule ref="PHPCompatibility"/>
+
+	<config name="minimum_supported_wp_version" value="5.6-" />
+    <config name="testVersion" value="5.6-"/>
+
 	<arg name="extensions" value="php"/>
 
+	<!-- Show sniff codes in all reports. -->
+	<arg value="ps"/>
+
+	<!-- Scan it all! -->
 	<file>./src</file>
 
-	<!-- Do not require docblocks for unit tests -->
-	<rule ref="Squiz.Commenting.FunctionComment.Missing">
-		<exclude-pattern>tests/*</exclude-pattern>
-	</rule>
-	<rule ref="Squiz.Commenting.FileComment.Missing">
-		<exclude-pattern>tests/*</exclude-pattern>
-	</rule>
-	<rule ref="Squiz.Commenting.ClassComment.Missing">
-		<exclude-pattern>tests/*</exclude-pattern>
-	</rule>
-	<rule ref="Squiz.Commenting.ClassComment.SpacingAfter">
-		<exclude-pattern>tests/*</exclude-pattern>
-	</rule>
-	<rule ref="Squiz.Commenting.FunctionComment.MissingParamTag">
-		<exclude-pattern>tests/*</exclude-pattern>
-	</rule>
-	<rule ref="Generic.Commenting.DocComment.Empty">
-    	<exclude-pattern>tests/*</exclude-pattern>
-    </rule>
-	<rule ref="Generic.Commenting.DocComment.MissingShort">
-		<exclude-pattern>tests/*</exclude-pattern>
-	</rule>
-	<rule ref="Squiz.Commenting.VariableComment.Missing">
-		<exclude-pattern>tests/*</exclude-pattern>
-	</rule>
-	<rule ref="Squiz.Commenting.FunctionCommentThrowTag.Missing">
-		<exclude-pattern>tests/*</exclude-pattern>
-	</rule>
-
-	<!-- Do not apply filename rules for unit tests -->
-	<rule ref="WordPress.Files.FileName.NotHyphenatedLowercase">
-		<exclude-pattern>tests/*</exclude-pattern>
-	</rule>
-	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
-		<exclude-pattern>tests/*</exclude-pattern>
-	</rule>
-
-	<!-- Do not apply compatibility rules to allow using the modern PHPUnit functionality -->
-	<rule ref="PHPCompatibility.FunctionDeclarations.NewReturnTypeDeclarations.stringFound">
-		<exclude-pattern>tests/utils/*</exclude-pattern>
-	</rule>
-	<rule ref="PHPCompatibility.FunctionDeclarations.NewReturnTypeDeclarations.boolFound">
-		<exclude-pattern>tests/utils/*</exclude-pattern>
-	</rule>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/ext/dependencies/*</exclude-pattern>
+	<exclude-pattern>*/modules/food-kg/includes/polyfills/mbstring.php</exclude-pattern>
+	<exclude-pattern>*/modules/**/scoper.inc.php</exclude-pattern>
 </ruleset>

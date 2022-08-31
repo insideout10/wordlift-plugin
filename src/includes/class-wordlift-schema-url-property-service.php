@@ -147,7 +147,7 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 		$this->add_filter_get_post_metadata();
 
 		// If we must return a single value, but we don't have a value, then return an empty string.
-		if ( $single && ( is_null( $new_value ) || empty( $new_value ) ) ) {
+		if ( $single && ( $new_value === null || empty( $new_value ) ) ) {
 			return '';
 		}
 

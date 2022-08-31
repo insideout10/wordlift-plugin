@@ -22,12 +22,12 @@ function wl_shortcode_field( $atts ) {
 
 	// Get id of the post
 	$entity_id = $field_atts['id'];
-	if ( is_null( $field_atts['id'] ) || ! is_numeric( $field_atts['id'] ) ) {
+	if ( $field_atts['id'] === null || ! is_numeric( $field_atts['id'] ) ) {
 		$entity_id = get_the_ID();
 	}
 
 	$property_name = $field_atts['name'];
-	if ( ! is_null( $property_name ) ) {
+	if ( $property_name !== null ) {
 		$values = wl_schema_get_value( $entity_id, $property_name );
 	}
 

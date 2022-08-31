@@ -375,7 +375,9 @@ class Wordlift_Admin {
 		);
 
 		// Set post-related values if there's a current post.
-		if ( null !== $post = $entity_being_edited = get_post() ) {
+		$entity_being_edited = get_post();
+		$post                = $entity_being_edited;
+		if ( null !== $post ) {
 
 			$params['post_id']           = $entity_being_edited->ID;
 			$entity_service              = Wordlift_Entity_Service::get_instance();

@@ -230,7 +230,7 @@ class Wl_Metabox_Field implements Field {
 
 		foreach ( $values as $value ) {
 			$sanitized_value = $this->sanitize_data_filter( $value );
-			if ( ! is_null( $sanitized_value ) ) {
+			if ( $sanitized_value !== null ) {
 				$sanitized_data[] = $sanitized_value;
 			}
 		}
@@ -260,7 +260,7 @@ class Wl_Metabox_Field implements Field {
 			return call_user_func( $this->raw_custom_field['sanitize'], $value );
 		}
 
-		if ( ! is_null( $value ) && '' !== $value ) {         // do not use 'empty()' -> https://www.virendrachandak.com/techtalk/php-isset-vs-empty-vs-is_null/ .
+		if ( $value !== null && '' !== $value ) {         // do not use 'empty()' -> https://www.virendrachandak.com/techtalk/php-isset-vs-empty-vs-is_null/ .
 			return $value;
 		}
 

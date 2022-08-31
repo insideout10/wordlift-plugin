@@ -71,7 +71,7 @@ class Wordlift_Term_JsonLd_Adapter {
 			return false;
 		}
 
-		if ( ! is_null( $id ) ) {
+		if ( $id !== null ) {
 			$term                       = get_term( $id );
 			$post_jsonld['description'] = wp_strip_all_tags( strip_shortcodes( $term->description ) );
 			$thumbnail_id               = get_term_meta( $id, 'thumbnail_id', true );
@@ -108,7 +108,7 @@ class Wordlift_Term_JsonLd_Adapter {
 	private function get_posts( $id ) {
 		global $wp_query;
 
-		if ( ! is_null( $wp_query->posts ) ) {
+		if ( $wp_query->posts !== null ) {
 			return array_map(
 				function ( $post ) {
 					return $post->ID;
@@ -117,7 +117,7 @@ class Wordlift_Term_JsonLd_Adapter {
 			);
 		}
 
-		if ( is_null( $id ) ) {
+		if ( $id === null ) {
 			return null;
 		}
 
@@ -208,7 +208,7 @@ class Wordlift_Term_JsonLd_Adapter {
 	}
 
 	private function get_term_url( $id ) {
-		if ( is_null( $id ) ) {
+		if ( $id === null ) {
 			return $_SERVER['REQUEST_URI'];
 		}
 

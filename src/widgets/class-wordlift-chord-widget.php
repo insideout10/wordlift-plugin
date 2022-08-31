@@ -43,6 +43,7 @@ class Wordlift_Chord_Widget extends WP_Widget {
 	 *
 	 * @return string|void
 	 */
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function form( $instance ) {
 		// outputs the options form on admin.
 	}
@@ -55,6 +56,7 @@ class Wordlift_Chord_Widget extends WP_Widget {
 	 *
 	 * @return array|void
 	 */
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function update( $new_instance, $old_instance ) {
 		// processes widget options to be saved.
 	}

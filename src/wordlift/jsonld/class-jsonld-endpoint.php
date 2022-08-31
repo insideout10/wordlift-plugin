@@ -179,7 +179,7 @@ class Jsonld_Endpoint {
 			)
 		);
 
-		if ( is_null( $post_id ) ) {
+		if ( $post_id === null ) {
 			return new WP_REST_Response( esc_html( "$post_name of type $post_type not found." ), 404, array( 'Content-Type' => 'text/html' ) );
 		}
 
@@ -213,7 +213,7 @@ class Jsonld_Endpoint {
 			)
 		);
 
-		if ( is_null( $post_id ) ) {
+		if ( $post_id === null ) {
 			return new WP_REST_Response( esc_html( "Post with meta key $meta_key and value $meta_value not found." ), 404, array( 'Content-Type' => 'text/html' ) );
 		}
 

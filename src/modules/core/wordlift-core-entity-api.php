@@ -86,6 +86,7 @@ function wl_entity_ajax_get_by_title() {
 	// See https://github.com/insideout10/wordlift-plugin/issues/438.
 	// Get the title to search.
 	if ( empty( $_POST['title'] ) && empty( $_GET['title'] ) ) {
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@ob_clean();
 		wp_send_json_error( 'The title parameter is required.' );
 	}
@@ -93,7 +94,7 @@ function wl_entity_ajax_get_by_title() {
 	// `wl_entity_metaboxes_utilities.js` still uses `GET`.
 	//
 	// See https://github.com/insideout10/wordlift-plugin/issues/438.
-	$title = sanitize_text_field( wp_unslash( $_POST['title'] ?: $_GET['title'] ) );
+	$title = sanitize_text_field( wp_unslash( $_POST['title'] ? $_POST['title'] : $_GET['title'] ) );
 
 	// Are we searching for a specific title or for a containing title?
 	$autocomplete = isset( $_GET['autocomplete'] );
@@ -112,6 +113,7 @@ function wl_entity_ajax_get_by_title() {
 	);
 
 	// Clean any buffer.
+	// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 	@ob_clean();
 
 	// Send the success response.

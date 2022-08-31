@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $term = get_term( $term_id, 'wl_entity_type' );
 
 // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
-$term_settings = ! is_null( $settings ) ? $settings : array(
+$term_settings = $settings !== null ? $settings : array(
 	'title'       => '',
 	'description' => '',
 );

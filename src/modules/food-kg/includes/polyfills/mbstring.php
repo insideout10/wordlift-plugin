@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Adapted from the polyfill-mbstring Symfony package.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-// This is is a copy of symfony/polyfill-mbstring/bootstrap.php.
+// This is a copy of symfony/polyfill-mbstring/bootstrap.php.
 // The file is not used directly because after running through PHP-Scoper
 // it won't be in the global scope anymore.
 

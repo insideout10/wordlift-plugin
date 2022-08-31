@@ -43,6 +43,7 @@ define( 'WL_PROPERTY_TABLE_NAME', 'wl_mapping_property' );
 // The array is serialized because array constants are only from php 5.6 on.
 define(
 	'WL_CORE_GET_POSTS_VALIDATION_RULES',
+	// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 	serialize(
 		array(
 			'get'            => array( 'posts', 'post_ids' ),
@@ -64,6 +65,7 @@ define(
 
 define(
 	'WL_CORE_POST_CLASSIFICATION_BOXES',
+	// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 	serialize(
 		array(
 			array(

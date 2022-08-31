@@ -161,7 +161,7 @@ class Wordlift_Timeline_Service {
 	public function to_json( $posts ) {
 
 		// If there are no events, return empty JSON
-		if ( empty( $posts ) || is_null( $posts ) ) {
+		if ( empty( $posts ) || $posts === null ) {
 			return '';
 		}
 

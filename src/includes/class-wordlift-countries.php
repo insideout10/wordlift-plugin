@@ -505,7 +505,7 @@ class Wordlift_Countries {
 
 		// Bail out if we don't have the flag.
 		if ( ! isset( self::$country_flags[ $country_code ] )
-			 || is_null( self::$country_flags[ $country_code ] ) ) {
+			 || ( self::$country_flags[ $country_code ] ) === null ) {
 			return null;
 		}
 

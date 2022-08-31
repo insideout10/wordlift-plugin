@@ -43,7 +43,7 @@ class Wordlift_Metabox_Field_Duration extends Wl_Metabox_Field_date {
 	 */
 	public function sanitize_data_filter( $value ) {
 
-		if ( ! is_null( $value ) && '' !== $value ) {         // do not use 'empty()' -> https://www.virendrachandak.com/techtalk/php-isset-vs-empty-vs-is_null/ .
+		if ( $value !== null && '' !== $value ) {         // do not use 'empty()' -> https://www.virendrachandak.com/techtalk/php-isset-vs-empty-vs-is_null/ .
 			preg_match(
 				'#((([01]?[0-9]{1}|2[0-3]{1}):)?[0-5]{1})?[0-9]{1}#',
 				trim( $value ),

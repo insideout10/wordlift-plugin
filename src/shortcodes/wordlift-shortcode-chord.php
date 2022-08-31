@@ -72,16 +72,16 @@ function wl_shortcode_chord_most_referenced_entity_id() {
  */
 function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = null, $max_size = 9 ) {
 
-	if ( ! is_null( $related ) ) {
+	if ( $related !== null ) {
 		if ( 0 === $depth ) {
 			return $related;
 		}
 	}
 
-	wl_write_log( "wl_shortcode_chord_get_relations [ post id :: $entity_id ][ depth :: $depth ][ related? :: " . ( is_null( $related ) ? 'yes' : 'no' ) . ' ]' );
+	wl_write_log( "wl_shortcode_chord_get_relations [ post id :: $entity_id ][ depth :: $depth ][ related? :: " . ( $related === null ? 'yes' : 'no' ) . ' ]' );
 
 	// Create a related array which will hold entities and relations.
-	if ( is_null( $related ) ) {
+	if ( $related === null ) {
 		$related = array(
 			'entities'  => array( $entity_id ),
 			'relations' => array(),
@@ -152,7 +152,7 @@ function wl_shortcode_chord_get_graph( $data ) {
 			$post = get_post( $item );
 
 			// Skip non-existing posts.
-			if ( is_null( $post ) ) {
+			if ( $post === null ) {
 				wl_write_log( "wl_shortcode_chord_get_graph : post not found [ post id :: $item ]" );
 
 				return $item;

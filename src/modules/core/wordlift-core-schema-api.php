@@ -18,7 +18,7 @@
 function wl_schema_get_value( $post_id, $property_name ) {
 
 	// Property name must be defined.
-	if ( ! isset( $property_name ) || is_null( $property_name ) ) {
+	if ( ! isset( $property_name ) || $property_name === null ) {
 		return null;
 	}
 
@@ -26,9 +26,9 @@ function wl_schema_get_value( $post_id, $property_name ) {
 	$property_schema_name = wl_build_full_schema_uri_from_schema_slug( $property_name );
 
 	// Establish entity id.
-	if ( is_null( $post_id ) || ! is_numeric( $post_id ) ) {
+	if ( $post_id === null || ! is_numeric( $post_id ) ) {
 		$post_id = get_the_ID();
-		if ( is_null( $post_id ) || ! is_numeric( $post_id ) ) {
+		if ( $post_id === null || ! is_numeric( $post_id ) ) {
 			return null;
 		}
 	}
@@ -59,7 +59,7 @@ function wl_schema_get_value( $post_id, $property_name ) {
 function wl_schema_set_value( $post_id, $property_name, $property_value ) {
 
 	// Some checks on the parameters
-	if ( ! is_numeric( $post_id ) || is_null( $property_name ) || empty( $property_value ) || is_null( $property_value ) ) {
+	if ( ! is_numeric( $post_id ) || $property_name === null || empty( $property_value ) || $property_value === null ) {
 		return false;
 	}
 
@@ -127,7 +127,7 @@ function wl_schema_get_types( $post_id ) {
 function wl_schema_set_types( $post_id, $type_names ) {
 
 	// Some checks on the parameters
-	if ( ! is_numeric( $post_id ) || empty( $type_names ) || is_null( $type_names ) ) {
+	if ( ! is_numeric( $post_id ) || empty( $type_names ) || $type_names === null ) {
 		return null;
 	}
 

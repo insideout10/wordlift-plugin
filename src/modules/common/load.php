@@ -1,4 +1,7 @@
 <?php
+/**
+ * Scoper autoload.
+ */
 
 // Autoloader for dependencies.
 if ( file_exists( __DIR__ . '/third-party/vendor/scoper-autoload.php' ) ) {

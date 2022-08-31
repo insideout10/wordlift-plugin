@@ -40,7 +40,7 @@ function wl_get_entity_rdf_types( $post_id ) {
 function wl_set_entity_rdf_types( $post_id, $type_uris = array() ) {
 
 	// Avoid errors because of null values.
-	if ( is_null( $type_uris ) ) {
+	if ( $type_uris === null ) {
 		$type_uris = array();
 	}
 
@@ -102,7 +102,7 @@ function wl_set_entity_rdf_types( $post_id, $type_uris = array() ) {
  */
 function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 
-	if ( is_null( $entity_id ) ) {
+	if ( $entity_id === null ) {
 
 		// Return all custom fields.
 		// Get taxonomy terms

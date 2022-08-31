@@ -33,8 +33,7 @@ class Wordlift_Seo_Service {
 				$this,
 				'get_wl_entity_type',
 			),
-			10,
-			2
+			10
 		);
 
 	}
@@ -43,14 +42,12 @@ class Wordlift_Seo_Service {
 	 * Filter the entity term object, and when not in admin context replace title
 	 * and description with whatever was set in the entity settings page.
 	 *
-	 * @since    3.11
-	 *
-	 * @param WP_Term $term     The term to filters.
-	 * @param string  $taxonomy The taxonomy name.
+	 * @param WP_Term $term The term to filters.
 	 *
 	 * @return WP_Term The {@link WP_Term} with fields changed.
+	 * @since    3.11
 	 */
-	public function get_wl_entity_type( $term, $taxonomy ) {
+	public function get_wl_entity_type( $term ) {
 
 		// Do nothing when in admin.
 		if ( is_admin() ) {

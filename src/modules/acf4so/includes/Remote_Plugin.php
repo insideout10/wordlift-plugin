@@ -16,15 +16,15 @@ class Remote_Plugin implements Plugin {
 		$this->name = $name;
 	}
 
-	function get_slug() {
+	public function get_slug() {
 		return $this->slug;
 	}
 
-	function get_zip_url() {
+	public function get_zip_url() {
 		return $this->url;
 	}
 
-	function is_plugin_installed() {
+	public function is_plugin_installed() {
 		if ( ! function_exists( 'get_plugins' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
@@ -33,11 +33,11 @@ class Remote_Plugin implements Plugin {
 		return array_key_exists( $this->slug, $all_plugins );
 	}
 
-	function is_plugin_activated() {
+	public function is_plugin_activated() {
 		return is_plugin_active( $this->slug );
 	}
 
-	function get_name() {
+	public function get_name() {
 		return $this->name;
 	}
 }

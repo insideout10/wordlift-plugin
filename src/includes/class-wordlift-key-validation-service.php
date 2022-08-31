@@ -101,7 +101,7 @@ class Wordlift_Key_Validation_Service {
 		// Considering that production URL may be filtered.
 		$home_url = get_option( 'home' );
 		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( $home_url ) );
-		if ( is_null( $url ) || $url === $site_url ) {
+		if ( $url === null || $url === $site_url ) {
 			return true;
 		}
 
@@ -147,7 +147,7 @@ class Wordlift_Key_Validation_Service {
 		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( $home_url ) );
 
 		// If the URL isn't set or matches, then it's valid.
-		if ( is_null( $url ) || $url === $site_url ) {
+		if ( $url === null || $url === $site_url ) {
 			// Invalidate the cache key
 			$this->ttl_cache_service->delete( 'is_key_valid' );
 			wp_send_json_success(

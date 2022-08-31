@@ -4,18 +4,18 @@ namespace Wordlift\Modules\Acf4so;
 
 interface Plugin {
 
-	function get_slug();
+	public function get_slug();
 
-	function get_name();
+	public function get_name();
 
 	/**
 	 * @return string
 	 * @throws \Exception when an error occurs.
 	 */
-	function get_zip_url();
+	public function get_zip_url();
 
-	function is_plugin_installed();
+	public function is_plugin_installed();
 
-	function is_plugin_activated();
+	public function is_plugin_activated();
 
 }

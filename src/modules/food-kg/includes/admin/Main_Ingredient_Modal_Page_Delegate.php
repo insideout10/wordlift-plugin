@@ -3,7 +3,7 @@
 namespace Wordlift\Modules\Food_Kg\Admin;
 
 class Main_Ingredient_Modal_Page_Delegate implements Page_Delegate {
-	function render() {
+	public function render() {
 		$post_id = filter_input( INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT );
 		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$value = get_post_meta( $post_id, '_wl_main_ingredient_jsonld', true );
