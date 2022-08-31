@@ -32,7 +32,7 @@ class Sync_Background_Process_Users_Stage {
 			AND post_status IN ( 'publish',  'future', 'draft', 'pending', 'private' )
 			";
 
-		return $wpdb->get_var( $sql );
+		return $wpdb->get_var( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	}
 
 	public function get_sync_object_adapters( $offset, $limit ) {
@@ -47,7 +47,7 @@ class Sync_Background_Process_Users_Stage {
 			LIMIT %d, %d
 			";
 
-		$ids = $wpdb->get_col( $wpdb->prepare( $sql, $offset, $limit ) );
+		$ids = $wpdb->get_col( $wpdb->prepare( $sql, $offset, $limit ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 		return $this->sync_object_adapter_factory->create_many( Object_Type_Enum::USER, $ids );
 	}
