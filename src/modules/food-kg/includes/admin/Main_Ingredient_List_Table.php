@@ -39,7 +39,7 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 
 		$this->items = $wpdb->get_results(
-				"SELECT p.ID, p.post_title, pm.meta_value
+			"SELECT p.ID, p.post_title, pm.meta_value
 			FROM $wpdb->posts p
 			INNER JOIN $wpdb->postmeta pm
 			    ON pm.post_ID = p.ID
