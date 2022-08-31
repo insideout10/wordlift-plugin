@@ -94,7 +94,7 @@ if ( isset( $_POST['submit'] ) ) {
 		<?php
 		if ( $wl_is_sitemap_enabled ) {
 			$wl_sitemap_link = esc_attr( get_home_url( null, 'wl-video-sitemap.xml' ) );
-            /* translators: %s: The link to the Video Sitemap. */
+			/* translators: %s: The link to the Video Sitemap. */
 			echo wp_kses( sprintf( __( 'Here is <a href="%s">link</a> to your Video Sitemap. Add it now, to Google Search Console.', 'wordlift' ), $wl_sitemap_link ), array( 'a' => array( 'href' => array() ) ) );
 		}
 		?>

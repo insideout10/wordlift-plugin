@@ -238,7 +238,7 @@ class Wordlift_Admin_Setup {
         // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$language_select = $this->language_select_element;
 		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		$country_select  = $this->country_select_element;
+		$country_select = $this->country_select_element;
 
 		include plugin_dir_path( __DIR__ ) . 'admin/partials/wordlift-admin-setup.php';
 

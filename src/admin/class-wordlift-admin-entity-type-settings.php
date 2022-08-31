@@ -188,7 +188,7 @@ class Wordlift_Admin_Entity_Type_Settings {
 	public function render() {
 
 		// Set variables used by the partial
-		$term_id  = isset( $_REQUEST['tag_ID'] ) ? absint( $_REQUEST['tag_ID'] ) : 0;
+		$term_id = isset( $_REQUEST['tag_ID'] ) ? absint( $_REQUEST['tag_ID'] ) : 0;
         // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$settings = $this->get_setting( $term_id );
 

@@ -26,7 +26,7 @@ class Wordlift_PrimaShop_Adapter {
 	 *
 	 * @since 3.2.3
 	 *
-	 * @param array  $meta The meta array.
+	 * @param array $meta The meta array.
 	 *
 	 * @return array A meta array.
 	 */

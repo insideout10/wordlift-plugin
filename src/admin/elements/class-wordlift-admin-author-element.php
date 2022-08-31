@@ -40,11 +40,10 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 	/**
 	 * Create a {@link Wordlift_Admin_Person_Element} instance.
 	 *
-	 * @param \Wordlift_Publisher_Service $publisher_service The {@link Wordlift_Publisher_Service} instance.
+	 * @param \Wordlift_Publisher_Service     $publisher_service The {@link Wordlift_Publisher_Service} instance.
 	 * @param \Wordlift_Admin_Select2_Element $select_element The {@link Wordlift_Admin_Select_Element} instance.
 	 *
 	 * @since 3.14.0
-	 *
 	 */
 	public function __construct( $publisher_service, $select_element ) {
 
@@ -93,12 +92,11 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 	 * Render the `select` using the provided parameters.
 	 *
 	 * @param array $params The array of parameters from the `render` function.
-	 * @param int $current_post_id The currently selected {@link WP_Post} `id`.
+	 * @param int   $current_post_id The currently selected {@link WP_Post} `id`.
 	 * @param array $data An array of Select2 options.
 	 *
 	 * @return \Wordlift_Admin_Author_Element $this Return this element.
 	 * @since 3.14.0
-	 *
 	 */
 	protected function do_render( $params, $current_post_id, $data ) {
 
