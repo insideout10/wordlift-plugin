@@ -271,14 +271,14 @@ class Wordlift_Rating_Service {
 		// Get all post meta keys for the current post
 		global $wpdb;
 
-		$query = $wpdb->prepare(
-			"SELECT DISTINCT (meta_key) FROM $wpdb->postmeta  WHERE post_id = %d",
-			$post->ID
-		);
-
 		// Check intersection between available meta keys and expected ones
 		// arrays to detect missing values.
-		$available_meta_keys = $wpdb->get_col( $query );
+		$available_meta_keys = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT DISTINCT (meta_key) FROM $wpdb->postmeta  WHERE post_id = %d",
+				$post->ID
+			)
+		);
 
 		// If each expected key is contained in available keys array ...
 		( in_array( Wordlift_Schema_Service::FIELD_SAME_AS, $available_meta_keys ) ) ?

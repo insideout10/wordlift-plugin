@@ -68,7 +68,7 @@ function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias =
 
 	return $wpdb->get_results(
 		$wpdb->prepare(
-			$query,
+			$query, // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$params
 		)
 	);

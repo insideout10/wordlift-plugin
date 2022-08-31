@@ -660,9 +660,9 @@ function wl_core_get_posts( $args, $returned_type = OBJECT ) {
 	// Otherwise an array of associative arrays representing the post | relation object
 	if ( 'post_ids' == $args['get'] ) {
 		// See https://codex.wordpress.org/Class_Reference/wpdb#SELECT_a_Column
-		$results = $wpdb->get_col( $sql_statement );
+		$results = $wpdb->get_col( $sql_statement ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	} else {
-		$results = $wpdb->get_results( $sql_statement, $returned_type );
+		$results = $wpdb->get_results( $sql_statement, $returned_type ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	}
 	// If there were an error performing the query then false is returned
 	if ( ! empty( $wpdb->last_error ) ) {

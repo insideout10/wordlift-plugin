@@ -124,7 +124,7 @@ class Wordlift_Entity_Uri_Service {
   		";
 
 		// Get the posts.
-		$posts = $wpdb->get_col( $sql );
+		$posts = $wpdb->get_col( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 		// Populate the array. We reinitialize the array on purpose because
 		// we don't want these data to long live.

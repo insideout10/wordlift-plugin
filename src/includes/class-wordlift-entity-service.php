@@ -206,27 +206,26 @@ class Wordlift_Entity_Service {
 		// Retrieve Wordlift relation instances table name
 		$table_name = wl_core_get_relation_instances_table_name();
 
-		// Check is it's referenced / related to another post / entity
-		$stmt = $wpdb->prepare(
-			"SELECT COUNT(*) FROM $table_name WHERE  object_id = %d",
-			$entity->ID
-		);
-
 		// Perform the query
-		$relation_instances = (int) $wpdb->get_var( $stmt );
+		$relation_instances = (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM $table_name WHERE  object_id = %d",
+				$entity->ID
+			)
+		);
 		// If there is at least one relation instance for the current entity, then it's used
 		if ( 0 < $relation_instances ) {
 			return true;
 		}
 
-		// Check if the entity uri is used as meta_value
-		$stmt = $wpdb->prepare(
-			"SELECT COUNT(*) FROM $wpdb->postmeta WHERE post_id != %d AND meta_value = %s",
-			$entity->ID,
-			wl_get_entity_uri( $entity->ID )
-		);
 		// Perform the query
-		$meta_instances = (int) $wpdb->get_var( $stmt );
+		$meta_instances = (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM $wpdb->postmeta WHERE post_id != %d AND meta_value = %s",
+				$entity->ID,
+				wl_get_entity_uri( $entity->ID )
+			)
+		);
 
 		// If there is at least one meta that refers the current entity uri, then current entity is used
 		if ( 0 < $meta_instances ) {

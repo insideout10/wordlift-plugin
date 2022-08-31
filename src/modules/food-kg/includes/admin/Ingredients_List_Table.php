@@ -44,18 +44,19 @@ class Ingredients_List_Table extends WP_List_Table {
 		 */
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 
-		$sql = "
-			SELECT t.term_id, t.name, tm.meta_value
+		$this->items = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT t.term_id, t.name, tm.meta_value
 			FROM $wpdb->term_taxonomy tt
 			INNER JOIN $wpdb->terms t
 			    ON t.term_id = tt.term_id
 			INNER JOIN $wpdb->termmeta tm
 				ON tm.term_id = t.term_id
 					AND tm.meta_key = '_wl_jsonld'
-			WHERE tt.taxonomy = %s;
-		";
-
-		$this->items = $wpdb->get_results( $wpdb->prepare( $sql, 'wprm_ingredient' ) );
+			WHERE tt.taxonomy = %s;",
+				'wprm_ingredient'
+			)
+		);
 	}
 
 	public function no_items() {
