@@ -130,7 +130,7 @@ abstract class Wordlift_Shortcode_REST {
 		if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( esc_url_raw( wp_unslash( (string) $_SERVER['REQUEST_URI'] ) ), $compare_route ) ) {
 			return true;
 		}
-		if ( ! empty( $_GET['rest_route'] ) && strpos( esc_url_raw( wp_unslash( (string) $_GET['rest_route'] ) ), $compare_route ) ) {
+		if ( ! empty( $_GET['rest_route'] ) && strpos( esc_url_raw( wp_unslash( (string) $_GET['rest_route'] ) ), $compare_route ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return true;
 		}
 

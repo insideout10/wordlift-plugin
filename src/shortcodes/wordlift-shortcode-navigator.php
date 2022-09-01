@@ -20,7 +20,7 @@ use Wordlift\Widgets\Srcset_Util;
 function wl_shortcode_navigator_data() {
 
 	// Create the cache key.
-	$cache_key_params = $_REQUEST;
+	$cache_key_params = $_REQUEST; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	unset( $cache_key_params['uniqid'] );
 	$cache_key = array( 'request_params' => $cache_key_params );
 
