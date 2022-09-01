@@ -272,7 +272,7 @@ class Wordlift_Entity_Service {
 		}
 
 		// We expect a numeric value here.
-		if ( ! is_numeric( $_REQUEST['post_ID'] ) ) {
+		if ( ! isset( $_REQUEST['post_ID'] ) || ! is_numeric( $_REQUEST['post_ID'] ) ) {
 			return;
 		}
 
@@ -288,9 +288,9 @@ class Wordlift_Entity_Service {
 		if ( $request_post_id !== $post_id || ! $this->is_entity( $post_id ) ) {
 			return;
 		}
-
+		$data = filter_var_array( $_POST, array( 'wl_alternative_label' => array( 'flags' => FILTER_REQUIRE_ARRAY ) ) );
 		// Get the alt labels from the request (or empty array).
-		$alt_labels = isset( $_REQUEST['wl_alternative_label'] ) ? (array) $_REQUEST['wl_alternative_label'] : array();
+		$alt_labels = isset( $data['wl_alternative_label'] ) ? $data['wl_alternative_label'] : array();
 
 		if ( ( ! empty( $_POST['content'] ) && ! empty( $_POST['post_content'] ) ) || isset( $_REQUEST['wl_alternative_label'] ) ) {
 			// This is via classic editor, so set the alternative labels.

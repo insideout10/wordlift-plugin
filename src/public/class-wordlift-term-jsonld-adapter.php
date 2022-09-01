@@ -208,8 +208,8 @@ class Wordlift_Term_JsonLd_Adapter {
 	}
 
 	private function get_term_url( $id ) {
-		if ( $id === null ) {
-			return $_SERVER['REQUEST_URI'];
+		if ( null === $id ) {
+			return isset( $_SERVER['REQUEST_URI'] ) ? sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 		}
 
 		$maybe_url = get_term_meta( $id, Wordlift_Url_Property_Service::META_KEY, true );

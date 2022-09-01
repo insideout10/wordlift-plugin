@@ -78,7 +78,7 @@ class Wordlift_Autocomplete_Adapter {
 
 		if ( isset( $_REQUEST['show_local_entities'] )
 			 && ! empty( $_REQUEST['show_local_entities'] ) ) { // Make request.
-			$show_local_entities = filter_var( $_REQUEST['show_local_entities'], FILTER_VALIDATE_BOOLEAN );
+			$show_local_entities = filter_var( wp_unslash( $_REQUEST['show_local_entities'] ), FILTER_VALIDATE_BOOLEAN );
 		}
 
 		// Add the filter to check if we need to show local entities or not.

@@ -309,7 +309,7 @@ class Wl_Abstract_Metabox {
 
 		$this->log->trace( "Saving form data for entity post $id..." );
 
-		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'update-post_' . $id ) ) {
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'update-post_' . $id ) ) {
 			return;
 		}
 
