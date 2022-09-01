@@ -119,11 +119,11 @@ class Wordlift_Key_Validation_Service {
 		ob_clean();
 
 		// Check if we have a key.
-		if ( ! isset( $_POST['key'] ) ) {
+		if ( ! isset( $_POST['key'] ) ) {  //phpcs:ignore WordPress.Security.NonceVerification.Missing
 			wp_send_json_error( 'The key parameter is required.' );
 		}
 
-		$response = $this->get_account_info( sanitize_text_field( wp_unslash( (string) $_POST['key'] ) ) );
+		$response = $this->get_account_info( sanitize_text_field( wp_unslash( (string) $_POST['key'] ) ) );  //phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		// If we got an error, return invalid.
 		if ( is_wp_error( $response ) || 2 !== (int) $response['response']['code'] / 100 ) {
