@@ -38,7 +38,7 @@ function wordlift_allowed_post_tags() {
 
 	foreach ( $tags as $tag ) {
 		if ( isset( $allowedposttags[ $tag ] ) && is_array( $allowedposttags[ $tag ] ) ) {
-			$allowedposttags[ $tag ] = array_merge( $allowedposttags[ $tag ], $new_attributes );
+			$allowedposttags[ $tag ] = array_merge( $allowedposttags[ $tag ], $new_attributes ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		}
 	}
 }

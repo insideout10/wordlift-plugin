@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
-$term = get_term( $term_id, 'wl_entity_type' );
+$current_term = get_term( $term_id, 'wl_entity_type' );
 
 // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 $term_settings = $settings !== null ? $settings : array(
@@ -53,7 +53,7 @@ $term_settings = $settings !== null ? $settings : array(
 				</th>
 				<td>
 				<?php
-					echo esc_html( $term->name )
+					echo esc_html( $current_term->name )
 				?>
 					</td>
 			</tr>

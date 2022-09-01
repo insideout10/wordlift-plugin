@@ -8,8 +8,8 @@ use Wordlift\Modules\Food_Kg\Admin\Main_Ingredient_List_Table;
 	<?php
 
 	// Prepare Table of elements
-	$wp_list_table = new Main_Ingredient_List_Table();
-	$wp_list_table->prepare_items();
-	$wp_list_table->display();
+	$main_ingredient_list_table = new Main_Ingredient_List_Table();
+	$main_ingredient_list_table->prepare_items();
+	$main_ingredient_list_table->display();
 	?>
 </div>

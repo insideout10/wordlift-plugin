@@ -231,7 +231,7 @@ class Wordlift_Timeline_Service {
 				$date['start_date'] = Wordlift_Timeline_Service::date( $start_date );
 				$date['end_date']   = Wordlift_Timeline_Service::date( $end_date );
 
-				setup_postdata( $GLOBALS['post'] = $item );
+				setup_postdata( $GLOBALS['post'] = $item ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 
 				$more_link_text = sprintf(
 					'<span aria-label="%1$s">%2$s</span>',

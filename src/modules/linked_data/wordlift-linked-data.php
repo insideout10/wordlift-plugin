@@ -380,7 +380,7 @@ function wl_save_entity( $entity_data ) {
 	// see https://github.com/insideout10/wordlift-plugin/issues/148
 	global $wp_filter;
 	$save_post_filters = is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] : $wp_filter['save_post']->callbacks;
-	is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] = array() : $wp_filter['save_post']->remove_all_filters();
+	is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] = array() : $wp_filter['save_post']->remove_all_filters(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 
 	$log->trace( 'Going to insert new post...' );
 
@@ -392,7 +392,7 @@ function wl_save_entity( $entity_data ) {
 						   ->set_alternative_labels( $post_id, $synonyms );
 
 	// Restore all the existing filters.
-	is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] = $save_post_filters : $wp_filter['save_post']->callbacks = $save_post_filters;
+	is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] = $save_post_filters : $wp_filter['save_post']->callbacks = $save_post_filters; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 
 	// If Yoast is installed and active, we restore the Yoast save_postdata hook (https://github.com/insideout10/wordlift-plugin/issues/156)
 	if ( isset( $wpseo_metabox ) ) {
