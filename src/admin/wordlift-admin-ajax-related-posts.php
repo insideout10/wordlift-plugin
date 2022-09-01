@@ -18,14 +18,14 @@ use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 function wordlift_ajax_related_posts( $http_raw_data = null ) {
 
 	// Extract filtering conditions
-	if ( ! isset( $_GET['post_id'] ) || ! is_numeric( $_GET['post_id'] ) ) {
+	if ( ! isset( $_GET['post_id'] ) || ! is_numeric( $_GET['post_id'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		wp_die( 'Post id missing or invalid!' );
 
 		return;
 	}
 
 	// Get the current post
-	$post_id = (int) $_GET['post_id'];
+	$post_id = (int) $_GET['post_id']; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$post    = get_post( $post_id );
 
 	Wordlift_Log_Service::get_logger( 'wordlift_ajax_related_posts' )->trace( "Going to find posts related to current with post id: $post_id ..." );
