@@ -83,10 +83,8 @@ class Entity_Type {
 
 	public function save_field( $term_id ) {
 
-		if ( ! isset( $_REQUEST['wordlift_vocabulary_terms_entity_type_nonce'] )
-		|| ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['wordlift_vocabulary_terms_entity_type_nonce'] ) ), 'wordlift_vocabulary_terms_entity_type' ) ) {
-			return;
-		}
+		check_admin_referer( 'wordlift_vocabulary_terms_entity_type', 'wordlift_vocabulary_terms_entity_type_nonce' );
+
 		if ( ! isset( $_REQUEST['tax_input'] ) ) {
 			return;
 		}
