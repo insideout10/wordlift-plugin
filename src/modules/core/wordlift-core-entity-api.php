@@ -94,7 +94,7 @@ function wl_entity_ajax_get_by_title() {
 	// `wl_entity_metaboxes_utilities.js` still uses `GET`.
 	//
 	// See https://github.com/insideout10/wordlift-plugin/issues/438.
-	$title = sanitize_text_field( wp_unslash( $_POST['title'] ? $_POST['title'] : $_GET['title'] ) );
+	$title = sanitize_text_field( wp_unslash( $_POST['title'] ? $_POST['title'] : $_GET['title'] ) ); //phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 	// Are we searching for a specific title or for a containing title?
 	$autocomplete = isset( $_GET['autocomplete'] ); //phpcs:ignore WordPress.Security.NonceVerification.Missing
