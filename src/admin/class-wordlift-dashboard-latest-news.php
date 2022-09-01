@@ -146,7 +146,7 @@ class Wordlift_Dashboard_Latest_News {
 	 */
 	public function ajax_get_latest_news() {
 		// Get wordlift articles
-		$more_posts_link_id = isset( $_POST['more_posts_link_id'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['more_posts_link_id'] ) ) : '';
+		$more_posts_link_id = isset( $_POST['more_posts_link_id'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['more_posts_link_id'] ) ) : '';//phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$start_position     = explode( '_', $more_posts_link_id );
 		$data               = $this->get_last_wordlift_articles( $start_position[ count( $start_position ) - 1 ] );
 

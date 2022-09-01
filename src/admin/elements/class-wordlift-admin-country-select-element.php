@@ -71,11 +71,11 @@ class Wordlift_Admin_Country_Select_Element extends Wordlift_Admin_Select_Elemen
 
 		// Check whether the required params are set.
         // phpcs:ignore Standard.Category.SniffName.ErrorCode
-		if ( ! empty( $_POST['lang'] ) && ! empty( $_POST['value'] ) ) {
+		if ( ! empty( $_POST['lang'] ) && ! empty( $_POST['value'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Missing
 			ob_start();
 			// Get the new options.
 			// phpcs:ignore Standard.Category.SniffName.ErrorCode
-			$this->render_options( $_POST );
+			$this->render_options( $_POST ); //phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 			$html = ob_get_clean();
 		}

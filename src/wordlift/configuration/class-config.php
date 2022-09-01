@@ -88,7 +88,7 @@ class Config {
 
 		// validate all the fields before processing
 		foreach ( $required_fields as $field ) {
-			if ( ! array_key_exists( $field, $_POST ) ) {
+			if ( ! array_key_exists( $field, $_POST ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Missing
 				/* translators: %s: field name */
 				wp_send_json_error( sprintf( __( 'Field %s is required', 'wordlift' ), $field ), 422 );
 
