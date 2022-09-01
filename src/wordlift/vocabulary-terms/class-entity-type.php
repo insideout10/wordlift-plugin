@@ -51,7 +51,7 @@ class Entity_Type {
 			)
 		);
 		?>
-		<?php wp_nonce_field( 'wordlift_vocabulary_terms_entity_type', 'wordlift_vocabulary_terms_entity_type_nonce', false ); ?>
+		<?php wp_nonce_field( 'wordlift_vocabulary_terms_entity_type', 'wordlift_vocabulary_terms_entity_type_nonce' ); ?>
 		<tr class="form-field term-name-wrap">
 			<th scope="row"><label for="wl-entity-type__checklist">%s</label></th>
 			<td>
