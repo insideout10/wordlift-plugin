@@ -318,7 +318,7 @@ class Wordlift_Entity_List_Service {
 			'wp',
 			function () {
 				global $post_type;
-				$post_type = Wordlift_Entity_Service::TYPE_NAME;
+				$post_type = Wordlift_Entity_Service::TYPE_NAME; //phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 			},
 			10,
 			0
