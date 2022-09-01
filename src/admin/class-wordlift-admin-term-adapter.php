@@ -130,7 +130,7 @@ class Wordlift_Admin_Term_Adapter {
 	 */
 	public function edit_term( $term_id ) {
 
-		if ( ! wp_verify_nonce( $_REQUEST['wordlift_term_entity'], 'wordlift_term_entity_edit' ) ) {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['wordlift_term_entity'] ) ), 'wordlift_term_entity_edit' ) ) {
 			return;
 		}
 

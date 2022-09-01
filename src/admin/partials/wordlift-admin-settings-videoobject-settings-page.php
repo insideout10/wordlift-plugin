@@ -3,7 +3,7 @@
 use Wordlift\Videoobject\Provider\Client\Vimeo_Client;
 use Wordlift\Videoobject\Provider\Client\Youtube_Client;
 
-if ( isset( $_POST['submit'] ) && wp_verify_nonce( $_POST['wordlift_videoobject_settings_nonce'], 'wordlift_videoobject_settings' ) ) {
+if ( isset( $_POST['wordlift_videoobject_settings_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wordlift_videoobject_settings_nonce'] ) ), 'wordlift_videoobject_settings' ) ) {
 
 	if ( isset( $_POST['wordlift_videoobject_youtube_api_key'] ) || isset( $_POST['wordlift_videoobject_vimeo_api_key'] ) ) {
 
@@ -36,12 +36,12 @@ if ( isset( $_POST['submit'] ) && wp_verify_nonce( $_POST['wordlift_videoobject_
 <h1><?php esc_html_e( 'API Settings', 'wordlift' ); ?></h1>
 <p><?php esc_html_e( 'To let WordLift access metadata from YouTube or Vimeo you will need to add here your API Key.', 'wordlift' ); ?></p>
 <form method="post">
-	<table>
-		<tr>
-			<td>
+    <table>
+        <tr>
+            <td>
 				<?php esc_html_e( 'YouTube API Key', 'wordlift' ); ?>
-			</td>
-			<td>
+            </td>
+            <td>
 				<?php
 				$element = new Wordlift_Admin_Input_Element();
 				$element->render(
@@ -52,18 +52,18 @@ if ( isset( $_POST['submit'] ) && wp_verify_nonce( $_POST['wordlift_videoobject_
 					)
 				);
 				?>
-			</td>
-			<td>
-				<a href="https://developers.google.com/youtube/registering_an_application"><?php esc_html_e( 'Click here', 'wordlift' ); ?></a>
+            </td>
+            <td>
+                <a href="https://developers.google.com/youtube/registering_an_application"><?php esc_html_e( 'Click here', 'wordlift' ); ?></a>
 				<?php esc_html_e( ' for instructions on getting your YouTube API Key', 'wordlift' ); ?>
-			</td>
-		</tr>
+            </td>
+        </tr>
 
-		<tr>
-			<td>
+        <tr>
+            <td>
 				<?php esc_html_e( 'Vimeo API Key', 'wordlift' ); ?>
-			</td>
-			<td>
+            </td>
+            <td>
 				<?php
 				$element = new Wordlift_Admin_Input_Element();
 				$element->render(
@@ -74,22 +74,23 @@ if ( isset( $_POST['submit'] ) && wp_verify_nonce( $_POST['wordlift_videoobject_
 					)
 				);
 				?>
-			</td>
-			<td>
-				<a href="https://developer.vimeo.com/api/guides/start"><?php esc_html_e( 'Click here', 'wordlift' ); ?></a>
+            </td>
+            <td>
+                <a href="https://developer.vimeo.com/api/guides/start"><?php esc_html_e( 'Click here', 'wordlift' ); ?></a>
 				<?php esc_html_e( ' for instructions on getting your Vimeo API Key', 'wordlift' ); ?>
-			</td>
-		</tr>
+            </td>
+        </tr>
 
-	</table>
-	<h1><?php esc_html_e( 'Video Sitemap', 'wordlift' ); ?></h1>
-	<p>
+    </table>
+    <h1><?php esc_html_e( 'Video Sitemap', 'wordlift' ); ?></h1>
+    <p>
 		<?php esc_html_e( 'The Video Sitemap works like any other XML Sitemap. Search engines will use it to display rich snippets in result pages.', 'wordlift' ); ?>
-	</p>
+    </p>
 	<?php $wl_is_sitemap_enabled = esc_attr( get_option( '_wl_video_sitemap_generation', false ) ? 'checked' : '' ); ?>
-	<p> <?php esc_html_e( 'Enable Video Sitemap', 'wordlift' ); ?>
-		<input type="checkbox" name="wl_enable_video_sitemap" value="1" <?php echo esc_html( $wl_is_sitemap_enabled ); ?> ></p>
-	<p>
+    <p> <?php esc_html_e( 'Enable Video Sitemap', 'wordlift' ); ?>
+        <input type="checkbox" name="wl_enable_video_sitemap"
+               value="1" <?php echo esc_html( $wl_is_sitemap_enabled ); ?> ></p>
+    <p>
 		<?php
 		if ( $wl_is_sitemap_enabled ) {
 			$wl_sitemap_link = esc_attr( get_home_url( null, 'wl-video-sitemap.xml' ) );
@@ -97,10 +98,10 @@ if ( isset( $_POST['submit'] ) && wp_verify_nonce( $_POST['wordlift_videoobject_
 			echo wp_kses( sprintf( __( 'Here is <a href="%s">link</a> to your Video Sitemap. Add it now, to Google Search Console.', 'wordlift' ), $wl_sitemap_link ), array( 'a' => array( 'href' => array() ) ) );
 		}
 		?>
-	</p>
+    </p>
 	<?php wp_nonce_field( 'wordlift_videoobject_settings', 'wordlift_videoobject_settings_nonce', false ); ?>
-	<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary"
-							 value="Save Changes">
-	</p>
+    <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary"
+                             value="Save Changes">
+    </p>
 </form>
 
