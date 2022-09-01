@@ -68,7 +68,7 @@ class Wordlift_Mapping_Ajax_Adapter {
 		$post_type = isset( $_REQUEST['post_type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post_type'] ) ) : '';
 
 		// Get the entity types URIs.
-		$entity_types = isset( $_REQUEST['entity_types'] ) ? array_map( 'sanitize_url', wp_unslash( (array) $_REQUEST['entity_types'] ) ) : array();
+		$entity_types = isset( $_REQUEST['entity_types'] ) ? filter_var( wp_unslash( $_REQUEST['entity_types'] ), FILTER_REQUIRE_ARRAY ) : array();
 
 		// Get the offset.
 		$offset = isset( $_REQUEST['offset'] ) ? intval( $_REQUEST['offset'] ) : 0;

@@ -209,7 +209,7 @@ class Wordlift_Term_JsonLd_Adapter {
 
 	private function get_term_url( $id ) {
 		if ( null === $id ) {
-			return isset( $_SERVER['REQUEST_URI'] ) ? sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+			return isset( $_SERVER['REQUEST_URI'] ) ? filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL ) : '';
 		}
 
 		$maybe_url = get_term_meta( $id, Wordlift_Url_Property_Service::META_KEY, true );
