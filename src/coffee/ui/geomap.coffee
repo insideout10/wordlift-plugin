@@ -76,7 +76,7 @@ jQuery ($) ->
     params = element.data()
     $.extend params, wl_geomap_params
 
-    url = "#{params.ajax_url}?" + $.param( 'action': params.action, 'post_id': params.postId )
+    url = "#{params.ajax_url}?" + $.param( 'action': params.action, 'post_id': params.postId, 'wl_geomap_nonce': params.wl_geomap_nonce )
 
     element.geomap
       dataEndpoint: url

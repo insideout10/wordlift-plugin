@@ -81,8 +81,9 @@ class Wordlift_Geomap_Shortcode extends Wordlift_Shortcode {
 			'wordlift-ui',
 			'wl_geomap_params',
 			array(
-				'ajax_url' => admin_url( 'admin-ajax.php' ),    // Global param
-				'action'   => 'wl_geomap',            // Global param
+				'ajax_url'        => admin_url( 'admin-ajax.php' ),    // Global param
+				'action'          => 'wl_geomap',            // Global param
+				'wl_geomap_nonce' => wp_create_nonce( 'wl_geomap' ),
 			)
 		);
 

@@ -224,7 +224,8 @@ jQuery(function($) {
     $.extend(params, wl_chord_params);
     url = (params.ajax_url + "?") + $.param({
       'action': params.action,
-      'post_id': params.postId
+      'post_id': params.postId,
+      'wl_chord_nonce': params.wl_chord_nonce
     });
     return element.chord({
       dataEndpoint: url,
@@ -353,7 +354,8 @@ jQuery(function($) {
     $.extend(params, wl_geomap_params);
     url = (params.ajax_url + "?") + $.param({
       'action': params.action,
-      'post_id': params.postId
+      'post_id': params.postId,
+      'wl_geomap_nonce': params.wl_geomap_nonce
     });
     return element.geomap({
       dataEndpoint: url
