@@ -69,7 +69,7 @@ function wl_analyze_content( $data, $content_type ) {
 	$default_response = json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' );
 	$request_body     = json_decode( $data, true );
 
-	$post_id = isset( $_REQUEST['postId'] ) ? intval( $_REQUEST['postId'] ) : 0;
+	$post_id = isset( $_REQUEST['postId'] ) ? intval( $_REQUEST['postId'] ) : 0; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 	if ( null === $request_body ) {
 		/**

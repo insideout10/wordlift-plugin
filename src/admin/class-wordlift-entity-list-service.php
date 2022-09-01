@@ -183,8 +183,8 @@ class Wordlift_Entity_List_Service {
 		}
 
 		// Was a W already selected?
-		$selected = isset( $_GET['wl-classification-scope'] ) ?
-			sanitize_text_field( wp_unslash( (string) $_GET['wl-classification-scope'] ) ) : '';
+		$selected = isset( $_GET['wl-classification-scope'] ) ? //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			sanitize_text_field( wp_unslash( (string) $_GET['wl-classification-scope'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		// Print select box with the 4W
 		$all_w = array(
@@ -213,12 +213,12 @@ class Wordlift_Entity_List_Service {
 	 */
 	public function posts_clauses_classification_scope( $clauses ) {
 
-		if ( ! ( $this->is_entity_list_screen() && is_main_query() && isset( $_GET['wl-classification-scope'] ) ) ) {
+		if ( ! ( $this->is_entity_list_screen() && is_main_query() && isset( $_GET['wl-classification-scope'] ) ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return $clauses;
 		}
 
 		// Check a valid W was requested.
-		$requested_w = sanitize_text_field( wp_unslash( (string) $_GET['wl-classification-scope'] ) );
+		$requested_w = sanitize_text_field( wp_unslash( (string) $_GET['wl-classification-scope'] ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		$all_w = array(
 			WL_WHAT_RELATION,

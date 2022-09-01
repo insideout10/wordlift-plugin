@@ -94,8 +94,8 @@ class Wordlift_Admin_Download_Your_Data_Page {
 		$suffix = 'json';
 
 		// Check if there is suffix.
-		if ( isset( $_GET['out'] ) ) {
-			$suffix = sanitize_text_field( wp_unslash( $_GET['out'] ) );
+		if ( isset( $_GET['out'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$suffix = sanitize_text_field( wp_unslash( $_GET['out'] ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 
 		// Create filename.

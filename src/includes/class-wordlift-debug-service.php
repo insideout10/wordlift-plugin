@@ -50,11 +50,11 @@ class Wordlift_Debug_Service {
 
 	public function dump_uri() {
 
-		if ( ! isset( $_GET['id'] ) ) {
+		if ( ! isset( $_GET['id'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			wp_send_json_error( 'id not set' );
 		}
 
-		$post_id = (int) $_GET['id'];
+		$post_id = (int) $_GET['id']; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		$post = get_post( $post_id );
 

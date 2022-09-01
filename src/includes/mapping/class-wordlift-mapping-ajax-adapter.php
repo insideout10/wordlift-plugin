@@ -35,12 +35,12 @@ class Wordlift_Mapping_Ajax_Adapter {
 
 	public function set_entity_types_for_post_type() {
 
-		if ( ! isset( $_REQUEST['post_type'] ) || ! isset( $_REQUEST['entity_types'] ) ) {
+		if ( ! isset( $_REQUEST['post_type'] ) || ! isset( $_REQUEST['entity_types'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 
-		$post_type    = sanitize_text_field( wp_unslash( $_REQUEST['post_type'] ) );
-		$entity_types = array_map( 'sanitize_text_field', wp_unslash( (array) $_REQUEST['entity_types'] ) );
+		$post_type    = sanitize_text_field( wp_unslash( $_REQUEST['post_type'] ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$entity_types = array_map( 'sanitize_text_field', wp_unslash( (array) $_REQUEST['entity_types'] ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		$this->mapping_service->set_entity_types_for_post_type( $post_type, $entity_types );
 
