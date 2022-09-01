@@ -51,6 +51,7 @@ class Entity_Type {
 			)
 		);
 		?>
+		<?php wp_nonce_field( 'wordlift_vocabulary_terms_entity_type', 'wordlift_vocabulary_terms_entity_type_nonce', false ); ?>
 		<tr class="form-field term-name-wrap">
 			<th scope="row"><label for="wl-entity-type__checklist">%s</label></th>
 			<td>
@@ -81,6 +82,11 @@ class Entity_Type {
 	}
 
 	public function save_field( $term_id ) {
+
+		if ( ! isset( $_REQUEST['wordlift_vocabulary_terms_entity_type_nonce'] )
+		|| ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['wordlift_vocabulary_terms_entity_type_nonce'] ) ), 'wordlift_vocabulary_terms_entity_type' ) ) {
+			return;
+		}
 		if ( ! isset( $_REQUEST['tax_input'] ) ) {
 			return;
 		}
