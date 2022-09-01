@@ -372,14 +372,14 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 * @since 3.11.0
 	 */
 	public function sanitize_callback( $input ) {
-
+		// No nonce verification since this callback is handled by settings api.
 		// Check whether a publisher name has been set.
 		// phpcs:ignore Standard.Category.SniffName.ErrorCode
-		if ( isset( $_POST['wl_publisher'] ) && ! empty( $_POST['wl_publisher']['name'] ) ) {
-			$name = isset( $_POST['wl_publisher']['name'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['wl_publisher']['name'] ) ) : '';
-			$type = isset( $_POST['wl_publisher']['type'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['wl_publisher']['type'] ) ) : '';
+		if ( isset( $_POST['wl_publisher'] ) && ! empty( $_POST['wl_publisher']['name'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$name = isset( $_POST['wl_publisher']['name'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['wl_publisher']['name'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$type = isset( $_POST['wl_publisher']['type'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['wl_publisher']['type'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification.Missing
 			// phpcs:ignore Standard.Category.SniffName.ErrorCode
-			$thumbnail_id = isset( $_POST['wl_publisher']['thumbnail_id'] ) ? intval( sanitize_text_field( wp_unslash( $_POST['wl_publisher']['thumbnail_id'] ) ) ) : null;
+			$thumbnail_id = isset( $_POST['wl_publisher']['thumbnail_id'] ) ? intval( sanitize_text_field( wp_unslash( $_POST['wl_publisher']['thumbnail_id'] ) ) ) : null; //phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 			// Set the type URI, either http://schema.org/Person or http://schema.org/Organization.
 			$type_uri = sprintf( 'http://schema.org/%s', 'organization' === $type ? 'Organization' : 'Person' );
