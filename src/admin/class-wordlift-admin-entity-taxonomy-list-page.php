@@ -116,7 +116,7 @@ class Wordlift_Admin_Entity_Taxonomy_List_Page {
 		}
 
 		// Bail out if a specific term is being handled.
-		if ( isset( $_REQUEST['action'] ) ) {
+		if ( isset( $_REQUEST['action'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return $caps;
 		}
 
