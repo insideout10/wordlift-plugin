@@ -256,7 +256,7 @@ jQuery ($) ->
     params = element.data()
     $.extend params, wl_chord_params
 
-    url = "#{params.ajax_url}?" + $.param('action': params.action, 'post_id': params.postId)
+    url = "#{params.ajax_url}?" + $.param('action': params.action, 'post_id': params.postId, 'wl_chord_nonce':params.wl_chord_nonce)
 
     # Launch chord.
     element.chord

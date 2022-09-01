@@ -95,8 +95,9 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 			'wordlift-ui',
 			'wl_chord_params',
 			array(
-				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'action'   => 'wl_chord',
+				'ajax_url'       => admin_url( 'admin-ajax.php' ),
+				'action'         => 'wl_chord',
+				'wl_chord_nonce' => wp_create_nonce( 'wl_chord' ),
 			)
 		);
 

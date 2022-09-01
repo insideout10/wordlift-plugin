@@ -226,7 +226,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 		}
 
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX
-			 && isset( $_REQUEST['action'] ) && 'wl_file_cache__flush_all' === $_REQUEST['action'] ) {
+			 && isset( $_REQUEST['action'] ) && 'wl_file_cache__flush_all' === $_REQUEST['action'] ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			wp_send_json_success();
 		}
 
