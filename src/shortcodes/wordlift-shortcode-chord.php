@@ -212,10 +212,7 @@ function wl_shortcode_chord_get_graph( $data ) {
  */
 function wl_shortcode_chord_ajax() {
 
-	if ( ! isset( $_REQUEST['wl_chord_nonce'] ) ||
-	! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['wl_chord_nonce'] ) ), 'wl_chord' ) ) {
-		return;
-	}
+	check_ajax_referer( 'wl_chord', 'wl_chord_nonce' );
 
 	$post_id = isset( $_REQUEST['post_id'] ) ? (int) $_REQUEST['post_id'] : 0;
 	$depth   = isset( $_REQUEST['depth'] ) ? (int) $_REQUEST['depth'] : 2;
