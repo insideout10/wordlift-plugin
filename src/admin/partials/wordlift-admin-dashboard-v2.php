@@ -246,14 +246,14 @@ if ( ! empty( $top_entities ) ) {
 			<?php
 			$i = 0;
 			// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
-			foreach ( $this->get_top_entities() as $post ) {
-				$permalink    = get_permalink( $post->ID );
-				$title        = $post->post_title;
-				$entities_100 = 100 * $post->entities / $max_value;
-				$posts_100    = 100 * $post->posts / $max_value;
+			foreach ( $this->get_top_entities() as $top_entity ) {
+				$permalink    = get_permalink( $top_entity->ID );
+				$post_title   = $top_entity->post_title;
+				$entities_100 = 100 * $top_entity->entities / $max_value;
+				$posts_100    = 100 * $top_entity->posts / $max_value;
 
 				?>
-				<div><a href="<?php echo esc_attr( $permalink ); ?>"><?php echo esc_html( $title ); ?></a></div>
+				<div><a href="<?php echo esc_attr( $permalink ); ?>"><?php echo esc_html( $post_title ); ?></a></div>
 				<div>
 					<div class="wl-dashboard__bar wl-dashboard__bar--posts"
 						 style="width: <?php echo esc_attr( $posts_100 ); ?>%;">

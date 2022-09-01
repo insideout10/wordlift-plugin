@@ -9,11 +9,9 @@
 	</p>
 
 	<?php
-	// Get WP's locale.
-	$locale = get_locale();
 
 	// Get the language locale part.
-	$parts    = explode( '_', $locale );
+	$parts    = explode( '_', get_locale() );
 	$language = isset( $parts[0] ) ? $parts[0] : '';
 	$country  = isset( $parts[1] ) ? strtolower( $parts[1] ) : '';
 	?>
