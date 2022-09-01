@@ -14,7 +14,7 @@ class Page {
 	 * @param Page_Delegate $modal_page_delegate
 	 */
 	public function __construct( $full_page_delegate, $modal_page_delegate ) {
-		$this->delegate = isset( $_GET['modal_window'] ) ? $modal_page_delegate : $full_page_delegate;
+		$this->delegate = isset( $_GET['modal_window'] ) ? $modal_page_delegate : $full_page_delegate; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	}
 
 	public function register_hooks() {
