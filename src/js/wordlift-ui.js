@@ -274,7 +274,7 @@ jQuery(function($) {
     url = (params.ajax_url + "?") + $.param({
       'action': params.action,
       'post_id': params.postId,
-      'wl_timeline_nonce': params.wl_timeline_nonce,
+      '_wpnonce': params.wl_timeline_nonce,
       'display_images_as': params.display_images_as,
       'excerpt_length': params.excerpt_length
     });
@@ -355,7 +355,7 @@ jQuery(function($) {
     url = (params.ajax_url + "?") + $.param({
       'action': params.action,
       'post_id': params.postId,
-      'wl_geomap_nonce': params.wl_geomap_nonce
+      '_wpnonce': params.wl_geomap_nonce
     });
     return element.geomap({
       dataEndpoint: url

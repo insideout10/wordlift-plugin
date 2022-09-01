@@ -75,11 +75,7 @@ class Wordlift_Timeline_Service {
 	 */
 	public function ajax_timeline() {
 
-		if ( ! isset( $_REQUEST['wl_timeline_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['wl_timeline_nonce'] ) ), 'wl_timeline' ) ) {
-			wp_send_json( $this->to_json( array() ) );
-
-			return;
-		}
+		check_ajax_referer( 'wl_timeline' );
 
 		// Get the ID of the post who requested the timeline.
 		$post_id = ( isset( $_REQUEST['post_id'] ) ? (int) $_REQUEST['post_id'] : null );
@@ -165,9 +161,7 @@ class Wordlift_Timeline_Service {
 	 * @since 3.1.0
 	 */
 	public function to_json( $posts ) {
-		if ( ! isset( $_REQUEST['wl_timeline_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['wl_timeline_nonce'] ) ), 'wl_timeline' ) ) {
-			return '';
-		}
+		check_ajax_referer( 'wl_timeline' );
 		// If there are no events, return empty JSON
 		if ( empty( $posts ) || $posts === null ) {
 			return '';

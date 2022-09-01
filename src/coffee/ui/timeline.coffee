@@ -41,7 +41,7 @@ jQuery ($) ->
     url = "#{params.ajax_url}?" + $.param(
       'action': params.action,
       'post_id': params.postId,
-      'wl_timeline_nonce': params.wl_timeline_nonce
+      '_wpnonce': params.wl_timeline_nonce
       'display_images_as': params.display_images_as,
       'excerpt_length': params.excerpt_length)
 

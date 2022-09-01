@@ -11,12 +11,7 @@
  * Print both global or post related places in json. It's executed via Ajax
  */
 function wl_shortcode_geomap_ajax() {
-
-	if ( ! isset( $_REQUEST['wl_geomap_nonce'] ) ||
-		 ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['wl_geomap_nonce'] ) ), 'wl_geomap' ) ) {
-		return;
-	}
-
+	check_ajax_referer( 'wl_geomap' );
 	// Get the post Id.
 	$post_id = isset( $_REQUEST['post_id'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post_id'] ) ) : null;
 

@@ -50,9 +50,7 @@ function wl_shortcode_navigator_data() {
 
 function _wl_navigator_get_data() {
 
-	if ( isset( $_GET['wl_navigator_nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['wl_navigator_nonce'] ) ), 'wl_navigator' ) ) {
-		return array();
-	}
+	check_ajax_referer( 'wl_navigator' );
 
 	// Post ID must be defined
 	if ( ! isset( $_GET['post_id'] ) ) {

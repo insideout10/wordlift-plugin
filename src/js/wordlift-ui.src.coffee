@@ -307,7 +307,7 @@ jQuery ($) ->
     url = "#{params.ajax_url}?" + $.param(
       'action': params.action,
       'post_id': params.postId,
-      'wl_timeline_nonce': params.wl_timeline_nonce
+      '_wpnonce': params.wl_timeline_nonce
       'display_images_as': params.display_images_as,
       'excerpt_length': params.excerpt_length)
 
@@ -392,7 +392,7 @@ jQuery ($) ->
     params = element.data()
     $.extend params, wl_geomap_params
 
-    url = "#{params.ajax_url}?" + $.param( 'action': params.action, 'post_id': params.postId, 'wl_geomap_nonce': params.wl_geomap_nonce )
+    url = "#{params.ajax_url}?" + $.param( 'action': params.action, 'post_id': params.postId, '_wpnonce': params.wl_geomap_nonce )
 
     element.geomap
       dataEndpoint: url
