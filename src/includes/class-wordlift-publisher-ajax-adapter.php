@@ -55,12 +55,12 @@ class Wordlift_Publisher_Ajax_Adapter {
 		}
 
 		// No actual search parameter was passed, bail out.
-		if ( ! isset( $_POST['q'] ) || empty( $_POST['q'] ) ) {
+		if ( ! isset( $_POST['q'] ) || empty( $_POST['q'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Missing
 			wp_send_json_error( 'The q parameter is required.' );
 		}
 
 		// Get the response.
-		$response = $this->publisher_service->query( sanitize_text_field( wp_unslash( (string) $_POST['q'] ) ) );
+		$response = $this->publisher_service->query( sanitize_text_field( wp_unslash( (string) $_POST['q'] ) ) ); //phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		// Finally output the response.
 		wp_send_json_success( $response );
