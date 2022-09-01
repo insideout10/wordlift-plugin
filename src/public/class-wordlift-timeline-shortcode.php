@@ -170,6 +170,7 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 				'ajax_url'          => admin_url( 'admin-ajax.php' ),
 				// TODO: this parameter is already provided by WP
 				'action'            => 'wl_timeline',
+				'wl_timeline_nonce' => wp_create_nonce( 'wl_timeline' ),
 				// These settings apply to our wl_timeline AJAX endpoint.
 				'display_images_as' => $settings['display_images_as'],
 				'excerpt_length'    => $settings['excerpt_length'],

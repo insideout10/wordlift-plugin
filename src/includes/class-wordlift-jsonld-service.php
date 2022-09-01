@@ -107,8 +107,8 @@ class Wordlift_Jsonld_Service {
 		@ob_clean();
 
 		// Get the parameter from the request.
-		$is_homepage = isset( $_REQUEST['homepage'] );
-		$post_id     = isset( $_REQUEST['id'] ) && is_numeric( $_REQUEST['id'] ) ? intval( $_REQUEST['id'] ) : null;
+		$is_homepage = isset( $_REQUEST['homepage'] ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$post_id     = isset( $_REQUEST['id'] ) && is_numeric( $_REQUEST['id'] ) ? intval( $_REQUEST['id'] ) : null; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		// Send the generated JSON-LD.
 		$this->send_jsonld( $this->get_jsonld( $is_homepage, $post_id ) );

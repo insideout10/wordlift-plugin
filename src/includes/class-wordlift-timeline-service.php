@@ -75,6 +75,12 @@ class Wordlift_Timeline_Service {
 	 */
 	public function ajax_timeline() {
 
+		if ( ! isset( $_REQUEST['wl_timeline_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['wl_timeline_nonce'] ) ), 'wl_timeline' ) ) {
+			wp_send_json( $this->to_json( array() ) );
+
+			return;
+		}
+
 		// Get the ID of the post who requested the timeline.
 		$post_id = ( isset( $_REQUEST['post_id'] ) ? (int) $_REQUEST['post_id'] : null );
 
@@ -159,7 +165,9 @@ class Wordlift_Timeline_Service {
 	 * @since 3.1.0
 	 */
 	public function to_json( $posts ) {
-
+		if ( ! isset( $_REQUEST['wl_timeline_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['wl_timeline_nonce'] ) ), 'wl_timeline' ) ) {
+			return '';
+		}
 		// If there are no events, return empty JSON
 		if ( empty( $posts ) || $posts === null ) {
 			return '';
@@ -201,22 +209,22 @@ class Wordlift_Timeline_Service {
 				$event_index ++;
 				// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 				if ( 0 === $start_at_slide && $now >= $start_date && $now <= $end_date ) {
-					  // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
-					  $start_at_slide = $event_index;
+					// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
+					$start_at_slide = $event_index;
 				}
 
 				// Load thumbnail
 				$thumbnail_id = get_post_thumbnail_id( $item->ID );
 				$attachment   = wp_get_attachment_image_src( $thumbnail_id );
 				if ( '' !== (string) $thumbnail_id && 0 !== $thumbnail_id
-				&& false !== $attachment
+				     && false !== $attachment
 				) {
 
 					// Set the thumbnail URL.
 					// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 					if ( 'background' === $display_images_as ) {
-						 $date['background'] = array( 'url' => $attachment[0] );
-						 $date['media']      = array( 'thumbnail' => $attachment[0] );
+						$date['background'] = array( 'url' => $attachment[0] );
+						$date['media']      = array( 'thumbnail' => $attachment[0] );
 					} else {
 						$date['media'] = array(
 							'url'       => $attachment[0],
