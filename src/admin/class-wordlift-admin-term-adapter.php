@@ -47,6 +47,7 @@ class Wordlift_Admin_Term_Adapter {
 			'wl_admin_settings',
 			function ( $params ) {
 				$params['show_local_entities'] = true;
+
 				return $params;
 			}
 		);
@@ -62,7 +63,7 @@ class Wordlift_Admin_Term_Adapter {
 	public function edit_form_fields( $tag ) {
 
 		// If disabled via filter, return;
-        // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( ! apply_filters( 'wl_feature__enable__term-entity', true ) ) {
 			return;
 		}
@@ -91,26 +92,28 @@ class Wordlift_Admin_Term_Adapter {
 		}
 
 		?>
-		<tr class="form-field term-name-wrap">
-			<th scope="row"><label for="wl-entity-id"><?php echo esc_html_x( 'Entity', 'term entity', 'wordlift' ); ?></label></th>
-			<td>
+        <tr class="form-field term-name-wrap">
+            <th scope="row"><label
+                        for="wl-entity-id"><?php echo esc_html_x( 'Entity', 'term entity', 'wordlift' ); ?></label></th>
+            <td>
 				<?php foreach ( $values as $value ) { ?>
-					<input type="text" name="wl_entity_id[]" value="<?php echo esc_attr( $value ); ?>"/>
+                    <input type="text" name="wl_entity_id[]" value="<?php echo esc_attr( $value ); ?>"/>
 				<?php } ?>
-				<div id="wl-term-entity-id"></div>
-				<p class="description"><?php esc_html_e( 'The entity bound to the term.', 'wordlift' ); ?></p>
-			</td>
-		</tr>
-		<?php wp_nonce_field( 'wordlift_term_entity_edit', 'wordlift_term_entity', false, true ); ?>
+                <div id="wl-term-entity-id"></div>
+                <p class="description"><?php esc_html_e( 'The entity bound to the term.', 'wordlift' ); ?></p>
+            </td>
+        </tr>
+		<?php wp_nonce_field( 'wordlift_term_entity_edit', 'wordlift_term_entity_edit_nonce' ); ?>
 		<?php
 	}
 
 	/**
 	 * Bind the new fields to the edit term screen.
 	 *
+	 * @param string $taxonomy The taxonomy name.
+	 *
 	 * @since 3.20.0
 	 *
-	 * @param string $taxonomy The taxonomy name.
 	 */
 	public function add_action( $taxonomy ) {
 		/**
@@ -124,15 +127,14 @@ class Wordlift_Admin_Term_Adapter {
 	/**
 	 * Hook to the edit term to handle our own custom fields.
 	 *
+	 * @param int $term_id The term id.
+	 *
 	 * @since 3.20.0
 	 *
-	 * @param int $term_id The term id.
 	 */
 	public function edit_term( $term_id ) {
 
-		if ( ! isset( $_REQUEST['wordlift_term_entity'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['wordlift_term_entity'] ) ), 'wordlift_term_entity_edit' ) ) {
-			return;
-		}
+		check_admin_referer( 'wordlift_term_entity_edit', 'wordlift_term_entity_edit_nonce' );
 
 		// Bail if the action isn't related to the term currently being edited.
 		if ( ! isset( $_POST['tag_ID'] ) || $term_id !== (int) $_POST['tag_ID'] ) {

@@ -266,9 +266,7 @@ class Wordlift_Entity_Service {
 	 */
 	public function save_post( $post_id, $post ) {
 
-		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'update-post_' . $post_id ) ) {
-			return;
-		}
+		check_admin_referer( 'update-post_' . $post_id );
 
 		// Avoid doing anything if post is autosave or a revision.
 		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {

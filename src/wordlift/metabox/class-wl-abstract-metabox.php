@@ -309,9 +309,7 @@ class Wl_Abstract_Metabox {
 
 		$this->log->trace( "Saving form data for entity post $id..." );
 
-		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'update-post_' . $id ) ) {
-			return;
-		}
+		check_admin_referer( 'update-post_' . $id );
 
 		// Skip saving if the save is called for a different post.
 		if ( isset( $_POST['post_ID'] ) && (int) $_POST['post_ID'] !== $id && Object_Type_Enum::POST === $type ) {

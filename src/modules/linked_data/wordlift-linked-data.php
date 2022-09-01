@@ -89,9 +89,7 @@ add_action( 'save_post', 'wl_linked_data_save_post' );
  */
 function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
-	if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'update-post_' . $post_id ) ) {
-		return;
-	}
+	check_admin_referer( 'update-post_' . $post_id );
 
 	$log = Wordlift_Log_Service::get_logger( 'wl_linked_data_save_post_and_related_entities' );
 
