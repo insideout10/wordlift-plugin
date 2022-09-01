@@ -42,7 +42,7 @@ class Wordlift_Admin_User_Profile_Page {
 	 *
 	 * @param \Wordlift_Admin_Author_Element $author_element The person entity selection
 	 *                                                       element rendering the possible persons.
-	 * @param \Wordlift_User_Service         $user_service The {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
 	 *
 	 * @since 3.14.0
 	 */
@@ -93,42 +93,42 @@ class Wordlift_Admin_User_Profile_Page {
 		}
 
 		?>
-		<h2><?php esc_html_e( 'WordLift', 'wordlift' ); ?></h2>
-
-		<table class="form-table">
+        <h2><?php esc_html_e( 'WordLift', 'wordlift' ); ?></h2>
+		<?php wp_nonce_field( 'wordlift_user_save', 'wordlift_user_save_nonce', false ); ?>
+        <table class="form-table">
 			<?php
-           // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+			// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 			if ( apply_filters( 'wl_feature__enable__user-author', true ) ) {
 				?>
-			<tr class="user-description-wrap">
-				<th><label
-							for="wl_person"><?php esc_html_e( 'Author from the vocabulary', 'wordlift' ); ?></label>
-				</th>
-				<td>
-					<?php
-					$this->author_element->render(
-						array(
-							'id'             => 'wl_person',
-							'name'           => 'wl_person',
-							'current_entity' => $this->user_service->get_entity( $user->ID ),
-						)
-					);
-					?>
-					<p class="description"><?php esc_html_e( 'The entity, person or organization, from the vocabulary to associate with this author.', 'wordlift' ); ?></p>
-				</td>
-			</tr>
+                <tr class="user-description-wrap">
+                    <th><label
+                                for="wl_person"><?php esc_html_e( 'Author from the vocabulary', 'wordlift' ); ?></label>
+                    </th>
+                    <td>
+						<?php
+						$this->author_element->render(
+							array(
+								'id'             => 'wl_person',
+								'name'           => 'wl_person',
+								'current_entity' => $this->user_service->get_entity( $user->ID ),
+							)
+						);
+						?>
+                        <p class="description"><?php esc_html_e( 'The entity, person or organization, from the vocabulary to associate with this author.', 'wordlift' ); ?></p>
+                    </td>
+                </tr>
 			<?php } ?>
 			<?php if ( $this->user_service->is_editor( $user->ID ) ) { ?>
-			<tr>
-				<th>
-					<label
-							for="wl_can_create_entities"><?php esc_html_e( 'Can create new entities', 'wordlift' ); ?></label>
-				</th>
-				<td>
-					<input id="wl_can_create_entities"
-						   name="wl_can_create_entities"
-						   type="checkbox" <?php checked( $this->user_service->editor_can_create_entities( $user->ID ) ); ?>
-				</td>
+            <tr>
+                <th>
+                    <label
+                            for="wl_can_create_entities"><?php esc_html_e( 'Can create new entities', 'wordlift' ); ?></label>
+                </th>
+                <td>
+                    <input id="wl_can_create_entities"
+                           name="wl_can_create_entities"
+                           type="checkbox" <?php checked( $this->user_service->editor_can_create_entities( $user->ID ) ); ?>
+                </td>
 				<?php } ?>
 				<?php
 				/**
@@ -139,7 +139,7 @@ class Wordlift_Admin_User_Profile_Page {
 				 */
 				do_action( 'wordlift_user_settings_page' );
 				?>
-		</table>
+        </table>
 		<?php
 	}
 
@@ -155,6 +155,11 @@ class Wordlift_Admin_User_Profile_Page {
 		// In case it is a user editing his own profile, make sure he has admin
 		// like capabilities.
 		if ( ! current_user_can( 'edit_users' ) ) {
+			return;
+		}
+
+		if ( ! isset( $_POST['wordlift_user_save_nonce'] )
+		     || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wordlift_user_save_nonce'] ) ), 'wordlift_user_save' ) ) {
 			return;
 		}
 
@@ -175,7 +180,7 @@ class Wordlift_Admin_User_Profile_Page {
 	 * Link an entity (specified in the `$_POST` array) to the {@link WP_User}
 	 * with the specified `id`.
 	 *
-	 * @param int   $user_id The {@link WP_User} `id`.
+	 * @param int $user_id The {@link WP_User} `id`.
 	 * @param array $post The `$_POST` array.
 	 *
 	 * @since 3.14.0
