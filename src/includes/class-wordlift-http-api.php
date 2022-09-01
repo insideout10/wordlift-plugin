@@ -82,7 +82,7 @@ class Wordlift_Http_Api {
 			return;
 		}
 
-		$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( (string) $_REQUEST['action'] ) ) : '';
+		$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( (string) $_REQUEST['action'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$this->do_action( $action );
 
 		exit;

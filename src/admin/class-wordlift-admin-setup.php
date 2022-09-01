@@ -127,7 +127,7 @@ class Wordlift_Admin_Setup {
 			}
 
 			// If we're already on the page or the user doesn't have permissions, return.
-			if ( ( ! empty( $_GET['page'] ) && 'wl-setup' === $_GET['page'] ) || is_network_admin() || isset( $_GET['activate-multi'] ) || ! current_user_can( 'manage_options' ) ) {
+			if ( ( ! empty( $_GET['page'] ) && 'wl-setup' === $_GET['page'] ) || is_network_admin() || isset( $_GET['activate-multi'] ) || ! current_user_can( 'manage_options' ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				return;
 			}
 
