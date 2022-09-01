@@ -83,13 +83,13 @@ add_action( 'save_post', 'wl_linked_data_save_post' );
 /**
  * Save the post to the triple store. Also saves the entities locally and on the triple store.
  *
+ * This function is called by the 'save_post' hook, so we expect the nonce to be valid.
+ *
  * @param int $post_id The post id being saved.
  *
  * @since 3.0.0
  */
 function wl_linked_data_save_post_and_related_entities( $post_id ) {
-
-	check_admin_referer( 'update-post_' . $post_id );
 
 	$log = Wordlift_Log_Service::get_logger( 'wl_linked_data_save_post_and_related_entities' );
 

@@ -257,6 +257,8 @@ class Wordlift_Entity_Service {
 	 * Fires once a post has been saved. This function uses the $_REQUEST, therefore
 	 * we check that the post we're saving is the current post.
 	 *
+	 * This function is called by a hook, so we're not the ones that need to check the `nonce`.
+	 *
 	 * @see   https://github.com/insideout10/wordlift-plugin/issues/363
 	 *
 	 * @since 3.2.0
@@ -265,8 +267,6 @@ class Wordlift_Entity_Service {
 	 * @param WP_Post $post Post object.
 	 */
 	public function save_post( $post_id, $post ) {
-
-		check_admin_referer( 'update-post_' . $post_id );
 
 		// Avoid doing anything if post is autosave or a revision.
 		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
