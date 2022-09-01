@@ -185,7 +185,7 @@ class Wordlift_Dashboard_Service {
 	public function ajax_get_stats() {
 
 		// If needed, the transient is force to reloaded.
-		if ( isset( $_GET['force_reload'] ) ) {
+		if ( isset( $_GET['force_reload'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			delete_transient( self::TRANSIENT_NAME );
 		}
 
