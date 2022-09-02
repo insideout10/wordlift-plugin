@@ -203,8 +203,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 		$file_extension_length = strlen( $this->file_extension );
 
 		// Loop into the directory to delete files.
-		$entry = readdir( $handle );
-		while ( false !== $entry ) {
+		while ( false !== ($entry = readdir($handle)) ) {
 			if ( substr( $entry, - $file_extension_length ) === $this->file_extension
 				 && file_exists( $this->cache_dir . $entry ) ) {
 				$this->log->trace( "Deleting file {$this->cache_dir}{$entry}..." );
