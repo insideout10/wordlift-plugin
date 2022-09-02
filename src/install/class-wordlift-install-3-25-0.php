@@ -151,7 +151,7 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 				FOREIGN KEY (rule_group_id) REFERENCES {$wpdb->prefix}wl_mapping_rule_group(rule_group_id)
 				ON DELETE CASCADE,
 				PRIMARY KEY  (rule_id)
-        ) %s;",
+        ) %1s;",
 				$charset_collate
 			)
 		);
@@ -179,13 +179,13 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 		// due to lack of support for foreign keys.
 		$wpdb->query(
 			$wpdb->prepare(
-				'CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wl_mapping_rule_group (
+				"CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wl_mapping_rule_group (
                 rule_group_id INT(11) NOT NULL AUTO_INCREMENT,
                 mapping_id INT(11) NOT NULL,
                 PRIMARY KEY  (rule_group_id),
                 FOREIGN KEY (mapping_id) REFERENCES {$wpdb->prefix}wl_mapping(mapping_id)
                 ON DELETE CASCADE
-        ) %s;',
+        ) %1s;",
 				$charset_collate
 			)
 		);
@@ -228,7 +228,7 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
                 PRIMARY KEY  (property_id),
                 FOREIGN KEY (mapping_id) REFERENCES {$wpdb->prefix}wl_mapping(mapping_id)
                 ON DELETE CASCADE
-        ) %s;",
+        ) %1s;",
 				$wpdb->get_charset_collate()
 			)
 		);

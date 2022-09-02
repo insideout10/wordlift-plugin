@@ -21,13 +21,11 @@ class Wordlift_Install_3_33_9 extends Wordlift_Install {
 	private function create_entities_table() {
 		global $wpdb;
 
-		$table_name = $wpdb->prefix . 'wl_entities';
-
 		$charset_collate = $wpdb->get_charset_collate();
 
 		$wpdb->query(
 			$wpdb->prepare(
-				'CREATE TABLE IF NOT EXISTS %s (
+				"CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wl_entities (
 			id bigint(20) unsigned NOT NULL auto_increment,
 			content_id bigint(20) unsigned NOT NULL,
 			content_type tinyint(1) unsigned NOT NULL,
@@ -38,15 +36,14 @@ class Wordlift_Install_3_33_9 extends Wordlift_Install {
 			PRIMARY KEY  (id),
 			UNIQUE KEY uq__content_id__content_type (content_id,content_type),
 			UNIQUE KEY uq__rel_uri_hash (rel_uri_hash)
-		) %s;',
-				$table_name,
+		) %1s;",
 				$charset_collate
 			)
 		);
 
 		dbDelta(
 			$wpdb->prepare(
-				'CREATE TABLE %s (
+				"CREATE TABLE {$wpdb->prefix}wl_entities (
 			id bigint(20) unsigned NOT NULL auto_increment,
 			content_id bigint(20) unsigned NOT NULL,
 			content_type tinyint(1) unsigned NOT NULL,
@@ -57,8 +54,7 @@ class Wordlift_Install_3_33_9 extends Wordlift_Install {
 			PRIMARY KEY  (id),
 			UNIQUE KEY uq__content_id__content_type (content_id,content_type),
 			UNIQUE KEY uq__rel_uri_hash (rel_uri_hash)
-		) %s;',
-				$table_name,
+		) %1s;",
 				$charset_collate
 			)
 		);
