@@ -379,7 +379,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			$name = isset( $_POST['wl_publisher']['name'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['wl_publisher']['name'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification.Missing
 			$type = isset( $_POST['wl_publisher']['type'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['wl_publisher']['type'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification.Missing
 			// phpcs:ignore Standard.Category.SniffName.ErrorCode
-			$thumbnail_id = isset( $_POST['wl_publisher']['thumbnail_id'] ) ? intval( sanitize_text_field( wp_unslash( $_POST['wl_publisher']['thumbnail_id'] ) ) ) : null; //phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$thumbnail_id = isset( $_POST['wl_publisher']['thumbnail_id'] ) ? sanitize_text_field( wp_unslash( $_POST['wl_publisher']['thumbnail_id'] ) ) : null; //phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 			// Set the type URI, either http://schema.org/Person or http://schema.org/Organization.
 			$type_uri = sprintf( 'http://schema.org/%s', 'organization' === $type ? 'Organization' : 'Person' );
