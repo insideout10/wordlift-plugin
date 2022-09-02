@@ -19,6 +19,12 @@ services:
     image: "ziodave/wordpress-tests:php${PHP_VERSION:-7.0}-phpunit${PHPUNIT_VERSION:-4.8}-wordpress${WORDPRESS_VERSION:-5.2}"
     depends_on:
       - db
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+        reservations:
+          memory: 256M
     volumes:
       - ..:/app
       # ini_set would not work when the file has parse error, so phpunit would exit with code 255

@@ -90,7 +90,7 @@ final class Mappings_DBO {
 		$primary_key_value = (int) $primary_key_value;
 		$count             = (int) $this->wpdb->get_var(
 			$wpdb->prepare(
-				'SELECT COUNT(%s) from %s where %s = %d',
+				'SELECT COUNT(%1s) from %2s where %3s = %4d',
 				$primary_key_name,
 				$table_name,
 				$primary_key_name,

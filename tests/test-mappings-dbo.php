@@ -59,12 +59,12 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		$mapping_id         = $this->dbo_instance->insert_mapping_item( "foo title" );
 		$mapping_table_name = WL_MAPPING_TABLE_NAME;
 		// Update this title.
-		$this->dbo_instance->insert_or_update_mapping_item(
+		var_dump( $this->dbo_instance->insert_or_update_mapping_item(
 			array(
 				'mapping_id'    => $mapping_id,
 				'mapping_title' => "foo"
 			)
-		);
+		) );
 		// Count all titles with string foo, it should be 1.
 		$count = $this->wpdb->get_var( "SELECT COUNT(mapping_id) as total FROM {$this->wpdb->prefix}$mapping_table_name WHERE mapping_title='foo'" );
 		$this->assertEquals( 1, $count );
