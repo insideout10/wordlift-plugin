@@ -178,7 +178,7 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		$post_5          = $this->create_faceted_search_post( $entity_1 );
 		$_GET['post_id'] = $entity_1;
 		$_GET['uniqid']  = 'random_id';
-		$result          = wl_shortcode_faceted_search_origin( null );
+		$result          = wl_shortcode_faceted_search_origin( $_GET );
 		$this->assertCount( 4, $result['posts'] );
 	}
 
@@ -192,7 +192,7 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		$product_2       = $this->create_faceted_search_post( $entity_1, 'product' );
 		$_GET['post_id'] = $page_1;
 		$_GET['uniqid']  = 'random_id';
-		$result          = wl_shortcode_faceted_search_origin( null );
+		$result          = wl_shortcode_faceted_search_origin( $_GET );
 		$this->assertCount( 3, $result['posts'] );
 		$this->assertCount( 1, $result['entities'] );
 	}
@@ -262,7 +262,7 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		$_GET['post_id'] = $post_1;
 		$_GET['uniqid']  = 'uniqid';
 		$_GET['amp']     = true;
-		$faceted_data    = wl_shortcode_faceted_search_origin( null );
+		$faceted_data    = wl_shortcode_faceted_search_origin( $_GET );
 		$result          = $faceted_data['posts'][0]['values'];
 
 		// Check if we have srcset in referenced posts.
