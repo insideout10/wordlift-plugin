@@ -231,6 +231,7 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 		                   ->with( $this->equalTo( $target_user_id ) )
 		                   ->willReturn( true );
 
+		$_REQUEST['wordlift_user_save_nonce'] = wp_create_nonce( 'wordlift_user_save' );
 		// Update the user profile.
 		$this->user_profile_page->edit_user_profile_update( $target_user_id );
 
