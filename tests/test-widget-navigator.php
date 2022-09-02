@@ -55,8 +55,9 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$post_3 = $this->create_navigator_post( $entity );
 		// But we will restrict by post type.
 		$_GET['post_id']    = $post_1;
-		$_GET['uniqid']     = "random_id";
+		$_GET['uniqid']     = 'random_id';
 		$_GET['post_types'] = 'post,some-random-post-type';
+		$_REQUEST['_wpnonce']   = wp_create_nonce( 'wl_navigator' );
 		$posts              = _wl_navigator_get_data();
 		$expected_post_ids  = array( $post_2, $post_3 );
 
@@ -91,11 +92,14 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 
 		$template = 'my-template';
 
-		add_filter( 'wordlift_navigator_templates', function ( $templates ) use ( $template, $template_id ) {
-			$templates[ $template_id ] = $template;
+		add_filter(
+			'wordlift_navigator_templates',
+			function ( $templates ) use ( $template, $template_id ) {
+				$templates[ $template_id ] = $template;
 
-			return $templates;
-		} );
+				return $templates;
+			}
+		);
 
 		$request = $this->create_template_request( $template_id );
 		/**
@@ -153,7 +157,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$post_id      = $this->factory()->post->create();
 		$post         = get_post( $post_id );
 		$result       = do_shortcode( "[wl_navigator template_id='foo' post_id=$post_id]" );
-		$template_url = "?rest_route=/wordlift/v1/navigator/template";
+		$template_url = '?rest_route=/wordlift/v1/navigator/template';
 		$this->assertTrue( strpos( $result, $template_url ) !== false, "Template url should be present in the navigator, but got $result " );
 	}
 
@@ -180,7 +184,6 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		 */
 		$this->set_navigator_test_category( $post_id );
 
-
 		// set the entity type as article.
 		$entity_type_service = Wordlift_Entity_Type_Service::get_instance();
 
@@ -196,7 +199,6 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		// Create an entity and link all the posts to post_1.
 		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 
-
 		// Lets create 2 posts and 2 pages.
 		$post_1 = $this->create_navigator_post( $entity );
 		$post_2 = $this->create_navigator_post( $entity );
@@ -205,10 +207,9 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$page_2 = $this->create_navigator_post( $entity, 'page' );
 		$page_3 = $this->create_navigator_post( $entity, 'page' );
 
-
 		// Get navigator data.
 		$_GET['post_id'] = $post_1;
-		$_GET['uniqid']  = "random_id";
+		$_GET['uniqid']  = 'random_id';
 		$data            = _wl_navigator_get_data();
 		$this->assertEquals( 4, count( $data ) );
 
@@ -221,13 +222,15 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$post_1 = $this->create_navigator_post( $entity );
 		// Get navigator data.
 		$_GET['post_id'] = $post_1;
-		$_GET['uniqid']  = "random_id";
+		$_GET['uniqid']  = 'random_id';
 		$post_2          = $this->create_navigator_post( $entity );
-		$title           = "You Can&#8217;t Contribute Beyond Yourself Until You&#8217;re Willing to Let Go";
-		wp_update_post( array(
-			'ID'         => $post_2,
-			'post_title' => $title
-		) );
+		$title           = 'You Can&#8217;t Contribute Beyond Yourself Until You&#8217;re Willing to Let Go';
+		wp_update_post(
+			array(
+				'ID'         => $post_2,
+				'post_title' => $title,
+			)
+		);
 		$posts     = _wl_navigator_get_data();
 		$post      = array_pop( $posts );
 		$post_data = $post['post'];
@@ -245,7 +248,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$page_3 = $this->create_navigator_post( $entity );
 		// Get navigator data.
 		$_GET['post_id'] = $entity;
-		$_GET['uniqid']  = "random_id";
+		$_GET['uniqid']  = 'random_id';
 		$data            = _wl_navigator_get_data();
 		$this->assertEquals( 4, count( $data ) );
 
@@ -262,7 +265,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$page_3 = $this->create_navigator_post( $entity, 'page' );
 		// Get navigator data.
 		$_GET['post_id']    = $entity;
-		$_GET['uniqid']     = "random_id";
+		$_GET['uniqid']     = 'random_id';
 		$_GET['post_types'] = 'post,some-random-post-type';
 		$data               = _wl_navigator_get_data();
 		// we expect to get only 4 posts along with 2 filler posts.
@@ -285,7 +288,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		 * we expect the posts to be fetched by the function.
 		 */
 		$_GET['post_id'] = $post_1;
-		$_GET['uniqid']  = "random_id";
+		$_GET['uniqid']  = 'random_id';
 		$data            = _wl_navigator_get_data();
 		$this->assertCount( 4, $data, '4 posts which are not linked to entity but present in same category as target post should be returned' );
 	}
@@ -303,7 +306,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		 * we expect the posts to be fetched by the function.
 		 */
 		$_GET['post_id'] = $post_1;
-		$_GET['uniqid']  = "random_id";
+		$_GET['uniqid']  = 'random_id';
 		$data            = _wl_navigator_get_data();
 		$this->assertCount( 4, $data, '4 posts which are not linked to entity, also not present in same category as target post should be returned' );
 	}
@@ -324,7 +327,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		 * we expect the posts to be fetched by the function.
 		 */
 		$_GET['post_id']    = $post_1;
-		$_GET['uniqid']     = "random_id";
+		$_GET['uniqid']     = 'random_id';
 		$_GET['post_types'] = 'post,some-random-post-type';
 		$data               = _wl_navigator_get_data();
 		$this->assertCount( 4, $data, '4 posts should be returned, because there wont be enough posts when we filter by post type post' );
@@ -343,7 +346,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		 * we expect the posts to be fetched by the function.
 		 */
 		$_GET['post_id']    = $post_1;
-		$_GET['uniqid']     = "random_id";
+		$_GET['uniqid']     = 'random_id';
 		$_GET['post_types'] = 'page,some-random-post-type';
 		$data               = _wl_navigator_get_data();
 		$this->assertCount( 2, $data, '2 posts should be returned, filler posts should not pick the post type page' );
@@ -402,7 +405,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_2 );
 		set_post_thumbnail( $post_2, $attachment_id );
 		$medium          = get_the_post_thumbnail_url( $post_2, 'medium' );
-		$large          = get_the_post_thumbnail_url( $post_2, 'large' );
+		$large           = get_the_post_thumbnail_url( $post_2, 'large' );
 		$_GET['amp']     = true;
 		$_GET['post_id'] = $post_id;
 		$_GET['uniqid']  = 'uniqid';
@@ -422,7 +425,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_2 );
 		set_post_thumbnail( $post_2, $attachment_id );
 		$medium          = get_the_post_thumbnail_url( $post_2, 'medium' );
-		$large          = get_the_post_thumbnail_url( $post_2, 'large' );
+		$large           = get_the_post_thumbnail_url( $post_2, 'large' );
 		$_GET['amp']     = true;
 		$_GET['post_id'] = $post_1;
 		$_GET['uniqid']  = 'uniqid';

@@ -25,6 +25,8 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 
 		$this->timeline_service = Wordlift_Timeline_Service::get_instance();
 
+		$_REQUEST['_wpnonce'] = wp_create_nonce( 'wl_timeline' );
+
 		add_filter( 'pre_http_request', array( $this, '_mock_api' ), 10, 3 );
 	}
 
