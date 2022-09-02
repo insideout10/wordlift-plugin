@@ -267,7 +267,6 @@ class Wordlift_Entity_Service {
 	 * @param WP_Post $post Post object.
 	 */
 	public function save_post( $post_id, $post ) {
-
 		// Avoid doing anything if post is autosave or a revision.
 		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
 			return;
@@ -290,11 +289,11 @@ class Wordlift_Entity_Service {
 		if ( $request_post_id !== $post_id || ! $this->is_entity( $post_id ) ) {
 			return;
 		}
-		$data = filter_var_array( $_POST, array( 'wl_alternative_label' => array( 'flags' => FILTER_REQUIRE_ARRAY ) ) );
-		// Get the alt labels from the request (or empty array).
-		$alt_labels = isset( $data['wl_alternative_label'] ) ? $data['wl_alternative_label'] : array();
 
-		if ( ( ! empty( $_POST['content'] ) && ! empty( $_POST['post_content'] ) ) || isset( $_REQUEST['wl_alternative_label'] ) ) {
+		if ( isset( $_REQUEST['wl_alternative_label'] ) ) {
+			$data = filter_var_array( $_REQUEST, array( 'wl_alternative_label' => array( 'flags' => FILTER_REQUIRE_ARRAY ) ) );
+			// Get the alt labels from the request (or empty array).
+			$alt_labels = isset( $data['wl_alternative_label'] ) ? $data['wl_alternative_label'] : array();
 			// This is via classic editor, so set the alternative labels.
 			$this->set_alternative_labels( $post_id, $alt_labels );
 		}

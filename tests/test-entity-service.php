@@ -67,12 +67,12 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 0, $entity_service->get_alternative_labels( $entity_id ) );
 
 		// Set the request post id to simulate a call from the edit post UI.
-		$_REQUEST['post_ID'] = (string) $entity_id;
+		$_REQUEST['post_ID'] = (int) $entity_id;
 
 		// Call save_post to set the alternative labels, mock the request first.
 		$_REQUEST['wl_alternative_label'] = array( 'ABC 1', 'ABD 2', 'EFG 3' );
-		$entity_service->save_post( $entity_id, null, null );
 
+		$entity_service->save_post( $entity_id, null, null );
 		// Check that we have 3 alternative labels.
 		$this->assertCount( 3, $entity_service->get_alternative_labels( $entity_id ) );
 		$this->assertCount( 2, wl_entity_get_by_title( 'AB', true ) );
