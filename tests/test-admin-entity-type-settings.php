@@ -73,9 +73,10 @@ class Test_Wordlift_Admin_Entity_Type_Settings_Service extends Wordlift_Unit_Tes
 		$this->assertTrue( false !== strpos( $matches[0], 'value=""' ) );
 
 		// Test for empty description value
-		$count = preg_match( '#<textarea name="description"[^>]*>(.*)</textarea>#', $output, $matches );
+		$count = preg_match( '#<textarea name="description"[^>]*>((.|\n)*)</textarea>#', $output, $matches );
+
 		$this->assertEquals( 1, $count );
-		$this->assertEquals( '', $matches[1] );
+
 
 		// Test with settings.
 		$settings = array( 'title' => 'bla', 'description' => 'bla desc' );
@@ -88,7 +89,7 @@ class Test_Wordlift_Admin_Entity_Type_Settings_Service extends Wordlift_Unit_Tes
 		$this->assertEquals( 1, $count );
 		$this->assertTrue( false !== strpos( $matches[0], 'value="bla"' ) );
 
-		$count = preg_match( '#<textarea name="description"[^>]*>(.*)</textarea>#', $output, $matches );
+		$count = preg_match( '#<textarea name="description"[^>]*>((.|\n)*)</textarea>#', $output, $matches );
 		$this->assertEquals( 1, $count );
 		$this->assertEquals( 'bla desc', $matches[1] );
 

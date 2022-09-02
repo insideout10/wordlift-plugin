@@ -83,11 +83,7 @@ $term_settings = $settings !== null ? $settings : array(
 						</label>
 				</th>
 				<td><textarea name="description" id="description" rows="5"
-							  cols="50" class="large-text">
-							  <?php
-								echo esc_html( $term_settings['description'] )
-								?>
-						</textarea>
+							  cols="50" class="large-text"><?php echo esc_html( $term_settings['description'] ); ?></textarea>
 					<p class="description">
 					<?php
 						esc_html_e( 'The description to be used in the entity type archive page.', 'wordlift' );
