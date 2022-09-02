@@ -126,6 +126,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 
 		// Let's mock up $_POST data
 		$_POST = array(
+
 			'post_ID'                                                                  => $post->ID,
 			// Data to be saved from the Metabox
 			'wl_metaboxes'                                                             => array(
@@ -141,6 +142,9 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 			'wordlift_coordinates_entity_box_nonce'                                    => wp_create_nonce( 'wordlift_coordinates_entity_box' ),
 			'wordlift_' . Wordlift_Schema_Service::FIELD_SAME_AS . '_entity_box_nonce' => wp_create_nonce( 'wordlift_' . Wordlift_Schema_Service::FIELD_SAME_AS . '_entity_box' ),
 		);
+
+		$_REQUEST['_wpnonce'] = wp_create_nonce('update-post_' . $post->ID );
+
 
 		// Metabox save (we call it manually here, but it's hooked to wl_linked_data_save_post - see *testWl_Metabox_constructor*)
 		$metabox->save_form_data( $place_id, Object_Type_Enum::POST );
