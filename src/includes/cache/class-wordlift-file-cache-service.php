@@ -203,9 +203,9 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 		$file_extension_length = strlen( $this->file_extension );
 
 		// Loop into the directory to delete files.
-		while ( false !== ($entry = readdir($handle)) ) {
+		while ( false !== ( $entry = readdir( $handle ) ) ) {
 			if ( substr( $entry, - $file_extension_length ) === $this->file_extension
-				 && file_exists( $this->cache_dir . $entry ) ) {
+			     && file_exists( $this->cache_dir . $entry ) ) {
 				$this->log->trace( "Deleting file {$this->cache_dir}{$entry}..." );
 
 				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
@@ -225,7 +225,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 		}
 
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX
-			 && isset( $_REQUEST['action'] ) && 'wl_file_cache__flush_all' === $_REQUEST['action'] ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		     && isset( $_REQUEST['action'] ) && 'wl_file_cache__flush_all' === $_REQUEST['action'] ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			wp_send_json_success();
 		}
 
