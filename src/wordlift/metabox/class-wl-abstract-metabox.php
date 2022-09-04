@@ -301,6 +301,8 @@ class Wl_Abstract_Metabox {
 	 *
 	 * @param int                   $id The entity's {@link WP_Post}'s id.
 	 *
+	 * We're being called from WP `save_post` hook, we don't need to check the nonce.
+	 *
 	 * @param $type int Post or term
 	 *
 	 * @since 3.5.4
@@ -309,9 +311,8 @@ class Wl_Abstract_Metabox {
 
 		$this->log->trace( "Saving form data for entity post $id..." );
 
-		check_admin_referer( 'update-post_' . $id );
-
 		// Skip saving if the save is called for a different post.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( isset( $_POST['post_ID'] ) && (int) $_POST['post_ID'] !== $id && Object_Type_Enum::POST === $type ) {
 			$this->log->debug( '`wl_metaboxes`, skipping because the post id from request doesnt match the id from filter.' );
 			return;
@@ -321,12 +322,14 @@ class Wl_Abstract_Metabox {
 		$this->instantiate_fields( $id, $type );
 
 		// Check if WL metabox form was posted.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( ! isset( $_POST['wl_metaboxes'] ) ) {
 			$this->log->debug( '`wl_metaboxes`, skipping...' );
 
 			return;
 		}
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$posted_data = filter_var_array( $_POST, array( 'wl_metaboxes' => array( 'flags' => FILTER_REQUIRE_ARRAY ) ) );
 		$posted_data = $posted_data['wl_metaboxes'];
 		foreach ( $this->fields as $field ) {
@@ -358,6 +361,7 @@ class Wl_Abstract_Metabox {
 		 *
 		 * @since  3.18.2
 		 */
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		do_action( 'wl_save_form_pre_push_entity', $id, $_POST );
 
 	}

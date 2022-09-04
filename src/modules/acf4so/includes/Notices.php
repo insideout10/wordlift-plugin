@@ -103,7 +103,7 @@ class Notices {
 			<p>
 				<?php echo wp_kses( $message, array( 'b' => array() ) ); ?>
 				<button class="button action right" onclick="wordliftInstallAcf4so(this)">
-					<?php esc_html( $button_text ); ?>
+					<?php echo esc_html( $button_text ); ?>
 				</button>
 			</p>
 			<br/>
