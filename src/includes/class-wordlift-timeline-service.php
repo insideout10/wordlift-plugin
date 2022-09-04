@@ -211,7 +211,7 @@ class Wordlift_Timeline_Service {
 				$thumbnail_id = get_post_thumbnail_id( $item->ID );
 				$attachment   = wp_get_attachment_image_src( $thumbnail_id );
 				if ( '' !== (string) $thumbnail_id && 0 !== $thumbnail_id
-				     && false !== $attachment
+					 && false !== $attachment
 				) {
 
 					// Set the thumbnail URL.

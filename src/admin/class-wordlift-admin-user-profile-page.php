@@ -42,7 +42,7 @@ class Wordlift_Admin_User_Profile_Page {
 	 *
 	 * @param \Wordlift_Admin_Author_Element $author_element The person entity selection
 	 *                                                       element rendering the possible persons.
-	 * @param \Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_User_Service         $user_service The {@link Wordlift_User_Service} instance.
 	 *
 	 * @since 3.14.0
 	 */
@@ -177,7 +177,7 @@ class Wordlift_Admin_User_Profile_Page {
 	 * Link an entity (specified in the `$_POST` array) to the {@link WP_User}
 	 * with the specified `id`.
 	 *
-	 * @param int $user_id The {@link WP_User} `id`.
+	 * @param int   $user_id The {@link WP_User} `id`.
 	 * @param array $post The `$_POST` array.
 	 *
 	 * @since 3.14.0

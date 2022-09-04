@@ -56,6 +56,7 @@ services:
         define( 'WL_DEBUG', WP_DEBUG );
         define( 'WL_LOG_LEVEL', 0 );
         define( 'WP_AUTO_UPDATE_CORE', false );
+      PHP_IDE_CONFIG: serverName=wordpress
     entrypoint: /var/www/html/wp-content/plugins/wordlift/.docker-custom-entrypoint.sh
 
   nginx:

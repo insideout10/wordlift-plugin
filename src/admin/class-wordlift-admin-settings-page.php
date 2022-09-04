@@ -75,12 +75,12 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	/**
 	 * Create a {@link Wordlift_Admin_Settings_Page} instance.
 	 *
-	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Admin_Input_Element $input_element A {@link Wordlift_Admin_Input_Element} element renderer.
+	 * @param \Wordlift_Entity_Service                $entity_service A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Admin_Input_Element           $input_element A {@link Wordlift_Admin_Input_Element} element renderer.
 	 * @param \Wordlift_Admin_Language_Select_Element $language_select_element A {@link Wordlift_Admin_Language_Select_Element} element renderer.
-	 * @param \Wordlift_Admin_Country_Select_Element $country_select_element A {@link Wordlift_Admin_Country_Select_Element} element renderer.
-	 * @param \Wordlift_Admin_Publisher_Element $publisher_element A {@link Wordlift_Admin_Publisher_Element} element renderer.
-	 * @param \Wordlift_Admin_Radio_Input_Element $radio_input_element A {@link Wordlift_Admin_Radio_Input_Element} element renderer.
+	 * @param \Wordlift_Admin_Country_Select_Element  $country_select_element A {@link Wordlift_Admin_Country_Select_Element} element renderer.
+	 * @param \Wordlift_Admin_Publisher_Element       $publisher_element A {@link Wordlift_Admin_Publisher_Element} element renderer.
+	 * @param \Wordlift_Admin_Radio_Input_Element     $radio_input_element A {@link Wordlift_Admin_Radio_Input_Element} element renderer.
 	 *
 	 * @since 3.11.0
 	 */
@@ -219,7 +219,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::KEY . ']',
 			'value'       => Wordlift_Configuration_Service::get_instance()->get_key(),
 			'description' => __( 'Insert the <a href="https://www.wordlift.io/blogger">WordLift Key</a> you received via email.', 'wordlift' )
-			                 . ' [' . get_option( 'home' ) . ']',
+							 . ' [' . get_option( 'home' ) . ']',
 		);
 
 		// Before we were used to validate the key beforehand, but this means

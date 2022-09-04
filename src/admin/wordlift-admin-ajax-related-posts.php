@@ -62,7 +62,7 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 	if ( ! empty( $filtering_entity_ids ) ) {
 
 		$related_posts = Wordlift_Relation_Service::get_instance()
-		                                          ->get_article_subjects( $filtering_entity_ids, '*', null, 'publish', array( $post_id ), 5 );
+												  ->get_article_subjects( $filtering_entity_ids, '*', null, 'publish', array( $post_id ), 5 );
 
 		foreach ( $related_posts as $post_obj ) {
 

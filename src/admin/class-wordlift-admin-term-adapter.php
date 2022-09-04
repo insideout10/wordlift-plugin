@@ -92,17 +92,17 @@ class Wordlift_Admin_Term_Adapter {
 		}
 
 		?>
-        <tr class="form-field term-name-wrap">
-            <th scope="row"><label
-                        for="wl-entity-id"><?php echo esc_html_x( 'Entity', 'term entity', 'wordlift' ); ?></label></th>
-            <td>
+		<tr class="form-field term-name-wrap">
+			<th scope="row"><label
+						for="wl-entity-id"><?php echo esc_html_x( 'Entity', 'term entity', 'wordlift' ); ?></label></th>
+			<td>
 				<?php foreach ( $values as $value ) { ?>
-                    <input type="text" name="wl_entity_id[]" value="<?php echo esc_attr( $value ); ?>"/>
+					<input type="text" name="wl_entity_id[]" value="<?php echo esc_attr( $value ); ?>"/>
 				<?php } ?>
-                <div id="wl-term-entity-id"></div>
-                <p class="description"><?php esc_html_e( 'The entity bound to the term.', 'wordlift' ); ?></p>
-            </td>
-        </tr>
+				<div id="wl-term-entity-id"></div>
+				<p class="description"><?php esc_html_e( 'The entity bound to the term.', 'wordlift' ); ?></p>
+			</td>
+		</tr>
 		<?php wp_nonce_field( 'wordlift_term_entity_edit', 'wordlift_term_entity_edit_nonce' ); ?>
 		<?php
 	}
@@ -113,7 +113,6 @@ class Wordlift_Admin_Term_Adapter {
 	 * @param string $taxonomy The taxonomy name.
 	 *
 	 * @since 3.20.0
-	 *
 	 */
 	public function add_action( $taxonomy ) {
 		/**
@@ -127,27 +126,29 @@ class Wordlift_Admin_Term_Adapter {
 	/**
 	 * Hook to the edit term to handle our own custom fields.
 	 *
+	 * We turn off nonce verification here because we're responding to a WordPress hook.
+	 *
 	 * @param int $term_id The term id.
 	 *
 	 * @since 3.20.0
-	 *
 	 */
 	public function edit_term( $term_id ) {
 
-		check_admin_referer( 'wordlift_term_entity_edit', 'wordlift_term_entity_edit_nonce' );
-
 		// Bail if the action isn't related to the term currently being edited.
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( ! isset( $_POST['tag_ID'] ) || $term_id !== (int) $_POST['tag_ID'] ) {
 			return;
 		}
 
 		// Delete.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( ! isset( $_POST['wl_entity_id'] ) || ! is_array( $_POST['wl_entity_id'] ) || empty( $_POST['wl_entity_id'] ) ) {
 			delete_term_meta( $term_id, self::META_KEY );
 
 			return;
 		}
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$entity_ids = array_map( 'esc_url_raw', wp_unslash( $_POST['wl_entity_id'] ) );
 		// Update.
 		//

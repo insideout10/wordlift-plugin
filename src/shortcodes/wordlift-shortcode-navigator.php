@@ -47,7 +47,6 @@ function wl_shortcode_navigator_data() {
 	return $results;
 }
 
-
 function _wl_navigator_get_data() {
 
 	check_ajax_referer( 'wl_navigator' );
@@ -183,9 +182,6 @@ function _wl_navigator_get_data() {
 	return $results;
 }
 
-
-
-
 /**
  * The Navigator Ajax function.
  *
@@ -237,7 +233,6 @@ add_action(
 		);
 	}
 );
-
 
 /**
  * Optimizations: disable unneeded plugins on Navigator AJAX call. WPSeo is slowing down the responses quite a bit.

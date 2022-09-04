@@ -195,7 +195,6 @@ class Ttl_Cache_Cleaner {
 	// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 	private function _reduce( $accumulator, $path, $handle ) {
 
-
 		while ( false !== ( $entry = readdir( $handle ) ) ) {
 
 			// Skip to the next one.
