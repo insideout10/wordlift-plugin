@@ -204,13 +204,11 @@ class Wordlift_Entity_Service {
 		$entity = get_post( $post_id );
 
 		global $wpdb;
-		// Retrieve Wordlift relation instances table name
-		$table_name = wl_core_get_relation_instances_table_name();
 
 		// Perform the query
 		$relation_instances = (int) $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT COUNT(*) FROM $table_name WHERE  object_id = %d",
+				"SELECT COUNT(*) FROM {$wpdb->prefix}wl_relation_instances WHERE  object_id = %d",
 				$entity->ID
 			)
 		);

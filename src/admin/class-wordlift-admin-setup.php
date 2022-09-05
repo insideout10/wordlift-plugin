@@ -212,12 +212,12 @@ class Wordlift_Admin_Setup {
 	public function show_page() {
 
 		// First check if we are in the wizard page at all, if not do nothing.
-		if ( empty( $_GET['page'] ) || 'wl-setup' !== $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( empty( $_GET['page'] ) || 'wl-setup' !== $_GET['page'] ) {
 			return;
 		}
 
 		// If it's a POST and the `wl-save-configuration` action is set, save the configuration.
-		if ( isset( $_POST['action'] ) && 'wl-save-configuration' === $_POST['action'] ) { //phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( isset( $_POST['action'] ) && 'wl-save-configuration' === $_POST['action'] ) {
 
 			// Check the nonce and the user capabilities.
 			check_admin_referer( 'wl-save-configuration' );
@@ -228,7 +228,7 @@ class Wordlift_Admin_Setup {
 			}
 
 			// Save the configuration.
-			$this->save_configuration( $_POST ); //phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$this->save_configuration( $_POST );
 
 			// Redirect to the admin's page.
 			wp_safe_redirect( admin_url() );

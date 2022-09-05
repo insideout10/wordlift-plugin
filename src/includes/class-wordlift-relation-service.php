@@ -294,7 +294,7 @@ class Wordlift_Relation_Service {
 		$actual_fields = self::fields( $fields );
 
 		$sql = $wpdb->prepare(
-			"SELECT p.$actual_fields FROM {$this->relation_table} r INNER JOIN $wpdb->posts p ON p.id = r.subject_id" // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			"SELECT p.$actual_fields FROM {$wpdb->prefix}wl_relation_instances r INNER JOIN $wpdb->posts p ON p.id = r.subject_id" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			// Add the status clause.
 			. self::and_status( $status ) // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			. self::inner_join_is_not_article() // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared

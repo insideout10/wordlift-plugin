@@ -155,15 +155,15 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 */
 	public function handle_form_submission() {
 
-		$term_id = isset( $_POST['tag_ID'] ) ? (int) $_POST['tag_ID'] : 0; //phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$term_id = isset( $_POST['tag_ID'] ) ? (int) $_POST['tag_ID'] : 0;
 
 		// Check the nonce.
 		check_admin_referer( 'update-entity_type_term_' . $term_id );
 
 		$term = get_term( $term_id, 'wl_entity_type' );
 
-		$title       = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['title'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$description = isset( $_POST['description'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['description'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$title       = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['title'] ) ) : '';
+		$description = isset( $_POST['description'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['description'] ) ) : '';
 		$this->set_setting(
 			$term_id,
 			trim( wp_unslash( $title ) ),
@@ -188,7 +188,7 @@ class Wordlift_Admin_Entity_Type_Settings {
 	public function render() {
 
 		// Set variables used by the partial
-		$term_id = isset( $_REQUEST['tag_ID'] ) ? absint( $_REQUEST['tag_ID'] ) : 0; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$term_id = isset( $_REQUEST['tag_ID'] ) ? absint( $_REQUEST['tag_ID'] ) : 0;  // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$settings = $this->get_setting( $term_id );
 

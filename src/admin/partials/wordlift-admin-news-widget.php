@@ -3,7 +3,10 @@
 $articles = $this->get_last_wordlift_articles(); ?>
 <div id='news_container'>
 	<?php if ( ! empty( $articles['posts_data'] ) ) { ?>
-		<?php foreach ( $articles['posts_data'] as $key => $item ) { ?>
+		<?php
+		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		foreach ( $articles['posts_data'] as $key => $item ) {
+			?>
 			<div>
 				<a target="_blank"
 				   href="<?php echo esc_url( $item['post_url'] ); ?>"><?php echo esc_html( $item['post_title'] ); ?></a>

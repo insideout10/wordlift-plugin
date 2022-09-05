@@ -214,10 +214,9 @@ class Jsonld_Converter {
 			/**
 			 * Once we find all the nested levels from the property name
 			 * loop through it and create associative array if the levels
-			 * didnt exist.
+			 * didn't exist.
 			 */
-			while ( count( $keys ) > 0 ) {
-				$key = array_shift( $keys );
+			foreach ( $keys as $key ) {
 				if ( '' === $key ) {
 					continue;
 				}

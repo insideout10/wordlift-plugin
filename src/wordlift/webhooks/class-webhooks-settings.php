@@ -22,7 +22,7 @@ class Webhooks_Settings {
 		);
 
 		// Registering the option group during setup
-		add_action( 'admin_init', array( &$this, 'wl_admin_register_setting' ) );
+		add_action( 'admin_init', array( &$this, 'wl_admin_register_setting' ) ); // phpcs:ignore MediaWiki.Usage.ReferenceThis.Found
 	}
 
 	/**

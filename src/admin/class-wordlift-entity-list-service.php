@@ -233,11 +233,9 @@ class Wordlift_Entity_List_Service {
 
 		global $wpdb;
 
-		$wl_relation_table = wl_core_get_relation_instances_table_name();
-
 		// Change WP main query clauses.
-		$clauses['join']     .= "INNER JOIN {$wl_relation_table} ON {$wpdb->posts}.ID = {$wl_relation_table}.object_id";
-		$clauses['where']    .= $wpdb->prepare( "AND {$wl_relation_table}.predicate = %s", $requested_w );
+		$clauses['join']     .= "INNER JOIN {$wpdb->prefix}wl_relation_instances ON {$wpdb->posts}.ID = {$wpdb->prefix}wl_relation_instances.object_id";
+		$clauses['where']    .= $wpdb->prepare( "AND {$wpdb->prefix}wl_relation_instances.predicate = %s", $requested_w );
 		$clauses['distinct'] .= 'DISTINCT';
 
 		return $clauses;

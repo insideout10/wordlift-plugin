@@ -36,7 +36,7 @@ class Wordlift_Install_3_33_9 extends Wordlift_Install {
 			PRIMARY KEY  (id),
 			UNIQUE KEY uq__content_id__content_type (content_id,content_type),
 			UNIQUE KEY uq__rel_uri_hash (rel_uri_hash)
-		) %1s;",
+		) %1s;", // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder
 				$charset_collate
 			)
 		);
@@ -54,7 +54,7 @@ class Wordlift_Install_3_33_9 extends Wordlift_Install {
 			PRIMARY KEY  (id),
 			UNIQUE KEY uq__content_id__content_type (content_id,content_type),
 			UNIQUE KEY uq__rel_uri_hash (rel_uri_hash)
-		) %1s;",
+		) %1s;", // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder
 				$charset_collate
 			)
 		);

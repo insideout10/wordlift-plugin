@@ -151,7 +151,7 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 				FOREIGN KEY (rule_group_id) REFERENCES {$wpdb->prefix}wl_mapping_rule_group(rule_group_id)
 				ON DELETE CASCADE,
 				PRIMARY KEY  (rule_id)
-        ) %1s;",
+        ) %1s;", // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder
 				$charset_collate
 			)
 		);
@@ -185,7 +185,7 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
                 PRIMARY KEY  (rule_group_id),
                 FOREIGN KEY (mapping_id) REFERENCES {$wpdb->prefix}wl_mapping(mapping_id)
                 ON DELETE CASCADE
-        ) %1s;",
+        ) %1s;", // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder
 				$charset_collate
 			)
 		);
@@ -228,7 +228,7 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
                 PRIMARY KEY  (property_id),
                 FOREIGN KEY (mapping_id) REFERENCES {$wpdb->prefix}wl_mapping(mapping_id)
                 ON DELETE CASCADE
-        ) %1s;",
+        ) %1s;", // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder
 				$wpdb->get_charset_collate()
 			)
 		);

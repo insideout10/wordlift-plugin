@@ -195,7 +195,7 @@ class Ttl_Cache_Cleaner {
 	// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 	private function _reduce( $accumulator, $path, $handle ) {
 
-		while ( false !== ( $entry = readdir( $handle ) ) ) {
+		while ( false !== ( $entry = readdir( $handle ) ) ) { // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 
 			// Skip to the next one.
 			if ( 0 === strpos( $entry, '.' ) ) {

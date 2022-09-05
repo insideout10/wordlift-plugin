@@ -26,6 +26,9 @@
 		<exclude name="Squiz.Commenting.VariableComment.Missing" />
 		<exclude name="Squiz.Commenting.VariableComment.MissingVar" />
 		<exclude name="Squiz.PHP.CommentedOutCode.Found" />
+		<exclude name="WordPress.DB.DirectDatabaseQuery.DirectQuery" />
+		<exclude name="WordPress.DB.DirectDatabaseQuery.NoCaching" />
+		<exclude name="WordPress.DB.DirectDatabaseQuery.SchemaChange" />
 		<exclude name="WordPress.WhiteSpace.PrecisionAlignment.Found" />
 		<exclude name="WordPressVIPMinimum.Files.IncludingFile.NotAbsolutePath" />
 	</rule>

@@ -548,6 +548,7 @@ function wl_core_sql_query_builder( $args ) {
 	$filtering_column = ( 'object' === $args['as'] ) ? 'subject_id' : 'object_id';
 
 	if ( isset( $args['related_to'] ) ) {
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$sql .= $wpdb->prepare( " r.$filtering_column = %d", $args['related_to'] );
 	}
 	if ( isset( $args['related_to'] ) && isset( $args['related_to__in'] ) ) {

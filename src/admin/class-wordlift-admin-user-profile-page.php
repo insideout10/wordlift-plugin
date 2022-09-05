@@ -161,10 +161,10 @@ class Wordlift_Admin_User_Profile_Page {
 		check_admin_referer( 'wordlift_user_save', 'wordlift_user_save_nonce' );
 
 		// Link an entity to the user.
-		$this->link_entity( $user_id, $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$this->link_entity( $user_id, $_POST );
 
 		// Deny and enable the edit entity capability
-		if ( isset( $_POST['wl_can_create_entities'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( isset( $_POST['wl_can_create_entities'] ) ) {
 			// User has capability so remove the deny indication if present.
 			$this->user_service->allow_editor_entity_create( $user_id );
 		} else {
