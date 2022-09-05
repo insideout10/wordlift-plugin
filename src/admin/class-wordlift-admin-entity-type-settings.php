@@ -155,15 +155,15 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 */
 	public function handle_form_submission() {
 
-		$term_id = isset( $_POST['tag_ID'] ) ? (int) $_POST['tag_ID'] : 0;
+		$term_id = isset( $_POST['tag_ID'] ) ? (int) $_POST['tag_ID'] : 0; //phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		// Check the nonce.
 		check_admin_referer( 'update-entity_type_term_' . $term_id );
 
 		$term = get_term( $term_id, 'wl_entity_type' );
 
-		$title       = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['title'] ) ) : '';
-		$description = isset( $_POST['description'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['description'] ) ) : '';
+		$title       = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['title'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$description = isset( $_POST['description'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['description'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$this->set_setting(
 			$term_id,
 			trim( wp_unslash( $title ) ),

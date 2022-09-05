@@ -273,12 +273,12 @@ class Wordlift_Entity_Service {
 		}
 
 		// We expect a numeric value here.
-		if ( ! isset( $_REQUEST['post_ID'] ) || ! is_numeric( $_REQUEST['post_ID'] ) ) {
+		if ( ! isset( $_REQUEST['post_ID'] ) || ! is_numeric( $_REQUEST['post_ID'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 
 		// Get the numeric post ID from the request.
-		$request_post_id = intval( $_REQUEST['post_ID'] );
+		$request_post_id = intval( $_REQUEST['post_ID'] ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		// We're setting the alternative label that have been provided via the UI
 		// (in fact we're using $_REQUEST), while save_post may be also called
@@ -290,8 +290,8 @@ class Wordlift_Entity_Service {
 			return;
 		}
 
-		if ( isset( $_REQUEST['wl_alternative_label'] ) ) {
-			$data = filter_var_array( $_REQUEST, array( 'wl_alternative_label' => array( 'flags' => FILTER_REQUIRE_ARRAY ) ) );
+		if ( isset( $_REQUEST['wl_alternative_label'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$data = filter_var_array( $_REQUEST, array( 'wl_alternative_label' => array( 'flags' => FILTER_REQUIRE_ARRAY ) ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			// Get the alt labels from the request (or empty array).
 			$alt_labels = isset( $data['wl_alternative_label'] ) ? $data['wl_alternative_label'] : array();
 			// This is via classic editor, so set the alternative labels.

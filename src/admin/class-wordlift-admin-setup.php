@@ -217,7 +217,7 @@ class Wordlift_Admin_Setup {
 		}
 
 		// If it's a POST and the `wl-save-configuration` action is set, save the configuration.
-		if ( isset( $_POST['action'] ) && 'wl-save-configuration' === $_POST['action'] ) {
+		if ( isset( $_POST['action'] ) && 'wl-save-configuration' === $_POST['action'] ) { //phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 			// Check the nonce and the user capabilities.
 			check_admin_referer( 'wl-save-configuration' );
@@ -228,7 +228,7 @@ class Wordlift_Admin_Setup {
 			}
 
 			// Save the configuration.
-			$this->save_configuration( $_POST );
+			$this->save_configuration( $_POST ); //phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 			// Redirect to the admin's page.
 			wp_safe_redirect( admin_url() );
