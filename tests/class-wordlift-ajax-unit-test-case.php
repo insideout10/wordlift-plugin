@@ -138,8 +138,10 @@ abstract class Wordlift_Ajax_Unit_Test_Case extends WP_Ajax_UnitTestCase {
 		do_action( 'rest_api_init' );
 
 		$request              = new WP_REST_Request( $action, $endpoint );
+		$request->set_query_params( $_GET );
 
 		$response             = $this->server->dispatch( $request );
+
 		$data                 = $response->get_data();
 		$this->_last_response = $data;
 

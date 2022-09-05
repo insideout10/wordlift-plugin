@@ -41,7 +41,7 @@ function wl_shortcode_faceted_search( $request ) {
 
 	header( 'X-WordLift-Cache: MISS' );
 
-	$results = wl_shortcode_faceted_search_origin( $request );
+	$results = wl_shortcode_faceted_search_origin( $request->get_query_params() );
 
 	// Put the result before sending the json to the client, since sending the json will terminate us.
 	$cache->put( $cache_key, $results );
