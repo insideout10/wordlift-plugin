@@ -83,14 +83,12 @@ class Entity_Type {
 
 	public function save_field( $term_id ) {
 
-		check_admin_referer( 'wordlift_vocabulary_terms_entity_type', 'wordlift_vocabulary_terms_entity_type_nonce' );
-
-		if ( ! isset( $_REQUEST['tax_input'] ) ) {
+		if ( ! isset( $_REQUEST['tax_input'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 		$entity_types = array();
-		if ( isset( $_REQUEST['tax_input'][ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ] ) ) {
-			$entity_types_data = filter_var_array( $_REQUEST, array( 'tax_input' => array( 'flags' => FILTER_REQUIRE_ARRAY ) ) );
+		if ( isset( $_REQUEST['tax_input'][ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$entity_types_data = filter_var_array( $_REQUEST, array( 'tax_input' => array( 'flags' => FILTER_REQUIRE_ARRAY ) ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$entity_types      = $entity_types_data[ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ];
 		}
 		if ( isset( $entity_types ) && is_array( $entity_types ) ) {
