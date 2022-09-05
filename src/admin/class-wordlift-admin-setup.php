@@ -212,7 +212,7 @@ class Wordlift_Admin_Setup {
 	public function show_page() {
 
 		// First check if we are in the wizard page at all, if not do nothing.
-		if ( empty( $_GET['page'] ) || 'wl-setup' !== $_GET['page'] ) {
+		if ( empty( $_GET['page'] ) || 'wl-setup' !== $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 
