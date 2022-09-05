@@ -50,7 +50,7 @@ class Wordlift_Navigator_Test extends Wordlift_Ajax_Unit_Test_Case {
 	}
 
 	public function test_navigator_without_post_id() {
-
+		$_GET['_wpnonce'] = wp_create_nonce( 'wl_navigator' );
 		$cache = new Ttl_Cache( 'navigator' );
 		$cache->flush();
 
@@ -69,7 +69,7 @@ class Wordlift_Navigator_Test extends Wordlift_Ajax_Unit_Test_Case {
 	}
 
 	public function test_navigator_without_uniqid() {
-
+		$_GET['_wpnonce'] = wp_create_nonce( 'wl_navigator' );
 		$cache = new Ttl_Cache( 'navigator' );
 		$cache->flush();
 
@@ -90,7 +90,7 @@ class Wordlift_Navigator_Test extends Wordlift_Ajax_Unit_Test_Case {
 	}
 
 	public function test_data_for_post_with_no_entities() {
-
+		$_GET['_wpnonce'] = wp_create_nonce( 'wl_navigator' );
 		$cache = new Ttl_Cache( 'navigator' );
 		$cache->flush();
 
