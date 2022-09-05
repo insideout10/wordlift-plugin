@@ -251,7 +251,7 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		 */
 		$_GET['post_id'] = $post_1_id;
 		$_GET['uniqid']  = 'uniqid-123';
-		$data            = wl_shortcode_faceted_search_origin( array() );
+		$data            = wl_shortcode_faceted_search_origin( $_GET );
 		$this->assertArrayHasKey( 'posts', $data );
 		$posts = $data['posts'];
 		// the first should be $post_3
@@ -283,7 +283,7 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		$_GET['post_id'] = $post_1_id;
 		$_GET['sort']    = 'ASC';
 		$_GET['uniqid']  = 'uniqid-123';
-		$data            = wl_shortcode_faceted_search_origin( array() );
+		$data            = wl_shortcode_faceted_search_origin( $_GET );
 		$this->assertArrayHasKey( 'posts', $data );
 		$posts = $data['posts'];
 		// the first should be $post_3
@@ -315,7 +315,7 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		$_GET['post_id'] = $post_1_id;
 		$_GET['sort']    = array( 'some-dangerous-data' );
 		$_GET['uniqid']  = 'uniqid-123';
-		$data            = wl_shortcode_faceted_search_origin( array() );
+		$data            = wl_shortcode_faceted_search_origin( $_GET );
 		$this->assertArrayHasKey( 'posts', $data );
 		$posts = $data['posts'];
 		// the first should be $post_3

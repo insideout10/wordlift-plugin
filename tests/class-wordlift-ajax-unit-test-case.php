@@ -111,7 +111,7 @@ abstract class Wordlift_Ajax_Unit_Test_Case extends WP_Ajax_UnitTestCase {
 		$_POST['action'] = $action;
 		$_GET['action']  = $action;
 		$_REQUEST        = array_merge( $_POST, $_GET );
-
+		$_REQUEST['_wpnonce'] = wp_create_nonce( 'wl_navigator' );
 		// Call the hooks
 		do_action( 'admin_init' );
 		do_action( 'wp_ajax_' . $_REQUEST['action'], $body );
@@ -138,6 +138,7 @@ abstract class Wordlift_Ajax_Unit_Test_Case extends WP_Ajax_UnitTestCase {
 		do_action( 'rest_api_init' );
 
 		$request              = new WP_REST_Request( $action, $endpoint );
+
 		$response             = $this->server->dispatch( $request );
 		$data                 = $response->get_data();
 		$this->_last_response = $data;
