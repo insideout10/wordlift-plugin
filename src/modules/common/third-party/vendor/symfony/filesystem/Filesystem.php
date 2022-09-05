@@ -413,8 +413,8 @@ class Filesystem {
 			}
 			return $result;
 		};
-		array( $endPath, $endDriveLetter )     = $splitDriveLetter( $endPath );
-		array( $startPath, $startDriveLetter ) = $splitDriveLetter( $startPath );
+		[ $endPath, $endDriveLetter ]     = $splitDriveLetter( $endPath );
+		[ $startPath, $startDriveLetter ] = $splitDriveLetter( $startPath );
 		$startPathArr                          = $splitPath( $startPath );
 		$endPathArr                            = $splitPath( $endPath );
 		if ( $endDriveLetter && $startDriveLetter && $endDriveLetter != $startDriveLetter ) {
@@ -527,7 +527,7 @@ class Filesystem {
 	 * @return string The new temporary filename (with path), or throw an exception on failure
 	 */
 	public function tempnam( $dir, $prefix ) {
-		array( $scheme, $hierarchy ) = $this->getSchemeAndHierarchy( $dir );
+		[ $scheme, $hierarchy ] = $this->getSchemeAndHierarchy( $dir );
 		// If no scheme or scheme is "file" or "gs" (Google Cloud) create temp file in local filesystem
 		if ( null === $scheme || 'file' === $scheme || 'gs' === $scheme ) {
 			$tmpFile = @\tempnam( $hierarchy, $prefix );

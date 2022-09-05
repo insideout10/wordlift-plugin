@@ -74,7 +74,7 @@ class PhpToken implements \Stringable {
 				$id   = \ord( $token );
 				$text = $token;
 			} else {
-				array( $id, $text, $line ) = $token;
+				[ $id, $text, $line ] = $token;
 			}
 			$tokens[ $index ] = new static( $id, $text, $line, $position );
 			$position        += \strlen( $text );
