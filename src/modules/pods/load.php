@@ -31,7 +31,7 @@ function __wl_pods_load() {
 	$container_builder->compile();
 
 	$field_definitions = $container_builder->get( Definition::class );
-	$field_definitions->register_fields();
+//	$field_definitions->register_fields();
 
 }
 

@@ -5,16 +5,22 @@ namespace Wordlift\Modules\Pods;
 class Definition {
 
 	public function __construct() {
-		if ( is_admin() ) {
-			add_action( 'add_meta_boxes', array( $this, 'register_fields' ), 1 );
-		}
+		$this->register_on_all_valid_post_types();
 	}
 
-	public function register_fields() {
 
-		$pod            = $this->pod( 'page', 'post_type', 'page' );
+
+	public function register_on_all_valid_post_types() {
+		$supported_types = \Wordlift_Entity_Service::valid_entity_post_types();
+		foreach ( $supported_types as $supported_type ) {
+			$this->register_pod( $supported_type, 'post_type', $supported_type );
+		}
+
+	}
+
+	public function register_pod( $name, $object_equals, $object_type_equals ) {
+		$pod            = $this->pod( $name, $object_equals, $object_type_equals );
 		$schema_classes = \Wordlift_Schema_Service::get_instance();
-		// @TODO: change this.
 
 		$schema = array( 'Person' => $schema_classes->get_schema( 'person' ) );
 
