@@ -35,17 +35,17 @@ class Definition {
 
 	public function register_pod( $name, $object_equals, $object_type_equals ) {
 		$pod            = $this->pod( $name, $object_equals, $object_type_equals );
-		$schema_classes = \Wordlift_Schema_Service::get_instance();
+		$schema_field_groups = $this->schema->get();
 
-		$schema = $this->schema->get();
+		foreach ( $schema_field_groups as $schema_field_group ) {
+			$custom_fields = $schema_field_group->get_custom_fields();
 
-		foreach ( $schema as $type => $data ) {
-			if ( is_array( $data['custom_fields'] ) && count( $data['custom_fields'] ) > 0 ) {
+			if ( is_array( $custom_fields ) && count( $custom_fields ) > 0 ) {
 				$this->group(
-					$type,
+					$schema_field_group->get_schema_type(),
 					$pod,
 					$this->group_fields(
-						...$this->custom_fields_to_pod_fields( $data['custom_fields'] )
+						...$this->custom_fields_to_pod_fields( $custom_fields )
 					)
 				);
 			}
