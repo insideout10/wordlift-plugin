@@ -33,6 +33,16 @@ function __wl_pods_load() {
 	$field_definitions = $container_builder->get( Definition::class );
 //	$field_definitions->register_fields();
 
+	add_filter( 'pods_api_field_types', function ( $types ) {
+		$types[] = 'wlentity';
+		return $types;
+	} );
+
+
 }
 
 add_action( 'plugins_loaded', '__wl_pods_load' );
+
+add_action('plugins_loaded', function () {
+	require_once __DIR__ . '/PodsField_WlEntity.php';
+});
