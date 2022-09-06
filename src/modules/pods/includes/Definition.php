@@ -12,7 +12,6 @@ class Definition {
 	}
 
 
-
 	public function register_on_all_valid_post_types() {
 		$supported_types = \Wordlift_Entity_Service::valid_entity_post_types();
 		foreach ( $supported_types as $supported_type ) {
@@ -127,7 +126,6 @@ class Definition {
 		);
 
 
-
 		pods_register_type( $pod['type'], $pod['name'], $pod );
 
 		return $pod;
@@ -136,7 +134,7 @@ class Definition {
 	private function register_on_all_supported_taxonomies() {
 		$taxonomies = Terms_Compat::get_public_taxonomies();
 		foreach ( $taxonomies as $taxonomy ) {
-			 $this->register_pod( $taxonomy, 'taxonomy', $taxonomy );
+			$this->register_pod( $taxonomy, 'taxonomies', $taxonomy );
 		}
 	}
 
@@ -267,8 +265,6 @@ class Definition {
 			)
 		);
 	}
-
-
 
 
 }
