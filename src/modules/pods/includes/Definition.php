@@ -8,10 +8,13 @@ class Definition {
 
 	public function __construct() {
 
-		add_action( 'admin_init', function () {
-			$this->register_on_all_valid_post_types();
-			$this->register_on_all_supported_taxonomies();
-		} );
+		add_action(
+			'admin_init',
+			function () {
+				$this->register_on_all_valid_post_types();
+				$this->register_on_all_supported_taxonomies();
+			}
+		);
 	}
 
 
@@ -127,7 +130,6 @@ class Definition {
 			'storage'     => 'meta',
 			'object'      => $object,
 		);
-
 
 		pods_register_type( $pod['type'], $pod['name'], $pod );
 
