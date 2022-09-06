@@ -32,6 +32,20 @@ function __wl_pods_load() {
 	pods_register_related_object( 'wlentity', 'WordLift Entity', array() );
 }
 
+//add_filter( 'pods_field_pick_data_ajax', function ( $arg1, $field_name, $arg2, $field, $pod, $id) {
+//
+//	var_dump($field_name);
+//	var_dump($pod);
+//	var_dump($field);
+//
+//} , 10, 6 );
+
+
+add_filter('pods_form_ui_field_pick_ajax', function ( $item, $name, $value, $field_options ) {
+	return isset( $field_options['pick_object'] ) && is_string( $field_options['pick_object'] ) &&
+	       'wlentity' === $field_options['pick_object'];
+}, 10, 4);
+
 add_action( 'plugins_loaded', '__wl_pods_load' );
 
 
