@@ -6,7 +6,14 @@ use Wordlift\Vocabulary\Terms_Compat;
 
 class Definition {
 
-	public function __construct() {
+	/**
+	 * @var Schema
+	 */
+	private $schema;
+
+	public function __construct( $schema ) {
+
+		$this->schema = $schema;
 
 		add_action(
 			'admin_init',
@@ -30,7 +37,7 @@ class Definition {
 		$pod            = $this->pod( $name, $object_equals, $object_type_equals );
 		$schema_classes = \Wordlift_Schema_Service::get_instance();
 
-		$schema = array( 'Person' => $schema_classes->get_schema( 'person' ) );
+		$schema = $this->schema->get();
 
 		foreach ( $schema as $type => $data ) {
 			if ( is_array( $data['custom_fields'] ) && count( $data['custom_fields'] ) > 0 ) {

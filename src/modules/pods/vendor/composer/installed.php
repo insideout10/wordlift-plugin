@@ -3,7 +3,7 @@
         'name' => 'wordlift/acf4so',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '4fd8eac19cb95fc535329b6ed54096c6415e561f',
+        'reference' => '29670e9b73ccda0bb65720bf985977da9f99bca1',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'wordlift/acf4so' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '4fd8eac19cb95fc535329b6ed54096c6415e561f',
+            'reference' => '29670e9b73ccda0bb65720bf985977da9f99bca1',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

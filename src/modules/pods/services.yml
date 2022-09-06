@@ -1,3 +1,6 @@
 services:
   Wordlift\Modules\Pods\Definition:
     class: \Wordlift\Modules\Pods\Definition
+    arguments: ['@Wordlift\Modules\Pods\Schema']
+  Wordlift\Modules\Pods\Schema:
+    class: \Wordlift\Modules\Pods\Schema
