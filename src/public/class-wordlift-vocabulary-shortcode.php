@@ -60,8 +60,8 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	/**
 	 * Check whether the requirements for this shortcode to work are available.
 	 *
-	 * @since 3.17.0
 	 * @return bool True if the requirements are satisfied otherwise false.
+	 * @since 3.17.0
 	 */
 	private static function are_requirements_satisfied() {
 
@@ -75,11 +75,10 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	/**
 	 * Render the shortcode.
 	 *
-	 * @since 3.16.0
-	 *
 	 * @param array $atts An array of shortcode attributes as set by the editor.
 	 *
 	 * @return string The output html code.
+	 * @since 3.16.0
 	 */
 	public function render( $atts ) {
 
@@ -149,7 +148,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 				$translations,
 				function ( $a, $b ) {
 					if ( mb_strtolower( $a ) === mb_strtolower( $b )
-					 || mb_strtoupper( $a ) === mb_strtoupper( $b ) ) {
+						 || mb_strtoupper( $a ) === mb_strtoupper( $b ) ) {
 						return 0;
 					}
 
@@ -164,10 +163,32 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 		?>
 		<div class='wl-vocabulary'>
 			<nav class='wl-vocabulary-alphabet-nav'>
-				<?php echo $header; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php
+				echo wp_kses(
+					$header,
+					array(
+						'span' => array( 'class' => array() ),
+						'a'    => array( 'href' => array() ),
+					)
+				);
+				?>
 			</nav>
 			<div class='wl-vocabulary-grid'>
-				<?php echo $sections; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php
+				echo wp_kses(
+					$sections,
+					array(
+						'div'   => array(
+							'class' => array(),
+							'id'    => array(),
+						),
+						'aside' => array( 'class' => array() ),
+						'ul'    => array( 'class' => array() ),
+						'li'    => array(),
+						'a'     => array( 'href' => array() ),
+					)
+				);
+				?>
 			</div>
 		</div>
 		<?php
@@ -240,15 +261,14 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	/**
 	 * Generate the html code for the section.
 	 *
-	 * @since 3.17.0
-	 *
 	 * @param string $letter The section's letter.
 	 * @param array  $posts An array of `$post_id => $post_title` associated with
-	 *                               the section.
+	 *                                the section.
 	 * @param int    $vocabulary_id Unique vocabulary id.
 	 *
 	 * @return string The section html code (or an empty string if the section has
 	 *                no posts).
+	 * @since 3.17.0
 	 */
 	private function get_section( $letter, $posts, $vocabulary_id ) {
 
@@ -278,11 +298,10 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	/**
 	 * Format an array post `$post_id => $post_title` as a list.
 	 *
-	 * @since 3.17.0
-	 *
 	 * @param array $posts An array of `$post_id => $post_title` key, value pairs.
 	 *
 	 * @return string A list.
+	 * @since 3.17.0
 	 */
 	private function format_posts_as_list( $posts ) {
 
@@ -298,16 +317,15 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	/**
 	 * Get the posts from WordPress using the provided attributes.
 	 *
-	 * @since 3.17.0
-	 *
 	 * @param array $atts The shortcode attributes.
 	 *
 	 * @return array An array of {@link WP_Post}s.
+	 * @since 3.17.0
 	 */
 	private function get_posts( $atts ) {
 		// The default arguments for the query.
 		$args = array(
-            // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page
+			// phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page
 			'posts_per_page'         => intval( $atts['limit'] ),
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
@@ -341,10 +359,10 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	/**
 	 * Populate the alphabet with posts.
 	 *
-	 * @since 3.17.0
-	 *
 	 * @param array $alphabet An array of letters.
 	 * @param int   $post_id The {@link WP_Post} id.
+	 *
+	 * @since 3.17.0
 	 */
 	private function add_to_alphabet( &$alphabet, $post_id ) {
 
@@ -394,12 +412,11 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	 * will look for groups of 2 or 3 letters in the alphabet before looking for a
 	 * single letter. In case the letter is not found a # (hash) key is returned.
 	 *
-	 * @since 3.17.0
-	 *
 	 * @param array  $alphabet An array of alphabet letters.
 	 * @param string $title The title to match.
 	 *
 	 * @return string The initial letter or a `#` key.
+	 * @since 3.17.0
 	 */
 	private function get_first_letter_in_alphabet_or_hash( $alphabet, $title ) {
 
@@ -417,9 +434,8 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	/**
 	 * Get and increment the `$vocabulary_id`.
 	 *
-	 * @since  3.18.3
-	 *
 	 * @return int The incremented vocabulary id.
+	 * @since  3.18.3
 	 */
 	private static function get_and_increment_vocabulary_id() {
 		return self::$vocabulary_id ++;

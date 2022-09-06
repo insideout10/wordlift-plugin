@@ -132,16 +132,34 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		wp_enqueue_script( 'wordlift-cloud' );
 		$template_url = get_rest_url( null, '/wordlift/v1/faceted-search/template' );
 
-		return <<<HTML
-			<!-- Faceted {$faceted_id} -->
-			<div id="{$faceted_id}" 
+		return wp_kses(
+			sprintf(
+				'
+			<div id="%s" 
 				 class="wl-faceted" 
-				 data-rest-url="{$rest_url}" 
-				 data-title="{$title}" 
-				 data-template-id="{$template_id}"
-				 data-template-url="{$template_url}"></div>
-			<!-- /Faceted {$faceted_id} -->
-HTML;
+				 data-rest-url="%s" 
+				 data-title="%s" 
+				 data-template-id="%s"
+				 data-template-url="%s"></div>
+			',
+				esc_attr( $faceted_id ),
+				esc_url( $rest_url ),
+				esc_attr( $title ),
+				esc_attr( $template_id ),
+				esc_url( $template_url )
+			),
+			array(
+				'div' => array(
+					'id'                => array(),
+					'class'             => array(),
+					'data-rest-url'     => array(),
+					'data-title'        => array(),
+					'data-template-id'  => array(),
+					'data-template-url' => array(),
+				),
+			)
+		);
+
 	}
 
 	/**

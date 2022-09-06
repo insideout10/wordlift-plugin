@@ -42,14 +42,14 @@ class Wordlift_Related_Entities_Cloud_Widget extends Wordlift_Widget {
 		?>
 
 		<p><label for="<?php echo esc_attr( $title_id ); ?>">
-								  <?php
-									esc_html_e( 'Title:', 'wordlift' );
-									?>
-				</label>
+				<?php
+				esc_html_e( 'Title:', 'wordlift' );
+				?>
+			</label>
 			<input type="text" class="widefat"
 				   id="<?php echo esc_attr( $title_id ); ?>"
 				   name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>"
-				   value="<?php echo esc_attr( $instance['title'] ); ?>" />
+				   value="<?php echo esc_attr( $instance['title'] ); ?>"/>
 		</p>
 
 		<?php
@@ -60,7 +60,7 @@ class Wordlift_Related_Entities_Cloud_Widget extends Wordlift_Widget {
 	/**
 	 * @inheritdoc
 	 */
-    // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function update( $new_instance, $old_instance ) {
 
 		return array( 'title' => sanitize_text_field( $new_instance['title'] ) );
@@ -89,10 +89,28 @@ class Wordlift_Related_Entities_Cloud_Widget extends Wordlift_Widget {
 		echo $args['before_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		if ( $title ) {
-			echo $args['before_title'] . $title . $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $args['before_title'] . esc_html( $title ) . $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 
-		echo $cloud_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo wp_kses(
+			$cloud_html,
+			array(
+				'div'  => array( 'class' => array() ),
+				'span' => array( 'class' => array() ),
+				'a'    => array(
+					'href'       => array(),
+					'class'      => array(),
+					'style'      => array(),
+					'aria-label' => array(),
+				),
+				'ul'   => array(
+					'class' => array(),
+					'role'  => array(),
+				),
+				'li'   => array(),
+			)
+		);
+
 		echo $args['after_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 	}

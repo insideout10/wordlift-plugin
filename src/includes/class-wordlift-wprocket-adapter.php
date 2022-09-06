@@ -68,8 +68,8 @@ class Wordlift_WpRocket_Adapter {
 		$excluded_js[] = $this->get_absolute_path( Wordlift_Public::get_public_js_url() );
 		$excluded_js[] = $this->get_absolute_path( Wordlift_Public::get_cloud_js_url() );
 
-		$excluded_js[] = str_replace( home_url(), '', plugins_url( '/wordlift/js/dist/bundle.js' ) );
-		$excluded_js[] = str_replace( home_url(), '', plugins_url( '/wordlift/js/dist/wordlift-cloud.js' ) );
+		$excluded_js[] = str_replace( home_url(), '', plugin_dir_url( __DIR__ ) . '/js/dist/bundle.js' );
+		$excluded_js[] = str_replace( home_url(), '', plugin_dir_url( __DIR__ ) . '/js/dist/wordlift-cloud.js' );
 
 		return $excluded_js;
 	}
