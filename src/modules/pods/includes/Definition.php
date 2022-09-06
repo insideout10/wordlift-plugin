@@ -2,10 +2,13 @@
 
 namespace Wordlift\Modules\Pods;
 
+use Wordlift\Vocabulary\Terms_Compat;
+
 class Definition {
 
 	public function __construct() {
 		$this->register_on_all_valid_post_types();
+		$this->register_on_all_supported_taxonomies();
 	}
 
 
@@ -113,19 +116,28 @@ class Definition {
 		pods_register_group( $group, $pod['name'], $group_fields );
 	}
 
-	private function pod( $name, $object_equals, $object_type_equals ) {
+	private function pod( $name, $type, $object ) {
 		$pod = array(
 			'name'        => $name,
 			'label'       => ucwords( $name ),
 			'description' => '',
-			'type'        => $object_equals,
+			'type'        => $type,
 			'storage'     => 'meta',
-			'object'      => $object_type_equals,
+			'object'      => $object,
 		);
+
+
 
 		pods_register_type( $pod['type'], $pod['name'], $pod );
 
 		return $pod;
+	}
+
+	private function register_on_all_supported_taxonomies() {
+		$taxonomies = Terms_Compat::get_public_taxonomies();
+		foreach ( $taxonomies as $taxonomy ) {
+			 $this->register_pod( $taxonomy, 'taxonomy', $taxonomy );
+		}
 	}
 
 
@@ -233,7 +245,7 @@ class Definition {
 	private function custom_field_to_pod_field( $custom_field ) {
 
 		$name = str_replace( 'http://schema.org/', '', $custom_field['predicate'] );
-		$type = $custom_field['type'] ?? 'string';
+		$type = isset( $custom_field['type'] ) ? $custom_field['type'] : 'string';
 
 		return $this->may_be_repeatable( $custom_field, $this->get_field_by_type( $name, $type ) );
 	}
@@ -255,6 +267,8 @@ class Definition {
 			)
 		);
 	}
+
+
 
 
 }
