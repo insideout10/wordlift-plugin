@@ -18,7 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 
-
 function __wl_pods_load() {
 	// Autoloader for plugin itself.
 	if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
@@ -30,19 +29,9 @@ function __wl_pods_load() {
 	$loader->load( 'services.yml' );
 	$container_builder->compile();
 
-//	$field_definitions = $container_builder->get( Definition::class );
-//	$field_definitions->register_fields();
-
-	add_filter( 'pods_api_field_types', function ( $types ) {
-		$types[] = 'wlentity';
-		return $types;
-	} );
-
-
+	pods_register_related_object( 'wlentity', 'WordLift Entity', array() );
 }
 
 add_action( 'plugins_loaded', '__wl_pods_load' );
 
-add_action('plugins_loaded', function () {
-	require_once __DIR__ . '/PodsField_WlEntity.php';
-});
+
