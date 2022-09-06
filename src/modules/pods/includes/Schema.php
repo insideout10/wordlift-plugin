@@ -47,8 +47,15 @@ class Schema {
 	 * @return Schema_Field_Group[]
 	 */
 	private function get_fields_for_term( $identifier ) {
-		$term_entity_types = get_term_meta( $identifier, \Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
-		return array();
+		$term_entity_types = get_term_meta( (int) $identifier, \Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		$schema_classes    = \Wordlift_Schema_Service::get_instance();
+		return array_map(
+			function ( $schema_type ) use ( $schema_classes ) {
+				$data = $schema_classes->get_schema( strtolower( $schema_type ) );
+				return new Schema_Field_Group( $schema_type, $data['custom_fields'] );
+			},
+			$term_entity_types
+		);
 	}
 
 
