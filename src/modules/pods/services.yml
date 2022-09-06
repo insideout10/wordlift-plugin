@@ -1,0 +1,3 @@
+services:
+  Wordlift\Modules\Pods\Definition:
+    class: \Wordlift\Modules\Pods\Definition

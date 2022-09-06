@@ -11,6 +11,7 @@
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Wordlift\Modules\Pods\Definition;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -28,6 +29,9 @@ function __wl_pods_load() {
 	$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
 	$loader->load( 'services.yml' );
 	$container_builder->compile();
+
+	$field_definitions = $container_builder->get( Definition::class );
+	$field_definitions->register_fields();
 
 }
 
