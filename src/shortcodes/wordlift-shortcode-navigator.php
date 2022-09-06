@@ -20,9 +20,18 @@ use Wordlift\Widgets\Srcset_Util;
 function wl_shortcode_navigator_data() {
 
 	// Create the cache key.
-	$cache_key_params = $_REQUEST; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	unset( $cache_key_params['uniqid'] );
-	$cache_key = array( 'request_params' => $cache_key_params );
+	$cache_params = array_intersect_key(
+		$_REQUEST, // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		array(
+			'limit'      => 1,
+			'offset'     => 1,
+			'sort'       => 1,
+			'post_types' => 1,
+			'post_id'    => 1,
+		)
+	);
+
+	$cache_key = array( 'request_params' => $cache_params );
 
 	// Create the TTL cache and try to get the results.
 	$cache         = new Ttl_Cache( 'navigator', 8 * 60 * 60 ); // 8 hours.
