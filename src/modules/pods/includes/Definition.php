@@ -16,7 +16,7 @@ class Definition {
 		$schema_classes = \Wordlift_Schema_Service::get_instance();
 		// @TODO: change this.
 
-		$schema         = array( 'Person' => $schema_classes->get_schema('person') );
+		$schema = array( 'Person' => $schema_classes->get_schema( 'person' ) );
 
 		foreach ( $schema as $type => $data ) {
 			if ( is_array( $data['custom_fields'] ) && count( $data['custom_fields'] ) > 0 ) {
@@ -125,15 +125,15 @@ class Definition {
 
 	private function get_field_by_type( $name, $type ) {
 
-		if ( $type === 'uri' ) {
+		if ( 'uri' === $type ) {
 			return $this->website( $name );
-		} elseif ( $type === 'string' ) {
+		} elseif ( 'string' === $type ) {
 			return $this->text( $name );
-		} elseif ( $type === 'double' ) {
+		} elseif ( 'double' === $type ) {
 			return $this->number( $name, 2 );
-		} elseif ( $type === 'date' ) {
+		} elseif ( 'date' === $type ) {
 			return $this->datetime( $name );
-		} elseif ( $type === 'multiline' ) {
+		} elseif ( 'multiline' === $type ) {
 			return $this->multiline( $name );
 		} else {
 			return $this->text( $name );
@@ -210,8 +210,7 @@ class Definition {
 	}
 
 	private function may_be_repeatable( $custom_field, $field ) {
-		$repeatable = isset( $custom_field['constraints']['cardinality'] ) &&
-		              $custom_field['constraints']['cardinality'] === INF;
+		$repeatable = isset( $custom_field['constraints']['cardinality'] ) && INF === $custom_field['constraints']['cardinality'];
 		if ( $repeatable ) {
 			return $this->repeatable( $field );
 		}
