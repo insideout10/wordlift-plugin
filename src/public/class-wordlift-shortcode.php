@@ -43,8 +43,8 @@ abstract class Wordlift_Shortcode {
 	 */
 	protected function enqueue_scripts() {
 
-		wp_enqueue_script( 'angularjs', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js', array(), WORDLIFT_VERSION, false );
-		wp_enqueue_script( 'angularjs-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js', array( 'angularjs' ), WORDLIFT_VERSION, false );
+		wp_enqueue_script( 'angularjs', plugin_dir_url( dirname( __FILE__ ) ) . '/js/3rdparty/angular.min.js', array(), '1.3.11', false );
+		wp_enqueue_script( 'angularjs-touch', plugin_dir_url( dirname( __FILE__ ) ) . '/js/3rdparty/angular-touch.min.js', array( 'angularjs' ), '1.3.11', false );
 		wp_enqueue_script(
 			'wordlift-ui',
 			dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-ui' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.js',
