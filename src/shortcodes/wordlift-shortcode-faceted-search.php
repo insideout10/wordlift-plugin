@@ -20,9 +20,21 @@ use Wordlift\Widgets\Srcset_Util;
  */
 function wl_shortcode_faceted_search( $request ) {
 
+	// Filter the allowed parameters for caching.
+	$cache_params = array_intersect_key(
+		$_GET, // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		array(
+			'post_id'    => 1,
+			'post_types' => 1,
+			'limit'      => 1,
+			'amp'        => 1,
+			'sort'       => 1,
+		)
+	);
+
 	// Create the cache key.
 	$cache_key = array(
-		'request_params' => $_GET, //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		'request_params' => $cache_params,
 	);
 
 	// Create the TTL cache and try to get the results.
