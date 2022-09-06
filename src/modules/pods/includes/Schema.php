@@ -47,6 +47,7 @@ class Schema {
 	 * @return Schema_Field_Group[]
 	 */
 	private function get_fields_for_term( $identifier ) {
+		$term_entity_types = get_term_meta( $identifier, \Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		return array();
 	}
 
