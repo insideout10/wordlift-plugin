@@ -53,7 +53,7 @@ class Entity_Type {
 		?>
 		<?php wp_nonce_field( 'wordlift_vocabulary_terms_entity_type', 'wordlift_vocabulary_terms_entity_type_nonce' ); ?>
 		<tr class="form-field term-name-wrap">
-			<th scope="row"><label for="wl-entity-type__checklist">%s</label></th>
+			<th scope="row"><label for="wl-entity-type__checklist"><?php esc_html_e( 'Entity Types', 'wordlift' ); ?></label></th>
 			<td>
 				<div id="wl-entity-type__checklist">
 					<?php
@@ -89,7 +89,7 @@ class Entity_Type {
 		$entity_types = array();
 		if ( isset( $_REQUEST['tax_input'][ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$entity_types_data = filter_var_array( $_REQUEST, array( 'tax_input' => array( 'flags' => FILTER_REQUIRE_ARRAY ) ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$entity_types      = $entity_types_data[ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ];
+			$entity_types      = $entity_types_data['tax_input'][ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ];
 		}
 		if ( isset( $entity_types ) && is_array( $entity_types ) ) {
 			// Save the taxonomies.
