@@ -7,8 +7,11 @@ use Wordlift\Vocabulary\Terms_Compat;
 class Definition {
 
 	public function __construct() {
-		$this->register_on_all_valid_post_types();
-		$this->register_on_all_supported_taxonomies();
+
+		add_action( 'admin_init', function () {
+			$this->register_on_all_valid_post_types();
+			$this->register_on_all_supported_taxonomies();
+		} );
 	}
 
 
@@ -134,7 +137,7 @@ class Definition {
 	private function register_on_all_supported_taxonomies() {
 		$taxonomies = Terms_Compat::get_public_taxonomies();
 		foreach ( $taxonomies as $taxonomy ) {
-			$this->register_pod( $taxonomy, 'taxonomies', $taxonomy );
+			$this->register_pod( $taxonomy, 'taxonomy', $taxonomy );
 		}
 	}
 
