@@ -30,7 +30,7 @@ function __wl_pods_load() {
 	$loader->load( 'services.yml' );
 	$container_builder->compile();
 
-	$field_definitions = $container_builder->get( Definition::class );
+//	$field_definitions = $container_builder->get( Definition::class );
 //	$field_definitions->register_fields();
 
 	add_filter( 'pods_api_field_types', function ( $types ) {
