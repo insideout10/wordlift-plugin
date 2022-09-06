@@ -151,7 +151,7 @@ class Definition {
 	}
 
 
-	private function get_field_by_type( $name, $type ) {
+	private function get_field_by_type( $name, $type, $field_data ) {
 
 		if ( 'uri' === $type ) {
 			return $this->website( $name );
@@ -257,7 +257,7 @@ class Definition {
 		$name = str_replace( 'http://schema.org/', '', $custom_field['predicate'] );
 		$type = isset( $custom_field['type'] ) ? $custom_field['type'] : 'string';
 
-		return $this->may_be_repeatable( $custom_field, $this->get_field_by_type( $name, $type ) );
+		return $this->may_be_repeatable( $custom_field, $this->get_field_by_type( $name, $type, $custom_field ) );
 	}
 
 	private function wordlift_css_class( $field ) {
