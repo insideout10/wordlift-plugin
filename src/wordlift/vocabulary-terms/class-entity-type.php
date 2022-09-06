@@ -98,7 +98,6 @@ class Entity_Type {
 			foreach ( $entity_types as $entity_type ) {
 				add_term_meta( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, (string) $entity_type );
 			}
-            var_dump($term_id);
 		}
 	}
 
