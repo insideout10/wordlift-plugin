@@ -9,6 +9,8 @@
 
 namespace Wordlift\Entity\Query;
 
+use Wordlift\Content\Wordpress\Wordpress_Content;
+use Wordlift\Object_Type_Enum;
 
 class Entity_Query_Service {
 
@@ -47,7 +49,7 @@ class Entity_Query_Service {
 
 		return $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT t.term_id as id, t.name as title FROM $wpdb->terms t INNER JOIN $wpdb->termmeta tm
+				"SELECT DISTINCT t.term_id as id, t.name as title, tm.meta_value as schema_type_name FROM $wpdb->terms t INNER JOIN $wpdb->termmeta tm
     ON t.term_id=tm.term_id WHERE t.name LIKE %s AND (tm.meta_key = %s AND tm.meta_value IN ($schema_types)) LIMIT %d",
 				'%' . $wpdb->esc_like( $query ) . '%',
 				\Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
@@ -57,15 +59,47 @@ class Entity_Query_Service {
 
 	}
 
+	/**
+	 * @param $results
+	 * @param $object_type
+	 *
+	 * @return  Entity[]
+	 */
+	private function transform_posts( $results ) {
+		return array_map(
+			function ( $item ) {
+				return new Entity( $item->schema_type_name, new Wordpress_Content( get_post( $item->id ) ) );
+			},
+			$results
+		);
+	}
+
+	private function transform_terms( $results ) {
+		return array_map(
+			function ( $item ) {
+				return new Entity( $item->schema_type_name, new Wordpress_Content( get_term( $item->id ) ) );
+			},
+			$results
+		);
+	}
+
+
+	/**
+	 * @param $query
+	 * @param $schema_types
+	 * @param $limit
+	 *
+	 * @return Entity[]
+	 */
 	public function query( $query, $schema_types = array(), $limit = 10 ) {
 
-		$results = $this->query_posts( $query, $schema_types, $limit );
+		$results = $this->transform_posts( $this->query_posts( $query, $schema_types, $limit ) );
 
 		if ( count( $results ) >= $limit ) {
 			return $results;
 		}
 
-		$results = array_merge( $results, $this->query_terms( $query, $schema_types, $limit ) );
+		$results = array_merge( $results, $this->transform_terms( $this->query_terms( $query, $schema_types, $limit ) ) );
 
 		return $results;
 
