@@ -10,7 +10,6 @@
 namespace Wordlift\Entity\Query;
 
 
-
 class Entity_Query_Service {
 
 
@@ -25,6 +24,7 @@ class Entity_Query_Service {
 		if ( ! isset( self::$instance ) ) {
 			self::$instance = new self();
 		}
+
 		return self::$instance;
 	}
 
@@ -35,16 +35,28 @@ class Entity_Query_Service {
 
 	private function query_terms( $query, $schema_types, $limit ) {
 		global $wpdb;
+		$schema_types = join(
+			',',
+			array_map(
+				function ( $schema_type ) {
+					return "'" . esc_sql( strtolower( $schema_type ) ) . "'";
+				},
+				$schema_types
+			)
+		);
+
 		return $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT t.term_id as id, t.name as title FROM $wpdb->terms t WHERE t.name LIKE %s",
-				'%' . $wpdb->esc_like( $query ) . '%'
+				"SELECT t.term_id as id, t.name as title FROM $wpdb->terms t INNER JOIN $wpdb->termmeta tm
+    ON t.term_id=tm.term_id WHERE t.name LIKE %s AND (tm.meta_key = %s AND tm.meta_value IN ($schema_types))",
+				'%' . $wpdb->esc_like( $query ) . '%',
+				\Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME
 			)
 		);
 
 	}
 
-	public function query( $query, $schema_types = array() , $limit = 10 ) {
+	public function query( $query, $schema_types = array(), $limit = 10 ) {
 
 		$results = $this->query_posts( $query, $schema_types, $limit );
 
@@ -52,7 +64,7 @@ class Entity_Query_Service {
 			return $results;
 		}
 
-		$results = array_merge( $results, $this->query_terms($query, $schema_types, $limit ) );
+		$results = array_merge( $results, $this->query_terms( $query, $schema_types, $limit ) );
 
 		return $results;
 
