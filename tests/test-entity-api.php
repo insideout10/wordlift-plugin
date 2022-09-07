@@ -68,4 +68,18 @@ class Wordlift_Entity_Api_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
+	public function test_get_entity_by_title_restrict_by_schema_types() {
+		$post_id_1 = wl_create_post( 'Lorem Ipsum', 'test-entity-2', 'Test Entity', 'draft', Wordlift_Entity_Service::TYPE_NAME );
+		$post_id_2 = wl_create_post( 'Lorem Ipsum', 'test-entity-2', 'Test Entity', 'draft', Wordlift_Entity_Service::TYPE_NAME );
+		$post_id_3 = wl_create_post( 'Lorem Ipsum', 'test-entity-2', 'Test Entity', 'draft', Wordlift_Entity_Service::TYPE_NAME );
+
+		Wordlift_Entity_Type_Service::get_instance()->set( $post_id_1, 'http://schema.org/Thing' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $post_id_2, 'http://schema.org/Thing' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $post_id_2, 'http://schema.org/Organization' );
+
+		$results = wl_entity_get_by_title( 'Test Entity', true, true, 10, array('Thing') );
+
+		$this->assertCount( 2, $results );
+	}
+
 }

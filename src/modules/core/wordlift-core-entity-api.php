@@ -18,7 +18,7 @@
  *
  * @return array An array of WP_Post instances.
  */
-function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias = true, $limit = false ) {
+function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias = true, $limit = false, $schema_types = array() ) {
 
 	global $wpdb;
 
