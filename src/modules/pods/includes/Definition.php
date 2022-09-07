@@ -6,7 +6,7 @@ use Wordlift\Vocabulary\Terms_Compat;
 
 class Definition {
 
-	private static $pod_id = 1000;
+	private static $pod_id = 100;
 
 	private static $field_id = 1000;
 
@@ -30,10 +30,10 @@ class Definition {
 		$this->schema = $schema;
 
 		add_action(
-			'admin_init',
+			'init',
 			function () {
 				$this->register_on_all_valid_post_types();
-				$this->register_on_all_supported_taxonomies();
+				//$this->register_on_all_supported_taxonomies();
 			}
 		);
 	}
