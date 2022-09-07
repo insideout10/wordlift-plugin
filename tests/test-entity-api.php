@@ -108,11 +108,11 @@ class Wordlift_Entity_Api_Test extends Wordlift_Unit_Test_Case {
 		$term_data_1 = wp_create_term( 'my term with entity type set to Product');
 		add_term_meta( $term_data_1['term_id'], Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, 'product' );
 
-		$term_data_2 = wp_create_term( 'my term with entity type set to Product');
+		$term_data_2 = wp_create_term( 'my term with entity type set to thing');
 		add_term_meta( $term_data_2['term_id'], Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, 'thing' );
 
 		$entity_query_service = Entity_Query_Service::get_instance();
-		$results = $entity_query_service->query( 'my term with entity type set to Product', array('product'), 10 );
+		$results = $entity_query_service->query( 'my term with entity type set to', array('product'), 10 );
 
 		$this->assertCount( 1, $results );
 	}
