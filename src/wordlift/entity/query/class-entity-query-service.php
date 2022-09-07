@@ -29,7 +29,31 @@ class Entity_Query_Service {
 	}
 
 
-	public function query( $entity_title, $limit = 10, $schema_types = array() ) {
+	private function query_posts( $query, $schema_types, $limit ) {
+		return wl_entity_get_by_title( $query, true, true, $limit, $schema_types );
+	}
+
+	private function query_terms( $query, $schema_types, $limit ) {
+		global $wpdb;
+		return $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT t.term_id as id, t.name as title, "
+			)
+		);
+
+	}
+
+	public function query( $query, $schema_types = array() , $limit = 10 ) {
+
+		$results = $this->query_posts( $query, $schema_types, $limit );
+
+		if ( count( $results ) >= $limit ) {
+			return $results;
+		}
+
+		$results = array_merge( $results, $this->query_terms($query, $schema_types, $limit ) );
+
+		return $results;
 
 	}
 

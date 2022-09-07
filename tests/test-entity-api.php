@@ -4,6 +4,8 @@
  * Test Entity functions from the modules/core/wordlift_core_entity.php file.
  */
 
+use Wordlift\Entity\Query\Entity_Query_Service;
+
 /**
  * Class EntityTest
  * @group entity
@@ -98,6 +100,18 @@ class Wordlift_Entity_Api_Test extends Wordlift_Unit_Test_Case {
 		$results = wl_entity_get_by_title( 'Lorem Ipsum', true, true, 10, array( 'Thing' ) );
 
 		$this->assertCount( 2, $results );
+	}
+
+
+	public function test_term_entity_restrict_by_title() {
+
+		$term_data = wp_create_term( 'my term with entity type set to Product');
+		add_term_meta( $term_data['term_id'], Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, 'product' );
+
+		$entity_query_service = Entity_Query_Service::get_instance();
+		$results = $entity_query_service->query( 'my term with entity type set to Product', array('product'), 10 );
+
+		$this->assertCount( 1, $results );
 	}
 
 }
