@@ -6,6 +6,20 @@ use Wordlift\Vocabulary\Terms_Compat;
 
 class Definition {
 
+	private static $pod_id = 1000;
+
+	private static $field_id = 1000;
+
+	private static function increment_and_get_pod_id() {
+		self::$pod_id += 1;
+		return self::$pod_id;
+	}
+
+	private static function increment_and_get_field_id() {
+		self::$field_id += 1;
+		return self::$field_id;
+	}
+
 	/**
 	 * @var Schema
 	 */
@@ -168,6 +182,7 @@ class Definition {
 			'description' => '',
 			'type'        => $type,
 			'storage'     => 'meta',
+			'id' => self::increment_and_get_pod_id(),
 			'object'      => $object,
 		);
 
@@ -291,7 +306,8 @@ class Definition {
 		$name = str_replace( 'http://schema.org/', '', $custom_field['predicate'] );
 		$type = isset( $custom_field['type'] ) ? $custom_field['type'] : 'string';
 
-		return $this->may_be_repeatable( $custom_field, $this->get_field_by_type( $name, $type, $custom_field ) );
+		return $this->may_be_repeatable( $custom_field, $this->get_field_by_type( $name, $type, $custom_field ) )
+			+ array( 'id' => self::increment_and_get_field_id(), 'pod_id' => self::$pod_id );
 	}
 
 	private function wordlift_css_class( $field ) {
