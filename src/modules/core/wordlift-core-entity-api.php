@@ -69,6 +69,18 @@ function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias =
 				  // Ensure we don't load entities from the trash, see https://github.com/insideout10/wordlift-plugin/issues/278.
 				  . "    AND p.post_status != 'trash'";
 
+		if ( $schema_types ) {
+			$query .= ' AND t.name IN (' . join(
+					',',
+					array_map(
+						function ( $schema_type ) {
+							return "'" . esc_sql( $schema_type ) . "'";
+						},
+						$schema_types
+					)
+				) . ')';
+		}
+
 		$params = array_merge(
 			$params,
 			array(
@@ -77,6 +89,8 @@ function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias =
 				Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 			)
 		);
+
+
 	}
 
 	if ( $limit ) {
