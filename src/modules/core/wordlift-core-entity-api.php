@@ -22,6 +22,8 @@ function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias =
 
 	global $wpdb;
 
+
+
 	// Search by substring
 	if ( $autocomplete ) {
 		$title = '%' . $title . '%';
@@ -42,6 +44,12 @@ function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias =
 		$title,
 		Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 	);
+
+	if ( $schema_types ) {
+		$query .= " AND t.name IN (" . join(",", array_map(function ( $schema_type) {
+				return "'" . esc_sql( $schema_type ) . "'";
+			}, $schema_types ) ) .")";
+	}
 
 	if ( $include_alias ) {
 
@@ -66,6 +74,8 @@ function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias =
 			)
 		);
 	}
+
+
 
 	if ( $limit ) {
 		$query   .= ' LIMIT %d';
