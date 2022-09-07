@@ -37,7 +37,8 @@ class Entity_Query_Service {
 		global $wpdb;
 		return $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT t.term_id as id, t.name as title, "
+				"SELECT t.term_id as id, t.name as title FROM $wpdb->terms t WHERE t.name = %s",
+				$query
 			)
 		);
 
