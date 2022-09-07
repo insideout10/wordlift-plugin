@@ -290,7 +290,7 @@ class Wl_Metabox_Field implements Field {
 	 */
 	public function html_wrapper_open() {
 
-		return "<div class='wl-field' data-cardinality='$this->cardinality'>";
+		return sprintf( '<div class="wl-field" data-cardinality="%s">', esc_attr( $this->cardinality ) );
 	}
 
 	/**
@@ -347,7 +347,7 @@ class Wl_Metabox_Field implements Field {
 	 */
 	protected function get_heading_html() {
 
-		return "<h3>$this->label</h3>";
+		return sprintf( '<h3>%s</h3>', esc_html( $this->label ) );
 	}
 
 	/**
@@ -425,7 +425,7 @@ class Wl_Metabox_Field implements Field {
 
 		// If cardinality allows it, print button to add new values.
 		if ( $count < $this->cardinality ) {
-			return '<button class="button wl-add-input wl-button wl-add-input--sameas ' . $class . '" type="button">' . esc_html( $label ) . '</button>';
+			return '<button class="button wl-add-input wl-button wl-add-input--sameas ' . esc_attr( $class ) . '" type="button">' . esc_html( $label ) . '</button>';
 		}
 
 		// Return an empty string.
@@ -440,7 +440,7 @@ class Wl_Metabox_Field implements Field {
 	 * @return string The html code fragment.
 	 */
 	public function html_input( $value ) {
-        // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@ob_start();
 		?>
 		<div class="wl-input-wrapper">

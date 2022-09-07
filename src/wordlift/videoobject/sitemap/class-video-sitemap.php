@@ -57,7 +57,7 @@ class Video_Sitemap {
 			$this->sitemap_cache->put( self::XML_CACHE_KEY, $xml );
 		}
 
-		echo $xml; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $xml; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- It's a `text/xml` output (see `Content-Type: text/xml` header above).
 		die();
 	}
 

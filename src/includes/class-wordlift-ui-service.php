@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Provides functions to draw the UI.
  *
@@ -80,8 +81,29 @@ class Wordlift_UI_Service {
 	 */
 	public static function print_template( $element_id, $body ) {
 
-		echo( self::get_template_html( $element_id, $body ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-
+		echo wp_kses(
+			self::get_template_html( $element_id, $body ),
+			array(
+				'div'    => array( 'class' => array() ),
+				'label'  => array(
+					'class' => array(),
+					'id'    => array(),
+					'for'   => array(),
+				),
+				'input'  => array(
+					'name'  => array(),
+					'size'  => array(),
+					'value' => array(),
+					'id'    => array(),
+					'type'  => array(),
+				),
+				'button' => array( 'class' => array() ),
+				'script' => array(
+					'id'   => array(),
+					'type' => array(),
+				),
+			)
+		);
 	}
 
 }

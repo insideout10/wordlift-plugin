@@ -86,10 +86,12 @@ class Wordlift_Related_Entities_Cloud_Widget extends Wordlift_Widget {
 		// Standard filter all widgets should apply
 		$title = apply_filters( 'widget_title', $title, $instance, $this->id_base );
 
-		echo $args['before_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo wp_kses( $args['before_widget'], wp_kses_allowed_html( 'post' ) );
 
 		if ( $title ) {
-			echo $args['before_title'] . esc_html( $title ) . $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo wp_kses( $args['before_title'], wp_kses_allowed_html( 'post' ) );
+			echo esc_html( $title );
+			echo wp_kses( $args['after_title'], wp_kses_allowed_html( 'post' ) );
 		}
 
 		echo wp_kses(
@@ -111,7 +113,7 @@ class Wordlift_Related_Entities_Cloud_Widget extends Wordlift_Widget {
 			)
 		);
 
-		echo $args['after_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo wp_kses( $args['after_widget'], wp_kses_allowed_html( 'post' ) );
 
 	}
 

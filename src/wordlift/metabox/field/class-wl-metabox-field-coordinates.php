@@ -43,17 +43,17 @@ class Wl_Metabox_Field_Coordinates extends Wl_Metabox_Field {
 		$data = $this->data;
 		// TODO: We temporary use here 0,0 as default coordinates for the marker, but if no coordinates are given we
 		// want to use the current user location for the marker.
-		$coordinates = ( ! empty( $data['latitude'] ) && ! empty( $data['longitude'] ) ? sprintf( '[%f,%f]', $data['latitude'], $data['longitude'] ) : '[0,0]' );
+		$coordinates = ( ! empty( $data['latitude'] ) && ! empty( $data['longitude'] ) ? sprintf( '[%f,%f]', (float) $data['latitude'], (float) $data['longitude'] ) : '[0,0]' );
 		$map_init    = '[0,0]' === $coordinates
 			? 'locate( {setView: true, maxZoom: 16} )'
-			: sprintf( 'setView( [%f,%f], 9 )', $data['latitude'], $data['longitude'] );
+			: sprintf( 'setView( [%f,%f], 9 )', (float) $data['latitude'], (float) $data['longitude'] );
 
 		// Print input fields
-		$html .= '<label for="wl_place_lat">' . __( 'Latitude', 'wordlift' ) . '</label>';
-		$html .= '<input type="text" id="wl_place_lat" name="wl_metaboxes[coordinates][]" value="' . $data['latitude'] . '" style="width:100%" />';
+		$html .= '<label for="wl_place_lat">' . esc_html__( 'Latitude', 'wordlift' ) . '</label>';
+		$html .= '<input type="text" id="wl_place_lat" name="wl_metaboxes[coordinates][]" value="' . esc_attr( $data['latitude'] ) . '" style="width:100%" />';
 
-		$html .= '<label for="wl_place_lon">' . __( 'Longitude', 'wordlift' ) . '</label>';
-		$html .= '<input type="text" id="wl_place_lon" name="wl_metaboxes[coordinates][]" value="' . $data['longitude'] . '" style="width:100%" />';
+		$html .= '<label for="wl_place_lon">' . esc_html__( 'Longitude', 'wordlift' ) . '</label>';
+		$html .= '<input type="text" id="wl_place_lon" name="wl_metaboxes[coordinates][]" value="' . esc_attr( $data['longitude'] ) . '" style="width:100%" />';
 
 		// Show Leaflet map to pick coordinates
 		$element_id = uniqid( 'wl-geo-map-' );

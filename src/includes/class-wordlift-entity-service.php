@@ -162,7 +162,7 @@ class Wordlift_Entity_Service {
 	 * @param integer $post_id An entity post id.
 	 *
 	 * @param string  $default The default classification scope, `what` if not
-	 *                           provided.
+	 *                            provided.
 	 *
 	 * @return string Returns a classification scope (e.g. 'what').
 	 * @since 3.5.0
@@ -446,7 +446,7 @@ class Wordlift_Entity_Service {
 	 */
 	private function get_alternative_label_input( $value = '' ) {
 
-		return sprintf( self::ALTERNATIVE_LABEL_INPUT_TEMPLATE, esc_attr( $value ), __( 'Delete', 'wordlift' ) );
+		return sprintf( self::ALTERNATIVE_LABEL_INPUT_TEMPLATE, esc_attr( $value ), esc_html__( 'Delete', 'wordlift' ) );
 	}
 
 	/**

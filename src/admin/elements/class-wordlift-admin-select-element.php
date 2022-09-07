@@ -44,7 +44,9 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 				id="<?php echo esc_attr( $params['id'] ); ?>"
 				name="<?php echo esc_attr( $params['name'] ); ?>"
 				class="<?php echo esc_attr( $params['class'] ); ?>"
-			<?php echo $this->get_data_attributes( $params['data'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php
+			echo $this->get_data_attributes( $params['data'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Printing additional attributes, attributes are escaped in `get_data_attributes`.
+			?>
 		>
 			<?php $this->render_options( $params ); ?>
 		</select>
@@ -65,9 +67,8 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 	 *
 	 * @param string|bool $description The field description or false if not set.
 	 *
-	 * @since 3.18.0
-	 *
 	 * @return string|void The description or null if not set.
+	 * @since 3.18.0
 	 */
 	public function get_description( $description ) {
 		// Bail if the description is not set.
@@ -93,9 +94,8 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 	 *
 	 * @param string $notice The notice to add.
 	 *
-	 * @since 3.18.0
-	 *
 	 * @return void
+	 * @since 3.18.0
 	 */
 	public function print_notice( $notice ) {
 		// Bail if the notice is empty.
@@ -118,9 +118,8 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 	 *
 	 * @param array $pre_attributes Array of all data attributes.
 	 *
-	 * @since 3.18.0
-	 *
 	 * @return string $output The data attributes or empty string
+	 * @since 3.18.0
 	 */
 	private function get_data_attributes( $pre_attributes ) {
 		// The output.
@@ -130,9 +129,9 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 		 * Filter: 'wl_admin_select_element_data_attributes' - Allow third
 		 * parties to modify the field data attrbutes.
 		 *
-		 * @since  3.18.0
+		 * @param array $pre_attributes Array of the field data attributes.
 		 *
-		 * @param  array $pre_attributes Array of the field data attributes.
+		 * @since  3.18.0
 		 */
 		$attributes = apply_filters( 'wl_admin_select_element_data_attributes', $pre_attributes );
 
@@ -145,7 +144,7 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 		foreach ( $attributes as $name => $value ) {
 			$output .= sprintf(
 				'data-%s="%s" ',
-				$name,
+				esc_html( $name ),
 				esc_attr( $value )
 			);
 		}
@@ -157,9 +156,8 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 	/**
 	 * Prints specific resources(scripts/styles) if the select requires them.
 	 *
-	 * @since 3.18.0
-	 *
 	 * @return void
+	 * @since 3.18.0
 	 */
 	protected function enqueue_resources() {
 
@@ -168,11 +166,10 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 	/**
 	 * Abstract method that renders the select options.
 	 *
-	 * @since 3.18.0
-	 *
 	 * @param array $params Select params.
 	 *
 	 * @return Prints the select options.
+	 * @since 3.18.0
 	 */
 	abstract public function render_options( $params );
 

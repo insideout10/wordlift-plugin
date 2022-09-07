@@ -104,15 +104,24 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 	 */
 	protected function get_add_button_html( $count ) {
 
-		$placeholder = esc_attr_x( 'Type here the URL of an equivalent entity from another dataset.', 'sameAs metabox input', 'wordlift' );
+		return sprintf(
+			'
+            <button type="button" class="wl-add-input wl-add-input--link">%1$s</button>
+	        <div style="display: none;">
+	            <div class="wl-input-wrapper">
+	                <input type="text" id="%2$s" name="wl_metaboxes[%2$s][]" placeholder="%3$s" />
+	                <button type="button" class="wl-remove-input wl-remove-input--sameas"></button>
+	            </div>
+            </div>
+            <fieldset id="wl-input-container">%4$s</fieldset>
+            ',
+			esc_html__( 'Click here to manually add URLs', 'wordlift' ),
+			esc_attr( $this->meta_name ),
+			esc_attr_x( 'Type here the URL of an equivalent entity from another dataset.', 'sameAs metabox input', 'wordlift' ),
+			$this->get_stored_values_html( $count )
+		) .
+			   parent::get_add_custom_button_html( $count, 'Add Another URL', 'hide' );
 
-		return '<button type="button" class="wl-add-input wl-add-input--link">' . esc_html__( 'Click here to manually add URLs', 'wordlift' ) . '</button>'
-			. '<div style="display: none;"><div class="wl-input-wrapper">'
-			. "<input type='text' id='$this->meta_name' name='wl_metaboxes[$this->meta_name][]' placeholder='$placeholder' />"
-			. '<button type="button" class="wl-remove-input wl-remove-input--sameas"></button>'
-			. '</div></div>'
-			. '<fieldset id="wl-input-container">' . $this->get_stored_values_html( $count ) . '</fieldset>'
-			. parent::get_add_custom_button_html( $count, 'Add Another URL', 'hide' );
 	}
 
 	/**
@@ -128,7 +137,7 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 		 * @return bool
 		 * @since 3.29.1
 		 */
-        // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( apply_filters( 'wl_feature__enable__metabox-sameas', true ) ) {
 
 			// Open main <div> for the Field.
@@ -157,7 +166,7 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 	 * @inheritdoc
 	 */
 	public function html_input( $value ) {
-        // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@ob_start();
 		?>
 		<div class="wl-input-wrapper wl-input-wrapper-readonly">

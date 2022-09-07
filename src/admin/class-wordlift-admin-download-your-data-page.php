@@ -137,7 +137,7 @@ class Wordlift_Admin_Download_Your_Data_Page {
 		 * Echo the response body. As this is not HTML we can not escape it
 		 * and neither sanitize it, therefor turning off the linter notice.
 		 */
-		echo $body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- This is an RDF file which is downloaded to the client (see the `Content-Disposition: attachment` header above).
 
 		// Exit in both cases.
 		exit;

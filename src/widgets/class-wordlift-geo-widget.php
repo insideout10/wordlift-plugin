@@ -30,16 +30,18 @@ class WordLift_Geo_Widget extends WP_Widget {
 		$title = apply_filters( 'widget_title', $instance['title'] );
 
 		// Print the HTML output.
-		echo $args['before_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo wp_kses( $args['before_widget'], wp_kses_allowed_html( 'post' ) );
 		if ( ! empty( $title ) ) {
-			echo $args['before_title'] . $title . $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo wp_kses( $args['before_title'], wp_kses_allowed_html( 'post' ) );
+			echo esc_html( $title );
+			echo wp_kses( $args['after_title'], wp_kses_allowed_html( 'post' ) );
 		}
 
 		// Print the geomap shortcode
 		// ( global = true - because it is not post-specific)
 		echo do_shortcode( '[wl_geomap global=true]' );
 
-		echo $args['after_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo wp_kses( $args['after_widget'], wp_kses_allowed_html( 'post' ) );
 	}
 
 	/**
@@ -73,7 +75,7 @@ class WordLift_Geo_Widget extends WP_Widget {
 	 * @param array $new_instance The new options
 	 * @param array $old_instance The previous options
 	 */
-    // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function update( $new_instance, $old_instance ) {
 
 		$instance          = array();
