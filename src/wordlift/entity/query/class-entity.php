@@ -3,6 +3,7 @@
 namespace Wordlift\Entity\Query;
 
 use Wordlift\Content\Wordpress\Wordpress_Content;
+use Wordlift\Object_Type_Enum;
 
 class Entity {
 
@@ -31,6 +32,16 @@ class Entity {
 
 	public function get_schema_type() {
 		return $this->schema_type;
+	}
+
+	public function get_title() {
+		if ( Object_Type_Enum::POST === $this->content->get_object_type_enum() ) {
+			return $this->content->get_bag()->post_title;
+		}
+		if ( Object_Type_Enum::TERM === $this->content->get_object_type_enum() ) {
+			return $this->content->get_bag()->name;
+		}
+		return '';
 	}
 
 

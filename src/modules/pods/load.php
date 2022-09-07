@@ -8,6 +8,8 @@
  * @package wordlift
  */
 
+use Wordlift\Content\Wordpress\Wordpress_Content;
+use Wordlift\Entity\Query\Entity_Query_Service;
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -41,7 +43,7 @@ add_filter(
 		return true;
 
 		return isset( $field_options['pick_object'] ) && is_string( $field_options['pick_object'] ) &&
-		   'wlentity' === $field_options['pick_object'];
+		       'wlentity' === $field_options['pick_object'];
 	},
 	10,
 	4
@@ -65,25 +67,25 @@ add_filter(
 			return $data;
 		}
 
-		$query    = sanitize_text_field( wp_unslash( $_REQUEST['query'] ) );
-		$entities = wl_entity_get_by_title( $query, true, true, 10 );
+		$query         = sanitize_text_field( wp_unslash( $_REQUEST['query'] ) );
+		$query_service = Entity_Query_Service::get_instance();
+
 
 		return array_map(
 			function ( $item ) {
 
-				/**
-				 * @var $item \WP_Post
-				 */
+				$content = $item->get_content();
+
 				return array(
-					'id'       => $item->id,
-					'icon'     => 'https:\/\/wordlift.localhost\/wp-content\/plugins\/wordlift\/images\/svg\/wl-vocabulary-icon.svg',
-					'name'     => $item->title . ' (' . $item->schema_type_name . ')',
-					//          'edit_link' => get_edit_post_link( $item->ID ),
-					//          'link'      => get_permalink( $item->ID ),
-					'selected' => false,
+					'id'        => $content->get_id(),
+					'icon'      => 'https:\/\/wordlift.localhost\/wp-content\/plugins\/wordlift\/images\/svg\/wl-vocabulary-icon.svg',
+					'name'      => $item->get_title() . ' (' . $item->get_schema_type() . ')',
+					'edit_link' => $content->get_edit_link(),
+					'link'      => $content->get_permalink(),
+					'selected'  => false,
 				);
 			},
-			$entities
+			$query_service->query( $query, array( 'Thing' ), 10 )
 		);
 
 	},
