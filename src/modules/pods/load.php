@@ -50,7 +50,7 @@ add_filter( 'pods_field_pick_data_ajax', function ( $data, $name, $_, $field ) {
 	}
 
 	$query    = sanitize_text_field( wp_unslash( $_REQUEST['query'] ) );
-	$entities = wl_entity_get_by_title( $query, true );
+	$entities = wl_entity_get_by_title( $query, true, true, 10 );
 
 	return array_map( function ( $item ) {
 //		var_dump($item);

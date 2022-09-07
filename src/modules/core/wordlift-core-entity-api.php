@@ -14,10 +14,11 @@
  *
  * @param bool                               $autocomplete
  * @param bool                               $include_alias
+ * @param int $limit Limit the results
  *
  * @return array An array of WP_Post instances.
  */
-function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias = true ) {
+function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias = true, $limit = false ) {
 
 	global $wpdb;
 
@@ -64,6 +65,11 @@ function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias =
 				Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 			)
 		);
+	}
+
+	if ( $limit ) {
+		$query   .= ' LIMIT %d';
+		$params[] = $limit;
 	}
 
 	return $wpdb->get_results(
