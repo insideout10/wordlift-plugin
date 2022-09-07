@@ -34,7 +34,7 @@ class Definition {
 	}
 
 	public function register_pod( $name, $object_equals, $object_type_equals ) {
-		$pod            = $this->pod( $name, $object_equals, $object_type_equals );
+		$pod                 = $this->pod( $name, $object_equals, $object_type_equals );
 		$schema_field_groups = $this->schema->get();
 
 		foreach ( $schema_field_groups as $schema_field_group ) {
@@ -68,6 +68,39 @@ class Definition {
 			'roles_allowed'          => 'administrator',
 			'rest_pick_response'     => 'array',
 			'rest_pick_depth'        => '1',
+		);
+	}
+
+	private function relationship( $name, $field_data ) {
+		return array(
+			'name'                          => $name,
+			'label'                         => ucwords( $name ),
+			'description'                   => '',
+			'weight'                        => 0,
+			'type'                          => 'pick',
+			'pick_object'                   => 'wlentity',
+			'sister_id'                     => '-- Select One --',
+			'rest_route'                    => '/pods/v1/fields',
+			'pick_table'                    => 'SDA',
+			'required'                      => '0',
+			'repeatable'                    => '0',
+			'pick_format_type'              => 'single',
+			'pick_format_single'            => 'autocomplete',
+			'pick_format_multi'             => 'list',
+			'pick_display_format_multi'     => 'default',
+			'pick_display_format_separator' => ', ',
+			'pick_allow_add_new'            => '1',
+			'pick_taggable'                 => '0',
+			'pick_show_icon'                => '1',
+			'pick_show_edit_link'           => '1',
+			'pick_show_view_link'           => '1',
+			'pick_limit'                    => '0',
+			'pick_user_role'                => 'Administrator',
+			'pick_post_status'              => 'publish',
+			'pick_post_author'              => '0',
+			'roles_allowed'                 => 'administrator',
+			'rest_pick_response'            => 'array',
+			'rest_pick_depth'               => '1',
 		);
 	}
 
@@ -152,8 +185,9 @@ class Definition {
 
 
 	private function get_field_by_type( $name, $type, $field_data ) {
-
-		if ( 'uri' === $type ) {
+		if ( 'uri' === $type && isset( $field_data['constraints']['uri_type'] ) ) {
+			return $this->relationship( $name, $field_data );
+		} elseif ( 'uri' === $type ) {
 			return $this->website( $name );
 		} elseif ( 'string' === $type ) {
 			return $this->text( $name );
