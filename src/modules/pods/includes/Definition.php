@@ -5,24 +5,6 @@ namespace Wordlift\Modules\Pods;
 use Wordlift\Vocabulary\Terms_Compat;
 
 class Definition {
-
-	private static $pod_id = 100;
-
-	private static $field_id = 1000;
-
-	private static function increment_and_get_pod_id() {
-		self::$pod_id += 1;
-
-		return self::$pod_id;
-	}
-
-	private static function increment_and_get_field_id() {
-		self::$field_id += 1;
-
-		return self::$field_id;
-	}
-
-
 	/**
 	 * @var Schema
 	 */
