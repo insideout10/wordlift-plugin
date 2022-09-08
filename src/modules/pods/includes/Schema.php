@@ -24,6 +24,10 @@ class Schema {
 			return $this->get_fields_for_term( $identifier );
 		}
 
+		if ( is_admin() && ! defined('DOING_AJAX') ) {
+			return array();
+		}
+
 		return $this->get_all_fields();
 
 	}
