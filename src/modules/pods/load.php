@@ -41,9 +41,13 @@ function __wl_pods_load() {
 
 add_filter(
 	'pods_form_ui_field_pick_ajax',
-	function ( $item, $name, $value, $field_options ) {
+	function ( $result, $name, $value, $field_options ) {
 
-		return isset( $field_options['pick_object'] ) && is_string( $field_options['pick_object'] ) &&
+		if ( ! isset( $field_options['pick_object'] ) ) {
+			return $result;
+		}
+
+		return  is_string( $field_options['pick_object'] ) &&
 			   'wlentity' === $field_options['pick_object'];
 	},
 	10,
