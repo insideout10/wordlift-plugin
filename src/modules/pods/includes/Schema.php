@@ -9,20 +9,20 @@ class Schema {
 	 */
 	public function get() {
 		// we need to identify the context to filter the results.
-//
-//		$identifier = isset( $_GET['post'] ) ? sanitize_text_field( wp_unslash( $_GET['post'] ) ) : '';
-//
-//		if ( $identifier ) {
-//			// If post identifier, get schema.
-//			return $this->get_fields_for_post( $identifier );
-//		}
-//
-//		$identifier = isset( $_GET['tag_ID'] ) ? sanitize_text_field( wp_unslash( $_GET['tag_ID'] ) ) : '';
-//
-//		if ( $identifier ) {
-//			// If post identifier, get schema.
-//			return $this->get_fields_for_term( $identifier );
-//		}
+
+		$identifier = isset( $_GET['post'] ) ? sanitize_text_field( wp_unslash( $_GET['post'] ) ) : '';
+
+		if ( $identifier ) {
+			// If post identifier, get schema.
+			return $this->get_fields_for_post( $identifier );
+		}
+
+		$identifier = isset( $_GET['tag_ID'] ) ? sanitize_text_field( wp_unslash( $_GET['tag_ID'] ) ) : '';
+
+		if ( $identifier ) {
+			// If post identifier, get schema.
+			return $this->get_fields_for_term( $identifier );
+		}
 
 		return $this->get_all_fields();
 

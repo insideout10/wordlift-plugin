@@ -12,13 +12,16 @@ class Definition {
 
 	private static function increment_and_get_pod_id() {
 		self::$pod_id += 1;
+
 		return self::$pod_id;
 	}
 
 	private static function increment_and_get_field_id() {
 		self::$field_id += 1;
+
 		return self::$field_id;
 	}
+
 
 	/**
 	 * @var Schema
@@ -48,7 +51,8 @@ class Definition {
 	}
 
 	public function register_pod( $name, $object_equals, $object_type_equals ) {
-		$pod                 = $this->pod( $name, $object_equals, $object_type_equals );
+		$pod_id              = intval( substr( md5( $name ), 0, 8 ) );
+		$pod                 = $this->pod( $pod_id, $name, $object_equals, $object_type_equals );
 		$schema_field_groups = $this->schema->get();
 
 		foreach ( $schema_field_groups as $schema_field_group ) {
@@ -59,7 +63,7 @@ class Definition {
 					$schema_field_group->get_schema_type(),
 					$pod,
 					$this->group_fields(
-						...$this->custom_fields_to_pod_fields( $custom_fields )
+						...$this->custom_fields_to_pod_fields( $custom_fields, $pod_id )
 					)
 				);
 			}
@@ -89,7 +93,7 @@ class Definition {
 
 		$supported_schema_types = $field_data['constraints']['uri_type'];
 
-		if ( ! is_array($supported_schema_types) ) {
+		if ( ! is_array( $supported_schema_types ) ) {
 			$supported_schema_types = array( $supported_schema_types );
 		}
 
@@ -183,14 +187,14 @@ class Definition {
 		pods_register_group( $group, $pod['name'], $group_fields );
 	}
 
-	private function pod( $name, $type, $object ) {
+	private function pod( $pod_id, $name, $type, $object ) {
 		$pod = array(
 			'name'        => $name,
 			'label'       => $this->format_label( $name ),
 			'description' => '',
 			'type'        => $type,
 			'storage'     => 'meta',
-			'id'          => self::increment_and_get_pod_id(),
+			'id'          => $pod_id,
 			'object'      => $object,
 		);
 
@@ -314,11 +318,8 @@ class Definition {
 		$name = str_replace( 'http://schema.org/', '', $custom_field['predicate'] );
 		$type = isset( $custom_field['type'] ) ? $custom_field['type'] : 'string';
 
-		return $this->may_be_repeatable( $custom_field, $this->get_field_by_type( $name, $type, $custom_field ) )
-			+ array(
-				'id'     => self::increment_and_get_field_id(),
-				'pod_id' => self::$pod_id,
-			);
+
+		return $this->may_be_repeatable( $custom_field, $this->get_field_by_type( $name, $type, $custom_field ) );
 	}
 
 	private function wordlift_css_class( $field ) {
@@ -328,11 +329,15 @@ class Definition {
 	}
 
 
-	private function custom_fields_to_pod_fields( $custom_fields ) {
+	private function custom_fields_to_pod_fields( $custom_fields, $pod_id ) {
 		return array_values(
 			array_map(
-				function ( $item ) {
-					return $this->wordlift_css_class( $this->custom_field_to_pod_field( $item ) );
+				function ( $item ) use ( $pod_id ) {
+					$name = str_replace( 'http://schema.org/', '', $item['predicate'] );
+					return $this->wordlift_css_class( $this->custom_field_to_pod_field( $item ) ) + array(
+							'pod_id' => $pod_id,
+							'id'     => intval( substr( md5( $pod_id . "_" . $name ), 0, 8 ), 16 ),
+						);
 				},
 				$custom_fields
 			)
@@ -340,7 +345,7 @@ class Definition {
 	}
 
 	private function format_label( $name ) {
-		return join( " ", array_map('ucwords', preg_split('/(?=[A-Z])/',$name) ));
+		return join( ' ', array_map( 'ucwords', preg_split( '/(?=[A-Z])/', $name ) ) );
 	}
 
 
