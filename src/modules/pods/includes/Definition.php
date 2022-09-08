@@ -86,6 +86,13 @@ class Definition {
 	}
 
 	private function relationship( $name, $field_data ) {
+
+		$supported_schema_types = $field_data['constraints']['uri_type'];
+
+		if ( ! is_array($supported_schema_types) ) {
+			$supported_schema_types = array( $supported_schema_types );
+		}
+
 		return array(
 			'name'                          => $name,
 			'label'                         => ucwords( $name ),
@@ -115,6 +122,7 @@ class Definition {
 			'roles_allowed'                 => 'administrator',
 			'rest_pick_response'            => 'array',
 			'rest_pick_depth'               => '1',
+			'supported_schema_types'        => $supported_schema_types,
 		);
 	}
 
@@ -182,7 +190,7 @@ class Definition {
 			'description' => '',
 			'type'        => $type,
 			'storage'     => 'meta',
-			'id' => self::increment_and_get_pod_id(),
+			'id'          => self::increment_and_get_pod_id(),
 			'object'      => $object,
 		);
 
@@ -307,7 +315,10 @@ class Definition {
 		$type = isset( $custom_field['type'] ) ? $custom_field['type'] : 'string';
 
 		return $this->may_be_repeatable( $custom_field, $this->get_field_by_type( $name, $type, $custom_field ) )
-			+ array( 'id' => self::increment_and_get_field_id(), 'pod_id' => self::$pod_id );
+			+ array(
+				'id'     => self::increment_and_get_field_id(),
+				'pod_id' => self::$pod_id,
+			);
 	}
 
 	private function wordlift_css_class( $field ) {

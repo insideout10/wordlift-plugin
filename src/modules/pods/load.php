@@ -85,13 +85,14 @@ add_filter(
 					'selected'  => false,
 				);
 			},
-			$query_service->query( $query, array( 'Organization' ), 10 )
+			$query_service->query( $query, $field->get_arg( 'supported_schema_types', array( 'Thing' ) ), 10 )
 		);
 
 	},
 	10,
 	4
 );
+
 
 
 add_action( 'plugins_loaded', '__wl_pods_load' );
