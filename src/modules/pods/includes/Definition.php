@@ -70,7 +70,7 @@ class Definition {
 	private function text( $name ) {
 		return array(
 			'name'                   => $name,
-			'label'                  => ucwords( $name ),
+			'label'                  => $this->format_label( $name ),
 			'description'            => '',
 			'weight'                 => 0,
 			'type'                   => 'text',
@@ -95,7 +95,7 @@ class Definition {
 
 		return array(
 			'name'                          => $name,
-			'label'                         => ucwords( $name ),
+			'label'                         => $this->format_label( $name ),
 			'description'                   => '',
 			'weight'                        => 0,
 			'type'                          => 'pick',
@@ -137,7 +137,7 @@ class Definition {
 	private function website( $name ) {
 		return array(
 			'name'               => $name,
-			'label'              => ucwords( $name ),
+			'label'              => $this->format_label( $name ),
 			'description'        => '',
 			'weight'             => 0,
 			'type'               => 'website',
@@ -175,7 +175,7 @@ class Definition {
 	private function group( $name, $pod, $group_fields ) {
 		$group = array(
 			'name'        => $name,
-			'label'       => sprintf( 'WordLift - %s', ucwords( $name ) ),
+			'label'       => sprintf( 'WordLift - %s', $this->format_label( $name ) ),
 			'description' => '',
 			'weight'      => 0,
 
@@ -186,7 +186,7 @@ class Definition {
 	private function pod( $name, $type, $object ) {
 		$pod = array(
 			'name'        => $name,
-			'label'       => ucwords( $name ),
+			'label'       => $this->format_label( $name ),
 			'description' => '',
 			'type'        => $type,
 			'storage'     => 'meta',
@@ -228,7 +228,7 @@ class Definition {
 	private function datetime( $name ) {
 		return array(
 			'name'                    => $name,
-			'label'                   => ucwords( $name ),
+			'label'                   => $this->format_label( $name ),
 			'description'             => '',
 			'weight'                  => 2,
 			'type'                    => 'datetime',
@@ -253,7 +253,7 @@ class Definition {
 	private function number( $name, $decimals = 0 ) {
 		return array(
 			'name'               => $name,
-			'label'              => ucwords( $name ),
+			'label'              => $this->format_label( $name ),
 			'description'        => '',
 			'weight'             => 1,
 			'type'               => 'number',
@@ -278,7 +278,7 @@ class Definition {
 	private function multiline( $name ) {
 		return array(
 			'name'                        => $name,
-			'label'                       => ucwords( $name ),
+			'label'                       => $this->format_label( $name ),
 			'description'                 => '',
 			'weight'                      => 3,
 			'type'                        => 'paragraph',
@@ -337,6 +337,10 @@ class Definition {
 				$custom_fields
 			)
 		);
+	}
+
+	private function format_label( $name ) {
+		return join( " ", array_map('ucwords', preg_split('/(?=[A-Z])/',$name) ));
 	}
 
 
