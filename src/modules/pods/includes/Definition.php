@@ -33,10 +33,10 @@ class Definition {
 		$this->schema = $schema;
 
 		add_action(
-			'init',
+			'admin_init',
 			function () {
 				$this->register_on_all_valid_post_types();
-				//$this->register_on_all_supported_taxonomies();
+				$this->register_on_all_supported_taxonomies();
 			}
 		);
 	}
@@ -51,7 +51,7 @@ class Definition {
 	}
 
 	public function register_pod( $name, $object_equals, $object_type_equals ) {
-		$pod_id              = intval( substr( md5( $name ), 0, 8 ) );
+		$pod_id              = intval( substr( md5( $object_equals. "_" .$name ), 0, 8 ), 16 );
 		$pod                 = $this->pod( $pod_id, $name, $object_equals, $object_type_equals );
 		$schema_field_groups = $this->schema->get();
 
