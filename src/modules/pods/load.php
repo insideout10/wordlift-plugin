@@ -53,7 +53,12 @@ add_filter(
 add_filter(
 	'pods_api_get_table_info',
 	function ( $info, $object_type, $object, $name, $pod, $field ) {
-		// @TODO: filter based on field here.
+
+		if ( $field === null || 'wlentity' !== $field->get_arg( 'pick_object', false ) ) {
+			return $info;
+		}
+		// We need to return an non empty array here to prevent pods from querying a table.
+		// This is necessary to prevent errors on ui.
 		return array( 'foo' => 'bar' );
 	},
 	10,
