@@ -2,6 +2,7 @@
 
 namespace Wordlift\Modules\Pods;
 
+use Pods\Whatsit\Store;
 use Wordlift\Vocabulary\Terms_Compat;
 
 class Definition {
@@ -18,9 +19,13 @@ class Definition {
 			'admin_init',
 			function () {
 				$this->register_on_all_valid_post_types();
-				$this->register_on_all_supported_taxonomies();
+
 			}
 		);
+
+		add_action('setup_theme', function () {
+			$this->register_on_all_supported_taxonomies();
+		}, 1);
 	}
 
 
@@ -50,6 +55,8 @@ class Definition {
 				);
 			}
 		}
+
+		return $pod_id;
 
 	}
 
@@ -188,7 +195,10 @@ class Definition {
 	private function register_on_all_supported_taxonomies() {
 		$taxonomies = Terms_Compat::get_public_taxonomies();
 		foreach ( $taxonomies as $taxonomy ) {
-			$this->register_pod( $taxonomy, 'taxonomy', $taxonomy );
+			$pod_id = $this->register_pod( $taxonomy, 'taxonomies', $taxonomy );
+			$pod = Store::get_instance()->get_object( $pod_id );
+			\PodsMeta::$taxonomies[ $taxonomy ] = $pod;
+
 		}
 	}
 
