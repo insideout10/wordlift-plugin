@@ -28,8 +28,8 @@ class Wordlift_WpRocket_Adapter_Test extends Wordlift_Unit_Test_Case {
 		$excludes = apply_filters( 'rocket_exclude_js', array() );
 
 		$this->assertTrue( is_array( $excludes ), '`$excludes` must be an array.' );
-		$this->assertContains( '/wp-content/plugins/wordlift/js/dist/bundle.js', $excludes, '`$excludes` must contain `/wp-content/plugins/wordlift/js/dist/bundle.js`.' );
-		$this->assertContains( '/wp-content/plugins/wordlift/js/dist/wordlift-cloud.js', $excludes, '`$excludes` must contain `/wp-content/plugins/wordlift/js/dist/wordlift-cloud.js`.' );
+		$this->assertContains( '/wp-content/plugins/app/src/js/dist/bundle.js', $excludes, '`$excludes` must contain `/wp-content/plugins/app/src/js/dist/bundle.js`. [' . var_export( $excludes, true ) . ']' );
+		$this->assertContains( '/wp-content/plugins/app/src/js/dist/wordlift-cloud.js', $excludes, '`$excludes` must contain `/wp-content/plugins/app/src/js/dist/wordlift-cloud.js`. [' . var_export( $excludes, true ) . ']' );
 
 	}
 
