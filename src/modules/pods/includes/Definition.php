@@ -33,7 +33,7 @@ class Definition {
 	}
 
 	public function register_pod( $name, $object_equals, $object_type_equals ) {
-		$pod_id              = intval( substr( md5( $object_equals. "_" .$name ), 0, 8 ), 16 );
+		$pod_id              = intval( substr( md5( $object_equals . '_' . $name ), 0, 8 ), 16 );
 		$pod                 = $this->pod( $pod_id, $name, $object_equals, $object_type_equals );
 		$schema_field_groups = $this->schema->get();
 
@@ -300,7 +300,6 @@ class Definition {
 		$name = str_replace( 'http://schema.org/', '', $custom_field['predicate'] );
 		$type = isset( $custom_field['type'] ) ? $custom_field['type'] : 'string';
 
-
 		return $this->may_be_repeatable( $custom_field, $this->get_field_by_type( $name, $type, $custom_field ) );
 	}
 
@@ -317,9 +316,9 @@ class Definition {
 				function ( $item ) use ( $pod_id ) {
 					$name = str_replace( 'http://schema.org/', '', $item['predicate'] );
 					return $this->wordlift_css_class( $this->custom_field_to_pod_field( $item ) ) + array(
-							'pod_id' => $pod_id,
-							'id'     => intval( substr( md5( $pod_id . "_" . $name ), 0, 8 ), 16 ),
-						);
+						'pod_id' => $pod_id,
+						'id'     => intval( substr( md5( $pod_id . '_' . $name ), 0, 8 ), 16 ),
+					);
 				},
 				$custom_fields
 			)
