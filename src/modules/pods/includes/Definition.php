@@ -31,10 +31,9 @@ class Definition {
 
 	}
 
-	public function register_pod( $name, $object_equals ) {
-		$pod_id              = intval( substr( md5( $object_equals . '_' . $name ), 0, 8 ), 16 );
-		$pod                 = $this->
-		pod( $pod_id, $name, $object_equals );
+	public function register_pod( $name, $type ) {
+		$pod_id              = intval( substr( md5( $type . '_' . $name ), 0, 8 ), 16 );
+		$pod                 = $this->pod( $pod_id, $name, $type );
 		$schema_field_groups = $this->schema->get();
 
 		foreach ( $schema_field_groups as $schema_field_group ) {
