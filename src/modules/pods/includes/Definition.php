@@ -26,14 +26,15 @@ class Definition {
 	public function register_on_all_valid_post_types() {
 		$supported_types = \Wordlift_Entity_Service::valid_entity_post_types();
 		foreach ( $supported_types as $supported_type ) {
-			$this->register_pod( $supported_type, 'post_type', $supported_type );
+			$this->register_pod( $supported_type, 'post_type' );
 		}
 
 	}
 
-	public function register_pod( $name, $object_equals, $object_type_equals ) {
+	public function register_pod( $name, $object_equals ) {
 		$pod_id              = intval( substr( md5( $object_equals . '_' . $name ), 0, 8 ), 16 );
-		$pod                 = $this->pod( $pod_id, $name, $object_equals, $object_type_equals );
+		$pod                 = $this->
+		pod( $pod_id, $name, $object_equals );
 		$schema_field_groups = $this->schema->get();
 
 		foreach ( $schema_field_groups as $schema_field_group ) {
@@ -163,7 +164,7 @@ class Definition {
 		pods_register_group( $group, $pod['name'], $group_fields );
 	}
 
-	private function pod( $pod_id, $name, $type, $object ) {
+	private function pod( $pod_id, $name, $type ) {
 		$pod = array(
 			'name'        => $name,
 			'label'       => $this->format_label( $name ),
@@ -171,7 +172,7 @@ class Definition {
 			'type'        => $type,
 			'storage'     => 'meta',
 			'id'          => $pod_id,
-			'object'      => $object,
+			'object'      => $name,
 		);
 
 		pods_register_type( $pod['type'], $pod['name'], $pod );
@@ -182,7 +183,7 @@ class Definition {
 	public function register_on_all_supported_taxonomies() {
 		$taxonomies = Terms_Compat::get_public_taxonomies();
 		foreach ( $taxonomies as $taxonomy ) {
-			$this->register_pod( $taxonomy, 'taxonomy', $taxonomy );
+			$this->register_pod( $taxonomy, 'taxonomy' );
 
 		}
 	}
@@ -314,15 +315,6 @@ class Definition {
 
 
 		return array_values( $pod_fields );
-//		return array_values(
-//			array_map(
-//				function ( $item ) use ( $pod_id ) {
-//					$name = str_replace( 'http://schema.org/', '', $item['predicate'] );
-//
-//				},
-//				$custom_fields
-//			)
-//		);
 	}
 
 	private function format_label( $name ) {
