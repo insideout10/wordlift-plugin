@@ -24,20 +24,18 @@ if ( ! defined( 'PODS_VERSION' ) ) {
 }
 
 
-function __wl_pods_load() {
-	// Autoloader for plugin itself.
-	if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-		require __DIR__ . '/vendor/autoload.php';
-	}
-
-	$container_builder = new ContainerBuilder();
-	$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
-	$loader->load( 'services.yml' );
-	$container_builder->compile();
-	$container_builder->get( Definition::class );
-
-	pods_register_related_object( 'wlentity', 'WordLift Entity', array( 'simple' => false ) );
+// Autoloader for plugin itself.
+if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	require __DIR__ . '/vendor/autoload.php';
 }
+
+$container_builder = new ContainerBuilder();
+$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
+$loader->load( 'services.yml' );
+$container_builder->compile();
+$container_builder->get( Definition::class );
+pods_register_related_object( 'wlentity', 'WordLift Entity', array( 'simple' => false ) );
+
 
 add_filter(
 	'pods_form_ui_field_pick_ajax',
@@ -47,8 +45,8 @@ add_filter(
 			return $result;
 		}
 
-		return  is_string( $field_options['pick_object'] ) &&
-			   'wlentity' === $field_options['pick_object'];
+		return is_string( $field_options['pick_object'] ) &&
+		       'wlentity' === $field_options['pick_object'];
 	},
 	10,
 	4
@@ -68,6 +66,7 @@ add_filter(
 	10,
 	6
 );
+
 
 add_filter(
 	'pods_field_pick_data_ajax',
@@ -104,6 +103,5 @@ add_filter(
 
 
 
-add_action( 'plugins_loaded', '__wl_pods_load' );
 
 

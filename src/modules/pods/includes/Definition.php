@@ -2,7 +2,6 @@
 
 namespace Wordlift\Modules\Pods;
 
-use Pods\Whatsit\Store;
 use Wordlift\Vocabulary\Terms_Compat;
 
 class Definition {
@@ -14,18 +13,12 @@ class Definition {
 	public function __construct( $schema ) {
 
 		$this->schema = $schema;
+		add_action('init', array( $this, 'register'));
+	}
 
-		add_action(
-			'admin_init',
-			function () {
-				$this->register_on_all_valid_post_types();
-
-			}
-		);
-
-		add_action('setup_theme', function () {
-			$this->register_on_all_supported_taxonomies();
-		}, 1);
+	public function register() {
+		$this->register_on_all_valid_post_types();
+		$this->register_on_all_supported_taxonomies();
 	}
 
 
@@ -44,7 +37,6 @@ class Definition {
 
 		foreach ( $schema_field_groups as $schema_field_group ) {
 			$custom_fields = $schema_field_group->get_custom_fields();
-
 			if ( is_array( $custom_fields ) && count( $custom_fields ) > 0 ) {
 				$this->group(
 					$schema_field_group->get_schema_type(),
@@ -195,9 +187,8 @@ class Definition {
 	private function register_on_all_supported_taxonomies() {
 		$taxonomies = Terms_Compat::get_public_taxonomies();
 		foreach ( $taxonomies as $taxonomy ) {
-			$pod_id = $this->register_pod( $taxonomy, 'taxonomies', $taxonomy );
-			$pod = Store::get_instance()->get_object( $pod_id );
-			\PodsMeta::$taxonomies[ $taxonomy ] = $pod;
+
+			$this->register_pod( $taxonomy, 'taxonomy', $taxonomy );
 
 		}
 	}
