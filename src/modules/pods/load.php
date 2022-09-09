@@ -110,6 +110,7 @@ add_filter(
 	'pods_field_pick_object_data',
 	function ( $_, $name, $value, $options, $pod, $id, $object_params ) {
 
+
 		$object_params = json_decode( json_encode( $object_params ), true );
 
 		$query_service = Entity_Query_Service::get_instance();
@@ -128,8 +129,16 @@ add_filter(
 			} elseif ( 'taxonomy' === $type ) {
 				$linked_entities = get_term_meta( $id, $name );
 			}
-			return array_map( 'wl_pods_transform_data_for_pick_field', $query_service->get( $linked_entities ) );
+			$data = array();
+			$linked_entities = $query_service->get( $linked_entities );
+			foreach ( $linked_entities as $linked_entity ) {
+				$content     = $linked_entity->get_content();
+				$id          = sprintf( '%s_%d', Object_Type_Enum::to_string( $content->get_object_type_enum() ), $content->get_id() );
+				$text         = $linked_entity->get_title() . ' (' . $linked_entity->get_schema_type() . ')';
+				$data[ $id ] = $text;
+			}
 
+			return $data;
 		}
 
 		return $_;
