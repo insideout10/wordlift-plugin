@@ -105,5 +105,25 @@ class Entity_Query_Service {
 
 	}
 
+	public function get( $linked_entities ) {
+		return array_filter( array_map(
+			function ( $item ) {
+				$parts      = explode( '_', $item );
+				$type       = Object_Type_Enum::from_string( $parts[0] );
+				$identifier = $parts[1];
+
+				if ( $type === Object_Type_Enum::POST ) {
+					return new Entity( 'Thing', new Wordpress_Content( get_post( $identifier ) ) );
+				} elseif ( $type === Object_Type_Enum::TERM ) {
+					return new Entity( 'Thing', new Wordpress_Content( get_term( $identifier ) ) );
+				}
+
+				//return new Entity( $item->schema_type_name, new Wordpress_Content( get_term( $item->id ) ) );
+			},
+			$linked_entities
+		) );
+
+	}
+
 
 }
