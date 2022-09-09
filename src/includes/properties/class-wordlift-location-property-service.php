@@ -30,6 +30,10 @@ class Wordlift_Location_Property_Service extends Wordlift_Entity_Property_Servic
 					  return $item;
 				}
 
+				if ( $item instanceof \Wordlift\Jsonld\Reference ) {
+					return $item;
+				}
+
 				return array(
 					'@type' => 'Place',
 					'name'  => $item,

@@ -7,6 +7,7 @@
 namespace Wordlift\Vocabulary_Terms\Jsonld;
 
 use Wordlift\Jsonld\Post_Reference;
+use Wordlift\Jsonld\Reference;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Term\Type_Service;
 
@@ -157,6 +158,29 @@ class Jsonld_Generator {
 			);
 
 		}
+
+
+		if (  is_array( $value )
+		      && count( $value ) > 0
+		      && $value[0] instanceof Reference ) {
+			$references = array_merge(
+				$references,
+				$value
+			);
+
+
+			$that = $this;
+			return array_map(
+				function ( $reference ) use ( $that ) {
+					/**
+					 * @var $reference Reference
+					 */
+					return array( '@id' => $that->entity_service->get_uri( $reference->get_id(), $reference->get_type() ) );
+				},
+				$value
+			);
+		}
+
 
 		return $value;
 	}
