@@ -41,6 +41,34 @@ add_action(
 	}
 );
 
+
+add_filter( 'pods_field_dfv_data', function ( $data, $args ) {
+
+	$args_arr   = json_decode( wp_json_encode( $args ), true );
+	$field_data = $args_arr['options'];
+
+	if ( ! isset( $field_data['pick_object'] ) || 'wlentity' !== $field_data['pick_object'] ) {
+		return $data;
+	}
+
+	if ( ! isset( $args_arr['pod']['data']['pod_data']['type'] )
+	     || ! is_string( $args_arr['pod']['data']['pod_data']['type'] ) ) {
+		return $data;
+	}
+
+	$name       = $field_data['name'];
+	$identifier = $args->id;
+	$type       = $args_arr['pod']['data']['pod_data']['type'];
+
+	if ( 'post_type' === $type ) {
+		$data['fieldValue'] = get_post_meta( $identifier, $name );
+	} elseif ( 'taxonomy' === $type ) {
+		$data['fieldValue'] = get_term_meta( $identifier, $name );
+	}
+
+	return $data;
+}, 10, 2 );
+
 add_filter(
 	'pods_form_ui_field_pick_ajax',
 	function ( $result, $name, $value, $field_options ) {
@@ -50,7 +78,7 @@ add_filter(
 		}
 
 		return is_string( $field_options['pick_object'] ) &&
-			   'wlentity' === $field_options['pick_object'];
+		       'wlentity' === $field_options['pick_object'];
 	},
 	10,
 	4
@@ -116,10 +144,10 @@ add_filter(
 		$query_service = Entity_Query_Service::get_instance();
 
 		if ( is_array( $object_params ) && isset( $object_params['options']['pick_object'] )
-		 && is_string( $object_params['options']['pick_object'] )
-		 && 'wlentity' === $object_params['options']['pick_object']
-		 && isset( $object_params['pod']['data']['pod_data']['type'] )
-		 && is_string( $object_params['pod']['data']['pod_data']['type'] ) ) {
+		     && is_string( $object_params['options']['pick_object'] )
+		     && 'wlentity' === $object_params['options']['pick_object']
+		     && isset( $object_params['pod']['data']['pod_data']['type'] )
+		     && is_string( $object_params['pod']['data']['pod_data']['type'] ) ) {
 
 			$type              = $object_params['pod']['data']['pod_data']['type'];
 			$linked_entity_ids = array();
@@ -129,12 +157,12 @@ add_filter(
 			} elseif ( 'taxonomy' === $type ) {
 				$linked_entities = get_term_meta( $id, $name );
 			}
-			$data = array();
+			$data            = array();
 			$linked_entities = $query_service->get( $linked_entities );
 			foreach ( $linked_entities as $linked_entity ) {
 				$content     = $linked_entity->get_content();
 				$id          = sprintf( '%s_%d', Object_Type_Enum::to_string( $content->get_object_type_enum() ), $content->get_id() );
-				$text         = $linked_entity->get_title() . ' (' . $linked_entity->get_schema_type() . ')';
+				$text        = $linked_entity->get_title() . ' (' . $linked_entity->get_schema_type() . ')';
 				$data[ $id ] = $text;
 			}
 
