@@ -6,20 +6,32 @@ use Wordlift\Vocabulary\Terms_Compat;
 
 class Definition {
 	/**
-	 * @var Schema
+	 * @var Context
 	 */
-	private $schema;
+	private $context;
 
 	public function __construct( $schema ) {
-
-		$this->schema = $schema;
-		add_action( 'init', array( $this, 'register_on_all_valid_post_types' ) );
-		add_action( 'setup_theme', array( $this, 'register_on_all_supported_taxonomies' ) );
+		$this->context = $schema->get();
 	}
 
 	public function register() {
-		$this->register_on_all_valid_post_types();
-		$this->register_on_all_supported_taxonomies();
+
+		if ( Context::ADMIN_AJAX === $this->context->get_object_type() ) {
+			add_action( 'init', array( $this, 'register_on_all_valid_post_types' ) );
+			add_action( 'setup_theme', array( $this, 'register_on_all_supported_taxonomies' ) );
+		}
+		else if ( Context::POST === $this->context->get_object_type() ) {
+			$that = $this;
+			add_action('init', function () use ($that) {
+				$that->register_pod( $that->context->get_pod_name(), $that->context->get_pod_type() );
+			});
+		}
+		else if ( Context::TERM === $this->context->get_object_type() ) {
+			$that = $this;
+			add_action('setup_theme', function () use ($that) {
+				$that->register_pod( $that->context->get_pod_name(), $that->context->get_pod_type() );
+			});
+		}
 	}
 
 
@@ -34,7 +46,7 @@ class Definition {
 	public function register_pod( $name, $type ) {
 		$pod_id              = intval( substr( md5( $type . '_' . $name ), 0, 8 ), 16 );
 		$pod                 = $this->pod( $pod_id, $name, $type );
-		$schema_field_groups = $this->schema->get();
+		$schema_field_groups = $this->context->get_custom_fields();
 
 		foreach ( $schema_field_groups as $schema_field_group ) {
 			$custom_fields = $schema_field_group->get_custom_fields();

@@ -5,7 +5,7 @@ namespace Wordlift\Modules\Pods;
 class Schema {
 
 	/**
-	 * @return Schema_Field_Group[]
+	 * @return Context
 	 */
 	public function get() {
 		// we need to identify the context to filter the results.
@@ -14,21 +14,21 @@ class Schema {
 
 		if ( $identifier ) {
 			// If post identifier, get schema.
-			return $this->get_fields_for_post( $identifier );
+			return new Context(Context::POST, $identifier, $this->get_fields_for_post( $identifier ) );
 		}
 
 		$identifier = isset( $_REQUEST['tag_ID'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['tag_ID'] ) ) : '';
 
 		if ( $identifier ) {
 			// If post identifier, get schema.
-			return $this->get_fields_for_term( $identifier );
+			return new Context(Context::TERM, $identifier,  $this->get_fields_for_term( $identifier ) );
 		}
 
 		if ( is_admin() && ! defined('DOING_AJAX') ) {
-			return array();
+			return new Context( Context::UNKNOWN, null, null );
 		}
 
-		return $this->get_all_fields();
+		return new Context( Context::ADMIN_AJAX, null, $this->get_all_fields() );
 
 	}
 
