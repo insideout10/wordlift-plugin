@@ -13,8 +13,8 @@ class Definition {
 	public function __construct( $schema ) {
 
 		$this->schema = $schema;
-		add_action('init', array( $this, 'register_on_all_valid_post_types'));
-		add_action('setup_theme', array( $this, 'register_on_all_supported_taxonomies'));
+		add_action( 'init', array( $this, 'register_on_all_valid_post_types' ) );
+		add_action( 'setup_theme', array( $this, 'register_on_all_supported_taxonomies' ) );
 	}
 
 	public function register() {
@@ -55,8 +55,6 @@ class Definition {
 
 	private function text( $name ) {
 		return array(
-			'name'                   => $name,
-			'label'                  => $this->format_label( $name ),
 			'description'            => '',
 			'weight'                 => 0,
 			'type'                   => 'text',
@@ -80,8 +78,6 @@ class Definition {
 		}
 
 		return array(
-			'name'                          => $name,
-			'label'                         => $this->format_label( $name ),
 			'description'                   => '',
 			'weight'                        => 0,
 			'type'                          => 'pick',
@@ -122,8 +118,6 @@ class Definition {
 
 	private function website( $name ) {
 		return array(
-			'name'               => $name,
-			'label'              => $this->format_label( $name ),
 			'description'        => '',
 			'weight'             => 0,
 			'type'               => 'website',
@@ -215,8 +209,6 @@ class Definition {
 
 	private function datetime( $name ) {
 		return array(
-			'name'                    => $name,
-			'label'                   => $this->format_label( $name ),
 			'description'             => '',
 			'weight'                  => 2,
 			'type'                    => 'datetime',
@@ -240,8 +232,6 @@ class Definition {
 
 	private function number( $name, $decimals = 0 ) {
 		return array(
-			'name'               => $name,
-			'label'              => $this->format_label( $name ),
 			'description'        => '',
 			'weight'             => 1,
 			'type'               => 'number',
@@ -265,8 +255,6 @@ class Definition {
 
 	private function multiline( $name ) {
 		return array(
-			'name'                        => $name,
-			'label'                       => $this->format_label( $name ),
 			'description'                 => '',
 			'weight'                      => 3,
 			'type'                        => 'paragraph',
@@ -320,6 +308,8 @@ class Definition {
 					return $this->wordlift_css_class( $this->custom_field_to_pod_field( $item ) ) + array(
 						'pod_id' => $pod_id,
 						'id'     => intval( substr( md5( $pod_id . '_' . $name ), 0, 8 ), 16 ),
+						'name'   => $name,
+						'label'  => $this->format_label( $name ),
 					);
 				},
 				$custom_fields
