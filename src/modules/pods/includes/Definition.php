@@ -182,7 +182,6 @@ class Definition {
 	public function register_on_all_supported_taxonomies() {
 		$taxonomies = Terms_Compat::get_public_taxonomies();
 		foreach ( $taxonomies as $taxonomy ) {
-
 			$this->register_pod( $taxonomy, 'taxonomy', $taxonomy );
 
 		}
