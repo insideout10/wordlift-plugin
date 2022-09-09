@@ -36,7 +36,7 @@ class Wl_Metabox extends Wl_Abstract_Metabox {
 		 * @return bool
 		 * @since 3.28.1
 		 */
-		if ( apply_filters( 'wl_feature__enable__metabox', true ) ) {
+		if ( apply_filters( 'wl_feature__enable__metabox', true ) && ! apply_filters( 'wl_feature__enable__pods-integration', false ) ) {
 
 			// Add hooks to print metaboxes and save submitted data.
 			add_action( 'add_meta_boxes', array( $this, 'add_main_metabox' ) );

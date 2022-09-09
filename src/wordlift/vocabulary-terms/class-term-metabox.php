@@ -21,6 +21,11 @@ class Term_Metabox extends Wl_Abstract_Metabox {
 	 * @param $term \WP_Term
 	 */
 	public function render_ui( $term ) {
+
+		if ( apply_filters( 'wl_feature__enable__pods-integration', false ) ) {
+			return;
+		}
+
 		$this->instantiate_fields( $term->term_id, Object_Type_Enum::TERM );
 		$this->html();
 		$this->enqueue_scripts_and_styles();

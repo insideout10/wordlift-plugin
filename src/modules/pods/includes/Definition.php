@@ -13,7 +13,8 @@ class Definition {
 	public function __construct( $schema ) {
 
 		$this->schema = $schema;
-		add_action('init', array( $this, 'register'));
+		add_action('init', array( $this, 'register_on_all_valid_post_types'));
+		add_action('setup_theme', array( $this, 'register_on_all_supported_taxonomies'));
 	}
 
 	public function register() {
@@ -184,7 +185,7 @@ class Definition {
 		return $pod;
 	}
 
-	private function register_on_all_supported_taxonomies() {
+	public function register_on_all_supported_taxonomies() {
 		$taxonomies = Terms_Compat::get_public_taxonomies();
 		foreach ( $taxonomies as $taxonomy ) {
 
