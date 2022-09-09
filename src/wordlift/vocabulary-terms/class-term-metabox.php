@@ -14,7 +14,6 @@ class Term_Metabox extends Wl_Abstract_Metabox {
 
 	public function __construct() {
 		parent::__construct();
-
 		if ( ! apply_filters( 'wl_feature__enable__pods-integration', false ) ) {
 			add_action( 'init', array( $this, 'init_all_custom_fields' ) );
 		}
