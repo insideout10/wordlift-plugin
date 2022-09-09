@@ -25,7 +25,7 @@ if ( ! defined( 'PODS_VERSION' ) ) {
 
 
 
-
+add_action('plugins_loaded', function () {
 	// Autoloader for plugin itself.
 	if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 		require __DIR__ . '/vendor/autoload.php';
@@ -37,7 +37,7 @@ if ( ! defined( 'PODS_VERSION' ) ) {
 	$container_builder->compile();
 	$container_builder->get( Definition::class );
 	pods_register_related_object( 'wlentity', 'WordLift Entity', array( 'simple' => false ) );
-
+});
 
 add_filter(
 	'pods_form_ui_field_pick_ajax',

@@ -12,6 +12,7 @@ class Definition {
 
 	public function __construct( $schema ) {
 		$this->context = $schema->get();
+		$this->register();
 	}
 
 	public function register() {
