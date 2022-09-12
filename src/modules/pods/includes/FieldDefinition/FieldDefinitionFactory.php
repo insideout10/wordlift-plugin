@@ -18,9 +18,9 @@ class FieldDefinitionFactory {
 
 
 	public function get_field_definition() {
-		$context = $this->schema->get();
+
 		// For now we are registering all the pods.
-		return new AllPodsDefiniton( $context );
+		return new AllPodsDefiniton( $this->schema );
 	}
 
 

@@ -7,17 +7,17 @@ use Wordlift\Vocabulary\Terms_Compat;
 
 abstract class AbstractFieldDefiniton implements FieldDefinition {
 	/**
-	 * @var Context
+	 * @var \Wordlift\Modules\Pods\Schema
 	 */
-	protected $context;
+	protected $schema;
 
 	/**
-	 * @param $context Context
+	 * @param  \Wordlift\Modules\Pods\Schema $schema
  	 *
 	 * @return void
 	 */
-	public function __construct( $context ) {
-		$this->context = $context;
+	public function __construct( $schema ) {
+		$this->schema = $schema;
 	}
 
 

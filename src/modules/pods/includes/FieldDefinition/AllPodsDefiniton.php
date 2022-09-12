@@ -19,17 +19,19 @@ class AllPodsDefiniton extends AbstractFieldDefiniton {
 
 
 	public function register_on_all_supported_taxonomies() {
+		$context = $this->schema->get();
 		$taxonomies = Terms_Compat::get_public_taxonomies();
 		foreach ( $taxonomies as $taxonomy ) {
-			$this->register_pod( $taxonomy, 'taxonomy', $this->context );
+			$this->register_pod( $taxonomy, 'taxonomy', $context );
 
 		}
 	}
 
 	public function register_on_all_valid_post_types() {
+		$context = $this->schema->get();
 		$supported_types = \Wordlift_Entity_Service::valid_entity_post_types();
 		foreach ( $supported_types as $supported_type ) {
-			$this->register_pod( $supported_type, 'post_type', $this->context );
+			$this->register_pod( $supported_type, 'post_type', $context );
 		}
 	}
 
