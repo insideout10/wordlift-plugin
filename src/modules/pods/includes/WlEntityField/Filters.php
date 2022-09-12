@@ -108,8 +108,8 @@ class Filters {
 			 && isset( $object_params['pod']['data']['pod_data']['type'] )
 			 && is_string( $object_params['pod']['data']['pod_data']['type'] ) ) {
 
-			$type = $object_params['pod']['data']['pod_data']['type'];
-
+			$type            = $object_params['pod']['data']['pod_data']['type'];
+			$linked_entities = array();
 			if ( 'post_type' === $type ) {
 				$linked_entities = get_post_meta( $id, $name );
 			} elseif ( 'taxonomy' === $type ) {
