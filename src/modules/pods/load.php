@@ -23,28 +23,32 @@ if ( ! defined( 'PODS_VERSION' ) ) {
 	return;
 }
 
+// Autoloader for plugin itself.
+if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	require __DIR__ . '/vendor/autoload.php';
+}
+
+
+$container_builder = new ContainerBuilder();
+$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
+$loader->load( 'services.yml' );
+$container_builder->compile();
 
 add_action(
 	'plugins_loaded',
-	function () {
-		// Autoloader for plugin itself.
-		if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-			require __DIR__ . '/vendor/autoload.php';
-		}
+	function () use ($container_builder) {
 
-		$container_builder = new ContainerBuilder();
-		$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
-		$loader->load( 'services.yml' );
 
-		$container_builder->compile();
+
 
 		$factory          = $container_builder->get( FieldDefinitionFactory::class );
 		$field_definition = $factory->get_field_definition();
 		$field_definition->register();
 
-		$filters = $container_builder->get( Filters::class );
+
 
 	}
 );
 
 
+$filters = $container_builder->get( 'Wordlift\Modules\Pods\WlEntityField\Filters' );

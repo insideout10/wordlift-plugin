@@ -20,6 +20,7 @@ class FieldDefinitionFactory {
 	public function get_field_definition() {
 
 		$context = $this->schema->get();
+		return new AllPodsDefiniton( $context );
 
 		if ( Context::ADMIN_AJAX === $context->get_object_type() ) {
 			return new AllPodsDefiniton( $context );
