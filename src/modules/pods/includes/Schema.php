@@ -14,17 +14,17 @@ class Schema {
 
 		if ( $identifier ) {
 			// If post identifier, get schema.
-			return new Context(Context::POST, $identifier, $this->get_fields_for_post( $identifier ) );
+			return new Context( Context::POST, $identifier, $this->get_fields_for_post( $identifier ) );
 		}
 
 		$identifier = isset( $_REQUEST['tag_ID'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['tag_ID'] ) ) : '';
 
 		if ( $identifier ) {
 			// If post identifier, get schema.
-			return new Context(Context::TERM, $identifier,  $this->get_fields_for_term( $identifier ) );
+			return new Context( Context::TERM, $identifier, $this->get_fields_for_term( $identifier ) );
 		}
 
-		if ( is_admin() && ! defined('DOING_AJAX') ) {
+		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
 			return new Context( Context::UNKNOWN, null, null );
 		}
 
@@ -70,13 +70,15 @@ class Schema {
 		$schema_classes   = \Wordlift_Schema_Service::get_instance();
 		$all_schema_slugs = $schema_classes->get_all_schema_slugs();
 
-		return array_filter( array_map(
-			function ( $schema_type ) use ( $schema_classes ) {
-				$data = $schema_classes->get_schema( strtolower( $schema_type ) );
-				return new Schema_Field_Group( $schema_type, $data['custom_fields'] );
-			},
-			$all_schema_slugs
-		) );
+		return array_filter(
+			array_map(
+				function ( $schema_type ) use ( $schema_classes ) {
+					$data = $schema_classes->get_schema( strtolower( $schema_type ) );
+					return new Schema_Field_Group( $schema_type, $data['custom_fields'] );
+				},
+				$all_schema_slugs
+			)
+		);
 	}
 
 
