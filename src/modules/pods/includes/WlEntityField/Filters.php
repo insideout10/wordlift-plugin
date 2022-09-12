@@ -11,7 +11,7 @@ class Filters {
 
 	public function __construct() {
 
-		pods_register_related_object( 'wlentity', 'WordLift Entity', array( 'simple' => false ) );
+		pods_register_related_object( self::FIELD_NAME, 'WordLift Entity', array( 'simple' => false ) );
 		add_filter( 'pods_form_ui_field_pick_ajax', array( $this, 'ajax_filter' ), 10, 4 );
 		add_filter( 'pods_api_get_table_info', array( $this, 'table_info_filter' ), 10, 6 );
 		add_filter( 'pods_field_pick_object_data', array( $this, 'field_options_filter' ), 10, 7 );
@@ -37,7 +37,7 @@ class Filters {
 
 	public function admin_ajax_filter( $data, $name, $_, $field ) {
 
-		if ( ( ! $field instanceof Pods\Whatsit\Field ) || $field->get_arg( 'pick_object', false ) !== 'wlentity' ) {
+		if ( ( ! $field instanceof Pods\Whatsit\Field ) || $field->get_arg( 'pick_object', false ) !== self::FIELD_NAME ) {
 			return $data;
 		}
 
@@ -53,7 +53,7 @@ class Filters {
 		$args_arr   = json_decode( wp_json_encode( $args ), true );
 		$field_data = $args_arr['options'];
 
-		if ( ! isset( $field_data['pick_object'] ) || 'wlentity' !== $field_data['pick_object'] ) {
+		if ( ! isset( $field_data['pick_object'] ) || self::FIELD_NAME !== $field_data['pick_object'] ) {
 			return $data;
 		}
 
@@ -87,7 +87,7 @@ class Filters {
 
 	public function table_info_filter( $info, $object_type, $object, $name, $pod, $field ) {
 
-		if ( $field === null || 'wlentity' !== $field->get_arg( 'pick_object', false ) ) {
+		if ( $field === null || self::FIELD_NAME !== $field->get_arg( 'pick_object', false ) ) {
 			return $info;
 		}
 		// We need to return an non empty array here to prevent pods from querying a table.
@@ -104,7 +104,7 @@ class Filters {
 
 		if ( is_array( $object_params ) && isset( $object_params['options']['pick_object'] )
 			 && is_string( $object_params['options']['pick_object'] )
-			 && 'wlentity' === $object_params['options']['pick_object']
+			 && self::FIELD_NAME === $object_params['options']['pick_object']
 			 && isset( $object_params['pod']['data']['pod_data']['type'] )
 			 && is_string( $object_params['pod']['data']['pod_data']['type'] ) ) {
 

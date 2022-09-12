@@ -36,16 +36,11 @@ $container_builder->compile();
 
 add_action(
 	'plugins_loaded',
-	function () use ($container_builder) {
-
-
-
+	function () use ( $container_builder ) {
 
 		$factory          = $container_builder->get( FieldDefinitionFactory::class );
 		$field_definition = $factory->get_field_definition();
 		$field_definition->register();
-
-
 
 	}
 );
