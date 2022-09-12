@@ -2,8 +2,6 @@
 
 namespace Wordlift\Modules\Pods;
 
-use Wordlift\Object_Type_Enum;
-
 class Context {
 
 	const POST       = 0;
@@ -23,7 +21,7 @@ class Context {
 	 */
 	private $custom_fields;
 
-	static $pod_types_map = array(
+	private static $pod_types_map = array(
 		self::POST => 'post_type',
 		self::TERM => 'taxonomy',
 	);
