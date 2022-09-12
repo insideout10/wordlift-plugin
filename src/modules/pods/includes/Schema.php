@@ -41,11 +41,11 @@ class Schema {
 			return new Context( Context::TERM, $identifier, $this->get_fields_for_term( $identifier ) );
 		}
 
-		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
-			return new Context( Context::UNKNOWN, null, null );
+		if ( is_admin() &&  defined( 'DOING_AJAX' ) ) {
+			return new Context( Context::ADMIN_AJAX, null, $this->get_all_fields() );
 		}
 
-		return new Context( Context::ADMIN_AJAX, null, $this->get_all_fields() );
+		return new Context( Context::UNKNOWN, null, null );
 
 	}
 
