@@ -4,6 +4,23 @@ namespace Wordlift\Modules\Pods;
 
 class Schema {
 
+	public function get_context_type() {
+
+		if ( isset( $_REQUEST['post'] ) ) {
+			return Context::POST;
+		}
+		if ( isset( $_REQUEST['tag_ID'] ) ) {
+			return Context::TERM;
+		}
+
+		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
+			return Context::ADMIN_AJAX;
+		}
+
+		return Context::UNKNOWN;
+	}
+
+
 	/**
 	 * @return Context
 	 */
@@ -74,6 +91,7 @@ class Schema {
 			array_map(
 				function ( $schema_type ) use ( $schema_classes ) {
 					$data = $schema_classes->get_schema( strtolower( $schema_type ) );
+
 					return new Schema_Field_Group( $schema_type, $data['custom_fields'] );
 				},
 				$all_schema_slugs
