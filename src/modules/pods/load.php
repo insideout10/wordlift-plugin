@@ -14,14 +14,17 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFil
 use Wordlift\Modules\Pods\Definition;
 use Wordlift\Modules\Pods\FieldDefinition\FieldDefinitionFactory;
 use Wordlift\Modules\Pods\WlEntityField\Filters;
+use Wordlift\Modules\Pods\Notices;
+use Wordlift\Modules\Pods\Installer;
+
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'PODS_VERSION' ) || ! apply_filters('wl_feature__enable__pods-integration', false ) ) {
-	return;
-}
+// if ( ! apply_filters('wl_feature__enable__pods-integration', false ) ) {
+// 	return;
+// }
 
 
 // Autoloader for plugin itself.
@@ -39,12 +42,24 @@ add_action(
 	'plugins_loaded',
 	function () use ( $container_builder ) {
 
-		$factory          = $container_builder->get( FieldDefinitionFactory::class );
-		$field_definition = $factory->get_field_definition();
-		$field_definition->register();
+		// $factory          = $container_builder->get( FieldDefinitionFactory::class );
+		// $field_definition = $factory->get_field_definition();
+		// $field_definition->register();
+
+
+		/**
+		 * @var $installer \Wordlift\Modules\Pods\Installer
+		 */
+		$installer = $container_builder->get( Installer::class );
+		$installer->register_hooks();
+
+		/**
+		 * @var $notices \Wordlift\Modules\Pods\Notices
+		 */
+		$notices = $container_builder->get( Notices::class );
+		$notices->register_hooks();
 
 	}
 );
 
-
-$filters = $container_builder->get( 'Wordlift\Modules\Pods\WlEntityField\Filters' );
+// $filters = $container_builder->get( 'Wordlift\Modules\Pods\WlEntityField\Filters' );

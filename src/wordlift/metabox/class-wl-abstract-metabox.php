@@ -94,6 +94,9 @@ class Wl_Abstract_Metabox {
 	 */
 	public function html() {
 
+		// HTML Code Before MetaBox Content.
+		do_action( 'wl_metabox_before_html' );
+
 		// Loop over the fields.
 		foreach ( $this->fields as $field ) {
 
