@@ -19,9 +19,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! defined( 'PODS_VERSION' ) ) {
+if ( ! defined( 'PODS_VERSION' ) || ! apply_filters('wl_feature__enable__pods-integration', false ) ) {
 	return;
 }
+
 
 // Autoloader for plugin itself.
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
