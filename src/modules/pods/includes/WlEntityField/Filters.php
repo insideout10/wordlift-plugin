@@ -37,7 +37,7 @@ class Filters {
 
 	public function admin_ajax_filter( $data, $name, $_, $field ) {
 
-		if ( ( ! $field instanceof Pods\Whatsit\Field ) || $field->get_arg( 'pick_object', false ) !== self::FIELD_NAME ) {
+		if ( ( ! $field instanceof \Pods\Whatsit\Field ) || $field->get_arg( 'pick_object', false ) !== self::FIELD_NAME ) {
 			return $data;
 		}
 
