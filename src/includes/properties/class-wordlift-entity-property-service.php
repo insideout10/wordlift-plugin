@@ -1,5 +1,6 @@
 <?php
 
+use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Jsonld\Term_Reference;
 use Wordlift\Object_Type_Enum;
 
@@ -27,10 +28,9 @@ class Wordlift_Entity_Property_Service extends Wordlift_Simple_Property_Service 
 
 					$object_type = Object_Type_Enum::from_string( $matches[1] );
 					$identifier  = (int) $matches[2];
-					if ( $object_type === Object_Type_Enum::POST ) {
-						return is_numeric( $identifier ) && null !== get_post( $identifier )
-							? new Wordlift_Property_Entity_Reference( $entity_service->get_uri( $identifier ), (int) $identifier ) : $item;
-					} elseif ( $object_type === Object_Type_Enum::TERM ) {
+					if ( Object_Type_Enum::POST === $object_type ) {
+						return new Post_Reference( $identifier );
+					} elseif ( Object_Type_Enum::TERM === $object_type ) {
 						return new Term_Reference( $identifier );
 					}
 				}
