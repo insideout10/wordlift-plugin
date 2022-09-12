@@ -1,53 +1,37 @@
 <?php
 
-namespace Wordlift\Modules\Pods;
+namespace Wordlift\Modules\Pods\FieldDefinition;
 
+use Wordlift\Modules\Pods\Context;
 use Wordlift\Vocabulary\Terms_Compat;
 
-class Definition {
+abstract class AbstractFieldDefiniton implements FieldDefinition {
 	/**
 	 * @var Context
 	 */
-	private $context;
+	protected $context;
 
-	public function __construct( $schema ) {
-		$this->context = $schema->get();
-		$this->register();
-	}
-
-	public function register() {
-
-		if ( Context::ADMIN_AJAX === $this->context->get_object_type() ) {
-			add_action( 'init', array( $this, 'register_on_all_valid_post_types' ) );
-			add_action( 'setup_theme', array( $this, 'register_on_all_supported_taxonomies' ) );
-		}
-		else if ( Context::POST === $this->context->get_object_type() ) {
-			$that = $this;
-			add_action('init', function () use ($that) {
-				$that->register_pod( $that->context->get_pod_name(), $that->context->get_pod_type() );
-			});
-		}
-		else if ( Context::TERM === $this->context->get_object_type() ) {
-			$that = $this;
-			add_action('setup_theme', function () use ($that) {
-				$that->register_pod( $that->context->get_pod_name(), $that->context->get_pod_type() );
-			});
-		}
+	/**
+	 * @param $context Context
+ 	 *
+	 * @return void
+	 */
+	public function __construct( $context ) {
+		$this->context = $context;
 	}
 
 
-	public function register_on_all_valid_post_types() {
-		$supported_types = \Wordlift_Entity_Service::valid_entity_post_types();
-		foreach ( $supported_types as $supported_type ) {
-			$this->register_pod( $supported_type, 'post_type' );
-		}
-
-	}
-
-	public function register_pod( $name, $type ) {
+	/**
+	 * @param $name string
+	 * @param $type string
+	 * @param $context Context
+	 *
+	 * @return int
+	 */
+	protected function register_pod( $name, $type, $context ) {
 		$pod_id              = intval( substr( md5( $type . '_' . $name ), 0, 8 ), 16 );
 		$pod                 = $this->pod( $pod_id, $name, $type );
-		$schema_field_groups = $this->context->get_custom_fields();
+		$schema_field_groups = $context->get_custom_fields();
 
 		foreach ( $schema_field_groups as $schema_field_group ) {
 			$custom_fields = $schema_field_group->get_custom_fields();
@@ -66,7 +50,7 @@ class Definition {
 
 	}
 
-	private function text( $name ) {
+	protected function text( $name ) {
 		return array(
 			'description'            => '',
 			'weight'                 => 0,
@@ -82,7 +66,7 @@ class Definition {
 		);
 	}
 
-	private function relationship( $name, $field_data ) {
+	protected function relationship( $name, $field_data ) {
 
 		$supported_schema_types = $field_data['constraints']['uri_type'];
 
@@ -122,14 +106,14 @@ class Definition {
 	}
 
 
-	private function repeatable( $field, $repeatable_label = 'Add New' ) {
+	protected function repeatable( $field, $repeatable_label = 'Add New' ) {
 		$field['repeatable']               = 1;
 		$field['repeatable_add_new_label'] = $repeatable_label;
 
 		return $field;
 	}
 
-	private function website( $name ) {
+	protected function website( $name ) {
 		return array(
 			'description'        => '',
 			'weight'             => 0,
@@ -152,7 +136,7 @@ class Definition {
 	}
 
 
-	private function group_fields( ...$fields ) {
+	protected function group_fields( ...$fields ) {
 		$result = array();
 		array_map(
 			function ( $item ) use ( &$result ) {
@@ -165,7 +149,7 @@ class Definition {
 		return $result;
 	}
 
-	private function group( $name, $pod, $group_fields ) {
+	protected function group( $name, $pod, $group_fields ) {
 		$group = array(
 			'name'        => $name,
 			'label'       => sprintf( 'WordLift - %s', $this->format_label( $name ) ),
@@ -176,7 +160,7 @@ class Definition {
 		pods_register_group( $group, $pod['name'], $group_fields );
 	}
 
-	private function pod( $pod_id, $name, $type ) {
+	protected function pod( $pod_id, $name, $type ) {
 		$pod = array(
 			'name'        => $name,
 			'label'       => $this->format_label( $name ),
@@ -192,7 +176,7 @@ class Definition {
 		return $pod;
 	}
 
-	public function register_on_all_supported_taxonomies() {
+	protected function register_on_all_supported_taxonomies() {
 		$taxonomies = Terms_Compat::get_public_taxonomies();
 		foreach ( $taxonomies as $taxonomy ) {
 			$this->register_pod( $taxonomy, 'taxonomy' );
@@ -201,7 +185,7 @@ class Definition {
 	}
 
 
-	private function get_field_by_type( $name, $type, $field_data ) {
+	protected function get_field_by_type( $name, $type, $field_data ) {
 		if ( 'uri' === $type && isset( $field_data['constraints']['uri_type'] ) ) {
 			return $this->relationship( $name, $field_data );
 		} elseif ( 'uri' === $type ) {
@@ -219,7 +203,7 @@ class Definition {
 		}
 	}
 
-	private function datetime( $name ) {
+	protected function datetime( $name ) {
 		return array(
 			'description'             => '',
 			'weight'                  => 2,
@@ -242,7 +226,7 @@ class Definition {
 	}
 
 
-	private function number( $name, $decimals = 0 ) {
+	protected function number( $name, $decimals = 0 ) {
 		return array(
 			'description'        => '',
 			'weight'             => 1,
@@ -265,7 +249,7 @@ class Definition {
 	}
 
 
-	private function multiline( $name ) {
+	protected function multiline( $name ) {
 		return array(
 			'description'                 => '',
 			'weight'                      => 3,
@@ -282,7 +266,7 @@ class Definition {
 		);
 	}
 
-	private function may_be_repeatable( $custom_field, $field ) {
+	protected function may_be_repeatable( $custom_field, $field ) {
 		$repeatable = isset( $custom_field['constraints']['cardinality'] ) && INF === $custom_field['constraints']['cardinality'];
 		if ( $repeatable ) {
 			return $this->repeatable( $field );
@@ -297,7 +281,7 @@ class Definition {
 	 * A function which defines these pods on the edit post screen.
 	 */
 
-	private function custom_field_to_pod_field( $custom_field ) {
+	protected function custom_field_to_pod_field( $custom_field ) {
 
 		$name = str_replace( 'http://schema.org/', '', $custom_field['predicate'] );
 		$type = isset( $custom_field['type'] ) ? $custom_field['type'] : 'string';
@@ -305,14 +289,14 @@ class Definition {
 		return $this->may_be_repeatable( $custom_field, $this->get_field_by_type( $name, $type, $custom_field ) );
 	}
 
-	private function wordlift_css_class( $field ) {
+	protected function wordlift_css_class( $field ) {
 		$field['class'] = 'wordlift';
 
 		return $field;
 	}
 
 
-	private function custom_fields_to_pod_fields( $custom_fields, $pod_id ) {
+	protected function custom_fields_to_pod_fields( $custom_fields, $pod_id ) {
 
 		$pod_fields = array();
 
@@ -329,9 +313,10 @@ class Definition {
 		return array_values( $pod_fields );
 	}
 
-	private function format_label( $name ) {
+	protected function format_label( $name ) {
 		return join( ' ', array_map( 'ucwords', preg_split( '/(?=[A-Z])/', $name ) ) );
 	}
+
 
 
 }

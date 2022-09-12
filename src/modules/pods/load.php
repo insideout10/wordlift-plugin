@@ -13,6 +13,7 @@ use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Wordlift\Modules\Pods\Definition;
+use Wordlift\Modules\Pods\FieldDefinition\FieldDefinitionFactory;
 use Wordlift\Object_Type_Enum;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -35,39 +36,49 @@ add_action(
 		$container_builder = new ContainerBuilder();
 		$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
 		$loader->load( 'services.yml' );
+
 		$container_builder->compile();
-		$container_builder->get( Definition::class );
+
+		$factory          = $container_builder->get( FieldDefinitionFactory::class );
+		$field_definition = $factory->get_field_definition();
+		$field_definition->register();
+
 		pods_register_related_object( 'wlentity', 'WordLift Entity', array( 'simple' => false ) );
 	}
 );
 
 
-add_filter( 'pods_field_dfv_data', function ( $data, $args ) {
+add_filter(
+	'pods_field_dfv_data',
+	function ( $data, $args ) {
 
-	$args_arr   = json_decode( wp_json_encode( $args ), true );
-	$field_data = $args_arr['options'];
+		$args_arr   = json_decode( wp_json_encode( $args ), true );
+		$field_data = $args_arr['options'];
 
-	if ( ! isset( $field_data['pick_object'] ) || 'wlentity' !== $field_data['pick_object'] ) {
+		if ( ! isset( $field_data['pick_object'] ) || 'wlentity' !== $field_data['pick_object'] ) {
+			return $data;
+		}
+
+		if ( ! isset( $args_arr['pod']['data']['pod_data']['type'] )
+		 || ! is_string( $args_arr['pod']['data']['pod_data']['type'] ) ) {
+			return $data;
+		}
+
+		$name       = $field_data['name'];
+		$identifier = $args->id;
+		$type       = $args_arr['pod']['data']['pod_data']['type'];
+
+		if ( 'post_type' === $type ) {
+			$data['fieldValue'] = get_post_meta( $identifier, $name );
+		} elseif ( 'taxonomy' === $type ) {
+			$data['fieldValue'] = get_term_meta( $identifier, $name );
+		}
+
 		return $data;
-	}
-
-	if ( ! isset( $args_arr['pod']['data']['pod_data']['type'] )
-	     || ! is_string( $args_arr['pod']['data']['pod_data']['type'] ) ) {
-		return $data;
-	}
-
-	$name       = $field_data['name'];
-	$identifier = $args->id;
-	$type       = $args_arr['pod']['data']['pod_data']['type'];
-
-	if ( 'post_type' === $type ) {
-		$data['fieldValue'] = get_post_meta( $identifier, $name );
-	} elseif ( 'taxonomy' === $type ) {
-		$data['fieldValue'] = get_term_meta( $identifier, $name );
-	}
-
-	return $data;
-}, 10, 2 );
+	},
+	10,
+	2
+);
 
 add_filter(
 	'pods_form_ui_field_pick_ajax',
@@ -78,7 +89,7 @@ add_filter(
 		}
 
 		return is_string( $field_options['pick_object'] ) &&
-		       'wlentity' === $field_options['pick_object'];
+			   'wlentity' === $field_options['pick_object'];
 	},
 	10,
 	4
@@ -138,16 +149,15 @@ add_filter(
 	'pods_field_pick_object_data',
 	function ( $_, $name, $value, $options, $pod, $id, $object_params ) {
 
-
 		$object_params = json_decode( json_encode( $object_params ), true );
 
 		$query_service = Entity_Query_Service::get_instance();
 
 		if ( is_array( $object_params ) && isset( $object_params['options']['pick_object'] )
-		     && is_string( $object_params['options']['pick_object'] )
-		     && 'wlentity' === $object_params['options']['pick_object']
-		     && isset( $object_params['pod']['data']['pod_data']['type'] )
-		     && is_string( $object_params['pod']['data']['pod_data']['type'] ) ) {
+			 && is_string( $object_params['options']['pick_object'] )
+			 && 'wlentity' === $object_params['options']['pick_object']
+			 && isset( $object_params['pod']['data']['pod_data']['type'] )
+			 && is_string( $object_params['pod']['data']['pod_data']['type'] ) ) {
 
 			$type              = $object_params['pod']['data']['pod_data']['type'];
 			$linked_entity_ids = array();
