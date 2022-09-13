@@ -20,7 +20,7 @@ class Wordlift_Entity_Property_Service extends Wordlift_Simple_Property_Service 
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
 		// Map each returned value to a Wordlift_Property_Entity_Reference.
-		return array_map(
+		$result = array_map(
 			function ( $item ) use ( $entity_service ) {
 
 				$regex = '/^(post|term)_(\d+)$/m';
@@ -28,9 +28,9 @@ class Wordlift_Entity_Property_Service extends Wordlift_Simple_Property_Service 
 					$object_type = Object_Type_Enum::from_string( $matches[1] );
 					$identifier  = (int) $matches[2];
 					if ( Object_Type_Enum::POST === $object_type ) {
-						return new Wordlift_Property_Entity_Reference( $entity_service->get_uri( $item ), $identifier );
+						return new Wordlift_Property_Entity_Reference( $entity_service->get_uri( $identifier ), $identifier );
 					} elseif ( Object_Type_Enum::TERM === $object_type ) {
-						return new Wordlift_Property_Entity_Reference( $entity_service->get_uri( $item, Object_Type_Enum::TERM ), $identifier, false, Object_Type_Enum::TERM );
+						return new Wordlift_Property_Entity_Reference( $entity_service->get_uri( $identifier, Object_Type_Enum::TERM ), $identifier, false, Object_Type_Enum::TERM );
 					}
 				}
 
@@ -42,6 +42,8 @@ class Wordlift_Entity_Property_Service extends Wordlift_Simple_Property_Service 
 			},
 			parent::get( $id, $meta_key, $type )
 		);
+
+		return $result;
 	}
 
 
