@@ -66,7 +66,7 @@ class Notices {
 			),
 		);
 		$installation_success_message = __(
-			'</p>WordLift: <b>Advanced Custom Fields for Schema.org</b> plugin installed and activated.</p>',
+			'<p>WordLift: <b>Advanced Custom Fields for Schema.org</b> plugin installed and activated.</p>',
 			'wordlift'
 		);
 

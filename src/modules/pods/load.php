@@ -18,21 +18,18 @@ use Wordlift\Modules\Pods\WlEntityField\Filters;
 use Wordlift\Modules\Pods\Notices;
 
 
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! apply_filters( 'wl_feature__enable__pods-integration', false ) || ! defined('PODS_VERSION') ) {
+if ( ! apply_filters( 'wl_feature__enable__pods-integration', false ) ) {
 	return;
 }
-
 
 // Autoloader for plugin itself.
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require __DIR__ . '/vendor/autoload.php';
 }
-
 
 $container_builder = new ContainerBuilder();
 $loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
@@ -43,12 +40,16 @@ add_action(
 	'plugins_loaded',
 	function () use ( $container_builder ) {
 
-		$factory          = $container_builder->get( FieldDefinitionFactory::class );
-		$field_definition = $factory->get_field_definition();
-		$field_definition->register();
+		if ( defined( 'PODS_VERSION' ) ) {
+			$factory          = $container_builder->get( FieldDefinitionFactory::class );
+			$field_definition = $factory->get_field_definition();
+			$field_definition->register();
+
+			$filters = $container_builder->get( Filters::class );
+		}
 
 		/**
-		 * @var $installer \Wordlift\Modules\Pods\Installer
+		 * @var $installer \Wordlift\Modules\Common\Installer
 		 */
 		$installer = $container_builder->get( Installer::class );
 		$installer->register_hooks();
@@ -58,11 +59,6 @@ add_action(
 		 */
 		$notices = $container_builder->get( Notices::class );
 		$notices->register_hooks();
-
-		$filters = $container_builder->get( Filters::class );
-
-
-
 
 	}
 );

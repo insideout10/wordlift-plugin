@@ -31,7 +31,7 @@ use Wordlift\Cache\Ttl_Cache_Cleaner;
 use Wordlift\Features\Features_Registry;
 use Wordlift\Post\Post_Adapter;
 
-add_filter('wl_feature__enable__pods-integration', '__return_true' );
+add_filter( 'wl_feature__enable__pods-integration', '__return_true' );
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
