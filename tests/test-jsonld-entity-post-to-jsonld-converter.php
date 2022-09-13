@@ -10,6 +10,7 @@
 
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Jsonld\Reference;
 
 /**
  * Test the {@link Wordlift_Entity_Post_To_Jsonld_Converter} class.
@@ -47,6 +48,21 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 	 */
 	private $postid_to_jsonld_converter;
 
+
+	public function convert( $item ) {
+		if ( $item instanceof Reference ) {
+			return $item->get_id();
+		}
+		return $item;
+	}
+
+	public function convert_references( $references ) {
+		return array_map( function ( $reference ) {
+			return $this->convert( $reference );
+		}, $references );
+	}
+
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -54,7 +70,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 		parent::setUp();
 
 		// Disable sending SPARQL queries, since we don't need it.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
+		Wordlift_Unit_Test_Case::turn_off_entity_push();
 
 		$this->entity_service = Wordlift_Entity_Service::get_instance();
 
@@ -62,7 +78,8 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 		$post_to_jsonld_converter = new Wordlift_Post_To_Jsonld_Converter(
 			Wordlift_Entity_Type_Service::get_instance(),
 			Wordlift_User_Service::get_instance(),
-			Wordlift_Attachment_Service::get_instance() );
+			Wordlift_Attachment_Service::get_instance()
+		);
 
 		$this->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter(
 			Wordlift_Entity_Type_Service::get_instance(),
@@ -70,11 +87,13 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 			Wordlift_Attachment_Service::get_instance(),
 			$property_getter,
 			Wordlift_Schemaorg_Property_Service::get_instance(),
-			$post_to_jsonld_converter );
+			$post_to_jsonld_converter
+		);
 
 		$this->postid_to_jsonld_converter = new Wordlift_Postid_To_Jsonld_Converter(
 			$this->entity_post_to_jsonld_converter,
-			$post_to_jsonld_converter );
+			$post_to_jsonld_converter
+		);
 	}
 
 	/**
@@ -88,10 +107,12 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 
 		// Create an entity post and assign it the Event type.
 		$name     = 'Test Entity Post to Json-Ld conversion test_event_conversion ' . rand_str();
-		$event_id = $this->factory->post->create( array(
-			'post_title' => $name,
-			'post_type'  => 'entity',
-		) );
+		$event_id = $this->factory->post->create(
+			array(
+				'post_title' => $name,
+				'post_type'  => 'entity',
+			)
+		);
 		Wordlift_Entity_Type_Service::get_instance()->set( $event_id, 'http://schema.org/Event' );
 		$event_uri = $this->entity_service->get_uri( $event_id );
 
@@ -172,12 +193,20 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 		$this->assertArrayHasKey( '@id', $jsonld['location'] );
 		$this->assertEquals( $place_uri, $jsonld['location']['@id'] );
 
+		$references = array_map( array( $this, 'convert'), $references );
+
+
+
 		$this->assertContains( $place_id, $references );
 
 		$this->assertFalse( isset( $jsonld['alternateName'] ) );
 
 		$references_2 = array();
 		$this->assertEquals( $jsonld, $this->postid_to_jsonld_converter->convert( $event_id, $references_2 ) );
+		$references_2 = array_map(
+			array( $this, 'convert'),
+			$references_2
+		);
 		$this->assertEquals( $references, $references_2 );
 
 	}
@@ -193,10 +222,12 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 
 		// Create a location entity post and bind it to the location property.
 		$name     = rand_str();
-		$place_id = $this->factory->post->create( array(
-			'post_title' => $name,
-			'post_type'  => 'entity',
-		) );
+		$place_id = $this->factory->post->create(
+			array(
+				'post_title' => $name,
+				'post_type'  => 'entity',
+			)
+		);
 		Wordlift_Entity_Type_Service::get_instance()->set( $place_id, 'http://schema.org/Place' );
 		$place_uri = $this->entity_service->get_uri( $place_id );
 
@@ -295,10 +326,12 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 
 		// Create a location entity post and bind it to the location property.
 		$name           = rand_str();
-		$create_work_id = $this->factory->post->create( array(
-			'post_title' => $name,
-			'post_type'  => 'entity',
-		) );
+		$create_work_id = $this->factory->post->create(
+			array(
+				'post_title' => $name,
+				'post_type'  => 'entity',
+			)
+		);
 		Wordlift_Entity_Type_Service::get_instance()->set( $create_work_id, 'http://schema.org/CreativeWork' );
 		$create_work_uri = $this->entity_service->get_uri( $create_work_id );
 
@@ -341,11 +374,11 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 		$this->assertArrayHasKey( '@id', $jsonld['author'] );
 		$this->assertEquals( $person_uri, $jsonld['author']['@id'] );
 
-		$this->assertContains( $person_id, $references );
+		$this->assertContains( $person_id, $this->convert_references( $references ) );
 
 		$references_2 = array();
 		$this->assertEquals( $jsonld, $this->postid_to_jsonld_converter->convert( $create_work_id, $references_2 ) );
-		$this->assertEquals( $references, $references_2 );
+		$this->assertEquals( $this->convert_references( $references ), $this->convert_references( $references_2 ) );
 
 	}
 
@@ -360,10 +393,12 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 
 		// Create a location entity post and bind it to the location property.
 		$name            = rand_str();
-		$organization_id = $this->factory->post->create( array(
-			'post_title' => $name,
-			'post_type'  => 'entity',
-		) );
+		$organization_id = $this->factory->post->create(
+			array(
+				'post_title' => $name,
+				'post_type'  => 'entity',
+			)
+		);
 		Wordlift_Entity_Type_Service::get_instance()->set( $organization_id, 'http://schema.org/Organization' );
 		$organization_uri = $this->entity_service->get_uri( $organization_id );
 
@@ -448,11 +483,11 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 		$this->assertArrayHasKey( '@id', $jsonld['founder'] );
 		$this->assertEquals( $person_uri, $jsonld['founder']['@id'] );
 
-		$this->assertContains( $person_id, $references );
+		$this->assertContains( $person_id, $this->convert_references( $references ) );
 
 		$references_2 = array();
 		$this->assertEquals( $jsonld, $this->postid_to_jsonld_converter->convert( $organization_id, $references_2 ) );
-		$this->assertEquals( $references, $references_2 );
+		$this->assertEquals( $this->convert_references( $references ),  $this->convert_references( $references_2 ) );
 
 	}
 
@@ -467,10 +502,12 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 
 		// Create an entity post and assign it the Event type.
 		$name      = rand_str();
-		$person_id = $this->factory->post->create( array(
-			'post_title' => $name,
-			'post_type'  => 'entity',
-		) );
+		$person_id = $this->factory->post->create(
+			array(
+				'post_title' => $name,
+				'post_type'  => 'entity',
+			)
+		);
 		Wordlift_Entity_Type_Service::get_instance()->set( $person_id, 'http://schema.org/Person' );
 		$person_uri = $this->entity_service->get_uri( $person_id );
 
@@ -517,7 +554,6 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 		// Bind the knows to the person.
 		add_post_meta( $person_id, Wordlift_Schema_Service::FIELD_AFFILIATION, $organization_id );
 
-
 		$post       = get_post( $person_id );
 		$references = array();
 		$jsonld     = $this->entity_post_to_jsonld_converter->convert( $post->ID, $references );
@@ -551,7 +587,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 		$this->assertArrayHasKey( '@id', $jsonld['birthPlace'] );
 		$this->assertEquals( $place_uri, $jsonld['birthPlace']['@id'] );
 
-		$this->assertContains( $place_id, $references );
+		$this->assertContains( $place_id, $this->convert_references( $references ) );
 
 		$this->assertCount( 2, $jsonld['knows'] );
 
@@ -560,7 +596,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 
 		$references_2 = array();
 		$this->assertEquals( $jsonld, $this->postid_to_jsonld_converter->convert( $person_id, $references_2 ) );
-		$this->assertEquals( $references, $references_2 );
+		$this->assertEquals( $this->convert_references( $references ), $this->convert_references( $references_2 ) );
 
 	}
 
@@ -575,10 +611,12 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 
 		// Create a location entity post and bind it to the location property.
 		$name              = rand_str();
-		$local_business_id = $this->factory->post->create( array(
-			'post_title' => $name,
-			'post_type'  => 'entity',
-		) );
+		$local_business_id = $this->factory->post->create(
+			array(
+				'post_title' => $name,
+				'post_type'  => 'entity',
+			)
+		);
 		Wordlift_Entity_Type_Service::get_instance()->set( $local_business_id, 'http://schema.org/LocalBusiness' );
 		$local_business_type = Wordlift_Entity_Type_Service::get_instance()->get( $local_business_id );
 		$this->assertEquals( 'http://schema.org/LocalBusiness', $local_business_type['uri'], 'Entity type must be http://schema.org/Person.' );
@@ -666,7 +704,6 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 		$this->assertArrayHasKey( 'longitude', $jsonld['geo'] );
 		$this->assertEquals( 1.23, $jsonld['geo']['longitude'] );
 
-
 		$this->assertArrayHasKey( 'address', $jsonld );
 
 		$this->assertArrayHasKey( '@type', $jsonld['address'] );
@@ -684,11 +721,11 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 		$this->assertArrayHasKey( '@id', $jsonld['founder'] );
 		$this->assertEquals( $person_uri, $jsonld['founder']['@id'] );
 
-		$this->assertContains( $person_id, $references );
+		$this->assertContains( $person_id, $this->convert_references( $references ) );
 
 		$references_2 = array();
 		$this->assertEquals( $jsonld, $this->postid_to_jsonld_converter->convert( $local_business_id, $references_2 ) );
-		$this->assertEquals( $references, $references_2 );
+		$this->assertEquals( $this->convert_references( $references ), $this->convert_references( $references_2 ) );
 
 	}
 
@@ -704,10 +741,12 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 
 		// Create an entity post and assign it the Offer type.
 		$name     = rand_str();
-		$offer_id = $this->factory->post->create( array(
-			'post_title' => $name,
-			'post_type'  => 'entity',
-		) );
+		$offer_id = $this->factory->post->create(
+			array(
+				'post_title' => $name,
+				'post_type'  => 'entity',
+			)
+		);
 		Wordlift_Entity_Type_Service::get_instance()->set( $offer_id, 'http://schema.org/Offer' );
 		$offer_uri = $this->entity_service->get_uri( $offer_id );
 
@@ -794,26 +833,36 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 
 	public function test_should_add_mentions_to_post_jsonld() {
 
-		$referenced_entity = $this->factory()->post->create( array( 'post_type' => 'entity', 'post_title' => 'Linux' ) );
-		$referenced_entity_uri  = Wordpress_Content_Service::get_instance()
-		                                      ->get_entity_id( Wordpress_Content_Id::create_post( $referenced_entity ) );
-		$post_content = <<<EOF
+		$referenced_entity     = $this->factory()->post->create(
+			array(
+				'post_type'  => 'entity',
+				'post_title' => 'Linux',
+			)
+		);
+		$referenced_entity_uri = Wordpress_Content_Service::get_instance()
+											  ->get_entity_id( Wordpress_Content_Id::create_post( $referenced_entity ) );
+		$post_content          = <<<EOF
 		<span itemid="$referenced_entity_uri">test</span>
 EOF;
 
-
-		$parent_entity = $this->factory()->post->create( array( 'post_type' => 'entity', 'post_title' => 'Windows',
-			'post_content' => $post_content ) );
+		$parent_entity = $this->factory()->post->create(
+			array(
+				'post_type'    => 'entity',
+				'post_title'   => 'Windows',
+				'post_content' => $post_content,
+			)
+		);
 
 		// set entity to creative work.
 		Wordlift_Entity_Type_Service::get_instance()->set( $parent_entity, 'http://schema.org/CreativeWork' );
 		$jsonld = Wordlift_Jsonld_Service::get_instance()->get_jsonld(
-			false, $parent_entity
+			false,
+			$parent_entity
 		);
 
-		$this->assertTrue( array_key_exists('mentions', $jsonld[0]), 'Entity since its descendant of CreativeWork should have mentions property');
-		$this->assertCount( 1, $jsonld[0]['mentions']);
-		$this->assertEquals(  array( '@id' => $referenced_entity_uri ), $jsonld[0]['mentions'][0] );
+		$this->assertTrue( array_key_exists( 'mentions', $jsonld[0] ), 'Entity since its descendant of CreativeWork should have mentions property' );
+		$this->assertCount( 1, $jsonld[0]['mentions'] );
+		$this->assertEquals( array( '@id' => $referenced_entity_uri ), $jsonld[0]['mentions'][0] );
 	}
 
 
@@ -828,9 +877,11 @@ EOF;
 
 		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
-		$post_id = $this->factory()->post->create( array(
-			'post_type' => 'entity',
-		) );
+		$post_id = $this->factory()->post->create(
+			array(
+				'post_type' => 'entity',
+			)
+		);
 
 		$_wl_prop_ = Wordlift_Schemaorg_Property_Service::PREFIX;
 		add_post_meta( $post_id, "{$_wl_prop_}propA_1_type", 'Text' );
