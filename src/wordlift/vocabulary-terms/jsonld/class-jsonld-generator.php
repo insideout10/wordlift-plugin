@@ -139,48 +139,24 @@ class Jsonld_Generator {
 						/**
 						 * @var $property_entity_reference \Wordlift_Property_Entity_Reference
 						 */
-						return new Post_Reference( $property_entity_reference->get_id() );
+						return $property_entity_reference->to_reference();
 					},
 					$value
 				)
 			);
 
-			$that = $this;
 
 			return array_map(
-				function ( $reference ) use ( $that ) {
+				function ( $reference ) {
 					/**
 					 * @var $reference \Wordlift_Property_Entity_Reference
 					 */
-					return array( '@id' => $that->entity_service->get_uri( $reference->get_id() ) );
+					return array( '@id' => $reference->get_url() );
 				},
 				$value
 			);
 
 		}
-
-
-		if (  is_array( $value )
-		      && count( $value ) > 0
-		      && $value[0] instanceof Reference ) {
-			$references = array_merge(
-				$references,
-				$value
-			);
-
-
-			$that = $this;
-			return array_map(
-				function ( $reference ) use ( $that ) {
-					/**
-					 * @var $reference Reference
-					 */
-					return array( '@id' => $that->entity_service->get_uri( $reference->get_id(), $reference->get_type() ) );
-				},
-				$value
-			);
-		}
-
 
 		return $value;
 	}

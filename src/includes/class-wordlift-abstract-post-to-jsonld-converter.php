@@ -420,14 +420,12 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 
 							  // The refactored converters require the entity id.
 							// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
-							  $references[] = $item->get_id();
+							  $references[] = $item->to_reference();
 
 							// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 							  $references_infos[] = array( 'reference' => $item );
 
-							  return array(
-								  '@id' => $url,
-							  );
+							  return array( '@id' => $url, );
 						}
 
 						return $converter->relative_to_context( $item );

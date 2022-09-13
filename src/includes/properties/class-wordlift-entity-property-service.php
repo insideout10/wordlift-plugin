@@ -25,13 +25,12 @@ class Wordlift_Entity_Property_Service extends Wordlift_Simple_Property_Service 
 
 				$regex = '/^(post|term)_(\d+)$/m';
 				if ( preg_match( $regex, $item, $matches ) ) {
-
 					$object_type = Object_Type_Enum::from_string( $matches[1] );
 					$identifier  = (int) $matches[2];
 					if ( Object_Type_Enum::POST === $object_type ) {
-						return new Post_Reference( $identifier );
+						return new Wordlift_Property_Entity_Reference( $entity_service->get_uri( $item ), $identifier );
 					} elseif ( Object_Type_Enum::TERM === $object_type ) {
-						return new Term_Reference( $identifier );
+						return new Wordlift_Property_Entity_Reference( $entity_service->get_uri( $item, Object_Type_Enum::TERM ), $identifier, false, Object_Type_Enum::TERM );
 					}
 				}
 
@@ -44,5 +43,7 @@ class Wordlift_Entity_Property_Service extends Wordlift_Simple_Property_Service 
 			parent::get( $id, $meta_key, $type )
 		);
 	}
+
+
 
 }

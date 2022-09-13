@@ -6,6 +6,10 @@
  * @package Wordlift
  */
 
+use Wordlift\Jsonld\Post_Reference;
+use Wordlift\Jsonld\Term_Reference;
+use Wordlift\Object_Type_Enum;
+
 /**
  * An entity reference property.
  *
@@ -35,6 +39,10 @@ class Wordlift_Property_Entity_Reference {
 	private $id;
 
 	private $required;
+	/**
+	 * @var int
+	 */
+	private $type;
 
 	/**
 	 * Create a Wordlift_Property_Entity_Reference instance with the provided URL.
@@ -42,15 +50,26 @@ class Wordlift_Property_Entity_Reference {
 	 * @param string $url The URL.
 	 * @param int    $id The entity post id.
 	 * @param bool   $required Whether this property is always required in SD output, default false.
+	 * @param int    $type Instance of Object_Enum_Type
 	 *
 	 * @since 3.8.0
 	 */
-	public function __construct( $url, $id, $required = false ) {
+	public function __construct( $url, $id, $required = false, $type = Object_Type_Enum::POST ) {
 
 		$this->url      = $url;
 		$this->id       = $id;
 		$this->required = $required;
+		$this->type     = $type;
 
+	}
+
+	/**
+	 * Return the type of the reference, one of the values in Object_Type_Enum
+	 * @return int
+	 * @since 3.38.0
+	 */
+	public function get_type() {
+		return $this->type;
 	}
 
 	/**
@@ -103,6 +122,16 @@ class Wordlift_Property_Entity_Reference {
 
 		$this->required = $value;
 
+	}
+
+	public function to_reference() {
+
+		if ( Object_Type_Enum::POST === $this->type ) {
+			return new Post_Reference( $this->id );
+		}
+		if ( Object_Type_Enum::TERM === $this->type ) {
+			return new Term_Reference( $this->id );
+		}
 	}
 
 }
