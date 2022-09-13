@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Modules\Pods;
+namespace Wordlift\Modules\Common;
 
 interface Plugin {
 
