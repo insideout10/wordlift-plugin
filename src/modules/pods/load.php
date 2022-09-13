@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! apply_filters( 'wl_feature__enable__pods-integration', false ) ) {
+if ( ! apply_filters( 'wl_feature__enable__pods-integration', false ) || ! defined('PODS_VERSION') ) {
 	return;
 }
 
