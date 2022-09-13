@@ -2,6 +2,8 @@
 
 namespace Wordlift\Modules\Acf4so;
 
+use Wordlift\Modules\Common\Plugin;
+
 class Notices {
 
 	/**

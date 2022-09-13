@@ -8,7 +8,7 @@
  * @package wordlift
  */
 
-use Wordlift\Modules\Acf4so\Installer;
+use Wordlift\Modules\Common\Installer;
 use Wordlift\Modules\Acf4so\Notices;
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;

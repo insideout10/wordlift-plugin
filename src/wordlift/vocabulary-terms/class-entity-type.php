@@ -91,6 +91,7 @@ class Entity_Type {
 			$entity_types_data = filter_var_array( $_REQUEST, array( 'tax_input' => array( 'flags' => FILTER_REQUIRE_ARRAY ) ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$entity_types      = $entity_types_data['tax_input'][ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ];
 		}
+
 		if ( isset( $entity_types ) && is_array( $entity_types ) ) {
 			// Save the taxonomies.
 			delete_term_meta( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );

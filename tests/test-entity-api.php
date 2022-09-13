@@ -4,6 +4,8 @@
  * Test Entity functions from the modules/core/wordlift_core_entity.php file.
  */
 
+use Wordlift\Entity\Query\Entity_Query_Service;
+
 /**
  * Class EntityTest
  * @group entity
@@ -66,6 +68,56 @@ class Wordlift_Entity_Api_Test extends Wordlift_Unit_Test_Case {
 		// The alias above should not be found if we don't ask for aliases
 		$this->assertCount( 0, wl_entity_get_by_title( 'an alias', false, false ) );
 
+	}
+
+	public function test_get_entity_by_title_restrict_by_schema_types() {
+		$post_id_1 = wl_create_post( 'Lorem Ipsum', 'test-entity-2', 'Test Entity', 'draft', Wordlift_Entity_Service::TYPE_NAME );
+		$post_id_2 = wl_create_post( 'Lorem Ipsum', 'test-entity-2', 'Test Entity', 'draft', Wordlift_Entity_Service::TYPE_NAME );
+		$post_id_3 = wl_create_post( 'Lorem Ipsum', 'test-entity-2', 'Test Entity', 'draft', Wordlift_Entity_Service::TYPE_NAME );
+
+		Wordlift_Entity_Type_Service::get_instance()->set( $post_id_1, 'http://schema.org/Thing' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $post_id_2, 'http://schema.org/Thing' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $post_id_2, 'http://schema.org/Organization' );
+
+		$results = wl_entity_get_by_title( 'Test Entity', true, true, 10, array( 'Thing' ) );
+
+		$this->assertCount( 2, $results );
+	}
+
+	public function test_get_entity_by_title_restrict_by_schema_types_for_synonymns() {
+		$post_id_1 = wl_create_post( 'Lorem Ipsum', 'test-entity-2', 'Test Entity', 'draft', Wordlift_Entity_Service::TYPE_NAME );
+		$post_id_2 = wl_create_post( 'Lorem Ipsum', 'test-entity-2', 'Test Entity', 'draft', Wordlift_Entity_Service::TYPE_NAME );
+		$post_id_3 = wl_create_post( 'Lorem Ipsum', 'test-entity-2', 'Test Entity', 'draft', Wordlift_Entity_Service::TYPE_NAME );
+
+		Wordlift_Entity_Service::get_instance()->set_alternative_labels( $post_id_1, array( 'Lorem Ipsum' ) );
+		Wordlift_Entity_Service::get_instance()->set_alternative_labels( $post_id_2, array( 'Lorem Ipsum' ) );
+		Wordlift_Entity_Service::get_instance()->set_alternative_labels( $post_id_3, array( 'Lorem Ipsum' ) );
+
+		Wordlift_Entity_Type_Service::get_instance()->set( $post_id_1, 'http://schema.org/Thing' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $post_id_2, 'http://schema.org/Thing' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $post_id_2, 'http://schema.org/Organization' );
+
+		$results = wl_entity_get_by_title( 'Lorem Ipsum', true, true, 10, array( 'Thing' ) );
+
+		$this->assertCount( 2, $results );
+	}
+
+
+	public function test_term_entity_restrict_by_title() {
+
+		$term_data_1 = wp_create_term( 'my term with entity type set to Product');
+		add_term_meta( $term_data_1['term_id'], Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, 'product' );
+		add_term_meta( $term_data_1['term_id'], Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, 'product' );
+
+		$term_data_2 = wp_create_term( 'my term with entity type set to thing');
+		add_term_meta( $term_data_2['term_id'], Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, 'thing' );
+
+		$entity_query_service = Entity_Query_Service::get_instance();
+		$results = $entity_query_service->query( 'my term with entity type set to', array('product'), 10 );
+
+		$this->assertCount( 1, $results );
+		$result = current( $results );
+		$this->assertSame('product', $result->get_schema_type() );
 	}
 
 }

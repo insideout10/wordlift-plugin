@@ -432,6 +432,10 @@ class Wordlift_Schema_Service {
 
 	}
 
+	public function get_all_schema_slugs() {
+		return array_keys( $this->schema );
+	}
+
 	/**
 	 * The Schema service singleton instance.
 	 *
