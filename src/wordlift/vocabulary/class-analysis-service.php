@@ -158,7 +158,7 @@ class Analysis_Service {
 					'contentType'     => 'text/plain',
 					'version'         => '1.0.0',
 					'contentLanguage' => 'en',
-					'scope'           => 'all',
+					'scope'           => 'network',
 				)
 			)
 		);

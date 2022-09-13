@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.38.1 (2022-09-13) =
+* Fix: Fix scope on match terms analysis.
+
 = 3.37.2 (2022-08-14) =
 
 * Fix: error on JSON-LD not containing an array.

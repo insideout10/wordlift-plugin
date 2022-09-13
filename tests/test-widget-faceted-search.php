@@ -226,7 +226,7 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		$post_id             = $this->factory()->post->create();
 		$html                = do_shortcode( "[wl_faceted_search limit=10 post_id=$post_id]" );
 		$expected_url_output = "wordlift/v1/faceted-search&amp;post_id=$post_id&amp;limit=10";
-		$this->assertTrue( strpos( $html, $expected_url_output ) !== false );
+		$this->assertTrue( strpos( $html, $expected_url_output ) !== false, 'Got ' . $html );
 	}
 
 	public function test_shortcode_should_have_src_set_attribute_in_amp_version() {

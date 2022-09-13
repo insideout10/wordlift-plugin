@@ -143,7 +143,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 				 data-template-url="%s"></div>
 			',
 				esc_attr( $faceted_id ),
-				esc_url( $rest_url ),
+				esc_attr( $rest_url ),
 				esc_attr( $title ),
 				esc_attr( $template_id ),
 				esc_url( $template_url )
