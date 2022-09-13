@@ -58,7 +58,12 @@ add_action(
 		$notices = $container_builder->get( Notices::class );
 		$notices->register_hooks();
 
+		$filters = $container_builder->get( Filters::class );
+
+
+
+
 	}
 );
 
-$filters = $container_builder->get( 'Wordlift\Modules\Pods\WlEntityField\Filters' );
+

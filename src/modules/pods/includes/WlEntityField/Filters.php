@@ -2,6 +2,7 @@
 
 namespace Wordlift\Modules\Pods\WlEntityField;
 
+use Pods\Whatsit\Field;
 use Wordlift\Entity\Query\Entity_Query_Service;
 use Wordlift\Object_Type_Enum;
 
@@ -18,6 +19,70 @@ class Filters {
 		add_filter( 'pods_field_dfv_data', array( $this, 'data_filter' ), 10, 2 );
 		add_filter( 'pods_field_pick_data_ajax', array( $this, 'admin_ajax_filter' ), 10, 4 );
 
+		add_action(
+			'pods_meta_save_taxonomy',
+			function ( $data, $pod, $id, $groups, $term_id, $term_taxonomy_id, $taxonomy, $is_new_item ) {
+				$this->save_field( 'term', $term_id, $groups );
+			},
+			10,
+			8
+		);
+
+		add_action(
+			'pods_meta_save_post',
+			function ( $data, $pod, $id, $groups ) {
+				$this->save_field( 'post', $id, $groups );
+			},
+			10,
+			4
+		);
+
+	}
+
+	private function save_field( $type, $identifier, $groups ) {
+
+		$entity_fields = $this->filter_entity_fields( $groups );
+		foreach ( $entity_fields as $entity_field ) {
+			delete_metadata( $type, $identifier, $entity_field );
+			$key = sprintf( 'pods_meta_%s', $entity_field );
+
+			$data = filter_var_array( $_REQUEST, array( $key => array( 'flags' => FILTER_REQUIRE_ARRAY ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+			if ( ! $data ) {
+				continue;
+			}
+			$values = $data[ $key ];
+
+			foreach ( $values as $value ) {
+				add_metadata( $type, $identifier, $entity_field, $value );
+			}
+		}
+
+	}
+
+	private function filter_entity_fields( $groups ) {
+
+		$pods = json_decode( wp_json_encode( $groups ), true );
+
+		$fields = array_reduce(
+			$pods,
+			function ( $carry, $item ) {
+				return array_merge( $carry, $item['fields'] );
+			},
+			array()
+		);
+
+		return array_map(
+			function ( $item ) {
+				return $item['name'];
+			},
+			array_filter(
+				$fields,
+				function ( $item ) {
+					return is_array( $item ) && isset( $item['pick_object'] ) && self::FIELD_NAME === $item['pick_object'];
+				}
+			)
+		);
 	}
 
 	public function wl_pods_transform_data_for_pick_field( $item ) {
@@ -44,7 +109,13 @@ class Filters {
 		$query         = sanitize_text_field( wp_unslash( $_REQUEST['query'] ) );
 		$query_service = Entity_Query_Service::get_instance();
 
-		return array_map( array( $this, 'wl_pods_transform_data_for_pick_field' ), $query_service->query( $query, $field->get_arg( 'supported_schema_types', array( 'Thing' ) ) ) );
+		return array_map(
+			array(
+				$this,
+				'wl_pods_transform_data_for_pick_field',
+			),
+			$query_service->query( $query, $field->get_arg( 'supported_schema_types', array( 'Thing' ) ) )
+		);
 
 	}
 
