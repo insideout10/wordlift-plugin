@@ -38,9 +38,9 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "autoload": {
-    "files": [
-      "includes/polyfills/mbstring.php"
-    ]
+    "psr-4": {
+      "Wordlift\\Modules\\Common\\": "includes"
+    }
   },
   "config": {
     "allow-plugins": {
@@ -71,6 +71,8 @@
     },
     "enable-patching": true
   },
+
+
   "scripts": {
     "post-install-cmd": [
       "@prefix-dependencies"

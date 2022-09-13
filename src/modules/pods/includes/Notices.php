@@ -2,6 +2,8 @@
 
 namespace Wordlift\Modules\Pods;
 
+use Wordlift\Modules\Common\Plugin;
+
 class Notices {
 
 	/**

@@ -8,6 +8,7 @@
  * @package wordlift
  */
 
+use Wordlift\Modules\Common\Installer;
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -15,7 +16,7 @@ use Wordlift\Modules\Pods\Definition;
 use Wordlift\Modules\Pods\FieldDefinition\FieldDefinitionFactory;
 use Wordlift\Modules\Pods\WlEntityField\Filters;
 use Wordlift\Modules\Pods\Notices;
-use Wordlift\Modules\Pods\Installer;
+
 
 
 if ( ! defined( 'ABSPATH' ) ) {
