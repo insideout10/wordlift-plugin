@@ -6,7 +6,7 @@ class Schema {
 
 	public function get_context_type() {
 
-		if ( isset( $_REQUEST['post'] ) ) {
+		if ( isset( $_REQUEST['post'] ) || isset($_REQUEST['post_ID']) ) {
 			return Context::POST;
 		}
 		if ( isset( $_REQUEST['tag_ID'] ) ) {
@@ -27,7 +27,8 @@ class Schema {
 	public function get() {
 		// we need to identify the context to filter the results.
 
-		$identifier = isset( $_REQUEST['post'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post'] ) ) : '';
+		$identifier = isset( $_REQUEST['post'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post'] ) )
+			: sanitize_text_field( wp_unslash( $_REQUEST['post_ID'] ) );
 
 		if ( $identifier ) {
 			// If post identifier, get schema.
@@ -41,7 +42,7 @@ class Schema {
 			return new Context( Context::TERM, $identifier, $this->get_fields_for_term( $identifier ) );
 		}
 
-		if ( is_admin() &&  defined( 'DOING_AJAX' ) ) {
+		if ( is_admin() && defined( 'DOING_AJAX' ) ) {
 			return new Context( Context::ADMIN_AJAX, null, $this->get_all_fields() );
 		}
 

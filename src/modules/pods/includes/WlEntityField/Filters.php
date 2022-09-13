@@ -42,6 +42,7 @@ class Filters {
 	private function save_field( $type, $identifier, $groups ) {
 
 		$entity_fields = $this->filter_entity_fields( $groups );
+
 		foreach ( $entity_fields as $entity_field ) {
 			delete_metadata( $type, $identifier, $entity_field );
 			$key = sprintf( 'pods_meta_%s', $entity_field );
