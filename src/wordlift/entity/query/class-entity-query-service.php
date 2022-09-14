@@ -48,7 +48,7 @@ class Entity_Query_Service {
 		return $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT DISTINCT t.term_id as id, t.name as title, tm.meta_value as schema_type_name FROM $wpdb->terms t INNER JOIN $wpdb->termmeta tm
-    ON t.term_id=tm.term_id WHERE t.name LIKE %s AND (tm.meta_key = %s AND tm.meta_value IN ($schema_types)) LIMIT %d",
+    ON t.term_id=tm.term_id WHERE t.name LIKE %s AND (tm.meta_key = %s AND tm.meta_value IN ($schema_types)) LIMIT %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				'%' . $wpdb->esc_like( $query ) . '%',
 				\Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				$limit
