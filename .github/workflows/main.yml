@@ -12,6 +12,14 @@ on:
       - develop
 
 jobs:
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: lint
+        run: >
+          composer install && composer lint src/
   cancel_running_workflows:
     runs-on: ubuntu-latest
     steps:
