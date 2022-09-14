@@ -162,6 +162,9 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+      - name: linter
+        run: >
+          composer install && composer lint src/
       - name: phpunit
         run: >
           docker run --workdir /github/workspace --rm -v "/var/run/docker.sock":"/var/run/docker.sock" \
