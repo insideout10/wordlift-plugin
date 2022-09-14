@@ -425,7 +425,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 							// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 							  $references_infos[] = array( 'reference' => $item );
 
-							  return array( '@id' => $url, );
+							  return array( '@id' => $url );
 						}
 
 						return $converter->relative_to_context( $item );

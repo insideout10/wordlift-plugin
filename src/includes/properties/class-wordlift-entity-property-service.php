@@ -1,7 +1,5 @@
 <?php
 
-use Wordlift\Jsonld\Post_Reference;
-use Wordlift\Jsonld\Term_Reference;
 use Wordlift\Object_Type_Enum;
 
 /**
@@ -45,7 +43,5 @@ class Wordlift_Entity_Property_Service extends Wordlift_Simple_Property_Service 
 
 		return $result;
 	}
-
-
 
 }

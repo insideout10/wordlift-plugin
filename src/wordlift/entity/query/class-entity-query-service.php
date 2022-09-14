@@ -14,7 +14,6 @@ use Wordlift\Object_Type_Enum;
 
 class Entity_Query_Service {
 
-
 	private static $instance = null;
 
 	/**
@@ -29,7 +28,6 @@ class Entity_Query_Service {
 
 		return self::$instance;
 	}
-
 
 	private function query_posts( $query, $schema_types, $limit ) {
 		return wl_entity_get_by_title( $query, true, true, $limit, $schema_types );
@@ -83,7 +81,6 @@ class Entity_Query_Service {
 		);
 	}
 
-
 	/**
 	 * @param $query
 	 * @param $schema_types
@@ -106,24 +103,25 @@ class Entity_Query_Service {
 	}
 
 	public function get( $linked_entities ) {
-		return array_filter( array_map(
-			function ( $item ) {
-				$parts      = explode( '_', $item );
-				$type       = Object_Type_Enum::from_string( $parts[0] );
-				$identifier = $parts[1];
+		return array_filter(
+			array_map(
+				function ( $item ) {
+					$parts      = explode( '_', $item );
+					$type       = Object_Type_Enum::from_string( $parts[0] );
+					$identifier = $parts[1];
 
-				if ( $type === Object_Type_Enum::POST ) {
-					return new Entity( 'Thing', new Wordpress_Content( get_post( $identifier ) ) );
-				} elseif ( $type === Object_Type_Enum::TERM ) {
-					return new Entity( 'Thing', new Wordpress_Content( get_term( $identifier ) ) );
-				}
+					if ( $type === Object_Type_Enum::POST ) {
+						return new Entity( 'Thing', new Wordpress_Content( get_post( $identifier ) ) );
+					} elseif ( $type === Object_Type_Enum::TERM ) {
+						return new Entity( 'Thing', new Wordpress_Content( get_term( $identifier ) ) );
+					}
 
-				//return new Entity( $item->schema_type_name, new Wordpress_Content( get_term( $item->id ) ) );
-			},
-			$linked_entities
-		) );
+					// return new Entity( $item->schema_type_name, new Wordpress_Content( get_term( $item->id ) ) );
+				},
+				$linked_entities
+			)
+		);
 
 	}
-
 
 }

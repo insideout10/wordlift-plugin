@@ -25,8 +25,6 @@ class Term_Metabox extends Wl_Abstract_Metabox {
 	 */
 	public function render_ui( $term ) {
 
-
-
 		$this->instantiate_fields( $term->term_id, Object_Type_Enum::TERM );
 		$this->html();
 		$this->enqueue_scripts_and_styles();

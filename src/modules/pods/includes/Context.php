@@ -26,9 +26,8 @@ class Context {
 		self::TERM => 'taxonomy',
 	);
 
-
 	/**
-	 * @param int $object_type
+	 * @param int           $object_type
 	 * @param $identifier
 	 * @param $custom_fields
 	 */
@@ -38,14 +37,12 @@ class Context {
 		$this->custom_fields = $custom_fields;
 	}
 
-
 	/**
 	 * @return int
 	 */
 	public function get_object_type() {
 		return $this->object_type;
 	}
-
 
 	public function get_pod_name() {
 		if ( self::POST === $this->object_type ) {

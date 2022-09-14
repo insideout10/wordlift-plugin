@@ -12,27 +12,22 @@ use Wordlift\Modules\Common\Installer;
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Wordlift\Modules\Pods\Definition;
 use Wordlift\Modules\Pods\FieldDefinition\FieldDefinitionFactory;
-use Wordlift\Modules\Pods\WlEntityField\Filters;
 use Wordlift\Modules\Pods\Notices;
-
-
+use Wordlift\Modules\Pods\WlEntityField\Filters;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! apply_filters( 'wl_feature__enable__pods-integration', false ) || ! defined('PODS_VERSION') ) {
+if ( ! apply_filters( 'wl_feature__enable__pods-integration', false ) || ! defined( 'PODS_VERSION' ) ) {
 	return;
 }
-
 
 // Autoloader for plugin itself.
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require __DIR__ . '/vendor/autoload.php';
 }
-
 
 $container_builder = new ContainerBuilder();
 $loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
@@ -60,9 +55,6 @@ add_action(
 		$notices->register_hooks();
 
 		$filters = $container_builder->get( Filters::class );
-
-
-
 
 	}
 );

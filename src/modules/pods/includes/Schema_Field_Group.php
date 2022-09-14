@@ -27,7 +27,4 @@ class Schema_Field_Group {
 		return $this->custom_fields;
 	}
 
-
-
-
 }

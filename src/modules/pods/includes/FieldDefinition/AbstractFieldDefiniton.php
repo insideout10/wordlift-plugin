@@ -13,13 +13,12 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 
 	/**
 	 * @param  \Wordlift\Modules\Pods\Schema $schema
- 	 *
+	 *
 	 * @return void
 	 */
 	public function __construct( $schema ) {
 		$this->schema = $schema;
 	}
-
 
 	/**
 	 * @param $name string
@@ -105,7 +104,6 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 		);
 	}
 
-
 	protected function repeatable( $field, $repeatable_label = 'Add New' ) {
 		$field['repeatable']               = 1;
 		$field['repeatable_add_new_label'] = $repeatable_label;
@@ -134,7 +132,6 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 			'website_html5'      => '0',
 		);
 	}
-
 
 	protected function group_fields( ...$fields ) {
 		$result = array();
@@ -184,7 +181,6 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 		}
 	}
 
-
 	protected function get_field_by_type( $name, $type, $field_data ) {
 		if ( 'uri' === $type && isset( $field_data['constraints']['uri_type'] ) ) {
 			return $this->relationship( $name, $field_data );
@@ -225,7 +221,6 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 		);
 	}
 
-
 	protected function number( $name, $decimals = 0 ) {
 		return array(
 			'description'        => '',
@@ -247,7 +242,6 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 			'rest_pick_depth'    => '1',
 		);
 	}
-
 
 	protected function multiline( $name ) {
 		return array(
@@ -275,7 +269,6 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 		return $field;
 	}
 
-
 	/**
 	 * @return array
 	 * A function which defines these pods on the edit post screen.
@@ -295,20 +288,18 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 		return $field;
 	}
 
-
 	protected function custom_fields_to_pod_fields( $custom_fields, $pod_id ) {
 
 		$pod_fields = array();
 
 		foreach ( $custom_fields as $name => $custom_field ) {
-			$pod_fields[] =  $this->wordlift_css_class( $this->custom_field_to_pod_field( $custom_field ) ) + array(
-					'pod_id' => $pod_id,
-					'id'     => intval( substr( md5( $pod_id . '_' . $name ), 0, 8 ), 16 ),
-					'name'   => $name,
-					'label'  => $this->format_label( str_replace( 'http://schema.org/', '', $custom_field['predicate'] ) ),
-				);
+			$pod_fields[] = $this->wordlift_css_class( $this->custom_field_to_pod_field( $custom_field ) ) + array(
+				'pod_id' => $pod_id,
+				'id'     => intval( substr( md5( $pod_id . '_' . $name ), 0, 8 ), 16 ),
+				'name'   => $name,
+				'label'  => $this->format_label( str_replace( 'http://schema.org/', '', $custom_field['predicate'] ) ),
+			);
 		}
-
 
 		return array_values( $pod_fields );
 	}
@@ -316,7 +307,5 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 	protected function format_label( $name ) {
 		return join( ' ', array_map( 'ucwords', preg_split( '/(?=[A-Z])/', $name ) ) );
 	}
-
-
 
 }

@@ -2,7 +2,6 @@
 
 namespace Wordlift\Modules\Pods\WlEntityField;
 
-use Pods\Whatsit\Field;
 use Wordlift\Entity\Query\Entity_Query_Service;
 use Wordlift\Object_Type_Enum;
 
@@ -100,7 +99,6 @@ class Filters {
 		);
 	}
 
-
 	public function admin_ajax_filter( $data, $name, $_, $field ) {
 
 		if ( ( ! $field instanceof \Pods\Whatsit\Field ) || $field->get_arg( 'pick_object', false ) !== self::FIELD_NAME ) {
@@ -147,7 +145,6 @@ class Filters {
 		return $data;
 	}
 
-
 	public function ajax_filter( $result, $name, $value, $field_options ) {
 
 		if ( ! isset( $field_options['pick_object'] ) ) {
@@ -166,7 +163,6 @@ class Filters {
 		// This is necessary to prevent errors on ui.
 		return array( 'foo' => 'bar' );
 	}
-
 
 	public function field_options_filter( $_, $name, $value, $options, $pod, $id, $object_params ) {
 
@@ -202,6 +198,5 @@ class Filters {
 		return $_;
 
 	}
-
 
 }

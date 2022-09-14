@@ -6,8 +6,6 @@
 
 namespace Wordlift\Vocabulary_Terms\Jsonld;
 
-use Wordlift\Jsonld\Post_Reference;
-use Wordlift\Jsonld\Reference;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Term\Type_Service;
 
@@ -144,7 +142,6 @@ class Jsonld_Generator {
 					$value
 				)
 			);
-
 
 			return array_map(
 				function ( $reference ) {

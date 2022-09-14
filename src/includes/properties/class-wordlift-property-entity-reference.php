@@ -65,6 +65,7 @@ class Wordlift_Property_Entity_Reference {
 
 	/**
 	 * Return the type of the reference, one of the values in Object_Type_Enum
+	 *
 	 * @return int
 	 * @since 3.38.0
 	 */

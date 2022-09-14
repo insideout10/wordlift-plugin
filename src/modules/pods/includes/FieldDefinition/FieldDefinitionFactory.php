@@ -16,7 +16,6 @@ class FieldDefinitionFactory {
 		$this->schema = $schema;
 	}
 
-
 	public function get_field_definition() {
 
 		$context_type = $this->schema->get_context_type();
@@ -30,6 +29,5 @@ class FieldDefinitionFactory {
 				return new AllPodsDefiniton( $this->schema );
 		}
 	}
-
 
 }

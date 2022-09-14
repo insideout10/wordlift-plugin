@@ -13,7 +13,6 @@ class Entity {
 	 */
 	private $content;
 
-
 	/**
 	 * @param $schema_type
 	 * @param $content Wordpress_Content
@@ -43,6 +42,5 @@ class Entity {
 		}
 		return '';
 	}
-
 
 }
