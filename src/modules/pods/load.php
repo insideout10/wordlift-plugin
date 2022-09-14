@@ -54,7 +54,7 @@ add_action(
 		$notices = $container_builder->get( Notices::class );
 		$notices->register_hooks();
 
-		$filters = $container_builder->get( Filters::class );
+		$container_builder->get( Filters::class );
 
 	}
 );
