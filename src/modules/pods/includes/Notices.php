@@ -16,10 +16,49 @@ class Notices {
 	}
 
 	public function register_hooks() {
-		add_action( 'wl_metabox_before_html', array( $this, 'admin_notices' ) );
+		add_action( 'wl_metabox_before_html', array( $this, 'pods_notice' ) );
 	}
 
-	public function admin_notices() {
+	public function pods_notice() {
+
+		// Enqueue pods module scripts.
+		wp_enqueue_script( 'wl-module-pods', WL_DIR_URL . 'js/dist/pods.js', array(), WORDLIFT_VERSION, true );
+
+		$kses_options                 = array(
+			'p'      => array(),
+			'b'      => array(),
+			'span' => array(
+				'class' => array(),
+			),
+			'button' => array(
+				'class'   => array(),
+				'onclick' => array(),
+			),
+		);
+		$installation_success_message = __(
+			'<p>WordLift: <b>Pods – Custom Content Types and Fields</b> plugin installed and activated.</p>',
+			'wordlift'
+		);
+
+		$installing_message          = __( 'Installing', 'wordlift' ) . ' <span class="spinner is-active"></span>';
+		$installation_failed_message = '<p>' .
+			__( 'Wordlift: Pods – Custom Content Types and Fields installation failed, please retry or contact support@wordlift.io', 'wordlift' )
+			. '</p><button class="button action" onclick="wordliftInstallPods(this)">'
+			. __( 'Retry', 'wordlift' )
+			. '</button>';
+
+		wp_localize_script(
+			'wl-module-pods',
+			'wl_module_pods',
+			array(
+				'ajax_url' => esc_html( wp_parse_url( admin_url( 'admin-ajax.php' ), PHP_URL_PATH ) ),
+				'messages' => array(
+					'installation_success' => wp_kses( $installation_success_message, $kses_options ),
+					'installing'           => wp_kses( $installing_message, $kses_options ),
+					'installation_failed'  => wp_kses( $installation_failed_message, $kses_options ),
+				),
+			)
+		);
 
 		/**
 		 * When pods not installed or activated then the notice should appear.
@@ -45,51 +84,7 @@ class Notices {
 	}
 
 	private function display_notice( $message, $button_text ) {
-
-		$kses_options                 = array(
-			'p'      => array(),
-			'b'      => array(),
-			'button' => array(
-				'class'   => array(),
-				'onclick' => array(),
-			),
-		);
-		$installation_success_message = __(
-			'<p>WordLift: <b>Pods – Custom Content Types and Fields</b> plugin installed and activated.</p>',
-			'wordlift'
-		);
-
-		$installing_message          = __( 'Installing', 'wordlift' ) . ' <span class="spinner is-active"></span>';
-		$installation_failed_message = '<p>' .
-			__( 'Wordlift: Pods – Custom Content Types and Fields installation failed, please retry or contact support@wordlift.io', 'wordlift' )
-			. '</p><button class="button action" onclick="wordliftInstallPods(this)">'
-			. __( 'Retry', 'wordlift' )
-			. '</button>';
 		?>
-
-		<script>
-			window.addEventListener("load", function () {
-				const pluginInstallationNotice = document.getElementById("wordlift_pods_plugin_installation_notice")
-				const installPlugin = (ajaxUrl) => fetch(`${ajaxUrl}?action=wl_install_and_activate_pods`)
-					.then(response => response.ok ? response.json() : Promise.reject())
-				const ajaxUrl = "<?php echo esc_html( wp_parse_url( admin_url( 'admin-ajax.php' ), PHP_URL_PATH ) ); ?>"
-				window.wordliftInstallPods = function (installBtn) {
-					installBtn.innerHTML = `<?php echo wp_kses( $installing_message, array( 'span' => array( 'class' => array() ) ) ); ?>`
-					installPlugin(ajaxUrl)
-						.catch(e => {
-							pluginInstallationNotice.innerHTML = `<?php echo wp_kses( $installation_failed_message, $kses_options ); ?>`
-						})
-						.then(() => {
-							pluginInstallationNotice.innerHTML = `<?php echo wp_kses( $installation_success_message, $kses_options ); ?>`
-							pluginInstallationNotice.classList.remove('notice-error')
-							pluginInstallationNotice.classList.add('notice-success')
-						})
-
-				};
-			})
-		</script>
-
-
 		<div class="wl-notice notice-error" id="wordlift_pods_plugin_installation_notice">
 			<p>
 				<?php echo wp_kses( $message, array( 'b' => array() ) ); ?>

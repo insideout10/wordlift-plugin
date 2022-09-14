@@ -26,6 +26,7 @@ const webpackConfig = {
   ...defaultConfig,
   entry: {
     bundle: "./src/Public/index.js",
+    pods: "./src/pods/index.js",
     edit: "./src/Edit/index.js",
     term: "./src/Term/index.js",
     "vocabulary-term": "./src/vocabulary-term/index.js",

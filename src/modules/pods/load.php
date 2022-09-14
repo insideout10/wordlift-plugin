@@ -17,7 +17,6 @@ use Wordlift\Modules\Pods\FieldDefinition\FieldDefinitionFactory;
 use Wordlift\Modules\Pods\WlEntityField\Filters;
 use Wordlift\Modules\Pods\Notices;
 
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
