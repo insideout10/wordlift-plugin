@@ -12,7 +12,7 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 	protected $schema;
 
 	/**
-	 * @param  \Wordlift\Modules\Pods\Schema $schema
+	 * @param \Wordlift\Modules\Pods\Schema $schema
 	 *
 	 * @return void
 	 */
@@ -49,7 +49,7 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 
 	}
 
-	protected function text( $name ) {
+	protected function text() {
 		return array(
 			'description'            => '',
 			'weight'                 => 0,
@@ -111,7 +111,7 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 		return $field;
 	}
 
-	protected function website( $name ) {
+	protected function website() {
 		return array(
 			'description'        => '',
 			'weight'             => 0,
@@ -185,21 +185,21 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 		if ( 'uri' === $type && isset( $field_data['constraints']['uri_type'] ) ) {
 			return $this->relationship( $name, $field_data );
 		} elseif ( 'uri' === $type ) {
-			return $this->website( $name );
+			return $this->website();
 		} elseif ( 'string' === $type ) {
-			return $this->text( $name );
+			return $this->text();
 		} elseif ( 'double' === $type ) {
 			return $this->number( $name, 2 );
 		} elseif ( 'date' === $type ) {
-			return $this->datetime( $name );
+			return $this->datetime();
 		} elseif ( 'multiline' === $type ) {
-			return $this->multiline( $name );
+			return $this->multiline();
 		} else {
-			return $this->text( $name );
+			return $this->text();
 		}
 	}
 
-	protected function datetime( $name ) {
+	protected function datetime() {
 		return array(
 			'description'             => '',
 			'weight'                  => 2,
@@ -243,7 +243,7 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 		);
 	}
 
-	protected function multiline( $name ) {
+	protected function multiline() {
 		return array(
 			'description'                 => '',
 			'weight'                      => 3,
@@ -273,7 +273,6 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 	 * @return array
 	 * A function which defines these pods on the edit post screen.
 	 */
-
 	protected function custom_field_to_pod_field( $custom_field ) {
 
 		$name = str_replace( 'http://schema.org/', '', $custom_field['predicate'] );

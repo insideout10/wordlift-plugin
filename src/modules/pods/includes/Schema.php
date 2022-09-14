@@ -6,10 +6,10 @@ class Schema {
 
 	public function get_context_type() {
 
-		if ( isset( $_REQUEST['post'] ) || isset( $_REQUEST['post_ID'] ) ) {
+		if ( isset( $_REQUEST['post'] ) || isset( $_REQUEST['post_ID'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return Context::POST;
 		}
-		if ( isset( $_REQUEST['tag_ID'] ) ) {
+		if ( isset( $_REQUEST['tag_ID'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return Context::TERM;
 		}
 
@@ -26,15 +26,15 @@ class Schema {
 	public function get() {
 		// we need to identify the context to filter the results.
 
-		$identifier = isset( $_REQUEST['post'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post'] ) )
-			: sanitize_text_field( wp_unslash( $_REQUEST['post_ID'] ) );
+		$identifier = isset( $_REQUEST['post'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post'] ) ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			: sanitize_text_field( wp_unslash( isset( $_REQUEST['post_ID'] ) ? $_REQUEST['post_ID'] : '' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		if ( $identifier ) {
 			// If post identifier, get schema.
 			return new Context( Context::POST, $identifier, $this->get_fields_for_post( $identifier ) );
 		}
 
-		$identifier = isset( $_REQUEST['tag_ID'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['tag_ID'] ) ) : '';
+		$identifier = isset( $_REQUEST['tag_ID'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['tag_ID'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		if ( $identifier ) {
 			// If post identifier, get schema.

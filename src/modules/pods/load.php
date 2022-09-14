@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! apply_filters( 'wl_feature__enable__pods-integration', false ) || ! defined( 'PODS_VERSION' ) ) {
+if ( ! apply_filters( 'wl_feature__enable__pods-integration', false ) || ! defined( 'PODS_VERSION' ) ) { //phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	return;
 }
 

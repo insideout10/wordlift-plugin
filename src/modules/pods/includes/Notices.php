@@ -55,7 +55,7 @@ class Notices {
 			),
 		);
 		$installation_success_message = __(
-			'<p>WordLift: <b>Pods – Custom Content Types and Fields</b> plugin installed and activated.</p>',
+			'<p>WordLift: <b>Pods – Custom Content Types and Fields</b> plugin installed and activated.</p>', // phpcs:ignore WordPress.WP.I18n.NoHtmlWrappedStrings
 			'wordlift'
 		);
 

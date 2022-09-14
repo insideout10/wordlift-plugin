@@ -20,11 +20,11 @@ class Filters {
 
 		add_action(
 			'pods_meta_save_taxonomy',
-			function ( $data, $pod, $id, $groups, $term_id, $term_taxonomy_id, $taxonomy, $is_new_item ) {
+			function ( $data, $pod, $id, $groups, $term_id ) {
 				$this->save_field( 'term', $term_id, $groups );
 			},
 			10,
-			8
+			5
 		);
 
 		add_action(
@@ -105,7 +105,7 @@ class Filters {
 			return $data;
 		}
 
-		$query         = sanitize_text_field( wp_unslash( $_REQUEST['query'] ) );
+		$query         = sanitize_text_field( wp_unslash( isset( $_REQUEST['query'] ) ? $_REQUEST['query'] : '' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$query_service = Entity_Query_Service::get_instance();
 
 		return array_map(
