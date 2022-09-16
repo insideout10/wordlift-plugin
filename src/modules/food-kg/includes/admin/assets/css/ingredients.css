@@ -1,0 +1,11 @@
+.wl-ingredients {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.wl-ingredients__btn-copy-table {
+    border: 2px solid #333;
+    padding: 5px 20px;
+    float: right;
+    cursor: pointer;
+}

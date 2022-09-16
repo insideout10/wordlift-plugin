@@ -23,6 +23,7 @@ class ComposerStaticInitbaaf547b24d2757395578581da934187 {
 		'Wordlift\\Modules\\Food_Kg\\Main_Ingredient_Jsonld' => __DIR__ . '/../..' . '/Main_Ingredient_Jsonld.php',
 		'Wordlift\\Modules\\Food_Kg\\Main_Ingredient_Recipe_Lift_Strategy' => __DIR__ . '/../..' . '/Main_Ingredient_Recipe_Lift_Strategy.php',
 		'Wordlift\\Modules\\Food_Kg\\Module'               => __DIR__ . '/../..' . '/Module.php',
+		'Wordlift\\Modules\\Food_Kg\\Meta_Box'               => __DIR__ . '/../..' . '/Meta_Box.php',
 		'Wordlift\\Modules\\Food_Kg\\Notices'              => __DIR__ . '/../..' . '/Notices.php',
 		'Wordlift\\Modules\\Food_Kg\\Preconditions'        => __DIR__ . '/../..' . '/Preconditions.php',
 		'Wordlift\\Modules\\Food_Kg\\Recipe_Lift_Strategy' => __DIR__ . '/../..' . '/Recipe_Lift_Strategy.php',

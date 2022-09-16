@@ -49,6 +49,7 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 	public function get_columns() {
 		return array(
 			'post_title' => __( 'Name', 'wordlift' ),
+			'url' => __( 'URL', 'wordlift' ),
 			'actions'    => '',
 		);
 	}
@@ -58,6 +59,11 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 		$edit_url = $recipe->parent_edit_url();
 
 		return empty( $edit_url ) ? $item->post_title : sprintf( '<a href="%s">%s</a>', $recipe->parent_edit_url(), $item->post_title );
+	}
+
+	public function column_url( $item ) {
+		$url = get_permalink( $item->ID );
+		return esc_url( $url );
 	}
 
 	public function column_actions( $item ) {

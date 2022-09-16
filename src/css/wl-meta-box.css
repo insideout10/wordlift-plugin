@@ -1,0 +1,70 @@
+/** Meta Box **/
+.wl-recipe-ingredient {
+    border-bottom: 1px solid #ddd;
+    padding: 20px 0;
+    overflow: hidden;
+}
+.wl-recipe-ingredient p {
+    font-size: 16px;
+}
+.wl-recipe-ingredient__field {}
+.wl-recipe-ingredient__field label {
+    font-size: 16px;
+}
+.wl-recipe-ingredient__field select {}
+
+.wl-recipe-ingredient__save {
+    float: right;
+    background-color: #333;
+    border: 0;
+    color: #fff;
+    padding: 7px 30px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+/** Tabs **/
+.wl-metabox-tabs {
+    margin: 20px 0 10px 0;
+}
+.wl-metabox-tabs ul {
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.wl-metabox-tabs ul li {
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 0px;
+}
+.wl-metabox-tabs ul li:hover a {
+    border-bottom: 3px solid #333;
+    /* font-weight: 600; */
+}
+.wl-metabox-tabs ul li.active a {
+    border-bottom: 3px solid #333;
+    /* font-weight: 600; */
+}
+.wl-metabox-tabs ul li a {
+    background-color: #EFEFEF;
+    padding: 10px 20px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 3px solid #ddd;
+    display: block;
+}
+.wl-metabox-tabs ul li a:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.wl-metabox-tabs__content {
+    background-color: #EFEFEF;
+    margin: 0;
+    padding: 10px 15px;
+}
+
+.wl-metabox-tabs__content > div:not(:first-child) {
+    display: none;
+}

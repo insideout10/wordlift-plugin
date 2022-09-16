@@ -11,6 +11,9 @@ defined( 'WL_TEMP_DIR' ) || define( 'WL_TEMP_DIR', wl_temp_dir() );
 // Define the meta name used to store the entity URL.
 define( 'WL_ENTITY_URL_META_NAME', 'entity_url' );
 
+// WordLift Directory URL.
+defined( 'WL_DIR_URL' ) || define( 'WL_DIR_URL', plugin_dir_url( __FILE__ ) );
+
 // Use the WordLift API URL set on the command line.
 if ( ! defined( 'WORDLIFT_API_URL' ) && false !== getenv( 'WORDLIFT_API_URL' ) ) {
 	define( 'WORDLIFT_API_URL', getenv( 'WORDLIFT_API_URL' ) );

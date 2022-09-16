@@ -26,13 +26,13 @@ class Preconditions {
 
 	private function check_version() {
 		$check = version_compare( WPRM_VERSION, '8.1.0', '>=' )
-				 && version_compare( WPRM_VERSION, '8.4.0', '<' );
+				&& version_compare( WPRM_VERSION, '8.6.0', '<' );
 
 		if ( ! $check ) {
 			$this->notices->queue(
 				'warning',
 				/* translators: %s: Detected WP Recipe Maker version. */
-				sprintf( __( 'WordLift Food KG support requires WP Recipe Maker 8.1-8.3, %s found.', 'wordlift' ), WPRM_VERSION )
+				sprintf( __( 'WordLift Food KG support requires WP Recipe Maker 8.1-8.5, %s found.', 'wordlift' ), WPRM_VERSION )
 			);
 		}
 

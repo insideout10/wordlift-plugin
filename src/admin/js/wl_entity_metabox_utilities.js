@@ -180,5 +180,18 @@ jQuery( document ).ready( function ( $ ) {
 			}
 		} );
 	}
+
+	// Tabs.
+	var wlMetaBoxTabItem = $('.wl-metabox-tabs ul li a');
+	wlMetaBoxTabItem.on('click', function(e) {
+		$('.wl-metabox-tabs ul li').removeClass('active');
+		$(this).parent().addClass('active');
+
+		var currentTab = $(this).attr('href');
+		$('.wl-metabox-tabs__content > div').hide();
+		$(currentTab).show();
+
+		return false;
+	});
 } );
 

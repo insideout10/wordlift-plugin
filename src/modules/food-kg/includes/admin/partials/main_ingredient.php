@@ -4,7 +4,10 @@ use Wordlift\Modules\Food_Kg\Admin\Main_Ingredient_List_Table;
 
 ?>
 <div class="wrap">
-	<h1><?php esc_attr_e( 'Main Ingredients', 'wordlift' ); ?></h1>
+	<div class="wl-ingredients">
+		<h1><?php esc_attr_e( 'Main Ingredients', 'wordlift' ); ?></h1>
+		<button class="wl-ingredients__btn-copy-table"><?php esc_attr_e( 'Copy Table', 'wordlift' ); ?></button>
+	</div>
 	<?php
 
 	// Prepare Table of elements

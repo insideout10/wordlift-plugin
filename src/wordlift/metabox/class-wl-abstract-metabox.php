@@ -60,7 +60,7 @@ class Wl_Abstract_Metabox {
 
 		// Add main metabox (will print also the inner fields).
 		$id    = uniqid( 'wl-metabox-' );
-		$title = get_the_title() . ' ' . __( 'properties', 'wordlift' );
+		$title = __( 'WordLift', 'wordlift' );
 
 		// WordPress 4.2 do not accept an array of screens as parameter, have to do be explicit.
 		foreach ( Wordlift_Entity_Service::valid_entity_post_types() as $screen ) {
@@ -96,17 +96,39 @@ class Wl_Abstract_Metabox {
 
 		// HTML Code Before MetaBox Content.
 		do_action( 'wl_metabox_before_html' );
+		?>
+		<div class="wl-metabox-tabs">
+			<ul>
+				<li class="active">
+					<a href="#wl-metabox-tab-properties"><?php esc_html_e( 'Properties', 'wordlift' ); ?></a>
+				</li>
+				<li>
+					<a href="#wl-metabox-tab-ingredient"><?php esc_html_e( 'Main Ingredient', 'wordlift' ); ?></a>
+				</li>
+			</ul>
+			<div class="wl-metabox-tabs__content">
+				<div id="wl-metabox-tab-properties">
+					<?php
+					// Loop over the fields.
+					foreach ( $this->fields as $field ) {
 
-		// Loop over the fields.
-		foreach ( $this->fields as $field ) {
+						// load data from DB (values will be available in $field->data).
+						$field->get_data();
 
-			// load data from DB (values will be available in $field->data).
-			$field->get_data();
-
-			// print field HTML (nonce included).
-			echo $field->html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaping happens in `$field->html()`.
-		}
-
+						// print field HTML (nonce included).
+						echo $field->html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaping happens in `$field->html()`.
+					}
+					?>
+				</div>
+				<div id="wl-metabox-tab-ingredient">
+					<form></form>
+					<?php
+						do_action( 'wl_ingredient_metabox_html' );
+					?>
+				</div>
+			</div>
+		</div>
+		<?php
 	}
 
 	/**
@@ -378,6 +400,9 @@ class Wl_Abstract_Metabox {
 
 		// Use the minified version if PW_DEBUG isn't set.
 		$min = ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ? '.min' : '';
+
+		// CSS For Meta Box.
+		wp_enqueue_style( 'wl-meta-box', WL_DIR_URL . 'css/wl-meta-box.css', array(), WORDLIFT_VERSION );
 
 		// Load the jquery-ui-timepicker-addon library.
 		wp_enqueue_style( 'wl-flatpickr', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . "/admin/js/flatpickr/flatpickr$min.css", array(), '3.0.6' );
