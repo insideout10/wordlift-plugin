@@ -74,7 +74,15 @@ jQuery(document).ready(function ($) {
                     }
                 } );
             },
-            select: function (event, ui) { $(`#${uID}`).val(ui); }
+            search: function(){
+                $(this).addClass('autocomplete-loading');
+            },
+            open: function(){
+                $(this).removeClass('autocomplete-loading');
+            },
+            select: function (event, ui) {
+                $(`#${uID}`).val(ui);
+            }
         });
     })
 });
