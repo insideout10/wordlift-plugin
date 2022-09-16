@@ -27,6 +27,8 @@ const webpackConfig = {
   entry: {
     bundle: "./src/Public/index.js",
     edit: "./src/Edit/index.js",
+    ingredients: "./src/ingredients/index.js",
+    "ingredients-meta-box": "./src/ingredients/meta-box.js",
     term: "./src/Term/index.js",
     "vocabulary-term": "./src/vocabulary-term/index.js",
     "block-editor": "./src/block-editor/index.js",
