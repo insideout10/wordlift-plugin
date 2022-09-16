@@ -11,8 +11,6 @@ use Wordlift\Api\Api_Service_Ext;
 
 class Meta_Box {
 
-	const RUN_EVENT = 'wl_food_kg__run';
-
 	/**
 	 * @var Api_Service_Ext
 	 */
@@ -55,9 +53,6 @@ class Meta_Box {
 
 		$recipe_ids = \WPRM_Recipe_Manager::get_recipe_ids_from_post( get_the_ID() );
 		if ( ! empty( $recipe_ids ) ) {
-			$ingredient_data = array( 'vegetable', 'egg', 'fruit', 'meat', 'fish', 'dairy', 'grain', 'spice', 'other', 'bacon' );
-			?>
-			<?php
 			foreach ( $recipe_ids as $key => $recipe_id ) {
 				$recipe_json_ld = get_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', true );
 				if ( $recipe_json_ld ) {
