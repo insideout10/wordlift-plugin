@@ -62,8 +62,10 @@ class Meta_Box {
 						<div class="wl-recipe-ingredient">
 							<?php echo sprintf( '<p>The main ingredient is <strong>%s</strong></p>', esc_html( $recipe['name'] ) ); ?>
 							<form class="wl-recipe-ingredient-form" id="wl-recipe-ingredient-form-<?php echo esc_attr( $key ); ?>">
-								<label for="wl-recipe-ingredient__field-<?php echo esc_attr( $recipe['name'] ) . '-' . esc_attr( $key ); ?>"><?php echo esc_html__( 'Replace the main ingredient', 'wordlift' ); ?>: </label>
-								<input class="main-ingredient" id="wl-recipe-ingredient__field-<?php echo esc_attr( $recipe['name'] ) . '-' . esc_attr( $key ); ?>" name="main_ingredient" >
+								<div class="wl-recipe-ingredient__field">
+									<label for="wl-recipe-ingredient__field-<?php echo esc_attr( $recipe['name'] ) . '-' . esc_attr( $key ); ?>"><?php echo esc_html__( 'Replace the main ingredient', 'wordlift' ); ?>: </label>
+									<input type="text" class="main-ingredient" id="wl-recipe-ingredient__field-<?php echo esc_attr( $recipe['name'] ) . '-' . esc_attr( $key ); ?>" name="main_ingredient" placeholder="<?php echo esc_html__( 'Type at least 3 characters to search...', 'wordlift' ); ?>">
+								</div>
 								<input type="hidden" id="recipe_id" name="recipe_id" value="<?php echo esc_attr( $recipe_id ); ?>">
 								<button type="submit" class="wl-recipe-ingredient__save"><?php echo esc_html__( 'Save', 'wordlift' ); ?></button>
 							</form>
