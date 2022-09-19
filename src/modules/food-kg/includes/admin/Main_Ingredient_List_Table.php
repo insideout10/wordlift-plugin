@@ -49,7 +49,7 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 	public function get_columns() {
 		return array(
 			'post_title' => __( 'Name', 'wordlift' ),
-			'url' => __( 'URL', 'wordlift' ),
+			'url'        => __( 'URL', 'wordlift' ),
 			'actions'    => '',
 		);
 	}

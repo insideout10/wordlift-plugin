@@ -14,7 +14,6 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFil
 use Wordlift\Modules\Food_Kg\Jsonld;
 use Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld;
 use Wordlift\Modules\Food_Kg\Preconditions;
-use Wordlift\Modules\Food_Kg\Meta_Box;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
