@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.38.1 (2022-09-19) =
+* Fix: Change scope from `network` to `network-only` for match terms analysis.
+
 = 3.38.1 (2022-09-13) =
 * Fix: Fix scope on match terms analysis.
 
