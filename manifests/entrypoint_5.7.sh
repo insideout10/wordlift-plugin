@@ -103,11 +103,13 @@ wp --allow-root plugin install wp-recipe-maker
 wp --allow-root plugin install woocommerce --version=6.3.1
 
 wp --allow-root plugin install http://wordlift.io/wp-content/uploads/wordlift-for-woocommerce.zip
+wp --allow-root plugin install http://wordlift.io/wp-content/uploads/pods.zip
 wp --allow-root rewrite structure '/%postname%/'
 wp --allow-root config set WP_DEBUG true
 wp --allow-root config set WP_DEBUG_LOG false
 wp --allow-root config set WP_DEBUG_DISPLAY true
 wp --allow-root core update --minor
+wp --allow-root plugin update --all
 sed -i "/\\* That's/ i ini_set(\'error_reporting\', E_ALL ^ E_DEPRECATED );" wp-config.php
 
 chown www-data:www-data -R /var/www/html/
