@@ -311,7 +311,7 @@ wp --allow-root config set WP_DEBUG true
 wp --allow-root config set WP_DEBUG_LOG false
 wp --allow-root config set WP_DEBUG_DISPLAY true
 wp --allow-root core update --minor
-wp --allow-root plugin update --all
+wp --allow-root plugin update woocommerce wp-recipe-maker
 sed -i "/\\* That's/ i ini_set(\'error_reporting\', E_ALL ^ E_DEPRECATED );" wp-config.php
 
 chown www-data:www-data -R /var/www/html/
