@@ -35,7 +35,6 @@ services:
       WORDPRESS_DATABASE_USER: wordpress
       WORDPRESS_DATABASE_PASSWORD: password
       WORDPRESS_DATABASE_NAME: wordpress
-      WORDPRESS_DEBUG: "1"
       WORDPRESS_ENABLE_HTTPS: "yes"
       WORDPRESS_ENABLE_REVERSE_PROXY: "yes"
       WORDPRESS_EXTRA_WP_CONFIG_CONTENT_FILE: /tmp/wp-config-extra.php
