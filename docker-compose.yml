@@ -25,10 +25,10 @@ services:
       - ./.docker/wordpress/opt/bitnami/php/etc/conf.d:/opt/bitnami/php/etc/conf.d:ro
 
       - ./src:/bitnami/wordpress/wp-content/plugins/wordlift
-      - ../pods-export-code:/bitnami/wordpress/wp-content/plugins/pods-export-code
+      # - ../pods-export-code:/bitnami/wordpress/wp-content/plugins/pods-export-code
 #      - ../advanced-custom-fields-for-schema-org:/var/www/html/wp-content/plugins/advanced-custom-fields-for-schema-org
-      - ../../wordpress/plugins/pods-2.9.3:/bitnami/wordpress/wp-content/plugins/pods
-      - ../../wordpress/plugins/woocommerce-6.9.2:/bitnami/wordpress/wp-content/plugins/woocommerce
+      # - ../../wordpress/plugins/pods-2.9.3:/bitnami/wordpress/wp-content/plugins/pods
+      # - ../../wordpress/plugins/woocommerce-6.9.2:/bitnami/wordpress/wp-content/plugins/woocommerce
       - ../../wordpress/plugins/wp-recipe-maker-8.5.0:/bitnami/wordpress/wp-content/plugins/wp-recipe-maker
     environment:
       WORDPRESS_DATABASE_HOST: db

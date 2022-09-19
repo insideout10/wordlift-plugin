@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'ComposerAutoloaderInitbaaf547b24d2757395578581da934187' => $vendorDir . '/composer/autoload_real.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'Wordlift\\Modules\\Food_Kg\\Admin\\Download_Ingredients_Data' => $baseDir . '/admin/Download_Ingredients_Data.php',
     'Wordlift\\Modules\\Food_Kg\\Admin\\Full_Page_Delegate' => $baseDir . '/admin/Full_Page_Delegate.php',
     'Wordlift\\Modules\\Food_Kg\\Admin\\Ingredients_List_Table' => $baseDir . '/admin/Ingredients_List_Table.php',
     'Wordlift\\Modules\\Food_Kg\\Admin\\Ingredients_Modal_Page_Delegate' => $baseDir . '/admin/Ingredients_Modal_Page_Delegate.php',

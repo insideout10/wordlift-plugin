@@ -49,6 +49,7 @@ function __wl_foodkg__load() {
 		return;
 	}
 
+	// Meta Box.
 	$meta_box = $container_builder->get( 'Wordlift\Modules\Food_Kg\Meta_Box' );
 	$meta_box->register_hooks();
 
@@ -66,6 +67,10 @@ function __wl_foodkg__load() {
 	if ( is_admin() ) {
 		$page = $container_builder->get( 'Wordlift\Modules\Food_Kg\Admin\Page' );
 		$page->register_hooks();
+
+		// Download Ingredients Data.
+		$download_ingredients_data = $container_builder->get( 'Wordlift\Modules\Food_Kg\Admin\Download_Ingredients_Data' );
+		$download_ingredients_data->register_hooks();
 	}
 }
 

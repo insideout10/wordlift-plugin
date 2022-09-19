@@ -38,9 +38,7 @@ class Meta_Box {
 	public function register_hooks() {
 		add_action( 'wl_ingredient_metabox_html', array( $this, 'ingredients_html' ) );
 		add_action( 'wp_ajax_wl_update_ingredient_post_meta', array( $this, 'update_ingredient_post_meta' ) );
-		add_action( 'wp_ajax_nopriv_wl_update_ingredient_post_meta', array( $this, 'update_ingredient_post_meta' ) );
 		add_action( 'wp_ajax_wl_ingredient_autocomplete', array( $this, 'wl_ingredient_autocomplete' ) );
-		add_action( 'wp_ajax_nopriv_wl_ingredient_autocomplete', array( $this, 'wl_ingredient_autocomplete' ) );
 	}
 
 	/**

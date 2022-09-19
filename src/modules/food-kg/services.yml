@@ -61,3 +61,5 @@ services:
   Wordlift\Modules\Food_Kg\Meta_Box:
     class: Wordlift\Modules\Food_Kg\Meta_Box
     arguments: [ '@Wordlift\Api\Api_Service_Ext', '@Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy' ]
+  Wordlift\Modules\Food_Kg\Admin\Download_Ingredients_Data:
+    class: Wordlift\Modules\Food_Kg\Admin\Download_Ingredients_Data

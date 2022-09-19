@@ -9,6 +9,7 @@ class ComposerStaticInitbaaf547b24d2757395578581da934187
     public static $classMap = array (
         'ComposerAutoloaderInitbaaf547b24d2757395578581da934187' => __DIR__ . '/..' . '/composer/autoload_real.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Wordlift\\Modules\\Food_Kg\\Admin\\Download_Ingredients_Data' => __DIR__ . '/../..' . '/admin/Download_Ingredients_Data.php',
         'Wordlift\\Modules\\Food_Kg\\Admin\\Full_Page_Delegate' => __DIR__ . '/../..' . '/admin/Full_Page_Delegate.php',
         'Wordlift\\Modules\\Food_Kg\\Admin\\Ingredients_List_Table' => __DIR__ . '/../..' . '/admin/Ingredients_List_Table.php',
         'Wordlift\\Modules\\Food_Kg\\Admin\\Ingredients_Modal_Page_Delegate' => __DIR__ . '/../..' . '/admin/Ingredients_Modal_Page_Delegate.php',

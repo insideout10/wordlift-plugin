@@ -63,7 +63,7 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 
 	public function column_url( $item ) {
 		$url = get_permalink( $item->ID );
-		return esc_url( $url );
+		return esc_html( $url );
 	}
 
 	public function column_actions( $item ) {
