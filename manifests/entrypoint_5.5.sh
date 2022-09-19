@@ -305,7 +305,6 @@ wp --allow-root plugin install wp-recipe-maker
 wp --allow-root plugin install woocommerce --version=5.5.2
 
 wp --allow-root plugin install http://wordlift.io/wp-content/uploads/wordlift-for-woocommerce.zip
-wp --allow-root plugin install http://wordlift.io/wp-content/uploads/pods.zip
 wp --allow-root rewrite structure '/%postname%/'
 wp --allow-root config set WP_DEBUG true
 wp --allow-root config set WP_DEBUG_LOG false
