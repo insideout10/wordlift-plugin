@@ -1,11 +1,1 @@
-{ "autoload": { "classmap": [""] },
-    "config": {
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "civicrm/composer-downloads-plugin": true,
-            "cweagans/composer-patches": true,
-            "mcaskill/composer-exclude-files": true,
-            "phpstan/extension-installer": true
-        }
-    }
-}
+{ "autoload": { "classmap": [""] } }
