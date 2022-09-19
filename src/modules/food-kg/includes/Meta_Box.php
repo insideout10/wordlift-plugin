@@ -100,12 +100,18 @@ class Meta_Box {
 
 		$data = json_decode( $new_json_ld );
 
-		$results = array( $data->name );
-
 		// Clear any buffer.
 		ob_clean();
 
-		wp_send_json_success( $results );
+		if ( $data ) {
+			wp_send_json_success( array( $data->name ) );
+		} else {
+			wp_send_json_error(
+				array(
+					'message' => __( 'No results found.', 'wordlift' ),
+				)
+			);
+		}
 	}
 
 	/**

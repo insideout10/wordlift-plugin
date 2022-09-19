@@ -1,6 +1,5 @@
 // jQuery Code.
 jQuery(document).ready(function ($) {
-
     // Update Ingredient.
     const ingredientForm = $(".wl-recipe-ingredient-form");
     ingredientForm.on("submit", function (e) {
@@ -36,10 +35,10 @@ jQuery(document).ready(function ($) {
             });
             return;
         }
-    
+
         // Clear any existing query.
         if (null !== autocompleteTimeout) clearTimeout(autocompleteTimeout);
-    
+
         // Send our query.
         autocompleteTimeout = setTimeout(
             () =>
@@ -66,22 +65,31 @@ jQuery(document).ready(function ($) {
         const uID = $(this).attr('id');
         $('.main-ingredient').autocomplete({
             source: function (request, response) {
-                autocomplete( request.term, (err, data) => {
-                    if ( data ) {
-                        response( data.options );
+                autocomplete(request.term, (err, data) => {
+                    if (data.options && data.options.length) {
+                        response(data.options);
                     } else {
-                        console.log( err );
+                        response([{
+                            label: 'No results found.',
+                            val: -1
+                        }]);
+                        console.log(err);
                     }
-                } );
+                });
             },
-            search: function(){
+            search: function () {
                 $(this).addClass('autocomplete-loading');
             },
-            open: function(){
+            open: function () {
                 $(this).removeClass('autocomplete-loading');
             },
-            select: function (event, ui) {
-                $(`#${uID}`).val(ui);
+            select: function (event, u) {
+                if (u.item.val == -1) {
+                    // Clear the AutoComplete TextBox.
+                    $(this).val("");
+                    return false;
+                }
+                $(`#${uID}`).val(u);
             }
         });
     })
