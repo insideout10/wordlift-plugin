@@ -21,8 +21,7 @@ class Main_Ingredient_Recipe_Lift_Strategy implements Recipe_Lift_Strategy {
 
 	public function get_json_ld_data( $ingredient ) {
 		// Get JSON LD Data.
-		$json_ld = $this->ingredients_client->main_ingredient( $ingredient );
-		return $json_ld;
+		return $this->ingredients_client->main_ingredient( $ingredient );
 	}
 
 	public function run() {

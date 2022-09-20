@@ -50,28 +50,38 @@ class Meta_Box {
 		$this->enqueue_scripts();
 
 		$recipe_ids = \WPRM_Recipe_Manager::get_recipe_ids_from_post( get_the_ID() );
-		if ( ! empty( $recipe_ids ) ) {
-			foreach ( $recipe_ids as $key => $recipe_id ) {
-				$recipe_json_ld = get_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', true );
-				if ( $recipe_json_ld ) {
-					$recipe = json_decode( $recipe_json_ld, true );
-					if ( isset( $recipe['name'] ) ) {
-						?>
-						<div class="wl-recipe-ingredient">
-							<?php echo sprintf( '<p>The main ingredient is <strong>%s</strong></p>', esc_html( $recipe['name'] ) ); ?>
-							<form class="wl-recipe-ingredient-form" id="wl-recipe-ingredient-form-<?php echo esc_attr( $key ); ?>">
-								<div class="wl-recipe-ingredient__field">
-									<label for="wl-recipe-ingredient__field-<?php echo esc_attr( $recipe['name'] ) . '-' . esc_attr( $key ); ?>"><?php echo esc_html__( 'Replace the main ingredient', 'wordlift' ); ?>: </label>
-									<input type="text" class="main-ingredient" id="wl-recipe-ingredient__field-<?php echo esc_attr( $recipe['name'] ) . '-' . esc_attr( $key ); ?>" name="main_ingredient" placeholder="<?php echo esc_html__( 'Type at least 3 characters to search...', 'wordlift' ); ?>">
-								</div>
-								<input type="hidden" id="recipe_id" name="recipe_id" value="<?php echo esc_attr( $recipe_id ); ?>">
-								<button type="submit" class="wl-recipe-ingredient__save"><?php echo esc_html__( 'Save', 'wordlift' ); ?></button>
-							</form>
-						</div>
-						<?php
-					}
-				}
+		if ( empty( $recipe_ids ) ) {
+			return;
+		}
+		foreach ( $recipe_ids as $key => $recipe_id ) {
+			$recipe_json_ld = get_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', true );
+			if ( ! $recipe_json_ld ) {
+				continue;
 			}
+			$recipe = json_decode( $recipe_json_ld, true );
+			if ( ! isset( $recipe['name'] ) ) {
+				continue;
+			}
+			?>
+			<div class="wl-recipe-ingredient">
+				<?php
+					$allowed_tags = array(
+						'p'      => array(),
+						'strong' => array(),
+					);
+					// translators: %s is the ingredient name.
+					echo wp_kses( sprintf( '<p>' . __( 'The main ingredient is ', 'wordlift' ) . '<strong>%s</strong></p>', esc_html( $recipe['name'] ) ), $allowed_tags );
+					?>
+				<form class="wl-recipe-ingredient-form" id="wl-recipe-ingredient-form-<?php echo esc_attr( $key ); ?>">
+					<div class="wl-recipe-ingredient__field">
+						<label for="wl-recipe-ingredient__field-<?php echo esc_attr( $recipe['name'] ) . '-' . esc_attr( $key ); ?>"><?php echo esc_html__( 'Replace the main ingredient', 'wordlift' ); ?>: </label>
+						<input type="text" class="main-ingredient" id="wl-recipe-ingredient__field-<?php echo esc_attr( $recipe['name'] ) . '-' . esc_attr( $key ); ?>" name="main_ingredient" placeholder="<?php echo esc_html__( 'Type at least 3 characters to search...', 'wordlift' ); ?>">
+					</div>
+					<input type="hidden" id="recipe_id" name="recipe_id" value="<?php echo esc_attr( $recipe_id ); ?>">
+					<button type="submit" class="wl-recipe-ingredient__save"><?php echo esc_html__( 'Save', 'wordlift' ); ?></button>
+				</form>
+			</div>
+			<?php
 		}
 	}
 
@@ -118,6 +128,16 @@ class Meta_Box {
 	public function update_ingredient_post_meta() {
 		check_ajax_referer( 'wl-ingredient-nonce' );
 
+		// Check if current user can edit posts.
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'You are not allowed to edit posts.', 'wordlift' ),
+					'btnText' => __( 'Denied!', 'wordlift' ),
+				)
+			);
+		}
+
 		// Return error if the recipe id is empty.
 		if ( ! empty( $_REQUEST['recipe_id'] ) ) { // Input var okay.
 			$recipe_id = sanitize_text_field( wp_unslash( $_REQUEST['recipe_id'] ) ); // Input var okay.
@@ -125,6 +145,7 @@ class Meta_Box {
 			wp_send_json_error(
 				array(
 					'message' => __( 'The recipe id is empty.', 'wordlift' ),
+					'btnText' => __( 'Failed!', 'wordlift' ),
 				)
 			);
 		}
@@ -136,6 +157,7 @@ class Meta_Box {
 			wp_send_json_error(
 				array(
 					'message' => __( 'The main ingredient is empty.', 'wordlift' ),
+					'btnText' => __( 'Failed!', 'wordlift' ),
 				)
 			);
 		}
@@ -150,6 +172,7 @@ class Meta_Box {
 				wp_send_json_success(
 					array(
 						'message' => __( 'The main ingredient has been updated.', 'wordlift' ),
+						'btnText' => __( 'Saved!', 'wordlift' ),
 					)
 				);
 			} else {
@@ -157,6 +180,7 @@ class Meta_Box {
 					array(
 						'same'    => true,
 						'message' => __( 'You didn\'t updated the main ingredient value.', 'wordlift' ),
+						'btnText' => __( 'Save', 'wordlift' ),
 					)
 				);
 			}
@@ -164,6 +188,7 @@ class Meta_Box {
 			wp_send_json_error(
 				array(
 					'message' => __( 'Failed to Update Recipe Ingredient.', 'wordlift' ),
+					'btnText' => __( 'Failed!', 'wordlift' ),
 				)
 			);
 		}
@@ -177,11 +202,15 @@ class Meta_Box {
 
 		wp_localize_script(
 			'wl-meta-box-ingredient',
-			'wlRecipeIngredient',
+			'_wlRecipeIngredient',
 			array(
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'nonce'   => wp_create_nonce( 'wl-ingredient-nonce' ),
 				'acNonce' => wp_create_nonce( 'wl-ac-ingredient-nonce' ),
+				'texts'   => array(
+					'saving'    => __( 'Saving...', 'wordlift' ),
+					'noResults' => __( 'No results found.', 'wordlift' ),
+				),
 			)
 		);
 	}

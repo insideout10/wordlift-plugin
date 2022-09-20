@@ -4,26 +4,26 @@ jQuery(document).ready(function ($) {
     const ingredientForm = $(".wl-recipe-ingredient-form");
     ingredientForm.on("submit", function (e) {
         e.preventDefault(e);
-        const data = `${$(this).serialize()}&action=wl_update_ingredient_post_meta&_wpnonce=${wlRecipeIngredient.nonce}`;
+        const data = {
+            _wpnonce: _wlRecipeIngredient.nonce,
+            main_ingredient: $(this).find(".main-ingredient").val(),
+            recipe_id: $(this).find("#recipe_id").val(),
+        };
         // Save the ingredient.
         const saveBtn = $(this).find('.wl-recipe-ingredient__save');
-        $.ajax({
-            type: "GET",
-            dataType: "json",
-            url: wlRecipeIngredient.ajaxurl,
-            data,
-            success: function (response) {
-                if (response.success) {
-                    saveBtn.text('Saved');
-                } else if (response.same) {
-                    saveBtn.text('Save');
-                } else {
-                    saveBtn.text('Error');
-                }
-            }
-        });
+        saveBtn.html(_wlRecipeIngredient.texts.saving);
+        wp.ajax
+            .post(
+                "wl_update_ingredient_post_meta",
+                data
+            ).done(function (response) {
+                saveBtn.text(response.btnText);
+            })
+            .fail(function (error) {
+                console.log(error);
+                saveBtn.text(error.btnText);
+            });
     });
-
 
     // Ingredient Autocomplete.
     let autocompleteTimeout = null;
@@ -45,7 +45,7 @@ jQuery(document).ready(function ($) {
             wp.ajax
             .post("wl_ingredient_autocomplete", {
                 query,
-                _wpnonce: wlRecipeIngredient.acNonce,
+                _wpnonce: _wlRecipeIngredient.acNonce,
             })
             .done((json) => callback(null, {
                 options: json
@@ -70,7 +70,7 @@ jQuery(document).ready(function ($) {
                         response(data.options);
                     } else {
                         response([{
-                            label: 'No results found.',
+                            label: _wlRecipeIngredient.texts.noResults,
                             val: -1
                         }]);
                         console.log(err);
