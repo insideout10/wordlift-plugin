@@ -1074,8 +1074,6 @@ class Wordlift {
 			function () use ( &$that, $schemaorg_property_service ) {
 
 				/** Services. */
-				// Create the configuration service.
-				$api_service = new Wordlift_Api_Service();
 
 				// Create an entity link service instance. It'll be later bound to the post_type_link and pre_get_posts actions.
 				$that->entity_link_service = new Wordlift_Entity_Link_Service( $that->entity_post_type_service, Wordlift_Configuration_Service::get_instance()->get_entity_base_path() );
