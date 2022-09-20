@@ -295,11 +295,11 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 
 		foreach ( $custom_fields as $name => $custom_field ) {
 			$pod_fields[] = $this->wordlift_css_class( $this->custom_field_to_pod_field( $custom_field ) ) + array(
-					'pod_id' => $pod_id,
-					'id'     => intval( substr( md5( $pod_id . '_' . $name ), 0, 8 ), 16 ),
-					'name'   => $name,
-					'label'  => $this->format_label( str_replace( 'http://schema.org/', '', $custom_field['predicate'] ) ),
-				);
+				'pod_id' => $pod_id,
+				'id'     => intval( substr( md5( $pod_id . '_' . $name ), 0, 8 ), 16 ),
+				'name'   => $name,
+				'label'  => $this->format_label( str_replace( 'http://schema.org/', '', $custom_field['predicate'] ) ),
+			);
 		}
 
 		return array_values( $pod_fields );
