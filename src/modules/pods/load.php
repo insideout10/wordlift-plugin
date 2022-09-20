@@ -34,6 +34,18 @@ $loader            = new YamlFileLoader( $container_builder, new FileLocator( __
 $loader->load( 'services.yml' );
 $container_builder->compile();
 
+add_filter(
+	'pods_install_run',
+	function ( $value ) {
+		if ( ! defined( 'PODS_DIR' ) || ! file_exists( PODS_DIR . 'sql/dump.sql' ) ) {
+			return $value;
+		}
+		// We dont want the pod installation to run when the file doesnt exist. This filter is to prevent
+		// a warning on pods plugin.
+		return false;
+	}
+);
+
 add_action(
 	'plugins_loaded',
 	function () use ( $container_builder ) {

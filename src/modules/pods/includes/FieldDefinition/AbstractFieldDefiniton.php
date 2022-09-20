@@ -25,12 +25,16 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 	 * @param $type string
 	 * @param $context Context
 	 *
-	 * @return int
+	 * @return void
 	 */
 	protected function register_pod( $name, $type, $context ) {
 		$pod_id              = intval( substr( md5( $type . '_' . $name ), 0, 8 ), 16 );
 		$pod                 = $this->pod( $pod_id, $name, $type );
 		$schema_field_groups = $context->get_custom_fields();
+
+		if ( ! is_array( $schema_field_groups ) ) {
+			return;
+		}
 
 		foreach ( $schema_field_groups as $schema_field_group ) {
 			$custom_fields = $schema_field_group->get_custom_fields();
@@ -44,8 +48,6 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 				);
 			}
 		}
-
-		return $pod_id;
 
 	}
 
@@ -293,11 +295,11 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 
 		foreach ( $custom_fields as $name => $custom_field ) {
 			$pod_fields[] = $this->wordlift_css_class( $this->custom_field_to_pod_field( $custom_field ) ) + array(
-				'pod_id' => $pod_id,
-				'id'     => intval( substr( md5( $pod_id . '_' . $name ), 0, 8 ), 16 ),
-				'name'   => $name,
-				'label'  => $this->format_label( str_replace( 'http://schema.org/', '', $custom_field['predicate'] ) ),
-			);
+					'pod_id' => $pod_id,
+					'id'     => intval( substr( md5( $pod_id . '_' . $name ), 0, 8 ), 16 ),
+					'name'   => $name,
+					'label'  => $this->format_label( str_replace( 'http://schema.org/', '', $custom_field['predicate'] ) ),
+				);
 		}
 
 		return array_values( $pod_fields );
