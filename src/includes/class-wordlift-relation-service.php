@@ -191,7 +191,7 @@ class Wordlift_Relation_Service {
 	 */
 	private static function offset( $offset = null ) {
 
-		if ( null === $offset ) {
+		if ( null === $offset || ! is_numeric( $offset ) ) {
 			return '';
 		}
 
