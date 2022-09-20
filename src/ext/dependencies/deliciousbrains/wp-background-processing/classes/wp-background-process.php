@@ -186,7 +186,7 @@ abstract class Wordlift_Plugin_WP_Background_Process extends Wordlift_Plugin_WP_
 		global $wpdb;
 
 		$table  = $wpdb->options;
-		$column = 'option_name';
+		$column = '';
 
 		if ( is_multisite() ) {
 			$table  = $wpdb->sitemeta;
