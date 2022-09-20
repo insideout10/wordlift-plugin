@@ -70,7 +70,7 @@ class Meta_Box {
 						'strong' => array(),
 					);
 					// translators: %s is the ingredient name.
-					echo wp_kses( sprintf( '<p>' . __( 'The main ingredient is ', 'wordlift' ) . '<strong>%s</strong></p>', esc_html( $recipe['name'] ) ), $allowed_tags );
+					echo wp_kses( sprintf( '<p>' . __( 'The main ingredient is', 'wordlift' ) . ' <strong>%s</strong></p>', esc_html( $recipe['name'] ) ), $allowed_tags );
 					?>
 				<form class="wl-recipe-ingredient-form" id="wl-recipe-ingredient-form-<?php echo esc_attr( $key ); ?>">
 					<div class="wl-recipe-ingredient__field">
