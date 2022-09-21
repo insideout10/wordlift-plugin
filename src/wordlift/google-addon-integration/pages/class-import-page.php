@@ -65,7 +65,7 @@ class Import_Page extends Wordlift_Admin_Page {
 	}
 
 	private function get_entity_urls() {
-		if ( isset( $_GET['e'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ! isset( $_GET['e'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return array();
 		}
 
