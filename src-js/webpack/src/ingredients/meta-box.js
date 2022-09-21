@@ -90,6 +90,9 @@ jQuery(document).ready(function ($) {
                     return false;
                 }
                 $(`#${uID}`).val(u);
+            },
+            close: function(event, ui) {
+                $(this).val("");
             }
         });
     })
