@@ -187,7 +187,6 @@ class Wordlift_Relation_Service {
 	 *
 	 * @return string The offset clause (empty if no offset has been specified).
 	 * @since 3.35.11
-	 *
 	 */
 	private static function offset( $offset = null ) {
 
