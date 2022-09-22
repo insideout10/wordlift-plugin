@@ -54,7 +54,6 @@ class Wordlift_Url_Property_Service extends Wordlift_Simple_Property_Service {
 					* @see https://github.com/insideout10/wordlift-plugin/issues/850.
 					*/
 
-
 				if ( '<permalink>' !== $item && 'http://<permalink>/' !== $item ) {
 					  return $item;
 				}
