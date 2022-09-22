@@ -97,37 +97,37 @@ class Wl_Abstract_Metabox {
 		// HTML Code Before MetaBox Content.
 		do_action( 'wl_metabox_before_html' );
 		?>
-		<div class="wl-metabox-tabs">
-			<ul>
-				<li class="active">
-					<a href="#wl-metabox-tab-properties"><?php esc_html_e( 'Properties', 'wordlift' ); ?></a>
-				</li>
-				<li>
-					<a href="#wl-metabox-tab-ingredient"><?php esc_html_e( 'Main Ingredient', 'wordlift' ); ?></a>
-				</li>
-			</ul>
-			<div class="wl-metabox-tabs__content">
-				<div id="wl-metabox-tab-properties">
-					<?php
-					// Loop over the fields.
-					foreach ( $this->fields as $field ) {
+        <div class="wl-tabs">
 
-						// load data from DB (values will be available in $field->data).
-						$field->get_data();
+            <input id="wl-tab-properties" type="radio" name="wl-metabox-tabs" checked="checked"/><label
+                    for="wl-tab-properties"><?php esc_html_e( 'Properties', 'wordlift' ); ?></label>
+            <div class="wl-tabs__tab">
+                <?php
+                // Loop over the fields.
+                foreach ( $this->fields as $field ) {
 
-						// print field HTML (nonce included).
-						echo $field->html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaping happens in `$field->html()`.
-					}
-					?>
-				</div>
-				<div id="wl-metabox-tab-ingredient">
-					<form></form>
-					<?php
-						do_action( 'wl_ingredient_metabox_html' );
-					?>
-				</div>
-			</div>
-		</div>
+                    // load data from DB (values will be available in $field->data).
+                    $field->get_data();
+
+                    // print field HTML (nonce included).
+                    echo $field->html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaping happens in `$field->html()`.
+                }
+                ?>
+            </div>
+			<?php
+            // Only display the Main Ingredient tab if the feature is enabled.
+			if ( apply_filters( 'wl_feature__enable__food-kg', false ) ) {
+				?>
+                <input id="wl-tab-main-ingredient" type="radio" name="wl-metabox-tabs" checked="true"/><label
+                        for="wl-tab-main-ingredient"><?php esc_html_e( 'Main Ingredient', 'wordlift' ); ?></label>
+                <div class="wl-tabs__tab">
+                    <?php
+                    do_action( 'wl_ingredient_metabox_html' );
+                    ?>
+                </div>
+				<?php
+			} ?>
+        </div>
 		<?php
 	}
 
@@ -137,7 +137,7 @@ class Wl_Abstract_Metabox {
 	 * Note: the first function that calls this method will instantiate the fields.
 	 * Why it isn't called from the constructor? Because we need to hook this process as late as possible.
 	 *
-	 * @param int                   $id | $term_id The post id or term id.
+	 * @param int $id | $term_id The post id or term id.
 	 *
 	 * @param $type int Post or Term
 	 *
@@ -255,9 +255,9 @@ class Wl_Abstract_Metabox {
 	 * This method is a rude factory for Field objects.
 	 *
 	 * @param array $args The field's information.
-	 * @param bool  $grouped Flag to distinguish between simple and grouped fields.
-	 * @param int   $type Post or Term, based on the correct decorator would be selected.
-	 * @param int   $id Identifier for the type.
+	 * @param bool $grouped Flag to distinguish between simple and grouped fields.
+	 * @param int $type Post or Term, based on the correct decorator would be selected.
+	 * @param int $id Identifier for the type.
 	 */
 	public function add_field( $args, $grouped, $type, $id ) {
 
@@ -324,7 +324,7 @@ class Wl_Abstract_Metabox {
 	/**
 	 * Save the form data for the specified entity {@link WP_Post}'s id.
 	 *
-	 * @param int                   $id The entity's {@link WP_Post}'s id.
+	 * @param int $id The entity's {@link WP_Post}'s id.
 	 *
 	 * We're being called from WP `save_post` hook, we don't need to check the nonce.
 	 *
@@ -340,6 +340,7 @@ class Wl_Abstract_Metabox {
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( isset( $_POST['post_ID'] ) && (int) $_POST['post_ID'] !== $id && Object_Type_Enum::POST === $type ) {
 			$this->log->debug( '`wl_metaboxes`, skipping because the post id from request doesnt match the id from filter.' );
+
 			return;
 		}
 
@@ -400,9 +401,6 @@ class Wl_Abstract_Metabox {
 
 		// Use the minified version if PW_DEBUG isn't set.
 		$min = ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ? '.min' : '';
-
-		// CSS For Meta Box.
-		wp_enqueue_style( 'wl-meta-box', WL_DIR_URL . 'css/wl-meta-box.css', array(), WORDLIFT_VERSION );
 
 		// Load the jquery-ui-timepicker-addon library.
 		wp_enqueue_style( 'wl-flatpickr', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . "/admin/js/flatpickr/flatpickr$min.css", array(), '3.0.6' );
