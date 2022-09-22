@@ -6,9 +6,10 @@
  * @package Wordlift
  */
 
-namespace Wordlift\Modules\Food_Kg;
+namespace Wordlift\Modules\Food_Kg\Admin;
 
 use Wordlift\Api\Api_Service_Ext;
+use Wordlift\Modules\Food_Kg\Recipe_Lift_Strategy;
 
 class Meta_Box {
 
@@ -95,6 +96,37 @@ class Meta_Box {
                                placeholder="<?php echo esc_html__( 'Type at least 3 characters to search...', 'wordlift' ); ?>">
                     </div>
                     <input type="hidden" id="recipe_id" name="recipe_id" value="<?php echo esc_attr( $recipe_id ); ?>">
+
+                    <table class="wl-table wl-table--main-ingredient">
+                        <thead>
+                        <tr>
+                            <th class="wl-table__th wl-table__th--recipe"><?php esc_html_e( 'Recipe', 'wordlift' ); ?></th>
+                            <th class="wl-table__th wl-table__th--main-ingredient"><?php esc_html_e( 'Main Ingredient', 'wordlift' ); ?></th>
+                            <th><?php esc_html_e( 'Action', 'wordlift' ); ?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+						<?php
+						foreach ( $recipe_ids as $recipe_id ) {
+							$recipe          = \WPRM_Recipe_Manager::get_recipe( $recipe_id );
+							$json_ld         = get_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', true );
+							$obj             = json_decode( $json_ld );
+							$main_ingredient = isset( $obj->name ) ? $obj->name : '<em>' . __( '(unset)', 'wordlift' ) . '</em>';
+							?>
+                            <tr>
+
+                                <td><?php echo esc_html( $recipe->name() ); ?></td>
+                                <td><?php echo wp_kses( $main_ingredient, array( 'em' => array() ) ) ?></td>
+                                <td>
+                                    <span class="wl-select-main-ingredient"></span>
+                                </td>
+                            </tr>
+							<?php
+						}
+						?>
+                        </tbody>
+                    </table>
+
                     <input type="submit" class="button button-primary button-large pull-right"
                            value="<?php echo esc_attr__( 'Save', 'wordlift' ); ?>">
                 </form>

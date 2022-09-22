@@ -1,6 +1,9 @@
 {
   "name": "wordlift-plugin",
-  "version": "3.35.3",
+  "engines": {
+    "node": "12"
+  },
+  "version": "3.38.3",
   "description": "WordLift Plugin application for the web site public front-end.",
   "main": "index.js",
   "repository": "https://github.com/insideout10/wordlift-plugin",
@@ -56,8 +59,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.2.1",
-    "@wordlift/design": "0.1.16",
-    "@wordlift/wordlift-for-schemaorg": "^1.0",
+    "@wordlift/wordlift-for-schemaorg": "git@github.com:wordlift/wordlift-for-schemaorg.git",
     "he": "^1.2.0",
     "immutable": "^3",
     "jest-fetch-mock": "^3.0.1",

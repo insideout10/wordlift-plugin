@@ -50,7 +50,7 @@ function __wl_foodkg__load() {
 	}
 
 	// Meta Box.
-	$meta_box = $container_builder->get( 'Wordlift\Modules\Food_Kg\Meta_Box' );
+	$meta_box = $container_builder->get( 'Wordlift\Modules\Food_Kg\Admin\Meta_Box' );
 	$meta_box->register_hooks();
 
 	$module = $container_builder->get( 'Wordlift\Modules\Food_Kg\Module' );

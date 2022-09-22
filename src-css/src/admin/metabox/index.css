@@ -1,4 +1,5 @@
 @import "./tabs.scss";
+@import "./main-ingredient.scss";
 
 /** Meta Box **/
 .wl-recipe-ingredient__field label {

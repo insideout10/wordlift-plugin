@@ -377,6 +377,12 @@
         margin-top: -1px;
         border-top: 1px solid #c3c4c7;
       }
+.wl-table {
+  width: 100%;
+}
+.wl-table__th--main-ingredient, .wl-table__th--recipe {
+    width: 10em;
+  }
 /** Meta Box **/
 .wl-recipe-ingredient__field label {
     font-size: 16px;

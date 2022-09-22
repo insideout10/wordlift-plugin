@@ -58,8 +58,8 @@ services:
     factory: [ 'Wordlift\Api\Default_Api_Service', 'get_instance' ]
     class: Wordlift\Api\Default_Api_Service
 
-  Wordlift\Modules\Food_Kg\Meta_Box:
-    class: Wordlift\Modules\Food_Kg\Meta_Box
+  Wordlift\Modules\Food_Kg\Admin\Meta_Box:
+    class: Wordlift\Modules\Food_Kg\Admin\Meta_Box
     arguments: [ '@Wordlift\Api\Api_Service_Ext', '@Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy' ]
   Wordlift\Modules\Food_Kg\Admin\Download_Ingredients_Data:
     class: Wordlift\Modules\Food_Kg\Admin\Download_Ingredients_Data
