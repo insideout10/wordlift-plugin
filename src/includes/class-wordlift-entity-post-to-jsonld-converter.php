@@ -198,7 +198,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	 * @return array The array remapped.
 	 * @since 3.8.0
 	 */
-	private function post_process( $jsonld ) {
+	public static function post_process( $jsonld ) {
 
 		foreach ( $jsonld as $key => $value ) {
 			if ( 'streetAddress' === $key || 'postalCode' === $key || 'addressLocality' === $key || 'addressRegion' === $key || 'addressCountry' === $key || 'postOfficeBoxNumber' === $key ) {

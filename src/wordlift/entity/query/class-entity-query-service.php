@@ -11,6 +11,7 @@ namespace Wordlift\Entity\Query;
 
 use Wordlift\Content\Wordpress\Wordpress_Content;
 use Wordlift\Object_Type_Enum;
+use Wordlift\Term\Type_Service;
 
 class Entity_Query_Service {
 
@@ -103,17 +104,25 @@ class Entity_Query_Service {
 	}
 
 	public function get( $linked_entities ) {
+
+		/**
+		 * @var $term_type_service Type_Service
+		 */
+		$term_type_service        = Type_Service::get_instance();
+		$post_entity_type_service = \Wordlift_Entity_Type_Service::get_instance();
+
 		return array_filter(
 			array_map(
-				function ( $item ) {
+				function ( $item ) use ( $term_type_service, $post_entity_type_service ) {
 					$parts      = explode( '_', $item );
 					$type       = Object_Type_Enum::from_string( $parts[0] );
 					$identifier = $parts[1];
 
-					if ( $type === Object_Type_Enum::POST ) {
-						return new Entity( 'Thing', new Wordpress_Content( get_post( $identifier ) ) );
-					} elseif ( $type === Object_Type_Enum::TERM ) {
-						return new Entity( 'Thing', new Wordpress_Content( get_term( $identifier ) ) );
+					if ( Object_Type_Enum::POST === $type ) {
+						return new Entity( join( ',', $post_entity_type_service->get_names( $identifier ) ), new Wordpress_Content( get_post( $identifier ) ) );
+					} elseif ( Object_Type_Enum::TERM === $type ) {
+
+						return new Entity( join( ',', $term_type_service->get_entity_types_labels( $identifier ) ), new Wordpress_Content( get_term( $identifier ) ) );
 					}
 
 					// return new Entity( $item->schema_type_name, new Wordpress_Content( get_term( $item->id ) ) );

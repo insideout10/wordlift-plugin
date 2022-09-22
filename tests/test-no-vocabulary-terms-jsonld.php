@@ -194,4 +194,30 @@ class No_Vocabulary_Terms_Jsonld extends Wordlift_Vocabulary_Terms_Unit_Test_Cas
 
 	}
 
+	function test_when_the_term_reference_present_in_jsonld_should_be_expanded() {
+		$term_data = wp_insert_term( 'vocabulary_term_test_6', 'no_vocabulary_terms' );
+		$term_id   = $term_data['term_id'];
+		$term_type_service = Type_Service::get_instance();
+		$term_type_service->set_entity_types( $term_id, array( 'person' ) );
+
+		$linked_term_data = wp_insert_term( 'vocabulary_term_test_7', 'no_vocabulary_terms' );
+		$linked_term_id   = $linked_term_data['term_id'];
+		update_term_meta($term_id, 'wl_birth_place', 'term_'.$linked_term_id );
+
+		$jsonld = Wordlift_Term_JsonLd_Adapter::get_instance()->get( $term_id, Jsonld_Context_Enum::REST );
+		$this->assertCount(2, $jsonld, 'Term references must be expanded');
+		$this->assertSame( 'vocabulary_term_test_7', $jsonld[1]['name'], 'Term references must be expanded' );
+
+	}
+
+	function test_when_the_term_is_linked_to_itself_it_should_not_expand() {
+		$term_data = wp_insert_term( 'vocabulary_term_test_8', 'no_vocabulary_terms' );
+		$term_id   = $term_data['term_id'];
+		$term_type_service = Type_Service::get_instance();
+		$term_type_service->set_entity_types( $term_id, array( 'person' ) );
+
+		$jsonld = Wordlift_Term_JsonLd_Adapter::get_instance()->get( $term_id, Jsonld_Context_Enum::REST );
+		$this->assertCount(1, $jsonld, 'Term references must not be expanded since it would cause infinite loop');
+	}
+
 }
