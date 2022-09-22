@@ -151,7 +151,7 @@ class Meta_Box {
 			wp_send_json_error(
 				array(
 					'message' => __( 'You are not allowed to edit posts.', 'wordlift' ),
-					'btnText' => __( 'Denied!', 'wordlift' ),
+					'btnText' => __( 'Denied', 'wordlift' ),
 				)
 			);
 		}
@@ -163,7 +163,7 @@ class Meta_Box {
 			wp_send_json_error(
 				array(
 					'message' => __( 'The recipe id is empty.', 'wordlift' ),
-					'btnText' => __( 'Failed!', 'wordlift' ),
+					'btnText' => __( 'Failed', 'wordlift' ),
 				)
 			);
 		}
@@ -175,7 +175,7 @@ class Meta_Box {
 			wp_send_json_error(
 				array(
 					'message' => __( 'The main ingredient is empty.', 'wordlift' ),
-					'btnText' => __( 'Failed!', 'wordlift' ),
+					'btnText' => __( 'Failed', 'wordlift' ),
 				)
 			);
 		}
@@ -190,7 +190,7 @@ class Meta_Box {
 				wp_send_json_success(
 					array(
 						'message' => __( 'The main ingredient has been updated.', 'wordlift' ),
-						'btnText' => __( 'Saved!', 'wordlift' ),
+						'btnText' => __( 'Saved', 'wordlift' ),
 					)
 				);
 			} else {
@@ -206,7 +206,7 @@ class Meta_Box {
 			wp_send_json_error(
 				array(
 					'message' => __( 'Failed to Update Recipe Ingredient.', 'wordlift' ),
-					'btnText' => __( 'Failed!', 'wordlift' ),
+					'btnText' => __( 'Failed', 'wordlift' ),
 				)
 			);
 		}

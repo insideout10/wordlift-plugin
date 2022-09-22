@@ -76,7 +76,7 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 	public function column_actions( $item ) {
 
 		$url = admin_url(
-			sprintf( 'admin.php?page=wl_ingredients&modal_window=true&id=%d&TB_iframe=true', $item->recipe_ID )
+			sprintf( 'admin.php?page=wl_ingredients&modal_window=true&id=%d&TB_iframe=true', $item->recipe_ID )  // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		);
 
 		return sprintf(
