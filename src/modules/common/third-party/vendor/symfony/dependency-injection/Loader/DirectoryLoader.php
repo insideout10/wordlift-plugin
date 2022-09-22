@@ -15,33 +15,35 @@ namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader;
  *
  * @author Sebastien Lavoie <seb@wemakecustom.com>
  */
-class DirectoryLoader extends FileLoader {
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function load( $file, $type = null ) {
-		$file = \rtrim( $file, '/' );
-		$path = $this->locator->locate( $file );
-		$this->container->fileExists( $path, \false );
-		foreach ( \scandir( $path ) as $dir ) {
-			if ( '.' !== $dir[0] ) {
-				if ( \is_dir( $path . '/' . $dir ) ) {
-					$dir .= '/';
-					// append / to allow recursion
-				}
-				$this->setCurrentDir( $path );
-				$this->import( $dir, null, \false, $path );
-			}
-		}
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function supports( $resource, $type = null ) {
-		if ( 'directory' === $type ) {
-			return \true;
-		}
-		return null === $type && \is_string( $resource ) && '/' === \substr( $resource, -1 );
-	}
+class DirectoryLoader extends FileLoader
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function load($file, $type = null)
+    {
+        $file = \rtrim($file, '/');
+        $path = $this->locator->locate($file);
+        $this->container->fileExists($path, \false);
+        foreach (\scandir($path) as $dir) {
+            if ('.' !== $dir[0]) {
+                if (\is_dir($path . '/' . $dir)) {
+                    $dir .= '/';
+                    // append / to allow recursion
+                }
+                $this->setCurrentDir($path);
+                $this->import($dir, null, \false, $path);
+            }
+        }
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function supports($resource, $type = null)
+    {
+        if ('directory' === $type) {
+            return \true;
+        }
+        return null === $type && \is_string($resource) && '/' === \substr($resource, -1);
+    }
 }

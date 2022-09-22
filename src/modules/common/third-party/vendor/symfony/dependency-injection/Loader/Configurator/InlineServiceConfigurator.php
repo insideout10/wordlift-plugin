@@ -14,18 +14,19 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Definition;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class InlineServiceConfigurator extends AbstractConfigurator {
-
-	const FACTORY = 'inline';
-	use Traits\ArgumentTrait;
-	use Traits\AutowireTrait;
-	use Traits\BindTrait;
-	use Traits\FactoryTrait;
-	use Traits\FileTrait;
-	use Traits\LazyTrait;
-	use Traits\ParentTrait;
-	use Traits\TagTrait;
-	public function __construct( Definition $definition ) {
-		$this->definition = $definition;
-	}
+class InlineServiceConfigurator extends AbstractConfigurator
+{
+    const FACTORY = 'inline';
+    use Traits\ArgumentTrait;
+    use Traits\AutowireTrait;
+    use Traits\BindTrait;
+    use Traits\FactoryTrait;
+    use Traits\FileTrait;
+    use Traits\LazyTrait;
+    use Traits\ParentTrait;
+    use Traits\TagTrait;
+    public function __construct(Definition $definition)
+    {
+        $this->definition = $definition;
+    }
 }

@@ -19,78 +19,88 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Definition;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class ServiceReferenceGraphNode {
-
-	private $id;
-	private $inEdges  = array();
-	private $outEdges = array();
-	private $value;
-	/**
-	 * @param string $id    The node identifier
-	 * @param mixed  $value The node value
-	 */
-	public function __construct( $id, $value ) {
-		$this->id    = $id;
-		$this->value = $value;
-	}
-	public function addInEdge( ServiceReferenceGraphEdge $edge ) {
-		$this->inEdges[] = $edge;
-	}
-	public function addOutEdge( ServiceReferenceGraphEdge $edge ) {
-		$this->outEdges[] = $edge;
-	}
-	/**
-	 * Checks if the value of this node is an Alias.
-	 *
-	 * @return bool True if the value is an Alias instance
-	 */
-	public function isAlias() {
-		return $this->value instanceof Alias;
-	}
-	/**
-	 * Checks if the value of this node is a Definition.
-	 *
-	 * @return bool True if the value is a Definition instance
-	 */
-	public function isDefinition() {
-		return $this->value instanceof Definition;
-	}
-	/**
-	 * Returns the identifier.
-	 *
-	 * @return string
-	 */
-	public function getId() {
-		return $this->id;
-	}
-	/**
-	 * Returns the in edges.
-	 *
-	 * @return ServiceReferenceGraphEdge[]
-	 */
-	public function getInEdges() {
-		return $this->inEdges;
-	}
-	/**
-	 * Returns the out edges.
-	 *
-	 * @return ServiceReferenceGraphEdge[]
-	 */
-	public function getOutEdges() {
-		return $this->outEdges;
-	}
-	/**
-	 * Returns the value of this Node.
-	 *
-	 * @return mixed The value
-	 */
-	public function getValue() {
-		return $this->value;
-	}
-	/**
-	 * Clears all edges.
-	 */
-	public function clear() {
-		$this->inEdges = $this->outEdges = array();
-	}
+class ServiceReferenceGraphNode
+{
+    private $id;
+    private $inEdges = [];
+    private $outEdges = [];
+    private $value;
+    /**
+     * @param string $id    The node identifier
+     * @param mixed  $value The node value
+     */
+    public function __construct($id, $value)
+    {
+        $this->id = $id;
+        $this->value = $value;
+    }
+    public function addInEdge(ServiceReferenceGraphEdge $edge)
+    {
+        $this->inEdges[] = $edge;
+    }
+    public function addOutEdge(ServiceReferenceGraphEdge $edge)
+    {
+        $this->outEdges[] = $edge;
+    }
+    /**
+     * Checks if the value of this node is an Alias.
+     *
+     * @return bool True if the value is an Alias instance
+     */
+    public function isAlias()
+    {
+        return $this->value instanceof Alias;
+    }
+    /**
+     * Checks if the value of this node is a Definition.
+     *
+     * @return bool True if the value is a Definition instance
+     */
+    public function isDefinition()
+    {
+        return $this->value instanceof Definition;
+    }
+    /**
+     * Returns the identifier.
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    /**
+     * Returns the in edges.
+     *
+     * @return ServiceReferenceGraphEdge[]
+     */
+    public function getInEdges()
+    {
+        return $this->inEdges;
+    }
+    /**
+     * Returns the out edges.
+     *
+     * @return ServiceReferenceGraphEdge[]
+     */
+    public function getOutEdges()
+    {
+        return $this->outEdges;
+    }
+    /**
+     * Returns the value of this Node.
+     *
+     * @return mixed The value
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+    /**
+     * Clears all edges.
+     */
+    public function clear()
+    {
+        $this->inEdges = $this->outEdges = [];
+    }
 }

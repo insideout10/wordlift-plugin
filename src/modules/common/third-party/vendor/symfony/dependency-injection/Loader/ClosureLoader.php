@@ -19,22 +19,25 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuild
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ClosureLoader extends Loader {
-
-	private $container;
-	public function __construct( ContainerBuilder $container ) {
-		$this->container = $container;
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function load( $resource, $type = null ) {
-		\call_user_func( $resource, $this->container );
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function supports( $resource, $type = null ) {
-		return $resource instanceof \Closure;
-	}
+class ClosureLoader extends Loader
+{
+    private $container;
+    public function __construct(ContainerBuilder $container)
+    {
+        $this->container = $container;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function load($resource, $type = null)
+    {
+        \call_user_func($resource, $this->container);
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function supports($resource, $type = null)
+    {
+        return $resource instanceof \Closure;
+    }
 }

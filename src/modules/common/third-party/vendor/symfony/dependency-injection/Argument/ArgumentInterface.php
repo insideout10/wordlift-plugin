@@ -15,11 +15,11 @@ namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Argument
  *
  * @author Titouan Galopin <galopintitouan@gmail.com>
  */
-interface ArgumentInterface {
-
-	/**
-	 * @return array
-	 */
-	public function getValues();
-	public function setValues( array $values);
+interface ArgumentInterface
+{
+    /**
+     * @return array
+     */
+    public function getValues();
+    public function setValues(array $values);
 }

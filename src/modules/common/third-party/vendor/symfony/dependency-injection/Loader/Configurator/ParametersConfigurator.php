@@ -14,34 +14,37 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuild
 /**
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class ParametersConfigurator extends AbstractConfigurator {
-
-	const FACTORY = 'parameters';
-	private $container;
-	public function __construct( ContainerBuilder $container ) {
-		$this->container = $container;
-	}
-	/**
-	 * Creates a parameter.
-	 *
-	 * @param string $name
-	 * @param mixed  $value
-	 *
-	 * @return $this
-	 */
-	final public function set( $name, $value ) {
-		$this->container->setParameter( $name, static::processValue( $value, \true ) );
-		return $this;
-	}
-	/**
-	 * Creates a parameter.
-	 *
-	 * @param string $name
-	 * @param mixed  $value
-	 *
-	 * @return $this
-	 */
-	final public function __invoke( $name, $value ) {
-		return $this->set( $name, $value );
-	}
+class ParametersConfigurator extends AbstractConfigurator
+{
+    const FACTORY = 'parameters';
+    private $container;
+    public function __construct(ContainerBuilder $container)
+    {
+        $this->container = $container;
+    }
+    /**
+     * Creates a parameter.
+     *
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public final function set($name, $value)
+    {
+        $this->container->setParameter($name, static::processValue($value, \true));
+        return $this;
+    }
+    /**
+     * Creates a parameter.
+     *
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public final function __invoke($name, $value)
+    {
+        return $this->set($name, $value);
+    }
 }

@@ -16,50 +16,54 @@ use Wordlift\Modules\Common\Symfony\Component\Config\Exception\FileLoaderLoadExc
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-abstract class Loader implements LoaderInterface {
-
-	protected $resolver;
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getResolver() {
-		return $this->resolver;
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setResolver( LoaderResolverInterface $resolver ) {
-		$this->resolver = $resolver;
-	}
-	/**
-	 * Imports a resource.
-	 *
-	 * @param mixed       $resource A resource
-	 * @param string|null $type     The resource type or null if unknown
-	 *
-	 * @return mixed
-	 */
-	public function import( $resource, $type = null ) {
-		return $this->resolve( $resource, $type )->load( $resource, $type );
-	}
-	/**
-	 * Finds a loader able to load an imported resource.
-	 *
-	 * @param mixed       $resource A resource
-	 * @param string|null $type     The resource type or null if unknown
-	 *
-	 * @return $this|LoaderInterface
-	 *
-	 * @throws FileLoaderLoadException If no loader is found
-	 */
-	public function resolve( $resource, $type = null ) {
-		if ( $this->supports( $resource, $type ) ) {
-			return $this;
-		}
-		$loader = null === $this->resolver ? \false : $this->resolver->resolve( $resource, $type );
-		if ( \false === $loader ) {
-			throw new FileLoaderLoadException( $resource, null, null, null, $type );
-		}
-		return $loader;
-	}
+abstract class Loader implements LoaderInterface
+{
+    protected $resolver;
+    /**
+     * {@inheritdoc}
+     */
+    public function getResolver()
+    {
+        return $this->resolver;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function setResolver(LoaderResolverInterface $resolver)
+    {
+        $this->resolver = $resolver;
+    }
+    /**
+     * Imports a resource.
+     *
+     * @param mixed       $resource A resource
+     * @param string|null $type     The resource type or null if unknown
+     *
+     * @return mixed
+     */
+    public function import($resource, $type = null)
+    {
+        return $this->resolve($resource, $type)->load($resource, $type);
+    }
+    /**
+     * Finds a loader able to load an imported resource.
+     *
+     * @param mixed       $resource A resource
+     * @param string|null $type     The resource type or null if unknown
+     *
+     * @return $this|LoaderInterface
+     *
+     * @throws FileLoaderLoadException If no loader is found
+     */
+    public function resolve($resource, $type = null)
+    {
+        if ($this->supports($resource, $type)) {
+            return $this;
+        }
+        $loader = null === $this->resolver ? \false : $this->resolver->resolve($resource, $type);
+        if (\false === $loader) {
+            throw new FileLoaderLoadException($resource, null, null, null, $type);
+        }
+        return $loader;
+    }
 }

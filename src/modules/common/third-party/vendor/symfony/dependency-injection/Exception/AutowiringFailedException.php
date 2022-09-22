@@ -13,14 +13,16 @@ namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Exceptio
 /**
  * Thrown when a definition cannot be autowired.
  */
-class AutowiringFailedException extends RuntimeException {
-
-	private $serviceId;
-	public function __construct( $serviceId, $message = '', $code = 0, \Exception $previous = null ) {
-		$this->serviceId = $serviceId;
-		parent::__construct( $message, $code, $previous );
-	}
-	public function getServiceId() {
-		return $this->serviceId;
-	}
+class AutowiringFailedException extends RuntimeException
+{
+    private $serviceId;
+    public function __construct($serviceId, $message = '', $code = 0, \Exception $previous = null)
+    {
+        $this->serviceId = $serviceId;
+        parent::__construct($message, $code, $previous);
+    }
+    public function getServiceId()
+    {
+        return $this->serviceId;
+    }
 }

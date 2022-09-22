@@ -11,10 +11,10 @@
 namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Extension;
 
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
-interface PrependExtensionInterface {
-
-	/**
-	 * Allow an extension to prepend the extension configurations.
-	 */
-	public function prepend( ContainerBuilder $container);
+interface PrependExtensionInterface
+{
+    /**
+     * Allow an extension to prepend the extension configurations.
+     */
+    public function prepend(ContainerBuilder $container);
 }

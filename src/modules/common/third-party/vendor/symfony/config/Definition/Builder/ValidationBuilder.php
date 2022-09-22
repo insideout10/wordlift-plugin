@@ -15,23 +15,25 @@ namespace Wordlift\Modules\Common\Symfony\Component\Config\Definition\Builder;
  *
  * @author Christophe Coevoet <stof@notk.org>
  */
-class ValidationBuilder {
-
-	protected $node;
-	public $rules = array();
-	public function __construct( NodeDefinition $node ) {
-		$this->node = $node;
-	}
-	/**
-	 * Registers a closure to run as normalization or an expression builder to build it if null is provided.
-	 *
-	 * @return ExprBuilder|$this
-	 */
-	public function rule( \Closure $closure = null ) {
-		if ( null !== $closure ) {
-			$this->rules[] = $closure;
-			return $this;
-		}
-		return $this->rules[] = new ExprBuilder( $this->node );
-	}
+class ValidationBuilder
+{
+    protected $node;
+    public $rules = [];
+    public function __construct(NodeDefinition $node)
+    {
+        $this->node = $node;
+    }
+    /**
+     * Registers a closure to run as normalization or an expression builder to build it if null is provided.
+     *
+     * @return ExprBuilder|$this
+     */
+    public function rule(\Closure $closure = null)
+    {
+        if (null !== $closure) {
+            $this->rules[] = $closure;
+            return $this;
+        }
+        return $this->rules[] = new ExprBuilder($this->node);
+    }
 }

@@ -134,7 +134,6 @@ class Wl_Abstract_Metabox {
 				<input id="wl-tab-main-ingredient" type="radio" name="wl-metabox-tabs"/><label
 						for="wl-tab-main-ingredient"><?php esc_html_e( 'Main Ingredient', 'wordlift' ); ?></label>
 				<div class="wl-tabs__tab">
-					<form></form>
 					<?php
 					do_action( 'wl_ingredient_metabox_html', $recipe_ids );
 					?>

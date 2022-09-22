@@ -15,6 +15,6 @@ namespace Wordlift\Modules\Common\Symfony\Component\Yaml\Exception;
  *
  * @author Romain Neutron <imprec@gmail.com>
  */
-class RuntimeException extends \RuntimeException implements ExceptionInterface {
-
+class RuntimeException extends \RuntimeException implements ExceptionInterface
+{
 }

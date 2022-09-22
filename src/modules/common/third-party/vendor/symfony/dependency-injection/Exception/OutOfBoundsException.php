@@ -13,6 +13,6 @@ namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Exceptio
 /**
  * Base OutOfBoundsException for Dependency Injection component.
  */
-class OutOfBoundsException extends \OutOfBoundsException implements ExceptionInterface {
-
+class OutOfBoundsException extends \OutOfBoundsException implements ExceptionInterface
+{
 }

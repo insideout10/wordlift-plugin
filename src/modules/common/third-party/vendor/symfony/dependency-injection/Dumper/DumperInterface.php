@@ -15,12 +15,12 @@ namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Dumper;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface DumperInterface {
-
-	/**
-	 * Dumps the service container.
-	 *
-	 * @return string|array The representation of the service container
-	 */
-	public function dump( array $options = array());
+interface DumperInterface
+{
+    /**
+     * Dumps the service container.
+     *
+     * @return string|array The representation of the service container
+     */
+    public function dump(array $options = []);
 }

@@ -15,12 +15,12 @@ namespace Wordlift\Modules\Common\Symfony\Component\Config\Definition;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-interface PrototypeNodeInterface extends NodeInterface {
-
-	/**
-	 * Sets the name of the node.
-	 *
-	 * @param string $name The name of the node
-	 */
-	public function setName( $name);
+interface PrototypeNodeInterface extends NodeInterface
+{
+    /**
+     * Sets the name of the node.
+     *
+     * @param string $name The name of the node
+     */
+    public function setName($name);
 }

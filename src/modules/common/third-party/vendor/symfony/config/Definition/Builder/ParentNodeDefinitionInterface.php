@@ -15,32 +15,32 @@ namespace Wordlift\Modules\Common\Symfony\Component\Config\Definition\Builder;
  *
  * @author Victor Berchet <victor@suumit.com>
  */
-interface ParentNodeDefinitionInterface {
-
-	/**
-	 * Returns a builder to add children nodes.
-	 *
-	 * @return NodeBuilder
-	 */
-	public function children();
-	/**
-	 * Appends a node definition.
-	 *
-	 * Usage:
-	 *
-	 *     $node = $parentNode
-	 *         ->children()
-	 *             ->scalarNode('foo')->end()
-	 *             ->scalarNode('baz')->end()
-	 *             ->append($this->getBarNodeDefinition())
-	 *         ->end()
-	 *     ;
-	 *
-	 * @return $this
-	 */
-	public function append( NodeDefinition $node);
-	/**
-	 * Sets a custom children builder.
-	 */
-	public function setBuilder( NodeBuilder $builder);
+interface ParentNodeDefinitionInterface
+{
+    /**
+     * Returns a builder to add children nodes.
+     *
+     * @return NodeBuilder
+     */
+    public function children();
+    /**
+     * Appends a node definition.
+     *
+     * Usage:
+     *
+     *     $node = $parentNode
+     *         ->children()
+     *             ->scalarNode('foo')->end()
+     *             ->scalarNode('baz')->end()
+     *             ->append($this->getBarNodeDefinition())
+     *         ->end()
+     *     ;
+     *
+     * @return $this
+     */
+    public function append(NodeDefinition $node);
+    /**
+     * Sets a custom children builder.
+     */
+    public function setBuilder(NodeBuilder $builder);
 }

@@ -13,6 +13,6 @@ namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Exceptio
 /**
  * Base LogicException for Dependency Injection component.
  */
-class LogicException extends \LogicException implements ExceptionInterface {
-
+class LogicException extends \LogicException implements ExceptionInterface
+{
 }

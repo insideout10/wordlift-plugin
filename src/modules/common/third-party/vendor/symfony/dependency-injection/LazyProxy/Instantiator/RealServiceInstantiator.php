@@ -19,12 +19,13 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Definition;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  */
-class RealServiceInstantiator implements InstantiatorInterface {
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function instantiateProxy( ContainerInterface $container, Definition $definition, $id, $realInstantiator ) {
-		return \call_user_func( $realInstantiator );
-	}
+class RealServiceInstantiator implements InstantiatorInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function instantiateProxy(ContainerInterface $container, Definition $definition, $id, $realInstantiator)
+    {
+        return \call_user_func($realInstantiator);
+    }
 }

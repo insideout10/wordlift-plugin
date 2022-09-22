@@ -17,50 +17,54 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Exception\Inva
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class RepeatedPass implements CompilerPassInterface {
-
-	/**
-	 * @var bool
-	 */
-	private $repeat = \false;
-	private $passes;
-	/**
-	 * @param RepeatablePassInterface[] $passes An array of RepeatablePassInterface objects
-	 *
-	 * @throws InvalidArgumentException when the passes don't implement RepeatablePassInterface
-	 */
-	public function __construct( array $passes ) {
-		foreach ( $passes as $pass ) {
-			if ( ! $pass instanceof RepeatablePassInterface ) {
-				throw new InvalidArgumentException( '$passes must be an array of RepeatablePassInterface.' );
-			}
-			$pass->setRepeatedPass( $this );
-		}
-		$this->passes = $passes;
-	}
-	/**
-	 * Process the repeatable passes that run more than once.
-	 */
-	public function process( ContainerBuilder $container ) {
-		do {
-			$this->repeat = \false;
-			foreach ( $this->passes as $pass ) {
-				$pass->process( $container );
-			}
-		} while ( $this->repeat );
-	}
-	/**
-	 * Sets if the pass should repeat.
-	 */
-	public function setRepeat() {
-		$this->repeat = \true;
-	}
-	/**
-	 * Returns the passes.
-	 *
-	 * @return RepeatablePassInterface[] An array of RepeatablePassInterface objects
-	 */
-	public function getPasses() {
-		return $this->passes;
-	}
+class RepeatedPass implements CompilerPassInterface
+{
+    /**
+     * @var bool
+     */
+    private $repeat = \false;
+    private $passes;
+    /**
+     * @param RepeatablePassInterface[] $passes An array of RepeatablePassInterface objects
+     *
+     * @throws InvalidArgumentException when the passes don't implement RepeatablePassInterface
+     */
+    public function __construct(array $passes)
+    {
+        foreach ($passes as $pass) {
+            if (!$pass instanceof RepeatablePassInterface) {
+                throw new InvalidArgumentException('$passes must be an array of RepeatablePassInterface.');
+            }
+            $pass->setRepeatedPass($this);
+        }
+        $this->passes = $passes;
+    }
+    /**
+     * Process the repeatable passes that run more than once.
+     */
+    public function process(ContainerBuilder $container)
+    {
+        do {
+            $this->repeat = \false;
+            foreach ($this->passes as $pass) {
+                $pass->process($container);
+            }
+        } while ($this->repeat);
+    }
+    /**
+     * Sets if the pass should repeat.
+     */
+    public function setRepeat()
+    {
+        $this->repeat = \true;
+    }
+    /**
+     * Returns the passes.
+     *
+     * @return RepeatablePassInterface[] An array of RepeatablePassInterface objects
+     */
+    public function getPasses()
+    {
+        return $this->passes;
+    }
 }

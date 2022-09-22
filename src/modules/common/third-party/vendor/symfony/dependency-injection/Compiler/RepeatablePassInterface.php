@@ -16,7 +16,7 @@ namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Compiler
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-interface RepeatablePassInterface extends CompilerPassInterface {
-
-	public function setRepeatedPass( RepeatedPass $repeatedPass);
+interface RepeatablePassInterface extends CompilerPassInterface
+{
+    public function setRepeatedPass(RepeatedPass $repeatedPass);
 }

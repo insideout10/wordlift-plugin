@@ -17,29 +17,32 @@ use Wordlift\Modules\Common\Symfony\Component\Config\Definition\Exception\Invali
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class BooleanNodeDefinition extends ScalarNodeDefinition {
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function __construct( $name, NodeParentInterface $parent = null ) {
-		parent::__construct( $name, $parent );
-		$this->nullEquivalent = \true;
-	}
-	/**
-	 * Instantiate a Node.
-	 *
-	 * @return BooleanNode The node
-	 */
-	protected function instantiateNode() {
-		return new BooleanNode( $this->name, $this->parent );
-	}
-	/**
-	 * {@inheritdoc}
-	 *
-	 * @throws InvalidDefinitionException
-	 */
-	public function cannotBeEmpty() {
-		throw new InvalidDefinitionException( '->cannotBeEmpty() is not applicable to BooleanNodeDefinition.' );
-	}
+class BooleanNodeDefinition extends ScalarNodeDefinition
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($name, NodeParentInterface $parent = null)
+    {
+        parent::__construct($name, $parent);
+        $this->nullEquivalent = \true;
+    }
+    /**
+     * Instantiate a Node.
+     *
+     * @return BooleanNode The node
+     */
+    protected function instantiateNode()
+    {
+        return new BooleanNode($this->name, $this->parent);
+    }
+    /**
+     * {@inheritdoc}
+     *
+     * @throws InvalidDefinitionException
+     */
+    public function cannotBeEmpty()
+    {
+        throw new InvalidDefinitionException('->cannotBeEmpty() is not applicable to BooleanNodeDefinition.');
+    }
 }

@@ -16,14 +16,15 @@ use Wordlift\Modules\Common\Symfony\Component\Config\Definition\IntegerNode;
  *
  * @author Jeanmonod David <david.jeanmonod@gmail.com>
  */
-class IntegerNodeDefinition extends NumericNodeDefinition {
-
-	/**
-	 * Instantiates a Node.
-	 *
-	 * @return IntegerNode The node
-	 */
-	protected function instantiateNode() {
-		return new IntegerNode( $this->name, $this->parent, $this->min, $this->max );
-	}
+class IntegerNodeDefinition extends NumericNodeDefinition
+{
+    /**
+     * Instantiates a Node.
+     *
+     * @return IntegerNode The node
+     */
+    protected function instantiateNode()
+    {
+        return new IntegerNode($this->name, $this->parent, $this->min, $this->max);
+    }
 }

@@ -17,18 +17,19 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Exception\Runt
  *
  * @author Ryan Weaver <ryan@knpuniversity.com>
  */
-class DefinitionErrorExceptionPass extends AbstractRecursivePass {
-
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function processValue( $value, $isRoot = \false ) {
-		if ( ! $value instanceof Definition || empty( $value->getErrors() ) ) {
-			return parent::processValue( $value, $isRoot );
-		}
-		// only show the first error so the user can focus on it
-		$errors  = $value->getErrors();
-		$message = \reset( $errors );
-		throw new RuntimeException( $message );
-	}
+class DefinitionErrorExceptionPass extends AbstractRecursivePass
+{
+    /**
+     * {@inheritdoc}
+     */
+    protected function processValue($value, $isRoot = \false)
+    {
+        if (!$value instanceof Definition || empty($value->getErrors())) {
+            return parent::processValue($value, $isRoot);
+        }
+        // only show the first error so the user can focus on it
+        $errors = $value->getErrors();
+        $message = \reset($errors);
+        throw new RuntimeException($message);
+    }
 }

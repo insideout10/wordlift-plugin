@@ -5,6 +5,7 @@
  * @author Mahbub Hasan Imon <mahbub@wordlift.io>
  * @package Wordlift
  */
+
 namespace Wordlift\Modules\Food_Kg;
 
 use Wordlift\Api\Api_Service_Ext;
@@ -22,7 +23,7 @@ class Meta_Box {
 	private $recipe_lift_strategy;
 
 	/**
-	 * @param Api_Service_Ext      $api_service
+	 * @param Api_Service_Ext $api_service
 	 * @param Recipe_Lift_Strategy $recipe_lift_strategy
 	 */
 	public function __construct( Api_Service_Ext $api_service, Recipe_Lift_Strategy $recipe_lift_strategy ) {
@@ -65,24 +66,39 @@ class Meta_Box {
 				continue;
 			}
 			?>
-			<div class="wl-recipe-ingredient">
-				<?php
-					$allowed_tags = array(
-						'p'      => array(),
-						'strong' => array(),
+            <div class="wl-recipe-ingredient">
+                <p>
+					<?php
+					$count = count( $recipe_ids );
+					echo sprintf(
+						'%s %s',
+						sprintf( 1 < $count ? __( 'There are %d recipes embedded in this post.', $count ) : __( 'There is %d recipe embedded in this post.', $count ), $count ),
+						__( 'Review the main ingredient for each recipe and change it if required.' )
 					);
-					// translators: %s is the ingredient name.
-					echo wp_kses( sprintf( '<p>' . __( '%s main ingredient is', 'wordlift' ) . ' <strong>%s</strong></p>', esc_html( $recipe_data->name() ), esc_html( $recipe['name'] ) ), $allowed_tags );
 					?>
-				<form class="wl-recipe-ingredient-form" id="wl-recipe-ingredient-form-<?php echo esc_attr( $key ); ?>">
-					<div class="wl-recipe-ingredient__field">
-						<label for="wl-recipe-ingredient__field-<?php echo esc_attr( $recipe['name'] ) . '-' . esc_attr( $key ); ?>"><?php echo esc_html__( 'Replace the main ingredient', 'wordlift' ); ?>: </label>
-						<input type="text" class="main-ingredient" id="wl-recipe-ingredient__field-<?php echo esc_attr( $recipe['name'] ) . '-' . esc_attr( $key ); ?>" name="main_ingredient" placeholder="<?php echo esc_html__( 'Type at least 3 characters to search...', 'wordlift' ); ?>">
-					</div>
-					<input type="hidden" id="recipe_id" name="recipe_id" value="<?php echo esc_attr( $recipe_id ); ?>">
-					<input type="submit" class="button button-primary button-large pull-right" value="<?php echo esc_attr__( 'Save', 'wordlift' ); ?>">
-				</form>
-			</div>
+                </p>
+				<?php
+				$allowed_tags = array(
+					'p'      => array(),
+					'strong' => array(),
+				);
+				// translators: %s is the ingredient name.
+				echo wp_kses( sprintf( '<p>' . __( '%s main ingredient is', 'wordlift' ) . ' <strong>%s</strong></p>', esc_html( $recipe_data->name() ), esc_html( $recipe['name'] ) ), $allowed_tags );
+				?>
+                <form class="wl-recipe-ingredient-form" id="wl-recipe-ingredient-form-<?php echo esc_attr( $key ); ?>">
+                    <div class="wl-recipe-ingredient__field">
+                        <label for="wl-recipe-ingredient__field-<?php echo esc_attr( $recipe['name'] ) . '-' . esc_attr( $key ); ?>"><?php echo esc_html__( 'Replace the main ingredient', 'wordlift' ); ?>
+                            : </label>
+                        <input type="text" class="main-ingredient"
+                               id="wl-recipe-ingredient__field-<?php echo esc_attr( $recipe['name'] ) . '-' . esc_attr( $key ); ?>"
+                               name="main_ingredient"
+                               placeholder="<?php echo esc_html__( 'Type at least 3 characters to search...', 'wordlift' ); ?>">
+                    </div>
+                    <input type="hidden" id="recipe_id" name="recipe_id" value="<?php echo esc_attr( $recipe_id ); ?>">
+                    <input type="submit" class="button button-primary button-large pull-right"
+                           value="<?php echo esc_attr__( 'Save', 'wordlift' ); ?>">
+                </form>
+            </div>
 			<?php
 		}
 	}
@@ -200,7 +216,10 @@ class Meta_Box {
 	 * Enqueue Scripts.
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( 'wl-meta-box-ingredient', WL_DIR_URL . 'js/dist/ingredients-meta-box.js', array( 'jquery', 'jquery-ui-autocomplete' ), WORDLIFT_VERSION, true );
+		wp_enqueue_script( 'wl-meta-box-ingredient', WL_DIR_URL . 'js/dist/ingredients-meta-box.js', array(
+			'jquery',
+			'jquery-ui-autocomplete'
+		), WORDLIFT_VERSION, true );
 
 		wp_localize_script(
 			'wl-meta-box-ingredient',

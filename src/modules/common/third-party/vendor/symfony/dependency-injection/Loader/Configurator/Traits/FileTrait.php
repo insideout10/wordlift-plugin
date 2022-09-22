@@ -10,17 +10,18 @@
  */
 namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\Configurator\Traits;
 
-trait FileTrait {
-
-	/**
-	 * Sets a file to require before creating the service.
-	 *
-	 * @param string $file A full pathname to include
-	 *
-	 * @return $this
-	 */
-	final public function file( $file ) {
-		$this->definition->setFile( $file );
-		return $this;
-	}
+trait FileTrait
+{
+    /**
+     * Sets a file to require before creating the service.
+     *
+     * @param string $file A full pathname to include
+     *
+     * @return $this
+     */
+    public final function file($file)
+    {
+        $this->definition->setFile($file);
+        return $this;
+    }
 }

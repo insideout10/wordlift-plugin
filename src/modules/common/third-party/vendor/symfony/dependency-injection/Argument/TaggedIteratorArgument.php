@@ -15,17 +15,19 @@ namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Argument
  *
  * @author Roland Franssen <franssen.roland@gmail.com>
  */
-class TaggedIteratorArgument extends IteratorArgument {
-
-	private $tag;
-	/**
-	 * @param string $tag
-	 */
-	public function __construct( $tag ) {
-		parent::__construct( array() );
-		$this->tag = (string) $tag;
-	}
-	public function getTag() {
-		return $this->tag;
-	}
+class TaggedIteratorArgument extends IteratorArgument
+{
+    private $tag;
+    /**
+     * @param string $tag
+     */
+    public function __construct($tag)
+    {
+        parent::__construct([]);
+        $this->tag = (string) $tag;
+    }
+    public function getTag()
+    {
+        return $this->tag;
+    }
 }

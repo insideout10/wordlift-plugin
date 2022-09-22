@@ -13,6 +13,6 @@ namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Exceptio
 /**
  * Base BadMethodCallException for Dependency Injection component.
  */
-class BadMethodCallException extends \BadMethodCallException implements ExceptionInterface {
-
+class BadMethodCallException extends \BadMethodCallException implements ExceptionInterface
+{
 }

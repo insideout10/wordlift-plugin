@@ -18,24 +18,27 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Definition;
  *
  * @final since version 3.3
  */
-class NullDumper implements DumperInterface {
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function isProxyCandidate( Definition $definition ) {
-		return \false;
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getProxyFactoryCode( Definition $definition, $id, $factoryCode = null ) {
-		return '';
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getProxyCode( Definition $definition ) {
-		return '';
-	}
+class NullDumper implements DumperInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function isProxyCandidate(Definition $definition)
+    {
+        return \false;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function getProxyFactoryCode(Definition $definition, $id, $factoryCode = null)
+    {
+        return '';
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function getProxyCode(Definition $definition)
+    {
+        return '';
+    }
 }

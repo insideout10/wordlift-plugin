@@ -18,26 +18,27 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Reference;
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class ResolveServiceSubscribersPass extends AbstractRecursivePass {
-
-	private $serviceLocator;
-	protected function processValue( $value, $isRoot = \false ) {
-		if ( $value instanceof Reference && $this->serviceLocator && ContainerInterface::class === $this->container->normalizeId( $value ) ) {
-			return new Reference( $this->serviceLocator );
-		}
-		if ( ! $value instanceof Definition ) {
-			return parent::processValue( $value, $isRoot );
-		}
-		$serviceLocator       = $this->serviceLocator;
-		$this->serviceLocator = null;
-		if ( $value->hasTag( 'container.service_subscriber.locator' ) ) {
-			$this->serviceLocator = $value->getTag( 'container.service_subscriber.locator' )[0]['id'];
-			$value->clearTag( 'container.service_subscriber.locator' );
-		}
-		try {
-			return parent::processValue( $value );
-		} finally {
-			$this->serviceLocator = $serviceLocator;
-		}
-	}
+class ResolveServiceSubscribersPass extends AbstractRecursivePass
+{
+    private $serviceLocator;
+    protected function processValue($value, $isRoot = \false)
+    {
+        if ($value instanceof Reference && $this->serviceLocator && ContainerInterface::class === $this->container->normalizeId($value)) {
+            return new Reference($this->serviceLocator);
+        }
+        if (!$value instanceof Definition) {
+            return parent::processValue($value, $isRoot);
+        }
+        $serviceLocator = $this->serviceLocator;
+        $this->serviceLocator = null;
+        if ($value->hasTag('container.service_subscriber.locator')) {
+            $this->serviceLocator = $value->getTag('container.service_subscriber.locator')[0]['id'];
+            $value->clearTag('container.service_subscriber.locator');
+        }
+        try {
+            return parent::processValue($value);
+        } finally {
+            $this->serviceLocator = $serviceLocator;
+        }
+    }
 }

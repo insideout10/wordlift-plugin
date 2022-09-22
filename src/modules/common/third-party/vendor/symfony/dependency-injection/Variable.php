@@ -23,16 +23,18 @@ namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class Variable {
-
-	private $name;
-	/**
-	 * @param string $name
-	 */
-	public function __construct( $name ) {
-		$this->name = $name;
-	}
-	public function __toString() {
-		return $this->name;
-	}
+class Variable
+{
+    private $name;
+    /**
+     * @param string $name
+     */
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

@@ -19,47 +19,45 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\Configu
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class PhpFileLoader extends FileLoader {
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function load( $resource, $type = null ) {
-		// the container and loader variables are exposed to the included file below
-		$container = $this->container;
-		$loader    = $this;
-		$path      = $this->locator->locate( $resource );
-		$this->setCurrentDir( \dirname( $path ) );
-		$this->container->fileExists( $path );
-		// the closure forbids access to the private scope in the included file
-		$load     = \Closure::bind(
-			function ( $path ) use ( $container, $loader, $resource, $type ) {
-				return include $path;
-			},
-			$this,
-			ProtectedPhpFileLoader::class
-		);
-		$callback = $load( $path );
-		if ( $callback instanceof \Closure ) {
-			$callback( new ContainerConfigurator( $this->container, $this, $this->instanceof, $path, $resource ), $this->container, $this );
-		}
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function supports( $resource, $type = null ) {
-		if ( ! \is_string( $resource ) ) {
-			return \false;
-		}
-		if ( null === $type && 'php' === \pathinfo( $resource, \PATHINFO_EXTENSION ) ) {
-			return \true;
-		}
-		return 'php' === $type;
-	}
+class PhpFileLoader extends FileLoader
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function load($resource, $type = null)
+    {
+        // the container and loader variables are exposed to the included file below
+        $container = $this->container;
+        $loader = $this;
+        $path = $this->locator->locate($resource);
+        $this->setCurrentDir(\dirname($path));
+        $this->container->fileExists($path);
+        // the closure forbids access to the private scope in the included file
+        $load = \Closure::bind(function ($path) use($container, $loader, $resource, $type) {
+            return include $path;
+        }, $this, ProtectedPhpFileLoader::class);
+        $callback = $load($path);
+        if ($callback instanceof \Closure) {
+            $callback(new ContainerConfigurator($this->container, $this, $this->instanceof, $path, $resource), $this->container, $this);
+        }
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function supports($resource, $type = null)
+    {
+        if (!\is_string($resource)) {
+            return \false;
+        }
+        if (null === $type && 'php' === \pathinfo($resource, \PATHINFO_EXTENSION)) {
+            return \true;
+        }
+        return 'php' === $type;
+    }
 }
 /**
  * @internal
  */
-final class ProtectedPhpFileLoader extends PhpFileLoader {
-
+final class ProtectedPhpFileLoader extends PhpFileLoader
+{
 }
