@@ -88,5 +88,5 @@
 }
 
 .autocomplete-loading {
-    background: url('../images/loading.gif') no-repeat right center;
+    background: url('../../images/loading.gif') no-repeat right center;
 }
