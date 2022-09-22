@@ -9,9 +9,14 @@ class Download_Ingredients_Data {
 	}
 
 	public function wl_download_ingredients_data() {
-		global $wpdb;
 
-		// @@todo add the admin capability check + nonce.
+		check_ajax_referer( 'wl-dl-ingredients-data-nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'wordlift' ) );
+		}
+
+		global $wpdb;
 
 		$items = $wpdb->get_results(
 			"SELECT p1.ID AS recipe_ID,
@@ -36,7 +41,7 @@ class Download_Ingredients_Data {
 		$filename = 'wl-main-ingredients-data-' . gmdate( 'Y-m-d-H-i-s' ) . '.tsv';
 
 		header( 'Content-Disposition: attachment; filename=' . $filename );
-		header( 'Content-Type: text/tsv; charset=' . get_bloginfo( 'charset' ) );
+		header( 'Content-Type: text/text/tab-separated-values; charset=' . get_bloginfo( 'charset' ) );
 
 		// Do not cache the file.
 		header( 'Pragma: no-cache' );
@@ -59,14 +64,19 @@ class Download_Ingredients_Data {
 
 		// Insert Data.
 		foreach ( $items as $item ) {
-			$row = array(
-				$item->post_title,
-				esc_url( get_the_permalink( $item->post_ID ) ),
-				'',
-				$item->post_ID,
-				$item->recipe_ID,
+			$recipe_json_ld = get_post_meta( $item->recipe_ID, '_wl_main_ingredient_jsonld', true ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			$recipe         = json_decode( $recipe_json_ld, true );
+			fputcsv(
+				$output,
+				array(
+					$item->post_title,
+					esc_url( get_the_permalink( $item->post_ID ) ),
+					$recipe ? $recipe['name'] : 'null',
+					$item->post_ID,
+					$item->recipe_ID, // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				),
+				"\t"
 			);
-			fputcsv( $output, $row );
 		}
 
 		wp_die();
