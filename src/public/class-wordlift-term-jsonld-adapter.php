@@ -270,9 +270,6 @@ class Wordlift_Term_JsonLd_Adapter {
 	 * @return array
 	 */
 	private function expand_references( $references ) {
-		// @TODO: we are assuming all the references are posts
-		// in this method, since now terms are getting converted to
-		// entities, this might not be true in all cases.
 		if ( ! is_array( $references ) ) {
 			return array();
 		}

@@ -104,6 +104,8 @@ class Jsonld_Generator {
 
 		}
 
+		$jsonld = \Wordlift_Entity_Post_To_Jsonld_Converter::post_process( $jsonld );
+
 		if ( $permalink ) {
 			$jsonld['mainEntityOfPage'] = $permalink;
 		}
