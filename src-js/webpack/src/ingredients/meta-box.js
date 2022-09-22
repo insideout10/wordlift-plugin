@@ -10,7 +10,7 @@ jQuery(document).ready(function ($) {
             recipe_id: $(this).find("#recipe_id").val(),
         };
         // Save the ingredient.
-        const saveBtn = $(this).find('.wl-recipe-ingredient__save');
+        const saveBtn = $('.wl-recipe-ingredient-form .button');
         saveBtn.html(_wlRecipeIngredient.texts.saving);
         wp.ajax
             .post(

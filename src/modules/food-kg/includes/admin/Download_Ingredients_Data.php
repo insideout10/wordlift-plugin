@@ -25,24 +25,12 @@ class Download_Ingredients_Data {
 					    INNER JOIN {$wpdb->posts} p2
 					        ON p2.post_content LIKE CONCAT( '%<!--WPRM Recipe ', p1.ID,'-->%' )
 					            AND p2.post_status = 'publish'
-					WHERE p1.post_type = 'wprm_recipe'"		);
+					WHERE p1.post_type = 'wprm_recipe'"
+		);
 
 		if ( ! $items ) {
 			wp_send_json_error( __( 'No main ingredients found.', 'wordlift' ) );
 		}
-
-		$tsv = array();
-
-		// foreach ( $items as $item ) {
-		// 	// @@todo write straight to the output.
-		// 	// @@todo print the ingredient name and the ingredient @id.
-		// 	// @@todo use tab as separator.
-		// 	// @@todo also output the post ID and recipe ID.
-		// 	$tsv[] = array(
-		// 		$item->post_title,
-		// 		esc_url( get_the_permalink( $item->post_ID ) ),
-		// 	);
-		// }
 
 		// Generate unique filename using current timestamp.
 		$filename = 'wl-main-ingredients-data-' . gmdate( 'Y-m-d-H-i-s' ) . '.tsv';

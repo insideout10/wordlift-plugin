@@ -55,7 +55,7 @@ class Meta_Box {
 			return;
 		}
 		foreach ( $recipe_ids as $key => $recipe_id ) {
-			$recipe_data = \WPRM_Recipe_Manager::get_recipe( $recipe_id );
+			$recipe_data    = \WPRM_Recipe_Manager::get_recipe( $recipe_id );
 			$recipe_json_ld = get_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', true );
 			if ( ! $recipe_json_ld ) {
 				continue;
@@ -80,7 +80,7 @@ class Meta_Box {
 						<input type="text" class="main-ingredient" id="wl-recipe-ingredient__field-<?php echo esc_attr( $recipe['name'] ) . '-' . esc_attr( $key ); ?>" name="main_ingredient" placeholder="<?php echo esc_html__( 'Type at least 3 characters to search...', 'wordlift' ); ?>">
 					</div>
 					<input type="hidden" id="recipe_id" name="recipe_id" value="<?php echo esc_attr( $recipe_id ); ?>">
-					<button type="submit" class="wl-recipe-ingredient__save"><?php echo esc_html__( 'Save', 'wordlift' ); ?></button>
+					<input type="submit" class="button button-primary button-large pull-right" value="<?php echo esc_attr__( 'Save', 'wordlift' ); ?>">
 				</form>
 			</div>
 			<?php

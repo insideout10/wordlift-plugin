@@ -131,14 +131,14 @@ class Wl_Abstract_Metabox {
 					return;
 				}
 				?>
-			<input id="wl-tab-main-ingredient" type="radio" name="wl-metabox-tabs" />
-			<label for="wl-tab-main-ingredient"><?php esc_html_e( 'Main Ingredient', 'wordlift' ); ?></label>
-			<div class="wl-tabs__tab">
-				<form></form>
-				<?php
-				do_action( 'wl_ingredient_metabox_html', $recipe_ids );
-				?>
-			</div>
+				<input id="wl-tab-main-ingredient" type="radio" name="wl-metabox-tabs"/><label
+						for="wl-tab-main-ingredient"><?php esc_html_e( 'Main Ingredient', 'wordlift' ); ?></label>
+				<div class="wl-tabs__tab">
+					<form></form>
+					<?php
+					do_action( 'wl_ingredient_metabox_html', $recipe_ids );
+					?>
+				</div>
 				<?php
 			}
 			?>
@@ -152,7 +152,7 @@ class Wl_Abstract_Metabox {
 	 * Note: the first function that calls this method will instantiate the fields.
 	 * Why it isn't called from the constructor? Because we need to hook this process as late as possible.
 	 *
-	 * @param int $id | $term_id The post id or term id.
+	 * @param int                   $id | $term_id The post id or term id.
 	 *
 	 * @param $type int Post or Term
 	 *
@@ -270,9 +270,9 @@ class Wl_Abstract_Metabox {
 	 * This method is a rude factory for Field objects.
 	 *
 	 * @param array $args The field's information.
-	 * @param bool $grouped Flag to distinguish between simple and grouped fields.
-	 * @param int $type Post or Term, based on the correct decorator would be selected.
-	 * @param int $id Identifier for the type.
+	 * @param bool  $grouped Flag to distinguish between simple and grouped fields.
+	 * @param int   $type Post or Term, based on the correct decorator would be selected.
+	 * @param int   $id Identifier for the type.
 	 */
 	public function add_field( $args, $grouped, $type, $id ) {
 
@@ -339,9 +339,9 @@ class Wl_Abstract_Metabox {
 	/**
 	 * Save the form data for the specified entity {@link WP_Post}'s id.
 	 *
-	 * @param int $id The entity's {@link WP_Post}'s id.
+	 * @param int                   $id The entity's {@link WP_Post}'s id.
 	 *
-	 * We're being called from WP `save_post` hook, we don't need to check the nonce.
+	 *                   We're being called from WP `save_post` hook, we don't need to check the nonce.
 	 *
 	 * @param $type int Post or term
 	 *

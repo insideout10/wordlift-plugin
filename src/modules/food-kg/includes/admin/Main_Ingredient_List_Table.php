@@ -7,7 +7,6 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 use WP_List_Table;
-use WPRM_Recipe_Manager;
 
 class Main_Ingredient_List_Table extends WP_List_Table {
 
