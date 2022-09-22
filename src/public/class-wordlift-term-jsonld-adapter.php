@@ -10,7 +10,9 @@
  */
 
 use Wordlift\Jsonld\Jsonld_Context_Enum;
+use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Jsonld\Reference;
+use Wordlift\Jsonld\Term_Reference;
 
 /**
  * Define the {@link Wordlift_Term_JsonLd_Adapter} class.
@@ -39,7 +41,7 @@ class Wordlift_Term_JsonLd_Adapter {
 	 * Wordlift_Term_JsonLd_Adapter constructor.
 	 *
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
-	 * @param \Wordlift_Post_Converter     $post_id_to_jsonld_converter The {@link Wordlift_Post_Converter} instance.
+	 * @param \Wordlift_Post_Converter $post_id_to_jsonld_converter The {@link Wordlift_Post_Converter} instance.
 	 *
 	 * @since 3.20.0
 	 */
@@ -99,7 +101,7 @@ class Wordlift_Term_JsonLd_Adapter {
 				'url'      => apply_filters( 'wl_carousel_post_list_item_url', get_permalink( $post_id ), $post_id ),
 			);
 			array_push( $post_jsonld['itemListElement'], $result );
-			++$position;
+			++ $position;
 		}
 
 		return $post_jsonld;
@@ -162,7 +164,7 @@ class Wordlift_Term_JsonLd_Adapter {
 
 	}
 
-	public function get( $id, $context ) {
+	public function get( $id, $context, $is_recursive_call = false ) {
 		/**
 		 * Support for carousel rich snippet, get jsonld data present
 		 * for all the posts shown in the term page, and add the jsonld data
@@ -196,11 +198,16 @@ class Wordlift_Term_JsonLd_Adapter {
 		 */
 		$arr = apply_filters( 'wl_term_jsonld_array', $result, $id );
 
-		/**
-		 * @since 3.32.0
-		 * Expand the references returned by this filter.
-		 */
-		$references = $this->expand_references( $arr['references'] );
+		$references = array();
+
+		// Don't expand nested references, it will lead to an infinite loop.
+		if ( ! $is_recursive_call ) {
+			/**
+			 * @since 3.32.0
+			 * Expand the references returned by this filter.
+			 */
+			$references = $this->expand_references( $arr['references'] );
+		}
 
 		$jsonld_array = array_merge( $arr['jsonld'], $references );
 
@@ -263,7 +270,6 @@ class Wordlift_Term_JsonLd_Adapter {
 	 * @return array
 	 */
 	private function expand_references( $references ) {
-
 		// @TODO: we are assuming all the references are posts
 		// in this method, since now terms are getting converted to
 		// entities, this might not be true in all cases.
@@ -273,11 +279,15 @@ class Wordlift_Term_JsonLd_Adapter {
 		$references_jsonld = array();
 		// Expand the references.
 		foreach ( $references as $reference ) {
-			$post_id = $reference;
-			if ( $reference instanceof Reference ) {
-				$post_id = $reference->get_id();
+			if ( $reference instanceof Post_Reference ) {
+				$post_id             = $reference->get_id();
+				$references_jsonld[] = $this->post_id_to_jsonld_converter->convert( $post_id );
+			} elseif ( $reference instanceof Term_Reference ) {
+				// Second level references won't be expanded.
+				$references_jsonld[] = current( $this->get( $reference->get_id(), Jsonld_Context_Enum::UNKNOWN, true ) );
+			} elseif ( is_numeric( $reference ) ) {
+				$references_jsonld[] = $this->post_id_to_jsonld_converter->convert( $reference );
 			}
-			$references_jsonld[] = $this->post_id_to_jsonld_converter->convert( $post_id );
 		}
 
 		return $references_jsonld;
