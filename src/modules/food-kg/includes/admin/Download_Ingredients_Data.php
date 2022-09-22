@@ -14,12 +14,18 @@ class Download_Ingredients_Data {
 		// @@todo add the admin capability check + nonce.
 
 		$items = $wpdb->get_results(
-			"SELECT p.ID, p.post_title, pm.meta_value
-			FROM $wpdb->posts p
-			INNER JOIN $wpdb->postmeta pm
-			    ON pm.post_ID = p.ID
-					AND pm.meta_key = '_wl_main_ingredient_jsonld'"
-		);
+			"SELECT p1.ID AS recipe_ID,
+					    p1.post_title AS recipe_name,
+					    p2.ID AS post_ID,
+					    p2.post_title,
+					    p2.post_status
+					FROM {$wpdb->posts} p1
+					    INNER JOIN wp_postmeta pm1 ON pm1.post_ID = p1.ID
+					        AND pm1.meta_key = '_wl_main_ingredient_jsonld'
+					    INNER JOIN {$wpdb->posts} p2
+					        ON p2.post_content LIKE CONCAT( '%<!--WPRM Recipe ', p1.ID,'-->%' )
+					            AND p2.post_status = 'publish'
+					WHERE p1.post_type = 'wprm_recipe'"		);
 
 		if ( ! $items ) {
 			wp_send_json_error( __( 'No main ingredients found.', 'wordlift' ) );
@@ -34,7 +40,7 @@ class Download_Ingredients_Data {
 			// @@todo also output the post ID and recipe ID.
 			$tsv[] = array(
 				$item->post_title,
-				esc_url( get_the_permalink( $item->ID ) ),
+				esc_url( get_the_permalink( $item->post_ID ) ),
 			);
 		}
 

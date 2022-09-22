@@ -34,11 +34,18 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 
 		$this->items = $wpdb->get_results(
-			"SELECT p.ID, p.post_title, pm.meta_value
-			FROM $wpdb->posts p
-			INNER JOIN $wpdb->postmeta pm
-			    ON pm.post_ID = p.ID
-					AND pm.meta_key = '_wl_main_ingredient_jsonld'"
+			"SELECT p1.ID AS recipe_ID,
+					    p1.post_title AS recipe_name,
+					    p2.ID AS post_ID,
+					    p2.post_title,
+					    p2.post_status
+					FROM {$wpdb->posts} p1
+					    INNER JOIN wp_postmeta pm1 ON pm1.post_ID = p1.ID
+					        AND pm1.meta_key = '_wl_main_ingredient_jsonld'
+					    INNER JOIN {$wpdb->posts} p2
+					        ON p2.post_content LIKE CONCAT( '%<!--WPRM Recipe ', p1.ID,'-->%' )
+					            AND p2.post_status = 'publish'
+					WHERE p1.post_type = 'wprm_recipe'"
 		);
 	}
 
@@ -48,22 +55,23 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 
 	public function get_columns() {
 		return array(
-			'post_title' => __( 'Name', 'wordlift' ),
-			'url'        => __( 'URL', 'wordlift' ),
-			'actions'    => '',
+			'recipe_name' => __( 'Recipe Name', 'wordlift' ),
+			'post_title'  => __( 'Post Title', 'wordlift' ),
+			'url'         => __( 'Post URL', 'wordlift' ),
+			'actions'     => '',
 		);
 	}
 
-	public function column_post_title( $item ) {
-		$recipe   = WPRM_Recipe_Manager::get_recipe( $item->ID );
-		$edit_url = $recipe->parent_edit_url();
+	public function column_recipe_name( $item ) {
+		return $item->recipe_name;
+	}
 
-		return empty( $edit_url ) ? $item->post_title : sprintf( '<a href="%s">%s</a>', $recipe->parent_edit_url(), $item->post_title );
+	public function column_post_title( $item ) {
+		return sprintf( '<a href="%s">%s</a>', get_edit_post_link( $item->post_ID ), $item->post_title );
 	}
 
 	public function column_url( $item ) {
-		$url = get_permalink( $item->ID );
-		return esc_html( $url );
+		return get_permalink( $item->post_ID );
 	}
 
 	public function column_actions( $item ) {
