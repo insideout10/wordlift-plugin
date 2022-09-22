@@ -79,7 +79,7 @@ class Api_Data_Hooks {
 				/**
 				 * Skip the <permalink>
 				 */
-				if ( '<permalink>' === $link ) {
+				if ( '<permalink>' === $link || 'http://<permalink>/' === $link ) {
 					$link = get_permalink();
 				}
 
