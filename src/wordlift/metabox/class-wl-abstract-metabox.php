@@ -116,6 +116,7 @@ class Wl_Abstract_Metabox {
             </div>
 			<?php
             // Only display the Main Ingredient tab if the feature is enabled.
+            // @@todo this tab shouldn't show if there are no ingredients.
 			if ( apply_filters( 'wl_feature__enable__food-kg', false ) ) {
 				?>
                 <input id="wl-tab-main-ingredient" type="radio" name="wl-metabox-tabs" checked="true"/><label
