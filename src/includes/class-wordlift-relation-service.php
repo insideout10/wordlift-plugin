@@ -96,7 +96,7 @@ class Wordlift_Relation_Service {
 	 * @return array|object|null Database query results
 	 * @since 3.15.0
 	 */
-	public function get_article_subjects( $object_id, $fields = '*', $predicate = null, $status = null, $excludes = array(), $limit = null, $include = null, $order_by = null, $post_types = array() ) {
+	public function get_article_subjects( $object_id, $fields = '*', $predicate = null, $status = null, $excludes = array(), $limit = null, $include = null, $order_by = null, $post_types = array(), $offset = null ) {
 		global $wpdb;
 
 		// The output fields.
@@ -133,7 +133,8 @@ class Wordlift_Relation_Service {
 			. self::and_post_type_in( $post_types )
 			. self::and_predicate( $predicate )
 			. self::order_by( $order_by )
-			. self::limit( $limit );
+			. self::limit( $limit )
+			. self::offset( $offset );
 
 		return '*' === $actual_fields ? $wpdb->get_results( $sql ) : $wpdb->get_col( $sql );  // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	}
@@ -176,6 +177,23 @@ class Wordlift_Relation_Service {
 		}
 
 		return "LIMIT $limit";
+	}
+
+	/**
+	 * Add the OFFSET clause if specified.
+	 *
+	 * @param null|int $offset The number of results to skip.
+	 *
+	 * @return string The offset clause (empty if no offset has been specified).
+	 * @since 3.35.11
+	 */
+	private static function offset( $offset = null ) {
+
+		if ( null === $offset || ! is_numeric( $offset ) ) {
+			return '';
+		}
+
+		return " OFFSET $offset";
 	}
 
 	/**
