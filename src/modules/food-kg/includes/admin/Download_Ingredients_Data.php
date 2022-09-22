@@ -11,6 +11,8 @@ class Download_Ingredients_Data {
 	public function wl_download_ingredients_data() {
 		global $wpdb;
 
+		// @@todo add the admin capability check + nonce.
+
 		$items = $wpdb->get_results(
 			"SELECT p.ID, p.post_title, pm.meta_value
 			FROM $wpdb->posts p
@@ -26,6 +28,10 @@ class Download_Ingredients_Data {
 		$tsv = array();
 
 		foreach ( $items as $item ) {
+			// @@todo write straight to the output.
+			// @@todo print the ingredient name and the ingredient @id.
+			// @@todo use tab as separator.
+			// @@todo also output the post ID and recipe ID.
 			$tsv[] = array(
 				$item->post_title,
 				esc_url( get_the_permalink( $item->ID ) ),
