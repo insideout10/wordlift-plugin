@@ -33,16 +33,16 @@ class Download_Ingredients_Data {
 
 		$tsv = array();
 
-		foreach ( $items as $item ) {
-			// @@todo write straight to the output.
-			// @@todo print the ingredient name and the ingredient @id.
-			// @@todo use tab as separator.
-			// @@todo also output the post ID and recipe ID.
-			$tsv[] = array(
-				$item->post_title,
-				esc_url( get_the_permalink( $item->post_ID ) ),
-			);
-		}
+		// foreach ( $items as $item ) {
+		// 	// @@todo write straight to the output.
+		// 	// @@todo print the ingredient name and the ingredient @id.
+		// 	// @@todo use tab as separator.
+		// 	// @@todo also output the post ID and recipe ID.
+		// 	$tsv[] = array(
+		// 		$item->post_title,
+		// 		esc_url( get_the_permalink( $item->post_ID ) ),
+		// 	);
+		// }
 
 		// Generate unique filename using current timestamp.
 		$filename = 'wl-main-ingredients-data-' . gmdate( 'Y-m-d-H-i-s' ) . '.tsv';
@@ -62,11 +62,22 @@ class Download_Ingredients_Data {
 			array(
 				__( 'Name', 'wordlift' ),
 				__( 'URL', 'wordlift' ),
-			)
+				__( 'Ingredient Name', 'wordlift' ),
+				__( 'Post ID', 'wordlift' ),
+				__( 'Recipe ID', 'wordlift' ),
+			),
+			"\t"
 		);
 
 		// Insert Data.
-		foreach ( $tsv as $row ) {
+		foreach ( $items as $item ) {
+			$row = array(
+				$item->post_title,
+				esc_url( get_the_permalink( $item->post_ID ) ),
+				'',
+				$item->post_ID,
+				$item->recipe_ID,
+			);
 			fputcsv( $output, $row );
 		}
 

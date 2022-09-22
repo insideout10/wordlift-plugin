@@ -97,38 +97,52 @@ class Wl_Abstract_Metabox {
 		// HTML Code Before MetaBox Content.
 		do_action( 'wl_metabox_before_html' );
 		?>
-        <div class="wl-tabs">
-
-            <input id="wl-tab-properties" type="radio" name="wl-metabox-tabs" checked="checked"/><label
-                    for="wl-tab-properties"><?php esc_html_e( 'Properties', 'wordlift' ); ?></label>
-            <div class="wl-tabs__tab">
-                <?php
-                // Loop over the fields.
-                foreach ( $this->fields as $field ) {
-
-                    // load data from DB (values will be available in $field->data).
-                    $field->get_data();
-
-                    // print field HTML (nonce included).
-                    echo $field->html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaping happens in `$field->html()`.
-                }
-                ?>
-            </div>
-			<?php
-            // Only display the Main Ingredient tab if the feature is enabled.
-            // @@todo this tab shouldn't show if there are no ingredients.
-			if ( apply_filters( 'wl_feature__enable__food-kg', false ) ) {
-				?>
-                <input id="wl-tab-main-ingredient" type="radio" name="wl-metabox-tabs" checked="true"/><label
-                        for="wl-tab-main-ingredient"><?php esc_html_e( 'Main Ingredient', 'wordlift' ); ?></label>
-                <div class="wl-tabs__tab">
-                    <?php
-                    do_action( 'wl_ingredient_metabox_html' );
-                    ?>
-                </div>
+		<div class="wl-tabs">
+			<input id="wl-tab-properties" type="radio" name="wl-metabox-tabs" checked="checked" />
+			<label for="wl-tab-properties"><?php esc_html_e( 'Properties', 'wordlift' ); ?></label>
+			<div class="wl-tabs__tab">
 				<?php
-			} ?>
-        </div>
+				// Loop over the fields.
+				foreach ( $this->fields as $field ) {
+
+					// load data from DB (values will be available in $field->data).
+					$field->get_data();
+
+					// print field HTML (nonce included).
+					echo $field->html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaping happens in `$field->html()`.
+				}
+				?>
+			</div>
+			<?php
+			// Only display the Main Ingredient tab if the feature and WP Recipe Maker plugin enabled.
+			if ( apply_filters( 'wl_feature__enable__food-kg', false ) && defined( 'WPRM_VERSION' ) && class_exists( 'WP_Recipe_Maker' ) ) { // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+				$recipe_ids = \WPRM_Recipe_Manager::get_recipe_ids_from_post( get_the_ID() );
+				if ( ! $recipe_ids ) {
+					return;
+				}
+				$is_available = false;
+				foreach ( $recipe_ids as $recipe_id ) {
+					$is_ingredient_available = get_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', true );
+					if ( $is_ingredient_available ) {
+						$is_available = true;
+					}
+				}
+				if ( ! $is_available ) {
+					return;
+				}
+				?>
+			<input id="wl-tab-main-ingredient" type="radio" name="wl-metabox-tabs" />
+			<label for="wl-tab-main-ingredient"><?php esc_html_e( 'Main Ingredient', 'wordlift' ); ?></label>
+			<div class="wl-tabs__tab">
+				<form></form>
+				<?php
+				do_action( 'wl_ingredient_metabox_html', $recipe_ids );
+				?>
+			</div>
+				<?php
+			}
+			?>
+		</div>
 		<?php
 	}
 

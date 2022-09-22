@@ -43,17 +43,19 @@ class Meta_Box {
 
 	/**
 	 * Ingredients HTML.
+	 *
+	 * @param array $recipe_ids Recipe IDs.
 	 */
-	public function ingredients_html() {
+	public function ingredients_html( $recipe_ids ) {
 
 		// Enqueue scripts.
 		$this->enqueue_scripts();
 
-		$recipe_ids = \WPRM_Recipe_Manager::get_recipe_ids_from_post( get_the_ID() );
 		if ( empty( $recipe_ids ) ) {
 			return;
 		}
 		foreach ( $recipe_ids as $key => $recipe_id ) {
+			$recipe_data = \WPRM_Recipe_Manager::get_recipe( $recipe_id );
 			$recipe_json_ld = get_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', true );
 			if ( ! $recipe_json_ld ) {
 				continue;
@@ -70,7 +72,7 @@ class Meta_Box {
 						'strong' => array(),
 					);
 					// translators: %s is the ingredient name.
-					echo wp_kses( sprintf( '<p>' . __( 'The main ingredient is', 'wordlift' ) . ' <strong>%s</strong></p>', esc_html( $recipe['name'] ) ), $allowed_tags );
+					echo wp_kses( sprintf( '<p>' . __( '%s main ingredient is', 'wordlift' ) . ' <strong>%s</strong></p>', esc_html( $recipe_data->name() ), esc_html( $recipe['name'] ) ), $allowed_tags );
 					?>
 				<form class="wl-recipe-ingredient-form" id="wl-recipe-ingredient-form-<?php echo esc_attr( $key ); ?>">
 					<div class="wl-recipe-ingredient__field">
