@@ -57,6 +57,7 @@ class Jsonld_Adapter {
 		$jsonld_post_html_output = '<script type="application/ld+json" id="wl-jsonld">' . $jsonld . '</script>';
 		$jsonld_post_html_output = apply_filters( 'wl_jsonld_post_html_output', $jsonld_post_html_output, $post_id );
 
+		// We don't need to escape this one since it's a JSON-LD output.
 		echo $jsonld_post_html_output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 	}
