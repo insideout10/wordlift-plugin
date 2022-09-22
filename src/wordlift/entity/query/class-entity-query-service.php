@@ -122,7 +122,7 @@ class Entity_Query_Service {
 						return new Entity( join( ',', $post_entity_type_service->get_names( $identifier ) ), new Wordpress_Content( get_post( $identifier ) ) );
 					} elseif ( Object_Type_Enum::TERM === $type ) {
 
-						return new Entity( join( ",", $term_type_service->get_entity_types_labels( $identifier ) ), new Wordpress_Content( get_term( $identifier ) ) );
+						return new Entity( join( ',', $term_type_service->get_entity_types_labels( $identifier ) ), new Wordpress_Content( get_term( $identifier ) ) );
 					}
 
 					// return new Entity( $item->schema_type_name, new Wordpress_Content( get_term( $item->id ) ) );

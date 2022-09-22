@@ -11,7 +11,6 @@
 
 use Wordlift\Jsonld\Jsonld_Context_Enum;
 use Wordlift\Jsonld\Post_Reference;
-use Wordlift\Jsonld\Reference;
 use Wordlift\Jsonld\Term_Reference;
 
 /**
@@ -41,7 +40,7 @@ class Wordlift_Term_JsonLd_Adapter {
 	 * Wordlift_Term_JsonLd_Adapter constructor.
 	 *
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
-	 * @param \Wordlift_Post_Converter $post_id_to_jsonld_converter The {@link Wordlift_Post_Converter} instance.
+	 * @param \Wordlift_Post_Converter     $post_id_to_jsonld_converter The {@link Wordlift_Post_Converter} instance.
 	 *
 	 * @since 3.20.0
 	 */
