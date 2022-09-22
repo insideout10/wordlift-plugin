@@ -5,7 +5,7 @@ namespace Wordlift\Modules\Pods\FieldDefinition;
 use Wordlift\Vocabulary\Terms_Compat;
 
 /**
- * @since 3.38.1
+ * @since 3.38.3
  * Registers all the pods for post_type and taxonomies.
  */
 class AllPodsDefiniton extends AbstractFieldDefiniton {

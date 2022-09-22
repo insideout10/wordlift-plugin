@@ -25,12 +25,16 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 	 * @param $type string
 	 * @param $context Context
 	 *
-	 * @return int
+	 * @return void
 	 */
 	protected function register_pod( $name, $type, $context ) {
 		$pod_id              = intval( substr( md5( $type . '_' . $name ), 0, 8 ), 16 );
 		$pod                 = $this->pod( $pod_id, $name, $type );
 		$schema_field_groups = $context->get_custom_fields();
+
+		if ( ! is_array( $schema_field_groups ) ) {
+			return;
+		}
 
 		foreach ( $schema_field_groups as $schema_field_group ) {
 			$custom_fields = $schema_field_group->get_custom_fields();
@@ -44,8 +48,6 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 				);
 			}
 		}
-
-		return $pod_id;
 
 	}
 
