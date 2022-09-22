@@ -78,7 +78,7 @@ class Meta_Box {
 						<input type="text" class="main-ingredient" id="wl-recipe-ingredient__field-<?php echo esc_attr( $recipe['name'] ) . '-' . esc_attr( $key ); ?>" name="main_ingredient" placeholder="<?php echo esc_html__( 'Type at least 3 characters to search...', 'wordlift' ); ?>">
 					</div>
 					<input type="hidden" id="recipe_id" name="recipe_id" value="<?php echo esc_attr( $recipe_id ); ?>">
-					<button type="submit" class="wl-recipe-ingredient__save"><?php echo esc_html__( 'Save', 'wordlift' ); ?></button>
+					<input type="submit" class="button button-primary button-large pull-right" value="<?php echo esc_attr__( 'Save', 'wordlift' ); ?>">
 				</form>
 			</div>
 			<?php

@@ -119,7 +119,7 @@ class Wl_Abstract_Metabox {
             // @@todo this tab shouldn't show if there are no ingredients.
 			if ( apply_filters( 'wl_feature__enable__food-kg', false ) ) {
 				?>
-                <input id="wl-tab-main-ingredient" type="radio" name="wl-metabox-tabs" checked="true"/><label
+                <input id="wl-tab-main-ingredient" type="radio" name="wl-metabox-tabs"/><label
                         for="wl-tab-main-ingredient"><?php esc_html_e( 'Main Ingredient', 'wordlift' ); ?></label>
                 <div class="wl-tabs__tab">
                     <?php

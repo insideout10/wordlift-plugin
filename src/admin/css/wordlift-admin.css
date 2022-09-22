@@ -337,47 +337,47 @@
   display: flex;
   flex-wrap: wrap;
   width: 100%;
+
 }
 .wl-tabs__tab {
     order: 999;
     width: 100%;
     display: none;
-    background: lightgray;
-    border: 1px gray solid;
-    border-top: 5px gray solid;
+    background: #f0f0f1;
+    border-top-width: 5px;
     padding: 1em;
   }
+/* The active label is defined within the input:checked rule. */
+.wl-tabs > label {
+    padding: .5em 1em;
+    border: 1px solid #c3c4c7;
+    border-left: 0;
+    background: #dcdcde;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+.wl-tabs > label:first-of-type {
+      border-left: 1px solid #c3c4c7;
+      margin-left: .5em;
+    }
 .wl-tabs > input[type="radio"] {
     opacity: 0;
     position: absolute;
   }
 .wl-tabs > input[type="radio"]:checked + label {
       /* The selected label. */
-      background: gray;
+      z-index: 1;
+      background: #f0f0f1;
+      border-bottom: 1px solid #f0f0f1;
     }
 /* Show the selected tab. */
 .wl-tabs > input[type="radio"]:checked + label + div {
         display: unset;
+        /* Combined with the label z-index:1px hides the border below the active tab */
+        margin-top: -1px;
+        border-top: 1px solid #c3c4c7;
       }
-.wl-tabs > label {
-    padding: .5em 1em;
-    background: #b4d5e4;
-    border-right: 1px solid gray;
-  }
-.wl-tabs > label:last-of-type {
-      border-right: none;
-    }
 /** Meta Box **/
-.wl-recipe-ingredient {
-    border-bottom: 1px solid #ddd;
-    padding: 20px 0;
-    overflow: hidden;
-}
-.wl-recipe-ingredient p {
-    font-size: 16px;
-}
-.wl-recipe-ingredient__field {
-}
 .wl-recipe-ingredient__field label {
     font-size: 16px;
 }
@@ -386,58 +386,6 @@
     border-radius: 5px;
     border: 2px solid #333;
     width: 20%;
-}
-.wl-recipe-ingredient__save {
-    float: right;
-    background-color: #333;
-    border: 0;
-    color: #fff;
-    padding: 7px 30px;
-    font-size: 15px;
-    cursor: pointer;
-}
-/** Tabs **/
-.wl-metabox-tabs {
-    margin: 20px 0 10px 0;
-}
-.wl-metabox-tabs ul {
-    display: inline-flex;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-.wl-metabox-tabs ul li {
-    transition: all 0.3s ease-in-out;
-    margin-bottom: 0px;
-}
-.wl-metabox-tabs ul li:hover a {
-    border-bottom: 3px solid #333;
-    /* font-weight: 600; */
-}
-.wl-metabox-tabs ul li.active a {
-    border-bottom: 3px solid #333;
-    /* font-weight: 600; */
-}
-.wl-metabox-tabs ul li a {
-    background-color: #EFEFEF;
-    padding: 10px 20px;
-    color: #333;
-    text-decoration: none;
-    font-size: 14px;
-    border-bottom: 3px solid #ddd;
-    display: block;
-}
-.wl-metabox-tabs ul li a:focus {
-    outline: none;
-    box-shadow: none;
-}
-.wl-metabox-tabs__content {
-    background-color: #EFEFEF;
-    margin: 0;
-    padding: 10px 15px;
-}
-.wl-metabox-tabs__content > div:not(:first-child) {
-    display: none;
 }
 .autocomplete-loading {
     background: url('../images/loading.gif') no-repeat right center;
