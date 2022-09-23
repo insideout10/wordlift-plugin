@@ -1,27 +1,27 @@
 // jQuery Code.
 jQuery(function ($) {
     // Update Ingredient.
-    const ingredientFormSubmitBtn = $( '.wl-recipe-ingredient-form__submit' );
-    ingredientFormSubmitBtn.on( 'click', function (e) {
+    const ingredientFormSubmitBtn = $('.wl-recipe-ingredient-form__submit');
+    ingredientFormSubmitBtn.on('click', function (e) {
         e.preventDefault(e);
-        
-        const ingredientsData = $( '.wl-table--main-ingredient__data' );
-        ingredientsData.each( ( index, element ) => {
-            const recipeID = $( element ).find( '#recipe-id' ).val();
-            const ingredient = $( element ).find( "input[name='main_ingredient[]']").val();
-            if ( ! recipeID && ! ingredient ) {
+
+        const ingredientsData = $('.wl-table--main-ingredient__data');
+        let recipeData = [];
+        ingredientsData.each((index, element) => {
+            const recipeID = $(element).find('#recipe-id').val();
+            const ingredient = $(element).find("input[name='main_ingredient[]']").val();
+            if (!recipeID || !ingredient) {
                 return;
             }
-            updateIngredient( recipeID, ingredient );
+            recipeData.push({
+                recipe_id: recipeID,
+                ingredient: ingredient
+            });
         });
-        
-    });
 
-    const updateIngredient = ( recipeID, ingredient ) => {
         const data = {
             _wpnonce: _wlRecipeIngredient.nonce,
-            main_ingredient: ingredient,
-            recipe_id: recipeID,
+            data: JSON.stringify( recipeData )
         };
         // Save the ingredient.
         wp.ajax
@@ -31,8 +31,7 @@ jQuery(function ($) {
             ).done(function (response) {
                 wp.data.dispatch('core/notices').createNotice(
                     'success',
-                    response.message,
-                    {
+                    response.message, {
                         type: 'snackbar',
                         isDismissible: true,
                     }
@@ -41,12 +40,11 @@ jQuery(function ($) {
             .fail(function (error) {
                 wp.data.dispatch('core/notices').createNotice(
                     'error',
-                    error.message,
-                    {
+                    error.message, {
                         type: 'snackbar',
                         isDismissible: true,
                     }
                 );
             });
-    }
+    });
 });

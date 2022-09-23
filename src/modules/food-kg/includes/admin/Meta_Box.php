@@ -137,15 +137,15 @@ class Meta_Box {
 		if ( $data ) {
 			$results = array(
 				array(
+					'label' => __( '(Don’t change)', 'wordlift' ),
+					'value' => 'dont-change',
+				),
+				array(
 					'label' => $data->name,
 					'value' => $new_json_ld,
 				),
 				array(
-					'label' => __( 'Don’t change', 'wordlift' ),
-					'value' => 'dont-change',
-				),
-				array(
-					'label' => __( 'Unset', 'wordlift' ),
+					'label' => __( '(Unset)', 'wordlift' ),
 					'value' => 'unset',
 				),
 			);
@@ -174,61 +174,42 @@ class Meta_Box {
 				)
 			);
 		}
-
-		// Return error if the recipe id is empty.
-		if ( ! empty( $_REQUEST['recipe_id'] ) ) { // Input var okay.
-			$recipe_id = sanitize_text_field( wp_unslash( $_REQUEST['recipe_id'] ) ); // Input var okay.
+		// Return error if the recipe data is empty.
+		if ( ! empty( $_REQUEST['data'] ) ) {
+			$recipe_data = sanitize_text_field( wp_unslash( $_REQUEST['data'] ) );
 		} else {
 			wp_send_json_error(
 				array(
-					'message' => __( 'The recipe id is empty.', 'wordlift' ),
+					'message' => __( 'Recipe data is empty.', 'wordlift' ),
 					'btnText' => __( 'Failed', 'wordlift' ),
 				)
 			);
 		}
 
-		// Return error if the main ingredient is empty.
-		if ( ! empty( $_REQUEST['main_ingredient'] ) ) {
-			$main_ingredient = sanitize_text_field( wp_unslash( $_REQUEST['main_ingredient'] ) );
-		} else {
-			wp_send_json_error(
-				array(
-					'message' => __( 'The main ingredient is empty.', 'wordlift' ),
-					'btnText' => __( 'Failed', 'wordlift' ),
-				)
-			);
-		}
+		$recipes = json_decode( $recipe_data );
 
-		if ( 'unset' === $main_ingredient ) {
-			$update = delete_post_meta( $recipe_id, '_wl_main_ingredient_jsonld' );
-		} elseif ( 'dont-change' === $main_ingredient ) {
-			// $old_json_ld = get_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', true );
-			$update = true;
-			echo 'Don\'t change';
-		} else {
-			$update = update_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', $main_ingredient );
-			if ( ! $update ) {
-				wp_send_json_error(
-					array(
-						'message' => __( 'The main ingredient could not be updated.', 'wordlift' ),
-						'btnText' => __( 'Failed', 'wordlift' ),
-					)
-				);
+		$updated = false;
+		foreach ( $recipes as $recipe ) {
+			$recipe_id       = $recipe->recipe_id;
+			$main_ingredient = $recipe->ingredient;
+			if ( 'unset' === $main_ingredient ) {
+				$updated = delete_post_meta( $recipe_id, '_wl_main_ingredient_jsonld' );
+			} elseif ( 'dont-change' === $main_ingredient ) {
+				$updated = true;
+			} else {
+				$updated = update_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', $main_ingredient );
 			}
 		}
-
-		if ( $update ) {
+		if ( $updated ) {
 			wp_send_json_success(
 				array(
 					'message' => __( 'The main ingredient has been updated.', 'wordlift' ),
-					'btnText' => __( 'Saved', 'wordlift' ),
 				)
 			);
 		} else {
 			wp_send_json_error(
 				array(
 					'message' => __( 'The main ingredient could not be updated.', 'wordlift' ),
-					'btnText' => __( 'Failed', 'wordlift' ),
 				)
 			);
 		}
