@@ -38,7 +38,6 @@ const autocomplete = (query, callback) => {
     1000
   );
 };
-
 // ### Render the sameAs metabox field autocomplete select.
 window.addEventListener("load", () => {
   document.querySelectorAll(".wl-select-main-ingredient").forEach(el => {
