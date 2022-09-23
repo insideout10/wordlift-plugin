@@ -38,11 +38,19 @@ const autocomplete = (query, callback) => {
     1000
   );
 };
+class IngredientAutocompleteSelect extends  AutocompleteSelect {
+
+  onChange(value) {
+      value = this.props.onStateChange(value)
+      super.onChange(value);
+  }
+
+}
 // ### Render the sameAs metabox field autocomplete select.
 window.addEventListener("load", () => {
   document.querySelectorAll(".wl-select-main-ingredient").forEach(el => {
     ReactDOM.render(
-      <AutocompleteSelect
+      <IngredientAutocompleteSelect
         loadOptions={autocomplete}
         name="main_ingredient[]"
         placeholder=""

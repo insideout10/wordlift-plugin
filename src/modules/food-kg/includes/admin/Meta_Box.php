@@ -87,14 +87,6 @@ class Meta_Box {
 				echo wp_kses( sprintf( '<p>' . __( '%s main ingredient is', 'wordlift' ) . ' <strong>%s</strong></p>', esc_html( $recipe_data->name() ), esc_html( $recipe['name'] ) ), $allowed_tags );
 				?>
 				<form class="wl-recipe-ingredient-form" id="wl-recipe-ingredient-form-<?php echo esc_attr( $key ); ?>">
-					<div class="wl-recipe-ingredient__field">
-						<label for="wl-recipe-ingredient__field-<?php echo esc_attr( $recipe['name'] ) . '-' . esc_attr( $key ); ?>"><?php echo esc_html__( 'Replace the main ingredient', 'wordlift' ); ?>
-							: </label>
-						<input type="text" class="main-ingredient"
-							   id="wl-recipe-ingredient__field-<?php echo esc_attr( $recipe['name'] ) . '-' . esc_attr( $key ); ?>"
-							   name="main_ingredient"
-							   placeholder="<?php echo esc_html__( 'Type at least 3 characters to search...', 'wordlift' ); ?>">
-					</div>
 					<input type="hidden" id="recipe_id" name="recipe_id" value="<?php echo esc_attr( $recipe_id ); ?>">
 
 					<table class="wl-table wl-table--main-ingredient">
@@ -162,22 +154,39 @@ class Meta_Box {
 		ob_clean();
 
 		if ( $data ) {
-			// $results = array(
-			// array(
-			// 'label' => $data->name,
-			// 'value' => $data->name,
-			// ),
-			// array(
-			// 'label' => __( 'Don’t change', 'wordlift' ),
-			// 'value' => 'dont-change',
-			// ),
-			// array(
-			// 'label' => __( 'Unset', 'wordlift' ),
-			// 'value' => 'unset',
-			// ),
-			// );
-			// wp_send_json_success( $results );
-			wp_send_json_success( array( $data->name ) );
+			$results = array(
+				// array(
+				// 	'label' => $data->name,
+				// 	'value' => $data->name,
+				// ),
+				// array(
+				// 	'label' => __( 'Don\'t change', 'wordlift' ),
+				// 	'value' => 'dont-change',
+				// ),
+				// array(
+				// 	'label' => __( 'Unset', 'wordlift' ),
+				// 	'value' => 'unset',
+				// ),
+				array(
+					'id'           => $data->name,
+					'labels'       => array( $data->name ),
+					'descriptions' => array( $data->name ),
+					'types'        => '',
+					'urls'         => array( $entity_id ),
+					'images'       => array(),
+					'sameAss'      => '',
+					'scope'        => 'cloud',
+					'description'  => '',
+					'mainType'     => '',
+					'label'        => $data->name,
+					'displayTypes' => '',
+					'value'        => '1',
+					'confidence'   => '',
+					'meta'         => ''
+				)
+			);
+			wp_send_json_success( $results );
+			// wp_send_json_success( array( $data->name ) );
 		} else {
 			wp_send_json_error(
 				array(
