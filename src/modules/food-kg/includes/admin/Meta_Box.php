@@ -162,22 +162,21 @@ class Meta_Box {
 		ob_clean();
 
 		if ( $data ) {
-			// $results = array(
-			// array(
-			// 'label' => $data->name,
-			// 'value' => $data->name,
-			// ),
-			// array(
-			// 'label' => __( 'Don’t change', 'wordlift' ),
-			// 'value' => 'dont-change',
-			// ),
-			// array(
-			// 'label' => __( 'Unset', 'wordlift' ),
-			// 'value' => 'unset',
-			// ),
-			// );
-			// wp_send_json_success( $results );
-			wp_send_json_success( array( $data->name ) );
+			$results = array(
+				array(
+					'label' => $data->name,
+					'value' => json_encode( $data ),
+				),
+				array(
+					'label' => __( 'Don’t change', 'wordlift' ),
+					'value' => 'dont-change',
+				),
+				array(
+					'label' => __( 'Unset', 'wordlift' ),
+					'value' => 'unset',
+				),
+			);
+			wp_send_json_success( $results );
 		} else {
 			wp_send_json_error(
 				array(
