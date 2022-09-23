@@ -1,68 +1,52 @@
 // jQuery Code.
-jQuery(document).ready(function ($) {
+jQuery(function ($) {
     // Update Ingredient.
-    const ingredientForm = $(".wl-recipe-ingredient-form");
-    ingredientForm.on("submit", function (e) {
+    const ingredientFormSubmitBtn = $( '.wl-recipe-ingredient-form__submit' );
+    ingredientFormSubmitBtn.on( 'click', function (e) {
         e.preventDefault(e);
+        
+        const ingredientsData = $( '.wl-table--main-ingredient__data' );
+        ingredientsData.each( ( index, element ) => {
+            const recipeID = $( element ).find( '#recipe-id' ).val();
+            const ingredient = $( element ).find( "input[name='main_ingredient[]']").val();
+            if ( ! recipeID && ! ingredient ) {
+                return;
+            }
+            updateIngredient( recipeID, ingredient );
+        });
+        
+    });
+
+    const updateIngredient = ( recipeID, ingredient ) => {
         const data = {
             _wpnonce: _wlRecipeIngredient.nonce,
-            main_ingredient: $(this).find(".main-ingredient").val(),
-            recipe_id: $(this).find("#recipe_id").val(),
+            main_ingredient: ingredient,
+            recipe_id: recipeID,
         };
         // Save the ingredient.
-        const saveBtn = $(this).find('input.button');
-        saveBtn.val(_wlRecipeIngredient.texts.saving);
         wp.ajax
             .post(
                 "wl_update_ingredient_post_meta",
                 data
             ).done(function (response) {
-                saveBtn.val(response.btnText);
+                wp.data.dispatch('core/notices').createNotice(
+                    'success',
+                    response.message,
+                    {
+                        type: 'snackbar',
+                        isDismissible: true,
+                    }
+                );
             })
             .fail(function (error) {
-                console.log(error);
-                saveBtn.val(error.btnText);
+                wp.data.dispatch('core/notices').createNotice(
+                    'error',
+                    error.message,
+                    {
+                        type: 'snackbar',
+                        isDismissible: true,
+                    }
+                );
             });
-    });
-
-    // Auto Complete.
-    $('.main-ingredient').on('change keyup', () => {
-        const uID = $(this).attr('id');
-        $('.main-ingredient').autocomplete({
-            minLength: 3,
-            delay: 500,
-            source: function (request, response) {
-                wp.ajax
-                    .post("wl_ingredient_autocomplete", {
-                        query: request.term,
-                        _wpnonce: _wlRecipeIngredient.acNonce,
-                    })
-                    .done((json) => {
-                        response(json);
-                    })
-                    .fail((err) => {
-                        response([{
-                            label: _wlRecipeIngredient.texts.noResults,
-                            val: -1
-                        }]);
-                        console.log(err);
-                    });
-                $(this).removeClass('autocomplete-loading');
-            },
-            search: function () {
-                $(this).addClass('autocomplete-loading');
-            },
-            open: function () {
-                $(this).removeClass('autocomplete-loading');
-            },
-            select: function (event, u) {
-                if (u.item.val == -1) {
-                    // Clear the AutoComplete TextBox.
-                    $(this).val("");
-                    return false;
-                }
-                $(`#${uID}`).val(u);
-            }
-        });
-    })
+    }
 });

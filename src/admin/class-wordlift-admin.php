@@ -329,6 +329,7 @@ class Wordlift_Admin {
 				'Type at least 3 characters to search...' => _x( 'Type at least 3 characters to search...', 'Autocomplete Select', 'wordlift' ),
 				'No results found for your search.'       => _x( 'No results found: try changing or removing some words.', 'Autocomplete Select', 'wordlift' ),
 				'Please wait while we look for entities in the linked data cloud...' => _x( 'Please wait while we look for entities in the linked data cloud...', 'Autocomplete Select', 'wordlift' ),
+				'Please wait while we look for ingredients in the linked data cloud...' => _x( 'Please wait while we look for ingredients in the linked data cloud...', 'Autocomplete Select', 'wordlift' ),
 				'Add keywords to track'                   => __( 'Add Keywords to track', 'wordlift' ),
 			),
 			'wl_autocomplete_nonce'        => wp_create_nonce( 'wl_autocomplete' ),

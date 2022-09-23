@@ -56,75 +56,56 @@ class Meta_Box {
 		if ( empty( $recipe_ids ) ) {
 			return;
 		}
-		foreach ( $recipe_ids as $key => $recipe_id ) {
-			$recipe_data    = \WPRM_Recipe_Manager::get_recipe( $recipe_id );
-			$recipe_json_ld = get_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', true );
-			if ( ! $recipe_json_ld ) {
-				continue;
-			}
-			$recipe = json_decode( $recipe_json_ld, true );
-			if ( ! isset( $recipe['name'] ) ) {
-				continue;
-			}
-			?>
-			<div class="wl-recipe-ingredient">
-				<p>
-					<?php
-					$count = count( $recipe_ids );
-					echo sprintf(
-						'%s %s',
-						sprintf( 1 < $count ? __( 'There are %d recipes embedded in this post.', $count ) : __( 'There is %d recipe embedded in this post.', $count ), $count ),
-						__( 'Review the main ingredient for each recipe and change it if required.' )
-					);
-					?>
-				</p>
+		?>
+		<div class="wl-recipe-ingredient">
+			<p>
 				<?php
-				$allowed_tags = array(
-					'p'      => array(),
-					'strong' => array(),
+				$count = count( $recipe_ids );
+				/* translators: 1: Number of recipes 2: Review notice */
+				echo sprintf(
+					'%1$s %2$s',
+					/* translators: %d: Number of recipes */
+					esc_html( sprintf( 1 < $count ? __( 'There are %d recipes embedded in this post.', 'wordlift' ) : __( 'There is %d recipe embedded in this post.', 'wordlift' ), $count ) ),
+					esc_html__( 'Review the main ingredient for each recipe and change it if required.', 'wordlift' )
 				);
-				// translators: %s is the ingredient name.
-				echo wp_kses( sprintf( '<p>' . __( '%s main ingredient is', 'wordlift' ) . ' <strong>%s</strong></p>', esc_html( $recipe_data->name() ), esc_html( $recipe['name'] ) ), $allowed_tags );
 				?>
-				<form class="wl-recipe-ingredient-form" id="wl-recipe-ingredient-form-<?php echo esc_attr( $key ); ?>">
-					<input type="hidden" id="recipe_id" name="recipe_id" value="<?php echo esc_attr( $recipe_id ); ?>">
+			</p>
+		</div>
+		<div class="wl-recipe-ingredient-form" id="wl-recipe-ingredient-form">
+			<table class="wl-table wl-table--main-ingredient">
+				<thead>
+				<tr>
+					<th class="wl-table__th wl-table__th--recipe"><?php esc_html_e( 'Recipe', 'wordlift' ); ?></th>
+					<th class="wl-table__th wl-table__th--main-ingredient"><?php esc_html_e( 'Main Ingredient', 'wordlift' ); ?></th>
+					<th><?php esc_html_e( 'Action', 'wordlift' ); ?></th>
+				</tr>
+				</thead>
+				<tbody>
+				<?php
+				foreach ( $recipe_ids as $recipe_id ) {
+					$recipe          = \WPRM_Recipe_Manager::get_recipe( $recipe_id );
+					$json_ld         = get_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', true );
+					$obj             = json_decode( $json_ld );
+					$main_ingredient = isset( $obj->name ) ? $obj->name : '<em>' . __( '(unset)', 'wordlift' ) . '</em>';
+					?>
+					<tr class="wl-table--main-ingredient__data">
+						<td><?php echo esc_html( $recipe->name() ); ?></td>
+						<td><?php echo wp_kses( $main_ingredient, array( 'em' => array() ) ); ?></td>
+						<td class="wl-table__ingredients-data">
+							<input type="hidden" id="recipe-id" name="recipe-id" value="<?php echo esc_attr( $recipe_id ); ?>">
+							<span class="wl-select-main-ingredient"></span>
+						</td>
+					</tr>
+					<?php
+				}
+				?>
+				</tbody>
+			</table>
 
-					<table class="wl-table wl-table--main-ingredient">
-						<thead>
-						<tr>
-							<th class="wl-table__th wl-table__th--recipe"><?php esc_html_e( 'Recipe', 'wordlift' ); ?></th>
-							<th class="wl-table__th wl-table__th--main-ingredient"><?php esc_html_e( 'Main Ingredient', 'wordlift' ); ?></th>
-							<th><?php esc_html_e( 'Action', 'wordlift' ); ?></th>
-						</tr>
-						</thead>
-						<tbody>
-						<?php
-						foreach ( $recipe_ids as $recipe_id ) {
-							$recipe          = \WPRM_Recipe_Manager::get_recipe( $recipe_id );
-							$json_ld         = get_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', true );
-							$obj             = json_decode( $json_ld );
-							$main_ingredient = isset( $obj->name ) ? $obj->name : '<em>' . __( '(unset)', 'wordlift' ) . '</em>';
-							?>
-							<tr>
-
-								<td><?php echo esc_html( $recipe->name() ); ?></td>
-								<td><?php echo wp_kses( $main_ingredient, array( 'em' => array() ) ); ?></td>
-								<td>
-									<span class="wl-select-main-ingredient"></span>
-								</td>
-							</tr>
-							<?php
-						}
-						?>
-						</tbody>
-					</table>
-
-					<input type="submit" class="button button-primary button-large pull-right"
-						   value="<?php echo esc_attr__( 'Save', 'wordlift' ); ?>">
-				</form>
-			</div>
-			<?php
-		}
+			<input type="submit" class="button button-primary button-large pull-right wl-recipe-ingredient-form__submit"
+					value="<?php echo esc_attr__( 'Save', 'wordlift' ); ?>">
+		</div>
+		<?php
 	}
 
 	/**
@@ -155,38 +136,20 @@ class Meta_Box {
 
 		if ( $data ) {
 			$results = array(
-				// array(
-				// 	'label' => $data->name,
-				// 	'value' => $data->name,
-				// ),
-				// array(
-				// 	'label' => __( 'Don\'t change', 'wordlift' ),
-				// 	'value' => 'dont-change',
-				// ),
-				// array(
-				// 	'label' => __( 'Unset', 'wordlift' ),
-				// 	'value' => 'unset',
-				// ),
 				array(
-					'id'           => $data->name,
-					'labels'       => array( $data->name ),
-					'descriptions' => array( $data->name ),
-					'types'        => '',
-					'urls'         => array( $entity_id ),
-					'images'       => array(),
-					'sameAss'      => '',
-					'scope'        => 'cloud',
-					'description'  => '',
-					'mainType'     => '',
-					'label'        => $data->name,
-					'displayTypes' => '',
-					'value'        => '1',
-					'confidence'   => '',
-					'meta'         => ''
-				)
+					'label' => $data->name,
+					'value' => $new_json_ld,
+				),
+				array(
+					'label' => __( 'Don’t change', 'wordlift' ),
+					'value' => 'dont-change',
+				),
+				array(
+					'label' => __( 'Unset', 'wordlift' ),
+					'value' => 'unset',
+				),
 			);
 			wp_send_json_success( $results );
-			// wp_send_json_success( array( $data->name ) );
 		} else {
 			wp_send_json_error(
 				array(
@@ -236,32 +199,35 @@ class Meta_Box {
 			);
 		}
 
-		// Get new JSON LD Data.
-		$new_json_ld = $this->recipe_lift_strategy->get_json_ld_data( $main_ingredient );
-
-		if ( $new_json_ld ) {
-			// Update the recipe post meta for JSON-LD.
-			$update = update_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', $new_json_ld );
-			if ( $update ) {
-				wp_send_json_success(
+		if ( 'unset' === $main_ingredient ) {
+			$update = delete_post_meta( $recipe_id, '_wl_main_ingredient_jsonld' );
+		} elseif ( 'dont-change' === $main_ingredient ) {
+			// $old_json_ld = get_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', true );
+			$update = true;
+			echo 'Don\'t change';
+		} else {
+			$update = update_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', $main_ingredient );
+			if ( ! $update ) {
+				wp_send_json_error(
 					array(
-						'message' => __( 'The main ingredient has been updated.', 'wordlift' ),
-						'btnText' => __( 'Saved', 'wordlift' ),
-					)
-				);
-			} else {
-				wp_send_json(
-					array(
-						'same'    => true,
-						'message' => __( 'You didn\'t updated the main ingredient value.', 'wordlift' ),
-						'btnText' => __( 'Save', 'wordlift' ),
+						'message' => __( 'The main ingredient could not be updated.', 'wordlift' ),
+						'btnText' => __( 'Failed', 'wordlift' ),
 					)
 				);
 			}
+		}
+
+		if ( $update ) {
+			wp_send_json_success(
+				array(
+					'message' => __( 'The main ingredient has been updated.', 'wordlift' ),
+					'btnText' => __( 'Saved', 'wordlift' ),
+				)
+			);
 		} else {
 			wp_send_json_error(
 				array(
-					'message' => __( 'Failed to Update Recipe Ingredient.', 'wordlift' ),
+					'message' => __( 'The main ingredient could not be updated.', 'wordlift' ),
 					'btnText' => __( 'Failed', 'wordlift' ),
 				)
 			);

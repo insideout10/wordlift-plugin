@@ -38,27 +38,21 @@ const autocomplete = (query, callback) => {
     1000
   );
 };
-class IngredientAutocompleteSelect extends  AutocompleteSelect {
 
-  onChange(value) {
-      value = this.props.onStateChange(value)
-      super.onChange(value);
-  }
-
-}
 // ### Render the sameAs metabox field autocomplete select.
 window.addEventListener("load", () => {
   document.querySelectorAll(".wl-select-main-ingredient").forEach(el => {
     ReactDOM.render(
-      <IngredientAutocompleteSelect
+      <AutocompleteSelect
+        multi={false}
         loadOptions={autocomplete}
         name="main_ingredient[]"
         placeholder=""
         filterOption={(option, filter) => true}
         searchPromptText={settings.l10n["Type at least 3 characters to search..."]}
-        loadingPlaceholder={settings.l10n["Please wait while we look for entities in the linked data cloud..."]}
+        loadingPlaceholder={settings.l10n["Please wait while we look for ingredients in the linked data cloud..."]}
         noResultsText={settings.l10n["No results found for your search."]}
-        optionRenderer={props => <>{props}</>}
+        optionRenderer={props => <option value={props.value}>{props.label}</option>}
       />,
       el
     );
