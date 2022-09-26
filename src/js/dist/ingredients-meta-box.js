@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/ingredients/meta-box.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/ingredients/index.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -4249,10 +4249,10 @@ Select$1.Option = Option;
 
 /***/ }),
 
-/***/ "./src/ingredients/meta-box.js":
-/*!*************************************!*\
-  !*** ./src/ingredients/meta-box.js ***!
-  \*************************************/
+/***/ "./src/ingredients/index.js":
+/*!**********************************!*\
+  !*** ./src/ingredients/index.js ***!
+  \**********************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4299,9 +4299,11 @@ window.addEventListener("load", () => {
     autocompleteTimeout = setTimeout(() => wp.ajax.post("wl_ingredient_autocomplete", {
       query,
       _wpnonce: settings.acNonce
-    }).done(json => callback(null, {
-      options: DEFAULT_OPTIONS.concat(json)
-    })).fail(() => {
+    }).done(json => {
+      callback(null, {
+        options: DEFAULT_OPTIONS.concat(json)
+      });
+    }).fail(() => {
       console.log("error");
       callback(null, {
         options: []
@@ -4325,9 +4327,12 @@ window.addEventListener("load", () => {
     }
 
     render() {
+      const {
+        recipeId
+      } = this.props;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_2__["default"].Async, {
         multi: false,
-        name: "wl_recipe_main_ingredient[]",
+        name: "wl_recipe_main_ingredient[" + recipeId + "]",
         value: this.state.value,
         onChange: this.onChange,
         loadOptions: autocomplete
@@ -4337,9 +4342,32 @@ window.addEventListener("load", () => {
   }
 
   document.querySelectorAll(".wl-select-main-ingredient").forEach(el => {
-    react_dom__WEBPACK_IMPORTED_MODULE_0___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(MainIngredientSelect, null), el);
+    react_dom__WEBPACK_IMPORTED_MODULE_0___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(MainIngredientSelect, {
+      recipeId: el.dataset.recipeId
+    }), el);
   });
-  document.getElementById('wl-recipe-ingredient-form__submit__btn').addEventListener('click', () => {// Get all recipe ids + jsonld.
+  document.getElementById('wl-recipe-ingredient-form__submit__btn').addEventListener('click', event => {
+    event.preventDefault(); // Get all recipe ids + jsonld.
+
+    const recipes = [];
+    document.querySelectorAll("input[name*='wl_recipe_main_ingredient']").forEach(element => {
+      recipes.push({
+        recipe_id: element.getAttribute("name").replace("wl_recipe_main_ingredient[", "").replace("]", ""),
+        ingredient: element.value
+      });
+    });
+    const data = {
+      _wpnonce: settings.nonce,
+      data: JSON.stringify(recipes)
+    };
+    fetch(settings["ajaxurl"], {
+      method: "POST",
+      body: JSON.stringify(data)
+    }).catch(error => {
+      console.log(error);
+    }).then(result => {
+      console.log(result);
+    });
   });
 }); // jQuery Code.
 

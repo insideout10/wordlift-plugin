@@ -34,16 +34,20 @@ window.addEventListener("load", () => {
         // Send our query.
         autocompleteTimeout = setTimeout(
             () =>
+
                 wp.ajax
                     .post("wl_ingredient_autocomplete", {
                         query,
                         _wpnonce: settings.acNonce
                     })
-                    .done(json => callback(null, { options: DEFAULT_OPTIONS.concat(json) }))
+                    .done(json => {
+                        callback(null, {options: DEFAULT_OPTIONS.concat(json)})
+                    })
                     .fail(() => {
                         console.log("error");
                         callback(null, { options: [] });
                     }),
+
             1000
         );
     };
@@ -60,10 +64,11 @@ window.addEventListener("load", () => {
             this.setState({ value });
         }
         render() {
+            const {recipeId} = this.props
             return (
                 <Select.Async
                     multi={false}
-                    name="wl_recipe_main_ingredient[]"
+                    name={"wl_recipe_main_ingredient[" + recipeId + "]"}
                     value={this.state.value}
                     onChange={this.onChange}
                     loadOptions={autocomplete}
@@ -73,14 +78,39 @@ window.addEventListener("load", () => {
     }
 
     document.querySelectorAll(".wl-select-main-ingredient").forEach(el => {
-        ReactDOM.render(<MainIngredientSelect />, el);
+        ReactDOM.render(<MainIngredientSelect recipeId={el.dataset.recipeId}/>, el);
     });
 
 
     document.getElementById('wl-recipe-ingredient-form__submit__btn')
-        .addEventListener('click', () => {
+        .addEventListener('click', (event) => {
+            event.preventDefault()
             // Get all recipe ids + jsonld.
+            const recipes = []
+            document.querySelectorAll("input[name*='wl_recipe_main_ingredient']")
+                .forEach((element) => {
+                    recipes.push({
+                        recipe_id: element.getAttribute("name")
+                            .replace("wl_recipe_main_ingredient[", "")
+                            .replace("]", ""),
+                        ingredient: element.value
+                    })
+                })
 
+
+            const data = {
+                _wpnonce: settings.nonce,
+                data: JSON.stringify( recipes )
+            }
+
+            fetch(settings["ajaxurl"], {
+                method: "POST",
+                body: JSON.stringify(data)
+            }).catch((error) => {
+                console.log(error)
+            }).then((result) => {
+                console.log(result)
+            })
         })
 
 });

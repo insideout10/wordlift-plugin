@@ -121,9 +121,7 @@ class Meta_Box {
 						<td><?php echo esc_html( $recipe->name() ); ?></td>
 						<td><?php echo wp_kses( $main_ingredient, array( 'em' => array() ) ); ?></td>
 						<td class="wl-table__ingredients-data">
-							<input type="hidden" id="recipe-id" name="recipe-id"
-								   value="<?php echo esc_attr( $recipe_id ); ?>">
-							<span class="wl-select-main-ingredient"></span>
+							<span class="wl-select-main-ingredient" data-recipe-id="<?php echo esc_attr( $recipe_id ); ?>"></span>
 						</td>
 					</tr>
 					<?php
