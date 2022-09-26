@@ -9,6 +9,7 @@
 namespace Wordlift\Modules\Food_Kg\Admin;
 
 use Wordlift\Api\Api_Service_Ext;
+use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Modules\Food_Kg\Recipe_Lift_Strategy;
 
 class Meta_Box {
@@ -192,14 +193,18 @@ class Meta_Box {
 		foreach ( $recipes as $recipe ) {
 			$recipe_id       = $recipe->recipe_id;
 			$main_ingredient = $recipe->ingredient;
-			if ( 'unset' === $main_ingredient ) {
+			if ( 'UNSET' === $main_ingredient ) {
 				$updated = delete_post_meta( $recipe_id, '_wl_main_ingredient_jsonld' );
-			} elseif ( 'dont-change' === $main_ingredient ) {
+			} elseif ( 'DONT_CHANGE' === $main_ingredient ) {
 				$updated = true;
 			} else {
 				$updated = update_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', $main_ingredient );
 			}
 		}
+
+        // Since we changed the main ingredients we want to flush all caches.
+        Ttl_Cache::flush_all();
+
 		if ( $updated ) {
 			wp_send_json_success(
 				array(
