@@ -130,7 +130,7 @@ class Meta_Box {
 				</tbody>
 			</table>
 			<div class="wl-recipe-ingredient-form__submit">
-				<div class="wl-recipe-ingredient-form__submit__message"></div>
+				<div id="wl-recipe-ingredient-form__submit__message"></div>
 				<input type="submit"
 					   class="button button-primary button-large pull-right" id="wl-recipe-ingredient-form__submit__btn"
 					   value="<?php echo esc_attr__( 'Save', 'wordlift' ); ?>">

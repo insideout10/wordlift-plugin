@@ -32622,7 +32622,8 @@ window.addEventListener("load", () => {
     }), el);
   });
   document.getElementById('wl-recipe-ingredient-form__submit__btn').addEventListener('click', event => {
-    event.preventDefault(); // Get all recipe ids + jsonld.
+    event.preventDefault();
+    const notification = document.getElementById('wl-recipe-ingredient-form__submit__message'); // Get all recipe ids + jsonld.
 
     const recipes = [];
     document.querySelectorAll("input[name*='wl_recipe_main_ingredient']").forEach(element => {
@@ -32631,52 +32632,15 @@ window.addEventListener("load", () => {
         ingredient: element.value
       });
     });
-    const data = {
-      _wpnonce: settings.nonce,
-      data: JSON.stringify(recipes)
-    };
-    fetch(settings["ajaxurl"], {
+    const formData = new FormData();
+    formData.set("_wpnonce", settings.nonce);
+    formData.set("data", JSON.stringify(recipes));
+    fetch(settings["ajaxurl"] + "?action=wl_update_ingredient_post_meta", {
       method: "POST",
-      body: JSON.stringify(data)
-    }).catch(error => {
-      console.log(error);
-    }).then(result => {
-      console.log(result);
-    });
-  });
-}); // jQuery Code.
-
-jQuery(function ($) {
-  // Update Ingredient.
-  const ingredientFormSubmitBtn = $('.wl-recipe-ingredient-form__submit__btn');
-  ingredientFormSubmitBtn.on('click', function (e) {
-    e.preventDefault(e);
-    const ingredientsData = $('.wl-table--main-ingredient__data');
-    let recipeData = [];
-    ingredientsData.each((index, element) => {
-      const recipeID = $(element).find('#recipe-id').val();
-      const ingredient = $(element).find("input[name='wl_recipe_main_ingredient[]']").val();
-
-      if (!recipeID || !ingredient) {
-        return;
-      }
-
-      recipeData.push({
-        recipe_id: recipeID,
-        ingredient: ingredient
-      });
-    });
-    const data = {
-      _wpnonce: _wlRecipeIngredientSettings.nonce,
-      data: JSON.stringify(recipeData)
-    };
-    const ingredientFormMessage = $('.wl-recipe-ingredient-form__submit__message'); // Save the ingredient.
-
-    wp.ajax.post("wl_update_ingredient_post_meta", data).done(function (response) {
-      ingredientFormMessage.html(response.message);
-    }).fail(function (error) {
-      ingredientFormMessage.html(error.message);
-    });
+      body: formData
+    }).then(response => response.json()).then(result => {
+      notification.innerText = result.data.message;
+    }).catch(() => {});
   });
 });
 
