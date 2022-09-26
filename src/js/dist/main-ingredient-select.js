@@ -113,6 +113,7 @@ var T=function(e){return"string"==typeof e?e:null!==e&&JSON.stringify(e)||""},D=
     display: inline-block;
     vertical-align: top;
   }
+<<<<<<< HEAD
 `,y=u.default.div`
 	position: relative;
   box-sizing: border-box;
@@ -124,3 +125,467 @@ var T=function(e){return"string"==typeof e?e:null!==e&&JSON.stringify(e)||""},D=
   font-size: 12px;
   hyphens: auto;
 `;class b extends r.Component{constructor(e){super(e),this.onRemove=this.onRemove.bind(this)}onRemove(e){e.preventDefault(),e.stopPropagation(),this.props.onRemove(this.props.value)}render(){const{scope:e,label:t}=this.props.value;return o.a.createElement(g,null,o.a.createElement(d,{className:"fa fa-minus-square",onMouseDown:this.onRemove}),o.a.createElement(y,null,t),"local"!==e&&o.a.createElement(d,{align:"right",className:"fa fa-cloud"}))}}var E=b;function C(){return(C=Object.assign?Object.assign.bind():function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(e[r]=n[r])}return e}).apply(this,arguments)}const O=({option:e,options:t,labelKey:n,valueKey:r})=>t&&-1===t.findIndex(t=>e[r]===t[r]),w=({label:e})=>e&&e.match(/^https?:\/\/.+/i),A=({label:e,labelKey:t,valueKey:n})=>({[t]:e,[n]:e});class S extends r.Component{constructor(e){super(e),this.onChange=this.onChange.bind(this),this.state={value:""}}onChange(e){this.setState({value:e})}render(){const{autoload:e,loadOptions:t,optionRenderer:n,valueComponent:r,...a}=this.props,i=void 0===this.props.multi||this.props.multi;return o.a.createElement(s.a.AsyncCreatable,C({autoload:e,ignoreAccents:!0,ignoreCase:!0,loadOptions:t,optionRenderer:n,valueComponent:r,openOnFocus:!0,autoBlur:!0,multi:i,onChange:this.onChange,value:this.state.value,newOptionCreator:A,isValidNewOption:w,isOptionUnique:O,clearable:!1},a))}}S.propTypes={autoload:i.a.bool,loadOptions:i.a.func.isRequired,optionRenderer:i.a.func,valueComponent:i.a.func},S.defaultProps={autoload:!1,optionRenderer:m,valueComponent:E};t.a=S},75:function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(e[r]=n[r])}return e},o=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),t}}(),a=n(0),i=u(a),s=u(n(2));function u(e){return e&&e.__esModule?e:{default:e}}var l={position:"absolute",top:0,left:0,visibility:"hidden",height:0,overflow:"scroll",whiteSpace:"pre"},c=["extraWidth","injectStyles","inputClassName","inputRef","inputStyle","minWidth","onAutosize","placeholderIsMinWidth"],p=function(e,t){t.style.fontSize=e.fontSize,t.style.fontFamily=e.fontFamily,t.style.fontWeight=e.fontWeight,t.style.fontStyle=e.fontStyle,t.style.letterSpacing=e.letterSpacing,t.style.textTransform=e.textTransform},h=!("undefined"==typeof window||!window.navigator)&&/MSIE |Trident\/|Edge\//.test(window.navigator.userAgent),d=function(){return h?"_"+Math.random().toString(36).substr(2,12):void 0},f=function(e){function t(e){!function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t);var n=function(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e));return n.inputRef=function(e){n.input=e,"function"==typeof n.props.inputRef&&n.props.inputRef(e)},n.placeHolderSizerRef=function(e){n.placeHolderSizer=e},n.sizerRef=function(e){n.sizer=e},n.state={inputWidth:e.minWidth,inputId:e.id||d()},n}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(t,e),o(t,[{key:"componentDidMount",value:function(){this.mounted=!0,this.copyInputStyles(),this.updateInputWidth()}},{key:"UNSAFE_componentWillReceiveProps",value:function(e){var t=e.id;t!==this.props.id&&this.setState({inputId:t||d()})}},{key:"componentDidUpdate",value:function(e,t){t.inputWidth!==this.state.inputWidth&&"function"==typeof this.props.onAutosize&&this.props.onAutosize(this.state.inputWidth),this.updateInputWidth()}},{key:"componentWillUnmount",value:function(){this.mounted=!1}},{key:"copyInputStyles",value:function(){if(this.mounted&&window.getComputedStyle){var e=this.input&&window.getComputedStyle(this.input);e&&(p(e,this.sizer),this.placeHolderSizer&&p(e,this.placeHolderSizer))}}},{key:"updateInputWidth",value:function(){if(this.mounted&&this.sizer&&void 0!==this.sizer.scrollWidth){var e=void 0;e=this.props.placeholder&&(!this.props.value||this.props.value&&this.props.placeholderIsMinWidth)?Math.max(this.sizer.scrollWidth,this.placeHolderSizer.scrollWidth)+2:this.sizer.scrollWidth+2,(e+="number"===this.props.type&&void 0===this.props.extraWidth?16:parseInt(this.props.extraWidth)||0)<this.props.minWidth&&(e=this.props.minWidth),e!==this.state.inputWidth&&this.setState({inputWidth:e})}}},{key:"getInput",value:function(){return this.input}},{key:"focus",value:function(){this.input.focus()}},{key:"blur",value:function(){this.input.blur()}},{key:"select",value:function(){this.input.select()}},{key:"renderStyles",value:function(){var e=this.props.injectStyles;return h&&e?i.default.createElement("style",{dangerouslySetInnerHTML:{__html:"input#"+this.state.inputId+"::-ms-clear {display: none;}"}}):null}},{key:"render",value:function(){var e=[this.props.defaultValue,this.props.value,""].reduce((function(e,t){return null!=e?e:t})),t=r({},this.props.style);t.display||(t.display="inline-block");var n=r({boxSizing:"content-box",width:this.state.inputWidth+"px"},this.props.inputStyle),o=function(e,t){var n={};for(var r in e)t.indexOf(r)>=0||Object.prototype.hasOwnProperty.call(e,r)&&(n[r]=e[r]);return n}(this.props,[]);return function(e){c.forEach((function(t){return delete e[t]}))}(o),o.className=this.props.inputClassName,o.id=this.state.inputId,o.style=n,i.default.createElement("div",{className:this.props.className,style:t},this.renderStyles(),i.default.createElement("input",r({},o,{ref:this.inputRef})),i.default.createElement("div",{ref:this.sizerRef,style:l},e),this.props.placeholder?i.default.createElement("div",{ref:this.placeHolderSizerRef,style:l},this.props.placeholder):null)}}]),t}(a.Component);f.propTypes={className:s.default.string,defaultValue:s.default.any,extraWidth:s.default.oneOfType([s.default.number,s.default.string]),id:s.default.string,injectStyles:s.default.bool,inputClassName:s.default.string,inputRef:s.default.func,inputStyle:s.default.object,minWidth:s.default.oneOfType([s.default.number,s.default.string]),onAutosize:s.default.func,onChange:s.default.func,placeholder:s.default.string,placeholderIsMinWidth:s.default.bool,style:s.default.object,value:s.default.any},f.defaultProps={minWidth:1,injectStyles:!0},t.default=f},94:function(e,t,n){}});
+=======
+`);
+
+/***/ }),
+
+/***/ "./src/Edit/components/Autocomplete/AutocompleteResultValue/index.js":
+/*!***************************************************************************!*\
+  !*** ./src/Edit/components/Autocomplete/AutocompleteResultValue/index.js ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Wrapper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Wrapper */ "./src/Edit/components/Autocomplete/AutocompleteResultValue/Wrapper.js");
+/* harmony import */ var _Label__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Label */ "./src/Edit/components/Autocomplete/AutocompleteResultValue/Label.js");
+/* harmony import */ var _FontAwesome__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../FontAwesome */ "./src/Edit/components/Autocomplete/FontAwesome/index.js");
+/**
+ * Components: AutocompleteResultValue.
+ *
+ * A stateless component to display Autocomplete Results in the AutocompleteSelect.
+ *
+ * @since 1.0.0
+ */
+
+/**
+ * External dependencies.
+ */
+
+/**
+ * Internal dependencies.
+ */
+
+
+
+
+/**
+ *
+ * @param {array} images An array of images.
+ * @param {array} labels An array of labels.
+ * @param {string} scope The result scope: local, network or cloud.
+ * @param {string} displayTypes The schema.org types string.
+ * @param descriptions
+ * @constructor
+ */
+
+class AutocompleteResultValue extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+  constructor(props) {
+    super(props);
+    this.onRemove = this.onRemove.bind(this);
+  }
+
+  onRemove(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.props.onRemove(this.props.value);
+  }
+
+  render() {
+    const {
+      scope,
+      label
+    } = this.props.value;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Wrapper__WEBPACK_IMPORTED_MODULE_1__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FontAwesome__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      className: "fa fa-minus-square",
+      onMouseDown: this.onRemove
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Label__WEBPACK_IMPORTED_MODULE_2__["default"], null, label), 'local' !== scope && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FontAwesome__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      align: "right",
+      className: "fa fa-cloud"
+    }));
+  }
+
+} // Finally export the `AutocompleteResultValue`.
+
+
+/* harmony default export */ __webpack_exports__["default"] = (AutocompleteResultValue);
+
+/***/ }),
+
+/***/ "./src/Edit/components/Autocomplete/AutocompleteSelect/index.css":
+/*!***********************************************************************!*\
+  !*** ./src/Edit/components/Autocomplete/AutocompleteSelect/index.css ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "./src/Edit/components/Autocomplete/AutocompleteSelect/index.js":
+/*!**********************************************************************!*\
+  !*** ./src/Edit/components/Autocomplete/AutocompleteSelect/index.js ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.css */ "./src/Edit/components/Autocomplete/AutocompleteSelect/index.css");
+/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_index_css__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/react-select.es.js");
+/* harmony import */ var _AutocompleteResultOption__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../AutocompleteResultOption */ "./src/Edit/components/Autocomplete/AutocompleteResultOption/index.js");
+/* harmony import */ var _AutocompleteResultValue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../AutocompleteResultValue */ "./src/Edit/components/Autocomplete/AutocompleteResultValue/index.js");
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+/**
+ * Components: Autocomplete Select.
+ *
+ * The Autocomplete Select displays Autocomplete results returned by the WordLift Autocomplete End-point.
+ *
+ * @since 1.0.0
+ */
+
+/**
+ * Stylesheets.
+ */
+
+/**
+ * External dependencies.
+ */
+
+
+
+
+/**
+ * Internal dependencies.
+ */
+
+
+
+
+const isOptionUnique = ({
+  option,
+  options,
+  labelKey,
+  valueKey
+}) => options && -1 === options.findIndex(x => option[valueKey] === x[valueKey]);
+
+const isValidNewOption = ({
+  label
+}) => label && label.match(/^https?:\/\/.+/i);
+
+const newOptionCreator = ({
+  label,
+  labelKey,
+  valueKey
+}) => {
+  return {
+    [labelKey]: label,
+    [valueKey]: label
+  };
+};
+/**
+ * AutocompleteSelect stateless component.
+ *
+ * @since 1.0.0
+ */
+
+
+class AutocompleteSelect extends react__WEBPACK_IMPORTED_MODULE_1__["Component"] {
+  /**
+   * Create an {@link AutocompleteSelect} instance.
+   *
+   *
+   * @param {boolean} autoload Whether to autoload data.
+   * @param {Function} loadOptions The function used to load the list of options. The
+   *                          function must accept two arguments: the input string
+   *                          and the callback to send the arguments.
+   * @param {Function} optionRenderer A React stateless component for rendering
+   *                          the option.
+   * @param {Function} valueRenderer A React stateless component for rendering the
+   *                          selected value.
+   * @param props
+   *
+   *
+   * @since 1.0.0
+   * @param {Object} props Rendering properties.
+   */
+  constructor(props) {
+    super(props); // Bind the `onChange` function.
+
+    this.onChange = this.onChange.bind(this); // Set the initial state.
+
+    this.state = {
+      value: ""
+    };
+  }
+  /**
+   * Catch `onChange` events and update the state.
+   *
+   * @since 1.0.0
+   *
+   * @param {Object|Array} value The value.
+   */
+
+
+  onChange(value) {
+    this.setState({
+      value
+    });
+  }
+  /**
+   * Render the component.
+   *
+   * @since 1.0.0
+   * @returns {XML}
+   */
+
+
+  render() {
+    const {
+      autoload,
+      loadOptions,
+      optionRenderer,
+      valueComponent,
+      ...props
+    } = this.props;
+    const multi = this.props.multi !== undefined ? this.props.multi : true;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_3__["default"].AsyncCreatable, _extends({
+      autoload: autoload,
+      ignoreAccents: true,
+      ignoreCase: true,
+      loadOptions: loadOptions,
+      optionRenderer: optionRenderer,
+      valueComponent: valueComponent,
+      openOnFocus: true,
+      autoBlur: true,
+      multi: multi,
+      onChange: this.onChange,
+      value: this.state.value,
+      newOptionCreator: newOptionCreator,
+      isValidNewOption: isValidNewOption,
+      isOptionUnique: isOptionUnique // matchProp="value"
+      ,
+      clearable: false
+    }, props));
+  }
+
+}
+/**
+ * Define the property types.
+ *
+ * @since 1.0.0
+ *
+ * @type {{autoload: *, loadOptions, optionRenderer: *, valueComponent: *}}
+ */
+
+
+AutocompleteSelect.propTypes = {
+  autoload: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  loadOptions: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func.isRequired,
+  optionRenderer: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
+  valueComponent: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func
+};
+/**
+ * Define the default properties.
+ *
+ * @since 1.0.0
+ *
+ * @type {{autoload: boolean, optionRenderer: (function({images: array, labels: array, scope: string, displayTypes: string, descriptions: *}): XML), valueRenderer: (function({images: array, labels: array, scope: string, displayTypes: string, descriptions: *}): XML), filterOptions: (function(*, *, *))}}
+ */
+
+AutocompleteSelect.defaultProps = {
+  autoload: false,
+  optionRenderer: _AutocompleteResultOption__WEBPACK_IMPORTED_MODULE_4__["default"],
+  valueComponent: _AutocompleteResultValue__WEBPACK_IMPORTED_MODULE_5__["default"]
+}; // Finally export the AutocompleteSelect.
+
+/* harmony default export */ __webpack_exports__["default"] = (AutocompleteSelect);
+
+/***/ }),
+
+/***/ "./src/Edit/components/Autocomplete/FontAwesome/index.js":
+/*!***************************************************************!*\
+  !*** ./src/Edit/components/Autocomplete/FontAwesome/index.js ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/**
+ * Components: Font Awesome.
+ *
+ * A Font Awesome element.
+ *
+ * @since 1.0.0
+ */
+
+/* harmony default export */ __webpack_exports__["default"] = (styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].i.attrs({
+  "aria-hidden": true
+})`
+  margin: 4px 8px;
+  font-size: 14px;
+
+  // ### ANY alignment.	
+  ${props => "right" !== props.align && `
+    &:hover {
+      cursor: pointer;
+      color: #2e92ff;
+    }
+  `}
+  
+	// ### RIGHT alignment.
+	${props => "right" === props.align && `
+    position: absolute;
+    right: 0;
+    top: 4px;
+    
+    // Elements on the right are indicators and aren't clickable.
+    color: #cbcbcb;
+  `}
+
+`);
+
+/***/ }),
+
+/***/ "./src/Edit/index.main-ingredient-select.js":
+/*!**************************************************!*\
+  !*** ./src/Edit/index.main-ingredient-select.js ***!
+  \**************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-dom */ "react-dom");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_Autocomplete_AutocompleteSelect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Autocomplete/AutocompleteSelect */ "./src/Edit/components/Autocomplete/AutocompleteSelect/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/react-select.es.js");
+/**
+ * Load the Main Ingredient Select.
+ *
+ * @since 3.38.3
+ */
+
+
+
+ // ### Render the sameAs metabox field autocomplete select.
+
+window.addEventListener("load", () => {
+  // Set a reference to the WordLift's settings stored in the window instance.
+  const settings = window["_wlRecipeIngredientSettings"] || {};
+  let autocompleteTimeout = null;
+  const DEFAULT_OPTIONS = [{
+    label: settings.l10n["(don't change)"],
+    value: "DONT_CHANGE"
+  }, {
+    label: settings.l10n["(unset)"],
+    value: "UNSET"
+  }];
+
+  const autocomplete = (query, callback) => {
+    // Minimum 3 characters.
+    if (3 > query.length) {
+      callback(null, {
+        options: DEFAULT_OPTIONS
+      });
+      return;
+    } // Clear any existing query.
+
+
+    if (null !== autocompleteTimeout) clearTimeout(autocompleteTimeout); // Send our query.
+
+    autocompleteTimeout = setTimeout(() => wp.ajax.post("wl_ingredient_autocomplete", {
+      query,
+      _wpnonce: settings.acNonce
+    }).done(json => callback(null, {
+      options: DEFAULT_OPTIONS.concat(json)
+    })).fail(() => {
+      console.log("error");
+      callback(null, {
+        options: []
+      });
+    }), 1000);
+  };
+
+  class MainIngredientSelect extends react__WEBPACK_IMPORTED_MODULE_2___default.a.Component {
+    constructor(props) {
+      super(props);
+      this.onChange = this.onChange.bind(this);
+      this.state = {
+        value: DEFAULT_OPTIONS[0]
+      };
+    }
+
+    onChange(value) {
+      this.setState({
+        value
+      });
+    }
+
+    render() {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_3__["default"].Async, {
+        multi: false,
+        value: this.state.value,
+        onChange: this.onChange,
+        loadOptions: autocomplete
+      });
+    }
+
+  }
+
+  document.querySelectorAll(".wl-select-main-ingredient").forEach(el => {
+    react_dom__WEBPACK_IMPORTED_MODULE_0___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(MainIngredientSelect, null), el);
+  });
+});
+/**
+ *       <AutocompleteSelect
+ *         value={DEFAULT_OPTIONS[0]}
+ *         multi={false}
+ *         loadOptions={autocomplete}
+ *         name="main_ingredient[]"
+ *         placeholder=""
+ *         filterOption={(option, filter) => true}
+ *         searchPromptText={settings.l10n["Type at least 3 characters to search..."]}
+ *         loadingPlaceholder={settings.l10n["Looking for main ingredients..."]}
+ *         noResultsText={settings.l10n["No results found for your search."]}
+ *         optionRenderer={props => (
+ *           <Option instancePrefix={"main-ingredient-"} option={props}>
+ *             <div>{props.label}</div>
+ *           </Option>
+ *         )}
+ *         valueComponent={Value}
+ *       />,
+ */
+
+/***/ }),
+
+/***/ "react":
+/*!************************!*\
+  !*** external "React" ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["React"]; }());
+
+/***/ }),
+
+/***/ "react-dom":
+/*!***************************!*\
+  !*** external "ReactDOM" ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["ReactDOM"]; }());
+
+/***/ })
+
+/******/ });
+//# sourceMappingURL=main-ingredient-select.js.map
+>>>>>>> 9dbe237218ca6e65ac3ec7152f706babfccb845e
