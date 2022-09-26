@@ -172,7 +172,7 @@ jobs:
         uses: actions/checkout@v2
       - name: phpunit
         run: >
-          docker run  -v /usr/local/etc/php/php.ini:$PWD/tests/php.ini --workdir /github/workspace --rm -v "/var/run/docker.sock":"/var/run/docker.sock" \
+          docker run  --mount type=bind,source="$PWD/tests/php.ini",target=/usr/local/etc/php/php.ini --workdir /github/workspace --rm -v "/var/run/docker.sock":"/var/run/docker.sock" \
             -e ACF_PRO_ENABLED -e YOUTUBE_DATA_API_KEY -e VIMEO_API_KEY -e ACF_PRO_KEY -e WORDLIFT_API_URL -e WORDLIFT_KEY \
             -e WORDPRESS_VERSION -v $GITHUB_WORKSPACE:"/github/workspace" \
             --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
