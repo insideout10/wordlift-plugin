@@ -176,5 +176,6 @@ jobs:
             -e ACF_PRO_ENABLED -e YOUTUBE_DATA_API_KEY -e VIMEO_API_KEY -e ACF_PRO_KEY -e WORDLIFT_API_URL -e WORDLIFT_KEY \
             -e WORDPRESS_VERSION -v $GITHUB_WORKSPACE:"/github/workspace" \
             --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
-              ziodave/wordpress-tests:${{ matrix.image }} -c ${{ matrix.phpunit-xml }} --stop-on-error --stop-on-fail
+              ziodave/wordpress-tests:${{ matrix.image }} -c ${{ matrix.phpunit-xml }} --stop-on-error --stop-on-fail \
+            -v /github/workspace/tests/php.ini:/usr/local/etc/php/php.ini
 
