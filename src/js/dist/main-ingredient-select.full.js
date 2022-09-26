@@ -149,7 +149,197 @@ KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
 WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
 MERCHANTABLITY OR NON-INFRINGEMENT.
 
+<<<<<<< HEAD
 See the Apache Version 2.0 License for specific language governing permissions
 and limitations under the License.
 ***************************************************************************** */
 function h(){for(var e=0,t=0,n=arguments.length;t<n;t++)e+=arguments[t].length;var r=Array(e),o=0;for(t=0;t<n;t++)for(var a=arguments[t],i=0,u=a.length;i<u;i++,o++)r[o]=a[i];return r}function m(e,t,n,r){var o=r.propertyIsEnumerable(t)?"enumerable":"nonenumerable";"enumerable"===o&&(e[t]=n),"nonenumerable"===o&&Object.defineProperty(e,t,{value:n,enumerable:!1,writable:!0,configurable:!0})}function v(e,t,n){if(!i(t))return n&&u(n)&&n.forEach((function(n){t=n(e,t)})),t;var r={};i(e)&&(r=h(Object.getOwnPropertyNames(e),Object.getOwnPropertySymbols(e)).reduce((function(n,r){var o=e[r];return(!l(r)&&!Object.getOwnPropertyNames(t).includes(r)||l(r)&&!Object.getOwnPropertySymbols(t).includes(r))&&m(n,r,o,e),n}),{}));return h(Object.getOwnPropertyNames(t),Object.getOwnPropertySymbols(t)).reduce((function(r,o){var a=t[o],l=i(e)?e[o]:void 0;return n&&u(n)&&n.forEach((function(e){a=e(l,a)})),void 0!==l&&i(a)&&(a=v(l,a,n)),m(r,o,a,t),r}),r)}t.a=function(e){for(var t=[],n=1;n<arguments.length;n++)t[n-1]=arguments[n];var r=null,o=e;return i(e)&&e.extensions&&1===Object.keys(e).length&&(o={},r=e.extensions),t.reduce((function(e,t){return v(e,t,r)}),o)}}});
+=======
+AutocompleteSelect.propTypes = {
+  autoload: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  loadOptions: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func.isRequired,
+  optionRenderer: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
+  valueComponent: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func
+};
+/**
+ * Define the default properties.
+ *
+ * @since 1.0.0
+ *
+ * @type {{autoload: boolean, optionRenderer: (function({images: array, labels: array, scope: string, displayTypes: string, descriptions: *}): XML), valueRenderer: (function({images: array, labels: array, scope: string, displayTypes: string, descriptions: *}): XML), filterOptions: (function(*, *, *))}}
+ */
+
+AutocompleteSelect.defaultProps = {
+  autoload: false,
+  optionRenderer: _AutocompleteResultOption__WEBPACK_IMPORTED_MODULE_4__["default"],
+  valueComponent: _AutocompleteResultValue__WEBPACK_IMPORTED_MODULE_5__["default"]
+}; // Finally export the AutocompleteSelect.
+
+/* harmony default export */ __webpack_exports__["default"] = (AutocompleteSelect);
+
+/***/ }),
+
+/***/ "./src/Edit/components/Autocomplete/FontAwesome/index.js":
+/*!***************************************************************!*\
+  !*** ./src/Edit/components/Autocomplete/FontAwesome/index.js ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/**
+ * Components: Font Awesome.
+ *
+ * A Font Awesome element.
+ *
+ * @since 1.0.0
+ */
+
+/* harmony default export */ __webpack_exports__["default"] = (styled_components__WEBPACK_IMPORTED_MODULE_0__["default"].i.attrs({
+  "aria-hidden": true
+})`
+  margin: 4px 8px;
+  font-size: 14px;
+
+  // ### ANY alignment.	
+  ${props => "right" !== props.align && `
+    &:hover {
+      cursor: pointer;
+      color: #2e92ff;
+    }
+  `}
+  
+	// ### RIGHT alignment.
+	${props => "right" === props.align && `
+    position: absolute;
+    right: 0;
+    top: 4px;
+    
+    // Elements on the right are indicators and aren't clickable.
+    color: #cbcbcb;
+  `}
+
+`);
+
+/***/ }),
+
+/***/ "./src/Edit/index.main-ingredient-select.js":
+/*!**************************************************!*\
+  !*** ./src/Edit/index.main-ingredient-select.js ***!
+  \**************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_Autocomplete_AutocompleteSelect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Autocomplete/AutocompleteSelect */ "./src/Edit/components/Autocomplete/AutocompleteSelect/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/react-select.es.js");
+/**
+ * Load the Main Ingredient Select.
+ *
+ * @since 3.38.3
+ */
+
+
+
+ // ### Render the sameAs metabox field autocomplete select.
+
+window.addEventListener("load", () => {
+  // Set a reference to the WordLift's settings stored in the window instance.
+  const settings = window["_wlRecipeIngredientSettings"] || {};
+  let autocompleteTimeout = null;
+  const DEFAULT_OPTIONS = [{
+    label: settings.l10n["(don't change)"],
+    value: "DONT_CHANGE"
+  }, {
+    label: settings.l10n["(unset)"],
+    value: "UNSET"
+  }];
+
+  const autocomplete = (query, callback) => {
+    // Minimum 3 characters.
+    if (3 > query.length) {
+      callback(null, {
+        options: DEFAULT_OPTIONS
+      });
+      return;
+    } // Clear any existing query.
+
+
+    if (null !== autocompleteTimeout) clearTimeout(autocompleteTimeout); // Send our query.
+
+    autocompleteTimeout = setTimeout(() => wp.ajax.post("wl_ingredient_autocomplete", {
+      query,
+      _wpnonce: settings.acNonce
+    }).done(json => callback(null, {
+      options: DEFAULT_OPTIONS.concat(json)
+    })).fail(() => {
+      console.log("error");
+      callback(null, {
+        options: []
+      });
+    }), 1000);
+  };
+
+  class MainIngredientSelect extends react__WEBPACK_IMPORTED_MODULE_2___default.a.Component {
+    constructor(props) {
+      super(props);
+      this.onChange = this.onChange.bind(this);
+      this.state = {
+        value: DEFAULT_OPTIONS[0]
+      };
+    }
+
+    onChange(value) {
+      this.setState({
+        value
+      });
+    }
+
+    render() {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_3__["default"].Async, {
+        multi: false,
+        name: "recipe_main_ingredient[]",
+        value: this.state.value,
+        onChange: this.onChange,
+        loadOptions: autocomplete
+      });
+    }
+
+  }
+
+  document.querySelectorAll(".wl-select-main-ingredient").forEach(el => {
+    react_dom__WEBPACK_IMPORTED_MODULE_0___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(MainIngredientSelect, null), el);
+  });
+});
+/**
+ *       <AutocompleteSelect
+ *         value={DEFAULT_OPTIONS[0]}
+ *         multi={false}
+ *         loadOptions={autocomplete}
+ *         name="main_ingredient[]"
+ *         placeholder=""
+ *         filterOption={(option, filter) => true}
+ *         searchPromptText={settings.l10n["Type at least 3 characters to search..."]}
+ *         loadingPlaceholder={settings.l10n["Looking for main ingredients..."]}
+ *         noResultsText={settings.l10n["No results found for your search."]}
+ *         optionRenderer={props => (
+ *           <Option instancePrefix={"main-ingredient-"} option={props}>
+ *             <div>{props.label}</div>
+ *           </Option>
+ *         )}
+ *         valueComponent={Value}
+ *       />,
+ */
+
+/***/ })
+
+/******/ });
+//# sourceMappingURL=main-ingredient-select.full.js.map
+>>>>>>> 565192e80e2a8462c14291e70e6d4d42180787e7

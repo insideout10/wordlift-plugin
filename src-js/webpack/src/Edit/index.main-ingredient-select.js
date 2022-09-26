@@ -64,6 +64,7 @@ window.addEventListener("load", () => {
       return (
         <Select.Async
           multi={false}
+          name="recipe_main_ingredient[]"
           value={this.state.value}
           onChange={this.onChange}
           loadOptions={autocomplete}
