@@ -383,6 +383,25 @@
 .wl-table__th--main-ingredient, .wl-table__th--recipe {
     width: 10em;
   }
+.wl-table--main-ingredient__data {
+    text-align: center;
+  }
+/** React Select **/
+.wl-select-main-ingredient .Select-multi-value-wrapper {
+    display: inline-block;
+    width: 100%;
+    min-height: 40px;
+  }
+.wl-select-main-ingredient .Select-clear-zone {
+    display: none;
+  }
+.wl-recipe-ingredient-form__submit {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
 /** Meta Box **/
 .wl-recipe-ingredient__field label {
     font-size: 16px;

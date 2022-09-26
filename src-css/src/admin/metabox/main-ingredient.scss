@@ -3,4 +3,25 @@
   &__th--main-ingredient, &__th--recipe {
     width: 10em;
   }
+  &--main-ingredient__data {
+    text-align: center;
+  }
+}
+.wl-select-main-ingredient {
+  /** React Select **/
+  .Select-multi-value-wrapper {
+    display: inline-block;
+    width: 100%;
+    min-height: 40px;
+  }
+  .Select-clear-zone {
+    display: none;
+  }
+}
+.wl-recipe-ingredient-form__submit {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
 }

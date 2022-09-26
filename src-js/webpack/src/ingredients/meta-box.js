@@ -1,7 +1,7 @@
 // jQuery Code.
 jQuery(function ($) {
     // Update Ingredient.
-    const ingredientFormSubmitBtn = $('.wl-recipe-ingredient-form__submit');
+    const ingredientFormSubmitBtn = $('.wl-recipe-ingredient-form__submit__btn');
     ingredientFormSubmitBtn.on('click', function (e) {
         e.preventDefault(e);
 
@@ -23,28 +23,17 @@ jQuery(function ($) {
             _wpnonce: _wlRecipeIngredientSettings.nonce,
             data: JSON.stringify( recipeData )
         };
+        const ingredientFormMessage = $('.wl-recipe-ingredient-form__submit__message');
         // Save the ingredient.
         wp.ajax
             .post(
                 "wl_update_ingredient_post_meta",
                 data
             ).done(function (response) {
-                wp.data.dispatch('core/notices').createNotice(
-                    'success',
-                    response.message, {
-                        type: 'snackbar',
-                        isDismissible: true,
-                    }
-                );
+                ingredientFormMessage.html( response.message );
             })
             .fail(function (error) {
-                wp.data.dispatch('core/notices').createNotice(
-                    'error',
-                    error.message, {
-                        type: 'snackbar',
-                        isDismissible: true,
-                    }
-                );
+                ingredientFormMessage.html( error.message );
             });
     });
 });

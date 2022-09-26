@@ -4,7 +4,6 @@
  * @since 3.38.3
  */
 import ReactDOM from "react-dom";
-import AutocompleteSelect from "./components/Autocomplete/AutocompleteSelect";
 import React from "react";
 import Select from "react-select";
 
