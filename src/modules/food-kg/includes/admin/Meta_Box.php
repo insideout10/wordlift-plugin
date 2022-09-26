@@ -134,7 +134,7 @@ class Meta_Box {
 			<div class="wl-recipe-ingredient-form__submit">
 				<div class="wl-recipe-ingredient-form__submit__message"></div>
 				<input type="submit"
-					   class="button button-primary button-large pull-right wl-recipe-ingredient-form__submit__btn"
+					   class="button button-primary button-large pull-right" id="wl-recipe-ingredient-form__submit__btn"
 					   value="<?php echo esc_attr__( 'Save', 'wordlift' ); ?>">
 			</div>
 		</div>
