@@ -32571,19 +32571,23 @@ window.addEventListener("load", () => {
 
     if (null !== autocompleteTimeout) clearTimeout(autocompleteTimeout); // Send our query.
 
-    autocompleteTimeout = setTimeout(() => wp.ajax.post("wl_ingredient_autocomplete", {
-      query,
-      _wpnonce: settings.acNonce
-    }).done(json => {
-      callback(null, {
-        options: DEFAULT_OPTIONS.concat(json)
+    autocompleteTimeout = setTimeout(() => {
+      const formData = new FormData();
+      formData.set("_wpnonce", settings.acNonce);
+      formData.set("query", query);
+      fetch(settings["ajaxurl"] + "?action=wl_ingredient_autocomplete", {
+        method: "POST",
+        body: formData
+      }).then(response => response.json()).then(result => {
+        callback(null, {
+          options: DEFAULT_OPTIONS.concat(result.data)
+        });
+      }).catch(() => {
+        callback(null, {
+          options: []
+        });
       });
-    }).fail(() => {
-      console.log("error");
-      callback(null, {
-        options: []
-      });
-    }), 1000);
+    }, 1000);
   };
 
   class MainIngredientSelect extends react__WEBPACK_IMPORTED_MODULE_1___default.a.Component {
@@ -32627,9 +32631,11 @@ window.addEventListener("load", () => {
 
     const recipes = [];
     document.querySelectorAll("input[name*='wl_recipe_main_ingredient']").forEach(element => {
+      console.log(JSON.parse(element.value));
+      console.log(JSON.stringify(JSON.parse(element.value)));
       recipes.push({
         recipe_id: element.getAttribute("name").replace("wl_recipe_main_ingredient[", "").replace("]", ""),
-        ingredient: element.value
+        ingredient: JSON.stringify(JSON.parse(element.value))
       });
     });
     const formData = new FormData();
