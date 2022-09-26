@@ -33,20 +33,25 @@ window.addEventListener("load", () => {
 
         // Send our query.
         autocompleteTimeout = setTimeout(
-            () =>
+            () => {
 
-                wp.ajax
-                    .post("wl_ingredient_autocomplete", {
-                        query,
-                        _wpnonce: settings.acNonce
-                    })
-                    .done(json => {
-                        callback(null, {options: DEFAULT_OPTIONS.concat(json)})
-                    })
-                    .fail(() => {
-                        console.log("error");
-                        callback(null, {options: []});
-                    }),
+
+                const formData = new FormData();
+                formData.set("_wpnonce", settings.acNonce)
+                formData.set("query", query)
+
+                fetch(settings["ajaxurl"] + "?action=wl_ingredient_autocomplete", {
+                    method: "POST",
+                    body: formData
+                }).then(response => response.json())
+                    .then((result) => {
+                        callback(null, {options: DEFAULT_OPTIONS.concat(result)})
+                    }).catch(() => {
+                    callback(null, {options: []})
+                })
+
+
+            },
 
             1000
         );
@@ -112,7 +117,8 @@ window.addEventListener("load", () => {
             }).then(response => response.json())
                 .then((result) => {
                     notification.innerText = result.data.message
-                }).catch(() => {})
+                }).catch(() => {
+            })
         })
 
 });
