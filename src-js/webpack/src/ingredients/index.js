@@ -99,17 +99,20 @@ window.addEventListener("load", () => {
             const recipes = []
             document.querySelectorAll("input[name*='wl_recipe_main_ingredient']")
                 .forEach((element) => {
+                    let ingredient;
                     try {
-                        recipes.push({
-                            recipe_id: element.getAttribute("name")
-                                .replace("wl_recipe_main_ingredient[", "")
-                                .replace("]", ""),
-                            ingredient: JSON.stringify(JSON.parse(element.value))
-                        })
-                    }
-                    catch (e) {
+                        ingredient = JSON.stringify(JSON.parse(element.value))
+                    } catch (e) {
                         // Handle json parsing exceptions if the value is not present.
+                        ingredient = element.value
                     }
+                    recipes.push({
+                        recipe_id: element.getAttribute("name")
+                            .replace("wl_recipe_main_ingredient[", "")
+                            .replace("]", ""),
+                        ingredient: ingredient
+                    })
+
                 })
 
             const formData = new FormData();
