@@ -78,22 +78,3 @@ window.addEventListener("load", () => {
   });
 });
 
-/**
- *       <AutocompleteSelect
- *         value={DEFAULT_OPTIONS[0]}
- *         multi={false}
- *         loadOptions={autocomplete}
- *         name="main_ingredient[]"
- *         placeholder=""
- *         filterOption={(option, filter) => true}
- *         searchPromptText={settings.l10n["Type at least 3 characters to search..."]}
- *         loadingPlaceholder={settings.l10n["Looking for main ingredients..."]}
- *         noResultsText={settings.l10n["No results found for your search."]}
- *         optionRenderer={props => (
- *           <Option instancePrefix={"main-ingredient-"} option={props}>
- *             <div>{props.label}</div>
- *           </Option>
- *         )}
- *         valueComponent={Value}
- *       />,
- */
