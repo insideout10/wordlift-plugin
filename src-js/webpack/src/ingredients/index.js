@@ -4,7 +4,7 @@
  * @since 3.38.3
  */
 import ReactDOM from "react-dom";
-import React from "react";
+import React, {useState} from "react";
 import Select from "react-select";
 
 // ### Render the sameAs metabox field autocomplete select.
@@ -34,8 +34,6 @@ window.addEventListener("load", () => {
         // Send our query.
         autocompleteTimeout = setTimeout(
             () => {
-
-
                 const formData = new FormData();
                 formData.set("_wpnonce", settings.acNonce)
                 formData.set("query", query)
@@ -57,31 +55,22 @@ window.addEventListener("load", () => {
         );
     };
 
-    class MainIngredientSelect extends React.Component {
 
-        constructor(props) {
-            super(props);
-            this.onChange = this.onChange.bind(this);
-            this.state = {value: DEFAULT_OPTIONS[0]};
-        }
-
-        onChange(value) {
-            this.setState({value});
-        }
-
-        render() {
-            const {recipeId} = this.props
-            return (
-                <Select.Async
-                    multi={false}
-                    name={"wl_recipe_main_ingredient[" + recipeId + "]"}
-                    value={this.state.value}
-                    onChange={this.onChange}
-                    loadOptions={autocomplete}
-                ></Select.Async>
-            );
-        }
+    const MainIngredientSelect = (props) => {
+        const {recipeId} = props
+        const [selected, setSelected] = useState(DEFAULT_OPTIONS[0])
+        return (
+            <Select.Async
+                multi={false}
+                name={"wl_recipe_main_ingredient[" + recipeId + "]"}
+                value={selected}
+                onChange={value => setSelected(value)}
+                loadOptions={autocomplete}
+            ></Select.Async>
+        );
     }
+
+
 
     document.querySelectorAll(".wl-select-main-ingredient").forEach(el => {
         ReactDOM.render(<MainIngredientSelect recipeId={el.dataset.recipeId}/>, el);

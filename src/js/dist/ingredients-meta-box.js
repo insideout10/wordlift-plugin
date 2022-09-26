@@ -4315,35 +4315,19 @@ window.addEventListener("load", () => {
     }, 1000);
   };
 
-  class MainIngredientSelect extends react__WEBPACK_IMPORTED_MODULE_1___default.a.Component {
-    constructor(props) {
-      super(props);
-      this.onChange = this.onChange.bind(this);
-      this.state = {
-        value: DEFAULT_OPTIONS[0]
-      };
-    }
-
-    onChange(value) {
-      this.setState({
-        value
-      });
-    }
-
-    render() {
-      const {
-        recipeId
-      } = this.props;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_2__["default"].Async, {
-        multi: false,
-        name: "wl_recipe_main_ingredient[" + recipeId + "]",
-        value: this.state.value,
-        onChange: this.onChange,
-        loadOptions: autocomplete
-      });
-    }
-
-  }
+  const MainIngredientSelect = props => {
+    const {
+      recipeId
+    } = props;
+    const [selected, setSelected] = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(DEFAULT_OPTIONS[0]);
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_2__["default"].Async, {
+      multi: false,
+      name: "wl_recipe_main_ingredient[" + recipeId + "]",
+      value: selected,
+      onChange: value => setSelected(value),
+      loadOptions: autocomplete
+    });
+  };
 
   document.querySelectorAll(".wl-select-main-ingredient").forEach(el => {
     react_dom__WEBPACK_IMPORTED_MODULE_0___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(MainIngredientSelect, {
