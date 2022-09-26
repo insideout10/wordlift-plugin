@@ -97,10 +97,10 @@ class Wl_Abstract_Metabox {
 		// HTML Code Before MetaBox Content.
 		do_action( 'wl_metabox_before_html' );
 		?>
-        <div class="wl-tabs">
-            <input id="wl-tab-properties" type="radio" name="wl-metabox-tabs" checked="checked"/>
-            <label for="wl-tab-properties"><?php esc_html_e( 'Properties', 'wordlift' ); ?></label>
-            <div class="wl-tabs__tab">
+		<div class="wl-tabs">
+			<input id="wl-tab-properties" type="radio" name="wl-metabox-tabs" checked="checked"/>
+			<label for="wl-tab-properties"><?php esc_html_e( 'Properties', 'wordlift' ); ?></label>
+			<div class="wl-tabs__tab">
 				<?php
 				// Loop over the fields.
 				foreach ( $this->fields as $field ) {
@@ -112,9 +112,9 @@ class Wl_Abstract_Metabox {
 					echo $field->html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaping happens in `$field->html()`.
 				}
 				?>
-            </div>
+			</div>
 			<?php do_action( 'wl_metabox_inner_html' ); ?>
-        </div>
+		</div>
 		<?php
 	}
 
