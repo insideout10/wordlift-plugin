@@ -173,7 +173,7 @@ jobs:
       - name: phpunit
         run: >
           docker run --workdir /github/workspace --rm -v "/var/run/docker.sock":"/var/run/docker.sock" \
-            -v /github/workspace/tests/php.ini:/usr/local/etc/php/php.ini \
+            -v "/github/workspace/tests/php.ini":"/usr/local/etc/php/php.ini" \
             -e ACF_PRO_ENABLED -e YOUTUBE_DATA_API_KEY -e VIMEO_API_KEY -e ACF_PRO_KEY -e WORDLIFT_API_URL -e WORDLIFT_KEY \
             -e WORDPRESS_VERSION -v $GITHUB_WORKSPACE:"/github/workspace" \
             --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
