@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! apply_filters( 'wl_feature__enable__pods-integration', false ) || ! defined( 'PODS_VERSION' ) ) { //phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+if ( ! apply_filters( 'wl_feature__enable__pods-integration', false ) ) { //phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	return;
 }
 
@@ -37,6 +37,10 @@ $container_builder->compile();
 add_action(
 	'plugins_loaded',
 	function () use ( $container_builder ) {
+
+		if ( ! defined( 'PODS_VERSION' ) ) {
+			return;
+		}
 
 		$factory          = $container_builder->get( FieldDefinitionFactory::class );
 		$field_definition = $factory->get_field_definition();
