@@ -25,7 +25,7 @@ class Meta_Box {
 	private $recipe_lift_strategy;
 
 	/**
-	 * @param Api_Service_Ext      $api_service
+	 * @param Api_Service_Ext $api_service
 	 * @param Recipe_Lift_Strategy $recipe_lift_strategy
 	 */
 	public function __construct( Api_Service_Ext $api_service, Recipe_Lift_Strategy $recipe_lift_strategy ) {
@@ -43,6 +43,27 @@ class Meta_Box {
 		add_action( 'wl_ingredient_metabox_html', array( $this, 'ingredients_html' ) );
 		add_action( 'wp_ajax_wl_update_ingredient_post_meta', array( $this, 'update_ingredient_post_meta' ) );
 		add_action( 'wp_ajax_wl_ingredient_autocomplete', array( $this, 'wl_ingredient_autocomplete' ) );
+		add_action( 'wl_metabox_inner_html', array( $this, 'metabox_tab' ) );
+	}
+
+	private function has_recipes( $post_id ) {
+
+		$recipe_ids = \WPRM_Recipe_Manager::get_recipe_ids_from_post( $post_id );
+
+		return 0 < count( $recipe_ids );
+	}
+
+
+	public function metabox_tab() {
+		// Only display the Main Ingredient tab if the feature and WP Recipe Maker plugin enabled.
+		if ( $this->has_recipes( get_the_ID() ) ) { // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+			$recipe_ids = \WPRM_Recipe_Manager::get_recipe_ids_from_post( get_the_ID() );
+			?>
+			<input id="wl-tab-main-ingredient" type="radio" name="wl-metabox-tabs"/><label
+					for="wl-tab-main-ingredient"><?php esc_html_e( 'Main Ingredient', 'wordlift' ); ?></label>
+			<div class="wl-tabs__tab"><?php $this->ingredients_html( $recipe_ids ); ?></div>
+			<?php
+		}
 	}
 
 	public function enqueue_block_editor_assets() {
@@ -112,8 +133,9 @@ class Meta_Box {
 			</table>
 			<div class="wl-recipe-ingredient-form__submit">
 				<div class="wl-recipe-ingredient-form__submit__message"></div>
-				<input type="submit" class="button button-primary button-large pull-right wl-recipe-ingredient-form__submit__btn"
-					value="<?php echo esc_attr__( 'Save', 'wordlift' ); ?>">
+				<input type="submit"
+					   class="button button-primary button-large pull-right wl-recipe-ingredient-form__submit__btn"
+					   value="<?php echo esc_attr__( 'Save', 'wordlift' ); ?>">
 			</div>
 		</div>
 		<?php

@@ -97,10 +97,10 @@ class Wl_Abstract_Metabox {
 		// HTML Code Before MetaBox Content.
 		do_action( 'wl_metabox_before_html' );
 		?>
-		<div class="wl-tabs">
-			<input id="wl-tab-properties" type="radio" name="wl-metabox-tabs" checked="checked"/>
-			<label for="wl-tab-properties"><?php esc_html_e( 'Properties', 'wordlift' ); ?></label>
-			<div class="wl-tabs__tab">
+        <div class="wl-tabs">
+            <input id="wl-tab-properties" type="radio" name="wl-metabox-tabs" checked="checked"/>
+            <label for="wl-tab-properties"><?php esc_html_e( 'Properties', 'wordlift' ); ?></label>
+            <div class="wl-tabs__tab">
 				<?php
 				// Loop over the fields.
 				foreach ( $this->fields as $field ) {
@@ -112,36 +112,12 @@ class Wl_Abstract_Metabox {
 					echo $field->html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaping happens in `$field->html()`.
 				}
 				?>
-			</div>
-			<?php
-			// Only display the Main Ingredient tab if the feature and WP Recipe Maker plugin enabled.
-			if ( apply_filters( 'wl_feature__enable__food-kg', false ) && $this->has_recipes( get_the_ID() ) ) { // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-				$recipe_ids = \WPRM_Recipe_Manager::get_recipe_ids_from_post( get_the_ID() );
-				?>
-				<input id="wl-tab-main-ingredient" type="radio" name="wl-metabox-tabs"/><label
-						for="wl-tab-main-ingredient"><?php esc_html_e( 'Main Ingredient', 'wordlift' ); ?></label>
-				<div class="wl-tabs__tab">
-					<?php
-					do_action( 'wl_ingredient_metabox_html', $recipe_ids );
-					?>
-				</div>
-				<?php
-			}
-			?>
-		</div>
+            </div>
+			<?php do_action( 'wl_metabox_inner_html' ); ?>
+        </div>
 		<?php
 	}
 
-	private function has_recipes( $post_id ) {
-		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-		if ( ! defined( 'WPRM_VERSION' ) || ! class_exists( 'WP_Recipe_Maker' ) ) {
-			return false;
-		}
-
-		$recipe_ids = \WPRM_Recipe_Manager::get_recipe_ids_from_post( $post_id );
-
-		return 0 < count( $recipe_ids );
-	}
 
 	/**
 	 * Read the WL <-> Schema mapping and build the Fields for the entity being edited.
@@ -149,7 +125,7 @@ class Wl_Abstract_Metabox {
 	 * Note: the first function that calls this method will instantiate the fields.
 	 * Why it isn't called from the constructor? Because we need to hook this process as late as possible.
 	 *
-	 * @param int                   $id | $term_id The post id or term id.
+	 * @param int $id | $term_id The post id or term id.
 	 *
 	 * @param $type int Post or Term
 	 *
@@ -267,9 +243,9 @@ class Wl_Abstract_Metabox {
 	 * This method is a rude factory for Field objects.
 	 *
 	 * @param array $args The field's information.
-	 * @param bool  $grouped Flag to distinguish between simple and grouped fields.
-	 * @param int   $type Post or Term, based on the correct decorator would be selected.
-	 * @param int   $id Identifier for the type.
+	 * @param bool $grouped Flag to distinguish between simple and grouped fields.
+	 * @param int $type Post or Term, based on the correct decorator would be selected.
+	 * @param int $id Identifier for the type.
 	 */
 	public function add_field( $args, $grouped, $type, $id ) {
 
@@ -336,7 +312,7 @@ class Wl_Abstract_Metabox {
 	/**
 	 * Save the form data for the specified entity {@link WP_Post}'s id.
 	 *
-	 * @param int                   $id The entity's {@link WP_Post}'s id.
+	 * @param int $id The entity's {@link WP_Post}'s id.
 	 *
 	 *                                     We're being called from WP `save_post` hook, we don't need to check the nonce.
 	 *
