@@ -44,11 +44,7 @@ class AutocompleteResultValue extends Component {
 
     return (
       <Wrapper>
-        {
-          this.props.values && (
-            <FontAwesome className="fa fa-minus-square" onMouseDown={this.onRemove}/>
-          )
-        }
+        <FontAwesome className="fa fa-minus-square" onMouseDown={this.onRemove}/>
         <Label>{label}</Label>
         {'local' !== scope && <FontAwesome align="right" className="fa fa-cloud"/>}
       </Wrapper>
