@@ -25,7 +25,7 @@ class Meta_Box {
 	private $recipe_lift_strategy;
 
 	/**
-	 * @param Api_Service_Ext $api_service
+	 * @param Api_Service_Ext      $api_service
 	 * @param Recipe_Lift_Strategy $recipe_lift_strategy
 	 */
 	public function __construct( Api_Service_Ext $api_service, Recipe_Lift_Strategy $recipe_lift_strategy ) {
@@ -53,15 +53,14 @@ class Meta_Box {
 		return 0 < count( $recipe_ids );
 	}
 
-
 	public function metabox_tab() {
 		// Only display the Main Ingredient tab if the feature and WP Recipe Maker plugin enabled.
 		if ( $this->has_recipes( get_the_ID() ) ) { // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 			$recipe_ids = \WPRM_Recipe_Manager::get_recipe_ids_from_post( get_the_ID() );
 			?>
-            <input id="wl-tab-main-ingredient" type="radio" name="wl-metabox-tabs"/><label
-                    for="wl-tab-main-ingredient"><?php esc_html_e( 'Main Ingredient', 'wordlift' ); ?></label>
-            <div class="wl-tabs__tab"><?php $this->ingredients_html( $recipe_ids ); ?></div>
+			<input id="wl-tab-main-ingredient" type="radio" name="wl-metabox-tabs"/><label
+					for="wl-tab-main-ingredient"><?php esc_html_e( 'Main Ingredient', 'wordlift' ); ?></label>
+			<div class="wl-tabs__tab"><?php $this->ingredients_html( $recipe_ids ); ?></div>
 			<?php
 		}
 	}
@@ -86,8 +85,8 @@ class Meta_Box {
 		$this->enqueue_scripts();
 
 		?>
-        <div class="wl-recipe-ingredient">
-            <p>
+		<div class="wl-recipe-ingredient">
+			<p>
 				<?php
 				$count = count( $recipe_ids );
 				/* translators: 1: Number of recipes 2: Review notice */
@@ -98,18 +97,18 @@ class Meta_Box {
 					esc_html__( 'Review the main ingredient for each recipe and change it if required.', 'wordlift' )
 				);
 				?>
-            </p>
-        </div>
-        <div class="wl-recipe-ingredient-form" id="wl-recipe-ingredient-form">
-            <table class="wl-table wl-table--main-ingredient">
-                <thead>
-                <tr>
-                    <th class="wl-table__th wl-table__th--recipe"><?php esc_html_e( 'Recipe', 'wordlift' ); ?></th>
-                    <th class="wl-table__th wl-table__th--main-ingredient"><?php esc_html_e( 'Main Ingredient', 'wordlift' ); ?></th>
-                    <th><?php esc_html_e( 'Action', 'wordlift' ); ?></th>
-                </tr>
-                </thead>
-                <tbody>
+			</p>
+		</div>
+		<div class="wl-recipe-ingredient-form" id="wl-recipe-ingredient-form">
+			<table class="wl-table wl-table--main-ingredient">
+				<thead>
+				<tr>
+					<th class="wl-table__th wl-table__th--recipe"><?php esc_html_e( 'Recipe', 'wordlift' ); ?></th>
+					<th class="wl-table__th wl-table__th--main-ingredient"><?php esc_html_e( 'Main Ingredient', 'wordlift' ); ?></th>
+					<th><?php esc_html_e( 'Action', 'wordlift' ); ?></th>
+				</tr>
+				</thead>
+				<tbody>
 				<?php
 				foreach ( $recipe_ids as $recipe_id ) {
 					$recipe          = \WPRM_Recipe_Manager::get_recipe( $recipe_id );
@@ -117,26 +116,26 @@ class Meta_Box {
 					$obj             = json_decode( $json_ld );
 					$main_ingredient = isset( $obj->name ) ? $obj->name : '<em>' . __( '(unset)', 'wordlift' ) . '</em>';
 					?>
-                    <tr class="wl-table--main-ingredient__data">
-                        <td><?php echo esc_html( $recipe->name() ); ?></td>
-                        <td><?php echo wp_kses( $main_ingredient, array( 'em' => array() ) ); ?></td>
-                        <td class="wl-table__ingredients-data">
-                            <span class="wl-select-main-ingredient"
-                                  data-recipe-id="<?php echo esc_attr( $recipe_id ); ?>"></span>
-                        </td>
-                    </tr>
+					<tr class="wl-table--main-ingredient__data">
+						<td><?php echo esc_html( $recipe->name() ); ?></td>
+						<td><?php echo wp_kses( $main_ingredient, array( 'em' => array() ) ); ?></td>
+						<td class="wl-table__ingredients-data">
+							<span class="wl-select-main-ingredient"
+								  data-recipe-id="<?php echo esc_attr( $recipe_id ); ?>"></span>
+						</td>
+					</tr>
 					<?php
 				}
 				?>
-                </tbody>
-            </table>
-            <div class="wl-recipe-ingredient-form__submit">
-                <div id="wl-recipe-ingredient-form__submit__message"></div>
-                <input type="submit"
-                       class="button button-primary button-large pull-right" id="wl-recipe-ingredient-form__submit__btn"
-                       value="<?php echo esc_attr__( 'Save', 'wordlift' ); ?>">
-            </div>
-        </div>
+				</tbody>
+			</table>
+			<div class="wl-recipe-ingredient-form__submit">
+				<div id="wl-recipe-ingredient-form__submit__message"></div>
+				<input type="submit"
+					   class="button button-primary button-large pull-right" id="wl-recipe-ingredient-form__submit__btn"
+					   value="<?php echo esc_attr__( 'Save', 'wordlift' ); ?>">
+			</div>
+		</div>
 		<?php
 	}
 
@@ -264,11 +263,11 @@ class Meta_Box {
 				'nonce'   => wp_create_nonce( 'wl-ingredient-nonce' ),
 				'acNonce' => wp_create_nonce( 'wl-ac-ingredient-nonce' ),
 				'l10n'    => array(
-					'Looking for main ingredients...'         => _x( 'Looking for main ingredients...', 'Main Ingredient select', 'wordlift' ),
+					'Looking for main ingredients...'   => _x( 'Looking for main ingredients...', 'Main Ingredient select', 'wordlift' ),
 					'Type at least 3 characters to search...' => _x( 'Type at least 3 characters to search...', 'Main Ingredient select', 'wordlift' ),
-					'No results found for your search.'       => _x( 'No results found: try changing or removing some words.', 'Main Ingredient select', 'wordlift' ),
-					"(don't change)"                          => _x( "(don't change)", 'Main Ingredient select', 'wordlift' ),
-					'(unset)'                                 => _x( '(unset)', 'Main Ingredient select', 'wordlift' ),
+					'No results found for your search.' => _x( 'No results found: try changing or removing some words.', 'Main Ingredient select', 'wordlift' ),
+					"(don't change)"                    => _x( "(don't change)", 'Main Ingredient select', 'wordlift' ),
+					'(unset)'                           => _x( '(unset)', 'Main Ingredient select', 'wordlift' ),
 				),
 			)
 		);
