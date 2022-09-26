@@ -103,7 +103,7 @@ jQuery(function ($) {
     let recipeData = [];
     ingredientsData.each((index, element) => {
       const recipeID = $(element).find('#recipe-id').val();
-      const ingredient = $(element).find("input[name='main_ingredient[]']").val();
+      const ingredient = $(element).find("input[name='recipe_main_ingredient[]']").val();
 
       if (!recipeID || !ingredient) {
         return;
@@ -115,7 +115,7 @@ jQuery(function ($) {
       });
     });
     const data = {
-      _wpnonce: _wlRecipeIngredient.nonce,
+      _wpnonce: _wlRecipeIngredientSettings.nonce,
       data: JSON.stringify(recipeData)
     }; // Save the ingredient.
 

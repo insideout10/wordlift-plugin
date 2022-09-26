@@ -8400,6 +8400,7 @@ window.addEventListener("load", () => {
     render() {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_3__["default"].Async, {
         multi: false,
+        name: "recipe_main_ingredient[]",
         value: this.state.value,
         onChange: this.onChange,
         loadOptions: autocomplete
