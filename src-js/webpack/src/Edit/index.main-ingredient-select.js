@@ -50,16 +50,22 @@ window.addEventListener("load", () => {
   };
 
   class MainIngredientSelect extends React.Component {
+
+    constructor(props) {
+      super(props);
+      this.onChange = this.onChange.bind(this);
+      this.state = { value: DEFAULT_OPTIONS[0] };
+    }
+
     onChange(value) {
       this.setState({ value });
     }
-
     render() {
       return (
         <Select.Async
           multi={false}
-          value={DEFAULT_OPTIONS[0]}
-          onChange={value => this.setState({ value })}
+          value={this.state.value}
+          onChange={this.onChange}
           loadOptions={autocomplete}
         ></Select.Async>
       );

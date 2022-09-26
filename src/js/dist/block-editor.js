@@ -87,9 +87,9 @@
 /******/ ({
 
 /***/ "../../src/images/svg/wl-author-icon.svg":
-/*!*******************************************************************************************!*\
-  !*** /Users/ziodave/Developer/wordlift/wordlift-plugin/src/images/svg/wl-author-icon.svg ***!
-  \*******************************************************************************************/
+/*!***********************************************************************!*\
+  !*** /var/www/html/wordlift-plugin/src/images/svg/wl-author-icon.svg ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -109,9 +109,9 @@ WlAuthorIcon.default = WlAuthorIcon;
 /***/ }),
 
 /***/ "../../src/images/svg/wl-calendar-icon.svg":
-/*!*********************************************************************************************!*\
-  !*** /Users/ziodave/Developer/wordlift/wordlift-plugin/src/images/svg/wl-calendar-icon.svg ***!
-  \*********************************************************************************************/
+/*!*************************************************************************!*\
+  !*** /var/www/html/wordlift-plugin/src/images/svg/wl-calendar-icon.svg ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
