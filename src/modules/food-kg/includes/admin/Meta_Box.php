@@ -43,7 +43,7 @@ class Meta_Box {
 		add_action( 'wl_ingredient_metabox_html', array( $this, 'ingredients_html' ) );
 		add_action( 'wp_ajax_wl_update_ingredient_post_meta', array( $this, 'update_ingredient_post_meta' ) );
 		add_action( 'wp_ajax_wl_ingredient_autocomplete', array( $this, 'wl_ingredient_autocomplete' ) );
-		add_action( 'wl_metabox_inner_html', array( $this, 'metabox_tab' ) );
+		add_action( 'wl_metabox_html', array( $this, 'metabox_tab' ) );
 	}
 
 	private function has_recipes( $post_id ) {

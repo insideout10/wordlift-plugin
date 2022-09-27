@@ -42,6 +42,7 @@ class Wl_Abstract_Metabox {
 	public function __construct() {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+
 	}
 
 	/**
@@ -98,22 +99,28 @@ class Wl_Abstract_Metabox {
 		do_action( 'wl_metabox_before_html' );
 		?>
 		<div class="wl-tabs">
-			<input id="wl-tab-properties" type="radio" name="wl-metabox-tabs" checked="checked"/>
-			<label for="wl-tab-properties"><?php esc_html_e( 'Properties', 'wordlift' ); ?></label>
-			<div class="wl-tabs__tab">
-				<?php
-				// Loop over the fields.
-				foreach ( $this->fields as $field ) {
+			<?php $this->fields_html(); ?>
+			<?php do_action( 'wl_metabox_html' ); ?>
+		</div>
+		<?php
+	}
 
-					// load data from DB (values will be available in $field->data).
-					$field->get_data();
+	private function fields_html() {
+		?>
+		<input id="wl-tab-properties" type="radio" name="wl-metabox-tabs" checked="checked"/>
+		<label for="wl-tab-properties"><?php esc_html_e( 'Properties', 'wordlift' ); ?></label>
+		<div class="wl-tabs__tab">
+			<?php
+			// Loop over the fields.
+			foreach ( $this->fields as $field ) {
 
-					// print field HTML (nonce included).
-					echo $field->html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaping happens in `$field->html()`.
-				}
-				?>
-			</div>
-			<?php do_action( 'wl_metabox_inner_html' ); ?>
+				// load data from DB (values will be available in $field->data).
+				$field->get_data();
+
+				// print field HTML (nonce included).
+				echo $field->html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaping happens in `$field->html()`.
+			}
+			?>
 		</div>
 		<?php
 	}
@@ -313,7 +320,7 @@ class Wl_Abstract_Metabox {
 	 *
 	 * @param int                   $id The entity's {@link WP_Post}'s id.
 	 *
-	 *                                                       We're being called from WP `save_post` hook, we don't need to check the nonce.
+	 *                                                                         We're being called from WP `save_post` hook, we don't need to check the nonce.
 	 *
 	 * @param $type int Post or term
 	 *
