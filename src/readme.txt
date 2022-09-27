@@ -142,7 +142,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.38.1 (2022-09-19) =
+= 3.38.4 (2022-09-27) =
+* Fix [#1582](https://github.com/insideout10/wordlift-plugin/issues/1582): Fix jsonld encoding issue.
+* Feature [#1580](https://github.com/insideout10/wordlift-plugin/issues/1580): Allow editors to change main ingredient for a recipe post
+
+= 3.38.3 (2022-09-19) =
 * Fix: Change scope from `network` to `network-only` for match terms analysis.
 
 = 3.38.1 (2022-09-13) =
