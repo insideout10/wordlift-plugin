@@ -21,33 +21,35 @@ use Wordlift\Modules\Common\Symfony\Component\Config\Resource\SelfCheckingResour
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Matthias Pigulla <mp@webfactory.de>
  */
-class ConfigCache extends ResourceCheckerConfigCache {
-
-	private $debug;
-	/**
-	 * @param string $file  The absolute cache path
-	 * @param bool   $debug Whether debugging is enabled or not
-	 */
-	public function __construct( $file, $debug ) {
-		$this->debug = (bool) $debug;
-		$checkers    = array();
-		if ( \true === $this->debug ) {
-			$checkers = array( new SelfCheckingResourceChecker() );
-		}
-		parent::__construct( $file, $checkers );
-	}
-	/**
-	 * Checks if the cache is still fresh.
-	 *
-	 * This implementation always returns true when debug is off and the
-	 * cache file exists.
-	 *
-	 * @return bool true if the cache is fresh, false otherwise
-	 */
-	public function isFresh() {
-		if ( ! $this->debug && \is_file( $this->getPath() ) ) {
-			return \true;
-		}
-		return parent::isFresh();
-	}
+class ConfigCache extends ResourceCheckerConfigCache
+{
+    private $debug;
+    /**
+     * @param string $file  The absolute cache path
+     * @param bool   $debug Whether debugging is enabled or not
+     */
+    public function __construct($file, $debug)
+    {
+        $this->debug = (bool) $debug;
+        $checkers = [];
+        if (\true === $this->debug) {
+            $checkers = [new SelfCheckingResourceChecker()];
+        }
+        parent::__construct($file, $checkers);
+    }
+    /**
+     * Checks if the cache is still fresh.
+     *
+     * This implementation always returns true when debug is off and the
+     * cache file exists.
+     *
+     * @return bool true if the cache is fresh, false otherwise
+     */
+    public function isFresh()
+    {
+        if (!$this->debug && \is_file($this->getPath())) {
+            return \true;
+        }
+        return parent::isFresh();
+    }
 }

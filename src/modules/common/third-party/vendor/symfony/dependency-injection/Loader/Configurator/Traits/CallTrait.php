@@ -11,20 +11,21 @@
 namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\Configurator\Traits;
 
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-trait CallTrait {
-
-	/**
-	 * Adds a method to call after service initialization.
-	 *
-	 * @param string $method    The method name to call
-	 * @param array  $arguments An array of arguments to pass to the method call
-	 *
-	 * @return $this
-	 *
-	 * @throws InvalidArgumentException on empty $method param
-	 */
-	final public function call( $method, array $arguments = array() ) {
-		$this->definition->addMethodCall( $method, static::processValue( $arguments, \true ) );
-		return $this;
-	}
+trait CallTrait
+{
+    /**
+     * Adds a method to call after service initialization.
+     *
+     * @param string $method    The method name to call
+     * @param array  $arguments An array of arguments to pass to the method call
+     *
+     * @return $this
+     *
+     * @throws InvalidArgumentException on empty $method param
+     */
+    public final function call($method, array $arguments = [])
+    {
+        $this->definition->addMethodCall($method, static::processValue($arguments, \true));
+        return $this;
+    }
 }

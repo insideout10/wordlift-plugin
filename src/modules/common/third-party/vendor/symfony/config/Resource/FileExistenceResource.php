@@ -18,45 +18,51 @@ namespace Wordlift\Modules\Common\Symfony\Component\Config\Resource;
  *
  * @author Charles-Henri Bruyand <charleshenri.bruyand@gmail.com>
  */
-class FileExistenceResource implements SelfCheckingResourceInterface, \Serializable {
-
-	private $resource;
-	private $exists;
-	/**
-	 * @param string $resource The file path to the resource
-	 */
-	public function __construct( $resource ) {
-		$this->resource = (string) $resource;
-		$this->exists   = \file_exists( $resource );
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function __toString() {
-		return $this->resource;
-	}
-	/**
-	 * @return string The file path to the resource
-	 */
-	public function getResource() {
-		return $this->resource;
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function isFresh( $timestamp ) {
-		return \file_exists( $this->resource ) === $this->exists;
-	}
-	/**
-	 * @internal
-	 */
-	public function serialize() {
-		return \serialize( array( $this->resource, $this->exists ) );
-	}
-	/**
-	 * @internal
-	 */
-	public function unserialize( $serialized ) {
-		list($this->resource, $this->exists) = \unserialize( $serialized );
-	}
+class FileExistenceResource implements SelfCheckingResourceInterface, \Serializable
+{
+    private $resource;
+    private $exists;
+    /**
+     * @param string $resource The file path to the resource
+     */
+    public function __construct($resource)
+    {
+        $this->resource = (string) $resource;
+        $this->exists = \file_exists($resource);
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function __toString()
+    {
+        return $this->resource;
+    }
+    /**
+     * @return string The file path to the resource
+     */
+    public function getResource()
+    {
+        return $this->resource;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function isFresh($timestamp)
+    {
+        return \file_exists($this->resource) === $this->exists;
+    }
+    /**
+     * @internal
+     */
+    public function serialize()
+    {
+        return \serialize([$this->resource, $this->exists]);
+    }
+    /**
+     * @internal
+     */
+    public function unserialize($serialized)
+    {
+        list($this->resource, $this->exists) = \unserialize($serialized);
+    }
 }

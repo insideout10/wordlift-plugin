@@ -15,6 +15,6 @@ namespace Wordlift\Modules\Common\Symfony\Component\Filesystem\Exception;
  *
  * @author Romain Neutron <imprec@gmail.com>
  */
-interface ExceptionInterface extends \Throwable {
-
+interface ExceptionInterface extends \Throwable
+{
 }

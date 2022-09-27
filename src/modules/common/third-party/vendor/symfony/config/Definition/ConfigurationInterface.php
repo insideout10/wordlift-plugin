@@ -15,12 +15,12 @@ namespace Wordlift\Modules\Common\Symfony\Component\Config\Definition;
  *
  * @author Victor Berchet <victor@suumit.com>
  */
-interface ConfigurationInterface {
-
-	/**
-	 * Generates the configuration tree builder.
-	 *
-	 * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The tree builder
-	 */
-	public function getConfigTreeBuilder();
+interface ConfigurationInterface
+{
+    /**
+     * Generates the configuration tree builder.
+     *
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The tree builder
+     */
+    public function getConfigTreeBuilder();
 }

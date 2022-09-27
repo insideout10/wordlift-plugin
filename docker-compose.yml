@@ -1,104 +1,56 @@
-version: "3.7"
+version: "3.9"
 
 services:
   db:
-    image: mariadb:10.2
+    image: mariadb:10.7
+    ports:
+      - "3306:3306"
     volumes:
-      - db-data-${WORDPRESS_VERSION:-5.5.0}:/var/lib/mysql
+      - db-data-${WORDPRESS_VERSION:-6}:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: password
+      MYSQL_DATABASE: wordpress
 
   wordpress:
-    image: ziodave/wordpress-xdebug:5.8.3-php8.0
-    depends_on:
-      - db
+    image: wordlift/wordpress-nginx:${WORDPRESS_VERSION:-6}
+    user: "root"
+    entrypoint: [ "/tmp/docker-entrypoint.sh", "/opt/bitnami/scripts/wordpress/entrypoint.sh", "/opt/bitnami/scripts/nginx-php-fpm/run.sh" ]
     volumes:
-      - wordpress-data-${WORDPRESS_VERSION:-5.5.0}:/var/www/html
-      - ./src:/var/www/html/wp-content/plugins/wordlift
-      - ../pods:/var/www/html/wp-content/plugins/pods
-      - ../pods-export-code:/var/www/html/wp-content/plugins/pods-export-code
+      - ./.docker/wordpress/docker-entrypoint.sh:/tmp/docker-entrypoint.sh:ro
+      - ./.docker/wordpress/docker-entrypoint-init.d:/docker-entrypoint-init.d:ro
+      - ./.docker/wordpress/wp-config-extra.php:/tmp/wp-config-extra.php:ro
+      - ./.docker/wordpress/opt/bitnami/scripts/libwordpress.sh:/opt/bitnami/scripts/libwordpress.sh:ro
+      - ./.docker/wordpress/opt/bitnami/php/etc/conf.d:/opt/bitnami/php/etc/conf.d:ro
+
+      - ./src:/bitnami/wordpress/wp-content/plugins/wordlift
+      # - ../pods-export-code:/bitnami/wordpress/wp-content/plugins/pods-export-code
 #      - ../advanced-custom-fields-for-schema-org:/var/www/html/wp-content/plugins/advanced-custom-fields-for-schema-org
-      - ../woocommerce:/var/www/html/wp-content/plugins/woocommerce
-      - ./.docker/php/etc/conf.d/custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro
+      # - ../../wordpress/plugins/pods-2.9.3:/bitnami/wordpress/wp-content/plugins/pods
+      # - ../../wordpress/plugins/woocommerce-6.9.2:/bitnami/wordpress/wp-content/plugins/woocommerce
+      - ../../wordpress/plugins/wp-recipe-maker-8.5.0:/bitnami/wordpress/wp-content/plugins/wp-recipe-maker
     environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: password
-      WORDPRESS_DB_NAME: wordpress
-      WORDPRESS_DEBUG: 1
-      WORDPRESS_CONFIG_EXTRA: |
-        # Add support for the reverse proxy.
-        if ( strpos( $$_SERVER['HTTP_X_FORWARDED_PROTO'], 'https' ) !== false ) {
-        	$$_SERVER['HTTPS'] = 'on';
-        }
-
-        if ( isset( $$_SERVER['HTTP_X_FORWARDED_HOST'] ) ) {
-          $$_SERVER['HTTP_HOST'] = $$_SERVER['HTTP_X_FORWARDED_HOST'];
-        }
-
-        # Define the site and home URLs.
-        define( 'WP_SITEURL', 'https://wordlift.localhost' );
-        define( 'WP_HOME', WP_SITEURL );
-
-        # Allow all entity types.
-        # define( 'WL_ALL_ENTITY_TYPES', true );
-
-        # Enable Debug logging to the /wp-content/debug.log file
-        define( 'WP_DEBUG_LOG', true );
-        # Disable display of errors and warnings
-        define( 'WP_DEBUG_DISPLAY', false );
-        @ini_set( 'display_errors', 0 );
-        # Use dev versions of core JS and CSS files (only needed if you are modifying these core files)
-        define( 'SCRIPT_DEBUG', true );
-
-        # Enable WordLift debug.
-        define( 'WL_DEBUG', WP_DEBUG );
-        define( 'WL_LOG_LEVEL', 0 );
-        define( 'WP_AUTO_UPDATE_CORE', false );
+      WORDPRESS_DATABASE_HOST: db
+      WORDPRESS_DATABASE_USER: wordpress
+      WORDPRESS_DATABASE_PASSWORD: password
+      WORDPRESS_DATABASE_NAME: wordpress
+      WORDPRESS_ENABLE_HTTPS: "yes"
+      WORDPRESS_ENABLE_REVERSE_PROXY: "yes"
+      WORDPRESS_EXTRA_WP_CONFIG_CONTENT_FILE: /tmp/wp-config-extra.php
+      WORDPRESS_USERNAME: admin
+      WORDPRESS_PASSWORD: password
       PHP_IDE_CONFIG: serverName=wordpress
-    entrypoint: /var/www/html/wp-content/plugins/wordlift/.docker-custom-entrypoint.sh
 
   nginx:
-    image: nginx:1.21.6
     depends_on:
       - wordpress
+    image: nginx:1.21
     ports:
       - "443:443"
     volumes:
-      - ./.docker/nginx:/etc/nginx/conf.d
-    environment:
-      NGINX_HOST: wordpress
-      NGINX_SERVER_NAME: wordlift.localhost
-    command: /bin/bash -c "envsubst '$$NGINX_HOST $$NGINX_SERVER_NAME' < /etc/nginx/conf.d/wordpress.template > /etc/nginx/conf.d/wordpress.conf && nginx -g 'daemon off;'"
-
-  cli:
-    image: wordpress:cli-2.6.0
-    depends_on:
-      - db
-    user: xfs
-    volumes:
-      - wordpress-data-${WORDPRESS_VERSION:-5.5.0}:/var/www/html
-      - ./src:/var/www/html/wp-content/plugins/wordlift
-    environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: password
-      WORDPRESS_DB_NAME: wordpress
-    tty: true
+      - ./.docker/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./wp-content:/var/www/html/blog/wp-content:ro
 
 volumes:
-  db-data-4.4.0:
-  wordpress-data-4.4.0:
-  db-data-4.7.0:
-  wordpress-data-4.7.0:
-  db-data-5.0.0:
-  wordpress-data-5.0.0:
-  db-data-5.3.0:
-  wordpress-data-5.3.0:
-  db-data-5.4.0:
-  wordpress-data-5.4.0:
-  db-data-5.5.0:
-  wordpress-data-5.5.0:
+  db-data-6:

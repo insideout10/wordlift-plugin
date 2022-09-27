@@ -15,6 +15,6 @@ namespace Wordlift\Modules\Common\Symfony\Component\Config\Util\Exception;
  *
  * @author Ole Rößner <ole@roessner.it>
  */
-class XmlParsingException extends \InvalidArgumentException {
-
+class XmlParsingException extends \InvalidArgumentException
+{
 }

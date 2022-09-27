@@ -16,26 +16,26 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Definition;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  */
-interface DumperInterface {
-
-	/**
-	 * Inspects whether the given definitions should produce proxy instantiation logic in the dumped container.
-	 *
-	 * @return bool
-	 */
-	public function isProxyCandidate( Definition $definition);
-	/**
-	 * Generates the code to be used to instantiate a proxy in the dumped factory code.
-	 *
-	 * @param string $id Service identifier
-	 *
-	 * @return string
-	 */
-	public function getProxyFactoryCode( Definition $definition, $id);
-	/**
-	 * Generates the code for the lazy proxy.
-	 *
-	 * @return string
-	 */
-	public function getProxyCode( Definition $definition);
+interface DumperInterface
+{
+    /**
+     * Inspects whether the given definitions should produce proxy instantiation logic in the dumped container.
+     *
+     * @return bool
+     */
+    public function isProxyCandidate(Definition $definition);
+    /**
+     * Generates the code to be used to instantiate a proxy in the dumped factory code.
+     *
+     * @param string $id Service identifier
+     *
+     * @return string
+     */
+    public function getProxyFactoryCode(Definition $definition, $id);
+    /**
+     * Generates the code for the lazy proxy.
+     *
+     * @return string
+     */
+    public function getProxyCode(Definition $definition);
 }

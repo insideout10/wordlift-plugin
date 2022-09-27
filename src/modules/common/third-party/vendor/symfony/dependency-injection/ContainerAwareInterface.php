@@ -15,10 +15,10 @@ namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface ContainerAwareInterface {
-
-	/**
-	 * Sets the container.
-	 */
-	public function setContainer( ContainerInterface $container = null);
+interface ContainerAwareInterface
+{
+    /**
+     * Sets the container.
+     */
+    public function setContainer(ContainerInterface $container = null);
 }

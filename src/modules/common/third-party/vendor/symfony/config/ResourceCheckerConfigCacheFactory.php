@@ -16,26 +16,28 @@ namespace Wordlift\Modules\Common\Symfony\Component\Config;
  *
  * @author Matthias Pigulla <mp@webfactory.de>
  */
-class ResourceCheckerConfigCacheFactory implements ConfigCacheFactoryInterface {
-
-	private $resourceCheckers = array();
-	/**
-	 * @param iterable|ResourceCheckerInterface[] $resourceCheckers
-	 */
-	public function __construct( $resourceCheckers = array() ) {
-		$this->resourceCheckers = $resourceCheckers;
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function cache( $file, $callback ) {
-		if ( ! \is_callable( $callback ) ) {
-			throw new \InvalidArgumentException( \sprintf( 'Invalid type for callback argument. Expected callable, but got "%s".', \gettype( $callback ) ) );
-		}
-		$cache = new ResourceCheckerConfigCache( $file, $this->resourceCheckers );
-		if ( ! $cache->isFresh() ) {
-			\call_user_func( $callback, $cache );
-		}
-		return $cache;
-	}
+class ResourceCheckerConfigCacheFactory implements ConfigCacheFactoryInterface
+{
+    private $resourceCheckers = [];
+    /**
+     * @param iterable|ResourceCheckerInterface[] $resourceCheckers
+     */
+    public function __construct($resourceCheckers = [])
+    {
+        $this->resourceCheckers = $resourceCheckers;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function cache($file, $callback)
+    {
+        if (!\is_callable($callback)) {
+            throw new \InvalidArgumentException(\sprintf('Invalid type for callback argument. Expected callable, but got "%s".', \gettype($callback)));
+        }
+        $cache = new ResourceCheckerConfigCache($file, $this->resourceCheckers);
+        if (!$cache->isFresh()) {
+            \call_user_func($callback, $cache);
+        }
+        return $cache;
+    }
 }

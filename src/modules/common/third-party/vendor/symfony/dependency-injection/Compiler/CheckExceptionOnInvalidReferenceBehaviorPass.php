@@ -18,15 +18,16 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Reference;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class CheckExceptionOnInvalidReferenceBehaviorPass extends AbstractRecursivePass {
-
-	protected function processValue( $value, $isRoot = \false ) {
-		if ( ! $value instanceof Reference ) {
-			return parent::processValue( $value, $isRoot );
-		}
-		if ( ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE === $value->getInvalidBehavior() && ! $this->container->has( $id = (string) $value ) ) {
-			throw new ServiceNotFoundException( $id, $this->currentId );
-		}
-		return $value;
-	}
+class CheckExceptionOnInvalidReferenceBehaviorPass extends AbstractRecursivePass
+{
+    protected function processValue($value, $isRoot = \false)
+    {
+        if (!$value instanceof Reference) {
+            return parent::processValue($value, $isRoot);
+        }
+        if (ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE === $value->getInvalidBehavior() && !$this->container->has($id = (string) $value)) {
+            throw new ServiceNotFoundException($id, $this->currentId);
+        }
+        return $value;
+    }
 }

@@ -11,19 +11,20 @@
 namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\Configurator\Traits;
 
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-trait DeprecateTrait {
-
-	/**
-	 * Whether this definition is deprecated, that means it should not be called anymore.
-	 *
-	 * @param string $template Template message to use if the definition is deprecated
-	 *
-	 * @return $this
-	 *
-	 * @throws InvalidArgumentException when the message template is invalid
-	 */
-	final public function deprecate( $template = null ) {
-		$this->definition->setDeprecated( \true, $template );
-		return $this;
-	}
+trait DeprecateTrait
+{
+    /**
+     * Whether this definition is deprecated, that means it should not be called anymore.
+     *
+     * @param string $template Template message to use if the definition is deprecated
+     *
+     * @return $this
+     *
+     * @throws InvalidArgumentException when the message template is invalid
+     */
+    public final function deprecate($template = null)
+    {
+        $this->definition->setDeprecated(\true, $template);
+        return $this;
+    }
 }

@@ -19,24 +19,27 @@ use Wordlift\Modules\Common\Symfony\Component\Config\Exception\FileLoaderLoadExc
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class DelegatingLoader extends Loader {
-
-	public function __construct( LoaderResolverInterface $resolver ) {
-		$this->resolver = $resolver;
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function load( $resource, $type = null ) {
-		if ( \false === ( $loader = $this->resolver->resolve( $resource, $type ) ) ) {
-			throw new FileLoaderLoadException( $resource, null, null, null, $type );
-		}
-		return $loader->load( $resource, $type );
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function supports( $resource, $type = null ) {
-		return \false !== $this->resolver->resolve( $resource, $type );
-	}
+class DelegatingLoader extends Loader
+{
+    public function __construct(LoaderResolverInterface $resolver)
+    {
+        $this->resolver = $resolver;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function load($resource, $type = null)
+    {
+        if (\false === ($loader = $this->resolver->resolve($resource, $type))) {
+            throw new FileLoaderLoadException($resource, null, null, null, $type);
+        }
+        return $loader->load($resource, $type);
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function supports($resource, $type = null)
+    {
+        return \false !== $this->resolver->resolve($resource, $type);
+    }
 }

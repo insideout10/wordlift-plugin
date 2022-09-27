@@ -17,12 +17,12 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuild
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-interface ConfigurationExtensionInterface {
-
-	/**
-	 * Returns extension configuration.
-	 *
-	 * @return ConfigurationInterface|null The configuration or null
-	 */
-	public function getConfiguration( array $config, ContainerBuilder $container);
+interface ConfigurationExtensionInterface
+{
+    /**
+     * Returns extension configuration.
+     *
+     * @return ConfigurationInterface|null The configuration or null
+     */
+    public function getConfiguration(array $config, ContainerBuilder $container);
 }

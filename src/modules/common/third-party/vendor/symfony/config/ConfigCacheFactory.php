@@ -19,26 +19,28 @@ namespace Wordlift\Modules\Common\Symfony\Component\Config;
  *
  * @author Matthias Pigulla <mp@webfactory.de>
  */
-class ConfigCacheFactory implements ConfigCacheFactoryInterface {
-
-	private $debug;
-	/**
-	 * @param bool $debug The debug flag to pass to ConfigCache
-	 */
-	public function __construct( $debug ) {
-		$this->debug = $debug;
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function cache( $file, $callback ) {
-		if ( ! \is_callable( $callback ) ) {
-			throw new \InvalidArgumentException( \sprintf( 'Invalid type for callback argument. Expected callable, but got "%s".', \gettype( $callback ) ) );
-		}
-		$cache = new ConfigCache( $file, $this->debug );
-		if ( ! $cache->isFresh() ) {
-			\call_user_func( $callback, $cache );
-		}
-		return $cache;
-	}
+class ConfigCacheFactory implements ConfigCacheFactoryInterface
+{
+    private $debug;
+    /**
+     * @param bool $debug The debug flag to pass to ConfigCache
+     */
+    public function __construct($debug)
+    {
+        $this->debug = $debug;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function cache($file, $callback)
+    {
+        if (!\is_callable($callback)) {
+            throw new \InvalidArgumentException(\sprintf('Invalid type for callback argument. Expected callable, but got "%s".', \gettype($callback)));
+        }
+        $cache = new ConfigCache($file, $this->debug);
+        if (!$cache->isFresh()) {
+            \call_user_func($callback, $cache);
+        }
+        return $cache;
+    }
 }

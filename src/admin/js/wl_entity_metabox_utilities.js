@@ -180,5 +180,6 @@ jQuery( document ).ready( function ( $ ) {
 			}
 		} );
 	}
+
 } );
 

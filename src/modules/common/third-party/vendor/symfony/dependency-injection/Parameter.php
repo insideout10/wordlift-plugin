@@ -15,19 +15,21 @@ namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Parameter {
-
-	private $id;
-	/**
-	 * @param string $id The parameter key
-	 */
-	public function __construct( $id ) {
-		$this->id = $id;
-	}
-	/**
-	 * @return string The parameter key
-	 */
-	public function __toString() {
-		return (string) $this->id;
-	}
+class Parameter
+{
+    private $id;
+    /**
+     * @param string $id The parameter key
+     */
+    public function __construct($id)
+    {
+        $this->id = $id;
+    }
+    /**
+     * @return string The parameter key
+     */
+    public function __toString()
+    {
+        return (string) $this->id;
+    }
 }

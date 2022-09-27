@@ -10,17 +10,18 @@
  */
 namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\Configurator\Traits;
 
-trait ConfiguratorTrait {
-
-	/**
-	 * Sets a configurator to call after the service is fully initialized.
-	 *
-	 * @param string|array $configurator A PHP callable reference
-	 *
-	 * @return $this
-	 */
-	final public function configurator( $configurator ) {
-		$this->definition->setConfigurator( static::processValue( $configurator, \true ) );
-		return $this;
-	}
+trait ConfiguratorTrait
+{
+    /**
+     * Sets a configurator to call after the service is fully initialized.
+     *
+     * @param string|array $configurator A PHP callable reference
+     *
+     * @return $this
+     */
+    public final function configurator($configurator)
+    {
+        $this->definition->setConfigurator(static::processValue($configurator, \true));
+        return $this;
+    }
 }

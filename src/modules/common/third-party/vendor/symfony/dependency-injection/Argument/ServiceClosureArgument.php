@@ -17,25 +17,28 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Reference;
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class ServiceClosureArgument implements ArgumentInterface {
-
-	private $values;
-	public function __construct( Reference $reference ) {
-		$this->values = array( $reference );
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getValues() {
-		return $this->values;
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setValues( array $values ) {
-		if ( array( 0 ) !== \array_keys( $values ) || ! ( $values[0] instanceof Reference || null === $values[0] ) ) {
-			throw new InvalidArgumentException( 'A ServiceClosureArgument must hold one and only one Reference.' );
-		}
-		$this->values = $values;
-	}
+class ServiceClosureArgument implements ArgumentInterface
+{
+    private $values;
+    public function __construct(Reference $reference)
+    {
+        $this->values = [$reference];
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function getValues()
+    {
+        return $this->values;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function setValues(array $values)
+    {
+        if ([0] !== \array_keys($values) || !($values[0] instanceof Reference || null === $values[0])) {
+            throw new InvalidArgumentException('A ServiceClosureArgument must hold one and only one Reference.');
+        }
+        $this->values = $values;
+    }
 }

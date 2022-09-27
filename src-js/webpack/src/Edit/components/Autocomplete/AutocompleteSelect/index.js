@@ -96,6 +96,8 @@ class AutocompleteSelect extends Component {
       ...props
     } = this.props;
 
+    const multi = this.props.multi !== undefined ? this.props.multi : true;
+
     return (
       <Select.AsyncCreatable
         autoload={autoload}
@@ -106,7 +108,7 @@ class AutocompleteSelect extends Component {
         valueComponent={valueComponent}
         openOnFocus={true}
         autoBlur={true}
-        multi={true}
+        multi={multi}
         onChange={this.onChange}
         value={this.state.value}
         newOptionCreator={newOptionCreator}

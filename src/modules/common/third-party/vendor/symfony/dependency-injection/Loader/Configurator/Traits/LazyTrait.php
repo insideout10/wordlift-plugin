@@ -10,17 +10,18 @@
  */
 namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\Configurator\Traits;
 
-trait LazyTrait {
-
-	/**
-	 * Sets the lazy flag of this service.
-	 *
-	 * @param bool $lazy
-	 *
-	 * @return $this
-	 */
-	final public function lazy( $lazy = \true ) {
-		$this->definition->setLazy( $lazy );
-		return $this;
-	}
+trait LazyTrait
+{
+    /**
+     * Sets the lazy flag of this service.
+     *
+     * @param bool $lazy
+     *
+     * @return $this
+     */
+    public final function lazy($lazy = \true)
+    {
+        $this->definition->setLazy($lazy);
+        return $this;
+    }
 }

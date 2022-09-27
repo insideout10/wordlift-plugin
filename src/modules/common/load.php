@@ -8,6 +8,7 @@ if ( file_exists( __DIR__ . '/third-party/vendor/scoper-autoload.php' ) ) {
 	require __DIR__ . '/third-party/vendor/scoper-autoload.php';
 }
 
-if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-	require __DIR__ . '/vendor/autoload.php';
+// Autoloader for plugin itself.
+if ( file_exists( __DIR__ . '/includes/vendor/autoload.php' ) ) {
+	require __DIR__ . '/includes/vendor/autoload.php';
 }
