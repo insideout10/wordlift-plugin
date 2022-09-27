@@ -17,17 +17,18 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuild
  *
  * @author Wouter J <wouter@wouterj.nl>
  */
-class ExtensionCompilerPass implements CompilerPassInterface {
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function process( ContainerBuilder $container ) {
-		foreach ( $container->getExtensions() as $extension ) {
-			if ( ! $extension instanceof CompilerPassInterface ) {
-				continue;
-			}
-			$extension->process( $container );
-		}
-	}
+class ExtensionCompilerPass implements CompilerPassInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
+        foreach ($container->getExtensions() as $extension) {
+            if (!$extension instanceof CompilerPassInterface) {
+                continue;
+            }
+            $extension->process($container);
+        }
+    }
 }

@@ -1,0 +1,24 @@
+{
+  "name": "@wordlift/styles",
+  "version": "0.1.0",
+  "description": "The official WordLift styles.",
+  "main": "index.js",
+  "scripts": {
+    "watch": "npx postcss src/admin/index.css -o ../src/admin/css/wordlift-admin.css -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "wordlift",
+    "css"
+  ],
+  "author": "WordLift",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "devDependencies": {
+    "autoprefixer": "^10.4.11",
+    "postcss": "^8.4.16",
+    "postcss-cli": "^10.0.0",
+    "postcss-import": "^15.0.0",
+    "tailwindcss": "^3.1.8",
+    "postcss-advanced-variables": "^3.0.1"
+  }
+}

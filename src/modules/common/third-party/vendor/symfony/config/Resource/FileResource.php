@@ -17,51 +17,57 @@ namespace Wordlift\Modules\Common\Symfony\Component\Config\Resource;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class FileResource implements SelfCheckingResourceInterface, \Serializable {
-
-	/**
-	 * @var string|false
-	 */
-	private $resource;
-	/**
-	 * @param string $resource The file path to the resource
-	 *
-	 * @throws \InvalidArgumentException
-	 */
-	public function __construct( $resource ) {
-		$this->resource = \realpath( $resource ) ?: ( \file_exists( $resource ) ? $resource : \false );
-		if ( \false === $this->resource ) {
-			throw new \InvalidArgumentException( \sprintf( 'The file "%s" does not exist.', $resource ) );
-		}
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function __toString() {
-		return $this->resource;
-	}
-	/**
-	 * @return string The canonicalized, absolute path to the resource
-	 */
-	public function getResource() {
-		return $this->resource;
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	public function isFresh( $timestamp ) {
-		return \false !== ( $filemtime = @\filemtime( $this->resource ) ) && $filemtime <= $timestamp;
-	}
-	/**
-	 * @internal
-	 */
-	public function serialize() {
-		return \serialize( $this->resource );
-	}
-	/**
-	 * @internal
-	 */
-	public function unserialize( $serialized ) {
-		$this->resource = \unserialize( $serialized );
-	}
+class FileResource implements SelfCheckingResourceInterface, \Serializable
+{
+    /**
+     * @var string|false
+     */
+    private $resource;
+    /**
+     * @param string $resource The file path to the resource
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function __construct($resource)
+    {
+        $this->resource = \realpath($resource) ?: (\file_exists($resource) ? $resource : \false);
+        if (\false === $this->resource) {
+            throw new \InvalidArgumentException(\sprintf('The file "%s" does not exist.', $resource));
+        }
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function __toString()
+    {
+        return $this->resource;
+    }
+    /**
+     * @return string The canonicalized, absolute path to the resource
+     */
+    public function getResource()
+    {
+        return $this->resource;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function isFresh($timestamp)
+    {
+        return \false !== ($filemtime = @\filemtime($this->resource)) && $filemtime <= $timestamp;
+    }
+    /**
+     * @internal
+     */
+    public function serialize()
+    {
+        return \serialize($this->resource);
+    }
+    /**
+     * @internal
+     */
+    public function unserialize($serialized)
+    {
+        $this->resource = \unserialize($serialized);
+    }
 }

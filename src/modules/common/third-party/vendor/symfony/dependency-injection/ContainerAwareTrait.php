@@ -15,13 +15,14 @@ namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-trait ContainerAwareTrait {
-
-	/**
-	 * @var ContainerInterface
-	 */
-	protected $container;
-	public function setContainer( ContainerInterface $container = null ) {
-		$this->container = $container;
-	}
+trait ContainerAwareTrait
+{
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
 }

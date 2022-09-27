@@ -15,6 +15,6 @@ namespace Wordlift\Modules\Common\Symfony\Component\Config\Definition\Builder;
  *
  * @author Victor Berchet <victor@suumit.com>
  */
-interface NodeParentInterface {
-
+interface NodeParentInterface
+{
 }

@@ -10,17 +10,18 @@
  */
 namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\Configurator\Traits;
 
-trait ShareTrait {
-
-	/**
-	 * Sets if the service must be shared or not.
-	 *
-	 * @param bool $shared Whether the service must be shared or not
-	 *
-	 * @return $this
-	 */
-	final public function share( $shared = \true ) {
-		$this->definition->setShared( $shared );
-		return $this;
-	}
+trait ShareTrait
+{
+    /**
+     * Sets if the service must be shared or not.
+     *
+     * @param bool $shared Whether the service must be shared or not
+     *
+     * @return $this
+     */
+    public final function share($shared = \true)
+    {
+        $this->definition->setShared($shared);
+        return $this;
+    }
 }

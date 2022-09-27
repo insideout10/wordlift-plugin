@@ -29,3 +29,4 @@ import "./index.autocomplete-select";
 import "./index.schema-class-tree";
 // Load the Schema Properties Form.
 import "./index.schema-property-form";
+

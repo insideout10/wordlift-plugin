@@ -16,14 +16,15 @@ use Wordlift\Modules\Common\Symfony\Component\Config\Definition\FloatNode;
  *
  * @author Jeanmonod David <david.jeanmonod@gmail.com>
  */
-class FloatNodeDefinition extends NumericNodeDefinition {
-
-	/**
-	 * Instantiates a Node.
-	 *
-	 * @return FloatNode The node
-	 */
-	protected function instantiateNode() {
-		return new FloatNode( $this->name, $this->parent, $this->min, $this->max );
-	}
+class FloatNodeDefinition extends NumericNodeDefinition
+{
+    /**
+     * Instantiates a Node.
+     *
+     * @return FloatNode The node
+     */
+    protected function instantiateNode()
+    {
+        return new FloatNode($this->name, $this->parent, $this->min, $this->max);
+    }
 }

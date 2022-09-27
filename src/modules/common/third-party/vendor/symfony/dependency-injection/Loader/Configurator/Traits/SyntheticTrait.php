@@ -10,18 +10,19 @@
  */
 namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\Configurator\Traits;
 
-trait SyntheticTrait {
-
-	/**
-	 * Sets whether this definition is synthetic, that is not constructed by the
-	 * container, but dynamically injected.
-	 *
-	 * @param bool $synthetic
-	 *
-	 * @return $this
-	 */
-	final public function synthetic( $synthetic = \true ) {
-		$this->definition->setSynthetic( $synthetic );
-		return $this;
-	}
+trait SyntheticTrait
+{
+    /**
+     * Sets whether this definition is synthetic, that is not constructed by the
+     * container, but dynamically injected.
+     *
+     * @param bool $synthetic
+     *
+     * @return $this
+     */
+    public final function synthetic($synthetic = \true)
+    {
+        $this->definition->setSynthetic($synthetic);
+        return $this;
+    }
 }

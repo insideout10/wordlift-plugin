@@ -14,17 +14,18 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuild
 /**
  * Removes abstract Definitions.
  */
-class RemoveAbstractDefinitionsPass implements CompilerPassInterface {
-
-	/**
-	 * Removes abstract definitions from the ContainerBuilder.
-	 */
-	public function process( ContainerBuilder $container ) {
-		foreach ( $container->getDefinitions() as $id => $definition ) {
-			if ( $definition->isAbstract() ) {
-				$container->removeDefinition( $id );
-				$container->log( $this, \sprintf( 'Removed service "%s"; reason: abstract.', $id ) );
-			}
-		}
-	}
+class RemoveAbstractDefinitionsPass implements CompilerPassInterface
+{
+    /**
+     * Removes abstract definitions from the ContainerBuilder.
+     */
+    public function process(ContainerBuilder $container)
+    {
+        foreach ($container->getDefinitions() as $id => $definition) {
+            if ($definition->isAbstract()) {
+                $container->removeDefinition($id);
+                $container->log($this, \sprintf('Removed service "%s"; reason: abstract.', $id));
+            }
+        }
+    }
 }

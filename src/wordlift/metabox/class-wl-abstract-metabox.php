@@ -60,7 +60,7 @@ class Wl_Abstract_Metabox {
 
 		// Add main metabox (will print also the inner fields).
 		$id    = uniqid( 'wl-metabox-' );
-		$title = get_the_title() . ' ' . __( 'properties', 'wordlift' );
+		$title = __( 'WordLift', 'wordlift' );
 
 		// WordPress 4.2 do not accept an array of screens as parameter, have to do be explicit.
 		foreach ( Wordlift_Entity_Service::valid_entity_post_types() as $screen ) {
@@ -96,17 +96,26 @@ class Wl_Abstract_Metabox {
 
 		// HTML Code Before MetaBox Content.
 		do_action( 'wl_metabox_before_html' );
+		?>
+		<div class="wl-tabs">
+			<input id="wl-tab-properties" type="radio" name="wl-metabox-tabs" checked="checked"/>
+			<label for="wl-tab-properties"><?php esc_html_e( 'Properties', 'wordlift' ); ?></label>
+			<div class="wl-tabs__tab">
+				<?php
+				// Loop over the fields.
+				foreach ( $this->fields as $field ) {
 
-		// Loop over the fields.
-		foreach ( $this->fields as $field ) {
+					// load data from DB (values will be available in $field->data).
+					$field->get_data();
 
-			// load data from DB (values will be available in $field->data).
-			$field->get_data();
-
-			// print field HTML (nonce included).
-			echo $field->html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaping happens in `$field->html()`.
-		}
-
+					// print field HTML (nonce included).
+					echo $field->html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaping happens in `$field->html()`.
+				}
+				?>
+			</div>
+			<?php do_action( 'wl_metabox_inner_html' ); ?>
+		</div>
+		<?php
 	}
 
 	/**
@@ -304,7 +313,7 @@ class Wl_Abstract_Metabox {
 	 *
 	 * @param int                   $id The entity's {@link WP_Post}'s id.
 	 *
-	 * We're being called from WP `save_post` hook, we don't need to check the nonce.
+	 *                                                       We're being called from WP `save_post` hook, we don't need to check the nonce.
 	 *
 	 * @param $type int Post or term
 	 *
@@ -318,6 +327,7 @@ class Wl_Abstract_Metabox {
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( isset( $_POST['post_ID'] ) && (int) $_POST['post_ID'] !== $id && Object_Type_Enum::POST === $type ) {
 			$this->log->debug( '`wl_metaboxes`, skipping because the post id from request doesnt match the id from filter.' );
+
 			return;
 		}
 

@@ -13,17 +13,18 @@ namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\C
 /**
  * @method $this class(string $class)
  */
-trait ClassTrait {
-
-	/**
-	 * Sets the service class.
-	 *
-	 * @param string $class The service class
-	 *
-	 * @return $this
-	 */
-	final protected function setClass( $class ) {
-		$this->definition->setClass( $class );
-		return $this;
-	}
+trait ClassTrait
+{
+    /**
+     * Sets the service class.
+     *
+     * @param string $class The service class
+     *
+     * @return $this
+     */
+    protected final function setClass($class)
+    {
+        $this->definition->setClass($class);
+        return $this;
+    }
 }

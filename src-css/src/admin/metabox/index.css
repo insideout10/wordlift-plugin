@@ -1,0 +1,18 @@
+@import "./tabs.scss";
+@import "./main-ingredient.scss";
+
+/** Meta Box **/
+.wl-recipe-ingredient__field label {
+    font-size: 16px;
+}
+
+.wl-recipe-ingredient__field input[type="text"] {
+    padding: 2px 7px;
+    border-radius: 5px;
+    border: 2px solid #333;
+    width: 20%;
+}
+
+.autocomplete-loading {
+    background: url('../../images/loading.gif') no-repeat right center;
+}

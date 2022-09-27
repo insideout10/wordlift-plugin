@@ -16,39 +16,41 @@ use Wordlift\Modules\Common\Symfony\Component\Config\Definition\VariableNode;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class VariableNodeDefinition extends NodeDefinition {
-
-	/**
-	 * Instantiate a Node.
-	 *
-	 * @return VariableNode The node
-	 */
-	protected function instantiateNode() {
-		return new VariableNode( $this->name, $this->parent );
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function createNode() {
-		$node = $this->instantiateNode();
-		if ( null !== $this->normalization ) {
-			$node->setNormalizationClosures( $this->normalization->before );
-		}
-		if ( null !== $this->merge ) {
-			$node->setAllowOverwrite( $this->merge->allowOverwrite );
-		}
-		if ( \true === $this->default ) {
-			$node->setDefaultValue( $this->defaultValue );
-		}
-		$node->setAllowEmptyValue( $this->allowEmptyValue );
-		$node->addEquivalentValue( null, $this->nullEquivalent );
-		$node->addEquivalentValue( \true, $this->trueEquivalent );
-		$node->addEquivalentValue( \false, $this->falseEquivalent );
-		$node->setRequired( $this->required );
-		$node->setDeprecated( $this->deprecationMessage );
-		if ( null !== $this->validation ) {
-			$node->setFinalValidationClosures( $this->validation->rules );
-		}
-		return $node;
-	}
+class VariableNodeDefinition extends NodeDefinition
+{
+    /**
+     * Instantiate a Node.
+     *
+     * @return VariableNode The node
+     */
+    protected function instantiateNode()
+    {
+        return new VariableNode($this->name, $this->parent);
+    }
+    /**
+     * {@inheritdoc}
+     */
+    protected function createNode()
+    {
+        $node = $this->instantiateNode();
+        if (null !== $this->normalization) {
+            $node->setNormalizationClosures($this->normalization->before);
+        }
+        if (null !== $this->merge) {
+            $node->setAllowOverwrite($this->merge->allowOverwrite);
+        }
+        if (\true === $this->default) {
+            $node->setDefaultValue($this->defaultValue);
+        }
+        $node->setAllowEmptyValue($this->allowEmptyValue);
+        $node->addEquivalentValue(null, $this->nullEquivalent);
+        $node->addEquivalentValue(\true, $this->trueEquivalent);
+        $node->addEquivalentValue(\false, $this->falseEquivalent);
+        $node->setRequired($this->required);
+        $node->setDeprecated($this->deprecationMessage);
+        if (null !== $this->validation) {
+            $node->setFinalValidationClosures($this->validation->rules);
+        }
+        return $node;
+    }
 }

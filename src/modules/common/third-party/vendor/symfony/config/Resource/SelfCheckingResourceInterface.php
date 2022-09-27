@@ -16,14 +16,14 @@ namespace Wordlift\Modules\Common\Symfony\Component\Config\Resource;
  *
  * @author Matthias Pigulla <mp@webfactory.de>
  */
-interface SelfCheckingResourceInterface extends ResourceInterface {
-
-	/**
-	 * Returns true if the resource has not been updated since the given timestamp.
-	 *
-	 * @param int $timestamp The last time the resource was loaded
-	 *
-	 * @return bool True if the resource has not been updated, false otherwise
-	 */
-	public function isFresh( $timestamp);
+interface SelfCheckingResourceInterface extends ResourceInterface
+{
+    /**
+     * Returns true if the resource has not been updated since the given timestamp.
+     *
+     * @param int $timestamp The last time the resource was loaded
+     *
+     * @return bool True if the resource has not been updated, false otherwise
+     */
+    public function isFresh($timestamp);
 }

@@ -10,17 +10,18 @@
  */
 namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\Configurator\Traits;
 
-trait AutowireTrait {
-
-	/**
-	 * Enables/disables autowiring.
-	 *
-	 * @param bool $autowired
-	 *
-	 * @return $this
-	 */
-	final public function autowire( $autowired = \true ) {
-		$this->definition->setAutowired( $autowired );
-		return $this;
-	}
+trait AutowireTrait
+{
+    /**
+     * Enables/disables autowiring.
+     *
+     * @param bool $autowired
+     *
+     * @return $this
+     */
+    public final function autowire($autowired = \true)
+    {
+        $this->definition->setAutowired($autowired);
+        return $this;
+    }
 }

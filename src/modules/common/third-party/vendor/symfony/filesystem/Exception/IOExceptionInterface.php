@@ -15,12 +15,12 @@ namespace Wordlift\Modules\Common\Symfony\Component\Filesystem\Exception;
  *
  * @author Christian Gärtner <christiangaertner.film@googlemail.com>
  */
-interface IOExceptionInterface extends ExceptionInterface {
-
-	/**
-	 * Returns the associated path for the exception.
-	 *
-	 * @return string|null The path
-	 */
-	public function getPath();
+interface IOExceptionInterface extends ExceptionInterface
+{
+    /**
+     * Returns the associated path for the exception.
+     *
+     * @return string|null The path
+     */
+    public function getPath();
 }

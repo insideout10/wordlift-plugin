@@ -14,28 +14,31 @@ namespace Wordlift\Modules\Common\Symfony\Component\Yaml\Tag;
  * @author Nicolas Grekas <p@tchwork.com>
  * @author Guilhem N. <egetick@gmail.com>
  */
-final class TaggedValue {
-
-	private $tag;
-	private $value;
-	/**
-	 * @param string $tag
-	 * @param mixed  $value
-	 */
-	public function __construct( $tag, $value ) {
-		$this->tag   = $tag;
-		$this->value = $value;
-	}
-	/**
-	 * @return string
-	 */
-	public function getTag() {
-		return $this->tag;
-	}
-	/**
-	 * @return mixed
-	 */
-	public function getValue() {
-		return $this->value;
-	}
+final class TaggedValue
+{
+    private $tag;
+    private $value;
+    /**
+     * @param string $tag
+     * @param mixed  $value
+     */
+    public function __construct($tag, $value)
+    {
+        $this->tag = $tag;
+        $this->value = $value;
+    }
+    /**
+     * @return string
+     */
+    public function getTag()
+    {
+        return $this->tag;
+    }
+    /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
 }

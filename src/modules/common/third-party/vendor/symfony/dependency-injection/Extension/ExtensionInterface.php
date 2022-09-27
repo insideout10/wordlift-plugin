@@ -16,32 +16,32 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuild
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface ExtensionInterface {
-
-	/**
-	 * Loads a specific configuration.
-	 *
-	 * @throws \InvalidArgumentException When provided tag is not defined in this extension
-	 */
-	public function load( array $configs, ContainerBuilder $container);
-	/**
-	 * Returns the namespace to be used for this extension (XML namespace).
-	 *
-	 * @return string The XML namespace
-	 */
-	public function getNamespace();
-	/**
-	 * Returns the base path for the XSD files.
-	 *
-	 * @return string|false
-	 */
-	public function getXsdValidationBasePath();
-	/**
-	 * Returns the recommended alias to use in XML.
-	 *
-	 * This alias is also the mandatory prefix to use when using YAML.
-	 *
-	 * @return string The alias
-	 */
-	public function getAlias();
+interface ExtensionInterface
+{
+    /**
+     * Loads a specific configuration.
+     *
+     * @throws \InvalidArgumentException When provided tag is not defined in this extension
+     */
+    public function load(array $configs, ContainerBuilder $container);
+    /**
+     * Returns the namespace to be used for this extension (XML namespace).
+     *
+     * @return string The XML namespace
+     */
+    public function getNamespace();
+    /**
+     * Returns the base path for the XSD files.
+     *
+     * @return string|false
+     */
+    public function getXsdValidationBasePath();
+    /**
+     * Returns the recommended alias to use in XML.
+     *
+     * This alias is also the mandatory prefix to use when using YAML.
+     *
+     * @return string The alias
+     */
+    public function getAlias();
 }

@@ -18,48 +18,51 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Reference;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class ResolveReferencesToAliasesPass extends AbstractRecursivePass {
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function process( ContainerBuilder $container ) {
-		parent::process( $container );
-		foreach ( $container->getAliases() as $id => $alias ) {
-			$aliasId = $container->normalizeId( $alias );
-			if ( $aliasId !== ( $defId = $this->getDefinitionId( $aliasId, $container ) ) ) {
-				$container->setAlias( $id, $defId )->setPublic( $alias->isPublic() )->setPrivate( $alias->isPrivate() );
-			}
-		}
-	}
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function processValue( $value, $isRoot = \false ) {
-		if ( $value instanceof Reference ) {
-			$defId = $this->getDefinitionId( $id = $this->container->normalizeId( $value ), $this->container );
-			if ( $defId !== $id ) {
-				return new Reference( $defId, $value->getInvalidBehavior() );
-			}
-		}
-		return parent::processValue( $value );
-	}
-	/**
-	 * Resolves an alias into a definition id.
-	 *
-	 * @param string $id The definition or alias id to resolve
-	 *
-	 * @return string The definition id with aliases resolved
-	 */
-	private function getDefinitionId( $id, ContainerBuilder $container ) {
-		$seen = array();
-		while ( $container->hasAlias( $id ) ) {
-			if ( isset( $seen[ $id ] ) ) {
-				throw new ServiceCircularReferenceException( $id, \array_merge( \array_keys( $seen ), array( $id ) ) );
-			}
-			$seen[ $id ] = \true;
-			$id          = $container->normalizeId( $container->getAlias( $id ) );
-		}
-		return $id;
-	}
+class ResolveReferencesToAliasesPass extends AbstractRecursivePass
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
+        parent::process($container);
+        foreach ($container->getAliases() as $id => $alias) {
+            $aliasId = $container->normalizeId($alias);
+            if ($aliasId !== ($defId = $this->getDefinitionId($aliasId, $container))) {
+                $container->setAlias($id, $defId)->setPublic($alias->isPublic())->setPrivate($alias->isPrivate());
+            }
+        }
+    }
+    /**
+     * {@inheritdoc}
+     */
+    protected function processValue($value, $isRoot = \false)
+    {
+        if ($value instanceof Reference) {
+            $defId = $this->getDefinitionId($id = $this->container->normalizeId($value), $this->container);
+            if ($defId !== $id) {
+                return new Reference($defId, $value->getInvalidBehavior());
+            }
+        }
+        return parent::processValue($value);
+    }
+    /**
+     * Resolves an alias into a definition id.
+     *
+     * @param string $id The definition or alias id to resolve
+     *
+     * @return string The definition id with aliases resolved
+     */
+    private function getDefinitionId($id, ContainerBuilder $container)
+    {
+        $seen = [];
+        while ($container->hasAlias($id)) {
+            if (isset($seen[$id])) {
+                throw new ServiceCircularReferenceException($id, \array_merge(\array_keys($seen), [$id]));
+            }
+            $seen[$id] = \true;
+            $id = $container->normalizeId($container->getAlias($id));
+        }
+        return $id;
+    }
 }

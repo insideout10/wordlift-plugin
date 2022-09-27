@@ -16,10 +16,10 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuild
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-interface CompilerPassInterface {
-
-	/**
-	 * You can modify the container here before it is dumped to PHP code.
-	 */
-	public function process( ContainerBuilder $container);
+interface CompilerPassInterface
+{
+    /**
+     * You can modify the container here before it is dumped to PHP code.
+     */
+    public function process(ContainerBuilder $container);
 }

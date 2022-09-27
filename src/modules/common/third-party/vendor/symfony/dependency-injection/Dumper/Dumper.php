@@ -16,10 +16,11 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuild
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-abstract class Dumper implements DumperInterface {
-
-	protected $container;
-	public function __construct( ContainerBuilder $container ) {
-		$this->container = $container;
-	}
+abstract class Dumper implements DumperInterface
+{
+    protected $container;
+    public function __construct(ContainerBuilder $container)
+    {
+        $this->container = $container;
+    }
 }

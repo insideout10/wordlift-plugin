@@ -15,9 +15,10 @@ namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Exceptio
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class EnvNotFoundException extends InvalidArgumentException {
-
-	public function __construct( $name ) {
-		parent::__construct( \sprintf( 'Environment variable not found: "%s".', $name ) );
-	}
+class EnvNotFoundException extends InvalidArgumentException
+{
+    public function __construct($name)
+    {
+        parent::__construct(\sprintf('Environment variable not found: "%s".', $name));
+    }
 }
