@@ -214,13 +214,14 @@ class Meta_Box {
 		$updated = false;
 		foreach ( $recipes as $recipe ) {
 			$recipe_id       = $recipe->recipe_id;
-			$main_ingredient = wp_json_encode( json_decode( $recipe->ingredient, true ) );
+			$main_ingredient = $recipe->ingredient;
 			if ( 'UNSET' === $main_ingredient ) {
 				$updated = delete_post_meta( $recipe_id, '_wl_main_ingredient_jsonld' );
 			} elseif ( 'DONT_CHANGE' === $main_ingredient ) {
 				$updated = true;
 			} else {
-				$updated = update_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', $main_ingredient );
+				$main_ingredient = wp_json_encode( json_decode( $recipe->ingredient, true ) );
+				$updated         = update_post_meta( $recipe_id, '_wl_main_ingredient_jsonld', $main_ingredient );
 			}
 		}
 
