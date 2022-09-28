@@ -25,7 +25,7 @@ class Download_Ingredients_Data {
 					    p2.post_title,
 					    p2.post_status
 					FROM {$wpdb->posts} p1
-					    INNER JOIN wp_postmeta pm1 ON pm1.post_ID = p1.ID
+					    INNER JOIN {$wpdb->postmeta} pm1 ON pm1.post_ID = p1.ID
 					        AND pm1.meta_key = '_wl_main_ingredient_jsonld'
 					    INNER JOIN {$wpdb->posts} p2
 					        ON p2.post_content LIKE CONCAT( '%<!--WPRM Recipe ', p1.ID,'-->%' )
