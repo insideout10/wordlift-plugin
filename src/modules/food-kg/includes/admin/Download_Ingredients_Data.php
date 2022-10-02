@@ -53,11 +53,12 @@ class Download_Ingredients_Data {
 		fputcsv(
 			$output,
 			array(
-				__( 'Name', 'wordlift' ),
-				__( 'URL', 'wordlift' ),
 				__( 'Ingredient Name', 'wordlift' ),
-				__( 'Post ID', 'wordlift' ),
+				__( 'Recipe Name', 'wordlift' ),
 				__( 'Recipe ID', 'wordlift' ),
+				__( 'Post Name', 'wordlift' ),
+				__( 'Post ID', 'wordlift' ),
+				__( 'Post URL', 'wordlift' ),
 			),
 			"\t"
 		);
@@ -69,11 +70,12 @@ class Download_Ingredients_Data {
 			fputcsv(
 				$output,
 				array(
-					$item->post_title,
-					esc_url( get_the_permalink( $item->post_ID ) ),
 					$recipe ? $recipe['name'] : 'null',
-					$item->post_ID,
+					$item->recipe_name,
 					$item->recipe_ID, // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+					$item->post_title,
+					$item->post_ID,
+					esc_url( get_the_permalink( $item->post_ID ) ),
 				),
 				"\t"
 			);

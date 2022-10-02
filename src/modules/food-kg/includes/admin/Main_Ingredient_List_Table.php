@@ -46,6 +46,21 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 					            AND p2.post_status = 'publish'
 					WHERE p1.post_type = 'wprm_recipe'"
 		);
+
+		// Pagination.
+		$per_page     = 20;
+		$current_page = $this->get_pagenum();
+		$total_items  = count( $this->items );
+
+		$this->items = array_slice( $this->items, ( ( $current_page - 1 ) * $per_page ), $per_page );
+
+		$this->set_pagination_args(
+			array(
+				'total_items' => $total_items,
+				'per_page'    => $per_page,
+				'total_pages' => ceil( $total_items / $per_page ),
+			)
+		);
 	}
 
 	public function no_items() {
@@ -54,11 +69,18 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 
 	public function get_columns() {
 		return array(
-			'recipe_name' => __( 'Recipe Name', 'wordlift' ),
-			'post_title'  => __( 'Post Title', 'wordlift' ),
-			'url'         => __( 'Post URL', 'wordlift' ),
-			'actions'     => '',
+			'ingredient_name' => __( 'Ingredient Name', 'wordlift' ),
+			'recipe_name'     => __( 'Recipe Name', 'wordlift' ),
+			'post_title'      => __( 'Post Title', 'wordlift' ),
+			'url'             => __( 'Post URL', 'wordlift' ),
+			'actions'         => '',
 		);
+	}
+
+	public function column_ingredient_name( $item ) {
+		$recipe_json_ld = get_post_meta( $item->recipe_ID, '_wl_main_ingredient_jsonld', true ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		$recipe         = json_decode( $recipe_json_ld, true );
+		return $recipe ? $recipe['name'] : 'null';
 	}
 
 	public function column_recipe_name( $item ) {
