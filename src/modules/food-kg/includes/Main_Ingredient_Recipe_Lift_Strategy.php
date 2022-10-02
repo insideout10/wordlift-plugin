@@ -68,7 +68,7 @@ class Main_Ingredient_Recipe_Lift_Strategy implements Recipe_Lift_Strategy {
 
 		$jsonld = $this->ingredients_client->main_ingredient( $post->post_title );
 		if ( $this->validate( $jsonld ) ) {
-			add_post_meta( $post_id, '_wl_main_ingredient_jsonld', $jsonld );
+			add_post_meta( $post_id, '_wl_main_ingredient_jsonld', wp_slash( $jsonld ) );
 
 			return true;
 		} else {
