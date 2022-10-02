@@ -7,7 +7,7 @@ set -o nounset
 set -o pipefail
 
 # Enable DEBUG.
-sed -i "s/'WP_DEBUG', false/'WP_DEBUG', true/" /opt/bitnami/wordpress/wp-config.php
+sed -i "s/'WP_DEBUG', false/'WP_DEBUG', true/g" /opt/bitnami/wordpress/wp-config.php
 
 echo "** Set the rewrite structure **"
 wp --skip-plugins --skip-themes rewrite structure '/%postname%/'

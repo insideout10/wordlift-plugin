@@ -25,7 +25,7 @@ class Download_Ingredients_Data {
 					    p2.post_title,
 					    p2.post_status
 					FROM {$wpdb->posts} p1
-					    INNER JOIN wp_postmeta pm1 ON pm1.post_ID = p1.ID
+					    INNER JOIN {$wpdb->postmeta} pm1 ON pm1.post_ID = p1.ID
 					        AND pm1.meta_key = '_wl_main_ingredient_jsonld'
 					    INNER JOIN {$wpdb->posts} p2
 					        ON p2.post_content LIKE CONCAT( '%<!--WPRM Recipe ', p1.ID,'-->%' )
@@ -53,11 +53,12 @@ class Download_Ingredients_Data {
 		fputcsv(
 			$output,
 			array(
-				__( 'Name', 'wordlift' ),
-				__( 'URL', 'wordlift' ),
 				__( 'Ingredient Name', 'wordlift' ),
-				__( 'Post ID', 'wordlift' ),
+				__( 'Recipe Name', 'wordlift' ),
 				__( 'Recipe ID', 'wordlift' ),
+				__( 'Post Name', 'wordlift' ),
+				__( 'Post ID', 'wordlift' ),
+				__( 'Post URL', 'wordlift' ),
 			),
 			"\t"
 		);
@@ -69,11 +70,12 @@ class Download_Ingredients_Data {
 			fputcsv(
 				$output,
 				array(
-					$item->post_title,
-					esc_url( get_the_permalink( $item->post_ID ) ),
 					$recipe ? $recipe['name'] : 'null',
-					$item->post_ID,
+					$item->recipe_name,
 					$item->recipe_ID, // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+					$item->post_title,
+					$item->post_ID,
+					esc_url( get_the_permalink( $item->post_ID ) ),
 				),
 				"\t"
 			);

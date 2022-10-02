@@ -43,19 +43,8 @@ class Main_Ingredient_Recipe_Lift_Strategy implements Recipe_Lift_Strategy {
 			// Emit something to keep the connection alive.
 			echo esc_html( "$count_lifted\n" );
 
-			// Skip posts with existing data.
-			$existing = get_post_meta( $recipe->ID, '_wl_main_ingredient_jsonld', true );
-			if ( ! empty( $existing ) ) {
+			if ( $this->process( $recipe->ID ) ) {
 				$count_lifted ++;
-				continue;
-			}
-
-			$jsonld = $this->ingredients_client->main_ingredient( $recipe->post_title );
-			if ( ! empty( $jsonld ) ) {
-				add_post_meta( $recipe->ID, '_wl_main_ingredient_jsonld', $jsonld );
-				$count_lifted ++;
-			} else {
-				delete_post_meta( $recipe->ID, '_wl_main_ingredient_jsonld' );
 			}
 		}
 
@@ -66,4 +55,43 @@ class Main_Ingredient_Recipe_Lift_Strategy implements Recipe_Lift_Strategy {
 		/* translators: 1: The number of lifted recipes, 2: The total number of recipes. */
 		$this->notices->queue( 'info', sprintf( __( 'WordLift lifted %1$d of %2$d recipe(s).', 'wordlift' ), $count_lifted, $count ) );
 	}
+
+	public function process( $post_id ) {
+
+		// Skip posts with existing data.
+		$existing = get_post_meta( $post_id, '_wl_main_ingredient_jsonld', true );
+		if ( ! empty( $existing ) ) {
+			return true;
+		}
+
+		$post = get_post( $post_id );
+
+		$jsonld = $this->ingredients_client->main_ingredient( $post->post_title );
+		if ( $this->validate( $jsonld ) ) {
+			add_post_meta( $post_id, '_wl_main_ingredient_jsonld', $jsonld );
+
+			return true;
+		} else {
+			// No ingredient found.
+			delete_post_meta( $post_id, '_wl_main_ingredient_jsonld' );
+
+			return false;
+		}
+
+	}
+
+	private function validate( $jsonld_string ) {
+
+		try {
+			$json = json_decode( $jsonld_string );
+			if ( ! isset( $json->{'@type'} ) || ! isset( $json->name ) ) {
+				return false;
+			}
+		} catch ( \Exception $e ) {
+			return false;
+		}
+
+		return true;
+	}
 }
+
