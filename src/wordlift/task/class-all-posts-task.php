@@ -43,7 +43,10 @@ class All_Posts_Task implements Task {
 			$count = $wpdb->get_var(
 				"SELECT COUNT( 1 ) 
 				FROM $wpdb->posts "
-				. $this->where( $this->add_post_type_filter() ) );
+				// Prepare is called with the `add_post_type_filter` function.
+				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				. $this->where( $this->add_post_type_filter() )
+			);
 			set_transient( $key, $count, HOUR_IN_SECONDS );
 		}
 
@@ -67,8 +70,10 @@ class All_Posts_Task implements Task {
 		$ids = $wpdb->get_col(
 			$wpdb->prepare(
 				"SELECT ID FROM $wpdb->posts "
+				// Prepare is called with the `add_post_type_filter` function.
+				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 				. $this->where( $this->add_post_type_filter() )
-				. " ORDER BY ID LIMIT %d,%d",
+				. ' ORDER BY ID LIMIT %d,%d',
 				$args['offset'],
 				$args['batch_size']
 			)

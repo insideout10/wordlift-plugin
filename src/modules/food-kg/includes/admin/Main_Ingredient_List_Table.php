@@ -47,8 +47,10 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 					FROM {$wpdb->posts} p1
 					    INNER JOIN {$wpdb->postmeta} pm1 ON pm1.post_ID = p1.ID
 					        AND pm1.meta_key = '_wl_main_ingredient_jsonld'
-					    INNER JOIN {$wpdb->posts} p2
-					        ON p2.post_content LIKE CONCAT( '%<!--WPRM Recipe ', p1.ID,'-->%' )
+					    INNER JOIN {$wpdb->posts} p2"
+				// The following ignore rule is used against the `LIKE CONCAT`. We only have const values.
+				// phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.LikeWildcardsInQuery
+				. " ON p2.post_content LIKE CONCAT( '%<!--WPRM Recipe ', p1.ID,'-->%' )
 					            AND p2.post_status = 'publish'
 					WHERE p1.post_type = 'wprm_recipe'
 					LIMIT %d

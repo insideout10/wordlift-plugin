@@ -68,13 +68,12 @@ function __wl_foodkg__load() {
 	$main_ingredient_jsonld = $container_builder->get( 'Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld' );
 	$main_ingredient_jsonld->register_hooks();
 
-
 	/** Prepare the background task. */
 	$main_ingredient_recipe_lift = $container_builder->get( 'Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy' );
 	$task                        = new All_Posts_Task(
 		array(
 			$main_ingredient_recipe_lift,
-			'process'
+			'process',
 		),
 		'wprm_recipe',
 		'sync-main-ingredient'
@@ -82,7 +81,6 @@ function __wl_foodkg__load() {
 	$background_task             = Background_Task::create( $task );
 	$background_task_route       = Background_Task_Route::create( $background_task, '/main-ingredient' );
 	Background_Task_Page::create( __( 'Synchronize Main Ingredient', 'wordlift' ), 'sync-main-ingredient', $background_task_route );
-
 
 	if ( is_admin() ) {
 		$page = $container_builder->get( 'Wordlift\Modules\Food_Kg\Admin\Page' );
