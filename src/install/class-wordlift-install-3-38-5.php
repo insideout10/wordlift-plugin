@@ -19,10 +19,11 @@ class Wordlift_Install_3_38_5 extends Wordlift_Install {
 			$wpdb->prepare(
 				"DELETE FROM $wpdb->postmeta
 				WHERE meta_key = %s
-					AND meta_value NOT LIKE %s
-				",
+					AND ( meta_value NOT LIKE %s
+						OR meta_value LIKE %s )",
 				'_wl_main_ingredient_jsonld',
-				'%' . $wpdb->esc_like( '"@id":' ) . '%'
+				'%' . $wpdb->esc_like( '"@id":' ) . '%',
+				'%' . $wpdb->esc_like( ' "' ) . '%'
 			)
 		);
 
