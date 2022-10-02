@@ -32,8 +32,14 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 		 */
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 
+		// Pagination.
+		$per_page     = 20;
+		$current_page = $this->get_pagenum();
+		$total_items  = $this->count();
+
 		$this->items = $wpdb->get_results(
-			"SELECT p1.ID AS recipe_ID,
+			$wpdb->prepare(
+				"SELECT p1.ID AS recipe_ID,
 					    p1.post_title AS recipe_name,
 					    p2.ID AS post_ID,
 					    p2.post_title,
@@ -44,15 +50,13 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 					    INNER JOIN {$wpdb->posts} p2
 					        ON p2.post_content LIKE CONCAT( '%<!--WPRM Recipe ', p1.ID,'-->%' )
 					            AND p2.post_status = 'publish'
-					WHERE p1.post_type = 'wprm_recipe'"
+					WHERE p1.post_type = 'wprm_recipe'
+					LIMIT %d
+					OFFSET %d",
+				$per_page,
+				( $current_page - 1 ) * $per_page
+			)
 		);
-
-		// Pagination.
-		$per_page     = 20;
-		$current_page = $this->get_pagenum();
-		$total_items  = count( $this->items );
-
-		$this->items = array_slice( $this->items, ( ( $current_page - 1 ) * $per_page ), $per_page );
 
 		$this->set_pagination_args(
 			array(
@@ -61,6 +65,30 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 				'total_pages' => ceil( $total_items / $per_page ),
 			)
 		);
+	}
+
+	private function count() {
+		global $wpdb;
+
+		$count = get_transient( '_wl_main_ingredient_list_table__count' );
+
+		if ( ! $count ) {
+
+			$count = $wpdb->get_var(
+				"SELECT COUNT( 1 ) 
+					FROM {$wpdb->posts} p1
+					    INNER JOIN {$wpdb->postmeta} pm1 ON pm1.post_ID = p1.ID
+					        AND pm1.meta_key = '_wl_main_ingredient_jsonld'
+					    INNER JOIN {$wpdb->posts} p2
+					        ON p2.post_content LIKE CONCAT( '%<!--WPRM Recipe ', p1.ID,'-->%' )
+					            AND p2.post_status = 'publish'
+					WHERE p1.post_type = 'wprm_recipe'"
+			);
+
+			set_transient( '_wl_main_ingredient_list_table__count', $count, 60 );
+		}
+
+		return $count;
 	}
 
 	public function no_items() {
@@ -80,6 +108,7 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 	public function column_ingredient_name( $item ) {
 		$recipe_json_ld = get_post_meta( $item->recipe_ID, '_wl_main_ingredient_jsonld', true ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$recipe         = json_decode( $recipe_json_ld, true );
+
 		return $recipe ? $recipe['name'] : 'null';
 	}
 

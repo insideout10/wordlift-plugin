@@ -67,7 +67,7 @@ class Main_Ingredient_Recipe_Lift_Strategy implements Recipe_Lift_Strategy {
 		$post = get_post( $post_id );
 
 		$jsonld = $this->ingredients_client->main_ingredient( $post->post_title );
-		if ( ! empty( $jsonld ) ) {
+		if ( $this->validate( $jsonld ) ) {
 			add_post_meta( $post_id, '_wl_main_ingredient_jsonld', $jsonld );
 
 			return true;
@@ -79,4 +79,19 @@ class Main_Ingredient_Recipe_Lift_Strategy implements Recipe_Lift_Strategy {
 		}
 
 	}
+
+	private function validate( $jsonld_string ) {
+
+		try {
+			$json = json_decode( $jsonld_string );
+			if ( ! isset( $json->{'@type'} ) || ! isset( $json->name ) ) {
+				return false;
+			}
+		} catch ( \Exception $e ) {
+			return false;
+		}
+
+		return true;
+	}
 }
+
