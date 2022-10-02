@@ -35,7 +35,7 @@ class Background_Task extends Wordlift_Plugin_WP_Background_Process {
 	 * @param Task $task
 	 */
 	public function __construct( $task ) {
-		$this->action        = sha1( get_class( $task ) );
+		$this->action        = $task->get_id();
 		$this->option_prefix = "_{$this->action}_";
 
 		parent::__construct();

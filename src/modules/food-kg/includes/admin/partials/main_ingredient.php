@@ -2,12 +2,16 @@
 
 use Wordlift\Modules\Food_Kg\Admin\Main_Ingredient_List_Table;
 
+
 ?>
+
+
 <div class="wrap">
-	<div class="wl-ingredients">
-		<h1><?php esc_html_e( 'Main Ingredients', 'wordlift' ); ?></h1>
-		<a href="<?php echo esc_url( admin_url( 'admin-ajax.php?action=wl_download_ingredients_data&_wpnonce=' . wp_create_nonce( 'wl-dl-ingredients-data-nonce' ) ) ); ?>" class="wl-ingredients__btn-copy-table"><?php esc_html_e( 'Download Ingredients Data', 'wordlift' ); ?></a>
-	</div>
+    <div class="wl-ingredients">
+        <h1><?php esc_html_e( 'Main Ingredients', 'wordlift' ); ?></h1>
+        <a href="<?php echo esc_url( admin_url( 'admin-ajax.php?action=wl_download_ingredients_data&_wpnonce=' . wp_create_nonce( 'wl-dl-ingredients-data-nonce' ) ) ); ?>"
+           class="wl-ingredients__btn-copy-table"><?php esc_html_e( 'Download Ingredients Data', 'wordlift' ); ?></a>
+    </div>
 	<?php
 
 	// Prepare Table of elements

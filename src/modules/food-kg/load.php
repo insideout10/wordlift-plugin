@@ -14,6 +14,10 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFil
 use Wordlift\Modules\Food_Kg\Jsonld;
 use Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld;
 use Wordlift\Modules\Food_Kg\Preconditions;
+use Wordlift\Task\All_Posts_Task;
+use Wordlift\Task\Background\Background_Task;
+use Wordlift\Task\Background\Background_Task_Page;
+use Wordlift\Task\Background\Background_Task_Route;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -64,6 +68,22 @@ function __wl_foodkg__load() {
 	$main_ingredient_jsonld = $container_builder->get( 'Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld' );
 	$main_ingredient_jsonld->register_hooks();
 
+
+	/** Prepare the background task. */
+	$main_ingredient_recipe_lift = $container_builder->get( 'Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy' );
+	$task                        = new All_Posts_Task(
+		array(
+			$main_ingredient_recipe_lift,
+			'process'
+		),
+		'wprm_recipe',
+		'sync-main-ingredient'
+	);
+	$background_task             = Background_Task::create( $task );
+	$background_task_route       = Background_Task_Route::create( $background_task, '/main-ingredient' );
+	Background_Task_Page::create( __( 'Synchronize Main Ingredient', 'wordlift' ), 'sync-main-ingredient', $background_task_route );
+
+
 	if ( is_admin() ) {
 		$page = $container_builder->get( 'Wordlift\Modules\Food_Kg\Admin\Page' );
 		$page->register_hooks();
@@ -71,6 +91,7 @@ function __wl_foodkg__load() {
 		// Download Ingredients Data.
 		$download_ingredients_data = $container_builder->get( 'Wordlift\Modules\Food_Kg\Admin\Download_Ingredients_Data' );
 		$download_ingredients_data->register_hooks();
+
 	}
 }
 
