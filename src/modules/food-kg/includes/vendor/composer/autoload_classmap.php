@@ -18,6 +18,7 @@ return array(
     'Wordlift\\Modules\\Food_Kg\\Admin\\Page' => $baseDir . '/admin/Page.php',
     'Wordlift\\Modules\\Food_Kg\\Admin\\Page_Delegate' => $baseDir . '/admin/Page_Delegate.php',
     'Wordlift\\Modules\\Food_Kg\\Ingredients' => $baseDir . '/Ingredients.php',
+    'Wordlift\\Modules\\Food_Kg\\Ingredients_API' => $baseDir . '/Ingredients_API.php',
     'Wordlift\\Modules\\Food_Kg\\Ingredients_Client' => $baseDir . '/Ingredients_Client.php',
     'Wordlift\\Modules\\Food_Kg\\Ingredients_Taxonomy_Recipe_Lift_Strategy' => $baseDir . '/Ingredients_Taxonomy_Recipe_Lift_Strategy.php',
     'Wordlift\\Modules\\Food_Kg\\Jsonld' => $baseDir . '/Jsonld.php',

@@ -64,6 +64,12 @@ function __wl_foodkg__load() {
 	$jsonld = $container_builder->get( 'Wordlift\Modules\Food_Kg\Jsonld' );
 	$jsonld->register_hooks();
 
+	/**
+	 * Ingredients API.
+	 */
+	$ingredients_api = $container_builder->get( 'Wordlift\Modules\Food_Kg\Ingredients_API' );
+	$ingredients_api->register_hooks();
+
 	/** @var Main_Ingredient_Jsonld $jsonld */
 	$main_ingredient_jsonld = $container_builder->get( 'Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld' );
 	$main_ingredient_jsonld->register_hooks();
