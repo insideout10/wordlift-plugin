@@ -74,8 +74,8 @@ class Download_Ingredients_Data {
 				array(
 					$recipe ? $recipe['name'] : 'null',
 					$item->recipe_name,
-					$item->recipe_ID,
 					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+					$item->recipe_ID,
 					$item->post_title,
 					$item->post_ID,
 					esc_url( get_the_permalink( $item->post_ID ) ),

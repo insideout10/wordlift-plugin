@@ -2,8 +2,6 @@
 
 namespace Wordlift\Shipping_Data;
 
-use WCML\Multicurrency\Shipping\ShippingModeProvider;
-
 class Local_Pickup_Shipping_Method extends Shipping_Method {
 
 	public function add_available_delivery_method( &$jsonld ) {

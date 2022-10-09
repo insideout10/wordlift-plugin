@@ -2,8 +2,6 @@
 
 namespace Wordlift\Shipping_Data;
 
-use WCML\Multicurrency\Shipping\ShippingModeProvider;
-
 class Flat_Rate_Shipping_Method extends Shipping_Method {
 
 	public function add_available_delivery_method( &$jsonld ) {
@@ -44,7 +42,5 @@ class Flat_Rate_Shipping_Method extends Shipping_Method {
 		$offer_shipping_details['shippingRate'][] = $shipping_rate;
 
 	}
-
-
 
 }
