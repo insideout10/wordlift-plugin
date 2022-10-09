@@ -2,6 +2,8 @@
 
 namespace Wordlift\Shipping_Data;
 
+use WCML\Multicurrency\Shipping\ShippingModeProvider;
+
 class Flat_Rate_Shipping_Method extends Shipping_Method {
 
 	public function add_available_delivery_method( &$jsonld ) {
@@ -29,7 +31,7 @@ class Flat_Rate_Shipping_Method extends Shipping_Method {
 		$description = isset( $this->wc_shipping_method->instance_settings['description'] )
 			? wp_strip_all_tags( $this->wc_shipping_method->instance_settings['description'] ) : '';
 
-		$offer_shipping_details['shippingRate'][] = array(
+		$shipping_rate = array(
 			'@type'       => 'MonetaryAmount',
 			'name'        => $this->wc_shipping_method->get_title(),
 			'description' => $description,
@@ -37,6 +39,12 @@ class Flat_Rate_Shipping_Method extends Shipping_Method {
 			'currency'    => get_woocommerce_currency(),
 		);
 
+		$this->change_to_manual_currency( $shipping_rate );
+
+		$offer_shipping_details['shippingRate'][] = $shipping_rate;
+
 	}
+
+
 
 }

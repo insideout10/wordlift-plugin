@@ -29,13 +29,17 @@ class Free_Shipping_Shipping_Method extends Shipping_Method {
 		$description = isset( $this->wc_shipping_method->instance_settings['description'] )
 			? wp_strip_all_tags( $this->wc_shipping_method->instance_settings['description'] ) : '';
 
-		$offer_shipping_details['shippingRate'][] = array(
+		$shipping_rate = array(
 			'@type'       => 'MonetaryAmount',
 			'name'        => $this->wc_shipping_method->get_title(),
 			'description' => $description,
 			'value'       => '0',
 			'currency'    => get_woocommerce_currency(),
 		);
+
+		$this->change_to_manual_currency( $shipping_rate );
+
+		$offer_shipping_details['shippingRate'][] = $shipping_rate;
 
 	}
 
