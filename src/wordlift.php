@@ -37,6 +37,8 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 define( 'WORDLIFT_VERSION', '3.39.0-dev' );
+require_once __DIR__ . '/modules/common/load.php';
+require_once __DIR__ . '/modules/include-exclude/load.php';
 
 /**
  * Filter to disable WLP on any request, defaults to true.
@@ -296,4 +298,3 @@ add_filter(
 require_once __DIR__ . '/modules/food-kg/load.php';
 require_once __DIR__ . '/modules/acf4so/load.php';
 require_once __DIR__ . '/modules/pods/load.php';
-require_once __DIR__ . '/modules/include-exclude/load.php';

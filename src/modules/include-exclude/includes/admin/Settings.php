@@ -19,8 +19,13 @@ class Settings {
 	 */
 	public function register_hooks() {
 		if ( is_admin() ) {
-			add_action( 'admin_menu', array( $this, 'register_sub_menu' ) );
-			add_action( 'admin_init', array( $this, 'register_setting' ) );
+			add_action(
+				'plugins_loaded',
+				function () {
+					add_action( 'admin_menu', array( $this, 'register_sub_menu' ) );
+					add_action( 'admin_init', array( $this, 'register_setting' ) );
+				}
+			);
 		}
 	}
 

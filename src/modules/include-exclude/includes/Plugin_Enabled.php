@@ -17,15 +17,12 @@ namespace WordLift\Modules\Include_Exclude;
 class Plugin_Enabled {
 
 	/**
-	 * WL_JSONLD_Enabled constructor.
+	 * Register hooks.
 	 */
-	public function __construct() {
-
+	public function register_hooks() {
 		add_filter( 'wl_is_enabled', array( $this, 'wl_is_enabled' ) );
-
 		add_filter( 'wl_jsonld_term_html_output', array( $this, 'may_be_exclude_nitropack' ) );
 		add_filter( 'wl_jsonld_post_html_output', array( $this, 'may_be_exclude_nitropack' ) );
-
 	}
 
 	/**
@@ -90,7 +87,6 @@ class Plugin_Enabled {
 				return ! $default_state;
 			}
 		}
-
 		return $default_state;
 
 	}

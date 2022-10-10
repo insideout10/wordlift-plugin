@@ -16,26 +16,34 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! apply_filters( 'wl_feature__enable__food-kg', false ) ) { //phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+$wl_features = get_option( '_wl_features', array() );
+if ( ! isset( $wl_features['include-exclude'] ) || ! $wl_features['include-exclude'] ) {
 	return;
 }
 
-// Autoloader for plugin itself.
-if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-	require __DIR__ . '/vendor/autoload.php';
-}
+/**
+ * Load Include Exclude Module.
+ *
+ * @return void
+ */
+function __wl_include_exclude__load() {
 
-$container_builder = new ContainerBuilder();
-$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
-$loader->load( 'services.yml' );
-$container_builder->compile();
+	// Autoloader for plugin itself.
+	if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+		require __DIR__ . '/vendor/autoload.php';
+	}
 
-add_action(
-	'plugins_loaded',
-	function () use ( $container_builder ) {
+	$container_builder = new ContainerBuilder();
+	$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
+	$loader->load( 'services.yml' );
+	$container_builder->compile();
+
+	$enabled = $container_builder->get( 'WordLift\Modules\Include_Exclude\Plugin_Enabled' );
+	$enabled->register_hooks();
+
+	if ( apply_filters( 'wl_is_enabled', true ) ) {
 		$settings = $container_builder->get( 'WordLift\Modules\Include_Exclude\Admin\Settings' );
 		$settings->register_hooks();
-
-		$container_builder->get( 'WordLift\Modules\Include_Exclude\Plugin_Enabled' );
 	}
-);
+}
+__wl_include_exclude__load();
