@@ -12,6 +12,7 @@ vendor/
 
 !src/composer.lock
 !src/vendor/
+!src/modules/include-exclude/vendor/
 
 node_modules/
 
