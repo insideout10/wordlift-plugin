@@ -27,27 +27,31 @@ class Wordlift_Include_Exclude_Test extends Wordlift_Unit_Test_Case {
 	public function setUp() {
 		parent::setUp();
 
+		// Update Site & Home URLs.
+		update_option( 'siteurl', 'https://wordlift.io' );
+		update_option( 'home', 'https://wordlift.io' );
+
 		$this->include_exclude_enabled = new WordLift\Modules\Include_Exclude\Plugin_Enabled();
 	}
 
-	public function test_include_urls() {
+	public function test_given_include_urls_should_return_true() {
 		update_option(
 			'wl_exclude_include_urls_settings',
 			array(
 				'include_exclude' => 'include',
-				'urls'            => "https://example.org/hello-world \n http://example.org/ \n https://example.org/3",
+				'urls'            => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
 			)
 		);
 
 		$this->assertTrue( $this->include_exclude_enabled->wl_is_enabled( true ) );
 	}
 
-	public function test_exclude_urls() {
+	public function test_given_exclude_urls_should_return_false() {
 		update_option(
 			'wl_exclude_include_urls_settings',
 			array(
 				'include_exclude' => 'exclude',
-				'urls'            => "https://example.org/hello-world \n http://example.org/ \n https://example.org/3",
+				'urls'            => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
 			)
 		);
 
