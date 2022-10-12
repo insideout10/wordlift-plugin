@@ -30,7 +30,19 @@ class Wordlift_Include_Exclude_Test extends Wordlift_Unit_Test_Case {
 		$this->include_exclude_enabled = new WordLift\Modules\Include_Exclude\Plugin_Enabled();
 	}
 
-	public function test_include_exclude_urls() {
+	public function test_include_urls() {
+		update_option(
+			'wl_exclude_include_urls_settings',
+			array(
+				'include_exclude' => 'include',
+				'urls'            => "https://example.org/hello-world \n http://example.org/ \n https://example.org/3",
+			)
+		);
+
+		$this->assertTrue( $this->include_exclude_enabled->wl_is_enabled( true ) );
+	}
+
+	public function test_exclude_urls() {
 		update_option(
 			'wl_exclude_include_urls_settings',
 			array(
