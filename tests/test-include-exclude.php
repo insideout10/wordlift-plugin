@@ -42,7 +42,7 @@ class Wordlift_Include_Exclude_Test extends Wordlift_Unit_Test_Case {
 				'urls'            => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
 			)
 		);
-
+		$_SERVER['REQUEST_URI'] = '/hello-world';
 		$this->assertTrue( $this->include_exclude_enabled->wl_is_enabled( true ) );
 	}
 
@@ -54,7 +54,31 @@ class Wordlift_Include_Exclude_Test extends Wordlift_Unit_Test_Case {
 				'urls'            => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
 			)
 		);
-
+		$_SERVER['REQUEST_URI'] = '/hello-world';
 		$this->assertFalse( $this->include_exclude_enabled->wl_is_enabled( true ) );
+	}
+
+	public function test_given_include_wrong_urls_should_return_false() {
+		update_option(
+			'wl_exclude_include_urls_settings',
+			array(
+				'include_exclude' => 'include',
+				'urls'            => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
+			)
+		);
+		$_SERVER['REQUEST_URI'] = '/hello-world-wrong';
+		$this->assertFalse( $this->include_exclude_enabled->wl_is_enabled( true ) );
+	}
+
+	public function test_given_exclude_wrong_urls_should_return_true() {
+		update_option(
+			'wl_exclude_include_urls_settings',
+			array(
+				'include_exclude' => 'exclude',
+				'urls'            => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
+			)
+		);
+		$_SERVER['REQUEST_URI'] = '/hello-world-wrong';
+		$this->assertTrue( $this->include_exclude_enabled->wl_is_enabled( true ) );
 	}
 }
