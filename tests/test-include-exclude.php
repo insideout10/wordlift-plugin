@@ -5,7 +5,7 @@
  * @package Wordlift
  * @subpackage Wordlift/tests
  */
-include dirname( __FILE__ ) . '/../src/modules/include-exclude/includes/Plugin_Enabled.php';
+// include dirname( __FILE__ ) . '/../src/modules/include-exclude/includes/Plugin_Enabled.php';
 
 /**
  * Define the Wordlift_Include_Exclude_Test class.
@@ -38,8 +38,8 @@ class Wordlift_Include_Exclude_Test extends Wordlift_Unit_Test_Case {
 		update_option(
 			'wl_exclude_include_urls_settings',
 			array(
-				'include_exclude' => 'include',
-				'urls'            => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
+				'type' => 'INCLUDE',
+				'urls' => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
 			)
 		);
 		$_SERVER['REQUEST_URI'] = '/hello-world';
@@ -50,8 +50,8 @@ class Wordlift_Include_Exclude_Test extends Wordlift_Unit_Test_Case {
 		update_option(
 			'wl_exclude_include_urls_settings',
 			array(
-				'include_exclude' => 'exclude',
-				'urls'            => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
+				'type' => 'EXCLUDE',
+				'urls' => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
 			)
 		);
 		$_SERVER['REQUEST_URI'] = '/hello-world';
@@ -62,8 +62,8 @@ class Wordlift_Include_Exclude_Test extends Wordlift_Unit_Test_Case {
 		update_option(
 			'wl_exclude_include_urls_settings',
 			array(
-				'include_exclude' => 'include',
-				'urls'            => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
+				'type' => 'INCLUDE',
+				'urls' => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
 			)
 		);
 		$_SERVER['REQUEST_URI'] = '/hello-world-wrong';
@@ -74,8 +74,8 @@ class Wordlift_Include_Exclude_Test extends Wordlift_Unit_Test_Case {
 		update_option(
 			'wl_exclude_include_urls_settings',
 			array(
-				'include_exclude' => 'exclude',
-				'urls'            => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
+				'type' => 'EXCLUDE',
+				'urls' => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
 			)
 		);
 		$_SERVER['REQUEST_URI'] = '/hello-world-wrong';

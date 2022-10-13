@@ -3,7 +3,7 @@
         'name' => 'wordlift/include-exclude',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => 'bd972241da84abec50e580eafa4012bf04b411da',
+        'reference' => '55bcad7417f59a42dfbbd428552068805f488d30',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'wordlift/include-exclude' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => 'bd972241da84abec50e580eafa4012bf04b411da',
+            'reference' => '55bcad7417f59a42dfbbd428552068805f488d30',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

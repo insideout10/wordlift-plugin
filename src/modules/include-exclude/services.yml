@@ -3,3 +3,5 @@ services:
     class: Wordlift\Modules\Include_Exclude\Plugin_Enabled
   Wordlift\Modules\Include_Exclude\Admin\Settings:
     class: Wordlift\Modules\Include_Exclude\Admin\Settings
+  Wordlift\Modules\Include_Exclude\API:
+    class: Wordlift\Modules\Include_Exclude\API

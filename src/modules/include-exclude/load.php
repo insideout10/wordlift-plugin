@@ -44,6 +44,9 @@ function __wl_include_exclude__load() {
 	if ( apply_filters( 'wl_is_enabled', true ) ) {
 		$settings = $container_builder->get( 'WordLift\Modules\Include_Exclude\Admin\Settings' );
 		$settings->register_hooks();
+
+		$api = $container_builder->get( 'WordLift\Modules\Include_Exclude\API' );
+		$api->register_hooks();
 	}
 }
 __wl_include_exclude__load();
