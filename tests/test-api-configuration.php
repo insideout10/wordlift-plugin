@@ -230,6 +230,11 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 		$this->assertSame( 'en', Wordlift_Configuration_Service::get_instance()->get_language_code(), 'Language code should not be from wordlift settings.' );
 	}
 
+
+	public function test_when_linked_datasets_not_found_should_return_empty_array() {
+		$this->assertEmpty( Wordlift_Configuration_Service::get_instance()->get_network_dataset_ids() );
+	}
+
 	/**
 	 * @param bool $preempt Whether to preempt an HTTP request return. Default false.
 	 * @param array $r HTTP request arguments.
