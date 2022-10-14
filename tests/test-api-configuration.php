@@ -232,7 +232,7 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 
 
 	public function test_when_linked_datasets_not_found_should_return_empty_array() {
-		$this->assertEmpty( Wordlift_Configuration_Service::get_instance()->get_network_dataset_ids() );
+		$this->assertCount( 0, Wordlift_Configuration_Service::get_instance()->get_network_dataset_ids(), "Should return empty array with zero dataset ids" );
 	}
 
 	/**
