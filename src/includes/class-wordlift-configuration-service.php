@@ -116,7 +116,7 @@ class Wordlift_Configuration_Service {
 	/**
 	 * The dataset ids connected to the current key
 	 *
-	 * @since 3.38.6
+	 * @since 3.38.5
 	 */
 	const NETWORK_DATASET_IDS = 'network_dataset_ids';
 

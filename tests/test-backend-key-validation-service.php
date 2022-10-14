@@ -3,7 +3,7 @@
  * Test the {@link Wordlift_Key_Validation_Service} class.
  *
  * @author Naveen Muthusamy <naveen@wordlift.io>
- * @since 3.38.6
+ * @since 3.38.5
  *
  * @package    Wordlift
  * @subpackage Wordlift/tests
@@ -13,7 +13,7 @@
 /**
  * Define the Key_Validation_Service_Test.
  *
- * @since 3.38.6
+ * @since 3.38.5
  * @group backend
  */
 class Key_Validation_Service_Test extends Wordlift_Unit_Test_Case {

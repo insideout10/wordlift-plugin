@@ -80,7 +80,7 @@ class Wordlift_Key_Validation_Service {
 		);
 
 		/**
-		 * @since 3.38.6
+		 * @since 3.38.5
 		 * This action is fired when the key is validated.
 		 * @param $response \Wordlift\Api\Response
 		 */
