@@ -29,7 +29,7 @@ class Analysis_Service {
 	 * Tag_Rest_Endpoint constructor.
 	 *
 	 * @param Default_Api_Service $api_service
-	 * @param Cache $cache_service
+	 * @param Cache               $cache_service
 	 */
 	public function __construct( $api_service, $cache_service ) {
 
@@ -83,8 +83,8 @@ class Analysis_Service {
 			return false;
 		}
 		if ( ! array_key_exists( 'scheme', $result )
-		     || ! array_key_exists( 'host', $result )
-		     || ! array_key_exists( 'path', $result ) ) {
+			 || ! array_key_exists( 'host', $result )
+			 || ! array_key_exists( 'path', $result ) ) {
 			return false;
 		}
 
@@ -110,8 +110,8 @@ class Analysis_Service {
 		$response = wp_remote_get( $meta_url );
 
 		if ( is_wp_error( $response )
-		     || ! isset( $response['response']['code'] )
-		     || 2 !== (int) $response['response']['code'] / 100 ) {
+			 || ! isset( $response['response']['code'] )
+			 || 2 !== (int) $response['response']['code'] / 100 ) {
 			return false;
 		}
 
