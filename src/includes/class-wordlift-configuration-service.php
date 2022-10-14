@@ -729,7 +729,7 @@ class Wordlift_Configuration_Service {
 	}
 
 	public function get_network_dataset_ids() {
-		return $this->get( 'wl_advanced_settings', self::NETWORK_DATASET_IDS, null );
+		return $this->get( 'wl_advanced_settings', self::NETWORK_DATASET_IDS, array() );
 	}
 
 }
