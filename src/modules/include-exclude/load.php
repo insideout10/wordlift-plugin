@@ -17,7 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $wl_features = get_option( '_wl_features', array() );
-if ( ! isset( $wl_features['include-exclude'] ) || ! $wl_features['include-exclude'] ) {
+// var_dump( $wl_features );
+if ( ! apply_filters( 'wl_feature__enable__include-exclude', isset( $wl_features['include-exclude'] ) && true === $wl_features['include-exclude'] ) ) { // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	return;
 }
 

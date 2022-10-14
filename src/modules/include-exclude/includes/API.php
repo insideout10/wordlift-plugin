@@ -60,7 +60,7 @@ class API {
 
 	public function get_include_exclude_data() {
 		$include_exclude_data = get_option( 'wl_exclude_include_urls_settings', array() );
-		if ( empty( $include_exclude_data ) || ! isset( $include_exclude_data['urls'] ) ) {
+		if ( empty( $include_exclude_data ) || empty( $include_exclude_data['urls'] ) ) {
 			return new \WP_Error(
 				'wl_include_exclude_data_not_found',
 				__( 'Include/Exclude data not found', 'wordlift' ),
@@ -77,20 +77,21 @@ class API {
 	}
 
 	public function update_include_exclude_data( \WP_REST_Request $request ) {
-		$data         = $request->get_params();
-		$type         = $data['type'];
-		$urls         = $data['urls'];
-		$content_type = $request->get_content_type();
-
-		if ( ! isset( $content_type['value'] ) || 'application/vnd.wordlift.include-exclude-config.v1+json' !== $content_type['value'] ) {
-			return new \WP_Error(
-				'wl_include_exclude_invalid_content_type',
-				__( 'Invalid content type.', 'wordlift' ),
-				array(
-					'status' => 400,
-				)
-			);
-		}
+		$data = $request->get_params();
+		$type = $data['type'];
+		$urls = $data['urls'];
+		// $content_type = $request->get_content_type(); // TODO: Content-Type checking.
+		// phpcs:disable
+		// if ( ! isset( $content_type['value'] ) || 'application/vnd.wordlift.include-exclude-config.v1+json' !== $content_type['value'] ) {
+		// 	return new \WP_Error(
+		// 		'wl_include_exclude_invalid_content_type',
+		// 		__( 'Invalid content type.', 'wordlift' ),
+		// 		array(
+		// 			'status' => 400,
+		// 		)
+		// 	);
+		// }
+		// phpcs:enable
 
 		$include_exclude_data = array(
 			'type' => $type,
@@ -100,7 +101,7 @@ class API {
 		$updated = update_option( 'wl_exclude_include_urls_settings', $include_exclude_data );
 
 		if ( $updated ) {
-			return new \WP_REST_Response( 204 );
+			return new \WP_REST_Response( null, 204 );
 		} else {
 			return new \WP_Error(
 				'wl_include_exclude_data_update_failed',
