@@ -22,6 +22,6 @@ class Ingredients_API {
 
     public function get_ingredients( \WP_REST_Request $request ) {
         var_dump( $request );
-        wp_send_json_success( $request );
+        // wp_send_json_success( $request );
     }
 }
