@@ -77,15 +77,16 @@ class Wordlift_Key_Validation_Service {
 			array(
 				'Authorization' => "Key $key",
 			)
-		)->get_response();
+		);
 
 		/**
 		 * @since 3.38.6
 		 * This action is fired when the key is validated.
+		 * @param $response \Wordlift\Api\Response
 		 */
 		do_action( 'wl_key_validation_response', $response );
 
-		return $response;
+		return $response->get_response();
 	}
 
 	/**
