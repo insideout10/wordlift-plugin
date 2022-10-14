@@ -235,6 +235,16 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 0, Wordlift_Configuration_Service::get_instance()->get_network_dataset_ids(), "Should return empty array with zero dataset ids" );
 	}
 
+	public function test_should_be_able_to_set_network_dataset_ids() {
+		$network_dataset_ids = array( 'one', 'two', 'three' );
+		Wordlift_Configuration_Service::get_instance()->set_network_dataset_ids( $network_dataset_ids );
+		$this->assertEquals(
+			$network_dataset_ids,
+			Wordlift_Configuration_Service::get_instance()->get_network_dataset_ids(),
+			"Should return correct dataset ids"
+		);
+	}
+
 	/**
 	 * @param bool $preempt Whether to preempt an HTTP request return. Default false.
 	 * @param array $r HTTP request arguments.
