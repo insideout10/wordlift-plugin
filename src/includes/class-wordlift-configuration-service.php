@@ -138,6 +138,25 @@ class Wordlift_Configuration_Service {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
+		// Sync some configuration properties when key is validated.
+		add_action( 'wl_key_validation_response', array( $this, 'sync' ) );
+
+	}
+
+	/**
+	 * @param $response \Wordlift\Api\Response
+	 *
+	 * @return void
+	 */
+	public function sync( $response ) {
+		if ( ! $response->is_success() ) {
+			return;
+		}
+		$data = json_decode( $response->get_body(), true );
+		if ( ! is_array( $data ) || ! array_key_exists( 'networkDatasetId', $data ) ) {
+			return;
+		}
+		$this->set_network_dataset_ids( $data['networkDatasetId'] );
 	}
 
 	/**
@@ -188,7 +207,7 @@ class Wordlift_Configuration_Service {
 	 *
 	 * @param string $option Name of option to retrieve. Expected to not be SQL-escaped.
 	 * @param string $key The value key.
-	 * @param mixed  $value The value.
+	 * @param mixed $value The value.
 	 *
 	 * @since 3.9.0
 	 */
@@ -507,10 +526,10 @@ class Wordlift_Configuration_Service {
 
 		// Build the URL.
 		$url = '/accounts'
-			   . '?key=' . rawurlencode( $key )
-			   . '&url=' . rawurlencode( $site_url )
-			   . '&country=' . $this->get_country_code()
-			   . '&language=' . $this->get_language_code();
+		       . '?key=' . rawurlencode( $key )
+		       . '&url=' . rawurlencode( $site_url )
+		       . '&country=' . $this->get_country_code()
+		       . '&language=' . $this->get_language_code();
 
 		$api_service = Default_Api_Service::get_instance();
 		/**
