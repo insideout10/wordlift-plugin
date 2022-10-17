@@ -138,6 +138,7 @@ class Analysis_Service {
 				$filtered_entities[] = $entity;
 			}
 		}
+
 		return $filtered_entities;
 
 	}
@@ -158,7 +159,7 @@ class Analysis_Service {
 					'contentType'     => 'text/plain',
 					'version'         => '1.0.0',
 					'contentLanguage' => 'en',
-					'scope'           => 'network-only',
+					'scope'           => $this->get_scope(),
 				)
 			)
 		);
@@ -176,6 +177,12 @@ class Analysis_Service {
 		$entities = $this->get_meta_for_entities( $response['entities'] );
 
 		return $entities;
+	}
+
+	public function get_scope() {
+		$service = \Wordlift_Configuration_Service::get_instance();
+
+		return count( $service->get_network_dataset_ids() ) > 0 ? 'network-only' : 'cloud';
 	}
 
 }

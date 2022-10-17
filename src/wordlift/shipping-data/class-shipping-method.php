@@ -3,6 +3,7 @@
 namespace Wordlift\Shipping_Data;
 
 use WC_Shipping_Method;
+use WCML\Multicurrency\Shipping\ShippingModeProvider;
 
 class Shipping_Method {
 
@@ -83,6 +84,28 @@ class Shipping_Method {
 			'maxValue' => intval( $maximum ),
 		);
 
+	}
+
+	protected function change_to_manual_currency( &$shipping_rate ) {
+		// WCML not available.
+		if ( ! class_exists( 'WCML\Multicurrency\Shipping\ShippingModeProvider' ) ) {
+			return;
+		}
+
+		// Manual pricing not enabled.
+		if ( ! ShippingModeProvider::get( $this->wc_shipping_method->id )->isManualPricingEnabled( $this->wc_shipping_method ) ) {
+			return;
+		}
+
+		// Get the first manual price.
+		foreach ( $this->wc_shipping_method->instance_settings as $key => $value ) {
+			if ( preg_match( '@^cost_(\w{3})$@', $key, $matches ) ) {
+				$shipping_rate['value']    = $value;
+				$shipping_rate['currency'] = $matches[1];
+
+				return;
+			}
+		}
 	}
 
 }

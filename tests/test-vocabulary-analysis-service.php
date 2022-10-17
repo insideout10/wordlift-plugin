@@ -15,6 +15,18 @@ class Analysis_Service_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 		$this->assertEquals( $expected_url, Analysis_Service::format_entity_url( $url ) );
 	}
 
+	public function test_when_there_are_network_dataset_ids_scope_should_be_network_only() {
+		Wordlift_Configuration_Service::get_instance()->set_network_dataset_ids( array( 'one' ) );
+		$service = new Analysis_Service(null, null);
+		$this->assertEquals( 'network-only', $service->get_scope() );
+	}
+
+	public function test_when_there_are_no_network_dataset_ids_scope_should_be_cloud() {
+		Wordlift_Configuration_Service::get_instance()->set_network_dataset_ids( array() );
+		$service = new Analysis_Service(null, null);
+		$this->assertEquals( 'cloud', $service->get_scope() );
+	}
+
 
 	public function test_given_wordlift_entity_data_should_return_the_compact_version() {
 		$mock_data = array(
@@ -63,8 +75,8 @@ class Analysis_Service_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 		);
 
 		$result = Default_Entity_List::compact_jsonld( $mock_data );
-		sort($expected_data['sameAs']);
-		sort($result['sameAs']);
+		sort( $expected_data['sameAs'] );
+		sort( $result['sameAs'] );
 
 		$this->assertEquals( $expected_data, $result );
 	}

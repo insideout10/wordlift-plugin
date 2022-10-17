@@ -31,13 +31,17 @@ class Local_Pickup_Shipping_Method extends Shipping_Method {
 
 		$cost = $this->wc_shipping_method->get_option( 'cost' );
 
-		$offer_shipping_details['shippingRate'][] = array(
+		$shipping_rate = array(
 			'@type'       => 'MonetaryAmount',
 			'name'        => $this->wc_shipping_method->get_title(),
 			'description' => $description,
 			'value'       => $cost ? $cost : '0',
 			'currency'    => get_woocommerce_currency(),
 		);
+
+		$this->change_to_manual_currency( $shipping_rate );
+
+		$offer_shipping_details['shippingRate'][] = $shipping_rate;
 
 	}
 
