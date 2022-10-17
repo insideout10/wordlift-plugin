@@ -58,19 +58,19 @@ class Ingredients_API {
 
 		$sql =
 			"SELECT p1.ID AS recipe_ID,
-					p1.post_title AS recipe_name,
-					p2.ID AS post_ID,
-					p2.post_title,
-					p2.post_status
-				FROM {$wpdb->posts} p1
-					INNER JOIN {$wpdb->postmeta} pm1 ON pm1.post_ID = p1.ID
-						AND pm1.meta_key = '_wl_main_ingredient_jsonld'
-					INNER JOIN {$wpdb->posts} p2"
-			// The following ignore rule is used against the `LIKE CONCAT`. We only have const values.
-			// phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.LikeWildcardsInQuery
-			. " ON p2.post_content LIKE CONCAT( '%<!--WPRM Recipe ', p1.ID,'-->%' )
-				AND p2.post_status = 'publish'
-				WHERE p1.post_type = 'wprm_recipe'" . $this->limit( $per_page ) . $this->offset( $offset );
+			p1.post_title AS recipe_name,
+			p2.ID AS post_ID,
+			p2.post_title
+			FROM $wpdb->postmeta pm1
+				INNER JOIN $wpdb->posts p1
+					ON p1.ID = pm1.post_ID AND p1.post_type = 'wprm_recipe'
+				INNER JOIN $wpdb->postmeta pm2
+					ON pm2.post_ID = pm1.post_ID AND pm2.meta_key = 'wprm_parent_post_id'
+				INNER JOIN $wpdb->posts p2"
+				// The following ignore rule is used against the `LIKE CONCAT`. We only have const values.
+				// phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.LikeWildcardsInQuery
+				. " ON p2.post_status = 'publish' AND p2.ID = pm2.post_ID
+				WHERE pm1.meta_key = '_wl_main_ingredient_jsonld'" . $this->limit( $per_page ) . $this->offset( $offset );
 
 		$ingredients = $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
