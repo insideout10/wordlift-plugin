@@ -15,10 +15,9 @@ class Ingredients_API {
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_ingredients' ),
-				'permission_callback' => '__return_true',
-				// 'permission_callback' => function () {
-				//     return current_user_can( 'manage_options' );
-				// },
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
 				'args'                => array(
 					'per_page' => array(
 						'type'              => 'integer',
@@ -58,9 +57,9 @@ class Ingredients_API {
 		}
 
 		$sql =
-			"SELECT p1.ID AS recipe_id,
+			"SELECT p1.ID AS recipe_ID,
 					p1.post_title AS recipe_name,
-					p2.ID AS post_id,
+					p2.ID AS post_ID,
 					p2.post_title,
 					p2.post_status
 				FROM {$wpdb->posts} p1
@@ -83,15 +82,18 @@ class Ingredients_API {
 		foreach ( $ingredients as $ingredient ) {
 			$recipe_json_ld = get_post_meta( $ingredient->recipe_ID, '_wl_main_ingredient_jsonld', true ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			$recipe         = json_decode( $recipe_json_ld, true );
-			$data[]         = array(
-				'ingredient_id'   => $ingredient->recipe_id,
+
+			// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			$data[] = array(
+				'ingredient_id'   => '', // TODO: get the ingredient id.
 				'ingredient_name' => $recipe ? $recipe['name'] : 'null',
-				'recipe_id'       => $ingredient->recipe_id,
+				'recipe_id'       => $ingredient->recipe_ID,
 				'recipe_name'     => $ingredient->recipe_name,
-				'post_id'         => $ingredient->post_id,
+				'post_id'         => $ingredient->post_ID,
 				'post_name'       => $ingredient->post_title,
-				'post_url'        => esc_url( get_the_permalink( $ingredient->post_id ) ),
+				'post_url'        => esc_url( get_the_permalink( $ingredient->post_ID ) ),
 			);
+			// phpcs:enable
 		}
 
 		return rest_ensure_response( $data );
