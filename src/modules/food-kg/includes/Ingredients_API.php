@@ -15,9 +15,10 @@ class Ingredients_API {
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_ingredients' ),
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
+				// 'permission_callback' => function () {
+				// 	return current_user_can( 'manage_options' );
+				// },
+				'permission_callback' => '__return_true',
 				'args'                => array(
 					'per_page' => array(
 						'type'              => 'integer',
@@ -56,23 +57,28 @@ class Ingredients_API {
 			$offset = ( $page - 1 ) * $per_page;
 		}
 
-		$sql =
-			"SELECT p1.ID AS recipe_ID,
-			p1.post_title AS recipe_name,
-			p2.ID AS post_ID,
-			p2.post_title
-			FROM $wpdb->postmeta pm1
-				INNER JOIN $wpdb->posts p1
-					ON p1.ID = pm1.post_ID AND p1.post_type = 'wprm_recipe'
-				INNER JOIN $wpdb->postmeta pm2
-					ON pm2.post_ID = pm1.post_ID AND pm2.meta_key = 'wprm_parent_post_id'
-				INNER JOIN $wpdb->posts p2"
+		$ingredients = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT p1.ID AS recipe_ID,
+						p1.post_title AS recipe_name,
+						p2.ID AS post_ID,
+						p2.post_title
+						FROM $wpdb->postmeta pm1
+							INNER JOIN $wpdb->posts p1
+								ON p1.ID = pm1.post_ID AND p1.post_type = 'wprm_recipe'
+							INNER JOIN $wpdb->postmeta pm2
+								ON pm2.post_ID = pm1.post_ID AND pm2.meta_key = 'wprm_parent_post_id'
+							INNER JOIN $wpdb->posts p2"
 				// The following ignore rule is used against the `LIKE CONCAT`. We only have const values.
 				// phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.LikeWildcardsInQuery
-				. " ON p2.post_status = 'publish' AND p2.ID = pm2.post_ID
-				WHERE pm1.meta_key = '_wl_main_ingredient_jsonld'" . $this->limit( $per_page ) . $this->offset( $offset );
-
-		$ingredients = $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				. " ON p2.post_status = 'publish' AND p2.ID = pm2.meta_value
+							WHERE pm1.meta_key = '_wl_main_ingredient_jsonld'
+					LIMIT %d
+					OFFSET %d",
+				$per_page,
+				$offset
+			)
+		);
 
 		if ( empty( $ingredients ) ) {
 			return new \WP_Error( 'no_ingredients', __( 'No ingredients found.', 'wordlift' ), array( 'status' => 404 ) );
@@ -85,50 +91,17 @@ class Ingredients_API {
 
 			// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			$data[] = array(
-				'ingredient_id'   => '', // TODO: get the ingredient id.
-				'ingredient_name' => $recipe ? $recipe['name'] : 'null',
-				'recipe_id'       => $ingredient->recipe_ID,
-				'recipe_name'     => $ingredient->recipe_name,
-				'post_id'         => $ingredient->post_ID,
-				'post_name'       => $ingredient->post_title,
-				'post_url'        => esc_url( get_the_permalink( $ingredient->post_ID ) ),
+				'main_ingredient_item_id' => $recipe ? $recipe['@id'] : null,
+				'main_ingredient_name'    => $recipe ? $recipe['name'] : null,
+				'recipe_id'               => $ingredient->recipe_ID,
+				'recipe_name'             => $ingredient->recipe_name,
+				'post_id'                 => $ingredient->post_ID,
+				'post_name'               => $ingredient->post_title,
+				'post_url'                => get_the_permalink( $ingredient->post_ID ),
 			);
 			// phpcs:enable
 		}
 
 		return rest_ensure_response( $data );
-
-	}
-
-	/**
-	 * Add the limit clause if specified.
-	 *
-	 * @param null|int $limit The maximum number of results.
-	 *
-	 * @return string The limit clause (empty if no limit has been specified).
-	 */
-	private function limit( $limit = null ) {
-
-		if ( null === $limit || ! is_numeric( $limit ) ) {
-			return '';
-		}
-
-		return " LIMIT $limit";
-	}
-
-	/**
-	 * Add the OFFSET clause if specified.
-	 *
-	 * @param null|int $offset The number of results to skip.
-	 *
-	 * @return string The offset clause (empty if no offset has been specified).
-	 */
-	private function offset( $offset = null ) {
-
-		if ( null === $offset || ! is_numeric( $offset ) ) {
-			return '';
-		}
-
-		return " OFFSET $offset";
 	}
 }
