@@ -29,6 +29,8 @@ class Include_Exclude_REST_Controller_Test extends WP_UnitTestCase {
 
 	private $include_exclude_data;
 
+	private $include_exclude_get_data;
+
 	/**
 	 * Our expected route for rest api.
 	 */
@@ -39,20 +41,25 @@ class Include_Exclude_REST_Controller_Test extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
-			// $features = get_option( '_wl_features', array() );
-			// $features['include_exclude'] = true;
-			// update_option( '_wl_features', $features );
+		// $features = get_option( '_wl_features', array() );
+		// $features['include_exclude'] = true;
+		// update_option( '_wl_features', $features );
 
 		$this->rest_instance = new API();
 		$this->rest_instance->register_hooks();
 		global $wp_rest_server;
 
 		$wp_rest_server = new WP_REST_Server();
-		$this->server   = $wp_rest_server;
+		$this->server = $wp_rest_server;
 		do_action( 'rest_api_init' );
 
 		$this->include_exclude_data = array(
-			'type' => 'INCLUDE',
+			'include_exclude' => 'include',
+			'urls'            => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
+		);
+
+		$this->include_exclude_get_data = array(
+			'type' => 'include',
 			'urls' => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
 		);
 
@@ -124,7 +131,7 @@ class Include_Exclude_REST_Controller_Test extends WP_UnitTestCase {
 
 		$response = $this->server->dispatch( $request );
 
-		$this->assertEquals( $this->include_exclude_data, $response->get_data() );
+		$this->assertEquals( $this->include_exclude_get_data, $response->get_data() );
 	}
 
 	/**
@@ -137,7 +144,7 @@ class Include_Exclude_REST_Controller_Test extends WP_UnitTestCase {
 		update_option(
 			'wl_exclude_include_urls_settings',
 			array(
-				'type' => 'INCLUDE',
+				'type' => 'include',
 				'urls' => '',
 			)
 		);
@@ -166,7 +173,7 @@ class Include_Exclude_REST_Controller_Test extends WP_UnitTestCase {
 
 		$json_data = wp_json_encode(
 			array(
-				'type' => 'INCLUDE',
+				'type' => 'include',
 				'urls' => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
 			)
 		);
@@ -207,7 +214,7 @@ class Include_Exclude_REST_Controller_Test extends WP_UnitTestCase {
 
 		$json_data = wp_json_encode(
 			array(
-				'type' => 'EXCLUDE',
+				'type' => 'exclude',
 				'urls' => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
 			)
 		);

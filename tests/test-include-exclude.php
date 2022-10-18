@@ -38,7 +38,7 @@ class Wordlift_Include_Exclude_Test extends Wordlift_Unit_Test_Case {
 		update_option(
 			'wl_exclude_include_urls_settings',
 			array(
-				'type' => 'INCLUDE',
+				'include_exclude' => 'include',
 				'urls' => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
 			)
 		);
@@ -50,7 +50,7 @@ class Wordlift_Include_Exclude_Test extends Wordlift_Unit_Test_Case {
 		update_option(
 			'wl_exclude_include_urls_settings',
 			array(
-				'type' => 'EXCLUDE',
+				'include_exclude' => 'exclude',
 				'urls' => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
 			)
 		);
@@ -62,7 +62,7 @@ class Wordlift_Include_Exclude_Test extends Wordlift_Unit_Test_Case {
 		update_option(
 			'wl_exclude_include_urls_settings',
 			array(
-				'type' => 'INCLUDE',
+				'include_exclude' => 'include',
 				'urls' => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
 			)
 		);
@@ -74,7 +74,7 @@ class Wordlift_Include_Exclude_Test extends Wordlift_Unit_Test_Case {
 		update_option(
 			'wl_exclude_include_urls_settings',
 			array(
-				'type' => 'EXCLUDE',
+				'include_exclude' => 'exclude',
 				'urls' => "https://wordlift.io/hello-world \n https://wordlift.io/ \n https://wordlift.io/3",
 			)
 		);

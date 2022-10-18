@@ -32,10 +32,10 @@ class API {
 						'required'          => true,
 						'type'              => 'string',
 						'validate_callback' => function ( $param ) {
-							if ( empty( $param ) || ! in_array( $param, array( 'INCLUDE', 'EXCLUDE' ), true ) ) {
+							if ( empty( $param ) || ! in_array( $param, array( 'include', 'exclude' ), true ) ) {
 								return new \WP_Error(
 									'wordlift_invalid_include_exclude_type',
-									__( 'type can be either INCLUDE or EXCLUDE.', 'wordlift' ),
+									__( 'type can be either include or exclude.', 'wordlift' ),
 									array(
 										'status' => 400,
 									)
@@ -70,7 +70,7 @@ class API {
 			);
 		}
 		$data = array(
-			'type' => $include_exclude_data['type'],
+			'type' => $include_exclude_data['include_exclude'],
 			'urls' => $include_exclude_data['urls'],
 		);
 		return rest_ensure_response( $data );
@@ -94,8 +94,8 @@ class API {
 		// phpcs:enable
 
 		$include_exclude_data = array(
-			'type' => $type,
-			'urls' => $urls,
+			'include_exclude' => $type,
+			'urls'            => $urls,
 		);
 
 		$updated = update_option( 'wl_exclude_include_urls_settings', $include_exclude_data );
