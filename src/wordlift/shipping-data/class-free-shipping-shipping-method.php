@@ -43,4 +43,12 @@ class Free_Shipping_Shipping_Method extends Shipping_Method {
 
 	}
 
+	protected function set_value_with_currency_codes( &$shipping_rate, $instance, $currency_codes ) {
+
+		if ( ! empty( $currency_codes ) ) {
+			$shipping_rate['currency'] = $currency_codes[0];
+		}
+
+	}
+
 }

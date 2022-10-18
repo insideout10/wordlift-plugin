@@ -43,4 +43,18 @@ class Flat_Rate_Shipping_Method extends Shipping_Method {
 
 	}
 
+	protected function set_value_with_currency_codes( &$shipping_rate, $instance, $currency_codes ) {
+
+		// Get the first manual price.
+		foreach ( $currency_codes as $code ) {
+			if ( isset( $instance[ "cost_$code" ] ) ) {
+				$shipping_rate['value']    = $instance[ "cost_$code" ];
+				$shipping_rate['currency'] = $code;
+
+				return;
+			}
+		}
+
+	}
+
 }

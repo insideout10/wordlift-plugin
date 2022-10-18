@@ -3,9 +3,11 @@
 namespace Wordlift\Shipping_Data;
 
 use WC_Shipping_Method;
-use WCML\Multicurrency\Shipping\ShippingModeProvider;
+use WCML_Multi_Currency;
 
 class Shipping_Method {
+
+	private $wcml;
 
 	/**
 	 * @var WC_Shipping_Method $wc_shipping_method
@@ -88,24 +90,41 @@ class Shipping_Method {
 
 	protected function change_to_manual_currency( &$shipping_rate ) {
 		// WCML not available.
-		if ( ! class_exists( 'WCML\Multicurrency\Shipping\ShippingModeProvider' ) ) {
+		if ( ! $this::wcml_requirements() ) {
+			return;
+		}
+
+		// Get WCML.
+		if ( ! isset( $this->wcml ) ) {
+			$this->wcml = new WCML_Multi_Currency();
+		}
+
+		$currencies = $this->wcml->get_currencies();
+		if ( empty( $currencies ) ) {
 			return;
 		}
 
 		// Manual pricing not enabled.
-		if ( ! ShippingModeProvider::get( $this->wc_shipping_method->id )->isManualPricingEnabled( $this->wc_shipping_method ) ) {
+		$instance = $this->wc_shipping_method->instance_settings;
+		if ( ! isset( $instance['wcml_shipping_costs'] ) || 'manual' !== $instance['wcml_shipping_costs'] ) {
 			return;
 		}
 
-		// Get the first manual price.
-		foreach ( $this->wc_shipping_method->instance_settings as $key => $value ) {
-			if ( preg_match( '@^cost_(\w{3})$@', $key, $matches ) ) {
-				$shipping_rate['value']    = $value;
-				$shipping_rate['currency'] = $matches[1];
+		$currency_codes = array_keys( $currencies );
 
-				return;
-			}
-		}
+		$this->set_value_with_currency_codes( $shipping_rate, $instance, $currency_codes );
+
+	}
+
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	protected function set_value_with_currency_codes( &$shipping_rate, $instance, $currency_codes ) {
+		// Override.
+	}
+
+	public static function wcml_requirements() {
+		return class_exists( 'WCML_Multi_Currency' )
+			   && function_exists( 'wcml_is_multi_currency_on' )
+			   && wcml_is_multi_currency_on();
 	}
 
 }
