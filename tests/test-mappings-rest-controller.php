@@ -57,7 +57,7 @@ class Mappings_REST_Controller_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test is rest route exists for inserting/updating mapping item.
+	 * Test if rest route exists for inserting/updating mapping item.
 	 */
 	public function test_rest_route_for_inserting_mapping_item() {
 		$routes = $this->server->get_routes();

@@ -37,6 +37,8 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 define( 'WORDLIFT_VERSION', '3.39.0-dev' );
+require_once __DIR__ . '/modules/common/load.php';
+require_once __DIR__ . '/modules/include-exclude/load.php';
 
 /**
  * Filter to disable WLP on any request, defaults to true.
