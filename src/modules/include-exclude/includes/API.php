@@ -81,8 +81,8 @@ class API {
 		$data = $request->get_params();
 
 		$include_exclude_data = array(
-			'include_exclude' => $data['$type'],
-			'urls'            => $data['$urls'],
+			'include_exclude' => $data['type'],
+			'urls'            => $data['urls'],
 		);
 
 		$updated = update_option( 'wl_exclude_include_urls_settings', $include_exclude_data );
