@@ -72,7 +72,7 @@ class Ingredients_API {
 		$offset   = $request['offset'];
 
 		if ( isset( $offset ) ) {
-			$offset = (int) $offset;
+			$offset = $offset;
 		} else {
 			$offset = ( $page - 1 ) * $per_page;
 		}

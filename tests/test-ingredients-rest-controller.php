@@ -7,8 +7,8 @@
  * @subpackage Wordlift/tests
  */
 
-require __DIR__ . '/../src/modules/food-kg/includes/services/Ingredients.php';
-require __DIR__ . '/../src/modules/food-kg/includes/Ingredients_API.php';
+require_once __DIR__ . '/../src/modules/food-kg/includes/services/Ingredients.php';
+require_once __DIR__ . '/../src/modules/food-kg/includes/Ingredients_API.php';
 
 /**
  * Define the Ingredients_REST_Controller_Test class.
@@ -51,13 +51,13 @@ class Ingredients_REST_Controller_Test extends WP_UnitTestCase {
 
 		$this->data = array(
 			array(
-				'main_ingredient_item_id' => 'http://www.wikidata.org/entity/Q111',
+				'main_ingredient_item_id' => 'https://wordlift.io/entity/Q111',
 				'main_ingredient_name'    => 'chicken',
 				'recipe_id'               => 20,
 				'recipe_name'             => 'Chicken Curry',
 				'post_id'                 => 10,
 				'post_name'               => 'Chicken Curry Recipe',
-				'post_url'                => 'http://example.com/chicken-curry-recipe',
+				'post_url'                => 'https://wordlift.io/chicken-curry-recipe',
 			),
 		);
 
@@ -70,7 +70,7 @@ class Ingredients_REST_Controller_Test extends WP_UnitTestCase {
 		global $wp_rest_server;
 
 		$wp_rest_server = new WP_REST_Server();
-		$this->server = $wp_rest_server;
+		$this->server   = $wp_rest_server;
 		do_action( 'rest_api_init' );
 	}
 
