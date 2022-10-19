@@ -5,7 +5,7 @@
  * @package Wordlift
  */
 
-namespace WordLift\Modules\Include_Exclude\Admin;
+namespace Wordlift\Modules\Include_Exclude\Admin;
 
 /**
  * Define the Settings class.

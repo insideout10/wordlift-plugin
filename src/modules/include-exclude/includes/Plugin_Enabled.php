@@ -5,7 +5,7 @@
  * @package Wordlift
  */
 
-namespace WordLift\Modules\Include_Exclude;
+namespace Wordlift\Modules\Include_Exclude;
 
 /**
  * Define the JSON-LD Enabled class.

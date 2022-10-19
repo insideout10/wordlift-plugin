@@ -36,10 +36,10 @@
         <const name="WL_LOG_LEVEL" value="1"/>
         <const name="WL_ALL_ENTITY_TYPES" value="true"/>
         <const name="WL_ENABLE_TERM_LINKING" value="true"/>
-        <env name="WL_FEATURES__INCLUDE-EXCLUDE" value="__return_true"/>
 
         <env name="WORDLIFT_KEY" value="key123"/>
 
+        <env name="WL_FEATURES__INCLUDE-EXCLUDE" value="__return_true"/>
 
     </php>
 </phpunit>

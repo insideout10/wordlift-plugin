@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * feature settings by ourselves.
  */
 $wl_features = get_option( '_wl_features', array() );
-if ( ! apply_filters( 'wl_feature__enable__include-exclude', isset( $wl_features['include-exclude'] ) && true === $wl_features['include-exclude'] ) ) { // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+if ( ! apply_filters( 'wl_feature__enable__include-exclude', isset( $wl_features['include-exclude'] ) && $wl_features['include-exclude'] ) ) { // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	return;
 }
 

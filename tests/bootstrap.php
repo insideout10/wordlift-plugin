@@ -48,13 +48,11 @@ if ( version_compare( $wordpress_version, '5.2', '>=' ) ) {
 
 function _manually_load_plugin() {
 
-	// To pass include exclude tests.
-	// $features = get_option( '_wl_features', array() );
-	// $features['include-exclude'] = true;
-	// update_option( '_wl_features', $features );
-
-	// Prevent WooCommerce to send ajax requests during tests.
-	add_filter( 'wl_feature__enable__include-exclude', '__return_true', PHP_INT_MAX );
+	// Include/Exclude is loaded before the WLP filter, so we're adding our own filter based on the env variable.
+	$include_exclude_env = getenv( 'WL_FEATURES__INCLUDE-EXCLUDE' );
+	if ( $include_exclude_env ) {
+		add_filter( 'wl_feature__enable__include-exclude', $include_exclude_env, PHP_INT_MAX );
+	}
 
 	require dirname( __FILE__ ) . '/../src/wordlift.php';
 
@@ -147,4 +145,5 @@ function unzip( $what, $to ) {
 	$zip->close();
 
 }
+
 define( 'FS_METHOD', 'direct' );
