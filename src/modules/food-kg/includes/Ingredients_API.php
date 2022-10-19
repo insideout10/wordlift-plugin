@@ -64,6 +64,7 @@ class Ingredients_API {
 	 * Get Ingredients Data.
 	 *
 	 * @param \WP_REST_Request $request The request.
+	 *
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function get_ingredients( \WP_REST_Request $request ) {
@@ -71,9 +72,7 @@ class Ingredients_API {
 		$page     = $request['page'];
 		$offset   = $request['offset'];
 
-		if ( isset( $offset ) ) {
-			$offset = $offset;
-		} else {
+		if ( ! isset( $offset ) ) {
 			$offset = ( $page - 1 ) * $per_page;
 		}
 
