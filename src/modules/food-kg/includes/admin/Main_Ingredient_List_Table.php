@@ -42,17 +42,17 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 				"SELECT p1.ID AS recipe_ID,
 					    p1.post_title AS recipe_name,
 					    p2.ID AS post_ID,
-					    p2.post_title,
-					    p2.post_status
-					FROM {$wpdb->posts} p1
-					    INNER JOIN {$wpdb->postmeta} pm1 ON pm1.post_ID = p1.ID
-					        AND pm1.meta_key = '_wl_main_ingredient_jsonld'
-					    INNER JOIN {$wpdb->posts} p2"
+					    p2.post_title
+						FROM $wpdb->postmeta pm1
+						    INNER JOIN $wpdb->posts p1
+						        ON p1.ID = pm1.post_ID AND p1.post_type = 'wprm_recipe'
+							INNER JOIN $wpdb->postmeta pm2
+								ON pm2.post_ID = pm1.post_ID AND pm2.meta_key = 'wprm_parent_post_id'
+						    INNER JOIN $wpdb->posts p2"
 				// The following ignore rule is used against the `LIKE CONCAT`. We only have const values.
 				// phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.LikeWildcardsInQuery
-				. " ON p2.post_content LIKE CONCAT( '%<!--WPRM Recipe ', p1.ID,'-->%' )
-					            AND p2.post_status = 'publish'
-					WHERE p1.post_type = 'wprm_recipe'
+				. " ON p2.post_status = 'publish' AND p2.ID = pm2.post_ID
+							WHERE pm1.meta_key = '_wl_main_ingredient_jsonld'
 					LIMIT %d
 					OFFSET %d",
 				$per_page,
@@ -77,14 +77,17 @@ class Main_Ingredient_List_Table extends WP_List_Table {
 		if ( ! $count ) {
 
 			$count = $wpdb->get_var(
-				"SELECT COUNT( 1 ) 
-					FROM {$wpdb->posts} p1
-					    INNER JOIN {$wpdb->postmeta} pm1 ON pm1.post_ID = p1.ID
-					        AND pm1.meta_key = '_wl_main_ingredient_jsonld'
-					    INNER JOIN {$wpdb->posts} p2
-					        ON p2.post_content LIKE CONCAT( '%<!--WPRM Recipe ', p1.ID,'-->%' )
-					            AND p2.post_status = 'publish'
-					WHERE p1.post_type = 'wprm_recipe'"
+				"SELECT COUNT(1)
+						FROM $wpdb->postmeta pm1
+						    INNER JOIN $wpdb->posts p1
+						        ON p1.ID = pm1.post_ID AND p1.post_type = 'wprm_recipe'
+							INNER JOIN $wpdb->postmeta pm2
+								ON pm2.post_ID = pm1.post_ID AND pm2.meta_key = 'wprm_parent_post_id'
+						    INNER JOIN $wpdb->posts p2"
+				// The following ignore rule is used against the `LIKE CONCAT`. We only have const values.
+				// phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.LikeWildcardsInQuery
+				. " ON p2.post_status = 'publish' AND p2.ID = pm2.post_ID
+							WHERE pm1.meta_key = '_wl_main_ingredient_jsonld'"
 			);
 
 			set_transient( '_wl_main_ingredient_list_table__count', $count, 60 );

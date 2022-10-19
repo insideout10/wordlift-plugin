@@ -20,22 +20,32 @@ class Flat_Rate_Shipping_Method extends Shipping_Method {
 
 	}
 
-	public function add_shipping_rate( &$offer_shipping_details ) {
-
-		if ( ! isset( $offer_shipping_details['shippingRate'] ) ) {
-			$offer_shipping_details['shippingRate'] = array();
-		}
+	protected function get_shipping_rate() {
 
 		$description = isset( $this->wc_shipping_method->instance_settings['description'] )
 			? wp_strip_all_tags( $this->wc_shipping_method->instance_settings['description'] ) : '';
 
-		$offer_shipping_details['shippingRate'][] = array(
+		return array(
 			'@type'       => 'MonetaryAmount',
 			'name'        => $this->wc_shipping_method->get_title(),
 			'description' => $description,
 			'value'       => $this->wc_shipping_method->get_option( 'cost' ),
 			'currency'    => get_woocommerce_currency(),
 		);
+
+	}
+
+	protected function set_value_with_currency_codes( &$shipping_rate, $instance, $currency_codes ) {
+
+		// Get the first manual price.
+		foreach ( $currency_codes as $code ) {
+			if ( isset( $instance[ "cost_$code" ] ) ) {
+				$shipping_rate['value']    = $instance[ "cost_$code" ];
+				$shipping_rate['currency'] = $code;
+
+				return;
+			}
+		}
 
 	}
 

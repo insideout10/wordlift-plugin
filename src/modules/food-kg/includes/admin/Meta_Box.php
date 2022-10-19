@@ -55,7 +55,7 @@ class Meta_Box {
 
 	public function metabox_tab() {
 		// Only display the Main Ingredient tab if the feature and WP Recipe Maker plugin enabled.
-		if ( $this->has_recipes( get_the_ID() ) ) { // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+		if ( get_the_ID() && $this->has_recipes( get_the_ID() ) ) { // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 			$recipe_ids = \WPRM_Recipe_Manager::get_recipe_ids_from_post( get_the_ID() );
 			?>
 			<input id="wl-tab-main-ingredient" type="radio" name="wl-metabox-tabs"/><label
