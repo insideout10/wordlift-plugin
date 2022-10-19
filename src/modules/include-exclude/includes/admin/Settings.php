@@ -73,7 +73,7 @@ class Settings {
 	}
 
 	public function settings_section_callback() {
-		echo esc_html__( 'Select a URL filter type, and add list of URLs to selective active from WordLift\'s JSON-LD', 'wordlift' );
+		echo esc_html__( "Choose a filter type, and add list of URLs to selective active from WordLift's JSON-LD", 'wordlift' );
 	}
 
 	/**
