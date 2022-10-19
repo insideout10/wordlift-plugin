@@ -31,7 +31,7 @@ class Download_Ingredients_Data {
 						    INNER JOIN $wpdb->posts p2"
 			// The following ignore rule is used against the `LIKE CONCAT`. We only have const values.
 			// phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.LikeWildcardsInQuery
-			. " ON p2.post_status = 'publish' AND p2.ID = pm2.post_ID
+			. " ON p2.post_status = 'publish' AND p2.ID = pm2.meta_value
 							WHERE pm1.meta_key = '_wl_main_ingredient_jsonld'"
 		);
 
