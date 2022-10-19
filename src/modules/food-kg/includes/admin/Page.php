@@ -20,6 +20,17 @@ class Page {
 	public function register_hooks() {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		if ( isset( $_GET['modal_window'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			add_action( 'in_admin_header', array( $this, 'remove_notices' ), 99 );
+		}
+	}
+
+	/**
+	 * Remove notices from ingredients modal.
+	 */
+	public function remove_notices() {
+		remove_all_actions( 'admin_notices' );
+		remove_all_actions( 'all_admin_notices' );
 	}
 
 	public function admin_menu() {
