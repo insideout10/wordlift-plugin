@@ -35,22 +35,23 @@ class Include_Exclude_REST_Controller_Test extends WP_UnitTestCase {
 	 * Our expected route for rest api.
 	 */
 	protected $include_exclude_route = '/wordlift/v1/include-exclude/config';
+
 	/**
 	 * @inheritdoc
 	 */
 	public function setUp() {
 		parent::setUp();
 
-		// $features = get_option( '_wl_features', array() );
-		// $features['include_exclude'] = true;
-		// update_option( '_wl_features', $features );
+		if ( ! apply_filters( 'wl_feature__enable__include-exclude', false ) ) {
+			$this->markTestSkipped( 'Include/Exclude is not enabled.' );
+		}
 
 		$this->rest_instance = new API();
 		$this->rest_instance->register_hooks();
 		global $wp_rest_server;
 
 		$wp_rest_server = new WP_REST_Server();
-		$this->server = $wp_rest_server;
+		$this->server   = $wp_rest_server;
 		do_action( 'rest_api_init' );
 
 		$this->include_exclude_data = array(
