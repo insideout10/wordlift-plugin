@@ -46,8 +46,8 @@ class Plugin_Enabled {
 			return $enabled;
 		}
 
-		// Set a default state
-		$default_state = $options['include_exclude'] === 'exclude' ? true : false;
+		// Set a default state.
+		$default_state = ( $options['include_exclude'] === 'exclude' );
 
 		// Get URLs into an array from settings, trim them and make absolute if needed.
 		$urls = array_map(
@@ -68,6 +68,7 @@ class Plugin_Enabled {
 				return ! $default_state;
 			}
 		}
+
 		return $default_state;
 
 	}

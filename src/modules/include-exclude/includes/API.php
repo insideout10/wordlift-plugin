@@ -73,17 +73,16 @@ class API {
 			'type' => $include_exclude_data['include_exclude'],
 			'urls' => $include_exclude_data['urls'],
 		);
+
 		return rest_ensure_response( $data );
 	}
 
 	public function update_include_exclude_data( \WP_REST_Request $request ) {
 		$data = $request->get_params();
-		$type = $data['type'];
-		$urls = $data['urls'];
 
 		$include_exclude_data = array(
-			'include_exclude' => $type,
-			'urls'            => $urls,
+			'include_exclude' => $data['$type'],
+			'urls'            => $data['$urls'],
 		);
 
 		$updated = update_option( 'wl_exclude_include_urls_settings', $include_exclude_data );

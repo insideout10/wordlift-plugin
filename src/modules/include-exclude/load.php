@@ -16,6 +16,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * This module loads very early since it needs to tell WLP whether to load itself or not. Therefore we need to load the
+ * feature settings by ourselves.
+ */
 $wl_features = get_option( '_wl_features', array() );
 if ( ! apply_filters( 'wl_feature__enable__include-exclude', isset( $wl_features['include-exclude'] ) && true === $wl_features['include-exclude'] ) ) { // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	return;
@@ -49,4 +53,5 @@ function __wl_include_exclude__load() {
 		$api->register_hooks();
 	}
 }
+
 __wl_include_exclude__load();
