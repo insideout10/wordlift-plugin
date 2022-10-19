@@ -113,6 +113,12 @@ class Wordlift_Configuration_Service {
 	 * @since 3.20.0
 	 */
 	const PACKAGE_TYPE = 'package_type';
+	/**
+	 * The dataset ids connected to the current key
+	 *
+	 * @since 3.38.5
+	 */
+	const NETWORK_DATASET_IDS = 'network_dataset_ids';
 
 	/**
 	 * The {@link Wordlift_Log_Service} instance.
@@ -132,6 +138,25 @@ class Wordlift_Configuration_Service {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
+		// Sync some configuration properties when key is validated.
+		add_action( 'wl_key_validation_response', array( $this, 'sync' ) );
+
+	}
+
+	/**
+	 * @param $response \Wordlift\Api\Response
+	 *
+	 * @return void
+	 */
+	public function sync( $response ) {
+		if ( ! $response->is_success() ) {
+			return;
+		}
+		$data = json_decode( $response->get_body(), true );
+		if ( ! is_array( $data ) || ! array_key_exists( 'networkDatasetId', $data ) ) {
+			return;
+		}
+		$this->set_network_dataset_ids( $data['networkDatasetId'] );
 	}
 
 	/**
@@ -720,6 +745,14 @@ class Wordlift_Configuration_Service {
 	public function get_api_url() {
 
 		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE;
+	}
+
+	public function get_network_dataset_ids() {
+		return $this->get( 'wl_advanced_settings', self::NETWORK_DATASET_IDS, array() );
+	}
+
+	public function set_network_dataset_ids( $network_dataset_ids ) {
+		$this->set( 'wl_advanced_settings', self::NETWORK_DATASET_IDS, $network_dataset_ids );
 	}
 
 }

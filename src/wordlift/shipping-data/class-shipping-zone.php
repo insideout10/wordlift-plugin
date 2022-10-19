@@ -176,16 +176,21 @@ class Shipping_Zone {
 		$offer_shipping_details = array( '@type' => 'OfferShippingDetails' );
 		$shipping_delivery_time = array( '@type' => 'ShippingDeliveryTime' );
 
-		$this->add_shipping_destination( $offer_shipping_details );
-
 		/*
 		 * Use Case UC003
 		 * 1.4.3
 		 */
 		if ( isset( $method ) ) {
-			$method->add_shipping_rate( $offer_shipping_details );
+			// If a shipping method is specified by we can't add a shipping rate, then there's no point in adding the details.
+			$method->add_shipping_rate( $offer_shipping_details, $jsonld );
+			if ( empty( $offer_shipping_details['shippingRate'] ) ) {
+				return;
+			}
+
 			$method->add_transit_time( $shipping_delivery_time );
 		}
+
+		$this->add_shipping_destination( $offer_shipping_details );
 
 		/*
 		 * Use Case UC004

@@ -1,0 +1,26 @@
+{
+  "accountId": 1500793,
+  "datasetUri": "https://data.localdomain.localhost/dataset/",
+  "features": {
+    "all-entity-types": true,
+    "analysis-ng": true,
+    "dataset-ng": true,
+    "entity-types-business": true,
+    "linked-data": true,
+    "mappings": true,
+    "match-terms": true,
+    "no-vocabulary-terms": true,
+    "product-navigator": true,
+    "sync-background": true,
+    "videoobject": true
+  },
+  "language": "en",
+  "networkDatasetId": ["one","two","three"],
+  "ngDatasetId": "ng_dataset_id",
+  "redlinkAnalyzer": null,
+  "redlinkKey": null,
+  "subscriptionId": 150783,
+  "url": "https://localdomain.localhost/en",
+  "wpAdmin": "https://localdomain.localhost/en/wp-admin",
+  "wpJson": "https://localdomain.localhost/en/wp-json"
+}

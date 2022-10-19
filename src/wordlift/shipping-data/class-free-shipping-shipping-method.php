@@ -20,22 +20,26 @@ class Free_Shipping_Shipping_Method extends Shipping_Method {
 
 	}
 
-	public function add_shipping_rate( &$offer_shipping_details ) {
-
-		if ( ! isset( $offer_shipping_details['shippingRate'] ) ) {
-			$offer_shipping_details['shippingRate'] = array();
-		}
+	protected function get_shipping_rate() {
 
 		$description = isset( $this->wc_shipping_method->instance_settings['description'] )
 			? wp_strip_all_tags( $this->wc_shipping_method->instance_settings['description'] ) : '';
 
-		$offer_shipping_details['shippingRate'][] = array(
+		return array(
 			'@type'       => 'MonetaryAmount',
 			'name'        => $this->wc_shipping_method->get_title(),
 			'description' => $description,
 			'value'       => '0',
 			'currency'    => get_woocommerce_currency(),
 		);
+
+	}
+
+	protected function set_value_with_currency_codes( &$shipping_rate, $instance, $currency_codes ) {
+
+		if ( ! empty( $currency_codes ) ) {
+			$shipping_rate['currency'] = $currency_codes[0];
+		}
 
 	}
 
