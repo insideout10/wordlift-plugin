@@ -849,6 +849,7 @@ class Wordlift {
 		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-sample-data-ajax-adapter.php';
 		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-entity-type-adapter.php';
 		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-wprocket-adapter.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-nitropack-adapter.php';
 
 		/** Autocomplete. */
 		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-autocomplete-adapter.php';
@@ -1209,6 +1210,10 @@ class Wordlift {
 				* @see https://github.com/insideout10/wordlift-plugin/issues/842.
 				*/
 				new Wordlift_WpRocket_Adapter();
+
+				// Add support for NitroPack compatibility.
+				$nitropack_adapter = new Wordlift_NitroPack_Adapter();
+				$nitropack_adapter->register_hooks();
 
 				/** WordPress Admin UI. */
 

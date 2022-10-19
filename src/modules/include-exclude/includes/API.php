@@ -80,18 +80,6 @@ class API {
 		$data = $request->get_params();
 		$type = $data['type'];
 		$urls = $data['urls'];
-		// $content_type = $request->get_content_type(); // TODO: Content-Type checking.
-		// phpcs:disable
-		// if ( ! isset( $content_type['value'] ) || 'application/vnd.wordlift.include-exclude-config.v1+json' !== $content_type['value'] ) {
-		// 	return new \WP_Error(
-		// 		'wl_include_exclude_invalid_content_type',
-		// 		__( 'Invalid content type.', 'wordlift' ),
-		// 		array(
-		// 			'status' => 400,
-		// 		)
-		// 	);
-		// }
-		// phpcs:enable
 
 		$include_exclude_data = array(
 			'include_exclude' => $type,

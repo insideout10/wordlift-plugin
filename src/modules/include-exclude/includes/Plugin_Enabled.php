@@ -21,25 +21,6 @@ class Plugin_Enabled {
 	 */
 	public function register_hooks() {
 		add_filter( 'wl_is_enabled', array( $this, 'wl_is_enabled' ) );
-		add_filter( 'wl_jsonld_term_html_output', array( $this, 'may_be_exclude_nitropack' ) );
-		add_filter( 'wl_jsonld_post_html_output', array( $this, 'may_be_exclude_nitropack' ) );
-	}
-
-	/**
-	 * Modify JSON-LD if Nitropack active.
-	 *
-	 * @param $html
-	 *
-	 * @return array|mixed|string|string[]
-	 */
-	public function may_be_exclude_nitropack( $html ) {
-		if ( ! defined( 'NITROPACK_VERSION' ) ) {
-			return $html;
-		}
-		$html = str_replace( 'id="wl-jsonld"', 'id="wl-jsonld" nitro-exclude', $html );
-		$html = str_replace( 'id="wl-jsonld-term"', 'id="wl-jsonld-term" nitro-exclude', $html );
-
-		return $html;
 	}
 
 	/**
