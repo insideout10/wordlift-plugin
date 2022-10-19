@@ -292,6 +292,19 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			)
 		);
 
+        // Add the `alternateName` field.
+        add_settings_field(
+            'wl-markup-alternate-name',
+            __( 'Website Alternate Name', 'wordlift' ),
+            array( $this->input_element, 'render' ),
+            'wl_general_settings',
+            'wl_general_settings_section',
+            array(
+                'id'   => 'wl-markup-alternate-name-id',
+                'name' => 'wl_general_settings["wl-markup-alternate-name"]',
+            )
+        );
+
 		// Add the `publisher` field.
 		add_settings_field(
 			'wl-publisher-id',
