@@ -21,6 +21,7 @@ if ( ! class_exists( 'Walker_Category_Checklist' ) ) {
  * @package    Wordlift
  * @subpackage Wordlift/includes
  */
+// phpcs:ignore Generic.Classes.DuplicateClassName.Found
 class Wordlift_Entity_Types_Taxonomy_Walker extends Walker_Category_Checklist {
 
 	/**
