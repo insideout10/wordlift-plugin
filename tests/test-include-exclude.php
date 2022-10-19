@@ -17,7 +17,7 @@ class Wordlift_Include_Exclude_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * The {@link Plugin_Enabled} instance to test.
 	 *
-	 * @var \WordLift\Modules\Include_Exclude\Plugin_Enabled $plugin_enabled The {@link Plugin_Enabled} instance.
+	 * @var \Wordlift\Modules\Include_Exclude\Plugin_Enabled $plugin_enabled The {@link Plugin_Enabled} instance.
 	 */
 	private $include_exclude_enabled;
 
@@ -31,7 +31,7 @@ class Wordlift_Include_Exclude_Test extends Wordlift_Unit_Test_Case {
 		update_option( 'siteurl', 'https://wordlift.io' );
 		update_option( 'home', 'https://wordlift.io' );
 
-		$this->include_exclude_enabled = new WordLift\Modules\Include_Exclude\Plugin_Enabled();
+		$this->include_exclude_enabled = new Wordlift\Modules\Include_Exclude\Plugin_Enabled();
 	}
 
 	public function test_given_include_urls_should_return_true() {

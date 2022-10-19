@@ -7,7 +7,7 @@
  * @subpackage Wordlift/tests
  */
 
-use WordLift\Modules\Include_Exclude\API;
+use Wordlift\Modules\Include_Exclude\API;
 
 /**
  * Define the Include_Exclude_REST_Controller_Test class.
