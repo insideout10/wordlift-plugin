@@ -25,6 +25,7 @@ class Woocommerce_Shipping_Data_Test_1_1 extends WP_UnitTestCase {
 			'@type'  => 'Product',
 			'offers' => array(
 				'@type' => 'Offer',
+				'priceCurrency' => 'GBP',
 			)
 		), - 1, array() );
 

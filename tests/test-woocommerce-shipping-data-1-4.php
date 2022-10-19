@@ -25,7 +25,8 @@ class Woocommerce_Shipping_Data_Test_1_4 extends WP_UnitTestCase {
 		$jsonld = apply_filters( 'wl_entity_jsonld', array(
 			'@type'  => 'Product',
 			'offers' => array(
-				'@type' => 'Offer',
+				'@type'         => 'Offer',
+				'priceCurrency' => 'GBP',
 			)
 		), - 1, array() );
 
