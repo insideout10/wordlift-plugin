@@ -29,6 +29,7 @@ class ComposerStaticInitbaaf547b24d2757395578581da934187
         'Wordlift\\Modules\\Food_Kg\\Notices' => __DIR__ . '/../..' . '/Notices.php',
         'Wordlift\\Modules\\Food_Kg\\Preconditions' => __DIR__ . '/../..' . '/Preconditions.php',
         'Wordlift\\Modules\\Food_Kg\\Recipe_Lift_Strategy' => __DIR__ . '/../..' . '/Recipe_Lift_Strategy.php',
+        'Wordlift\\Modules\\Food_Kg\\Services\\Ingredients' => __DIR__ . '/../..' . '/services/Ingredients.php',
         'Wordlift_Modules_Food_Kg_Composer\\Autoload\\ClassLoader' => __DIR__ . '/..' . '/composer/ClassLoader.php',
         'Wordlift_Modules_Food_Kg_Composer\\Autoload\\ComposerStaticInitbaaf547b24d2757395578581da934187' => __DIR__ . '/..' . '/composer/autoload_static.php',
     );

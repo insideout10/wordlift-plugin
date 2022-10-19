@@ -7,9 +7,8 @@
  * @subpackage Wordlift/tests
  */
 
-use WordLift\Modules\Food_Kg\Ingredients_API;
-
-include dirname( __FILE__ ) . '/../src/modules/food-kg/includes/Ingredients_API.php';
+require __DIR__ . '/../src/modules/food-kg/includes/services/Ingredients.php';
+require __DIR__ . '/../src/modules/food-kg/includes/Ingredients_API.php';
 
 /**
  * Define the Ingredients_REST_Controller_Test class.
@@ -33,20 +32,46 @@ class Ingredients_REST_Controller_Test extends WP_UnitTestCase {
 	 * Our expected route for rest api.
 	 */
 	protected $ingredients_api_route = '/wordlift/v1/ingredients';
+
+	/**
+	 * Ingredients Data.
+	 */
+	private $ingredients_data;
+
+	/**
+	 * Data to be used for testing.
+	 */
+	private $data;
+
 	/**
 	 * @inheritdoc
 	 */
 	public function setUp() {
 		parent::setUp();
 
-		$this->rest_instance = new Ingredients_API();
+		$this->data = array(
+			array(
+				'main_ingredient_item_id' => 'http://www.wikidata.org/entity/Q111',
+				'main_ingredient_name'    => 'chicken',
+				'recipe_id'               => 20,
+				'recipe_name'             => 'Chicken Curry',
+				'post_id'                 => 10,
+				'post_name'               => 'Chicken Curry Recipe',
+				'post_url'                => 'http://example.com/chicken-curry-recipe',
+			),
+		);
+
+		$this->ingredients_data = $this->getMockBuilder( 'WordLift\Modules\Food_Kg\Services\Ingredients' )
+										->disableOriginalConstructor()
+										->setMethods( array( 'get_data' ) )
+										->getMock();
+		$this->rest_instance = new WordLift\Modules\Food_Kg\Ingredients_API( $this->ingredients_data );
 		$this->rest_instance->register_hooks();
 		global $wp_rest_server;
 
 		$wp_rest_server = new WP_REST_Server();
 		$this->server = $wp_rest_server;
 		do_action( 'rest_api_init' );
-
 	}
 
 	/**
@@ -89,11 +114,16 @@ class Ingredients_REST_Controller_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test if rest route for getting ingredients returns empty data ( As we don't have any data ).
+	 * Test if rest route for getting ingredients returns data.
 	 */
-	public function test_rest_route_for_getting_ingredients_returns_empty_data() {
+	public function test_rest_route_for_getting_ingredients_returns_data() {
 		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );
+
+
+		$this->ingredients_data->expects( $this->once() )
+								->method( 'get_data' )
+								->willReturn( $this->data );
 
 		$request = new WP_REST_Request(
 			'GET',
@@ -102,14 +132,6 @@ class Ingredients_REST_Controller_Test extends WP_UnitTestCase {
 
 		$response = $this->server->dispatch( $request );
 
-		$data = array(
-			'code'    => 'no_ingredients',
-			'message' => 'No ingredients found.',
-			'data'    => array(
-				'status' => 404,
-			),
-		);
-
-		$this->assertEquals( $data, $response->get_data() );
+		$this->assertEquals( $this->data, $response->get_data() );
 	}
 }

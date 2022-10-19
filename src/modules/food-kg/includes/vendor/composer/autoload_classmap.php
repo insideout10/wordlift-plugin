@@ -28,6 +28,7 @@ return array(
     'Wordlift\\Modules\\Food_Kg\\Notices' => $baseDir . '/Notices.php',
     'Wordlift\\Modules\\Food_Kg\\Preconditions' => $baseDir . '/Preconditions.php',
     'Wordlift\\Modules\\Food_Kg\\Recipe_Lift_Strategy' => $baseDir . '/Recipe_Lift_Strategy.php',
+    'Wordlift\\Modules\\Food_Kg\\Services\\Ingredients' => $baseDir . '/services/Ingredients.php',
     'Wordlift_Modules_Food_Kg_Composer\\Autoload\\ClassLoader' => $vendorDir . '/composer/ClassLoader.php',
     'Wordlift_Modules_Food_Kg_Composer\\Autoload\\ComposerStaticInitbaaf547b24d2757395578581da934187' => $vendorDir . '/composer/autoload_static.php',
 );
