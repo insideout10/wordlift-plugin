@@ -42,14 +42,14 @@ function __wl_include_exclude__load() {
 	$loader->load( 'services.yml' );
 	$container_builder->compile();
 
-	$enabled = $container_builder->get( 'WordLift\Modules\Include_Exclude\Plugin_Enabled' );
+	$enabled = $container_builder->get( 'Wordlift\Modules\Include_Exclude\Plugin_Enabled' );
 	$enabled->register_hooks();
 
 	if ( apply_filters( 'wl_is_enabled', true ) ) {
-		$settings = $container_builder->get( 'WordLift\Modules\Include_Exclude\Admin\Settings' );
+		$settings = $container_builder->get( 'Wordlift\Modules\Include_Exclude\Admin\Settings' );
 		$settings->register_hooks();
 
-		$api = $container_builder->get( 'WordLift\Modules\Include_Exclude\API' );
+		$api = $container_builder->get( 'Wordlift\Modules\Include_Exclude\API' );
 		$api->register_hooks();
 	}
 }
