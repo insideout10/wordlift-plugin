@@ -12,7 +12,7 @@ use WordLift\Modules\Include_Exclude\API;
 /**
  * Define the Include_Exclude_REST_Controller_Test class.
  *
- * @group mappings
+ * @group include-exclude
  *
  * @since 3.38.4
  */

@@ -10,7 +10,7 @@
 /**
  * Define the Wordlift_Include_Exclude_Test class.
  *
- * @group module
+ * @group include-exclude
  */
 class Wordlift_Include_Exclude_Test extends Wordlift_Unit_Test_Case {
 
