@@ -52,8 +52,25 @@ class Shipping_Method {
 	}
 
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-	public function add_shipping_rate( &$offer_shipping_details ) {
+	public function add_shipping_rate( &$offer_shipping_details, $jsonld ) {
+		if ( ! isset( $offer_shipping_details['shippingRate'] ) ) {
+			$offer_shipping_details['shippingRate'] = array();
+		}
 
+		$shipping_rate = $this->get_shipping_rate();
+
+		$this->change_to_manual_currency( $shipping_rate );
+
+		// Only add the shipping rate if the currency matches the offer currency.
+		$currency = self::get_offer_price_currency( $jsonld );
+		if ( $currency && $currency === $shipping_rate['currency'] ) {
+			$offer_shipping_details['shippingRate'][] = $shipping_rate;
+		}
+
+	}
+
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	protected function get_shipping_rate() {
 	}
 
 	public function add_transit_time( &$shipping_delivery_time ) {
@@ -119,6 +136,33 @@ class Shipping_Method {
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	protected function set_value_with_currency_codes( &$shipping_rate, $instance, $currency_codes ) {
 		// Override.
+	}
+
+	/**
+	 * @param array $jsonld {
+	 *     An `Offer` structure.
+	 *
+	 * @type string $priceCurrency The price currency.
+	 * @type array $priceSpecification {
+	 *         A `PriceSpecification` structure.
+	 *
+	 * @type string $priceCurrency The price currency.
+	 *     }
+	 * }
+	 *
+	 * @return string|false The price currency or false.
+	 */
+	protected static function get_offer_price_currency( $jsonld ) {
+
+		if ( isset( $jsonld['priceCurrency'] ) ) {
+			return $jsonld['priceCurrency'];
+		}
+
+		if ( isset( $jsonld['priceSpecification']['priceCurrency'] ) ) {
+			return $jsonld['priceSpecification']['priceCurrency'];
+		}
+
+		return false;
 	}
 
 	public static function wcml_requirements() {

@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.39.0 (????-??-??) =
+* Feature: add support for WPML for WooCommerce for shipping methods structured data.
+
 = 3.38.5 (2022-10-17) =
 * Feature [#1586](https://github.com/insideout10/wordlift-plugin/issues/1586): Improvements to the Ingredients feature.
 * Fix [#1594](https://github.com/insideout10/wordlift-plugin/issues/1594): Match Terms, set scope based on the connected datasets.
