@@ -26,12 +26,16 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 		// Create new jsonld.
 		$home_url = home_url( '/' );
 
+        // Alternate Name.
+        $wl_settings = get_option( 'wl_general_settings' );
+        $alternate_name = isset( $wl_settings['wl-markup-alternate-name'] ) ? html_entity_decode( $wl_settings['wl-markup-alternate-name'], ENT_QUOTES ) : html_entity_decode( get_bloginfo( 'description' ), ENT_QUOTES );
+
 		$jsonld = array(
 			'@context'      => 'http://schema.org',
 			'@type'         => 'WebSite',
 			'@id'           => "$home_url#website",
 			'name'          => html_entity_decode( get_bloginfo( 'name' ), ENT_QUOTES ),
-			'alternateName' => html_entity_decode( get_bloginfo( 'description' ), ENT_QUOTES ),
+			'alternateName' => $alternate_name,
 			'url'           => $home_url,
 		);
 

@@ -300,7 +300,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
             'wl_general_settings',
             'wl_general_settings_section',
             array(
-                'id'   => 'wl-markup-alternate-name-id',
+                'id'   => 'wl-markup-alternate-name',
                 'name' => 'wl_general_settings["wl-markup-alternate-name"]',
             )
         );
