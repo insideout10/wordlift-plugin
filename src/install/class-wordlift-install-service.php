@@ -71,6 +71,8 @@ class Wordlift_Install_Service {
 		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-33-9.php';
 		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-36-0.php';
 		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-38-5.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-39-0.php';
+
 		// Get the install services.
 		$this->installs = array(
 			new Wordlift_Install_1_0_0(),
@@ -101,6 +103,7 @@ class Wordlift_Install_Service {
 			new Wordlift_Install_3_36_0(),
 
 			new Wordlift_Install_3_38_5(),
+			new Wordlift_Install_3_39_0(),
 		);
 		self::$instance = $this;
 

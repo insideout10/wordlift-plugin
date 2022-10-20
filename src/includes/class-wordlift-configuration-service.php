@@ -214,7 +214,7 @@ class Wordlift_Configuration_Service {
 	 *
 	 * @param string $option Name of option to retrieve. Expected to not be SQL-escaped.
 	 * @param string $key The value key.
-	 * @param mixed  $value The value.
+	 * @param mixed $value The value.
 	 *
 	 * @since 3.9.0
 	 */
@@ -390,7 +390,7 @@ class Wordlift_Configuration_Service {
 	 * @since 3.38.6
 	 */
 	public function get_alternate_name() {
-		return $this->get( 'wl_general_settings', self::ALTERNATE_NAME, html_entity_decode( get_bloginfo( 'description' ) ) );
+		return $this->get( 'wl_general_settings', self::ALTERNATE_NAME );
 	}
 
 	/**
@@ -558,10 +558,10 @@ class Wordlift_Configuration_Service {
 
 		// Build the URL.
 		$url = '/accounts'
-			   . '?key=' . rawurlencode( $key )
-			   . '&url=' . rawurlencode( $site_url )
-			   . '&country=' . $this->get_country_code()
-			   . '&language=' . $this->get_language_code();
+		       . '?key=' . rawurlencode( $key )
+		       . '&url=' . rawurlencode( $site_url )
+		       . '&country=' . $this->get_country_code()
+		       . '&language=' . $this->get_language_code();
 
 		$api_service = Default_Api_Service::get_instance();
 		/**
