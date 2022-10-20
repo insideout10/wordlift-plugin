@@ -18,6 +18,7 @@ return array(
     'Wordlift\\Modules\\Food_Kg\\Admin\\Page' => $baseDir . '/admin/Page.php',
     'Wordlift\\Modules\\Food_Kg\\Admin\\Page_Delegate' => $baseDir . '/admin/Page_Delegate.php',
     'Wordlift\\Modules\\Food_Kg\\Ingredients' => $baseDir . '/Ingredients.php',
+    'Wordlift\\Modules\\Food_Kg\\Ingredients_API' => $baseDir . '/Ingredients_API.php',
     'Wordlift\\Modules\\Food_Kg\\Ingredients_Client' => $baseDir . '/Ingredients_Client.php',
     'Wordlift\\Modules\\Food_Kg\\Ingredients_Taxonomy_Recipe_Lift_Strategy' => $baseDir . '/Ingredients_Taxonomy_Recipe_Lift_Strategy.php',
     'Wordlift\\Modules\\Food_Kg\\Jsonld' => $baseDir . '/Jsonld.php',
@@ -27,6 +28,7 @@ return array(
     'Wordlift\\Modules\\Food_Kg\\Notices' => $baseDir . '/Notices.php',
     'Wordlift\\Modules\\Food_Kg\\Preconditions' => $baseDir . '/Preconditions.php',
     'Wordlift\\Modules\\Food_Kg\\Recipe_Lift_Strategy' => $baseDir . '/Recipe_Lift_Strategy.php',
+    'Wordlift\\Modules\\Food_Kg\\Services\\Ingredients' => $baseDir . '/services/Ingredients.php',
     'Wordlift_Modules_Food_Kg_Composer\\Autoload\\ClassLoader' => $vendorDir . '/composer/ClassLoader.php',
     'Wordlift_Modules_Food_Kg_Composer\\Autoload\\ComposerStaticInitbaaf547b24d2757395578581da934187' => $vendorDir . '/composer/autoload_static.php',
 );

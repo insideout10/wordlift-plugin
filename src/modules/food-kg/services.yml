@@ -63,3 +63,8 @@ services:
     arguments: [ '@Wordlift\Api\Api_Service_Ext', '@Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy' ]
   Wordlift\Modules\Food_Kg\Admin\Download_Ingredients_Data:
     class: Wordlift\Modules\Food_Kg\Admin\Download_Ingredients_Data
+  Wordlift\Modules\Food_Kg\Services\Ingredients:
+    class: Wordlift\Modules\Food_Kg\Services\Ingredients
+  Wordlift\Modules\Food_Kg\Ingredients_API:
+    class: Wordlift\Modules\Food_Kg\Ingredients_API
+    arguments: [ '@Wordlift\Modules\Food_Kg\Services\Ingredients' ]

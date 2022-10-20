@@ -235,13 +235,11 @@ require_once 'wordlift-editor.php';
 // add the WordLift entity custom type.
 require_once 'wordlift-entity-type.php';
 
-require_once 'modules/common/load.php';
 require_once 'modules/configuration/wordlift-configuration-settings.php';
 
 // Load modules
 require_once 'modules/analyzer/wordlift-analyzer.php';
 require_once 'modules/linked_data/wordlift-linked-data.php';
-require_once 'modules/acf4so/load.php';
 
 // Shortcodes
 require_once 'shortcodes/class-wordlift-shortcode-rest.php';

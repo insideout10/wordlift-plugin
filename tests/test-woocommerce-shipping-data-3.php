@@ -24,7 +24,8 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 		$jsonld = apply_filters( 'wl_entity_jsonld', array(
 			'@type'  => 'Product',
 			'offers' => array(
-				'@type' => 'Offer',
+				'@type'         => 'Offer',
+				'priceCurrency' => 'GBP'
 			)
 		), - 1, array() );
 
@@ -93,7 +94,7 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 
 		$free_shipping_method_id = $zone->add_shipping_method( 'free_shipping' );
 		update_option( "woocommerce_free_shipping_{$free_shipping_method_id}_settings", array(
-			'title'         => 'Custom Free shipping Label',
+			'title' => 'Custom Free shipping Label',
 		), true );
 
 		$shipping_method_id        = $zone->add_shipping_method( 'flat_rate' );

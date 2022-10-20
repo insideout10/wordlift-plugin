@@ -47,8 +47,14 @@ if ( version_compare( $wordpress_version, '5.2', '>=' ) ) {
 }
 
 function _manually_load_plugin() {
-	require dirname( __FILE__ ) . '/../src/wordlift.php';
 
+	// Include/Exclude is loaded before the WLP filter, so we're adding our own filter based on the env variable.
+	$include_exclude_env = getenv( 'WL_FEATURES__INCLUDE-EXCLUDE' );
+	if ( $include_exclude_env ) {
+		add_filter( 'wl_feature__enable__include-exclude', $include_exclude_env, PHP_INT_MAX );
+	}
+
+	require dirname( __FILE__ ) . '/../src/wordlift.php';
 
 	if ( version_compare( get_bloginfo( 'version' ), '5.5', '>=' ) ) {
 
@@ -72,8 +78,8 @@ function _manually_load_plugin() {
 				'woocommerce/woocommerce.php',
 				'wpsso/wpsso.php',
 				'wpsso-wc-shipping-delivery-time/wpsso-wc-shipping-delivery-time.php',
-			) );
-
+			)
+		);
 	}
 }
 
@@ -139,4 +145,5 @@ function unzip( $what, $to ) {
 	$zip->close();
 
 }
+
 define( 'FS_METHOD', 'direct' );

@@ -21,14 +21,15 @@
             <group>no-vocabulary-terms</group>
             <group>rel-item-id</group>
             <group>woocommerce-extension</group>
+            <group>include-exclude</group>
         </exclude>
     </groups>
     <php>
-        <ini name="error_reporting" value="2147483647" />
+        <ini name="error_reporting" value="2147483647"/>
         <ini name="display_errors" value="true"/>
         <ini name="display_startup_errors" value="true"/>
-        <ini name="xdebug.force_error_reporting" value="1" />
-        <ini name="xdebug.force_error_reporting" value="on" />
+        <ini name="xdebug.force_error_reporting" value="1"/>
+        <ini name="xdebug.force_error_reporting" value="on"/>
         <const name="WP_DEBUG_LOG" value="true"/>
         <const name="WP_DEBUG_DISPLAY" value="false"/>
         <const name="WL_DEBUG" value="true"/>
@@ -37,6 +38,8 @@
         <const name="WL_ENABLE_TERM_LINKING" value="true"/>
 
         <env name="WORDLIFT_KEY" value="key123"/>
+
+        <env name="WL_FEATURES__INCLUDE-EXCLUDE" value="__return_true"/>
 
     </php>
 </phpunit>
