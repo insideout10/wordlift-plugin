@@ -390,7 +390,8 @@ class Wordlift_Configuration_Service {
 	 * @since 3.38.6
 	 */
 	public function get_alternate_name() {
-		return $this->get( 'wl_general_settings', self::ALTERNATE_NAME, html_entity_decode( get_bloginfo( 'description' ) ) );
+		$alternate_name = $this->get( 'wl_general_settings', self::ALTERNATE_NAME, get_bloginfo( 'description' ) );
+		return wp_strip_all_tags( $alternate_name, true );
 	}
 
 	/**
