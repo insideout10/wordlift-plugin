@@ -58,12 +58,12 @@ class Wordlift_Configuration_Service {
 	 */
 	const COUNTRY_CODE = 'country_code';
 
-    /**
-     * The alternateName option name.
-     *
-     * @since 3.9.0
-     */
-    const ALTERNATE_NAME = 'wl-alternate-name';
+	/**
+	 * The alternateName option name.
+	 *
+	 * @since 3.9.0
+	 */
+	const ALTERNATE_NAME = 'wl-alternate-name';
 
 	/**
 	 * The publisher entity post ID option name.

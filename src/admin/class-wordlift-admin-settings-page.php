@@ -292,19 +292,19 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			)
 		);
 
-        // Add the `alternateName` field.
-        add_settings_field(
-            'wl-alternate-name',
-            __( 'Website Alternate Name', 'wordlift' ),
-            array( $this->input_element, 'render' ),
-            'wl_general_settings',
-            'wl_general_settings_section',
-            array(
-                'id'    => 'wl-alternate-name',
-                'name'  => 'wl_general_settings[' . Wordlift_Configuration_Service::ALTERNATE_NAME . ']',
+		// Add the `alternateName` field.
+		add_settings_field(
+			'wl-alternate-name',
+			__( 'Website Alternate Name', 'wordlift' ),
+			array( $this->input_element, 'render' ),
+			'wl_general_settings',
+			'wl_general_settings_section',
+			array(
+				'id'    => 'wl-alternate-name',
+				'name'  => 'wl_general_settings[' . Wordlift_Configuration_Service::ALTERNATE_NAME . ']',
 				'value' => Wordlift_Configuration_Service::get_instance()->get_alternate_name(),
-            )
-        );
+			)
+		);
 
 		// Add the `publisher` field.
 		add_settings_field(
