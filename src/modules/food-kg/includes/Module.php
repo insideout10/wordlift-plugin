@@ -16,15 +16,15 @@ class Module {
 	/**
 	 * @var Recipe_Lift_Strategy
 	 */
-	private $recipe_lift_strategy;
+	private $recipe_lift_strategies;
 
 	/**
-	 * @param Api_Service_Ext      $api_service
-	 * @param Recipe_Lift_Strategy $recipe_lift_strategy
+	 * @param Api_Service_Ext $api_service
+	 * @param Recipe_Lift_Strategy[] $recipe_lift_strategies
 	 */
-	public function __construct( Api_Service_Ext $api_service, Recipe_Lift_Strategy $recipe_lift_strategy ) {
-		$this->api_service          = $api_service;
-		$this->recipe_lift_strategy = $recipe_lift_strategy;
+	public function __construct( Api_Service_Ext $api_service, array $recipe_lift_strategies ) {
+		$this->api_service            = $api_service;
+		$this->recipe_lift_strategies = $recipe_lift_strategies;
 	}
 
 	public function register_hooks() {
@@ -37,7 +37,7 @@ class Module {
 		try {
 			$me_response    = $this->api_service->me();
 			$has_food_kg    = isset( $me_response->networks )
-							  && array_reduce( $me_response->networks, array( $this, '__has_food_kg' ), false );
+			                  && array_reduce( $me_response->networks, array( $this, '__has_food_kg' ), false );
 			$next_scheduled = wp_next_scheduled( self::RUN_EVENT );
 
 			// We're connected to the Food KG, but not yet scheduled.
@@ -49,14 +49,16 @@ class Module {
 			if ( ! $has_food_kg && $next_scheduled ) {
 				wp_unschedule_event( $next_scheduled, self::RUN_EVENT );
 			}
-		// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 		} catch ( \Exception $e ) {
 			// Do nothing.
 		}
 	}
 
 	public function __run() {
-		$this->recipe_lift_strategy->run();
+		foreach ( $this->recipe_lift_strategies as $recipe_lift_strategy ) {
+			$recipe_lift_strategy->run();
+		}
 	}
 
 	private function __has_food_kg( $carry, $item ) {

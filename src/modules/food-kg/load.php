@@ -15,9 +15,8 @@ use Wordlift\Modules\Food_Kg\Jsonld;
 use Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld;
 use Wordlift\Modules\Food_Kg\Preconditions;
 use Wordlift\Task\All_Posts_Task;
-use Wordlift\Task\Background\Background_Task;
-use Wordlift\Task\Background\Background_Task_Page;
-use Wordlift\Task\Background\Background_Task_Route;
+use Wordlift\Task\Background\Background_Task_Factory;
+use Wordlift\Task\Single_Call_Task;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -74,28 +73,42 @@ function __wl_foodkg__load() {
 	$main_ingredient_jsonld = $container_builder->get( 'Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld' );
 	$main_ingredient_jsonld->register_hooks();
 
-	/** Prepare the background task. */
+	// Main Ingredient Background Task.
 	$main_ingredient_recipe_lift = $container_builder->get( 'Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy' );
-	$task                        = new All_Posts_Task(
-		array(
-			$main_ingredient_recipe_lift,
-			'process',
+	Background_Task_Factory::create(
+		new All_Posts_Task(
+			array( $main_ingredient_recipe_lift, 'process', ),
+			'wprm_recipe',
+			'sync-main-ingredient'
 		),
-		'wprm_recipe',
-		'sync-main-ingredient'
+		'/main-ingredient',
+		'sync-main-ingredient',
+		__( 'Synchronize Main Ingredient', 'wordlift' )
 	);
-	$background_task             = Background_Task::create( $task );
-	$background_task_route       = Background_Task_Route::create( $background_task, '/main-ingredient' );
-	Background_Task_Page::create( __( 'Synchronize Main Ingredient', 'wordlift' ), 'sync-main-ingredient', $background_task_route );
+
+	// Ingredients Taxonomy Background Task.
+	$ingredients_taxonomy_recipe_lift = $container_builder->get( 'Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy' );
+	Background_Task_Factory::create(
+		new Single_Call_Task(
+			array( $ingredients_taxonomy_recipe_lift, 'run', ),
+			'sync-ingredients-taxonomy'
+		),
+		'/sync-ingredients-taxonomy',
+		'sync-ingredients-taxonomy',
+		__( 'Synchronize Ingredients Taxonomy', 'wordlift' )
+	);
+
 
 	if ( is_admin() ) {
 		$page = $container_builder->get( 'Wordlift\Modules\Food_Kg\Admin\Page' );
 		$page->register_hooks();
 
+		$page = $container_builder->get( 'Wordlift\Modules\Food_Kg\Admin\Ingredients_Taxonomy_Page' );
+		$page->register_hooks();
+
 		// Download Ingredients Data.
 		$download_ingredients_data = $container_builder->get( 'Wordlift\Modules\Food_Kg\Admin\Download_Ingredients_Data' );
 		$download_ingredients_data->register_hooks();
-
 	}
 }
 

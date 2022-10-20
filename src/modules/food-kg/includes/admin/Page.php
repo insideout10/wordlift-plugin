@@ -8,13 +8,19 @@ class Page {
 	 * @var Page_Delegate
 	 */
 	private $delegate;
+	private $menu_slug;
+	private $page_title;
+	private $menu_title;
 
 	/**
 	 * @param Page_Delegate $full_page_delegate
 	 * @param Page_Delegate $modal_page_delegate
 	 */
-	public function __construct( $full_page_delegate, $modal_page_delegate ) {
-		$this->delegate = isset( $_GET['modal_window'] ) ? $modal_page_delegate : $full_page_delegate; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	public function __construct( $full_page_delegate, $modal_page_delegate, $menu_slug, $page_title, $menu_title ) {
+		$this->delegate   = isset( $_GET['modal_window'] ) ? $modal_page_delegate : $full_page_delegate; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$this->menu_slug  = $menu_slug;
+		$this->page_title = $page_title;
+		$this->menu_title = $menu_title;
 	}
 
 	public function register_hooks() {
@@ -36,10 +42,10 @@ class Page {
 	public function admin_menu() {
 		add_submenu_page(
 			'wl_admin_menu',
-			__( 'Ingredients', 'wordlift' ),
-			__( 'Ingredients', 'wordlift' ),
+			$this->page_title,
+			$this->menu_title,
 			'manage_options',
-			'wl_ingredients',
+			$this->menu_slug,
 			array( $this, 'render' )
 		);
 	}
