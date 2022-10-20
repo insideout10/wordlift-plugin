@@ -12,7 +12,7 @@ class Jsonld {
 	}
 
 	/**
-	 * @param array $metadata
+	 * @param array       $metadata
 	 * @param WPRM_Recipe $recipe
 	 *
 	 * @return array

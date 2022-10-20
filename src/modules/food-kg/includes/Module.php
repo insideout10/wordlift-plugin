@@ -19,7 +19,7 @@ class Module {
 	private $recipe_lift_strategies;
 
 	/**
-	 * @param Api_Service_Ext $api_service
+	 * @param Api_Service_Ext        $api_service
 	 * @param Recipe_Lift_Strategy[] $recipe_lift_strategies
 	 */
 	public function __construct( Api_Service_Ext $api_service, array $recipe_lift_strategies ) {
@@ -37,7 +37,7 @@ class Module {
 		try {
 			$me_response    = $this->api_service->me();
 			$has_food_kg    = isset( $me_response->networks )
-			                  && array_reduce( $me_response->networks, array( $this, '__has_food_kg' ), false );
+							  && array_reduce( $me_response->networks, array( $this, '__has_food_kg' ), false );
 			$next_scheduled = wp_next_scheduled( self::RUN_EVENT );
 
 			// We're connected to the Food KG, but not yet scheduled.

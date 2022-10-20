@@ -17,7 +17,7 @@ class Background_Task_Factory {
 	/**
 	 * Create a {@link Background_Task} given the provided task and route.
 	 *
-	 * @param Task $task The target task.
+	 * @param Task   $task The target task.
 	 * @param string $route The route name.
 	 * @param string $page_id The page id.
 	 * @param string $page_title The page title.

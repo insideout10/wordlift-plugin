@@ -35,6 +35,7 @@ class Single_Call_Task implements Task {
 	 *
 	 * @return void
 	 */
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function tick( $value, $args ) {
 
 		call_user_func( $this->callable, 1 );

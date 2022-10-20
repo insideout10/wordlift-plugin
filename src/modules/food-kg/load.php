@@ -77,7 +77,7 @@ function __wl_foodkg__load() {
 	$main_ingredient_recipe_lift = $container_builder->get( 'Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy' );
 	Background_Task_Factory::create(
 		new All_Posts_Task(
-			array( $main_ingredient_recipe_lift, 'process', ),
+			array( $main_ingredient_recipe_lift, 'process' ),
 			'wprm_recipe',
 			'sync-main-ingredient'
 		),
@@ -90,14 +90,13 @@ function __wl_foodkg__load() {
 	$ingredients_taxonomy_recipe_lift = $container_builder->get( 'Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy' );
 	Background_Task_Factory::create(
 		new Single_Call_Task(
-			array( $ingredients_taxonomy_recipe_lift, 'run', ),
+			array( $ingredients_taxonomy_recipe_lift, 'run' ),
 			'sync-ingredients-taxonomy'
 		),
 		'/sync-ingredients-taxonomy',
 		'sync-ingredients-taxonomy',
 		__( 'Synchronize Ingredients Taxonomy', 'wordlift' )
 	);
-
 
 	if ( is_admin() ) {
 		$page = $container_builder->get( 'Wordlift\Modules\Food_Kg\Admin\Page' );
