@@ -28,7 +28,7 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 
 		// Alternate Name.
 		$wl_settings    = get_option( 'wl_general_settings' );
-		$alternate_name = isset( $wl_settings['wl-alternate-name'] ) ? html_entity_decode( $wl_settings['wl-alternate-name'], ENT_QUOTES ) : html_entity_decode( get_bloginfo( 'description' ), ENT_QUOTES );
+		$alternate_name = isset( $wl_settings['wl-alternate-name'] ) ? html_entity_decode( strip_tags( $wl_settings['wl-alternate-name'], ENT_QUOTES ) ) : html_entity_decode( get_bloginfo( 'description' ), ENT_QUOTES );
 
 		$jsonld = array(
 			'@context'      => 'http://schema.org',

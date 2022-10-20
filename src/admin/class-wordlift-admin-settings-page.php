@@ -148,7 +148,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 */
 	public function get_page_title() {
 
-		return 'WordLift Settings';
+		return __( 'WordLift Settings', 'wordlift' );
 	}
 
 	/**
@@ -156,7 +156,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 */
 	public function get_menu_title() {
 
-		return 'Settings';
+		return __( 'Settings', 'wordlift' );
 	}
 
 	/**
