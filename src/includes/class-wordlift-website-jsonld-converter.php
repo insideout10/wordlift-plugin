@@ -28,14 +28,14 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 
 		// Alternate Name.
 		$wl_settings    = get_option( 'wl_general_settings' );
-		$alternate_name = isset( $wl_settings['wl-alternate-name'] ) ? wp_strip_all_tags( $wl_settings['wl-alternate-name'], true ) : '';
+		$alternate_name = isset( $wl_settings['wl-alternate-name'] ) ? $wl_settings['wl-alternate-name'] : '';
 
 		$jsonld = array(
 			'@context'      => 'http://schema.org',
 			'@type'         => 'WebSite',
 			'@id'           => "$home_url#website",
 			'name'          => html_entity_decode( get_bloginfo( 'name' ), ENT_QUOTES ),
-			'alternateName' => $alternate_name,
+			'alternateName' => wp_strip_all_tags( $alternate_name, true ),
 			'url'           => $home_url,
 		);
 
