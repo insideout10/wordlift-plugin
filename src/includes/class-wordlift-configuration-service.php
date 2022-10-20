@@ -61,7 +61,7 @@ class Wordlift_Configuration_Service {
 	/**
 	 * The alternateName option name.
 	 *
-	 * @since 3.9.0
+	 * @since 3.38.6
 	 */
 	const ALTERNATE_NAME = 'wl-alternate-name';
 
@@ -387,10 +387,23 @@ class Wordlift_Configuration_Service {
 	 * Website markup alternateName
 	 *
 	 * @return string|NULL alternateName or NULL if not set.
-	 * @since 3.9.0
+	 * @since 3.38.6
 	 */
 	public function get_alternate_name() {
 		return $this->get( 'wl_general_settings', self::ALTERNATE_NAME, html_entity_decode( get_bloginfo( 'description' ) ) );
+	}
+
+	/**
+	 * Set the alternateName.
+	 *
+	 * @param int $value The alternateName value.
+	 *
+	 * @since 3.38.6
+	 */
+	public function set_alternate_name( $value ) {
+
+		$this->set( 'wl_general_settings', self::ALTERNATE_NAME, $value );
+
 	}
 
 	/**
