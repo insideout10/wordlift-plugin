@@ -1,7 +1,7 @@
 services:
   Wordlift\Modules\Food_Kg\Module:
     class: Wordlift\Modules\Food_Kg\Module
-    arguments: [ '@Wordlift\Api\Api_Service_Ext', '@Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy' ]
+    arguments: [ '@Wordlift\Api\Api_Service_Ext', [ '@Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy', '@Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy' ] ]
 
   Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy:
     class: Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy
@@ -30,13 +30,20 @@ services:
 
   Wordlift\Modules\Food_Kg\Admin\Page:
     class: Wordlift\Modules\Food_Kg\Admin\Page
-    arguments: [ '@Wordlift\Modules\Food_Kg\Admin\Full_Page_Delegate', '@Wordlift\Modules\Food_Kg\Admin\Main_Ingredient_Modal_Page_Delegate' ]
+    arguments: [ '@Wordlift\Modules\Food_Kg\Admin\Full_Page_Delegate', '@Wordlift\Modules\Food_Kg\Admin\Main_Ingredient_Modal_Page_Delegate', 'wl_main_ingredients', 'Main Ingredients', 'Main Ingredients' ]
+
+  Wordlift\Modules\Food_Kg\Admin\Ingredients_Taxonomy_Page:
+    class: Wordlift\Modules\Food_Kg\Admin\Page
+    arguments: [ '@Wordlift\Modules\Food_Kg\Admin\Ingredients_Full_Page_Delegate', '@Wordlift\Modules\Food_Kg\Admin\Ingredients_Modal_Page_Delegate', 'wl_ingredients', 'Ingredients', 'Ingredients' ]
 
   Wordlift\Modules\Food_Kg\Admin\Page_Delegate:
     class: Wordlift\Modules\Food_Kg\Admin\Page_Delegate
 
   Wordlift\Modules\Food_Kg\Admin\Full_Page_Delegate:
     class: Wordlift\Modules\Food_Kg\Admin\Full_Page_Delegate
+
+  Wordlift\Modules\Food_Kg\Admin\Ingredients_Full_Page_Delegate:
+    class: Wordlift\Modules\Food_Kg\Admin\Ingredients_Full_Page_Delegate
 
   Wordlift\Modules\Food_Kg\Admin\Ingredients_List_Table:
     class: Wordlift\Modules\Food_Kg\Admin\Ingredients_List_Table
