@@ -58,6 +58,13 @@ class Wordlift_Configuration_Service {
 	 */
 	const COUNTRY_CODE = 'country_code';
 
+    /**
+     * The alternateName option name.
+     *
+     * @since 3.9.0
+     */
+    const ALTERNATE_NAME = 'wl-alternate-name';
+
 	/**
 	 * The publisher entity post ID option name.
 	 *
@@ -372,6 +379,18 @@ class Wordlift_Configuration_Service {
 
 		$this->set( 'wl_general_settings', self::COUNTRY_CODE, $value );
 
+	}
+
+	/**
+	 * Get the alternateName.
+	 *
+	 * Website markup alternateName
+	 *
+	 * @return string|NULL alternateName or NULL if not set.
+	 * @since 3.9.0
+	 */
+	public function get_alternate_name() {
+		return $this->get( 'wl_general_settings', self::ALTERNATE_NAME, html_entity_decode( get_bloginfo( 'description' ) ) );
 	}
 
 	/**
