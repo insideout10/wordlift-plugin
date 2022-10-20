@@ -17,7 +17,7 @@ class Single_Call_Task implements Task {
 	}
 
 	public function get_id() {
-		return isset( $this->id ) ? $this->id : sha1( get_class( $this ) );
+		return isset( $this->id ) ? $this->id : hash( 'sha256', get_class( $this ) );
 	}
 
 	public function starting() {
