@@ -16,4 +16,5 @@ git push
 git checkout svn
 git checkout master -- src/readme.txt
 mv src/readme.txt trunk/readme.txt
+svn reset --hard
 svn commit trunk/readme.txt
