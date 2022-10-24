@@ -8,7 +8,7 @@ if [[ 'src/readme.txt' == "$(git diff HEAD^ HEAD --name-only)" ]]; then
   echo 'readme.txt has been updated, pushing...'
 
   version="$(get_version)"
-  sed -i '' "s|^Stable tag: .*$|Stable tag: $version|g" src/readme.txt
+  sed -i "s|^Stable tag: .*$|Stable tag: $version|g" src/readme.txt
 
   # Update readme.txt in trunk and stable version tag.
   # shellcheck disable=SC2086
