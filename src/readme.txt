@@ -49,6 +49,8 @@ _____________
 
 WordLift currently supports 32 languages: Chinese, Danish, German, English, French, Italian, Dutch, Russian, Spanish, Portuguese, Swedish, Turkish, Albanian, Belarusian, Bulgarian, Catalan, Croatian, Czech, Estonian, Finnish, Hungarian, Icelandic, Indonesian, Latvian, Lithuanian, Norwegian, Polish, Romanian, Serbian, Slovak, Slovenian, Ukrainian.
 
+We also experimentally support [hundreds of languages](https://wordlift.io/academy-entries/wordlift-languages/) with many different alphabets. You can use WordLift in any language that is being supported natively by WikiData.
+
 The Plug-in is built on **open source software**.
 
 == Installation ==
@@ -69,7 +71,7 @@ http://docs.wordlift.io/
 
 = Who is WordLift for? =
 
-**WordLift** is for all *bloggers*, *journalists*, and *content marketers* publishing and fighting for readers’ attention on the web. <br />
+**WordLift** helps small, medium, and large businesses in all market segments, including e-commerce, speak Google's language by transforming unstructured content into structured data that search engines can understand. <br />
 **WordLift** democratizes the field, bringing to the hands of all web content creators the technology that web publisher giants such as *Google*, *Facebook* and the *BBC* are using to organize and monetize their content. <br />
 **WordLift** helps you create richer and more engaging content, optimizes it for all search engines and efficiently organizes your content creation process, allowing you to reach and speak directly to your tribe. <br />
 
@@ -102,12 +104,11 @@ To know more about how **WordLift** works, please [watch the step-by-step video 
 
 = What are the languages supported by WordLift? =
 
-WordLift currently supports 32 languages: Chinese, Danish, German, English, French, Italian, Dutch, Russian, Spanish, Portuguese, Swedish, Turkish, Albanian, Belarusian, Bulgarian, Catalan, Croatian, Czech, Estonian, Finnish, Hungarian, Icelandic, Indonesian, Latvian, Lithuanian, Norwegian, Polish, Romanian, Serbian, Slovak, Slovenian, Ukrainian.
+WordLift currently supports 32 languages: Chinese, Danish, German, English, French, Italian, Dutch, Russian, Spanish, Portuguese, Swedish, Turkish, Albanian, Belarusian, Bulgarian, Catalan, Croatian, Czech, Estonian, Finnish, Hungarian, Icelandic, Indonesian, Latvian, Lithuanian, Norwegian, Polish, Romanian, Serbian, Slovak, Slovenian, Ukrainian. We also now **experimentally support** [hundreds of languages](https://wordlift.io/academy-entries/wordlift-languages/) with many different alphabets.
 
 = Is there a free trial? =
 
 Yes! All of our subscriptions come with a **14-day free trial**. If after two weeks you are not happy with WordLift, [contact us](mailto:support@wordlift.io) and we will cancel your subscription, no questions asked.
-In addition, with the purchase of our 6-month or 12-month packages, we offer free additional months. [Check it out](https://wordlift.io/pricing/)!
 
 = Who owns the structured metadata created with WordLift? =
 
@@ -141,9 +142,6 @@ You can open your datasets to the public, attaching to it a free or a commercial
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
-
-= 3.39.0 (????-??-??) =
-* Feature: add support for WPML for WooCommerce for shipping methods structured data.
 
 = 3.38.5 (2022-10-17) =
 * Feature [#1586](https://github.com/insideout10/wordlift-plugin/issues/1586): Improvements to the Ingredients feature.
@@ -1614,7 +1612,7 @@ Change wording for invalid or missing text selection on entity creation workflow
 == More Information ==
 WordLift is **happily developed** by [WordLift](https://wordlift.io), an innovative Italian startup founded in 2017 and based in downtown Rome.
 
-Our goal is to **help blogger, journalists and content creators connect and share experiences with their readers** as well as **structuring knowledge in machine-readable form**.
+WordLift **helps companies**, operating in all market sectors, including e-commerce, of the small, medium, and large sizes **to speak Google's native language** by converting *unstructured content* into *structured data* that search engines understand. This will allow them to get more organic traffic to the website and offer a more relevant user experience.
 
 For more information, contact us at [hello@wordlift.io](mailto:hello@wordlift.io).
 
