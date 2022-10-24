@@ -7,10 +7,10 @@ on:
 
 jobs:
   wordpress:
-    name: Publish readme.txt
+    name: readme.txt
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v2
-      - name: phpunit
+      - name: Publish
         run: ./.github/workflows/publish-readme.sh
