@@ -53,13 +53,18 @@ class Ingredients_List_Table extends WP_List_Table {
 
 	public function get_columns() {
 		return array(
+			'id'      => __( 'ID', 'wordlift' ),
 			'name'    => __( 'Name', 'wordlift' ),
 			'actions' => '',
 		);
 	}
 
+	public function column_id( $item ) {
+		return $item->term_id;
+	}
+
 	public function column_name( $item ) {
-		return sprintf( '<a href="%s">%s</a>', get_edit_term_link( $item->term_id ), $item->name );
+		return $item->name;
 	}
 
 	public function column_actions( $item ) {

@@ -39,12 +39,15 @@ class Ingredients_Taxonomy_Recipe_Lift_Strategy implements Recipe_Lift_Strategy 
 			if ( ! isset( $term ) ) {
 				continue;
 			}
-			update_term_meta( $term->term_id, '_wl_jsonld', $value );
+			update_term_meta( $term->term_id, '_wl_jsonld', wp_slash( $value ) );
 
 			/**
 			 * @@todo update notification with progress
 			 */
 		}
+
+		// Clean up caches.
+		do_action( 'wl_ttl_cache_cleaner__flush' );
 
 		/**
 		 * @@todo add notification that procedure is complete, with information about the number of processed items vs
