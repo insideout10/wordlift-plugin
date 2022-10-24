@@ -10,6 +10,8 @@ fi
 
 version="$(get_version)"
 sed -i '' "s|^Stable tag: .*$|Stable tag: $version|g" src/readme.txt
+git commit -m "update readme version" src/readme.txt
+git push
 
 git checkout svn
 git checkout master -- src/readme.txt
