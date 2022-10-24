@@ -4,7 +4,7 @@ get_version() {
   grep -E '^ \* Version:\s+(\d+\.\d+\.\d+)$' src/wordlift.php | grep -oE '(\d+\.\d+\.\d+)$'
 }
 
-if [[ 'src/readme.txt' == $(git diff HEAD~1 --name-only) ]]; then
+if [[ 'src/readme.txt' == "$(git diff HEAD~1 --name-only)" ]]; then
   echo 'readme.txt has been updated, pushing...'
 
   version="$(get_version)"
