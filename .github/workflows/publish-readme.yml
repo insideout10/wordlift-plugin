@@ -1,0 +1,16 @@
+name: Publish readme.txt
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  wordpress:
+    name: Publish readme.txt
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: phpunit
+        run: ./.github/publish-readme.sh
