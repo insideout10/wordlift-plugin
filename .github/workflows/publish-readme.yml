@@ -1,4 +1,4 @@
-name: Publish readme.txt
+name: wordpress.org
 
 on:
   push:
@@ -13,4 +13,4 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: phpunit
-        run: ./.github/publish-readme.sh
+        run: ./.github/workflows/publish-readme.sh
