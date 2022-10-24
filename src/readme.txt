@@ -1638,3 +1638,5 @@ If you are a coder and wish to contribute to WordLift plugin you are welcome to 
 
 **WordLift Plugin Issue Tracker:**
 [https://github.com/insideout10/wordlift-plugin/issues](https://github.com/insideout10/wordlift-plugin/issues)
+
+.
