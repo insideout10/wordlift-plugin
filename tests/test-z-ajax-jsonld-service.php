@@ -334,6 +334,7 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		Wordlift_Entity_Type_Service::get_instance()->set( $publisher->ID, 'http://schema.org/Person' );
 		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
 		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher->ID );
+		Wordlift_Configuration_Service::get_instance()->set_alternate_name( $description );
 
 		// Create homepage
 		$homepage_id = $this->factory()->post->create( array(
@@ -367,7 +368,6 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		// Get response
 		$response = json_decode( $this->_last_response, 1 );
-
 
 		$this->assertTrue( is_array( $response ) );
 
@@ -428,6 +428,7 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		Wordlift_Entity_Type_Service::get_instance()->set( $publisher->ID, 'http://schema.org/Organization' );
 		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
 		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher->ID );
+		Wordlift_Configuration_Service::get_instance()->set_alternate_name( $description );
 
 		// Set our page as homepage & update the site description
 		update_option( 'show_on_front', 'page' );
@@ -512,6 +513,7 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		Wordlift_Entity_Type_Service::get_instance()->set( $publisher->ID, 'http://schema.org/Organization' );
 		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
 		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher->ID );
+		Wordlift_Configuration_Service::get_instance()->set_alternate_name( $description );
 
 		// Get site info
 		$headline    = get_bloginfo( 'name' );
@@ -588,6 +590,7 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		Wordlift_Entity_Type_Service::get_instance()->set( $publisher->ID, 'http://schema.org/Person' );
 		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
 		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher->ID );
+		Wordlift_Configuration_Service::get_instance()->set_alternate_name( $description );
 
 		// Set our page as homepage & update the site description
 		update_option( 'show_on_front', 'page' );
@@ -660,6 +663,8 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$name        = 'Wordlift\'s blog';
 		$description = 'Sample description" with\'s single\'s quote';
 
+		Wordlift_Configuration_Service::get_instance()->set_alternate_name( $description );
+
 		// Set our page as homepage & update the site description
 		update_option( 'blogdescription', $description );
 		update_option( 'blogname', $name );
@@ -688,6 +693,8 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	public function test_jsonld_with_diacritics() {
 		$name        = 'àüé';
 		$description = 'Sample description" with\'s single\'s quote';
+
+		Wordlift_Configuration_Service::get_instance()->set_alternate_name( $description );
 
 		// Set our page as homepage & update the site description
 		update_option( 'blogdescription', $description );

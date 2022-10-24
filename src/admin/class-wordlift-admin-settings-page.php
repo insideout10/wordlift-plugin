@@ -148,7 +148,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 */
 	public function get_page_title() {
 
-		return 'WordLift Settings';
+		return __( 'WordLift Settings', 'wordlift' );
 	}
 
 	/**
@@ -156,7 +156,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 */
 	public function get_menu_title() {
 
-		return 'Settings';
+		return __( 'Settings', 'wordlift' );
 	}
 
 	/**
@@ -289,6 +289,20 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 				'value'       => Wordlift_Configuration_Service::get_instance()->get_country_code(),
 				'description' => __( 'Please select a country.', 'wordlift' ),
 				'notice'      => __( 'The selected language is not supported in this country.</br>Please choose another country or language.', 'wordlift' ),
+			)
+		);
+
+		// Add the `alternateName` field.
+		add_settings_field(
+			'wl-alternate-name',
+			__( 'Website Alternate Name', 'wordlift' ),
+			array( $this->input_element, 'render' ),
+			'wl_general_settings',
+			'wl_general_settings_section',
+			array(
+				'id'    => 'wl-alternate-name',
+				'name'  => 'wl_general_settings[' . Wordlift_Configuration_Service::ALTERNATE_NAME . ']',
+				'value' => Wordlift_Configuration_Service::get_instance()->get_alternate_name(),
 			)
 		);
 

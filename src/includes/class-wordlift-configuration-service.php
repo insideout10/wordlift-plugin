@@ -59,6 +59,13 @@ class Wordlift_Configuration_Service {
 	const COUNTRY_CODE = 'country_code';
 
 	/**
+	 * The alternateName option name.
+	 *
+	 * @since 3.38.6
+	 */
+	const ALTERNATE_NAME = 'wl-alternate-name';
+
+	/**
 	 * The publisher entity post ID option name.
 	 *
 	 * @since 3.9.0
@@ -375,6 +382,31 @@ class Wordlift_Configuration_Service {
 	}
 
 	/**
+	 * Get the alternateName.
+	 *
+	 * Website markup alternateName
+	 *
+	 * @return string|NULL alternateName or NULL if not set.
+	 * @since 3.38.6
+	 */
+	public function get_alternate_name() {
+		return $this->get( 'wl_general_settings', self::ALTERNATE_NAME );
+	}
+
+	/**
+	 * Set the alternateName.
+	 *
+	 * @param int $value The alternateName value.
+	 *
+	 * @since 3.38.6
+	 */
+	public function set_alternate_name( $value ) {
+
+		$this->set( 'wl_general_settings', self::ALTERNATE_NAME, wp_strip_all_tags( $value ) );
+
+	}
+
+	/**
 	 * Get the publisher entity post id.
 	 *
 	 * The publisher entity post id points to an entity post which contains the data for the publisher used in schema.org
@@ -526,10 +558,10 @@ class Wordlift_Configuration_Service {
 
 		// Build the URL.
 		$url = '/accounts'
-			   . '?key=' . rawurlencode( $key )
-			   . '&url=' . rawurlencode( $site_url )
-			   . '&country=' . $this->get_country_code()
-			   . '&language=' . $this->get_language_code();
+				. '?key=' . rawurlencode( $key )
+				. '&url=' . rawurlencode( $site_url )
+				. '&country=' . $this->get_country_code()
+				. '&language=' . $this->get_language_code();
 
 		$api_service = Default_Api_Service::get_instance();
 		/**
