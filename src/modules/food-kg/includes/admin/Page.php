@@ -55,10 +55,7 @@ class Page {
 	}
 
 	public function admin_enqueue_scripts() {
-		// Check that we are on the right screen
-		if ( get_current_screen()->id === 'wordlift_page_wl_ingredients' ) {
-			$this->delegate->admin_enqueue_scripts();
-		}
+		$this->delegate->admin_enqueue_scripts();
 	}
 
 }

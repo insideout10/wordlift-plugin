@@ -9,6 +9,8 @@ class Ingredients_Full_Page_Delegate implements Page_Delegate {
 	}
 
 	public function admin_enqueue_scripts() {
+		wp_enqueue_style( 'thickbox' );
+		wp_enqueue_script( 'plugin-install' );
 	}
 
 }
