@@ -430,3 +430,57 @@ spec:
         ports:
         - containerPort: 3306
           name: mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress-61-mysql
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-6.1
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: wordpress-6.1
+    tier: mysql
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress-6.1-mysql
+  namespace: qa-wordpress
+  labels:
+    app: wordpress
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-6.1
+      tier: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress-6.1
+        tier: mysql
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        resources:
+          requests:
+            cpu: "450m"
+            memory: "450Mi"
+          limits:
+            cpu: "650m"
+            memory: "750Mi"
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: password
+        - name: MYSQL_DATABASE
+          value: wordpress
+        ports:
+        - containerPort: 3306
+          name: mysql

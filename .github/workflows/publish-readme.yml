@@ -1,0 +1,21 @@
+name: wordpress.org
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  wordpress:
+    name: readme.txt
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Publish
+        run: ./.github/workflows/publish-readme.sh
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
