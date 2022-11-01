@@ -143,7 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.39.0 (????-??-??) =
+= 3.39.0 (2022-11-01) =
 * Feature: Add support for WPML for WooCommerce for shipping methods structured data.
 * Feature [#1599](https://github.com/insideout10/wordlift-plugin/issues/1599): Add alternate name to website markup.
 * Feature: Configure include or exclude URLs for an easy A/B testing of SD enhancements
