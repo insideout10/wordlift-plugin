@@ -6,7 +6,7 @@ echo "** Booting up **"
 
 while [ -z "$ipaddr" ]; do
   sleep 1
-  ipaddr=$( curl -v nginx 2> >(grep -Eo '([0-9]+\.){3}[0-9]+' | uniq))
+  ipaddr=$(getent hosts nginx | awk '{ print $1 }')
 done
 
 if [ ! -z "$ipaddr" ]; then

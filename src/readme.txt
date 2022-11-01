@@ -6,7 +6,7 @@ Tags: SEO, SERP, FAQ Markup, Schema Markup, structured data, schema.org, schema 
 Requires at least: 4.9
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: {version}
+Stable tag: 3.38.5
 License: GPLv2 or later
 
 Search engines are looking for meaning, not keywords. WordLift tells Google how your content relates to your brand, products, and stakeholders.
@@ -143,8 +143,12 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.39.0 (????-??-??) =
-* Feature: add support for WPML for WooCommerce for shipping methods structured data.
+= 3.39.0 (2022-11-01) =
+* Feature: Add support for WPML for WooCommerce for shipping methods structured data.
+* Feature [#1599](https://github.com/insideout10/wordlift-plugin/issues/1599): Add alternate name to website markup.
+* Feature: Configure include or exclude URLs for an easy A/B testing of SD enhancements
+* Feature: API for the include/exclude module
+* Feature: API for the main ingredients module
 
 = 3.38.5 (2022-10-17) =
 * Feature [#1586](https://github.com/insideout10/wordlift-plugin/issues/1586): Improvements to the Ingredients feature.
