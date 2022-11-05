@@ -52,12 +52,6 @@ class Post_Excerpt_Rest_Controller {
 		$post_id   = $data['post_id'];
 		$post_body = $data['post_body'];
 
-		if ( preg_match( '/\[fusion_/i', $post_body ) ) { // Check if its Avada Builder's Content.
-			$post_body = wp_strip_all_tags( do_shortcode( $post_body ), true );
-		} else {
-			$post_body = strip_shortcodes( $post_body );
-		}
-
 		/**
 		 * @param $post_body string The post content sent from WordPress editor.
 		 * @param $post_id int The post id.
