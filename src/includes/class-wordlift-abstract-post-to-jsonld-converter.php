@@ -123,7 +123,8 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			'@context'    => self::CONTEXT,
 			'@id'         => $id,
 			'@type'       => $type,
-			'description' => Wordlift_Post_Excerpt_Helper::get_text_excerpt( $post ),
+			'description' => post_type_supports( $post->post_type, 'excerpt' )
+				? Wordlift_Post_Excerpt_Helper::get_text_excerpt( $post ) : '',
 		);
 
 		// Set the `mainEntityOfPage` property if the post has some contents.
