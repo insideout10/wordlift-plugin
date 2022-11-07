@@ -12,7 +12,12 @@ class Avada_Builder_Support {
 
 	public function __construct() {
 		add_filter( 'wl_post_excerpt_post_content', array( $this, 'post_excerpt_post_content' ), 10, 3 );
-		add_filter( 'wl_no_editor_analysis_should_be_enabled_for_post_id', array( $this, 'is_avada_builder_active' ), 10, 2 );
+		add_filter(
+			'wl_no_editor_analysis_should_be_enabled_for_post_id',
+			array( $this, 'is_avada_builder_active_no_analysis' ),
+			10,
+			2
+		);
 	}
 
 	/**
@@ -26,7 +31,7 @@ class Avada_Builder_Support {
 	 */
 	public function post_excerpt_post_content( $post_body, $post_id, $post_content ) {
 
-		if ( $this->is_avada_builder_active( false, $post_id ) ) { // Check if its Avada Builder's Content.
+		if ( $this->is_avada_builder_active( $post_id ) ) { // Check if its Avada Builder's Content.
 			return wp_strip_all_tags( do_shortcode( $post_content ), true );
 		}
 		return $post_body;
@@ -36,17 +41,28 @@ class Avada_Builder_Support {
 	/**
 	 * Check if Avada Builder is active for the post.
 	 *
-	 * @param $is_enabled bool ( For No Analysis ) @see wl_no_editor_analysis_should_be_enabled_for_post_id filter.
 	 * @param $post_id int The post id.
 	 *
 	 * @return bool True if Avada Builder is active for the post.
 	 */
-	public function is_avada_builder_active( $is_enabled, $post_id ) {
+	public function is_avada_builder_active( $post_id ) {
 
 		if ( ! $post_id || ! class_exists( '\FusionBuilder' ) ) {
-			return $is_enabled;
+			return false;
 		}
 
 		return 'active' === get_post_meta( $post_id, 'fusion_builder_status', true );
+	}
+
+	/**
+	 * Check if Avada Builder is active for the post ( no analysis ).
+	 *
+	 * @param $is_enabled bool Is Enabled.
+	 * @param $post_id int The post id.
+	 *
+	 * @return bool True if Avada Builder is active for the post.
+	 */
+	public function is_avada_builder_active_no_analysis( $is_enabled, $post_id ) {
+		return $is_enabled ? $is_enabled : $this->is_avada_builder_active( $post_id );
 	}
 }

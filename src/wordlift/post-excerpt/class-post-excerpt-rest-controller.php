@@ -48,20 +48,23 @@ class Post_Excerpt_Rest_Controller {
 	 * @return array Post excerpt data.
 	 */
 	public static function get_post_excerpt( $request ) {
-		$data      = $request->get_params();
-		$post_id   = $data['post_id'];
-		$post_body = $data['post_body'];
-		$post_body = strip_shortcodes( $post_body );
+		$data    = $request->get_params();
+		$post_id = $data['post_id'];
 
 		/**
-		 * @param $post_body string The post content sent from WordPress editor. ( with strip shortcodes )
+		 * @param $data['post_body'] string The post content sent from WordPress editor. ( with strip shortcodes )
 		 * @param $post_id int The post id.
 		 * @param $data['post_body'] string The post content.
 		 *
 		 * @since 3.33.5
 		 * Allow post content sent to excerpt api to be filtered.
 		 */
-		$post_body       = apply_filters( 'wl_post_excerpt_post_content', $post_body, $post_id, $data['post_body'] );
+		$post_body       = apply_filters(
+			'wl_post_excerpt_post_content',
+			strip_shortcodes( $data['post_body'] ),
+			$post_id,
+			$data['post_body']
+		);
 		$current_hash    = md5( $post_body );
 		$server_response = self::get_post_excerpt_conditionally( $post_id, $post_body, $current_hash );
 		if ( empty( $server_response ) || ! array_key_exists( 'post_excerpt', $server_response ) ) {
