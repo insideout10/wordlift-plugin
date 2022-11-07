@@ -54,8 +54,9 @@ class Post_Excerpt_Rest_Controller {
 		$post_body = strip_shortcodes( $post_body );
 
 		/**
-		 * @param $post_body string The post content sent from WordPress editor.
+		 * @param $post_body string The post content sent from WordPress editor. ( with strip shortcodes )
 		 * @param $post_id int The post id.
+		 * @param $data['post_body'] string The post content.
 		 *
 		 * @since 3.33.5
 		 * Allow post content sent to excerpt api to be filtered.
