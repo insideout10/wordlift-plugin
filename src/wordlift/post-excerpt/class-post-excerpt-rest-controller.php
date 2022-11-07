@@ -65,7 +65,7 @@ class Post_Excerpt_Rest_Controller {
 		if ( empty( $server_response ) || ! array_key_exists( 'post_excerpt', $server_response ) ) {
 			return array(
 				'status'  => 'error',
-				'message' => __( 'Unable to contact WordLift API', 'wordlift' ),
+				'message' => __( 'Error While Generating Post Excerpt.', 'wordlift' ),
 			);
 		} else {
 			return array(

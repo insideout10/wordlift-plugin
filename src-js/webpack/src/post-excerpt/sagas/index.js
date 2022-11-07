@@ -23,13 +23,7 @@ function* handleRefreshPostExcerpt(action) {
   if (response.post_excerpt !== undefined) {
     yield put(updatePostExcerpt(response.post_excerpt));
   } else {
-    // show error message.
-    yield put(
-      setNotificationData({
-        notificationMessage: response.message,
-        notificationType: response.status
-      })
-    );
+    console.error( response );
   }
   // Request is complete, now dont show the loading icon.
   yield put(updateRequestStatus(false));
