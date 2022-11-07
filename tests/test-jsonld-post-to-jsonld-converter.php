@@ -154,14 +154,17 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
 		$post      = $this->factory()->post->create_and_get( array(
-			'post_type'   => 'page',
-			'post_author' => $this->author->ID,
+			'post_type'    => 'page',
+			'post_author'  => $this->author->ID,
 		) );
+		add_post_type_support( 'page', 'excerpt' );
+
 		$post_uri  = $this->entity_service->get_uri( $post->ID );
 		$permalink = get_permalink( $post->ID );
 
 		$references = array();
 		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+
 
 		// Check that we don't have reference.
 		$this->assertCount( 0, $references );
