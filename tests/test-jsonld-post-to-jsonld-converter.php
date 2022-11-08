@@ -80,7 +80,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		parent::setUp();
 
 		// Disable sending SPARQL queries, since we don't need it.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
+		Wordlift_Unit_Test_Case::turn_off_entity_push();
 
 		$this->post_to_jsonld_converter = new Wordlift_Post_To_Jsonld_Converter(
 			Wordlift_Entity_Type_Service::get_instance(),
@@ -627,6 +627,34 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 1, $jsonld['about'] );
 		$this->assertEquals( $entity_2_uri, $jsonld['about'][0]['@id'] );
 
+	}
+
+	/**
+	 * Test the about match in post title with matched label should returns true.
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/1613
+	 */
+	public function test_the_about_match_in_post_title_with_matched_label_should_returns_true() {
+		$title  = 'Example Post Title';
+		$labels = array( 'o', 'Post' );
+
+		$check_matches = Wordlift_Post_To_Jsonld_Converter::get_instance()->check_title_match( $labels, $title );
+
+		$this->assertTrue( $check_matches );
+	}
+
+	/**
+	 * Test the about match in post title without matched label should returns false.
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/1613
+	 */
+	public function test_the_about_match_in_post_title_without_matched_label_should_returns_false() {
+		$title  = 'Example Post Title';
+		$labels = array( 'o', 'WordLift' );
+
+		$check_matches = Wordlift_Post_To_Jsonld_Converter::get_instance()->check_title_match( $labels, $title );
+
+		$this->assertFalse( $check_matches );
 	}
 
 	/**
