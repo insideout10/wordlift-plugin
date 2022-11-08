@@ -68,6 +68,19 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 	}
 
 	/**
+	 * Encode URL Path to fix non ASCII characters.
+	 *
+	 * @param string $url URL to check.
+	 *
+	 * @return string Encoded URL.
+	 */
+	public function encode_path( $url ) {
+		$path         = wp_parse_url( $url, PHP_URL_PATH );
+		$encoded_path = array_map( 'urlencode', explode( '/', $path ) );
+		return str_replace( $path, implode( '/', $encoded_path ), $url );
+	}
+
+	/**
 	 * @inheritdoc
 	 */
 	public function sanitize_data_filter( $value ) {
@@ -199,7 +212,7 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 		return array_filter(
 			$urls,
 			function ( $url ) use ( $dataset_uri ) {
-				$url_validation = filter_var( $url, FILTER_VALIDATE_URL );
+				$url_validation = filter_var( $this->encode_path( $url ), FILTER_VALIDATE_URL );
 				if ( null === $dataset_uri ) {
 					return $url_validation;
 				}
