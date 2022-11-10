@@ -210,13 +210,20 @@ class Mentions {
 		$entity_references = Object_Relation_Service::get_instance()
 													->get_references( $post_id, Object_Type_Enum::POST );
 
+		$about_id = array();
+		if ( array_key_exists( 'about', $jsonld[0] ) ) {
+			foreach ( $jsonld[0]['about'] as $about ) {
+				$about_id[] = $about['@id'];
+			}
+		}
+
 		$jsonld[0]['mentions'] = array_values(
 			array_filter(
 				array_map(
-					function ( $item ) {
+					function ( $item ) use ( $about_id ) {
 						$id = \Wordlift_Entity_Service::get_instance()->get_uri( $item->get_id() );
-						if ( ! $id ) {
-							  return false;
+						if ( ! $id || in_array( $id, $about_id, true ) ) {
+							return false;
 						}
 
 						return array( '@id' => $id );
