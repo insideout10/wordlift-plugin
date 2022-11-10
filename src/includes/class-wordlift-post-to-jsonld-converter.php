@@ -490,7 +490,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			// When the title is empty, then we shouldn't yield a match to about section.
 			if ( array_filter( $escaped_labels ) ) {
 				// Check if the labels match any part of the title.
-				$matches = 1 === preg_match( '/' . implode( '|', $escaped_labels ) . '/', $post->post_title );
+				$matches = $this->check_title_match( $escaped_labels, $post->post_title );
 			}
 
 			// If the title matches, assign the entity to the about, otherwise to the mentions.
@@ -512,6 +512,26 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		}
 
 		return $jsonld;
+	}
+
+	/**
+	 * Check if the labels match any part of the title.
+	 *
+	 * @param $labels array The labels to check.
+	 * @param $title string The title to check.
+	 *
+	 * @return boolean
+	 */
+	public function check_title_match( $labels, $title ) {
+
+		// If the title is empty, then we shouldn't yield a match to about section.
+		if ( empty( $title ) ) {
+			return false;
+		}
+
+		// Check if the labels match any part of the title.
+		return 1 === preg_match( '/\b(' . implode( '|', $labels ) . ')\b/iu', $title );
+
 	}
 
 	/**
