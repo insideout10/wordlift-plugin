@@ -1537,7 +1537,7 @@ class Wordlift {
 		     // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 			 && ! apply_filters( 'wl_feature__enable__entity-types-professional', false )
 		     // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-		     && ! apply_filters( 'wl_feature__enable__entity-types-business', false )
+			 && ! apply_filters( 'wl_feature__enable__entity-types-business', false )
 		) {
 			$that->loader->add_filter( 'wp_terms_checklist_args', $that->entity_types_taxonomy_walker, 'terms_checklist_args' );
 		}

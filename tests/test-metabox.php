@@ -136,6 +136,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 				Wordlift_Schema_Service::FIELD_SAME_AS => array(
 					'http://yago-knowledge.org/resource/Florence',
 					'http://dbpedia.org/resource/Florence',
+					'http://fr.dbpedia.org/resource/Phonétique'
 				),
 			),
 			// Fake nonces
@@ -155,6 +156,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( array(
 			'http://yago-knowledge.org/resource/Florence',
 			'http://dbpedia.org/resource/Florence',
+			'http://fr.dbpedia.org/resource/Phonétique'
 		),
 			$place_meta[ Wordlift_Schema_Service::FIELD_SAME_AS ]
 		);
