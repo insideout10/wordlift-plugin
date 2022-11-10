@@ -143,6 +143,15 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.39.2 (2022-11-??) =
+* Fix [#1605](https://github.com/insideout10/wordlift-plugin/issues/1605): API error message on Excerpt generation when using Avada builder.
+* Feature [#1606](https://github.com/insideout10/wordlift-plugin/issues/1606): Integrate Avada Builder support with the main plugin.
+* Fix [#1608](https://github.com/insideout10/wordlift-plugin/issues/1608): Avada, the post excerpt contains HTML code in the schema.
+* Fix [#1610](https://github.com/insideout10/wordlift-plugin/issues/1610): URLs with accents cannot be added to sameAs.
+* Fix [#1611](https://github.com/insideout10/wordlift-plugin/issues/1611): Entities in about shouldn’t be in mentions.
+* Fix [#1613](https://github.com/insideout10/wordlift-plugin/issues/1613): the about match in post title is bogus.
+
+
 = 3.39.1 (2022-11-02) =
 * Fix: allow multiple entity types.
 
