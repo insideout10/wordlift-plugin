@@ -28,6 +28,7 @@ use Wordlift\Entity\Entity_No_Index_Flag;
 use Wordlift\Entity\Entity_Rest_Service;
 use Wordlift\Entity_Type\Entity_Type_Change_Handler;
 use Wordlift\Entity_Type\Entity_Type_Setter;
+use Wordlift\External_Plugin_Hooks\Avada_Builder\Avada_Builder_Support;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Swap;
@@ -1350,6 +1351,13 @@ class Wordlift {
 				new Recipe_Maker_After_Get_Jsonld_Hook( $recipe_maker_validation_service );
 				new Recipe_Maker_Jsonld_Swap( $recipe_maker_validation_service, $that->jsonld_service );
 				new Recipe_Maker_Warning( $recipe_maker_validation_service );
+
+				/**
+				 * Avada Builder compatibility.
+				 *
+				 * @since 3.39.2
+				*/
+				new Avada_Builder_Support();
 
 				new Duplicate_Markup_Remover();
 
