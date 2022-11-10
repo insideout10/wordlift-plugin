@@ -631,7 +631,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.40.0-dev';
+		$this->version     = '3.40.0';
 		$this->load_dependencies();
 		$this->set_locale();
 
@@ -1355,7 +1355,7 @@ class Wordlift {
 				/**
 				 * Avada Builder compatibility.
 				 *
-				 * @since 3.39.2
+				 * @since 3.40.0
 				*/
 				new Avada_Builder_Support();
 

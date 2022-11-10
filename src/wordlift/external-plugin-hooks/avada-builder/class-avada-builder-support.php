@@ -5,7 +5,7 @@ namespace Wordlift\External_Plugin_Hooks\Avada_Builder;
 /**
  * Avada Builder Support.
  *
- * @since 3.39.2
+ * @since 3.40.0
  * @author Mahbub Hasan Imon <mahbub@wordlift.io>
  */
 class Avada_Builder_Support {
