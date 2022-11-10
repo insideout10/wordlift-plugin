@@ -115,6 +115,9 @@ class Config {
 
 		$this->admin_setup->save_configuration( $this->get_params() );
 
+		// This prevents invalid key issue with automatic installation in sites which have redis cache enabled.
+		wp_cache_flush();
+
 		wp_send_json_success( __( 'Configuration Saved', 'wordlift' ) );
 	}
 
