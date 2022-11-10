@@ -865,19 +865,16 @@ EOF;
 		$this->assertEquals( array( '@id' => $referenced_entity_uri ), $jsonld[0]['mentions'][0] );
 	}
 
-
-
-
 	public function test_when_entity_is_in_about_should_not_be_in_mentions() {
 
-		$referenced_entity_1     = $this->factory()->post->create(
+		$referenced_entity_1 = $this->factory()->post->create(
 			array(
 				'post_type'  => 'entity',
 				'post_title' => 'Linux',
 			)
 		);
 
-		$referenced_entity_2     = $this->factory()->post->create(
+		$referenced_entity_2 = $this->factory()->post->create(
 			array(
 				'post_type'  => 'entity',
 				'post_title' => 'Windows',
@@ -885,12 +882,10 @@ EOF;
 		);
 
 		$referenced_entity_uri_1 = Wordpress_Content_Service::get_instance()
-		                                                  ->get_entity_id( Wordpress_Content_Id::create_post( $referenced_entity_1 ) );
-
+										->get_entity_id( Wordpress_Content_Id::create_post( $referenced_entity_1 ) );
 
 		$referenced_entity_uri_2 = Wordpress_Content_Service::get_instance()
-		                                                    ->get_entity_id( Wordpress_Content_Id::create_post( $referenced_entity_2 ) );
-
+										->get_entity_id( Wordpress_Content_Id::create_post( $referenced_entity_2 ) );
 
 		$post_content          = <<<EOF
 		<span itemid="$referenced_entity_uri_1">test</span>
@@ -899,27 +894,22 @@ EOF;
 
 		$parent_entity = $this->factory()->post->create(
 			array(
-				'post_type'    => 'entity',
+				'post_type'    => 'post',
 				'post_title'   => 'Windows test',
 				'post_content' => $post_content,
 			)
 		);
 
 		// set entity to creative work.
-		Wordlift_Entity_Type_Service::get_instance()->set( $parent_entity, 'http://schema.org/CreativeWork' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $parent_entity, 'http://schema.org/Article' );
 		$jsonld = Wordlift_Jsonld_Service::get_instance()->get_jsonld(
 			false,
 			$parent_entity
 		);
 
-		var_dump($jsonld);
-		$this->assertFalse(true);
-
-		$this->assertCount(1 ,  $jsonld[0]['mentions'], 'One entity needs to be present on the mentions instead of two');
-		$this->assertCount(1 ,  $jsonld[0]['about'], 'One entity needs to be present on the about');
+		$this->assertCount( 1, $jsonld[0]['mentions'], 'One entity needs to be present on the mentions instead of two' );
+		$this->assertCount( 1, $jsonld[0]['about'], 'One entity needs to be present on the about' );
 	}
-
-
 
 	/**
 	 * Test the `convert` function using the post properties introduced with #835.
