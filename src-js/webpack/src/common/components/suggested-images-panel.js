@@ -27,7 +27,7 @@ const Images = () => {
 };
 
 export default () =>
-  Images().length ? (
+  Images().length > 0 ? (
     <Panel>
       <PanelBody title={ __( 'Suggested images', 'wordlift' ) } initialOpen={false}>
         <h4>{ __( 'Drag & Drop in editor', 'wordlift' ) }</h4>
