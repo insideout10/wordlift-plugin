@@ -26,7 +26,7 @@ class Preconditions {
 
 	private function check_version() {
 		$check = version_compare( WPRM_VERSION, '8.1.0', '>=' )
-				&& version_compare( WPRM_VERSION, '8.6.0', '<' );
+				&& version_compare( WPRM_VERSION, '8.7.0', '<' );
 
 		if ( ! $check ) {
 			$this->notices->queue(
