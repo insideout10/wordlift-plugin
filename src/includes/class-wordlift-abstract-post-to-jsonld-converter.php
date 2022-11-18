@@ -9,6 +9,7 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Assertions;
 use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Jsonld\Reference;
 use Wordlift\Object_Type_Enum;
@@ -223,6 +224,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * @since 3.10.0
 	 */
 	public function relative_to_context( $value ) {
+		Assertions::is_string( $value, '$value is not a string: ' . var_export( $value, true ) );
 
 		return 0 === strpos( $value, self::CONTEXT . '/' ) ? substr( $value, strlen( self::CONTEXT ) + 1 ) : $value;
 	}
