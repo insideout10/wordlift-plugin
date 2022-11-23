@@ -66,9 +66,9 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * Wordlift_Post_To_Jsonld_Converter constructor.
 	 *
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_User_Service $user_service A {@link Wordlift_User_Service} instance.
-	 * @param \Wordlift_Attachment_Service $attachment_service A {@link Wordlift_Attachment_Service} instance.
-	 * @param \Wordlift_Property_Getter $property_getter
+	 * @param \Wordlift_User_Service        $user_service A {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Attachment_Service  $attachment_service A {@link Wordlift_Attachment_Service} instance.
+	 * @param \Wordlift_Property_Getter     $property_getter
 	 *
 	 * @since 3.10.0
 	 */
@@ -169,7 +169,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		// array so that the caller can do further processing, such as printing out
 		// more of those references.
 		$references_without_locations = Object_Relation_Service::get_instance()
-		                                                       ->get_references( $post_id, Object_Type_Enum::POST );
+															   ->get_references( $post_id, Object_Type_Enum::POST );
 
 		/*
 		 * Add the locations to the references.
@@ -188,8 +188,8 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 				 */
 				// @see https://schema.org/location for the schema.org types using the `location` property.
 				if ( ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Action' )
-				     && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Event' )
-				     && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Organization' ) ) {
+					 && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Event' )
+					 && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Organization' ) ) {
 
 					return $carry;
 				}
@@ -233,8 +233,8 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * Uses the cache service to store the results of this function for a day.
 	 *
 	 * @param $attachment_service Wordlift_Attachment_Service
-	 * @param WP_Post $post The target {@link WP_Post}.
-	 * @param array $jsonld The JSON-LD array.
+	 * @param WP_Post                                        $post The target {@link WP_Post}.
+	 * @param array                                          $jsonld The JSON-LD array.
 	 *
 	 * @since 3.10.0
 	 */
@@ -382,10 +382,10 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * Add data to the JSON-LD using the `custom_fields` array which contains the definitions of property
 	 * for the post entity type.
 	 *
-	 * @param array $jsonld The JSON-LD array.
-	 * @param array $fields The entity types field array.
+	 * @param array   $jsonld The JSON-LD array.
+	 * @param array   $fields The entity types field array.
 	 * @param WP_Post $post The target {@link WP_Post} instance.
-	 * @param array $references The references array.
+	 * @param array   $references The references array.
 	 *
 	 * @since 3.20.0 This code moved from the above function `convert`, used for entity types defined in
 	 *  the {@link Wordlift_Schema_Service} class.

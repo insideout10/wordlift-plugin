@@ -5,7 +5,7 @@
  *
  * @since 3.39.0
  */
-class Wordlift_Install_3_39_0 extends Wordlift_Install {
+class Wordlift_Install_3_39_1 extends Wordlift_Install {
 
 	/**
 	 * {@inheritdoc}
