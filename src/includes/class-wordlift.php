@@ -821,11 +821,6 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-key-validation-service.php';
 
-		/**
-		 * Load the WordLift Video Settings API key validation service.
-		 */
-		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-video-key-validation-service.php';
-
 		// Load the `Wordlift_Category_Taxonomy_Service` class definition.
 		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-category-taxonomy-service.php';
 
@@ -1160,9 +1155,6 @@ class Wordlift {
 				new Mentions();
 
 				$that->key_validation_service = new Wordlift_Key_Validation_Service();
-
-				// Video Settings API Key Validation.
-				new Wordlift_Video_Key_Validation_Service();
 
 				$that->content_filter_service = Wordlift_Content_Filter_Service::get_instance();
 				// Creating Faq Content filter service.

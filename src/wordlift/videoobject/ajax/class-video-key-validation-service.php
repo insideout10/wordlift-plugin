@@ -1,8 +1,10 @@
 <?php
+namespace Wordlift\Videoobject\Ajax;
+
 /**
- * Wordlift_Video_Key_Validation_Service class
+ * Video_Key_Validation_Service class
  *
- * The {@link Wordlift_Video_Key_Validation_Service} class provides WordLift Video Settings key validation services.
+ * The {@link Video_Key_Validation_Service} class provides WordLift Video Settings key validation services.
  *
  * @link    https://wordlift.io
  *
@@ -12,11 +14,11 @@
  */
 
 /**
- * Define the {@link Wordlift_Video_Key_Validation_Service} class.
+ * Define the {@link Video_Key_Validation_Service} class.
  *
  * @since 3.40.1
  */
-class Wordlift_Video_Key_Validation_Service {
+class Video_Key_Validation_Service {
 
 	public function __construct() {
 		// create ajax request to handle youtube and vimeo api key validation.
