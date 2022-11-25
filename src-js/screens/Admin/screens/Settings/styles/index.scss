@@ -4,10 +4,15 @@
   input::-ms-clear {
     display: none
   }
+  &__video-api {
+    width: 100%;
+  }
 
   #wl-entity-base-path,
   #wl-key,
-  #wl-alternate-name {
+  #wl-alternate-name,
+  #wordlift_videoobject_youtube_api_key,
+  #wordlift_videoobject_vimeo_api_key {
     // Size,
     width: 100%;
     max-width: 480px;
@@ -27,7 +32,7 @@
     // Anime.
     transition: 50ms border-color ease-in-out;
     // Background.
-    background-position: 448px 8px;
+    background-position: 98% 50%;
     background-repeat: no-repeat;
     &.valid {
       // Icon.
