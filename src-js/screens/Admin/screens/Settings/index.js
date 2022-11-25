@@ -29,11 +29,11 @@ import VideoAPIKeyValidator from 'modules/video-api-key-validator';
 
     // Youtube API Key Validator.
     VideoAPIKeyValidator( '#wordlift_videoobject_youtube_api_key', 'youtube' );
-    $('#wordlift_videoobject_youtube_api_key').trigger('keyup');
+    document.querySelector( '#wordlift_videoobject_youtube_api_key' ).dispatchEvent( new Event( 'keyup' ) );
 
     // Vimeo API Key Validator.
     VideoAPIKeyValidator( '#wordlift_videoobject_vimeo_api_key', 'vimeo' );
-    $('#wordlift_videoobject_vimeo_api_key').trigger('keyup');
+    document.querySelector( '#wordlift_videoobject_vimeo_api_key' ).dispatchEvent( new Event( 'keyup' ) );
 
     // Attach the Media Uploader to the #wl-publisher-logo
     MediaUploader(

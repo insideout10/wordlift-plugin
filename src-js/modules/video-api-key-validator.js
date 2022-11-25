@@ -1,57 +1,52 @@
-/*global jQuery wp*/
 /**
  * Validators: Video API Key Validator.
  *
- * Validate WordLift's Video Settings API key in inputs.
+ * Validate WordLift"s Video Settings API key in inputs.
  *
  * @since 3.40.1
  */
 
 /**
- * Internal dependencies
- */
-import delay from './delay'
-
-// Map $ to jQuery.
-const $ = jQuery
-
-/**
  * Create a Video API key validator on the element with the specified selector.
  *
- * @since 3.11.0
+ * @since 3.40.1
  * @param {string} selector The element selector.
  * @param {string} type Type.
  */
 const VideoAPIKeyValidator = (selector, type) => {
-  $(selector).on('keyup', function () {
-    // Get a jQuery reference to the object.
-    const $this = $(this)
+  const selectorInput = document.querySelector(selector);
+  const settings = window["wlSettings"] || {};
 
-    const settings = window["wlSettings"] || {};
-
-    // Remove any preexisting states, including the `untouched` class
-    // which is set initially to prevent displaying the
-    // `valid`/`invalid` indicator.
-    $this.removeClass('untouched valid invalid')
-
-    // Delay execution of the validation.
-    delay($this, function () {
+  selectorInput.addEventListener("keyup", () => {
+    selectorInput.classList.remove( "untouched", "valid", "invalid");
+    delay( selectorInput, () => {
+      const apiKey = selectorInput.value;
       // Post the validation request.
-      wp.ajax.post(
-        'wl_validate_video_api_key',
-        {
-          api_key: $this.val(),
+      window['wp'].ajax
+        .post(
+          "wl_validate_video_api_key", {
+          api_key: apiKey,
           type: type,
-          _wpnonce: settings['wl_video_api_nonce']
+          _wpnonce: settings["wl_video_api_nonce"],
         })
-        .done(function (data) {
-            $this.addClass('valid')
+        .done( () => {
+          selectorInput.classList.add("valid");
         })
-        .fail(function (data) {
-            $this.addClass('invalid')
-        } )
+        .fail( () => {
+          selectorInput.classList.add("invalid");
+        });
     })
-  })
-}
+  });
 
-export default VideoAPIKeyValidator
+};
+
+const delay = (elem, fn, timeout = 500, ...args) => {
+  clearTimeout(elem.getAttribute("data-timeout"));
+
+  elem.setAttribute(
+    "data-timeout",
+    setTimeout(fn, timeout, ...args)
+  );
+};
+
+export default VideoAPIKeyValidator;
