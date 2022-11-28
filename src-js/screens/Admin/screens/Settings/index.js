@@ -40,7 +40,6 @@ import { VideoAPIKeyValidator, ApiKeyValidator } from 'modules/video-api-key-val
         ApiKeyValidator( VimeoApiSelector, 'vimeo' );
       });
     }
-    
 
     // Attach the Media Uploader to the #wl-publisher-logo
     MediaUploader(

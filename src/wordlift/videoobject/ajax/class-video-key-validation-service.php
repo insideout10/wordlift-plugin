@@ -46,10 +46,20 @@ class Video_Key_Validation_Service {
 		$api_key = sanitize_text_field( wp_unslash( $_POST['api_key'] ) );
 		$type    = sanitize_text_field( wp_unslash( $_POST['type'] ) );
 
+		if ( empty( $api_key ) ) {
+			wp_send_json_error(
+				array(
+					'valid'   => false,
+					'message' => __( 'API key is required.', 'wordlift' ),
+				)
+			);
+		}
+
 		// Check if we have a valid type.
 		if ( ! in_array( $type, array( 'youtube', 'vimeo' ), true ) ) {
 			wp_send_json_error(
 				array(
+					'valid'   => false,
 					'message' => __( 'Invalid type.', 'wordlift' ),
 				)
 			);
@@ -60,13 +70,6 @@ class Video_Key_Validation_Service {
 		} else {
 			$this->validate_vimeo_api_key( $api_key );
 		}
-
-		wp_send_json_error(
-			array(
-				'valid'   => false,
-				'message' => __( 'Invalid API Key.', 'wordlift' ),
-			)
-		);
 	}
 
 	/**
@@ -74,14 +77,9 @@ class Video_Key_Validation_Service {
 	 *
 	 * @param string $api_key Youtube api key.
 	 *
-	 * @return bool
+	 * @return void
 	 */
 	private function validate_youtube_api_key( $api_key ) {
-		// Check if api key is empty.
-		if ( empty( $api_key ) ) {
-			return false;
-		}
-
 		$url = add_query_arg(
 			array(
 				'part' => 'snippet',
@@ -100,15 +98,13 @@ class Video_Key_Validation_Service {
 		if ( 200 === $response_code ) {
 			wp_send_json_success(
 				array(
-					'valid'   => true,
-					'message' => __( 'Youtube API key is valid.', 'wordlift' ),
+					'valid' => true,
 				)
 			);
 		} else {
 			wp_send_json_error(
 				array(
-					'valid'   => false,
-					'message' => __( 'Youtube API key is invalid.', 'wordlift' ),
+					'valid' => false,
 				)
 			);
 		}
@@ -119,14 +115,9 @@ class Video_Key_Validation_Service {
 	 *
 	 * @param string $api_key Vimeo api key.
 	 *
-	 * @return bool
+	 * @return void
 	 */
 	private function validate_vimeo_api_key( $api_key ) {
-		// Check if api key is empty.
-		if ( empty( $api_key ) ) {
-			return false;
-		}
-
 		$url = add_query_arg(
 			array(
 				'query'    => 'wordlift',
@@ -151,18 +142,15 @@ class Video_Key_Validation_Service {
 		if ( 200 === $response_code ) {
 			wp_send_json_success(
 				array(
-					'valid'   => true,
-					'message' => __( 'Vimeo API key is valid.', 'wordlift' ),
+					'valid' => true,
 				)
 			);
 		} else {
 			wp_send_json_error(
 				array(
-					'valid'   => false,
-					'message' => __( 'Vimeo API key is invalid.', 'wordlift' ),
+					'valid' => false,
 				)
 			);
 		}
 	}
-
 }

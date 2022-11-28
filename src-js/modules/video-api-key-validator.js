@@ -14,11 +14,13 @@
  * @param {string} type Type.
  */
 export const VideoAPIKeyValidator = (selector, type) => {
-  selector.addEventListener("keyup", () => {
-    selector.classList.remove( "untouched", "valid", "invalid");
-    delay( selector, () => {
-      ApiKeyValidator(selector, type);
-    })
+  ["keyup", "paste"].forEach( event => {
+    selector.addEventListener( event, () => {
+      selector.classList.remove( "untouched", "valid", "invalid");
+      delay( selector, () => {
+        ApiKeyValidator(selector, type);
+      })
+    });
   });
 
 };
@@ -37,12 +39,10 @@ export const ApiKeyValidator = (selector, type) => {
     _wpnonce: settings["wl_video_api_nonce"],
   })
   .done( () => {
-    selector.classList.remove("loading");
-    selector.classList.add("valid");
+    selector.classList.replace("loading","valid");
   })
   .fail( () => {
-    selector.classList.remove("loading");
-    selector.classList.add("invalid");
+    selector.classList.replace("loading","invalid");
   });
 }
 
