@@ -29,17 +29,13 @@ import { VideoAPIKeyValidator, ApiKeyValidator } from 'modules/video-api-key-val
 
     const YTAPiKeySelector = document.querySelector('#wordlift_videoobject_youtube_api_key');
     const VimeoApiSelector = document.querySelector('#wordlift_videoobject_vimeo_api_key');
-    if ( YTAPiKeySelector !== null && VimeoApiSelector !== null ) {
-      // Youtube API Key Validator.
-      VideoAPIKeyValidator( YTAPiKeySelector, 'youtube' );
-      // Vimeo API Key Validator.
-      VideoAPIKeyValidator( VimeoApiSelector, 'vimeo' );
-
+    [YTAPiKeySelector, VimeoApiSelector].filter( Boolean ).map( selector => {
+      const type = selector.getAttribute('data-type');
+      VideoAPIKeyValidator(selector, type);
       window.addEventListener( 'load', () => {
-        ApiKeyValidator( YTAPiKeySelector, 'youtube' );
-        ApiKeyValidator( VimeoApiSelector, 'vimeo' );
+        ApiKeyValidator( selector, type );
       });
-    }
+    } );
 
     // Attach the Media Uploader to the #wl-publisher-logo
     MediaUploader(

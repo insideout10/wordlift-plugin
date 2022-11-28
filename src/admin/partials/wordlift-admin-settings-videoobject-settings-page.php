@@ -46,9 +46,10 @@ if ( isset( $_POST['wordlift_videoobject_settings_nonce'] ) && wp_verify_nonce( 
 				$element = new Wordlift_Admin_Input_Element();
 				$element->render(
 					array(
-						'id'    => 'wordlift_videoobject_youtube_api_key',
-						'name'  => 'wordlift_videoobject_youtube_api_key',
-						'value' => Youtube_Client::get_api_key(),
+						'id'        => 'wordlift_videoobject_youtube_api_key',
+						'name'      => 'wordlift_videoobject_youtube_api_key',
+						'value'     => Youtube_Client::get_api_key(),
+						'data-type' => 'youtube',
 					)
 				);
 				?>
@@ -68,9 +69,10 @@ if ( isset( $_POST['wordlift_videoobject_settings_nonce'] ) && wp_verify_nonce( 
 				$element = new Wordlift_Admin_Input_Element();
 				$element->render(
 					array(
-						'id'    => 'wordlift_videoobject_vimeo_api_key',
-						'name'  => 'wordlift_videoobject_vimeo_api_key',
-						'value' => Vimeo_Client::get_api_key(),
+						'id'        => 'wordlift_videoobject_vimeo_api_key',
+						'name'      => 'wordlift_videoobject_vimeo_api_key',
+						'value'     => Vimeo_Client::get_api_key(),
+						'data-type' => 'vimeo',
 					)
 				);
 				?>

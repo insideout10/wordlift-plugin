@@ -35,10 +35,10 @@ class Video_Key_Validation_Service {
 		check_ajax_referer( 'wl_video_api_nonce' );
 
 		// Check if we have an API key and Type.
-		if ( ! isset( $_POST['api_key'] ) || ! isset( $_POST['type'] ) ) {
+		if ( ! isset( $_POST['api_key'] ) || empty( $_POST['api_key'] ) || ! isset( $_POST['type'] ) ) {
 			wp_send_json_error(
 				array(
-					'message' => __( 'API key and type are required.', 'wordlift' ),
+					'valid' => false,
 				)
 			);
 		}
@@ -46,21 +46,11 @@ class Video_Key_Validation_Service {
 		$api_key = sanitize_text_field( wp_unslash( $_POST['api_key'] ) );
 		$type    = sanitize_text_field( wp_unslash( $_POST['type'] ) );
 
-		if ( empty( $api_key ) ) {
-			wp_send_json_error(
-				array(
-					'valid'   => false,
-					'message' => __( 'API key is required.', 'wordlift' ),
-				)
-			);
-		}
-
 		// Check if we have a valid type.
 		if ( ! in_array( $type, array( 'youtube', 'vimeo' ), true ) ) {
 			wp_send_json_error(
 				array(
-					'valid'   => false,
-					'message' => __( 'Invalid type.', 'wordlift' ),
+					'valid' => false,
 				)
 			);
 		}
