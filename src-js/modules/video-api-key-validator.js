@@ -13,32 +13,38 @@
  * @param {string} selector The element selector.
  * @param {string} type Type.
  */
-const VideoAPIKeyValidator = (selector, type) => {
-  const selectorInput = document.querySelector(selector);
-  const settings = window["wlSettings"] || {};
-
-  selectorInput.addEventListener("keyup", () => {
-    selectorInput.classList.remove( "untouched", "valid", "invalid");
-    delay( selectorInput, () => {
-      const apiKey = selectorInput.value;
-      // Post the validation request.
-      window['wp'].ajax
-        .post(
-          "wl_validate_video_api_key", {
-          api_key: apiKey,
-          type: type,
-          _wpnonce: settings["wl_video_api_nonce"],
-        })
-        .done( () => {
-          selectorInput.classList.add("valid");
-        })
-        .fail( () => {
-          selectorInput.classList.add("invalid");
-        });
+export const VideoAPIKeyValidator = (selector, type) => {
+  selector.addEventListener("keyup", () => {
+    selector.classList.remove( "untouched", "valid", "invalid");
+    delay( selector, () => {
+      ApiKeyValidator(selector, type);
     })
   });
 
 };
+
+export const ApiKeyValidator = (selector, type) => {
+  const settings = window["wlSettings"] || {};
+  const apiKey = selector.value;
+  selector.classList.add("loading");
+
+  // Post the validation request.
+  window['wp'].ajax
+  .post(
+    "wl_validate_video_api_key", {
+    api_key: apiKey,
+    type: type,
+    _wpnonce: settings["wl_video_api_nonce"],
+  })
+  .done( () => {
+    selector.classList.remove("loading");
+    selector.classList.add("valid");
+  })
+  .fail( () => {
+    selector.classList.remove("loading");
+    selector.classList.add("invalid");
+  });
+}
 
 const delay = (elem, fn, timeout = 500, ...args) => {
   clearTimeout(elem.getAttribute("data-timeout"));
@@ -48,5 +54,3 @@ const delay = (elem, fn, timeout = 500, ...args) => {
     setTimeout(fn, timeout, ...args)
   );
 };
-
-export default VideoAPIKeyValidator;

@@ -11,7 +11,7 @@ import KeyValidator from 'modules/key-validator';
 import CountryValidator from 'modules/country-validator';
 import MediaUploader from 'modules/media-uploader';
 import Tabs from 'modules/tabs';
-import VideoAPIKeyValidator from 'modules/video-api-key-validator';
+import { VideoAPIKeyValidator, ApiKeyValidator } from 'modules/video-api-key-validator';
 
 /**
  * UI interactions on the WordLift Settings page
@@ -27,13 +27,20 @@ import VideoAPIKeyValidator from 'modules/video-api-key-validator';
     // @since 3.32.7, country validation is disabled.
     //CountryValidator('#wl-country-code', '#wl-site-language');
 
-    // Youtube API Key Validator.
-    VideoAPIKeyValidator( '#wordlift_videoobject_youtube_api_key', 'youtube' );
-    document.querySelector( '#wordlift_videoobject_youtube_api_key' ).dispatchEvent( new Event( 'keyup' ) );
+    const YTAPiKeySelector = document.querySelector('#wordlift_videoobject_youtube_api_key');
+    const VimeoApiSelector = document.querySelector('#wordlift_videoobject_vimeo_api_key');
+    if ( YTAPiKeySelector !== null && VimeoApiSelector !== null ) {
+      // Youtube API Key Validator.
+      VideoAPIKeyValidator( YTAPiKeySelector, 'youtube' );
+      // Vimeo API Key Validator.
+      VideoAPIKeyValidator( VimeoApiSelector, 'vimeo' );
 
-    // Vimeo API Key Validator.
-    VideoAPIKeyValidator( '#wordlift_videoobject_vimeo_api_key', 'vimeo' );
-    document.querySelector( '#wordlift_videoobject_vimeo_api_key' ).dispatchEvent( new Event( 'keyup' ) );
+      window.addEventListener( 'load', () => {
+        ApiKeyValidator( YTAPiKeySelector, 'youtube' );
+        ApiKeyValidator( VimeoApiSelector, 'vimeo' );
+      });
+    }
+    
 
     // Attach the Media Uploader to the #wl-publisher-logo
     MediaUploader(

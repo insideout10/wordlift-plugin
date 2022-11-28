@@ -34,6 +34,14 @@
     // Background.
     background-position: 98% 50%;
     background-repeat: no-repeat;
+  
+    &.loading {
+      // Icon.
+      background-image: url('loading.gif');
+      // Spacing.
+      padding-right: 32px;
+    }
+
     &.valid {
       // Icon.
       background-image: url('valid.png');
