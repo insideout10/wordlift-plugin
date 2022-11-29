@@ -224,7 +224,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * @since 3.10.0
 	 */
 	public function relative_to_context( $value ) {
-		Assertions::is_string( $value, '$value is not a string: ' . var_export( $value, true ) );
+		Assertions::is_string( $value, '$value is not a string: ' . var_export( $value, true ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
 
 		return 0 === strpos( $value, self::CONTEXT . '/' ) ? substr( $value, strlen( self::CONTEXT ) + 1 ) : $value;
 	}

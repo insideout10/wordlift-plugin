@@ -84,7 +84,7 @@ class Jsonld_Generator {
 			'name'        => $term->name,
 			'@type'       => $this->term_entity_type_service->get_entity_types_labels( $term_id ),
 			'@id'         => $id,
-			'description' => $term->description,
+			'description' => wp_strip_all_tags( self::strip_all_shortcodes( $term->description ) ),
 		);
 
 		if ( ! $custom_fields || ! is_array( $custom_fields ) ) {
@@ -160,4 +160,18 @@ class Jsonld_Generator {
 		return $value;
 	}
 
+	/**
+	 * Remove all the shortcodes from the content. We're using our own function
+	 * because WordPress' own `strip_shortcodes` only takes into consideration
+	 * shortcodes for installed plugins/themes.
+	 *
+	 * @since 3.12.0
+	 *
+	 * @param string $content The content with shortcodes.
+	 *
+	 * @return string The content without shortcodes.
+	 */
+	private static function strip_all_shortcodes( $content ) {
+		return preg_replace( '/\[[^]]+\]/', '', $content );
+	}
 }
