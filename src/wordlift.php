@@ -99,6 +99,11 @@ function activate_wordlift() {
 	 * @see https://github.com/insideout10/wordlift-plugin/issues/1214
 	 */
 	Top_Entities::activate();
+
+	if ( ! wp_next_scheduled( 'wl_daily_cron' ) ) {
+		wp_schedule_event( time(), 'daily', 'wl_daily_cron' );
+	}
+
 }
 
 /**
@@ -122,6 +127,8 @@ function deactivate_wordlift() {
 	 */
 	Key_Validation_Notice::remove_notification_flag();
 	flush_rewrite_rules();
+
+	wp_clear_scheduled_hook( 'wl_daily_cron' );
 
 }
 
@@ -299,3 +306,4 @@ add_filter(
 require_once __DIR__ . '/modules/food-kg/load.php';
 require_once __DIR__ . '/modules/acf4so/load.php';
 require_once __DIR__ . '/modules/pods/load.php';
+require_once __DIR__ . '/modules/include-exclude-push-config/load.php';
