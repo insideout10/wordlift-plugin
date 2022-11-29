@@ -26,12 +26,15 @@ function __wl_include_exclude_push_config() {
 	}
 
 	// Map the configuration to the payload.
-	$payload = array_map( function ( $item ) use ( $config ) {
-		return array(
-			'url'  => $item,
-			'flag' => strtoupper( $config['include_exclude'] )
-		);
-	}, $config['url'] );
+	$payload = array_map(
+		function ( $item ) use ( $config ) {
+			return array(
+				'url'  => $item,
+				'flag' => strtoupper( $config['include_exclude'] ),
+			);
+		},
+		$config['url']
+	);
 
 	// Load the service.
 	$container_builder = new ContainerBuilder();
