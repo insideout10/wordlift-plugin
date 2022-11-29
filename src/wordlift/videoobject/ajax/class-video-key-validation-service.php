@@ -9,14 +9,14 @@ namespace Wordlift\Videoobject\Ajax;
  * @link    https://wordlift.io
  *
  * @package Wordlift
- * @since   3.40.1
+ * @since   3.40.2
  * @author Mahbub Hasan Imon <mahbub@wordlift.io>
  */
 
 /**
  * Define the {@link Video_Key_Validation_Service} class.
  *
- * @since 3.40.1
+ * @since 3.40.2
  */
 class Video_Key_Validation_Service {
 
@@ -28,7 +28,7 @@ class Video_Key_Validation_Service {
 	/**
 	 * Validate video api key.
 	 *
-	 * @since 3.40.1
+	 * @since 3.40.2
 	 */
 	public function validate_video_api_key() {
 		// check nonce.

@@ -3,13 +3,13 @@
  *
  * Validate WordLift"s Video Settings API key in inputs.
  *
- * @since 3.40.1
+ * @since 3.40.2
  */
 
 /**
  * Create a Video API key validator on the element with the specified selector.
  *
- * @since 3.40.1
+ * @since 3.40.2
  * @param {string} selector The element selector.
  * @param {string} type Type.
  */
