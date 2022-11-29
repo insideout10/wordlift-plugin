@@ -143,6 +143,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.40.1 (2022-11-18) =
+* Fix: exception in JSON-LD conversion.
+
 = 3.40.0 (2022-11-18) =
 * Fix [#1605](https://github.com/insideout10/wordlift-plugin/issues/1605): API error message on Excerpt generation when using Avada builder.
 * Feature [#1606](https://github.com/insideout10/wordlift-plugin/issues/1606): Integrate Avada Builder support.

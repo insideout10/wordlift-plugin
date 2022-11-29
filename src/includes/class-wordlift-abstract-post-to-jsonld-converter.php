@@ -9,7 +9,6 @@
  * @subpackage Wordlift/includes
  */
 
-use Wordlift\Assertions;
 use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Jsonld\Reference;
 use Wordlift\Object_Type_Enum;
@@ -84,7 +83,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * Convert the provided {@link WP_Post} to a JSON-LD array. Any entity reference
 	 * found while processing the post is set in the $references array.
 	 *
-	 * @param int   $post_id The post id.
+	 * @param int $post_id The post id.
 	 * @param array $references An array of entity references.
 	 * @param array $references_infos
 	 *
@@ -189,8 +188,8 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 				 */
 				// @see https://schema.org/location for the schema.org types using the `location` property.
 				if ( ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Action' )
-				 && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Event' )
-				 && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Organization' ) ) {
+					 && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Event' )
+					 && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Organization' ) ) {
 
 					return $carry;
 				}
@@ -224,9 +223,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * @since 3.10.0
 	 */
 	public function relative_to_context( $value ) {
-		Assertions::is_string( $value, '$value is not a string: ' . var_export( $value, true ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
-
-		return 0 === strpos( $value, self::CONTEXT . '/' ) ? substr( $value, strlen( self::CONTEXT ) + 1 ) : $value;
+		return ! is_array( $value ) && 0 === strpos( $value, self::CONTEXT . '/' ) ? substr( $value, strlen( self::CONTEXT ) + 1 ) : $value;
 	}
 
 	/**
@@ -421,16 +418,16 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 
 						if ( $item instanceof Wordlift_Property_Entity_Reference ) {
 
-							  $url = $item->get_url();
+							$url = $item->get_url();
 
-							  // The refactored converters require the entity id.
+							// The refactored converters require the entity id.
 							// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
-							  $references[] = $item->to_reference();
+							$references[] = $item->to_reference();
 
 							// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
-							  $references_infos[] = array( 'reference' => $item );
+							$references_infos[] = array( 'reference' => $item );
 
-							  return array( '@id' => $url );
+							return array( '@id' => $url );
 						}
 
 						return $converter->relative_to_context( $item );
