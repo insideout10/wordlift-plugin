@@ -151,7 +151,6 @@ class Wordlift_Entity_Post_Type_Service {
 				'revisions',
 				'custom-fields',
 			),
-			'has_archive'     => true,
 			'menu_icon'       => WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-vocabulary-icon.svg',
 			// Although we define our slug here, we further manage linking to entities using the Wordlift_Entity_Link_Service.
 			'rewrite'         => array( 'slug' => $this->slug ),
