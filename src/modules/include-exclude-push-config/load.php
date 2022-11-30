@@ -30,10 +30,13 @@ function __wl_include_exclude_push_config() {
 
 	// Set the default data.
 	if ( ! is_array( $config ) || empty( $config ) || ! isset( $config['include_exclude'] ) || ! isset( $config['urls'] ) ) {
-		$config = get_option( 'wl_exclude_include_urls_settings', array(
-			'include_exclude' => 'exclude',
-			'urls'            => '',
-		) );
+		$config = get_option(
+			'wl_exclude_include_urls_settings',
+			array(
+				'include_exclude' => 'exclude',
+				'urls'            => '',
+			)
+		);
 	}
 
 	// Map the configuration to the payload.

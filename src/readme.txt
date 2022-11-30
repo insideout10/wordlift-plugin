@@ -145,6 +145,12 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.40.2 (????-??-??) =
 
+* Feature [#1627](https://github.com/insideout10/wordlift-plugin/issues/1627): Integrate Include/Exclude configuration with platform, this means you can now access it via Looker Studio or API.
+* Feature [#1623](https://github.com/insideout10/wordlift-plugin/issues/1623): We now validate the YouTube key and avoid warning in logs.
+* Fix [#1625](https://github.com/insideout10/wordlift-plugin/issues/1625): Creepy html in description has been stripped away.
+* Fix [#1621](https://github.com/insideout10/wordlift-plugin/issues/1621): Say goodbye to the vocabulary page (tip: use the glossary widget in its stead).
+
+
 = 3.40.1 (2022-11-18) =
 * Fix: exception in JSON-LD conversion.
 
