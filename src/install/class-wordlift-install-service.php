@@ -151,7 +151,7 @@ class Wordlift_Install_Service {
 				$version = $install->get_version();
 
 				if ( version_compare( $version, $this->get_current_version(), '>' )
-					 || $install->must_install() ) {
+				     || $install->must_install() ) {
 					$class_name = get_class( $install );
 
 					$this->log->info( "Current version is {$this->get_current_version()}, installing $class_name..." );
@@ -180,7 +180,7 @@ class Wordlift_Install_Service {
 			$version = $install->get_version();
 
 			if ( version_compare( $version, $this->get_current_version(), '>' )
-				 || $install->must_install() ) {
+			     || $install->must_install() ) {
 				return true;
 			}
 		}
