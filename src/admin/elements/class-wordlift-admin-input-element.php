@@ -71,11 +71,11 @@ class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 				name="<?php echo esc_attr( $params['name'] ); ?>"
 				value="<?php echo esc_attr( $params['value'] ); ?>"
 			<?php
-			if ( ! empty( $params['data-type'] ) ) {
-				?>
-				data-type="<?php echo esc_attr( $params['data-type'] ); ?>"
-			<?php } ?>
-			<?php
+			if ( ! empty( $params['data'] ) && is_array( $params['data'] ) ) {
+				foreach ( $params['data'] as $key => $value ) {
+					echo 'data-' . esc_attr( $key ) . '="' . esc_attr( $value ) . '" ';
+				}
+			}
 			if ( ! empty( $params['readonly'] ) ) {
 				?>
 				 readonly="readonly" <?php } ?>
