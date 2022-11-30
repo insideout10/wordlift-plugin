@@ -143,6 +143,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.40.2 (????-??-??) =
+
 = 3.40.1 (2022-11-18) =
 * Fix: exception in JSON-LD conversion.
 
