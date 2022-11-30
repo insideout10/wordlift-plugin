@@ -4,6 +4,7 @@ namespace Wordlift\Videoobject;
 
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Common\Loader\Default_Loader;
+use Wordlift\Videoobject\Ajax\Video_Key_Validation_Service;
 use Wordlift\Videoobject\Api\Rest_Controller;
 use Wordlift\Videoobject\Background_Process\Videoobject_Background_Process;
 use Wordlift\Videoobject\Background_Process\Videos_Data_Source;
@@ -64,6 +65,11 @@ class Loader extends Default_Loader {
 		 */
 		$jw_player_capture_videos = new Jw_Player_Capture();
 		$jw_player_capture_videos->init();
+
+		/**
+		 * Validate API Key for Youtube, Vimeo.
+		 */
+		new Video_Key_Validation_Service();
 
 	}
 

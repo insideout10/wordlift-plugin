@@ -55,7 +55,7 @@ class Wordlift_Post_Excerpt_Helper {
 		$excerpt = wp_trim_words( ! empty( $post->post_excerpt ) ? $post->post_excerpt : $post_content, $length, $more );
 
 		// Remove shortcodes and decode html entities.
-		return html_entity_decode( self::strip_all_shortcodes( $excerpt ) );
+		return wp_strip_all_tags( html_entity_decode( self::strip_all_shortcodes( $excerpt ) ) );
 	}
 
 	/**
