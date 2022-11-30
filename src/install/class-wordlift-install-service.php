@@ -109,6 +109,8 @@ class Wordlift_Install_Service {
 
 			// See #1621.
 			new Wordlift_Install_3_40_1(),
+
+			// @link https://github.com/insideout10/wordlift-plugin/issues/1627
 			new Wordlift_Install_3_40_2(),
 		);
 		self::$instance = $this;

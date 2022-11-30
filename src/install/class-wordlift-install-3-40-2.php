@@ -5,7 +5,7 @@ use Wordlift\Cache\Ttl_Cache;
 /**
  * Create a daily schedule for WLP for existing installs.
  *
- * @since 3.40.0
+ * @since 3.40.2
  */
 class Wordlift_Install_3_40_2 extends Wordlift_Install {
 
