@@ -16,11 +16,11 @@ class Include_Exclude_API {
 	}
 
 	public function update( $payload ) {
-		$this->api_service->request(
+		$response = $this->api_service->request(
 			'PUT',
 			'/accounts/me/include-excludes',
 			array( 'content-type' => 'application/json' ),
-			$payload
+			wp_json_encode( $payload )
 		);
 	}
 

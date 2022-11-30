@@ -36,7 +36,7 @@ class Notices {
 		 */
 		if ( ! $this->acf4so_plugin->is_plugin_installed() ) {
 			$this->display_notice(
-				__( "WordLift detected that <b>Advanced Custom Fields for Schema.org</b> is not installed and, you're loosing out on full Schema.org support.", 'wordlift' ),
+				__( "WordLift detected that <b>Advanced Custom Fields for Schema.org</b> is not installed and, you're losing out on full Schema.org support.", 'wordlift' ),
 				__( 'Reinstall & Activate', 'wordlift' )
 			);
 
@@ -46,7 +46,7 @@ class Notices {
 
 		if ( ! $this->acf4so_plugin->is_plugin_activated() ) {
 			$this->display_notice(
-				__( "WordLift detected that <b>Advanced Custom Fields for Schema.org</b> is deactivated and, you're loosing out on full Schema.org support.", 'wordlift' ),
+				__( "WordLift detected that <b>Advanced Custom Fields for Schema.org</b> is deactivated and, you're losing out on full Schema.org support.", 'wordlift' ),
 				__( 'Reactivate', 'wordlift' )
 			);
 

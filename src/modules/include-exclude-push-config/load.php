@@ -14,26 +14,38 @@ if ( ! apply_filters( 'wl_feature__enable__include-exclude', false ) ) { // phpc
 	return;
 }
 
-if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-	require_once __DIR__ . '/vendor/autoload.php';
+// Autoloader for dependencies.
+if ( file_exists( __DIR__ . '/third-party/vendor/scoper-autoload.php' ) ) {
+	require __DIR__ . '/third-party/vendor/scoper-autoload.php';
+}
+
+// Autoloader for plugin itself.
+if ( file_exists( __DIR__ . '/includes/vendor/autoload.php' ) ) {
+	require __DIR__ . '/includes/vendor/autoload.php';
 }
 
 function __wl_include_exclude_push_config() {
-	// Get the configuration and bail out if empty.
+	// Get the configuration.
 	$config = get_option( 'wl_exclude_include_urls_settings', array() );
+
+	// Set the default data.
 	if ( ! is_array( $config ) || empty( $config ) || ! isset( $config['include_exclude'] ) || ! isset( $config['urls'] ) ) {
-		return;
+		$config = get_option( 'wl_exclude_include_urls_settings', array(
+			'include_exclude' => 'exclude',
+			'urls'            => '',
+		) );
 	}
 
 	// Map the configuration to the payload.
 	$payload = array_map(
 		function ( $item ) use ( $config ) {
 			return array(
-				'url'  => $item,
+				'url'  =>
+					( 1 === preg_match( '@^https?://.*$@', $item ) ? $item : get_home_url( null, $item ) ),
 				'flag' => strtoupper( $config['include_exclude'] ),
 			);
 		},
-		$config['url']
+		array_filter( preg_split( '/[\r\n]+/', $config['urls'] ) )
 	);
 
 	// Load the service.
