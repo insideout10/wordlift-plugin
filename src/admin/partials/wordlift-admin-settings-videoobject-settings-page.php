@@ -36,7 +36,7 @@ if ( isset( $_POST['wordlift_videoobject_settings_nonce'] ) && wp_verify_nonce( 
 <h1><?php esc_html_e( 'API Settings', 'wordlift' ); ?></h1>
 <p><?php esc_html_e( 'To let WordLift access metadata from YouTube or Vimeo you will need to add here your API Key.', 'wordlift' ); ?></p>
 <form method="post">
-	<table>
+	<table id="wl-settings-page__video-api">
 		<tr>
 			<td>
 				<?php esc_html_e( 'YouTube API Key', 'wordlift' ); ?>
@@ -49,6 +49,7 @@ if ( isset( $_POST['wordlift_videoobject_settings_nonce'] ) && wp_verify_nonce( 
 						'id'    => 'wordlift_videoobject_youtube_api_key',
 						'name'  => 'wordlift_videoobject_youtube_api_key',
 						'value' => Youtube_Client::get_api_key(),
+						'data'  => array( 'type' => 'youtube' ),
 					)
 				);
 				?>
@@ -71,6 +72,7 @@ if ( isset( $_POST['wordlift_videoobject_settings_nonce'] ) && wp_verify_nonce( 
 						'id'    => 'wordlift_videoobject_vimeo_api_key',
 						'name'  => 'wordlift_videoobject_vimeo_api_key',
 						'value' => Vimeo_Client::get_api_key(),
+						'data'  => array( 'type' => 'vimeo' ),
 					)
 				);
 				?>

@@ -11,6 +11,7 @@ import KeyValidator from 'modules/key-validator';
 import CountryValidator from 'modules/country-validator';
 import MediaUploader from 'modules/media-uploader';
 import Tabs from 'modules/tabs';
+import { VideoAPIKeyValidator, ApiKeyValidator } from 'modules/video-api-key-validator';
 
 /**
  * UI interactions on the WordLift Settings page
@@ -25,6 +26,16 @@ import Tabs from 'modules/tabs';
 
     // @since 3.32.7, country validation is disabled.
     //CountryValidator('#wl-country-code', '#wl-site-language');
+
+    const YTAPiKeySelector = document.querySelector('#wordlift_videoobject_youtube_api_key');
+    const VimeoApiSelector = document.querySelector('#wordlift_videoobject_vimeo_api_key');
+    [YTAPiKeySelector, VimeoApiSelector].filter( Boolean ).map( selector => {
+      const type = selector.getAttribute('data-type');
+      VideoAPIKeyValidator(selector, type);
+      window.addEventListener( 'load', () => {
+        ApiKeyValidator( selector, type );
+      });
+    } );
 
     // Attach the Media Uploader to the #wl-publisher-logo
     MediaUploader(

@@ -1155,6 +1155,7 @@ class Wordlift {
 				new Mentions();
 
 				$that->key_validation_service = new Wordlift_Key_Validation_Service();
+
 				$that->content_filter_service = Wordlift_Content_Filter_Service::get_instance();
 				// Creating Faq Content filter service.
 				$that->faq_content_filter_service = new Faq_Content_Filter();
