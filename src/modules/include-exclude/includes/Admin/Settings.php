@@ -80,7 +80,10 @@ class Settings {
 	 * Callback function for settings field rendering.
 	 */
 	public function settings_field_0_render() {
-		$options = get_option( 'wl_exclude_include_urls_settings' ); // phpcs:ignore
+		$options = get_option( 'wl_exclude_include_urls_settings', array(
+			'include_exclude' => 'exclude',
+			'urls'            => ''
+		) ); // phpcs:ignore
 		include_once plugin_dir_path( __FILE__ ) . 'partials/field-0.php';
 	}
 
@@ -88,7 +91,10 @@ class Settings {
 	 * Callback function for settings field rendering.
 	 */
 	public function settings_field_1_render() {
-		$options = get_option( 'wl_exclude_include_urls_settings' ); // phpcs:ignore
+		$options = get_option( 'wl_exclude_include_urls_settings', array(
+			'include_exclude' => true,
+			'urls'            => ''
+		) ); // phpcs:ignore
 		include_once plugin_dir_path( __FILE__ ) . 'partials/field-1.php';
 	}
 

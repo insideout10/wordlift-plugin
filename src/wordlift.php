@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.40.1
+ * Version:           3.40.2
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -36,7 +36,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'WORDLIFT_VERSION', '3.40.1' );
+define( 'WORDLIFT_VERSION', '3.40.2' );
 
 require_once __DIR__ . '/modules/common/load.php';
 require_once __DIR__ . '/modules/include-exclude/load.php';
@@ -99,6 +99,11 @@ function activate_wordlift() {
 	 * @see https://github.com/insideout10/wordlift-plugin/issues/1214
 	 */
 	Top_Entities::activate();
+
+	if ( ! wp_next_scheduled( 'wl_daily_cron' ) ) {
+		wp_schedule_event( time(), 'daily', 'wl_daily_cron' );
+	}
+
 }
 
 /**
@@ -122,6 +127,8 @@ function deactivate_wordlift() {
 	 */
 	Key_Validation_Notice::remove_notification_flag();
 	flush_rewrite_rules();
+
+	wp_clear_scheduled_hook( 'wl_daily_cron' );
 
 }
 
@@ -299,3 +306,4 @@ add_filter(
 require_once __DIR__ . '/modules/food-kg/load.php';
 require_once __DIR__ . '/modules/acf4so/load.php';
 require_once __DIR__ . '/modules/pods/load.php';
+require_once __DIR__ . '/modules/include-exclude-push-config/load.php';

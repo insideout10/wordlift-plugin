@@ -1,0 +1,8 @@
+services:
+  Wordlift\Api\Api_Service:
+    factory: [ 'Wordlift\Api\Default_Api_Service', 'get_instance' ]
+    class: Wordlift\Api\Default_Api_Service
+
+  Wordlift\Modules\Include_Exclude_Push_Config\Include_Exclude_API:
+    class: Wordlift\Modules\Include_Exclude_Push_Config\Include_Exclude_API
+    arguments: [ '@Wordlift\Api\Api_Service' ]
