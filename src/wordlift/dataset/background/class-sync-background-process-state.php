@@ -16,11 +16,9 @@ interface Sync_Background_Process_State {
 	 * in the next pass through. Or, return false to remove the
 	 * item from the queue.
 	 *
-	 * @param mixed $item Queue item to iterate over.
-	 *
 	 * @return mixed
 	 */
-	public function task( $item );
+	public function task();
 
 	public function get_info();
 

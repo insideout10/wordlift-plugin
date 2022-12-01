@@ -23,11 +23,8 @@ class Sync_Background_Process_Stopped_State extends Abstract_Sync_Background_Pro
 		$this->context->set_state( null );
 	}
 
-	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-	public function task( $item ) {
-
-		$this->context->cancel_process();
-
+	public function task() {
+		as_unschedule_action( 'wl_sync_data_task' );
 		return false;
 	}
 

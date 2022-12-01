@@ -16,7 +16,7 @@ use Wordlift\Dataset\Sync_Service;
  *
  * @package Wordlift\Dataset\Background
  */
-class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
+class Sync_Background_Process {
 
 	const STATE_STARTED = 'started';
 	const STATE_STOPPED = 'stopped';
@@ -50,7 +50,7 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
 	 */
 	public function __construct( $sync_service, $sync_object_adapter_factory ) {
-		parent::__construct();
+		// parent::__construct();
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
@@ -63,23 +63,6 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 		} else {
 			$this->state = new Sync_Background_Process_Stopped_State( $this );
 		}
-
-	}
-
-	/**
-	 * This function is called:
-	 *  - To start a new Synchronization, by passing a {@link Sync_Start_Message} instance.
-	 *  - To synchronize a post, by passing a numeric ID.
-	 *
-	 * This function returns the parameter for the next call or NULL if there are no more posts to process.
-	 *
-	 * @param mixed $item Queue item to iterate over.
-	 *
-	 * @return int[]|false The next post IDs or false if there are no more.
-	 */
-	protected function task( $item ) {
-
-		return $this->state->task( $item );
 	}
 
 	/**

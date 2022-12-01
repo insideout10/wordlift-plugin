@@ -52,6 +52,9 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 			new Sync_Background_Process_Terms_Stage( $sync_object_adapter_factory ),
 			new Sync_Background_Process_Users_Stage( $sync_object_adapter_factory ),
 		);
+
+		as_enqueue_async_action( 'wl_sync_data_task' );
+		add_action( 'wl_sync_data_task', array( $this, 'task' ), 10, 0 );
 	}
 
 	public function enter() {
@@ -80,8 +83,9 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 	}
 
 	public function resume() {
-		$this->context->push_to_queue( true );
-		$this->context->save()->dispatch();
+		// TODO : Resume Functionality.
+		// $this->context->push_to_queue( true );
+		// $this->context->save()->dispatch();
 	}
 
 	public function leave() {
@@ -89,7 +93,7 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 	}
 
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-	public function task( $args ) {
+	public function task() {
 
 		$offset     = get_option( '_wl_sync_background_process_offset' );
 		$stage      = get_option( '_wl_sync_background_process_stage' );
