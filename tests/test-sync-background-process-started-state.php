@@ -161,19 +161,19 @@ class Sync_Background_Process_Started_State_Test extends Wordlift_Unit_Test_Case
 			->method( 'set_state' )
 			->with( Sync_Background_Process::STATE_STARTED );
 
-		$this->mock_sync_background_process
-			->expects( $this->once() )
-			->method( 'push_to_queue' )
-			->with( $this->isTrue() );
+		// $this->mock_sync_background_process
+		// 	->expects( $this->once() )
+		// 	->method( 'push_to_queue' )
+		// 	->with( $this->isTrue() );
 
-		$this->mock_sync_background_process
-			->expects( $this->once() )
-			->method( 'save' )
-			->willReturn( $this->mock_sync_background_process );
+		// $this->mock_sync_background_process
+		// 	->expects( $this->once() )
+		// 	->method( 'save' )
+		// 	->willReturn( $this->mock_sync_background_process );
 
-		$this->mock_sync_background_process
-			->expects( $this->once() )
-			->method( 'dispatch' );
+		// $this->mock_sync_background_process
+		// 	->expects( $this->once() )
+		// 	->method( 'dispatch' );
 
 		$this->sync_background_process_started_state->enter();
 
