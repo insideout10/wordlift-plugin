@@ -5,9 +5,9 @@
  * @package test_cases\migration
  */
 
-use ActionScheduler_StoreSchema as Schema;
 use Action_Scheduler\Migration\Controller;
 use Action_Scheduler\Migration\Scheduler;
+use ActionScheduler_StoreSchema as Schema;
 
 /**
  * Test the migration controller.

@@ -43,7 +43,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	/**
 	 * Process an individual action.
 	 *
-	 * @param int $action_id The action ID to process.
+	 * @param int    $action_id The action ID to process.
 	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
 	 *        Generally, this should be capitalised and not localised as it's a proper noun.
 	 */
@@ -83,7 +83,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	 * Schedule the next instance of the action if necessary.
 	 *
 	 * @param ActionScheduler_Action $action
-	 * @param int $action_id
+	 * @param int                    $action_id
 	 */
 	protected function schedule_next_instance( ActionScheduler_Action $action, $action_id ) {
 		// If a recurring action has been consistently failing, we may wish to stop rescheduling it.
@@ -133,7 +133,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 			'date'         => date_create( 'now', timezone_open( 'UTC' ) )->format( 'Y-m-d H:i:s' ),
 			'date_compare' => '<',
 			'per_page'     => 1,
-			'offset'       => $consistent_failure_threshold - 1
+			'offset'       => $consistent_failure_threshold - 1,
 		);
 
 		$first_failing_action_id = $this->store->query_actions( $query_args );

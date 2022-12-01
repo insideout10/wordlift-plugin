@@ -18,93 +18,89 @@
  *
  * @author Michael Dowling <mtdowling@gmail.com>
  */
-class CronExpression_DayOfMonthField extends CronExpression_AbstractField
-{
-    /**
-     * Get the nearest day of the week for a given day in a month
-     *
-     * @param int $currentYear  Current year
-     * @param int $currentMonth Current month
-     * @param int $targetDay    Target day of the month
-     *
-     * @return DateTime Returns the nearest date
-     */
-    private static function getNearestWeekday($currentYear, $currentMonth, $targetDay)
-    {
-        $tday = str_pad($targetDay, 2, '0', STR_PAD_LEFT);
-        $target = new DateTime("$currentYear-$currentMonth-$tday");
-        $currentWeekday = (int) $target->format('N');
+class CronExpression_DayOfMonthField extends CronExpression_AbstractField {
 
-        if ($currentWeekday < 6) {
-            return $target;
-        }
+	/**
+	 * Get the nearest day of the week for a given day in a month
+	 *
+	 * @param int $currentYear  Current year
+	 * @param int $currentMonth Current month
+	 * @param int $targetDay    Target day of the month
+	 *
+	 * @return DateTime Returns the nearest date
+	 */
+	private static function getNearestWeekday( $currentYear, $currentMonth, $targetDay ) {
+		$tday           = str_pad( $targetDay, 2, '0', STR_PAD_LEFT );
+		$target         = new DateTime( "$currentYear-$currentMonth-$tday" );
+		$currentWeekday = (int) $target->format( 'N' );
 
-        $lastDayOfMonth = $target->format('t');
+		if ( $currentWeekday < 6 ) {
+			return $target;
+		}
 
-        foreach (array(-1, 1, -2, 2) as $i) {
-            $adjusted = $targetDay + $i;
-            if ($adjusted > 0 && $adjusted <= $lastDayOfMonth) {
-                $target->setDate($currentYear, $currentMonth, $adjusted);
-                if ($target->format('N') < 6 && $target->format('m') == $currentMonth) {
-                    return $target;
-                }
-            }
-        }
-    }
+		$lastDayOfMonth = $target->format( 't' );
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isSatisfiedBy(DateTime $date, $value)
-    {
-        // ? states that the field value is to be skipped
-        if ($value == '?') {
-            return true;
-        }
+		foreach ( array( -1, 1, -2, 2 ) as $i ) {
+			$adjusted = $targetDay + $i;
+			if ( $adjusted > 0 && $adjusted <= $lastDayOfMonth ) {
+				$target->setDate( $currentYear, $currentMonth, $adjusted );
+				if ( $target->format( 'N' ) < 6 && $target->format( 'm' ) == $currentMonth ) {
+					return $target;
+				}
+			}
+		}
+	}
 
-        $fieldValue = $date->format('d');
+	/**
+	 * {@inheritdoc}
+	 */
+	public function isSatisfiedBy( DateTime $date, $value ) {
+		// ? states that the field value is to be skipped
+		if ( $value == '?' ) {
+			return true;
+		}
 
-        // Check to see if this is the last day of the month
-        if ($value == 'L') {
-            return $fieldValue == $date->format('t');
-        }
+		$fieldValue = $date->format( 'd' );
 
-        // Check to see if this is the nearest weekday to a particular value
-        if (strpos($value, 'W')) {
-            // Parse the target day
-            $targetDay = substr($value, 0, strpos($value, 'W'));
-            // Find out if the current day is the nearest day of the week
-            return $date->format('j') == self::getNearestWeekday(
-                $date->format('Y'),
-                $date->format('m'),
-                $targetDay
-            )->format('j');
-        }
+		// Check to see if this is the last day of the month
+		if ( $value == 'L' ) {
+			return $fieldValue == $date->format( 't' );
+		}
 
-        return $this->isSatisfied($date->format('d'), $value);
-    }
+		// Check to see if this is the nearest weekday to a particular value
+		if ( strpos( $value, 'W' ) ) {
+			// Parse the target day
+			$targetDay = substr( $value, 0, strpos( $value, 'W' ) );
+			// Find out if the current day is the nearest day of the week
+			return $date->format( 'j' ) == self::getNearestWeekday(
+				$date->format( 'Y' ),
+				$date->format( 'm' ),
+				$targetDay
+			)->format( 'j' );
+		}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function increment(DateTime $date, $invert = false)
-    {
-        if ($invert) {
-            $date->modify('previous day');
-            $date->setTime(23, 59);
-        } else {
-            $date->modify('next day');
-            $date->setTime(0, 0);
-        }
+		return $this->isSatisfied( $date->format( 'd' ), $value );
+	}
 
-        return $this;
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function increment( DateTime $date, $invert = false ) {
+		if ( $invert ) {
+			$date->modify( 'previous day' );
+			$date->setTime( 23, 59 );
+		} else {
+			$date->modify( 'next day' );
+			$date->setTime( 0, 0 );
+		}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate($value)
-    {
-        return (bool) preg_match('/[\*,\/\-\?LW0-9A-Za-z]+/', $value);
-    }
+		return $this;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function validate( $value ) {
+		return (bool) preg_match( '/[\*,\/\-\?LW0-9A-Za-z]+/', $value );
+	}
 }

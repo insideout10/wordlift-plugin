@@ -5,6 +5,7 @@ use ActionScheduler_wpPostStore as PostStore;
 
 /**
  * Class Scheduler_Test
+ *
  * @group migration
  */
 class Scheduler_Test extends ActionScheduler_UnitTestCase {
@@ -63,16 +64,16 @@ class Scheduler_Test extends ActionScheduler_UnitTestCase {
 		for ( $i = 0; $i < 10; $i ++ ) {
 			$time     = as_get_datetime_object( $i + 1 . ' minutes' );
 			$schedule = new ActionScheduler_SimpleSchedule( $time );
-			$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [], $schedule );
+			$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array(), $schedule );
 			$future[] = $source_store->save_action( $action );
 
 			$time     = as_get_datetime_object( $i + 1 . ' minutes ago' );
 			$schedule = new ActionScheduler_SimpleSchedule( $time );
-			$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [], $schedule );
+			$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array(), $schedule );
 			$due[]    = $source_store->save_action( $action );
 		}
 
-		$this->assertCount( 20, $source_store->query_actions( [ 'per_page' => 0 ] ) );
+		$this->assertCount( 20, $source_store->query_actions( array( 'per_page' => 0 ) ) );
 
 		$scheduler = new Scheduler();
 		$scheduler->unschedule_migration();
@@ -82,7 +83,15 @@ class Scheduler_Test extends ActionScheduler_UnitTestCase {
 		$queue_runner->run();
 
 		// 5 actions should have moved from the source store when the queue runner triggered the migration action
-		$this->assertCount( 15, $source_store->query_actions( [ 'per_page' => 0, 'hook' => ActionScheduler_Callbacks::HOOK_WITH_CALLBACK ] ) );
+		$this->assertCount(
+			15,
+			$source_store->query_actions(
+				array(
+					'per_page' => 0,
+					'hook'     => ActionScheduler_Callbacks::HOOK_WITH_CALLBACK,
+				)
+			)
+		);
 
 		remove_filter( 'action_scheduler/migration_batch_size', $return_5 );
 		remove_filter( 'action_scheduler/migration_interval', $return_60 );
@@ -95,11 +104,11 @@ class Scheduler_Test extends ActionScheduler_UnitTestCase {
 		for ( $i = 0; $i < 5; $i ++ ) {
 			$time     = as_get_datetime_object( $i + 1 . ' minutes ago' );
 			$schedule = new ActionScheduler_SimpleSchedule( $time );
-			$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [], $schedule );
+			$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array(), $schedule );
 			$due[]    = $source_store->save_action( $action );
 		}
 
-		$this->assertCount( 5, $source_store->query_actions( [ 'per_page' => 0 ] ) );
+		$this->assertCount( 5, $source_store->query_actions( array( 'per_page' => 0 ) ) );
 
 		$scheduler = new Scheduler();
 		$scheduler->unschedule_migration();
@@ -109,7 +118,15 @@ class Scheduler_Test extends ActionScheduler_UnitTestCase {
 		$queue_runner->run();
 
 		// All actions should have moved from the source store when the queue runner triggered the migration action
-		$this->assertCount( 0, $source_store->query_actions( [ 'per_page' => 0, 'hook' => ActionScheduler_Callbacks::HOOK_WITH_CALLBACK ] ) );
+		$this->assertCount(
+			0,
+			$source_store->query_actions(
+				array(
+					'per_page' => 0,
+					'hook'     => ActionScheduler_Callbacks::HOOK_WITH_CALLBACK,
+				)
+			)
+		);
 
 		// schedule another so we can get it to run immediately
 		$scheduler->unschedule_migration();

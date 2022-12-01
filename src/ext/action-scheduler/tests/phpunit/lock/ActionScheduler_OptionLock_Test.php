@@ -2,6 +2,7 @@
 
 /**
  * Class ActionScheduler_Lock_Test
+ *
  * @package test_cases\lock
  */
 class ActionScheduler_OptionLock_Test extends ActionScheduler_UnitTestCase {

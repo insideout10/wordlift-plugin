@@ -1,6 +1,5 @@
 <?php
 
-
 use Action_Scheduler\Migration\Config;
 use Action_Scheduler\Migration\Runner;
 use ActionScheduler_wpCommentLogger as CommentLogger;
@@ -8,6 +7,7 @@ use ActionScheduler_wpPostStore as PostStore;
 
 /**
  * Class Runner_Test
+ *
  * @group migration
  */
 class Runner_Test extends ActionScheduler_UnitTestCase {
@@ -34,57 +34,85 @@ class Runner_Test extends ActionScheduler_UnitTestCase {
 
 		$runner = new Runner( $config );
 
-		$due      = [];
-		$future   = [];
-		$complete = [];
+		$due      = array();
+		$future   = array();
+		$complete = array();
 
 		for ( $i = 0; $i < 5; $i ++ ) {
 			$time     = as_get_datetime_object( $i + 1 . ' minutes' );
 			$schedule = new ActionScheduler_SimpleSchedule( $time );
-			$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [], $schedule );
+			$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array(), $schedule );
 			$future[] = $source_store->save_action( $action );
 
 			$time     = as_get_datetime_object( $i + 1 . ' minutes ago' );
 			$schedule = new ActionScheduler_SimpleSchedule( $time );
-			$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [], $schedule );
+			$action   = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array(), $schedule );
 			$due[]    = $source_store->save_action( $action );
 
 			$time       = as_get_datetime_object( $i + 1 . ' minutes ago' );
 			$schedule   = new ActionScheduler_SimpleSchedule( $time );
-			$action     = new ActionScheduler_FinishedAction( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, [], $schedule );
+			$action     = new ActionScheduler_FinishedAction( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array(), $schedule );
 			$complete[] = $source_store->save_action( $action );
 		}
 
-		$created = $source_store->query_actions( [ 'per_page' => 0 ] );
+		$created = $source_store->query_actions( array( 'per_page' => 0 ) );
 		$this->assertCount( 15, $created );
 
 		$runner->run( 10 );
 
 		// due actions should migrate in the first batch
-		$migrated = $destination_store->query_actions( [ 'per_page' => 0, 'hook' => ActionScheduler_Callbacks::HOOK_WITH_CALLBACK ] );
+		$migrated = $destination_store->query_actions(
+			array(
+				'per_page' => 0,
+				'hook'     => ActionScheduler_Callbacks::HOOK_WITH_CALLBACK,
+			)
+		);
 		$this->assertCount( 5, $migrated );
 
-		$remaining = $source_store->query_actions( [ 'per_page' => 0, 'hook' => ActionScheduler_Callbacks::HOOK_WITH_CALLBACK ] );
+		$remaining = $source_store->query_actions(
+			array(
+				'per_page' => 0,
+				'hook'     => ActionScheduler_Callbacks::HOOK_WITH_CALLBACK,
+			)
+		);
 		$this->assertCount( 10, $remaining );
-
 
 		$runner->run( 10 );
 
 		// pending actions should migrate in the second batch
-		$migrated = $destination_store->query_actions( [ 'per_page' => 0, 'hook' => ActionScheduler_Callbacks::HOOK_WITH_CALLBACK ] );
+		$migrated = $destination_store->query_actions(
+			array(
+				'per_page' => 0,
+				'hook'     => ActionScheduler_Callbacks::HOOK_WITH_CALLBACK,
+			)
+		);
 		$this->assertCount( 10, $migrated );
 
-		$remaining = $source_store->query_actions( [ 'per_page' => 0, 'hook' => ActionScheduler_Callbacks::HOOK_WITH_CALLBACK ] );
+		$remaining = $source_store->query_actions(
+			array(
+				'per_page' => 0,
+				'hook'     => ActionScheduler_Callbacks::HOOK_WITH_CALLBACK,
+			)
+		);
 		$this->assertCount( 5, $remaining );
-
 
 		$runner->run( 10 );
 
 		// completed actions should migrate in the third batch
-		$migrated = $destination_store->query_actions( [ 'per_page' => 0, 'hook' => ActionScheduler_Callbacks::HOOK_WITH_CALLBACK ] );
+		$migrated = $destination_store->query_actions(
+			array(
+				'per_page' => 0,
+				'hook'     => ActionScheduler_Callbacks::HOOK_WITH_CALLBACK,
+			)
+		);
 		$this->assertCount( 15, $migrated );
 
-		$remaining = $source_store->query_actions( [ 'per_page' => 0, 'hook' => ActionScheduler_Callbacks::HOOK_WITH_CALLBACK ] );
+		$remaining = $source_store->query_actions(
+			array(
+				'per_page' => 0,
+				'hook'     => ActionScheduler_Callbacks::HOOK_WITH_CALLBACK,
+			)
+		);
 		$this->assertCount( 0, $remaining );
 
 	}

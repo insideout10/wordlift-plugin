@@ -8,11 +8,11 @@ interface ActionScheduler_Schedule {
 	 * @param DateTime $after
 	 * @return DateTime|null
 	 */
-	public function next( DateTime $after = NULL );
+	public function next( DateTime $after = null );
 
 	/**
 	 * @return bool
 	 */
 	public function is_recurring();
 }
- 
+

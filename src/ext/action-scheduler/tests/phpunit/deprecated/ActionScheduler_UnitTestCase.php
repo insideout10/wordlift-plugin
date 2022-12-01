@@ -36,9 +36,9 @@ class ActionScheduler_UnitTestCase extends WP_UnitTestCase {
 	 * We want to run every test multiple times using a different timezone to make sure
 	 * that they are unaffected by changes to PHP's timezone.
 	 */
-	public function run( PHPUnit_Framework_TestResult $result = NULL ){
+	public function run( PHPUnit_Framework_TestResult $result = null ) {
 
-		if ($result === NULL) {
+		if ( $result === null ) {
 			$result = $this->createResult();
 		}
 

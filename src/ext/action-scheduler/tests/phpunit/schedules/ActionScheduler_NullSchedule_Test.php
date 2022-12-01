@@ -2,6 +2,7 @@
 
 /**
  * Class ActionScheduler_NullSchedule_Test
+ *
  * @group schedules
  */
 class ActionScheduler_NullSchedule_Test extends ActionScheduler_UnitTestCase {
@@ -15,4 +16,4 @@ class ActionScheduler_NullSchedule_Test extends ActionScheduler_UnitTestCase {
 		$this->assertFalse( $schedule->is_recurring() );
 	}
 }
- 
+

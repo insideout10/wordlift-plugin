@@ -4,6 +4,7 @@ use Action_Scheduler\Migration\Config;
 
 /**
  * Class Config_Test
+ *
  * @group migration
  */
 class Config_Test extends ActionScheduler_UnitTestCase {

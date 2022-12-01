@@ -1,6 +1,5 @@
 <?php
 
-
 use Action_Scheduler\Migration\Config;
 use ActionScheduler_NullAction as NullAction;
 use ActionScheduler_wpCommentLogger as CommentLogger;
@@ -8,6 +7,7 @@ use ActionScheduler_wpPostStore as PostStore;
 
 /**
  * Class ActionScheduler_HybridStore_Test
+ *
  * @group tables
  */
 
@@ -53,10 +53,10 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 
 		$time      = as_get_datetime_object( '10 minutes ago' );
 		$schedule  = new ActionScheduler_SimpleSchedule( $time );
-		$action    = new ActionScheduler_Action( __FUNCTION__, [], $schedule );
+		$action    = new ActionScheduler_Action( __FUNCTION__, array(), $schedule );
 		$source_id = $source_store->save_action( $action );
 
-		$found = $hybrid_store->find_action( __FUNCTION__, [] );
+		$found = $hybrid_store->find_action( __FUNCTION__, array() );
 
 		$this->assertNotEquals( $source_id, $found );
 		$this->assertGreaterThanOrEqual( $this->demarkation_id, $found );
@@ -64,7 +64,6 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 		$found_in_source = $source_store->fetch_action( $source_id );
 		$this->assertInstanceOf( NullAction::class, $found_in_source );
 	}
-
 
 	public function test_actions_are_migrated_on_query() {
 		$source_store       = new PostStore();
@@ -80,29 +79,31 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 
 		$hybrid_store = new ActionScheduler_HybridStore( $config );
 
-		$source_actions      = [];
-		$destination_actions = [];
+		$source_actions      = array();
+		$destination_actions = array();
 
 		for ( $i = 0; $i < 10; $i++ ) {
 			// create in instance in the source store
 			$time     = as_get_datetime_object( ( $i * 10 + 1 ) . ' minutes' );
 			$schedule = new ActionScheduler_SimpleSchedule( $time );
-			$action   = new ActionScheduler_Action( __FUNCTION__, [], $schedule );
+			$action   = new ActionScheduler_Action( __FUNCTION__, array(), $schedule );
 
 			$source_actions[] = $source_store->save_action( $action );
 
 			// create an instance in the destination store
 			$time     = as_get_datetime_object( ( $i * 10 + 5 ) . ' minutes' );
 			$schedule = new ActionScheduler_SimpleSchedule( $time );
-			$action   = new ActionScheduler_Action( __FUNCTION__, [], $schedule );
+			$action   = new ActionScheduler_Action( __FUNCTION__, array(), $schedule );
 
 			$destination_actions[] = $destination_store->save_action( $action );
 		}
 
-		$found = $hybrid_store->query_actions([
-			'hook' => __FUNCTION__,
-			'per_page' => 6,
-		] );
+		$found = $hybrid_store->query_actions(
+			array(
+				'hook'     => __FUNCTION__,
+				'per_page' => 6,
+			)
+		);
 
 		$this->assertCount( 6, $found );
 		foreach ( $found as $key => $action_id ) {
@@ -117,13 +118,14 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 
 		// six of the original 10 should have migrated to the new store
 		// even though only three were retrieve in the final query
-		$found_in_source = $source_store->query_actions( [
-			'hook' => __FUNCTION__,
-			'per_page' => 10,
-		] );
+		$found_in_source = $source_store->query_actions(
+			array(
+				'hook'     => __FUNCTION__,
+				'per_page' => 10,
+			)
+		);
 		$this->assertCount( 4, $found_in_source );
 	}
-
 
 	public function test_actions_are_migrated_on_claim() {
 		$source_store       = new PostStore();
@@ -139,21 +141,21 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 
 		$hybrid_store = new ActionScheduler_HybridStore( $config );
 
-		$source_actions      = [];
-		$destination_actions = [];
+		$source_actions      = array();
+		$destination_actions = array();
 
 		for ( $i = 0; $i < 10; $i++ ) {
 			// create in instance in the source store
 			$time     = as_get_datetime_object( ( $i * 10 + 1 ) . ' minutes ago' );
 			$schedule = new ActionScheduler_SimpleSchedule( $time );
-			$action   = new ActionScheduler_Action( __FUNCTION__, [], $schedule );
+			$action   = new ActionScheduler_Action( __FUNCTION__, array(), $schedule );
 
 			$source_actions[] = $source_store->save_action( $action );
 
 			// create an instance in the destination store
 			$time     = as_get_datetime_object( ( $i * 10 + 5 ) . ' minutes ago' );
 			$schedule = new ActionScheduler_SimpleSchedule( $time );
-			$action   = new ActionScheduler_Action( __FUNCTION__, [], $schedule );
+			$action   = new ActionScheduler_Action( __FUNCTION__, array(), $schedule );
 
 			$destination_actions[] = $destination_store->save_action( $action );
 		}
@@ -164,18 +166,19 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 		$this->assertCount( 6, $claimed_actions );
 		$this->assertCount( 3, array_intersect( $destination_actions, $claimed_actions ) );
 
-
 		// six of the original 10 should have migrated to the new store
 		// even though only three were retrieve in the final claim
-		$found_in_source = $source_store->query_actions( [
-			'hook' => __FUNCTION__,
-			'per_page' => 10,
-		] );
+		$found_in_source = $source_store->query_actions(
+			array(
+				'hook'     => __FUNCTION__,
+				'per_page' => 10,
+			)
+		);
 		$this->assertCount( 4, $found_in_source );
 
-		$this->assertEquals( 0, $source_store->get_claim_count() );
-		$this->assertEquals( 1, $destination_store->get_claim_count() );
-		$this->assertEquals( 1, $hybrid_store->get_claim_count() );
+		$this->assertSame( 0, $source_store->get_claim_count() );
+		$this->assertSame( 1, $destination_store->get_claim_count() );
+		$this->assertSame( 1, $hybrid_store->get_claim_count() );
 
 	}
 
@@ -193,21 +196,21 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 
 		$hybrid_store = new ActionScheduler_HybridStore( $config );
 
-		$source_actions      = [];
-		$destination_actions = [];
+		$source_actions      = array();
+		$destination_actions = array();
 
 		for ( $i = 0; $i < 2; $i++ ) {
 			// create in instance in the source store
 			$time     = as_get_datetime_object( ( $i * 10 + 1 ) . ' minutes ago' );
 			$schedule = new ActionScheduler_SimpleSchedule( $time );
-			$action   = new ActionScheduler_Action( __FUNCTION__, [], $schedule );
+			$action   = new ActionScheduler_Action( __FUNCTION__, array(), $schedule );
 
 			$source_actions[] = $source_store->save_action( $action );
 
 			// create an instance in the destination store
 			$time     = as_get_datetime_object( ( $i * 10 + 5 ) . ' minutes ago' );
 			$schedule = new ActionScheduler_SimpleSchedule( $time );
-			$action   = new ActionScheduler_Action( __FUNCTION__, [], $schedule );
+			$action   = new ActionScheduler_Action( __FUNCTION__, array(), $schedule );
 
 			$destination_actions[] = $destination_store->save_action( $action );
 		}
@@ -239,21 +242,21 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 
 		$hybrid_store = new ActionScheduler_HybridStore( $config );
 
-		$source_actions      = [];
-		$destination_actions = [];
+		$source_actions      = array();
+		$destination_actions = array();
 
 		for ( $i = 0; $i < 2; $i++ ) {
 			// create in instance in the source store
 			$time     = as_get_datetime_object( ( $i * 10 + 1 ) . ' minutes ago' );
 			$schedule = new ActionScheduler_SimpleSchedule( $time );
-			$action   = new ActionScheduler_Action( __FUNCTION__, [], $schedule );
+			$action   = new ActionScheduler_Action( __FUNCTION__, array(), $schedule );
 
 			$source_actions[] = $source_store->save_action( $action );
 
 			// create an instance in the destination store
 			$time     = as_get_datetime_object( ( $i * 10 + 5 ) . ' minutes ago' );
 			$schedule = new ActionScheduler_SimpleSchedule( $time );
-			$action   = new ActionScheduler_Action( __FUNCTION__, [], $schedule );
+			$action   = new ActionScheduler_Action( __FUNCTION__, array(), $schedule );
 
 			$destination_actions[] = $destination_store->save_action( $action );
 		}
