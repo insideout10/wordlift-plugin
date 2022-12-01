@@ -52,7 +52,7 @@ if ( ! apply_filters( 'wl_is_enabled', true ) ) {
 
 require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 // Action Scheduler.
-require_once plugin_dir_path( __FILE__ ) . '/ext/action-scheduler/action-scheduler.php';
+require_once plugin_dir_path( __FILE__ ) . '/ext/dependencies/action-scheduler/action-scheduler.php';
 
 /*
 	 * We introduce the WordLift autoloader, since we start using classes in namespaces, i.e. Wordlift\Http.

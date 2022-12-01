@@ -21,8 +21,6 @@ class Sync_Background_Process {
 	const STATE_STARTED = 'started';
 	const STATE_STOPPED = 'stopped';
 
-	protected $action = 'wl_dataset__sync';
-
 	/**
 	 * @var Sync_Service
 	 */
