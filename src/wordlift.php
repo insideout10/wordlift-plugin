@@ -36,7 +36,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'WORDLIFT_VERSION', '3.40.2' );
+define( 'WORDLIFT_VERSION', '3.41.0-dev' );
 
 require_once __DIR__ . '/modules/common/load.php';
 require_once __DIR__ . '/modules/include-exclude/load.php';
