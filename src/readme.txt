@@ -143,7 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.40.2 (????-??-??) =
+= 3.40.2 (2022-12-04) =
 
 * Feature [#1627](https://github.com/insideout10/wordlift-plugin/issues/1627): Integrate Include/Exclude configuration with platform, this means you can now access it via Looker Studio or API.
 * Feature [#1623](https://github.com/insideout10/wordlift-plugin/issues/1623): We now validate the YouTube key and avoid warning in logs.
