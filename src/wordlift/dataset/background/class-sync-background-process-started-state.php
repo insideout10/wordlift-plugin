@@ -53,7 +53,7 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 			new Sync_Background_Process_Users_Stage( $sync_object_adapter_factory ),
 		);
 
-		add_action( 'wl_dataset__sync', array( $this, 'task' ) );
+		add_action( $this->context->identifier, array( $this, 'task' ) );
 	}
 
 	public function enter() {
