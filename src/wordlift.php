@@ -51,8 +51,6 @@ if ( ! apply_filters( 'wl_is_enabled', true ) ) {
 }
 
 require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
-// Action Scheduler.
-require_once plugin_dir_path( __FILE__ ) . '/ext/dependencies/action-scheduler/action-scheduler.php';
 
 /*
 	 * We introduce the WordLift autoloader, since we start using classes in namespaces, i.e. Wordlift\Http.
@@ -131,6 +129,8 @@ function deactivate_wordlift() {
 	flush_rewrite_rules();
 
 	wp_clear_scheduled_hook( 'wl_daily_cron' );
+
+	as_unschedule_action( 'wl_dataset__sync' );
 
 }
 

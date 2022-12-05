@@ -2,7 +2,10 @@
   "autoload": {
     "classmap": [
       "ext/dependencies/"
-    ]
+    ],
+    "files": [
+			"vendor/woocommerce/action-scheduler/action-scheduler.php"
+		]
   },
   "require-dev": {
     "coenjacobs/mozart": "^0.5.1",
@@ -42,6 +45,12 @@
     ]
   },
   "require": {
-    "deliciousbrains/wp-background-processing": "^1.0"
+    "deliciousbrains/wp-background-processing": "^1.0",
+    "woocommerce/action-scheduler": "3.4.2"
+  },
+  "config": {
+    "allow-plugins": {
+      "cweagans/composer-patches": true
+    }
   }
 }

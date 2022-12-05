@@ -53,8 +53,7 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 			new Sync_Background_Process_Users_Stage( $sync_object_adapter_factory ),
 		);
 
-		as_enqueue_async_action( 'wl_sync_data_task' );
-		add_action( 'wl_sync_data_task', array( $this, 'task' ), 10, 0 );
+		add_action( 'wl_dataset__sync', array( $this, 'task' ) );
 	}
 
 	public function enter() {
@@ -79,7 +78,7 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 
 		$this->context->set_state( Sync_Background_Process::STATE_STARTED );
 
-		$this->resume();
+		// $this->resume();
 	}
 
 	public function resume() {

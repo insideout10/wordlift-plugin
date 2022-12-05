@@ -88,3 +88,5 @@ delete_option( 'wl_option_prefixes' );
 delete_option( 'wl_general_settings' );
 delete_option( 'wl_advanced_settings' );
 wl_write_log( 'Done. WordLift successfully uninstalled.' );
+
+as_unschedule_action( 'wl_dataset__sync' );

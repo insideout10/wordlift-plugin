@@ -4,24 +4,25 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit30c84c47a44576eaa4b38cc478d5e11b {
+class ComposerStaticInit30c84c47a44576eaa4b38cc478d5e11b
+{
+    public static $files = array (
+        '47d13ae087941cebbc8027d9bbaa667e' => __DIR__ . '/..' . '/woocommerce/action-scheduler/action-scheduler.php',
+    );
 
-	public static $classMap = array(
-		'Composer\\InstalledVersions'           => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-		'WP_Async_Request'                      => __DIR__ . '/..' . '/deliciousbrains/wp-background-processing/classes/wp-async-request.php',
-		'WP_Background_Process'                 => __DIR__ . '/..' . '/deliciousbrains/wp-background-processing/classes/wp-background-process.php',
-		'Wordlift_Plugin_WP_Async_Request'      => __DIR__ . '/../..' . '/ext/dependencies/deliciousbrains/wp-background-processing/classes/wp-async-request.php',
-		'Wordlift_Plugin_WP_Background_Process' => __DIR__ . '/../..' . '/ext/dependencies/deliciousbrains/wp-background-processing/classes/wp-background-process.php',
-	);
+    public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'WP_Async_Request' => __DIR__ . '/..' . '/deliciousbrains/wp-background-processing/classes/wp-async-request.php',
+        'WP_Background_Process' => __DIR__ . '/..' . '/deliciousbrains/wp-background-processing/classes/wp-background-process.php',
+        'Wordlift_Plugin_WP_Async_Request' => __DIR__ . '/../..' . '/ext/dependencies/deliciousbrains/wp-background-processing/classes/wp-async-request.php',
+        'Wordlift_Plugin_WP_Background_Process' => __DIR__ . '/../..' . '/ext/dependencies/deliciousbrains/wp-background-processing/classes/wp-background-process.php',
+    );
 
-	public static function getInitializer( ClassLoader $loader ) {
-		return \Closure::bind(
-			function () use ( $loader ) {
-				$loader->classMap = ComposerStaticInit30c84c47a44576eaa4b38cc478d5e11b::$classMap;
+    public static function getInitializer(ClassLoader $loader)
+    {
+        return \Closure::bind(function () use ($loader) {
+            $loader->classMap = ComposerStaticInit30c84c47a44576eaa4b38cc478d5e11b::$classMap;
 
-			},
-			null,
-			ClassLoader::class
-		);
-	}
+        }, null, ClassLoader::class);
+    }
 }

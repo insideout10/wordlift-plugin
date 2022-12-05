@@ -48,7 +48,6 @@ class Sync_Background_Process {
 	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
 	 */
 	public function __construct( $sync_service, $sync_object_adapter_factory ) {
-		// parent::__construct();
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
@@ -61,6 +60,12 @@ class Sync_Background_Process {
 		} else {
 			$this->state = new Sync_Background_Process_Stopped_State( $this );
 		}
+
+		if ( false === as_has_scheduled_action( 'wl_dataset__sync' ) ) {
+			as_enqueue_async_action( 'wl_dataset__sync' );
+		}
+		add_action( 'wl_dataset__sync', array( $this, 'start' ) );
+
 	}
 
 	/**
@@ -79,6 +84,10 @@ class Sync_Background_Process {
 		$this->state->leave();
 		$this->state = new Sync_Background_Process_Stopped_State( $this );
 		$this->state->enter();
+	}
+
+	public function task() {
+		$this->state->task();
 	}
 
 	public function resume() {

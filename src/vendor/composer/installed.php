@@ -1,30 +1,41 @@
 <?php return array(
-	'root'     =>
-	array(
-		'pretty_version' => 'dev-develop',
-		'version'        => 'dev-develop',
-		'aliases'        =>
-		array(),
-		'reference'      => '2b5035defcc45dcd4370a5865ba4fe5e91035435',
-		'name'           => '__root__',
-	),
-	'versions' =>
-	array(
-		'__root__'                                 =>
-		array(
-			'pretty_version' => 'dev-develop',
-			'version'        => 'dev-develop',
-			'aliases'        =>
-			array(),
-			'reference'      => '2b5035defcc45dcd4370a5865ba4fe5e91035435',
-		),
-		'deliciousbrains/wp-background-processing' =>
-		array(
-			'pretty_version' => '1.0.2',
-			'version'        => '1.0.2.0',
-			'aliases'        =>
-			array(),
-			'reference'      => '2cbee1abd1b49e1133cd8f611df4d4fc5a8b9800',
-		),
-	),
+    'root' => array(
+        'name' => '__root__',
+        'pretty_version' => 'dev-develop',
+        'version' => 'dev-develop',
+        'reference' => '8175e644cdcb4290a3845869af4f96bad62350d7',
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => false,
+    ),
+    'versions' => array(
+        '__root__' => array(
+            'pretty_version' => 'dev-develop',
+            'version' => 'dev-develop',
+            'reference' => '8175e644cdcb4290a3845869af4f96bad62350d7',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'deliciousbrains/wp-background-processing' => array(
+            'pretty_version' => '1.0.2',
+            'version' => '1.0.2.0',
+            'reference' => '2cbee1abd1b49e1133cd8f611df4d4fc5a8b9800',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../deliciousbrains/wp-background-processing',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'woocommerce/action-scheduler' => array(
+            'pretty_version' => '3.4.2',
+            'version' => '3.4.2.0',
+            'reference' => '7d8e830b6387410ccf11708194d3836f01cb2942',
+            'type' => 'wordpress-plugin',
+            'install_path' => __DIR__ . '/../woocommerce/action-scheduler',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+    ),
 );
