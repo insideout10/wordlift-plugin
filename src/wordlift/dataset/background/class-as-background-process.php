@@ -25,8 +25,8 @@ class AS_Background_Process {
 	 * @return void
 	 */
 	public function schedule() {
-		if ( false === as_has_scheduled_action( $this->identifier ) ) {
-			as_enqueue_async_action( $this->identifier );
+		if ( false === as_has_scheduled_action( $this->identifier, array(), 'wordlift' ) ) {
+			as_enqueue_async_action( $this->identifier, array(), 'wordlift' );
 		}
 	}
 

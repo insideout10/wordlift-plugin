@@ -62,7 +62,12 @@ class Sync_Background_Process extends AS_Background_Process {
 			$this->state = new Sync_Background_Process_Stopped_State( $this );
 		}
 
-		$this->schedule();
+		add_action(
+			'init',
+			function () {
+				$this->schedule();
+			}
+		);
 	}
 
 	/**
