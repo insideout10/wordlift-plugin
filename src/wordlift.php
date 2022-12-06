@@ -36,16 +36,10 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 define(
-	'WORDLIFT_PLUGIN_DATA',
-	get_file_data(
-		__FILE__,
-		array(
-			'Version' => 'Version',
-			'Name'    => 'Plugin Name',
-		)
-	)
+	'WORDLIFT_PLUGIN_FILE',
+	__FILE__
 );
-define( 'WORDLIFT_VERSION', WORDLIFT_PLUGIN_DATA['Version'] );
+define( 'WORDLIFT_VERSION', '3.41.0-dev' );
 
 
 
