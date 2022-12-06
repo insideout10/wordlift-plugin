@@ -8,7 +8,7 @@ class Installation_Complete_Notice {
 	public function __construct() {
 
 
-		add_action( 'admin_notices', function () {
+		add_action( 'wordlift_admin_notices', function () {
 			?>
             <div class="updated">
                 <H3><?php echo WORDLIFT_PLUGIN_DATA['Name']; ?> <?php esc_html_e( 'has been successfully installed on your site!' ); ?></H3>

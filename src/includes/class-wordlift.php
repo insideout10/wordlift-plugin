@@ -1545,9 +1545,9 @@ class Wordlift {
 		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( ! apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES )
 		     // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-		     && ! apply_filters( 'wl_feature__enable__entity-types-professional', false )
+			 && ! apply_filters( 'wl_feature__enable__entity-types-professional', false )
 		     // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-		     && ! apply_filters( 'wl_feature__enable__entity-types-business', false )
+			 && ! apply_filters( 'wl_feature__enable__entity-types-business', false )
 		) {
 			$that->loader->add_filter( 'wp_terms_checklist_args', $that->entity_types_taxonomy_walker, 'terms_checklist_args' );
 		}
@@ -1715,6 +1715,19 @@ class Wordlift {
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/1214
 		 */
 		new Top_Entities();
+
+		add_action(
+			'admin_notices',
+			function () {
+				if ( apply_filters( 'wl_feature__enable__notices', true ) ) {
+					/**
+					 * Fired when the notice feature is enabled.
+					 * @since 3.40.4
+					 */
+					do_action( 'wordlift_admin_notices' );
+				}
+			}
+		);
 
 	}
 
