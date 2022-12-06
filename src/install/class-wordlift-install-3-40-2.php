@@ -12,7 +12,7 @@ class Wordlift_Install_3_40_2 extends Wordlift_Install {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected static $version = '3.41.0-dev';
+	protected static $version = '3.40.2';
 
 	public function install() {
 		if ( ! wp_next_scheduled( 'wl_daily_cron' ) ) {
