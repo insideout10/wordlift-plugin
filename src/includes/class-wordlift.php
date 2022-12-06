@@ -1367,6 +1367,7 @@ class Wordlift {
 				 * @see https://github.com/insideout10/wordlift-plugin/issues/1248
 				 */
 				new Key_Validation_Notice( $that->key_validation_service, Wordlift_Configuration_Service::get_instance() );
+				new \Wordlift\Admin\Installation_Complete_Notice( $this->notice_service );
 				/**
 				 * @since 3.28.0
 				 * @see https://github.com/insideout10/wordlift-plugin/issues?q=assignee%3Anaveen17797+is%3Aopen

@@ -35,8 +35,19 @@ use Wordlift\Post\Post_Adapter;
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+define(
+	'WORDLIFT_PLUGIN_DATA',
+	get_file_data(
+		__FILE__,
+		array(
+			'Version' => 'Version',
+			'Name'    => 'Plugin Name',
+		)
+	)
+);
+define( 'WORDLIFT_VERSION', WORDLIFT_PLUGIN_DATA['Version'] );
 
-define( 'WORDLIFT_VERSION', '3.41.0-dev' );
+
 
 require_once __DIR__ . '/modules/common/load.php';
 require_once __DIR__ . '/modules/include-exclude/load.php';
