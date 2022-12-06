@@ -2,10 +2,13 @@
   "name": "wordlift-plugin",
   "description": "WordLift brings the power of Artificial Intelligence to organize content. Attract new readers and get their true attention with top notch semantic seo.",
   "private": true,
-  "version": "3.38.3",
+  "version": "3.40.3",
   "author": "WordLift",
   "homepage": "https://wordift.io/",
   "license": "GPL-3.0",
+  "engines": {
+    "node": "^16.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/insideout10/wordlift-plugin"
@@ -58,9 +61,6 @@
     "styled-components": "^3",
     "sw-precache-webpack-plugin": "0.11.4",
     "url-loader": "0.5.9",
-    "webpack": "3.5.1",
-    "webpack-dev-server": "2.7.1",
-    "webpack-manifest-plugin": "1.2.1",
     "whatwg-fetch": "^2",
     "wordlift-ui": "git+ssh://git@gitlab.com:wordlift/wordlift-ui.git"
   },
@@ -154,16 +154,20 @@
     "karma-safari-launcher": "^1",
     "karma-script-launcher": "^1",
     "matchdep": "^2.0.0",
-    "node-sass": "^4.13.1",
+    "node-gyp": "^7.1.0",
+    "node-sass": "^6.0.0",
     "prettier": "^1.12.1",
     "requirejs": "2",
-    "sass-loader": "^6.0.6",
+    "sass-loader": "^7.0.1",
     "selenium-webdriver": "^3.5.0",
     "wdio-dot-reporter": "^0.0.9",
     "wdio-firefox-profile-service": "^0.1.0",
     "wdio-jasmine-framework": "^0.3.2",
     "wdio-sauce-service": "^0.4.0",
     "wdio-selenium-standalone-service": "^0.0.9",
-    "webdriverio": "^4.8.0"
+    "webdriverio": "^4.8.0",
+    "webpack": "3.5.1",
+    "webpack-dev-server": "2.7.1",
+    "webpack-manifest-plugin": "1.2.1"
   }
 }
