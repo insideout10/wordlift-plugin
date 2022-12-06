@@ -13,6 +13,7 @@
  */
 
 use Wordlift\Admin\Admin_User_Option;
+use Wordlift\Admin\Installation_Complete_Notice;
 use Wordlift\Admin\Key_Validation_Notice;
 use Wordlift\Admin\Top_Entities;
 use Wordlift\Assertions;
@@ -1367,7 +1368,12 @@ class Wordlift {
 				 * @see https://github.com/insideout10/wordlift-plugin/issues/1248
 				 */
 				new Key_Validation_Notice( $that->key_validation_service, Wordlift_Configuration_Service::get_instance() );
-				new \Wordlift\Admin\Installation_Complete_Notice( $this->notice_service );
+
+				if ( !\Wordlift_Configuration_Service::get_instance()->get_skip_installation_notice() ) {
+					$installation_complete_notice = new Installation_Complete_Notice();
+					$installation_complete_notice->init();
+				}
+
 				/**
 				 * @since 3.28.0
 				 * @see https://github.com/insideout10/wordlift-plugin/issues?q=assignee%3Anaveen17797+is%3Aopen

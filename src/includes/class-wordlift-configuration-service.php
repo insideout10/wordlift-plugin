@@ -38,6 +38,13 @@ class Wordlift_Configuration_Service {
 	const SKIP_WIZARD = 'wl_skip_wizard';
 
 	/**
+	 * The skip installation notice.
+	 *
+	 * @since 3.40.3
+	 */
+	const SKIP_INSTALLATION_NOTICE = 'wl_skip_installation_notice';
+
+	/**
 	 * WordLift's key option name.
 	 *
 	 * @since 3.9.0
@@ -785,6 +792,20 @@ class Wordlift_Configuration_Service {
 
 	public function set_network_dataset_ids( $network_dataset_ids ) {
 		$this->set( 'wl_advanced_settings', self::NETWORK_DATASET_IDS, $network_dataset_ids );
+	}
+
+
+
+	public function get_skip_installation_notice() {
+
+		return $this->get( 'wl_general_settings', self::SKIP_INSTALLATION_NOTICE, false );
+	}
+
+
+	public function set_skip_installation_notice( $value ) {
+
+		$this->set( 'wl_general_settings', self::SKIP_INSTALLATION_NOTICE, true === $value );
+
 	}
 
 }
