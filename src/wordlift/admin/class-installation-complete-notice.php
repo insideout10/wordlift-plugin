@@ -6,12 +6,14 @@ class Installation_Complete_Notice {
 
 	public function init() {
 
-		add_action( 'admin_init', array( $this, 'handle_notice' ) );
+		$this->handle_notice_close();
 
 		add_action(
 			'wordlift_admin_notices',
 			function () {
-
+				if ( \Wordlift_Configuration_Service::get_instance()->get_skip_installation_notice() ) {
+					return;
+				}
 				?>
 				<div class="updated">
 					<H3><?php echo esc_html( get_plugin_data( WORDLIFT_PLUGIN_FILE )['Name'] ); ?> <?php esc_html_e( 'has been successfully installed on your site!' ); ?></H3>
@@ -30,7 +32,7 @@ class Installation_Complete_Notice {
 
 	}
 
-	public function handle_notice() {
+	public function handle_notice_close() {
 		if ( ! isset( $_GET['wl_hide_installation_notice'] ) || ! isset( $_GET['_wl_hide_installation_notice_nonce'] ) ) {
 			return;
 		}

@@ -1369,12 +1369,6 @@ class Wordlift {
 				 */
 				new Key_Validation_Notice( $that->key_validation_service, Wordlift_Configuration_Service::get_instance() );
 
-				// Only show the notice when the key is set
-				if ( \Wordlift_Configuration_Service::get_instance()->get_key() && ! \Wordlift_Configuration_Service::get_instance()->get_skip_installation_notice() ) {
-					$installation_complete_notice = new Installation_Complete_Notice();
-					$installation_complete_notice->init();
-				}
-
 				/**
 				 * @since 3.28.0
 				 * @see https://github.com/insideout10/wordlift-plugin/issues?q=assignee%3Anaveen17797+is%3Aopen
@@ -1733,6 +1727,18 @@ class Wordlift {
 					 * @since 3.40.4
 					 */
 					do_action( 'wordlift_admin_notices' );
+				}
+			}
+		);
+
+
+		add_action(
+			'admin_init',
+			function () {
+				// Only show the notice when the key is set or skipped.
+				if ( \Wordlift_Configuration_Service::get_instance()->get_key() && ! \Wordlift_Configuration_Service::get_instance()->get_skip_installation_notice() ) {
+					$installation_complete_notice = new Installation_Complete_Notice();
+					$installation_complete_notice->init();
 				}
 			}
 		);
