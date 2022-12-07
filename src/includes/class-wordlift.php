@@ -13,6 +13,7 @@
  */
 
 use Wordlift\Admin\Admin_User_Option;
+use Wordlift\Admin\Installation_Complete_Notice;
 use Wordlift\Admin\Key_Validation_Notice;
 use Wordlift\Admin\Top_Entities;
 use Wordlift\Assertions;
@@ -631,7 +632,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.40.2';
+		$this->version     = WORDLIFT_VERSION;
 		$this->load_dependencies();
 		$this->set_locale();
 
@@ -1357,7 +1358,7 @@ class Wordlift {
 				 * Avada Builder compatibility.
 				 *
 				 * @since 3.40.0
-				*/
+				 */
 				new Avada_Builder_Support();
 
 				new Duplicate_Markup_Remover();
@@ -1367,6 +1368,7 @@ class Wordlift {
 				 * @see https://github.com/insideout10/wordlift-plugin/issues/1248
 				 */
 				new Key_Validation_Notice( $that->key_validation_service, Wordlift_Configuration_Service::get_instance() );
+
 				/**
 				 * @since 3.28.0
 				 * @see https://github.com/insideout10/wordlift-plugin/issues?q=assignee%3Anaveen17797+is%3Aopen
@@ -1714,6 +1716,31 @@ class Wordlift {
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/1214
 		 */
 		new Top_Entities();
+
+		add_action(
+			'admin_notices',
+			function () {
+				if ( apply_filters( 'wl_feature__enable__notices', true ) ) {
+					/**
+					 * Fired when the notice feature is enabled.
+					 *
+					 * @since 3.40.4
+					 */
+					do_action( 'wordlift_admin_notices' );
+				}
+			}
+		);
+
+		add_action(
+			'admin_init',
+			function () {
+				// Only show the notice when the key is set or skipped.
+				if ( \Wordlift_Configuration_Service::get_instance()->get_key() && ! \Wordlift_Configuration_Service::get_instance()->get_skip_installation_notice() ) {
+					$installation_complete_notice = new Installation_Complete_Notice();
+					$installation_complete_notice->init();
+				}
+			}
+		);
 
 	}
 
