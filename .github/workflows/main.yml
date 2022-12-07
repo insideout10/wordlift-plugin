@@ -27,14 +27,6 @@ jobs:
         uses: styfle/cancel-workflow-action@0.6.0
         with:
           access_token: ${{ github.TOKEN }}
-  php5-3_compat:
-    runs-on: ubuntu-latest
-    container:
-      # Do not upgrade to 2.0.9+ unless you want to use PHP 8,
-      image: composer:2.0.8
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
   wordpress:
     name: ${{ matrix.image }}_${{ matrix.phpunit-xml }}
     runs-on: ubuntu-latest
