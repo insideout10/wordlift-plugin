@@ -794,13 +794,10 @@ class Wordlift_Configuration_Service {
 		$this->set( 'wl_advanced_settings', self::NETWORK_DATASET_IDS, $network_dataset_ids );
 	}
 
-
-
 	public function get_skip_installation_notice() {
 
 		return $this->get( 'wl_general_settings', self::SKIP_INSTALLATION_NOTICE, false );
 	}
-
 
 	public function set_skip_installation_notice( $value ) {
 

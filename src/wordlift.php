@@ -313,7 +313,7 @@ require_once __DIR__ . '/modules/include-exclude-push-config/load.php';
 
 add_action(
 	'update_plugins_adthrive.wordlift.io',
-	function ( $update, $plugin_data, $plugin_file, $locales ) {
+	function ( $update, $plugin_data, $plugin_file ) {
 		// Bail out if it's not our plugin.
 		$update_uri = $plugin_data['UpdateURI'];
 		if ( 'wordlift/wordlift.php' !== $plugin_file || ! isset( $update_uri ) ) {
@@ -333,5 +333,5 @@ add_action(
 		}
 	},
 	10,
-	4
+	3
 );
