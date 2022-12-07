@@ -73,7 +73,7 @@ jobs:
   adthrive:
     runs-on: ubuntu-latest
     # Run only for master branch push
-    if: ${{ github.ref == 'refs/heads/master' }}
+    if: ${{ success() && github.ref == 'refs/heads/master' }}
     needs: [linter, wordpress]
     steps:
       - name: Checkout
