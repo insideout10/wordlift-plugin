@@ -25,7 +25,7 @@ curl --request PUT \
 
 cp .github/workflows/adthrive.json /tmp/package.json
 version="$(get_version)"
-sed -i -r  "s/<version>/$version/' /tmp/package.json"
+sed -i -r  "s/<version>/$version/" /tmp/package.json
 
 echo "updating the package.json file..."
 curl --request PUT \
