@@ -1369,7 +1369,8 @@ class Wordlift {
 				 */
 				new Key_Validation_Notice( $that->key_validation_service, Wordlift_Configuration_Service::get_instance() );
 
-				if ( ! \Wordlift_Configuration_Service::get_instance()->get_skip_installation_notice() ) {
+				// Only show the notice when the key is set
+				if ( \Wordlift_Configuration_Service::get_instance()->get_key() && ! \Wordlift_Configuration_Service::get_instance()->get_skip_installation_notice() ) {
 					$installation_complete_notice = new Installation_Complete_Notice();
 					$installation_complete_notice->init();
 				}
@@ -1728,6 +1729,7 @@ class Wordlift {
 				if ( apply_filters( 'wl_feature__enable__notices', true ) ) {
 					/**
 					 * Fired when the notice feature is enabled.
+					 *
 					 * @since 3.40.4
 					 */
 					do_action( 'wordlift_admin_notices' );
