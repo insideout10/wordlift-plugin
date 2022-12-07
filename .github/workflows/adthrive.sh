@@ -1,0 +1,20 @@
+#!/bin/bash
+
+echo "packaging the plugin..."
+cp src/ /tmp/wordlift -r
+
+
+sed -i -r  's/Plugin Name:(..*)WordLift/Plugin Name:\1AdThrive SEO Amplifier – Powered by WordLift/' /tmp/wordlift/wordlift.php
+sed -i -r  's/Description:(..*)/Description: Automated schema enrichment powered by WordLift, exclusive to AdThrive publishers/' /tmp/wordlift/wordlift.php
+
+
+
+zip -r /tmp/wordlift.zip /tmp/wordlift/
+
+
+echo "updating the zip file..."
+curl --request PUT \
+  --url "https://adthrive.blob.core.windows.net/seo/wordlift.zip?$AZURE_STORAGE_SHARED_KEY_QUERY_PARAM" \
+  --header 'x-ms-blob-type: BlockBlob' \
+  --header 'x-ms-date: <date>' \
+  --data-binary "@/tmp/wordlift.zip" -m 300 -w '%{http_code}\n'
