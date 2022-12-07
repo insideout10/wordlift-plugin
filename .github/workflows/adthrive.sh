@@ -1,7 +1,7 @@
 #!/bin/bash
 
 get_version() {
-  grep -E '^ \* Version:\s+(\d+\.\d+\.\d+)$' src/wordlift.php | grep -oE '(\d+\.\d+\.\d+)$'
+ pcregrep -o1 "Version.*([0-9]+\.[0-9]+\.[0-9]+)" src/wordlift.php
 }
 
 echo "packaging the plugin..."
@@ -26,6 +26,7 @@ curl --request PUT \
 cp .github/workflows/adthrive.json /tmp/package.json
 version="$(get_version)"
 echo "going to replace version $version in package.json"
+
 sed -i -r  "s/<version>/$version/" /tmp/package.json
 
 echo "updating the package.json file..."
