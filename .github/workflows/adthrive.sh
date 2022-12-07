@@ -8,14 +8,15 @@ get_version() {
 
 echo "packaging the plugin..."
 cp src/ /tmp/wordlift -r
-
+cp .github/workflows/adthrive.json /tmp/package.json
+version="$(get_version)"
 
 sed -i -r  's/Plugin Name:(..*)WordLift/Plugin Name:\1AdThrive SEO Amplifier – Powered by WordLift/' /tmp/wordlift/wordlift.php
 sed -i -r  's/Description:(..*)/Description: Automated schema enrichment powered by WordLift, exclusive to AdThrive publishers/' /tmp/wordlift/wordlift.php
 
 
 
-zip -r /tmp/wordlift.zip /tmp/wordlift/
+cd /tmp && zip -r -D wordlift.zip wordlift/
 
 
 echo "updating the zip file..."
@@ -25,8 +26,7 @@ curl --request PUT \
   --header 'x-ms-date: <date>' \
   --data-binary "@/tmp/wordlift.zip" -m 300 -w '%{http_code}\n'
 
-cp .github/workflows/adthrive.json /tmp/package.json
-version="$(get_version)"
+
 echo "going to replace version $version in package.json"
 
 sed -i -r  "s/<version>/$version/" /tmp/package.json
