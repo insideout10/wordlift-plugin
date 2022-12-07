@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#sudo apt-get update -y && sudo apt-get install -y pcregrep
+sudo apt-get update -y && sudo apt-get install -y pcregrep
 
 get_version() {
  pcregrep -o1 "Version.*([0-9]+\.[0-9]+\.[0-9]+)" src/wordlift.php
