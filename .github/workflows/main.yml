@@ -35,119 +35,9 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-# Minimum PHP version is now set to 5.6.
-#      - name: test
-#        run: |
-#          composer install
-#          ./vendor/bin/phpcs src/ --extensions=php --ignore=class-wordlift-entity-types-taxonomy-walker-5-3.php,autoload_static.php \
-#              --standard=PHPCompatibilityWP --runtime-set testVersion 5.3
-
-  # These tests need updating.
-  #  js_karma:
-  #    runs-on: ubuntu-latest
-  #    steps:
-  #      - name: deploy key
-  #        uses: shimataro/ssh-key-action@v2
-  #        with:
-  #          name: id_rsa-gitlab
-  #          key: ${{ secrets.GITLAB_DEPLOY_KEY }}
-  #          known_hosts: "gitlab.com,52.167.219.168 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFSMqzJeV9rUzU4kWitGjeR4PWSa29SPqJ1fVkhtj3Hw9xjLVXVYrU9QlYWrOLXBpQ6KWjbjTDTdDkoohFzgbEY="
-  #          config: |
-  #            Host gitlab.com
-  #              User git
-  #              IdentityFile ~/.ssh/id_rsa-gitlab
-  #      - name: checkout
-  #        uses: actions/checkout@v2
-  #      - name: install node
-  #        uses: actions/setup-node@v1
-  #        with:
-  #          node-version: "10"
-  #      - name: install packages
-  #        run: npm install
-  #      # We need to run using `docker run` instead of `container` because the latter sets the `HOME` env to a user folder
-  #      # and Firefox will refuse to run.
-  #      #
-  #      # https://docs.github.com/en/free-pro-team@latest/actions/reference/specifications-for-github-hosted-runners#file-systems
-  #      - name: test
-  #        run: >
-  #          docker run --workdir /github/workspace --rm -v "/var/run/docker.sock":"/var/run/docker.sock" \
-  #            -v $GITHUB_WORKSPACE:"/github/workspace" \
-  #              ziodave/node-chromium:node10-2 run test:js
-
-  #  js_jest:
-  #    runs-on: ubuntu-latest
-  #    steps:
-  #      - name: checkout
-  #        uses: actions/checkout@v2
-  #      - name: install node
-  #        uses: actions/setup-node@v1
-  #        with:
-  #          node-version: "10"
-  #      - name: test
-  #        run: npm run test:jest
-
   wordpress:
     name: ${{ matrix.image }}_${{ matrix.phpunit-xml }}
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        image:
-          - "php7.0-phpunit4.8-wordpress5.2"
-          - "php7.1-phpunit4.8-wordpress5.3"
-          - "php7.2-phpunit4.8-wordpress5.4"
-          - "php7.3-phpunit7.5-wordpress5.5"
-          - "php7.3-phpunit7.5-wordpress5.6"
-          - "php7.3-phpunit7.5-wordpress5.7"
-          - "php7.3-phpunit7.5-wordpress5.8"
-          - "php7.4-phpunit7.5-wordpress5.9"
-          - "php8.0-phpunit7.5woo-wordpress5.6"
-        phpunit-xml:
-          - tests/scenarios/phpunit.ajax.xml
-          - tests/scenarios/phpunit.default.xml
-          - tests/scenarios/phpunit.no-editor.xml
-          - tests/scenarios/phpunit.no-vocabulary-terms.xml
-          - tests/scenarios/phpunit.rel-item-id.xml
-          - tests/scenarios/phpunit.woocommerce-extension.xml
-          - tests/scenarios/phpunit.multisite.ajax.xml
-          - tests/scenarios/phpunit.multisite.default.xml
-          - tests/scenarios/phpunit.multisite.no-editor.xml
-          - tests/scenarios/phpunit.multisite.no-vocabulary-terms.xml
-          - tests/scenarios/phpunit.multisite.rel-item-id.xml
-          - tests/scenarios/phpunit.multisite.woocommerce-extension.xml
-    #        include:
-    #          - acf-pro-enabled: true
-    #            image: "php5.6-phpunit4.8-wordpress4.7"
-    #            phpunit-xml: phpunit.xml
-    #            dataset-ng: true
-    #          - acf-pro-enabled: true
-    #            image: "php5.6-phpunit4.8-wordpress4.7"
-    #            phpunit-xml: phpunit-multisite.xml
-    #            dataset-ng: true
-    #          - acf-pro-enabled: true
-    #            image: "php5.6-phpunit4.8-wordpress4.7"
-    #            phpunit-xml: phpunit.xml
-    #            dataset-ng: false
-    #          - acf-pro-enabled: true
-    #            image: "php5.6-phpunit4.8-wordpress4.7"
-    #            phpunit-xml: phpunit-multisite.xml
-    #            dataset-ng: false
-    #          - acf-pro-enabled: true
-    #            image: "php7.3-phpunit7.5-wordpress5.5"
-    #            phpunit-xml: phpunit.xml
-    #            dataset-ng: true
-    #          - acf-pro-enabled: true
-    #            image: "php7.3-phpunit7.5-wordpress5.5"
-    #            phpunit-xml: phpunit-multisite.xml
-    #            dataset-ng: true
-    #          - acf-pro-enabled: true
-    #            image: "php7.3-phpunit7.5-wordpress5.5"
-    #            phpunit-xml: phpunit.xml
-    #            dataset-ng: false
-    #          - acf-pro-enabled: true
-    #            image: "php7.3-phpunit7.5-wordpress5.5"
-    #            phpunit-xml: phpunit-multisite.xml
-    #            dataset-ng: false
-    # If you want the following envs to be avail to docker, you need to add them to `docker run`.
     env:
       ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
       ACF_PRO_ENABLED: ${{ matrix.acf-pro-enabled }}
@@ -178,3 +68,19 @@ jobs:
             --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
               ziodave/wordpress-tests:${{ matrix.image }} -c ${{ matrix.phpunit-xml }} --stop-on-error --stop-on-fail
 
+
+
+  adthrive:
+    runs-on: ubuntu-latest
+    # Run only for master branch push
+    if: ${{ github.ref == 'refs/heads/master' }}
+    needs: [linter, wordpress]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Package and upload to blob storage
+        run: ./.github/workflows/adthrive.sh
+        env:
+          AZURE_STORAGE_SHARED_KEY_QUERY_PARAM: ${{ secrets.AZURE_STORAGE_SHARED_KEY_QUERY_PARAM }}
