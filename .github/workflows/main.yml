@@ -30,6 +30,31 @@ jobs:
   wordpress:
     name: ${{ matrix.image }}_${{ matrix.phpunit-xml }}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image:
+          - "php7.0-phpunit4.8-wordpress5.2"
+          - "php7.1-phpunit4.8-wordpress5.3"
+          - "php7.2-phpunit4.8-wordpress5.4"
+          - "php7.3-phpunit7.5-wordpress5.5"
+          - "php7.3-phpunit7.5-wordpress5.6"
+          - "php7.3-phpunit7.5-wordpress5.7"
+          - "php7.3-phpunit7.5-wordpress5.8"
+          - "php7.4-phpunit7.5-wordpress5.9"
+          - "php8.0-phpunit7.5woo-wordpress5.6"
+        phpunit-xml:
+          - tests/scenarios/phpunit.ajax.xml
+          - tests/scenarios/phpunit.default.xml
+          - tests/scenarios/phpunit.no-editor.xml
+          - tests/scenarios/phpunit.no-vocabulary-terms.xml
+          - tests/scenarios/phpunit.rel-item-id.xml
+          - tests/scenarios/phpunit.woocommerce-extension.xml
+          - tests/scenarios/phpunit.multisite.ajax.xml
+          - tests/scenarios/phpunit.multisite.default.xml
+          - tests/scenarios/phpunit.multisite.no-editor.xml
+          - tests/scenarios/phpunit.multisite.no-vocabulary-terms.xml
+          - tests/scenarios/phpunit.multisite.rel-item-id.xml
+          - tests/scenarios/phpunit.multisite.woocommerce-extension.xml
     env:
       ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
       ACF_PRO_ENABLED: ${{ matrix.acf-pro-enabled }}
@@ -62,17 +87,17 @@ jobs:
 
 
 
-#  adthrive:
-#    runs-on: ubuntu-latest
-#    # Run only for master branch push
-#    if: ${{ success() && github.ref == 'refs/heads/master' }}
-#    needs: [linter, wordpress]
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v3
-#        with:
-#          fetch-depth: 2
-#      - name: Package and upload to blob storage
-#        run: ./.github/workflows/adthrive.sh
-#        env:
-#          AZURE_STORAGE_SHARED_KEY_QUERY_PARAM: ${{ secrets.AZURE_STORAGE_SHARED_KEY_QUERY_PARAM }}
+  adthrive:
+    runs-on: ubuntu-latest
+    # Run only for master branch push
+    if: ${{ success() && github.ref == 'refs/heads/master' }}
+    needs: [linter, wordpress]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Package and upload to blob storage
+        run: ./.github/workflows/adthrive.sh
+        env:
+          AZURE_STORAGE_SHARED_KEY_QUERY_PARAM: ${{ secrets.AZURE_STORAGE_SHARED_KEY_QUERY_PARAM }}
