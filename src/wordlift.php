@@ -35,7 +35,10 @@ use Wordlift\Post\Post_Adapter;
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-
+define(
+	'WORDLIFT_PLUGIN_FILE',
+	__FILE__
+);
 define( 'WORDLIFT_VERSION', '3.41.0-dev' );
 
 require_once __DIR__ . '/modules/common/load.php';
@@ -307,3 +310,28 @@ require_once __DIR__ . '/modules/food-kg/load.php';
 require_once __DIR__ . '/modules/acf4so/load.php';
 require_once __DIR__ . '/modules/pods/load.php';
 require_once __DIR__ . '/modules/include-exclude-push-config/load.php';
+
+add_action(
+	'update_plugins_adthrive.wordlift.io',
+	function ( $update, $plugin_data, $plugin_file ) {
+		// Bail out if it's not our plugin.
+		$update_uri = $plugin_data['UpdateURI'];
+		if ( 'wordlift/wordlift.php' !== $plugin_file || ! isset( $update_uri ) ) {
+			return $update;
+		}
+
+		$response = wp_remote_get( "$update_uri?nocache=" . time() );
+
+		if ( is_wp_error( $response ) ) {
+			return $update;
+		}
+
+		try {
+			return json_decode( wp_remote_retrieve_body( $response ) );
+		} catch ( Exception $e ) {
+			return $update;
+		}
+	},
+	10,
+	3
+);

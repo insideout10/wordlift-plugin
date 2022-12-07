@@ -1,9 +1,9 @@
 <?php
 
+use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
+use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
+use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Wordlift\Modules\Include_Exclude_Push_Config\Include_Exclude_API;
-use Wordlift\Modules\Include_Exclude_Push_Config\Symfony\Component\Config\FileLocator;
-use Wordlift\Modules\Include_Exclude_Push_Config\Symfony\Component\DependencyInjection\ContainerBuilder;
-use Wordlift\Modules\Include_Exclude_Push_Config\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

@@ -7,12 +7,17 @@
 
 define( 'WL_ENHANCER_NAMESPACE', 'a' );
 define( 'WL_DUBLIN_CORE_NAMESPACE', 'b' );
-define( 'WL_JSON_LD_CONTEXT', serialize( array(
-	WL_ENHANCER_NAMESPACE    => 'http://fise.iks-project.eu/ontology/',
-	WL_DUBLIN_CORE_NAMESPACE => 'http://purl.org/dc/terms/',
-) ) );
+define(
+	'WL_JSON_LD_CONTEXT',
+	serialize(
+		array(
+			WL_ENHANCER_NAMESPACE    => 'http://fise.iks-project.eu/ontology/',
+			WL_DUBLIN_CORE_NAMESPACE => 'http://purl.org/dc/terms/',
+		)
+	)
+);
 
-require_once( 'jsonld.php' );
+require_once 'jsonld.php';
 
 /**
  * Compatibility for WP 4.4.
@@ -34,18 +39,23 @@ function _wl_test_set_wp_die_handler() {
 
 			throw new WPDieException( $message );
 		}
-
 	}
 
 	unset( $wp_filter['wp_die_ajax_handler'] );
-	add_filter( 'wp_die_ajax_handler', function () {
-		return '_wl_test_wp_die_handler';
-	} );
+	add_filter(
+		'wp_die_ajax_handler',
+		function () {
+			return '_wl_test_wp_die_handler';
+		}
+	);
 
 	unset( $wp_filter['wp_die_handler'] );
-	add_filter( 'wp_die_handler', function () {
-		return '_wl_test_wp_die_handler';
-	} );
+	add_filter(
+		'wp_die_handler',
+		function () {
+			return '_wl_test_wp_die_handler';
+		}
+	);
 
 }
 
@@ -157,12 +167,12 @@ function wl_parse_response( $json ) {
 		if ( in_array( WL_ENHANCER_NAMESPACE . ':EntityAnnotation', $types ) ) {
 			array_push( $entity_annotations, $item );
 		} // Text Annotation.
-		else if ( in_array( WL_ENHANCER_NAMESPACE . ':TextAnnotation', $types ) ) {
+		elseif ( in_array( WL_ENHANCER_NAMESPACE . ':TextAnnotation', $types ) ) {
 
 			// Skip Text Annotations that do not have the selection-prefix, -suffix and selected-text.
 			if ( isset( $item->{WL_ENHANCER_NAMESPACE . ':selection-prefix'}->{'@value'} )
-			     && isset( $item->{WL_ENHANCER_NAMESPACE . ':selection-suffix'}->{'@value'} )
-			     && isset( $item->{WL_ENHANCER_NAMESPACE . ':selected-text'}->{'@value'} )
+				 && isset( $item->{WL_ENHANCER_NAMESPACE . ':selection-suffix'}->{'@value'} )
+				 && isset( $item->{WL_ENHANCER_NAMESPACE . ':selected-text'}->{'@value'} )
 			) {
 
 				$text_annotations[ $item->{'@id'} ] = array(
@@ -171,7 +181,7 @@ function wl_parse_response( $json ) {
 					'sel_prefix' => $item->{WL_ENHANCER_NAMESPACE . ':selection-prefix'}->{'@value'},
 					'sel_suffix' => $item->{WL_ENHANCER_NAMESPACE . ':selection-suffix'}->{'@value'},
 					'sel_text'   => $item->{WL_ENHANCER_NAMESPACE . ':selected-text'}->{'@value'},
-					'entities'   => array()
+					'entities'   => array(),
 					// will hold the entities referenced by this text-annotation.
 				);
 			}
@@ -181,9 +191,9 @@ function wl_parse_response( $json ) {
 		}
 	}
 
-//    echo '[ $entity_annotations :: ' . count( $entity_annotations ) . ' ]';
-//    echo '[ $text_annotations :: ' . count( $text_annotations ) . ' ]';
-//    echo '[ $entities :: ' . count( $entities ) . ' ]';
+	// echo '[ $entity_annotations :: ' . count( $entity_annotations ) . ' ]';
+	// echo '[ $text_annotations :: ' . count( $text_annotations ) . ' ]';
+	// echo '[ $entities :: ' . count( $entities ) . ' ]';
 
 	// Bind the entities to each text annotation via the entity annotation.
 	foreach ( $entity_annotations as $item ) {
@@ -194,20 +204,23 @@ function wl_parse_response( $json ) {
 		// Get the confidence for the match.
 		$confidence = $item->{WL_ENHANCER_NAMESPACE . ':confidence'}->{'@value'};
 
-//        echo "[ relation :: $relation ][ reference :: $entity_reference ]\n";
+		// echo "[ relation :: $relation ][ reference :: $entity_reference ]\n";
 
 		// Get the Text Annotation (by ref).
 		$text_annotation = &$text_annotations[ $relation ];
 		// Get the Entity (by ref)
 		$entity = &$entities[ $entity_reference ];
 
-//        echo "[ entity null :: " . is_null( $entity ) . " ]\n";
+		// echo "[ entity null :: " . is_null( $entity ) . " ]\n";
 
 		// Add the entity to the text annotation entities array.
-		array_push( $text_annotation['entities'], array(
-			'entity'     => $entity,
-			'confidence' => $confidence,
-		) );
+		array_push(
+			$text_annotation['entities'],
+			array(
+				'entity'     => $entity,
+				'confidence' => $confidence,
+			)
+		);
 	}
 
 	return array(
@@ -226,12 +239,14 @@ function wl_parse_response( $json ) {
  */
 function wl_get_attachments( $post_id ) {
 
-	return get_posts( array(
-		'post_type'      => 'attachment',
-		'posts_per_page' => - 1,
-		'post_status'    => 'any',
-		'post_parent'    => $post_id,
-	) );
+	return get_posts(
+		array(
+			'post_type'      => 'attachment',
+			'posts_per_page' => - 1,
+			'post_status'    => 'any',
+			'post_parent'    => $post_id,
+		)
+	);
 }
 
 function _wl_mock_http_request( $response, $request, $url ) {
@@ -250,7 +265,7 @@ function _wl_mock_http_request( $response, $request, $url ) {
 
 		$response = array(
 			'body'     => '{ "datasetURI": "https://data.localdomain.localhost/dataset", "packageType": "unknown" }',
-			'response' => array( 'code' => 200, ),
+			'response' => array( 'code' => 200 ),
 		);
 
 		// If dataset-ng is enable for tests, populate the features response header.
@@ -261,6 +276,9 @@ function _wl_mock_http_request( $response, $request, $url ) {
 		return $response;
 	}
 
+	if ( preg_match( '@/accounts/me/include-excludes$@', $url ) ) {
+		return array( 'response' => array( 'code' => 200 ) );
+	}
 
 	$request_data = is_string( $request['body'] ) ? json_decode( $request['body'], true ) : null;
 
@@ -268,7 +286,7 @@ function _wl_mock_http_request( $response, $request, $url ) {
 		return array(
 			'body'     => file_get_contents( __DIR__ . '/assets/content-analysis-response-3.json' ),
 			'headers'  => array( 'content-type' => 'application/json' ),
-			'response' => array( 'code' => 200, )
+			'response' => array( 'code' => 200 ),
 		);
 	}
 
@@ -296,16 +314,15 @@ function _wl_mock_http_request( $response, $request, $url ) {
 	debug_print_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 30 );
 	die( 1 );
 
-
 	return $response;
 }
 
 add_filter( 'pre_http_request', '_wl_mock_http_request', PHP_INT_MAX, 3 );
 
-//add_option( 'wl_advanced_settings', array(
-//	"redlink_dataset_uri" => "https://data.localdomain.localhost/dataset",
-//	"package_type"        => "unknown"
-//) );
+// add_option( 'wl_advanced_settings', array(
+// "redlink_dataset_uri" => "https://data.localdomain.localhost/dataset",
+// "package_type"        => "unknown"
+// ) );
 
 /**
  * Configure WordPress with the test settings (may vary according to the local PHP and WordPress versions).
@@ -327,31 +344,33 @@ function wl_configure_wordpress_test() {
 	 *
 	 * @since 3.24.2
 	 */
-	//	if ( empty( $dataset_uri ) ) {
-	//		echo( 'The dataset URI is not set (maybe the WordLift key is not valid?).' );
-	//		die( 2 );
-	//	}
-
+	// if ( empty( $dataset_uri ) ) {
+	// echo( 'The dataset URI is not set (maybe the WordLift key is not valid?).' );
+	// die( 2 );
+	// }
 }
 
 /**
  * Create a test user.
+ *
  * @return int|WP_Error
  */
 function wl_test_create_user() {
 
-	return wp_insert_user( array(
-		'user_login' => uniqid( 'user-' ),
-		'user_pass'  => 'tmppass',
-		'first_name' => 'Mario',
-		'last_name'  => 'Rossi',
-	) );
+	return wp_insert_user(
+		array(
+			'user_login' => uniqid( 'user-' ),
+			'user_pass'  => 'tmppass',
+			'first_name' => 'Mario',
+			'last_name'  => 'Rossi',
+		)
+	);
 }
 
 /**
  * Get relations for a given $subject_id as an associative array.
  *
- * @param int $post_id
+ * @param int    $post_id
  * @param string $predicate
  *
  * @return array in the following format:
@@ -361,7 +380,6 @@ function wl_test_create_user() {
  *                  [2] => stdClass Object ( [id] => 142 [subject_id] => 17 [predicate] => where [object_id] => 16 ),
  *                  ...
  * @global WP_Query $wpdb
- *
  */
 function wl_tests_get_relation_instances_for( $post_id, $predicate = null ) {
 
@@ -372,7 +390,7 @@ function wl_tests_get_relation_instances_for( $post_id, $predicate = null ) {
 	// Sql Action
 	$sql_statement = $wpdb->prepare( "SELECT * FROM $table_name WHERE subject_id = %d", $post_id );
 	if ( null != $predicate ) {
-		$sql_statement .= $wpdb->prepare( " AND predicate = %s", $predicate );
+		$sql_statement .= $wpdb->prepare( ' AND predicate = %s', $predicate );
 	}
 	$results = $wpdb->get_results( $sql_statement );
 
@@ -391,7 +409,7 @@ function wl_tests_get_relation_instances_for( $post_id, $predicate = null ) {
 function wl_get_meta_type( $property_name ) {
 
 	// Property name must be defined.
-	if ( ! isset( $property_name ) || is_null( $property_name ) ) {
+	if ( ! isset( $property_name ) || $property_name === null ) {
 		return null;
 	}
 
@@ -422,13 +440,12 @@ function wl_get_meta_type( $property_name ) {
 /**
  * Remove a given relation instance
  *
- * @param int $subject_id The post ID | The entity post ID.
+ * @param int    $subject_id The post ID | The entity post ID.
  * @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
- * @param int $object_id The entity post ID.
+ * @param int    $object_id The entity post ID.
  *
  * @return boolean False for failure. True for success.
  * @uses   $wpdb->delete() to perform the query
- *
  */
 function wl_core_delete_relation_instance( $subject_id, $predicate, $object_id ) {
 
@@ -464,13 +481,12 @@ function wl_core_delete_relation_instance( $subject_id, $predicate, $object_id )
 /**
  * Create multiple relation instances
  *
- * @param int $subject_id The post ID | The entity post ID.
+ * @param int    $subject_id The post ID | The entity post ID.
  * @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
- * @param array $object_ids The entity post IDs collection.
+ * @param array  $object_ids The entity post IDs collection.
  *
  * @return integer|boolean Return the relation instances IDs or false
  * @uses   wl_add_relation_instance() to create each single instance
- *
  */
 function wl_core_add_relation_instances( $subject_id, $predicate, $object_ids ) {
 
