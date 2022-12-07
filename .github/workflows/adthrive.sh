@@ -29,7 +29,7 @@ sed -i -r  "s/<version>/$version/' /tmp/package.json"
 
 echo "updating the package.json file..."
 curl --request PUT \
-  --url "https://adthrive.blob.core.windows.net/seo/wordlift.zip?$AZURE_STORAGE_SHARED_KEY_QUERY_PARAM" \
+  --url "https://adthrive.blob.core.windows.net/seo/package.json?$AZURE_STORAGE_SHARED_KEY_QUERY_PARAM" \
   --header 'x-ms-blob-type: BlockBlob' \
   --header 'x-ms-date: <date>' \
   --data-binary "@/tmp/package.json" -m 300 -w '%{http_code}\n'
