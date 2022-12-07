@@ -39,7 +39,7 @@ define(
 	'WORDLIFT_PLUGIN_FILE',
 	__FILE__
 );
-define( 'WORDLIFT_VERSION', '3.41.0-dev' );
+define( 'WORDLIFT_VERSION', '3.40.3' );
 
 require_once __DIR__ . '/modules/common/load.php';
 require_once __DIR__ . '/modules/include-exclude/load.php';
