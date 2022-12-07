@@ -312,7 +312,7 @@ require_once __DIR__ . '/modules/pods/load.php';
 require_once __DIR__ . '/modules/include-exclude-push-config/load.php';
 
 add_action(
-	'update_plugins_wordlift.io',
+	'update_plugins_adthrive.wordlift.io',
 	function ( $update, $plugin_data, $plugin_file, $locales ) {
 		// Bail out if it's not our plugin.
 		$update_uri = $plugin_data['UpdateURI'];
