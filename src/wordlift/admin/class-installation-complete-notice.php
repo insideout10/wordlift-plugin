@@ -18,7 +18,7 @@ class Installation_Complete_Notice {
 					<p><?php esc_html_e( 'we\'re now automatically enriching the structured data on your posts to create the best representation of your content that search engines will understand. Time to look forward to an increase in organic traffic!', 'wordlift' ); ?></p>
 					<p><u>
 							<a
-									href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'wl-hide-installation-notice', true ), 'wordlift_hide_installation_notice_nonce', '_wl_hide_installation_notice_nonce' ) ); ?>">
+									href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'wl_hide_installation_notice', true ), 'wordlift_hide_installation_notice_nonce', '_wl_hide_installation_notice_nonce' ) ); ?>">
 								<?php esc_html_e( 'Dismiss', 'wordlift' ); ?>
 							</a>
 						</u>
@@ -31,7 +31,7 @@ class Installation_Complete_Notice {
 	}
 
 	public function handle_notice() {
-		if ( ! isset( $_GET['wl-hide-installation-notice'] ) || ! isset( $_GET['_wl_hide_installation_notice_nonce'] ) ) {
+		if ( ! isset( $_GET['wl_hide_installation_notice'] ) || ! isset( $_GET['_wl_hide_installation_notice_nonce'] ) ) {
 			return;
 		}
 

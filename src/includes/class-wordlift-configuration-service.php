@@ -804,7 +804,7 @@ class Wordlift_Configuration_Service {
 
 	public function set_skip_installation_notice( $value ) {
 
-		$this->set( 'wl_general_settings', self::SKIP_INSTALLATION_NOTICE, true === $value );
+		$this->set( 'wl_general_settings', self::SKIP_INSTALLATION_NOTICE, $value );
 
 	}
 
