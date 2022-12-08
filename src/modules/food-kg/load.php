@@ -25,15 +25,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'WL_FOOD_KG_FILE', __FILE__ );
 define( 'WL_FOOD_KG_DIR_PATH', dirname( WL_FOOD_KG_FILE ) );
 
+
 function __wl_foodkg__load() {
-	// Autoloader for dependencies.
-	if ( file_exists( WL_FOOD_KG_DIR_PATH . '/third-party/vendor/scoper-autoload.php' ) ) {
-		require WL_FOOD_KG_DIR_PATH . '/third-party/vendor/scoper-autoload.php';
-	}
 
 	// Autoloader for plugin itself.
-	if ( file_exists( WL_FOOD_KG_DIR_PATH . '/includes/vendor/autoload.php' ) ) {
-		require WL_FOOD_KG_DIR_PATH . '/includes/vendor/autoload.php';
+	if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+		require __DIR__ . '/vendor/autoload.php';
 	}
 
 	$container_builder = new ContainerBuilder();
