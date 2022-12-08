@@ -25,7 +25,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'WL_FOOD_KG_FILE', __FILE__ );
 define( 'WL_FOOD_KG_DIR_PATH', dirname( WL_FOOD_KG_FILE ) );
 
-
 function __wl_foodkg__load() {
 
 	// Autoloader for plugin itself.
