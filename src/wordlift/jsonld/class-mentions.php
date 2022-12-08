@@ -211,7 +211,7 @@ class Mentions {
 													->get_references( $post_id, Object_Type_Enum::POST );
 
 		$about_id = array();
-		if ( array_key_exists( 'about', $jsonld[0] ) ) {
+		if ( array_key_exists( 'about', $jsonld[0] ) && is_array( $jsonld[0]['about'] ) ) {
 			foreach ( $jsonld[0]['about'] as $about ) {
 				$about_id[] = $about['@id'];
 			}
