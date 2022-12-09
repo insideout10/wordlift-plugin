@@ -84,6 +84,7 @@
 	<file>./src</file>
 
 	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>src/libraries/action-scheduler/*</exclude-pattern>
 	<exclude-pattern>*/ext/dependencies/*</exclude-pattern>
 	<exclude-pattern>*/modules/food-kg/includes/polyfills/mbstring.php</exclude-pattern>
 	<exclude-pattern>*/modules/**/scoper.inc.php</exclude-pattern>
