@@ -42,7 +42,7 @@ class Sync_Background_Process_Started_State_Test extends Wordlift_Unit_Test_Case
 		$this->mock_sync_background_process =
 			$this->getMockBuilder( 'Wordlift\Dataset\Background\Sync_Background_Process' )
 			     ->disableOriginalConstructor()
-			     ->setMethods( array( 'dispatch', 'get_info', 'push_to_queue', 'save', 'set_state', 'stop' ) )
+			     ->setMethods( array( 'get_info',  'set_state', 'stop' ) )
 			     ->getMock();
 
 		$this->mock_sync_service =
@@ -98,7 +98,7 @@ class Sync_Background_Process_Started_State_Test extends Wordlift_Unit_Test_Case
 			->method( 'sync_many' )
 			->with( $this->equalTo( array( 1, 2, 3, 4 ) ), $this->isTrue() );
 
-		$this->assertTrue( $this->sync_background_process_started_state->task( true ) );
+		$this->assertTrue(  $this->sync_background_process_started_state->task(array())->has_next() );
 
 	}
 
@@ -124,11 +124,7 @@ class Sync_Background_Process_Started_State_Test extends Wordlift_Unit_Test_Case
 			->method( 'sync_many' )
 			->with( $this->equalTo( array( 1, 2, 3, 4, 5 ) ), $this->isTrue() );
 
-		$this->mock_sync_background_process
-			->expects( $this->once() )
-			->method( 'stop' );
-
-		$this->assertFalse( $this->sync_background_process_started_state->task( true ) );
+		$this->assertFalse( $this->sync_background_process_started_state->task( true )->has_next() );
 
 	}
 
@@ -161,19 +157,7 @@ class Sync_Background_Process_Started_State_Test extends Wordlift_Unit_Test_Case
 			->method( 'set_state' )
 			->with( Sync_Background_Process::STATE_STARTED );
 
-		$this->mock_sync_background_process
-			->expects( $this->once() )
-			->method( 'push_to_queue' )
-			->with( $this->isTrue() );
 
-		$this->mock_sync_background_process
-			->expects( $this->once() )
-			->method( 'save' )
-			->willReturn( $this->mock_sync_background_process );
-
-		$this->mock_sync_background_process
-			->expects( $this->once() )
-			->method( 'dispatch' );
 
 		$this->sync_background_process_started_state->enter();
 
