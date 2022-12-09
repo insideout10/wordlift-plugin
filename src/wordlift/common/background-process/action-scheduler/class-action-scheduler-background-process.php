@@ -22,9 +22,10 @@ abstract class Action_Scheduler_Background_Process {
 	}
 
 	public function schedule( $args = array() ) {
-		if ( ! as_has_scheduled_action( $this->hook, $args ) ) {
-			as_enqueue_async_action( $this->hook, $args, $this->group );
-		}
+
+		as_enqueue_async_action( $this->hook, $args, $this->group );
+		error_log( "scheduled action for hook " . $this->hook );
+
 	}
 
 	public function unschedule() {
@@ -33,6 +34,7 @@ abstract class Action_Scheduler_Background_Process {
 
 	public function task( $args = array() ) {
 		$state = $this->do_task( $args );
+		error_log( 'do_task returned state ' . var_export( $state, true ) );
 		if ( $state->has_next() ) {
 			$this->schedule( $state->get_args() );
 		}
@@ -45,10 +47,7 @@ abstract class Action_Scheduler_Background_Process {
 	 * @return State The state object provides necessary information about
 	 * whether to schedule next event or stop processing.
 	 */
-	abstract public function do_task( $args);
-
-
-
+	abstract public function do_task( $args );
 
 
 }

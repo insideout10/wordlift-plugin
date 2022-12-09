@@ -48,20 +48,30 @@ class Action_Scheduler_Sync_Background_Process extends Action_Scheduler_Backgrou
 	}
 
 	public function start() {
+		$this->state->leave();
+		$this->state = new Sync_Background_Process_Started_State( $this, $this->sync_service, $this->sync_object_adapter_factory );
+		$this->state->enter();
 		$this->schedule();
 	}
 
 	public function stop() {
-		$this->unschedule();
+		$this->state->leave();
+		$this->state = new Sync_Background_Process_Stopped_State( $this );
+		$this->state->enter();
 	}
 
 	public function resume() {
 		$this->schedule();
+		$this->state->resume();
 	}
 
 
 	public function do_task( $args ) {
-		return $this->state->task( $args );
+		$result = $this->state->task( $args );
+		if ( ! $result->has_next() ) {
+			$this->stop();
+		}
+		return $result;
 	}
 
 	/**

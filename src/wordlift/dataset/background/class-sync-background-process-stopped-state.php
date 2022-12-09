@@ -12,13 +12,13 @@ class Sync_Background_Process_Stopped_State extends Abstract_Sync_Background_Pro
 	private $context;
 
 	public function __construct( $context ) {
-		parent::__construct( Sync_Background_Process::STATE_STOPPED );
+		parent::__construct( Action_Scheduler_Sync_Background_Process::STATE_STOPPED );
 
 		$this->context = $context;
 	}
 
 	public function enter() {
-		$this->context->set_state( Sync_Background_Process::STATE_STOPPED );
+		$this->context->set_state( Action_Scheduler_Sync_Background_Process::STATE_STOPPED );
 	}
 
 	public function leave() {
