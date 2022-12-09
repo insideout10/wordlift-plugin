@@ -122,7 +122,7 @@ class Cron_Background_Process implements Background_Process {
 		$this->state->leave();
 		$this->state = new Sync_Background_Process_Stopped_State( $this );
 		$this->state->enter();
-		wp_clear_scheduled_hook( self::HOOK_NAME );
+		as_unschedule_all_actions( self::HOOK_NAME );
 	}
 
 	public function resume() {
@@ -161,6 +161,6 @@ class Cron_Background_Process implements Background_Process {
 	 */
 	private function schedule() {
 		error_log("scheduling task");
-		wp_schedule_single_event( time(), self::HOOK_NAME );
+		as_enqueue_async_action(self::HOOK_NAME );
 	}
 }
