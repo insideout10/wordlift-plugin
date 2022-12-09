@@ -95,7 +95,6 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 	 */
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function task( $args ) {
-		error_log("started state task() called");
 		$offset     = get_option( '_wl_sync_background_process_offset' );
 		$stage      = get_option( '_wl_sync_background_process_stage' );
 		$counts     = get_option( '_wl_sync_background_process_count' );
