@@ -5,7 +5,7 @@ namespace Wordlift\Dataset\Background;
 use Wordlift\Dataset\Sync_Object_Adapter_Factory;
 use Wordlift\Dataset\Sync_Service;
 
-class Cron_Background_Process implements Background_Process {
+class Test_Background_Process implements Background_Process {
 
 	private $queue      = array();
 	const STATE_STARTED = 'started';
