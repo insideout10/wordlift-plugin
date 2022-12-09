@@ -3,6 +3,7 @@
 namespace Wordlift\Dataset\Background;
 
 use Wordlift\Common\Background_Process\Action_Scheduler\Action_Scheduler_Background_Process;
+use Wordlift\Common\Background_Process\Action_Scheduler\State;
 use Wordlift\Dataset\Sync_Object_Adapter_Factory;
 use Wordlift\Dataset\Sync_Service;
 
@@ -67,6 +68,13 @@ class Action_Scheduler_Sync_Background_Process extends Action_Scheduler_Backgrou
 
 
 	public function do_task( $args ) {
+
+		// Action scheduler might have pending tasks which can call this method.
+		// So we need to check if the task should run or not
+		if ( self::STATE_STOPPED === $this->get_state() ) {
+			return State::complete();
+		}
+
 		$result = $this->state->task( $args );
 		if ( ! $result->has_next() ) {
 			$this->stop();
