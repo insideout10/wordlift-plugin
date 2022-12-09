@@ -254,7 +254,7 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 		$now = as_get_datetime_object();
 		$this->assertInstanceOf( 'ActionScheduler_DateTime', $now );
 
-		$datetime   = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+		$datetime    = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
 		$as_datetime = as_get_datetime_object( $datetime );
 		$this->assertEquals( $datetime->format( $f ), $as_datetime->format( $f ) );
 	}
@@ -309,7 +309,7 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 		$this->assertValidAction( $action_id );
 
 		$action_id_duplicate = as_enqueue_async_action( 'hook_1', array( 'a' ), 'dummy', true );
-		$this->assertEquals( 0, $action_id_duplicate );
+		$this->assertSame( 0, $action_id_duplicate );
 	}
 
 	/**
@@ -322,7 +322,7 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 		$this->assertValidAction( $action_id );
 
 		$action_id_duplicate = as_schedule_single_action( time(), 'hook_1', array( 'a' ), 'dummy', true );
-		$this->assertEquals( 0, $action_id_duplicate );
+		$this->assertSame( 0, $action_id_duplicate );
 	}
 
 	/**
@@ -335,7 +335,7 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 		$this->assertValidAction( $action_id );
 
 		$action_id_duplicate = as_schedule_recurring_action( time(), MINUTE_IN_SECONDS, 'hook_1', array( 'a' ), 'dummy', true );
-		$this->assertEquals( 0, $action_id_duplicate );
+		$this->assertSame( 0, $action_id_duplicate );
 	}
 
 	/**
@@ -348,7 +348,7 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 		$this->assertValidAction( $action_id );
 
 		$action_id_duplicate = as_schedule_cron_action( time(), '0 0 * * *', 'hook_1', array( 'a' ), 'dummy', true );
-		$this->assertEquals( 0, $action_id_duplicate );
+		$this->assertSame( 0, $action_id_duplicate );
 	}
 
 	/**
@@ -357,7 +357,7 @@ class Procedural_API_Test extends ActionScheduler_UnitTestCase {
 	 * @param ActionScheduler_Store $store Store instance to set.
 	 */
 	private function set_action_scheduler_store( $store ) {
-		$store_factory_setter = function() use ( $store ) {
+		$store_factory_setter        = function () use ( $store ) {
 			self::$store = $store;
 		};
 		$binded_store_factory_setter = Closure::bind( $store_factory_setter, null, ActionScheduler_Store::class );

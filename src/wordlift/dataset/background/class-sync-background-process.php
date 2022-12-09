@@ -32,7 +32,7 @@ class Sync_Background_Process extends Action_Scheduler_Background_Process {
 	/**
 	 * Sync_Background_Process constructor.
 	 *
-	 * @param Sync_Service $sync_service A {@link Sync_Service} instance providing the supporting functions to this background process.
+	 * @param Sync_Service                $sync_service A {@link Sync_Service} instance providing the supporting functions to this background process.
 	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
 	 */
 	public function __construct( $sync_service, $sync_object_adapter_factory ) {
@@ -65,7 +65,6 @@ class Sync_Background_Process extends Action_Scheduler_Background_Process {
 		$this->schedule();
 		$this->state->resume();
 	}
-
 
 	public function do_task( $args ) {
 

@@ -2,6 +2,7 @@
 
 /**
  * Class ActionScheduler_Store
+ *
  * @codeCoverageIgnore
  */
 abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
@@ -13,20 +14,20 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	const DEFAULT_CLASS   = 'ActionScheduler_wpPostStore';
 
 	/** @var ActionScheduler_Store */
-	private static $store = NULL;
+	private static $store = null;
 
 	/** @var int */
 	protected static $max_args_length = 191;
 
 	/**
 	 * @param ActionScheduler_Action $action
-	 * @param DateTime $scheduled_date Optional Date of the first instance
-	 *        to store. Otherwise uses the first date of the action's
-	 *        schedule.
+	 * @param DateTime               $scheduled_date Optional Date of the first instance
+	 *                      to store. Otherwise uses the first date of the action's
+	 *                      schedule.
 	 *
 	 * @return int The action ID
 	 */
-	abstract public function save_action( ActionScheduler_Action $action, DateTime $scheduled_date = NULL );
+	abstract public function save_action( ActionScheduler_Action $action, DateTime $scheduled_date = null );
 
 	/**
 	 * @param string $action_id
@@ -141,10 +142,13 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	public function extra_action_counts() {
 		$extra_actions = array();
 
-		$pastdue_action_counts = ( int ) $this->query_actions( array(
-			'status' => self::STATUS_PENDING,
-			'date'   => as_get_datetime_object(),
-		), 'count' );
+		$pastdue_action_counts = (int) $this->query_actions(
+			array(
+				'status' => self::STATUS_PENDING,
+				'date'   => as_get_datetime_object(),
+			),
+			'count'
+		);
 
 		if ( $pastdue_action_counts ) {
 			$extra_actions['past-due'] = $pastdue_action_counts;
@@ -175,7 +179,6 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 * @return DateTime The date the action is schedule to run, or the date that it ran.
 	 */
 	abstract public function get_date( $action_id );
-
 
 	/**
 	 * @param int      $max_actions
@@ -241,7 +244,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 * @return string
 	 */
 	protected function validate_sql_comparator( $comparison_operator ) {
-		if ( in_array( $comparison_operator, array('!=', '>', '>=', '<', '<=', '=') ) ) {
+		if ( in_array( $comparison_operator, array( '!=', '>', '>=', '<', '<=', '=' ) ) ) {
 			return $comparison_operator;
 		}
 		return '=';
@@ -251,10 +254,10 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 * Get the time MySQL formated date/time string for an action's (next) scheduled date.
 	 *
 	 * @param ActionScheduler_Action $action
-	 * @param DateTime $scheduled_date (optional)
+	 * @param DateTime               $scheduled_date (optional)
 	 * @return string
 	 */
-	protected function get_scheduled_date_string( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ) {
+	protected function get_scheduled_date_string( ActionScheduler_Action $action, DateTime $scheduled_date = null ) {
 		$next = null === $scheduled_date ? $action->get_schedule()->get_date() : $scheduled_date;
 		if ( ! $next ) {
 			return '0000-00-00 00:00:00';
@@ -268,10 +271,10 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 * Get the time MySQL formated date/time string for an action's (next) scheduled date.
 	 *
 	 * @param ActionScheduler_Action $action
-	 * @param DateTime $scheduled_date (optional)
+	 * @param DateTime               $scheduled_date (optional)
 	 * @return string
 	 */
-	protected function get_scheduled_date_string_local( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ) {
+	protected function get_scheduled_date_string_local( ActionScheduler_Action $action, DateTime $scheduled_date = null ) {
 		$next = null === $scheduled_date ? $action->get_schedule()->get_date() : $scheduled_date;
 		if ( ! $next ) {
 			return '0000-00-00 00:00:00';
@@ -414,15 +417,17 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 * Check if there are any pending scheduled actions due to run.
 	 *
 	 * @param ActionScheduler_Action $action
-	 * @param DateTime $scheduled_date (optional)
+	 * @param DateTime               $scheduled_date (optional)
 	 * @return string
 	 */
 	public function has_pending_actions_due() {
-		$pending_actions = $this->query_actions( array(
-			'date'    => as_get_datetime_object(),
-			'status'  => ActionScheduler_Store::STATUS_PENDING,
-			'orderby' => 'none',
-		) );
+		$pending_actions = $this->query_actions(
+			array(
+				'date'    => as_get_datetime_object(),
+				'status'  => self::STATUS_PENDING,
+				'orderby' => 'none',
+			)
+		);
 
 		return ! empty( $pending_actions );
 	}
@@ -442,7 +447,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 */
 	public static function instance() {
 		if ( empty( self::$store ) ) {
-			$class = apply_filters( 'action_scheduler_store_class', self::DEFAULT_CLASS );
+			$class       = apply_filters( 'action_scheduler_store_class', self::DEFAULT_CLASS );
 			self::$store = new $class();
 		}
 		return self::$store;

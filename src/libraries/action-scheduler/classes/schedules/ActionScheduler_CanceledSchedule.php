@@ -8,7 +8,7 @@ class ActionScheduler_CanceledSchedule extends ActionScheduler_SimpleSchedule {
 	/**
 	 * Deprecated property @see $this->__wakeup() for details.
 	 **/
-	private $timestamp = NULL;
+	private $timestamp = null;
 
 	/**
 	 * @param DateTime $after
@@ -48,7 +48,7 @@ class ActionScheduler_CanceledSchedule extends ActionScheduler_SimpleSchedule {
 	 * map the old property names with matching visibility.
 	 */
 	public function __wakeup() {
-		if ( ! is_null( $this->timestamp ) ) {
+		if ( $this->timestamp !== null ) {
 			$this->scheduled_timestamp = $this->timestamp;
 			unset( $this->timestamp );
 		}

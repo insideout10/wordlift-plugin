@@ -127,8 +127,6 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 			return State::items_in_queue();
 		}
 
-
-
 		return State::complete();
 	}
 

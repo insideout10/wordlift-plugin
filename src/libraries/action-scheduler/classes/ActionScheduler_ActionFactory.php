@@ -24,7 +24,7 @@ class ActionScheduler_ActionFactory {
 				break;
 			case ActionScheduler_Store::STATUS_CANCELED:
 				$action_class = 'ActionScheduler_CanceledAction';
-				if ( ! is_null( $schedule ) && ! is_a( $schedule, 'ActionScheduler_CanceledSchedule' ) && ! is_a( $schedule, 'ActionScheduler_NullSchedule' ) ) {
+				if ( $schedule !== null && ! is_a( $schedule, 'ActionScheduler_CanceledSchedule' ) && ! is_a( $schedule, 'ActionScheduler_NullSchedule' ) ) {
 					$schedule = new ActionScheduler_CanceledSchedule( $schedule->get_date() );
 				}
 				break;
@@ -171,7 +171,6 @@ class ActionScheduler_ActionFactory {
 		return $this->cron_unique( $hook, $args, $base_timestamp, $schedule, $group, false );
 	}
 
-
 	/**
 	 * Create the first instance of an action recurring on a Cron schedule only if there is no pending or running action with same name and params.
 	 *
@@ -225,7 +224,7 @@ class ActionScheduler_ActionFactory {
 		$schedule = $action->get_schedule();
 		$next     = $schedule->get_next( as_get_datetime_object() );
 
-		if ( is_null( $next ) || ! $schedule->is_recurring() ) {
+		if ( $next === null || ! $schedule->is_recurring() ) {
 			throw new InvalidArgumentException( __( 'Invalid action - must be a recurring action.', 'action-scheduler' ) );
 		}
 

@@ -15,110 +15,107 @@
  *
  * @author Michael Dowling <mtdowling@gmail.com>
  */
-class CronExpression_DayOfWeekField extends CronExpression_AbstractField
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function isSatisfiedBy(DateTime $date, $value)
-    {
-        if ($value == '?') {
-            return true;
-        }
+class CronExpression_DayOfWeekField extends CronExpression_AbstractField {
 
-        // Convert text day of the week values to integers
-        $value = str_ireplace(
-            array('SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'),
-            range(0, 6),
-            $value
-        );
+	/**
+	 * {@inheritdoc}
+	 */
+	public function isSatisfiedBy( DateTime $date, $value ) {
+		if ( $value == '?' ) {
+			return true;
+		}
 
-        $currentYear = $date->format('Y');
-        $currentMonth = $date->format('m');
-        $lastDayOfMonth = $date->format('t');
+		// Convert text day of the week values to integers
+		$value = str_ireplace(
+			array( 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT' ),
+			range( 0, 6 ),
+			$value
+		);
 
-        // Find out if this is the last specific weekday of the month
-        if (strpos($value, 'L')) {
-            $weekday = str_replace('7', '0', substr($value, 0, strpos($value, 'L')));
-            $tdate = clone $date;
-            $tdate->setDate($currentYear, $currentMonth, $lastDayOfMonth);
-            while ($tdate->format('w') != $weekday) {
-                $tdate->setDate($currentYear, $currentMonth, --$lastDayOfMonth);
-            }
+		$currentYear    = $date->format( 'Y' );
+		$currentMonth   = $date->format( 'm' );
+		$lastDayOfMonth = $date->format( 't' );
 
-            return $date->format('j') == $lastDayOfMonth;
-        }
+		// Find out if this is the last specific weekday of the month
+		if ( strpos( $value, 'L' ) ) {
+			$weekday = str_replace( '7', '0', substr( $value, 0, strpos( $value, 'L' ) ) );
+			$tdate   = clone $date;
+			$tdate->setDate( $currentYear, $currentMonth, $lastDayOfMonth );
+			while ( $tdate->format( 'w' ) != $weekday ) {
+				$tdate->setDate( $currentYear, $currentMonth, --$lastDayOfMonth );
+			}
 
-        // Handle # hash tokens
-        if (strpos($value, '#')) {
-            list($weekday, $nth) = explode('#', $value);
-            // Validate the hash fields
-            if ($weekday < 1 || $weekday > 5) {
-                throw new InvalidArgumentException("Weekday must be a value between 1 and 5. {$weekday} given");
-            }
-            if ($nth > 5) {
-                throw new InvalidArgumentException('There are never more than 5 of a given weekday in a month');
-            }
-            // The current weekday must match the targeted weekday to proceed
-            if ($date->format('N') != $weekday) {
-                return false;
-            }
+			return $date->format( 'j' ) == $lastDayOfMonth;
+		}
 
-            $tdate = clone $date;
-            $tdate->setDate($currentYear, $currentMonth, 1);
-            $dayCount = 0;
-            $currentDay = 1;
-            while ($currentDay < $lastDayOfMonth + 1) {
-                if ($tdate->format('N') == $weekday) {
-                    if (++$dayCount >= $nth) {
-                        break;
-                    }
-                }
-                $tdate->setDate($currentYear, $currentMonth, ++$currentDay);
-            }
+		// Handle # hash tokens
+		if ( strpos( $value, '#' ) ) {
+			list($weekday, $nth) = explode( '#', $value );
+			// Validate the hash fields
+			if ( $weekday < 1 || $weekday > 5 ) {
+				throw new InvalidArgumentException( "Weekday must be a value between 1 and 5. {$weekday} given" );
+			}
+			if ( $nth > 5 ) {
+				throw new InvalidArgumentException( 'There are never more than 5 of a given weekday in a month' );
+			}
+			// The current weekday must match the targeted weekday to proceed
+			if ( $date->format( 'N' ) != $weekday ) {
+				return false;
+			}
 
-            return $date->format('j') == $currentDay;
-        }
+			$tdate = clone $date;
+			$tdate->setDate( $currentYear, $currentMonth, 1 );
+			$dayCount   = 0;
+			$currentDay = 1;
+			while ( $currentDay < $lastDayOfMonth + 1 ) {
+				if ( $tdate->format( 'N' ) == $weekday ) {
+					if ( ++$dayCount >= $nth ) {
+						break;
+					}
+				}
+				$tdate->setDate( $currentYear, $currentMonth, ++$currentDay );
+			}
 
-        // Handle day of the week values
-        if (strpos($value, '-')) {
-            $parts = explode('-', $value);
-            if ($parts[0] == '7') {
-                $parts[0] = '0';
-            } elseif ($parts[1] == '0') {
-                $parts[1] = '7';
-            }
-            $value = implode('-', $parts);
-        }
+			return $date->format( 'j' ) == $currentDay;
+		}
 
-        // Test to see which Sunday to use -- 0 == 7 == Sunday
-        $format = in_array(7, str_split($value)) ? 'N' : 'w';
-        $fieldValue = $date->format($format);
+		// Handle day of the week values
+		if ( strpos( $value, '-' ) ) {
+			$parts = explode( '-', $value );
+			if ( $parts[0] == '7' ) {
+				$parts[0] = '0';
+			} elseif ( $parts[1] == '0' ) {
+				$parts[1] = '7';
+			}
+			$value = implode( '-', $parts );
+		}
 
-        return $this->isSatisfied($fieldValue, $value);
-    }
+		// Test to see which Sunday to use -- 0 == 7 == Sunday
+		$format     = in_array( 7, str_split( $value ) ) ? 'N' : 'w';
+		$fieldValue = $date->format( $format );
 
-    /**
-     * {@inheritdoc}
-     */
-    public function increment(DateTime $date, $invert = false)
-    {
-        if ($invert) {
-            $date->modify('-1 day');
-            $date->setTime(23, 59, 0);
-        } else {
-            $date->modify('+1 day');
-            $date->setTime(0, 0, 0);
-        }
+		return $this->isSatisfied( $fieldValue, $value );
+	}
 
-        return $this;
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function increment( DateTime $date, $invert = false ) {
+		if ( $invert ) {
+			$date->modify( '-1 day' );
+			$date->setTime( 23, 59, 0 );
+		} else {
+			$date->modify( '+1 day' );
+			$date->setTime( 0, 0, 0 );
+		}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate($value)
-    {
-        return (bool) preg_match('/[\*,\/\-0-9A-Z]+/', $value);
-    }
+		return $this;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function validate( $value ) {
+		return (bool) preg_match( '/[\*,\/\-0-9A-Z]+/', $value );
+	}
 }

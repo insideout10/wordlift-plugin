@@ -2,28 +2,29 @@
 
 /**
  * Class ActionScheduler_QueueRunner_Test
+ *
  * @group runners
  */
 class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 	public function test_create_runner() {
-		$store = ActionScheduler::store();
-		$runner = ActionScheduler_Mocker::get_queue_runner( $store );
+		$store       = ActionScheduler::store();
+		$runner      = ActionScheduler_Mocker::get_queue_runner( $store );
 		$actions_run = $runner->run();
 
-		$this->assertEquals( 0, $actions_run );
+		$this->assertSame( 0, $actions_run );
 	}
 
 	public function test_run() {
-		$store = ActionScheduler::store();
+		$store  = ActionScheduler::store();
 		$runner = ActionScheduler_Mocker::get_queue_runner( $store );
 
-		$mock = new MockAction();
-		$random = md5(rand());
+		$mock   = new MockAction();
+		$random = md5( rand() );
 		add_action( $random, array( $mock, 'action' ) );
-		$schedule = new ActionScheduler_SimpleSchedule(as_get_datetime_object('1 day ago'));
+		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '1 day ago' ) );
 
-		for ( $i = 0 ; $i < 5 ; $i++ ) {
-			$action = new ActionScheduler_Action( $random, array($random), $schedule );
+		for ( $i = 0; $i < 5; $i++ ) {
+			$action = new ActionScheduler_Action( $random, array( $random ), $schedule );
 			$store->save_action( $action );
 		}
 
@@ -36,22 +37,22 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_run_with_future_actions() {
-		$store = ActionScheduler::store();
+		$store  = ActionScheduler::store();
 		$runner = ActionScheduler_Mocker::get_queue_runner( $store );
 
-		$mock = new MockAction();
-		$random = md5(rand());
+		$mock   = new MockAction();
+		$random = md5( rand() );
 		add_action( $random, array( $mock, 'action' ) );
-		$schedule = new ActionScheduler_SimpleSchedule(as_get_datetime_object('1 day ago'));
+		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '1 day ago' ) );
 
-		for ( $i = 0 ; $i < 3 ; $i++ ) {
-			$action = new ActionScheduler_Action( $random, array($random), $schedule );
+		for ( $i = 0; $i < 3; $i++ ) {
+			$action = new ActionScheduler_Action( $random, array( $random ), $schedule );
 			$store->save_action( $action );
 		}
 
-		$schedule = new ActionScheduler_SimpleSchedule(as_get_datetime_object('tomorrow'));
-		for ( $i = 0 ; $i < 3 ; $i++ ) {
-			$action = new ActionScheduler_Action( $random, array($random), $schedule );
+		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( 'tomorrow' ) );
+		for ( $i = 0; $i < 3; $i++ ) {
+			$action = new ActionScheduler_Action( $random, array( $random ), $schedule );
 			$store->save_action( $action );
 		}
 
@@ -64,13 +65,13 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_completed_action_status() {
-		$store = ActionScheduler::store();
+		$store  = ActionScheduler::store();
 		$runner = ActionScheduler_Mocker::get_queue_runner( $store );
 
-		$random = md5(rand());
-		$schedule = new ActionScheduler_SimpleSchedule(as_get_datetime_object('12 hours ago'));
+		$random   = md5( rand() );
+		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '12 hours ago' ) );
 
-		$action = new ActionScheduler_Action( $random, array(), $schedule );
+		$action    = new ActionScheduler_Action( $random, array(), $schedule );
 		$action_id = $store->save_action( $action );
 
 		$runner->run();
@@ -97,7 +98,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 
 		$date->modify( '+1 minute' );
 
-		$claim = $store->stake_claim( 10, $date );
+		$claim   = $store->stake_claim( 10, $date );
 		$actions = $claim->get_actions();
 		$this->assertCount( 1, $actions );
 
@@ -113,7 +114,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 		// Make sure the 2nd instance of the cron action is scheduled to occur tomorrow still
 		$runner->process_action( $action_id );
 
-		$claim = $store->stake_claim( 10, $date );
+		$claim   = $store->stake_claim( 10, $date );
 		$actions = $claim->get_actions();
 		$this->assertCount( 1, $actions );
 
@@ -134,7 +135,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 		$runner    = ActionScheduler_Mocker::get_queue_runner( $store );
 
 		// Make sure the 1st instance of the action is scheduled to occur 12 hours ago
-		$claim = $store->stake_claim( 10, $date );
+		$claim   = $store->stake_claim( 10, $date );
 		$actions = $claim->get_actions();
 		$this->assertCount( 1, $actions );
 
@@ -150,8 +151,8 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 		// Make sure after the queue is run, the 2nd instance of the action is scheduled to occur in 24 hours
 		$runner->run();
 
-		$date = as_get_datetime_object( '+1 day' );
-		$claim = $store->stake_claim( 10, $date );
+		$date    = as_get_datetime_object( '+1 day' );
+		$claim   = $store->stake_claim( 10, $date );
 		$actions = $claim->get_actions();
 		$this->assertCount( 1, $actions );
 
@@ -168,7 +169,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 		$runner->process_action( $fetched_action_id );
 		$date = as_get_datetime_object( '+1 day' );
 
-		$claim = $store->stake_claim( 10, $date );
+		$claim   = $store->stake_claim( 10, $date );
 		$actions = $claim->get_actions();
 		$this->assertCount( 1, $actions );
 
@@ -213,7 +214,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 
 		// Process the queue!
 		$runner->run();
-		$pending_actions = $store->query_actions(
+		$pending_actions       = $store->query_actions(
 			array(
 				'hook'   => $hook,
 				'args'   => $args,
@@ -244,20 +245,20 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 
 	public function test_hooked_into_wp_cron() {
 		$next = wp_next_scheduled( ActionScheduler_QueueRunner::WP_CRON_HOOK, array( 'WP Cron' ) );
-		$this->assertNotEmpty($next);
+		$this->assertNotEmpty( $next );
 	}
 
 	public function test_batch_count_limit() {
-		$store = ActionScheduler::store();
+		$store  = ActionScheduler::store();
 		$runner = ActionScheduler_Mocker::get_queue_runner( $store );
 
-		$mock = new MockAction();
-		$random = md5(rand());
+		$mock   = new MockAction();
+		$random = md5( rand() );
 		add_action( $random, array( $mock, 'action' ) );
-		$schedule = new ActionScheduler_SimpleSchedule(new ActionScheduler_DateTime('1 day ago'));
+		$schedule = new ActionScheduler_SimpleSchedule( new ActionScheduler_DateTime( '1 day ago' ) );
 
-		for ( $i = 0 ; $i < 2 ; $i++ ) {
-			$action = new ActionScheduler_Action( $random, array($random), $schedule );
+		for ( $i = 0; $i < 2; $i++ ) {
+			$action = new ActionScheduler_Action( $random, array( $random ), $schedule );
 			$store->save_action( $action );
 		}
 
@@ -265,8 +266,8 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 
 		$actions_run = $runner->run();
 
-		$this->assertEquals( 0, $mock->get_call_count() );
-		$this->assertEquals( 0, $actions_run );
+		$this->assertSame( 0, $mock->get_call_count() );
+		$this->assertSame( 0, $actions_run );
 
 		$store->release_claim( $claim );
 
@@ -279,20 +280,20 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_changing_batch_count_limit() {
-		$store = ActionScheduler::store();
+		$store  = ActionScheduler::store();
 		$runner = ActionScheduler_Mocker::get_queue_runner( $store );
 
-		$random = md5(rand());
-		$schedule = new ActionScheduler_SimpleSchedule(new ActionScheduler_DateTime('1 day ago'));
+		$random   = md5( rand() );
+		$schedule = new ActionScheduler_SimpleSchedule( new ActionScheduler_DateTime( '1 day ago' ) );
 
-		for ( $i = 0 ; $i < 30 ; $i++ ) {
-			$action = new ActionScheduler_Action( $random, array($random), $schedule );
+		for ( $i = 0; $i < 30; $i++ ) {
+			$action = new ActionScheduler_Action( $random, array( $random ), $schedule );
 			$store->save_action( $action );
 		}
 
 		$claims = array();
 
-		for ( $i = 0 ; $i < 5 ; $i++ ) {
+		for ( $i = 0; $i < 5; $i++ ) {
 			$claims[] = $store->stake_claim( 5 );
 		}
 
@@ -301,9 +302,8 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 		$actions_run = $runner->run();
 		remove_action( $random, array( $mock1, 'action' ) );
 
-		$this->assertEquals( 0, $mock1->get_call_count() );
-		$this->assertEquals( 0, $actions_run );
-
+		$this->assertSame( 0, $mock1->get_call_count() );
+		$this->assertSame( 0, $actions_run );
 
 		add_filter( 'action_scheduler_queue_runner_concurrent_batches', array( $this, 'return_6' ) );
 
@@ -317,8 +317,8 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 
 		remove_filter( 'action_scheduler_queue_runner_concurrent_batches', array( $this, 'return_6' ) );
 
-		for ( $i = 0 ; $i < 5 ; $i++ ) { // to make up for the actions we just processed
-			$action = new ActionScheduler_Action( $random, array($random), $schedule );
+		for ( $i = 0; $i < 5; $i++ ) { // to make up for the actions we just processed
+			$action = new ActionScheduler_Action( $random, array( $random ), $schedule );
 			$store->save_action( $action );
 		}
 
@@ -327,8 +327,8 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 		$actions_run = $runner->run();
 		remove_action( $random, array( $mock3, 'action' ) );
 
-		$this->assertEquals( 0, $mock3->get_call_count() );
-		$this->assertEquals( 0, $actions_run );
+		$this->assertSame( 0, $mock3->get_call_count() );
+		$this->assertSame( 0, $actions_run );
 
 		remove_filter( 'action_scheduler_queue_runner_concurrent_batches', array( $this, 'return_6' ) );
 	}

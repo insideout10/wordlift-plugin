@@ -8,7 +8,7 @@ class ActionScheduler_SimpleSchedule extends ActionScheduler_Abstract_Schedule {
 	/**
 	 * Deprecated property @see $this->__wakeup() for details.
 	 **/
-	private $timestamp = NULL;
+	private $timestamp = null;
 
 	/**
 	 * @param DateTime $after
@@ -45,9 +45,12 @@ class ActionScheduler_SimpleSchedule extends ActionScheduler_Abstract_Schedule {
 
 		$this->timestamp = $this->scheduled_timestamp;
 
-		return array_merge( $sleep_params, array(
-			'timestamp',
-		) );
+		return array_merge(
+			$sleep_params,
+			array(
+				'timestamp',
+			)
+		);
 	}
 
 	/**
@@ -62,7 +65,7 @@ class ActionScheduler_SimpleSchedule extends ActionScheduler_Abstract_Schedule {
 	 */
 	public function __wakeup() {
 
-		if ( is_null( $this->scheduled_timestamp ) && ! is_null( $this->timestamp ) ) {
+		if ( $this->scheduled_timestamp === null && $this->timestamp !== null ) {
 			$this->scheduled_timestamp = $this->timestamp;
 			unset( $this->timestamp );
 		}

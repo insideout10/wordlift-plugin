@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Action_Scheduler\Migration;
 
 use Action_Scheduler\WP_CLI\ProgressBar;

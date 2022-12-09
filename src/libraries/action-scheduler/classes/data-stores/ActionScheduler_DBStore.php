@@ -139,7 +139,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		$placeholder_sql = implode( ', ', $placeholders );
 		$where_clause    = $this->build_where_clause_for_insert( $data, $table_name, $unique );
 		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $column_sql and $where_clause are already prepared. $placeholder_sql is hardcoded.
-		$insert_query    = $wpdb->prepare(
+		$insert_query = $wpdb->prepare(
 			"
 INSERT INTO $table_name ( $column_sql )
 SELECT $placeholder_sql FROM DUAL
@@ -310,7 +310,7 @@ AND `group_id` = %d
 			'last_attempt_gmt',
 		);
 		foreach ( $date_fields as $date_field ) {
-			if ( is_null( $data->$date_field ) ) {
+			if ( $data->$date_field === null ) {
 				$data->$date_field = ActionScheduler_StoreSchema::DEFAULT_DATE;
 			}
 		}
@@ -375,22 +375,25 @@ AND `group_id` = %d
 			throw new InvalidArgumentException( __( 'Invalid value for select or count parameter. Cannot query actions.', 'action-scheduler' ) );
 		}
 
-		$query = wp_parse_args( $query, array(
-			'hook'                  => '',
-			'args'                  => null,
-			'partial_args_matching' => 'off', // can be 'like' or 'json'
-			'date'                  => null,
-			'date_compare'          => '<=',
-			'modified'              => null,
-			'modified_compare'      => '<=',
-			'group'                 => '',
-			'status'                => '',
-			'claimed'               => null,
-			'per_page'              => 5,
-			'offset'                => 0,
-			'orderby'               => 'date',
-			'order'                 => 'ASC',
-		 ) );
+		$query = wp_parse_args(
+			$query,
+			array(
+				'hook'                  => '',
+				'args'                  => null,
+				'partial_args_matching' => 'off', // can be 'like' or 'json'
+				'date'                  => null,
+				'date_compare'          => '<=',
+				'modified'              => null,
+				'modified_compare'      => '<=',
+				'group'                 => '',
+				'status'                => '',
+				'claimed'               => null,
+				'per_page'              => 5,
+				'offset'                => 0,
+				'orderby'               => 'date',
+				'order'                 => 'ASC',
+			)
+		);
 
 		/** @var \wpdb $wpdb */
 		global $wpdb;
@@ -407,26 +410,26 @@ AND `group_id` = %d
 		}
 
 		$sql        = ( 'count' === $select_or_count ) ? 'SELECT count(a.action_id)' : 'SELECT a.action_id';
-		$sql        .= " FROM {$wpdb->actionscheduler_actions} a";
+		$sql       .= " FROM {$wpdb->actionscheduler_actions} a";
 		$sql_params = array();
 
 		if ( ! empty( $query['group'] ) || 'group' === $query['orderby'] ) {
 			$sql .= " LEFT JOIN {$wpdb->actionscheduler_groups} g ON g.group_id=a.group_id";
 		}
 
-		$sql .= " WHERE 1=1";
+		$sql .= ' WHERE 1=1';
 
 		if ( ! empty( $query['group'] ) ) {
-			$sql          .= " AND g.slug=%s";
+			$sql         .= ' AND g.slug=%s';
 			$sql_params[] = $query['group'];
 		}
 
 		if ( ! empty( $query['hook'] ) ) {
-			$sql          .= " AND a.hook=%s";
+			$sql         .= ' AND a.hook=%s';
 			$sql_params[] = $query['hook'];
 		}
 
-		if ( ! is_null( $query['args'] ) ) {
+		if ( $query['args'] !== null ) {
 			switch ( $query['partial_args_matching'] ) {
 				case 'json':
 					if ( ! $supports_json ) {
@@ -445,26 +448,28 @@ AND `group_id` = %d
 						}
 						$placeholder = isset( $supported_types[ $value_type ] ) ? $supported_types[ $value_type ] : false;
 						if ( ! $placeholder ) {
-							throw new \RuntimeException( sprintf(
+							throw new \RuntimeException(
+								sprintf(
 								/* translators: %s: provided value type */
-								__( 'The value type for the JSON partial matching is not supported. Must be either integer, boolean, double or string. %s type provided.', 'action-scheduler' ),
-								$value_type
-							) );
+									__( 'The value type for the JSON partial matching is not supported. Must be either integer, boolean, double or string. %s type provided.', 'action-scheduler' ),
+									$value_type
+								)
+							);
 						}
-						$sql          .= ' AND JSON_EXTRACT(a.args, %s)='.$placeholder;
-						$sql_params[] = '$.'.$key;
+						$sql         .= ' AND JSON_EXTRACT(a.args, %s)=' . $placeholder;
+						$sql_params[] = '$.' . $key;
 						$sql_params[] = $value;
 					}
 					break;
 				case 'like':
 					foreach ( $query['args'] as $key => $value ) {
-						$sql          .= ' AND a.args LIKE %s';
+						$sql         .= ' AND a.args LIKE %s';
 						$json_partial = $wpdb->esc_like( trim( json_encode( array( $key => $value ) ), '{}' ) );
 						$sql_params[] = "%{$json_partial}%";
 					}
 					break;
 				case 'off':
-					$sql          .= " AND a.args=%s";
+					$sql         .= ' AND a.args=%s';
 					$sql_params[] = $this->get_args_for_query( $query['args'] );
 					break;
 				default:
@@ -501,7 +506,7 @@ AND `group_id` = %d
 			$sql .= ' AND a.claim_id != 0';
 		} elseif ( false === $query['claimed'] ) {
 			$sql .= ' AND a.claim_id = 0';
-		} elseif ( ! is_null( $query['claimed'] ) ) {
+		} elseif ( $query['claimed'] !== null ) {
 			$sql         .= ' AND a.claim_id = %d';
 			$sql_params[] = $query['claimed'];
 		}
@@ -814,7 +819,7 @@ AND `group_id` = %d
 		global $wpdb;
 
 		$now  = as_get_datetime_object();
-		$date = is_null( $before_date ) ? $now : clone $before_date;
+		$date = $before_date === null ? $now : clone $before_date;
 
 		// can't use $wpdb->update() because of the <= condition.
 		$update = "UPDATE {$wpdb->actionscheduler_actions} SET claim_id=%d, last_attempt_gmt=%s, last_attempt_local=%s";
@@ -830,7 +835,7 @@ AND `group_id` = %d
 
 		if ( ! empty( $hooks ) ) {
 			$placeholders = array_fill( 0, count( $hooks ), '%s' );
-			$where        .= ' AND hook IN (' . join( ', ', $placeholders ) . ')';
+			$where       .= ' AND hook IN (' . join( ', ', $placeholders ) . ')';
 			$params       = array_merge( $params, array_values( $hooks ) );
 		}
 
@@ -844,7 +849,7 @@ AND `group_id` = %d
 				throw new InvalidArgumentException( sprintf( __( 'The group "%s" does not exist.', 'action-scheduler' ), $group ) );
 			}
 
-			$where    .= ' AND group_id = %d';
+			$where   .= ' AND group_id = %d';
 			$params[] = $group_id;
 		}
 

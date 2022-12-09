@@ -4,7 +4,6 @@ namespace Wordlift\Common\Background_Process\Action_Scheduler;
 
 abstract class Action_Scheduler_Background_Process {
 
-
 	/**
 	 * @var string Hook name used for invoking the task method.
 	 */
@@ -13,7 +12,6 @@ abstract class Action_Scheduler_Background_Process {
 	 * @var string Group which would be used when
 	 */
 	private $group;
-
 
 	public function __construct( $hook, $group ) {
 		$this->hook  = $hook;
@@ -38,7 +36,6 @@ abstract class Action_Scheduler_Background_Process {
 		}
 	}
 
-
 	/**
 	 * @param $args
 	 *
@@ -46,6 +43,5 @@ abstract class Action_Scheduler_Background_Process {
 	 * whether to schedule next event or stop processing.
 	 */
 	abstract public function do_task( $args );
-
 
 }

@@ -26,11 +26,11 @@ abstract class AbstractStoreTest extends ActionScheduler_UnitTestCase {
 	abstract protected function get_store();
 
 	public function test_get_status() {
-		$time = as_get_datetime_object('-10 minutes');
-		$schedule = new ActionScheduler_IntervalSchedule($time, HOUR_IN_SECONDS);
-		$action = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array(), $schedule);
-		$store = $this->get_store();
-		$action_id = $store->save_action($action);
+		$time      = as_get_datetime_object( '-10 minutes' );
+		$schedule  = new ActionScheduler_IntervalSchedule( $time, HOUR_IN_SECONDS );
+		$action    = new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array(), $schedule );
+		$store     = $this->get_store();
+		$action_id = $store->save_action( $action );
 
 		$this->assertEquals( ActionScheduler_Store::STATUS_PENDING, $store->get_status( $action_id ) );
 
@@ -49,7 +49,7 @@ abstract class AbstractStoreTest extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_query_actions_query_type_arg_valid_options() {
-		$store = $this->get_store();
+		$store    = $this->get_store();
 		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( 'tomorrow' ) );
 
 		$action_id_1 = $store->save_action( new ActionScheduler_Action( ActionScheduler_Callbacks::HOOK_WITH_CALLBACK, array( 1 ), $schedule ) );
@@ -60,10 +60,10 @@ abstract class AbstractStoreTest extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_query_actions_by_single_status() {
-		$store = $this->get_store();
+		$store    = $this->get_store();
 		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( 'tomorrow' ) );
 
-		$this->assertEquals( 0, $store->query_actions( array( 'status' => ActionScheduler_Store::STATUS_PENDING ), 'count' ) );
+		$this->assertSame( 0, $store->query_actions( array( 'status' => ActionScheduler_Store::STATUS_PENDING ), 'count' ) );
 
 		$action_id_1 = $store->save_action( new ActionScheduler_Action( 'my_hook_1', array( 1 ), $schedule ) );
 		$action_id_2 = $store->save_action( new ActionScheduler_Action( 'my_hook_2', array( 1 ), $schedule ) );
@@ -71,14 +71,14 @@ abstract class AbstractStoreTest extends ActionScheduler_UnitTestCase {
 		$store->mark_complete( $action_id_3 );
 
 		$this->assertEquals( 2, $store->query_actions( array( 'status' => ActionScheduler_Store::STATUS_PENDING ), 'count' ) );
-		$this->assertEquals( 1, $store->query_actions( array( 'status' => ActionScheduler_Store::STATUS_COMPLETE ), 'count' ) );
+		$this->assertSame( 1, $store->query_actions( array( 'status' => ActionScheduler_Store::STATUS_COMPLETE ), 'count' ) );
 	}
 
 	public function test_query_actions_by_array_status() {
-		$store = $this->get_store();
+		$store    = $this->get_store();
 		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( 'tomorrow' ) );
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$store->query_actions(
 				array(

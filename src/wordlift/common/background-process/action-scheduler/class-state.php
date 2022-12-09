@@ -28,5 +28,4 @@ class State {
 		return new self( true, $args );
 	}
 
-
 }
