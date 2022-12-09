@@ -13,7 +13,7 @@ use Wordlift\Dataset\Sync_Service;
 class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Process_State {
 
 	/**
-	 * @var Action_Scheduler_Sync_Background_Process
+	 * @var Sync_Background_Process
 	 */
 	private $context;
 
@@ -36,14 +36,14 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 	/**
 	 * Sync_Background_Process_Started_State constructor.
 	 *
-	 * @param Action_Scheduler_Sync_Background_Process     $context
+	 * @param Sync_Background_Process     $context
 	 * @param Sync_Service                $sync_service
 	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
 	 * @param bool                        $reset Whether to reset the counters
 	 */
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function __construct( $context, $sync_service, $sync_object_adapter_factory, $reset = true ) {
-		parent::__construct( Action_Scheduler_Sync_Background_Process::STATE_STARTED );
+		parent::__construct( Sync_Background_Process::STATE_STARTED );
 
 		$this->context      = $context;
 		$this->sync_service = $sync_service;
@@ -75,7 +75,7 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 		update_option( '_wl_sync_background_process_started', time(), true );
 		update_option( '_wl_sync_background_process_updated', time(), true );
 
-		$this->context->set_state( Action_Scheduler_Sync_Background_Process::STATE_STARTED );
+		$this->context->set_state( Sync_Background_Process::STATE_STARTED );
 
 		$this->resume();
 	}

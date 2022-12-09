@@ -7,7 +7,7 @@ use Wordlift\Common\Background_Process\Action_Scheduler\State;
 use Wordlift\Dataset\Sync_Object_Adapter_Factory;
 use Wordlift\Dataset\Sync_Service;
 
-class Action_Scheduler_Sync_Background_Process extends Action_Scheduler_Background_Process {
+class Sync_Background_Process extends Action_Scheduler_Background_Process {
 
 	const STATE_STARTED = 'started';
 	const STATE_STOPPED = 'stopped';
