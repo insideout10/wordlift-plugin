@@ -2,26 +2,17 @@
 
 namespace Wordlift\Dataset\Background;
 
+use Wordlift\Common\Background_Process\Action_Scheduler\Action_Scheduler_Background_Process;
+use Wordlift\Common\Background_Process\Action_Scheduler\State;
 use Wordlift\Dataset\Sync_Object_Adapter_Factory;
 use Wordlift\Dataset\Sync_Service;
 
-/**
- * Class Sync_Background_Process
- *
- * The background process has the following states:
- *  - STOPPING
- *  - STOPPED
- *  - STARTING
- *  - STARTED
- *
- * @package Wordlift\Dataset\Background
- */
-class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
+class Sync_Background_Process extends Action_Scheduler_Background_Process {
 
 	const STATE_STARTED = 'started';
 	const STATE_STOPPED = 'stopped';
 
-	protected $action = 'wl_dataset__sync';
+	const HOOK_NAME = 'wl_dataset__sync';
 
 	/**
 	 * @var Sync_Service
@@ -32,11 +23,6 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 	 * @var Sync_Object_Adapter_Factory
 	 */
 	private $sync_object_adapter_factory;
-
-	/**
-	 * @var \Wordlift_Log_Service
-	 */
-	private $log;
 
 	/**
 	 * @var Sync_Background_Process_State
@@ -50,10 +36,7 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
 	 */
 	public function __construct( $sync_service, $sync_object_adapter_factory ) {
-		parent::__construct();
-
-		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
-
+		parent::__construct( self::HOOK_NAME, 'wordlift' );
 		$this->sync_service                = $sync_service;
 		$this->sync_object_adapter_factory = $sync_object_adapter_factory;
 
@@ -63,37 +46,15 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 		} else {
 			$this->state = new Sync_Background_Process_Stopped_State( $this );
 		}
-
 	}
 
-	/**
-	 * This function is called:
-	 *  - To start a new Synchronization, by passing a {@link Sync_Start_Message} instance.
-	 *  - To synchronize a post, by passing a numeric ID.
-	 *
-	 * This function returns the parameter for the next call or NULL if there are no more posts to process.
-	 *
-	 * @param mixed $item Queue item to iterate over.
-	 *
-	 * @return int[]|false The next post IDs or false if there are no more.
-	 */
-	protected function task( $item ) {
-
-		return $this->state->task( $item );
-	}
-
-	/**
-	 * Transition to the started state.
-	 */
 	public function start() {
 		$this->state->leave();
 		$this->state = new Sync_Background_Process_Started_State( $this, $this->sync_service, $this->sync_object_adapter_factory );
 		$this->state->enter();
+		$this->schedule();
 	}
 
-	/**
-	 * Transition to the stopped state.
-	 */
 	public function stop() {
 		$this->state->leave();
 		$this->state = new Sync_Background_Process_Stopped_State( $this );
@@ -101,7 +62,23 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 	}
 
 	public function resume() {
+		$this->schedule();
 		$this->state->resume();
+	}
+
+	public function do_task( $args ) {
+
+		// Action scheduler might have pending tasks which can call this method.
+		// So we need to check if the task should run or not
+		if ( self::STATE_STOPPED === $this->get_state() ) {
+			return State::complete();
+		}
+
+		$result = $this->state->task( $args );
+		if ( ! $result->has_next() ) {
+			$this->stop();
+		}
+		return $result;
 	}
 
 	/**
