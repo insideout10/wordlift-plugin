@@ -14,7 +14,7 @@ class Sync_Background_Process_Wpjson_Endpoint {
 	/**
 	 * Sync_Background_Process_Wpjson_Endpoint constructor.
 	 *
-	 * @param Sync_Background_Process $sync_background_process
+	 * @param Background_Process $sync_background_process
 	 */
 	public function __construct( $sync_background_process ) {
 

@@ -35,7 +35,7 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 	/**
 	 * Sync_Background_Process_Started_State constructor.
 	 *
-	 * @param Sync_Background_Process     $context
+	 * @param Background_Process     $context
 	 * @param Sync_Service                $sync_service
 	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
 	 * @param bool                        $reset Whether to reset the counters
@@ -90,7 +90,7 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function task( $args ) {
-
+		error_log("started state task() called");
 		$offset     = get_option( '_wl_sync_background_process_offset' );
 		$stage      = get_option( '_wl_sync_background_process_stage' );
 		$counts     = get_option( '_wl_sync_background_process_count' );

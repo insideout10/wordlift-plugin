@@ -5,23 +5,13 @@ namespace Wordlift\Dataset\Background;
 use Wordlift\Dataset\Sync_Object_Adapter_Factory;
 use Wordlift\Dataset\Sync_Service;
 
-/**
- * Class Sync_Background_Process
- *
- * The background process has the following states:
- *  - STOPPING
- *  - STOPPED
- *  - STARTING
- *  - STARTED
- *
- * @package Wordlift\Dataset\Background
- */
-class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process implements Background_Process {
+class Cron_Background_Process implements Background_Process {
 
+	private $queue      = array();
 	const STATE_STARTED = 'started';
 	const STATE_STOPPED = 'stopped';
 
-	protected $action = 'wl_dataset__sync';
+	const HOOK_NAME = 'wl_dataset__sync';
 
 	/**
 	 * @var Sync_Service
@@ -43,14 +33,31 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process imp
 	 */
 	private $state;
 
+	public function push_to_queue( $data ) {
+
+		$this->queue[] = $data;
+
+		return $this;
+	}
+
+	public function save() {
+		return $this;
+	}
+
+	public function dispatch() {
+		if ( count( $this->queue ) > 0 ) {
+			$this->queue = array();
+			$this->schedule();
+		}
+	}
+
 	/**
 	 * Sync_Background_Process constructor.
 	 *
-	 * @param Sync_Service                $sync_service A {@link Sync_Service} instance providing the supporting functions to this background process.
+	 * @param Sync_Service $sync_service A {@link Sync_Service} instance providing the supporting functions to this background process.
 	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
 	 */
 	public function __construct( $sync_service, $sync_object_adapter_factory ) {
-		parent::__construct();
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
@@ -63,6 +70,8 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process imp
 		} else {
 			$this->state = new Sync_Background_Process_Stopped_State( $this );
 		}
+
+		add_action( self::HOOK_NAME, array( $this, 'task' ) );
 
 	}
 
@@ -77,9 +86,23 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process imp
 	 *
 	 * @return int[]|false The next post IDs or false if there are no more.
 	 */
-	protected function task( $item ) {
+	public function task(  ) {
+		error_log("task() called from cron");
+		try {
+			$result = $this->state->task( array() );
 
-		return $this->state->task( $item );
+			if ( $result ) {
+				$this->schedule();
+				var_dump( "running method" );
+			}
+
+		} catch ( \Exception $e ) {
+
+		}
+	}
+
+	public function cancel_process() {
+		$this->stop();
 	}
 
 	/**
@@ -89,6 +112,7 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process imp
 		$this->state->leave();
 		$this->state = new Sync_Background_Process_Started_State( $this, $this->sync_service, $this->sync_object_adapter_factory );
 		$this->state->enter();
+		$this->schedule();
 	}
 
 	/**
@@ -98,9 +122,11 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process imp
 		$this->state->leave();
 		$this->state = new Sync_Background_Process_Stopped_State( $this );
 		$this->state->enter();
+		wp_clear_scheduled_hook( self::HOOK_NAME );
 	}
 
 	public function resume() {
+		$this->schedule();
 		$this->state->resume();
 	}
 
@@ -130,4 +156,11 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process imp
 		return $this->state->get_info();
 	}
 
+	/**
+	 * @return void
+	 */
+	private function schedule() {
+		error_log("scheduling task");
+		wp_schedule_single_event( time(), self::HOOK_NAME );
+	}
 }
