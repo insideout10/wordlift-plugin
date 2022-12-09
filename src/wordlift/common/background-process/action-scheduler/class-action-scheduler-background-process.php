@@ -24,7 +24,6 @@ abstract class Action_Scheduler_Background_Process {
 	public function schedule( $args = array() ) {
 
 		as_enqueue_async_action( $this->hook, $args, $this->group );
-		error_log( "scheduled action for hook " . $this->hook );
 
 	}
 
@@ -34,7 +33,6 @@ abstract class Action_Scheduler_Background_Process {
 
 	public function task( $args = array() ) {
 		$state = $this->do_task( $args );
-		error_log( 'do_task returned state ' . var_export( $state, true ) );
 		if ( $state->has_next() ) {
 			$this->schedule( $state->get_args() );
 		}
