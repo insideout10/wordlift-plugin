@@ -3,6 +3,7 @@
 
 FILES=$(git diff --cached --name-only --diff-filter=ACMR -- '***.php' | sed 's| |\\ |g')
 
+## TODO: enable precommit hook.
 
 #if [ -n "$FILES" ]; then
 #  ./vendor/bin/phpcbf --standard=phpcs.xml.dist "$FILES"
