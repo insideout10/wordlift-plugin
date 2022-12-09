@@ -2,10 +2,12 @@
 
 namespace Wordlift\Dataset\Background;
 
+use Wordlift\Common\Background_Process\Action_Scheduler\State;
+
 class Sync_Background_Process_Stopped_State extends Abstract_Sync_Background_Process_State {
 
 	/**
-	 * @var Sync_Background_Process
+	 * @var Action_Scheduler_Sync_Background_Process
 	 */
 	private $context;
 
@@ -26,9 +28,9 @@ class Sync_Background_Process_Stopped_State extends Abstract_Sync_Background_Pro
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function task( $item ) {
 
-		$this->context->cancel_process();
+		$this->context->unschedule();
 
-		return false;
+		return State::complete();
 	}
 
 }

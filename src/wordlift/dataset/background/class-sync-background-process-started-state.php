@@ -2,6 +2,7 @@
 
 namespace Wordlift\Dataset\Background;
 
+use Wordlift\Common\Background_Process\Action_Scheduler\State;
 use Wordlift\Dataset\Background\Stages\Sync_Background_Process_Posts_Stage;
 use Wordlift\Dataset\Background\Stages\Sync_Background_Process_Stage;
 use Wordlift\Dataset\Background\Stages\Sync_Background_Process_Terms_Stage;
@@ -12,7 +13,7 @@ use Wordlift\Dataset\Sync_Service;
 class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Process_State {
 
 	/**
-	 * @var Sync_Background_Process
+	 * @var Action_Scheduler_Sync_Background_Process
 	 */
 	private $context;
 
@@ -35,7 +36,7 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 	/**
 	 * Sync_Background_Process_Started_State constructor.
 	 *
-	 * @param Background_Process     $context
+	 * @param Action_Scheduler_Sync_Background_Process     $context
 	 * @param Sync_Service                $sync_service
 	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
 	 * @param bool                        $reset Whether to reset the counters
@@ -80,14 +81,18 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 	}
 
 	public function resume() {
-		$this->context->push_to_queue( true );
-		$this->context->save()->dispatch();
+		$this->context->schedule();
 	}
 
 	public function leave() {
 		$this->context->set_state( null );
 	}
 
+	/**
+	 * @param $args
+	 *
+	 * @return State
+	 */
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function task( $args ) {
 		error_log("started state task() called");
@@ -112,7 +117,7 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 		if ( ( $offset + $batch_size ) < $counts[ $stage ] ) {
 			update_option( '_wl_sync_background_process_offset', $offset + $batch_size, true );
 
-			return true;
+			return State::items_in_queue();
 		}
 
 		// Increase the stage.
@@ -120,13 +125,12 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 			update_option( '_wl_sync_background_process_stage', $stage + 1, true );
 			update_option( '_wl_sync_background_process_offset', 0, true );
 
-			return true;
+			return State::items_in_queue();
 		}
 
-		// Stop processing.
-		$this->context->stop();
 
-		return false;
+
+		return State::complete();
 	}
 
 	/**

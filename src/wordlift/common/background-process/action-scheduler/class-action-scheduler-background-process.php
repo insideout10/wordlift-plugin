@@ -31,7 +31,7 @@ abstract class Action_Scheduler_Background_Process {
 		as_unschedule_all_actions( $this->hook );
 	}
 
-	public function task( $args ) {
+	public function task( $args = array() ) {
 		$state = $this->do_task( $args );
 		if ( $state->has_next() ) {
 			$this->schedule( $state->get_args() );

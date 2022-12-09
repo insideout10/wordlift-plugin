@@ -1,6 +1,7 @@
 <?php
 
 use Wordlift\Api\Default_Api_Service;
+use Wordlift\Dataset\Background\Action_Scheduler_Sync_Background_Process;
 use Wordlift\Dataset\Background\Test_Background_Process;
 use Wordlift\Dataset\Background\Sync_Background_Process;
 use Wordlift\Dataset\Background\Sync_Background_Process_Wpjson_Endpoint;
@@ -45,7 +46,7 @@ if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
 	// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	if ( apply_filters( 'wl_feature__enable__sync-background', false ) ) {
 		// Set up the sync background process.
-		$sync_background_process = new Test_Background_Process( $sync_service, $sync_object_adapter_factory );
+		$sync_background_process = new Action_Scheduler_Sync_Background_Process( $sync_service, $sync_object_adapter_factory );
 		new Sync_Background_Process_Wpjson_Endpoint( $sync_background_process );
 		new Sync_Page();
 	}

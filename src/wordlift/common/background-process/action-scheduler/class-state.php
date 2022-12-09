@@ -20,5 +20,13 @@ class State {
 		return $this->args;
 	}
 
+	public static function complete() {
+		return new self( false, array() );
+	}
+
+	public static function items_in_queue( $args = array() ) {
+		return new self( true, $args );
+	}
+
 
 }
