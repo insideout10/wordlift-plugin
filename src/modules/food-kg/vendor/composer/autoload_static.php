@@ -6,29 +6,35 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit718e370ed095fd597a1f1d468c2b59f4
 {
-    public static $prefixLengthsPsr4 = array (
-        'W' => 
-        array (
-            'Wordlift\\Modules\\Food_Kg\\' => 25,
-        ),
-    );
-
-    public static $prefixDirsPsr4 = array (
-        'Wordlift\\Modules\\Food_Kg\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/includes',
-        ),
-    );
-
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Wordlift\\Modules\\Food_Kg\\Admin\\Download_Ingredients_Data' => __DIR__ . '/../..' . '/includes/admin/Download_Ingredients_Data.php',
+        'Wordlift\\Modules\\Food_Kg\\Admin\\Full_Page_Delegate' => __DIR__ . '/../..' . '/includes/admin/Full_Page_Delegate.php',
+        'Wordlift\\Modules\\Food_Kg\\Admin\\Ingredients_Full_Page_Delegate' => __DIR__ . '/../..' . '/includes/admin/Ingredients_Full_Page_Delegate.php',
+        'Wordlift\\Modules\\Food_Kg\\Admin\\Ingredients_List_Table' => __DIR__ . '/../..' . '/includes/admin/Ingredients_List_Table.php',
+        'Wordlift\\Modules\\Food_Kg\\Admin\\Ingredients_Modal_Page_Delegate' => __DIR__ . '/../..' . '/includes/admin/Ingredients_Modal_Page_Delegate.php',
+        'Wordlift\\Modules\\Food_Kg\\Admin\\Main_Ingredient_List_Table' => __DIR__ . '/../..' . '/includes/admin/Main_Ingredient_List_Table.php',
+        'Wordlift\\Modules\\Food_Kg\\Admin\\Main_Ingredient_Modal_Page_Delegate' => __DIR__ . '/../..' . '/includes/admin/Main_Ingredient_Modal_Page_Delegate.php',
+        'Wordlift\\Modules\\Food_Kg\\Admin\\Meta_Box' => __DIR__ . '/../..' . '/includes/admin/Meta_Box.php',
+        'Wordlift\\Modules\\Food_Kg\\Admin\\Page' => __DIR__ . '/../..' . '/includes/admin/Page.php',
+        'Wordlift\\Modules\\Food_Kg\\Admin\\Page_Delegate' => __DIR__ . '/../..' . '/includes/admin/Page_Delegate.php',
+        'Wordlift\\Modules\\Food_Kg\\Ingredients' => __DIR__ . '/../..' . '/includes/Ingredients.php',
+        'Wordlift\\Modules\\Food_Kg\\Ingredients_API' => __DIR__ . '/../..' . '/includes/Ingredients_API.php',
+        'Wordlift\\Modules\\Food_Kg\\Ingredients_Client' => __DIR__ . '/../..' . '/includes/Ingredients_Client.php',
+        'Wordlift\\Modules\\Food_Kg\\Ingredients_Taxonomy_Recipe_Lift_Strategy' => __DIR__ . '/../..' . '/includes/Ingredients_Taxonomy_Recipe_Lift_Strategy.php',
+        'Wordlift\\Modules\\Food_Kg\\Jsonld' => __DIR__ . '/../..' . '/includes/Jsonld.php',
+        'Wordlift\\Modules\\Food_Kg\\Main_Ingredient_Jsonld' => __DIR__ . '/../..' . '/includes/Main_Ingredient_Jsonld.php',
+        'Wordlift\\Modules\\Food_Kg\\Main_Ingredient_Recipe_Lift_Strategy' => __DIR__ . '/../..' . '/includes/Main_Ingredient_Recipe_Lift_Strategy.php',
+        'Wordlift\\Modules\\Food_Kg\\Module' => __DIR__ . '/../..' . '/includes/Module.php',
+        'Wordlift\\Modules\\Food_Kg\\Notices' => __DIR__ . '/../..' . '/includes/Notices.php',
+        'Wordlift\\Modules\\Food_Kg\\Preconditions' => __DIR__ . '/../..' . '/includes/Preconditions.php',
+        'Wordlift\\Modules\\Food_Kg\\Recipe_Lift_Strategy' => __DIR__ . '/../..' . '/includes/Recipe_Lift_Strategy.php',
+        'Wordlift\\Modules\\Food_Kg\\Services\\Ingredients' => __DIR__ . '/../..' . '/includes/services/Ingredients.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit718e370ed095fd597a1f1d468c2b59f4::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit718e370ed095fd597a1f1d468c2b59f4::$prefixDirsPsr4;
             $loader->classMap = ComposerStaticInit718e370ed095fd597a1f1d468c2b59f4::$classMap;
 
         }, null, ClassLoader::class);
