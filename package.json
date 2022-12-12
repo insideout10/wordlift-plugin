@@ -49,7 +49,8 @@
     "test:multisite": "./vendor/bin/phpunit -c phpunit-multisite.xml",
     "test:jest": "cd ./src-js/webpack/ && yarn install && yarn test",
     "test:php5.3-compat": "./vendor/bin/phpcs src/ --extensions=php --ignore=class-wordlift-entity-types-taxonomy-walker-5-3.php,autoload_static.php --standard=PHPCompatibilityWP --runtime-set testVersion 5.3",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "cypress:open": "node_modules/.bin/cypress open"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -102,6 +103,7 @@
     "babel-runtime": "6.26.0",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
     "css-loader": "0.28.4",
+    "cypress": "^12.0.2",
     "dotenv": "4.0.0",
     "eslint": "4.18.2",
     "eslint-config-react-app": "^2.0.0",
