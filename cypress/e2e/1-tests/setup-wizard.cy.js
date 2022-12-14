@@ -34,7 +34,7 @@ describe('Setup Wizard', () => {
 	it( 'Check if an invalid key is recognized as invalid', () => {
         cy.get(':nth-child(1) > :nth-child(1) > .btn-wrapper > .wl-default-action').click();
         cy.get(':nth-child(2) > :nth-child(1) > .btn-wrapper > .wl-default-action').click();
-        // cy.get('#key').clear('h');
+        cy.get('#key').clear();
         cy.get('#key').type('invalid-key');
 		cy.wait(300);
         cy.get('#key').should( 'have.class', 'invalid' );
@@ -43,7 +43,7 @@ describe('Setup Wizard', () => {
 	it( 'Check if an valid key is recognized as valid', () => {
         cy.get(':nth-child(1) > :nth-child(1) > .btn-wrapper > .wl-default-action').click();
         cy.get(':nth-child(2) > :nth-child(1) > .btn-wrapper > .wl-default-action').click();
-        // cy.get('#key').clear('h');
+        cy.get('#key').clear();
         cy.get('#key').type( Cypress.env('key') );
 		cy.wait(300);
         cy.get('#key').should( 'have.class', 'valid' );
