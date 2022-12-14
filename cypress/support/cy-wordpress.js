@@ -27,10 +27,10 @@ Cypress.Commands.add('inputFile', (selector, fileUrl, type = '') => {
 
 Cypress.Commands.add('login', ( username, password ) => {
     cy.visit('/wp-login.php');
-    cy.wait(1000);
+    cy.wait(500);
     cy.get('#user_login').type(username);
     cy.get('#user_pass').type(password);
-    cy.get('#loginform').submit().wait(1000);
+    cy.get('#loginform').submit().wait(500);
 
     cy.url().should('contain', '/wp-admin');
 });
