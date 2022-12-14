@@ -30,4 +30,13 @@ describe('Setup Wizard', () => {
 			expect(newUrl).to.contain('https://wordlift.io/pricing')
 		});
     });
+
+	it( 'Check if an invalid key is recognized as invalid', () => {
+        cy.get(':nth-child(1) > :nth-child(1) > .btn-wrapper > .wl-default-action').click();
+        cy.get(':nth-child(2) > :nth-child(1) > .btn-wrapper > .wl-default-action').click();
+        // cy.get('#key').clear('h');
+        cy.get('#key').type('invalid-key');
+		cy.wait(300);
+        cy.get('#key').should( 'have.class', 'invalid' );
+    });
 });
