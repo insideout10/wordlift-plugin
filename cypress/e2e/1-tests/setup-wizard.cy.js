@@ -66,4 +66,29 @@ describe('Setup Wizard', () => {
 			expect($el).to.contain('Country');
 		});
     });
+
+	it( 'Check if the country list contains several countries & Selecting country works', () => {
+        cy.get(':nth-child(1) > :nth-child(1) > .btn-wrapper > .wl-default-action').click();
+        cy.get(':nth-child(2) > :nth-child(1) > .btn-wrapper > .wl-default-action').click();
+        cy.get('#key').clear();
+        cy.get('#key').type( Cypress.env('key') );
+        cy.wait(300);
+        cy.get('#key').should( 'have.class', 'valid' ).then( () => {
+			cy.get('#btn-license-key-next').click();
+			cy.wait(300);
+		});
+        cy.get('#vocabulary').clear('vocabulary');
+        cy.get(':nth-child(4) > :nth-child(1) > .btn-wrapper > .wl-default-action').click();
+        cy.wait(200);
+        cy.get('#wl-country-code > option').should( 'have.length.greaterThan', 50 );
+
+        cy.get('#wl-country-code').select('bd');
+        cy.get('#wl-country-code').should( 'have.value', 'bd' );
+
+        cy.get(':nth-child(5) > :nth-child(1) > .btn-wrapper > .wl-default-action').click();
+		cy.wait(200);
+		cy.get(':nth-child(6) > :nth-child(1) > .page-title').then( ( $el ) => {
+			expect($el).to.contain('Publisher');
+		});
+    });
 });
