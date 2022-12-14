@@ -48,4 +48,22 @@ describe('Setup Wizard', () => {
 		cy.wait(300);
         cy.get('#key').should( 'have.class', 'valid' );
     });
+
+	it( 'Check if an empty vocabulary setting is accepted', () => {
+        cy.get(':nth-child(1) > :nth-child(1) > .btn-wrapper > .wl-default-action').click();
+        cy.get(':nth-child(2) > :nth-child(1) > .btn-wrapper > .wl-default-action').click();
+        cy.get('#key').clear();
+        cy.get('#key').type( Cypress.env('key') );
+        cy.wait(300);
+        cy.get('#key').should( 'have.class', 'valid' ).then( () => {
+			cy.get('#btn-license-key-next').click();
+			cy.wait(300);
+		});
+        cy.get('#vocabulary').clear('vocabulary');
+        cy.get(':nth-child(4) > :nth-child(1) > .btn-wrapper > .wl-default-action').click();
+		cy.wait(200);
+        cy.get(':nth-child(5) > :nth-child(1) > .page-title').then( ( $el ) => {
+			expect($el).to.contain('Country');
+		});
+    });
 });
