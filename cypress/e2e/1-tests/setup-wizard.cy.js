@@ -39,4 +39,13 @@ describe('Setup Wizard', () => {
 		cy.wait(300);
         cy.get('#key').should( 'have.class', 'invalid' );
     });
+
+	it( 'Check if an valid key is recognized as valid', () => {
+        cy.get(':nth-child(1) > :nth-child(1) > .btn-wrapper > .wl-default-action').click();
+        cy.get(':nth-child(2) > :nth-child(1) > .btn-wrapper > .wl-default-action').click();
+        // cy.get('#key').clear('h');
+        cy.get('#key').type( Cypress.env('key') );
+		cy.wait(300);
+        cy.get('#key').should( 'have.class', 'valid' );
+    });
 });
