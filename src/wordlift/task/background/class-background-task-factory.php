@@ -57,7 +57,7 @@ class Background_Task_Factory {
 	}
 
 	/**
-	 * @param Task $task
+	 * @param Task  $task
 	 * @param $route
 	 *
 	 * @return void

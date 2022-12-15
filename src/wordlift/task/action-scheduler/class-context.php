@@ -22,7 +22,6 @@ class Context {
 		$this->updated = $updated;
 	}
 
-
 	/**
 	 * @return int
 	 */
@@ -122,6 +121,5 @@ class Context {
 	public static function from_data( $data ) {
 		return new self( $data['count'], $data['offset'], $data['started'], $data['updated'] );
 	}
-
 
 }

@@ -10,6 +10,7 @@ use Wordlift\Task\Task;
 class Background_Task extends Action_Scheduler_Background_Process implements Background_Route_Task {
 	/**
 	 * The option prefix to store state.
+	 *
 	 * @var string $option_prefix
 	 */
 	private $option_prefix;
@@ -18,7 +19,6 @@ class Background_Task extends Action_Scheduler_Background_Process implements Bac
 	 */
 	private $task;
 
-
 	const STATE_STARTED = 'started';
 	const STATE_STOPPED = 'stopped';
 	/**
@@ -26,14 +26,12 @@ class Background_Task extends Action_Scheduler_Background_Process implements Bac
 	 */
 	private $batch_size;
 
-
 	public function __construct( $hook, $group, $task, $option_prefix, $batch_size = 5 ) {
 		parent::__construct( $hook, $group );
 		$this->task          = $task;
 		$this->option_prefix = $option_prefix;
 		$this->batch_size    = $batch_size;
 	}
-
 
 	public function do_task( $args ) {
 		if ( self::STATE_STOPPED === $this->get_process_state() ) {
