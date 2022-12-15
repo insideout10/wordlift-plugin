@@ -43,10 +43,19 @@ class Background_Task extends Action_Scheduler_Background_Process implements Bac
 		$this->task->tick( null, $context->get_data() + array( 'batch_size' => $this->batch_size ) );
 		$context->set_offset( $context->get_offset() + $this->batch_size )->set_updated( time() );
 		$this->set_info( $context );
-		return $context->get_offset() + $this->batch_size < $context->get_count() ? State::items_in_queue() : State::complete();
+
+		if ( $context->get_offset() + $this->batch_size < $context->get_count() ) {
+			return State::items_in_queue();
+		}
+		else {
+			$this->set_process_state(self::STATE_STOPPED);
+			return State::complete();
+		}
+
 	}
 
 	public function start() {
+		$this->delete_info();
 		$this->set_process_state( self::STATE_STARTED );
 		$this->schedule();
 	}
@@ -62,7 +71,7 @@ class Background_Task extends Action_Scheduler_Background_Process implements Bac
 	}
 
 	public function get_info() {
-		return $this->get_context()->get_data();
+		return $this->get_context()->get_data() + array( 'state' => $this->get_process_state() );
 	}
 
 	public function get_context() {
@@ -70,8 +79,9 @@ class Background_Task extends Action_Scheduler_Background_Process implements Bac
 			"{$this->option_prefix}_state",
 			null
 		);
+
 		if ( null === $data ) {
-			return Context::from( $this->task->starting() );
+			return Context::from( (int) $this->task->starting() );
 		}
 
 		return Context::from_data( $data );
@@ -86,11 +96,15 @@ class Background_Task extends Action_Scheduler_Background_Process implements Bac
 		update_option( "{$this->option_prefix}_state", $context->get_data() );
 	}
 
+	private function delete_info() {
+		delete_option("{$this->option_prefix}_state");
+	}
+
 	private function get_process_state() {
 		return get_option( "{$this->option_prefix}_action_scheduler_state", self::STATE_STOPPED );
 	}
 
-	private function set_process_state( $state ): void {
+	private function set_process_state( $state ) {
 		update_option( "{$this->option_prefix}_action_scheduler_state", $state );
 	}
 }
