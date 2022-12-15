@@ -101,6 +101,7 @@ class Context {
 			'updated' => $this->updated,
 			'started' => $this->started,
 			'offset'  => $this->offset,
+			'index'   => $this->offset,
 		);
 	}
 

@@ -42,7 +42,7 @@ class Background_Task extends Action_Scheduler_Background_Process implements Bac
 		$context = $this->get_context();
 		$this->task->tick( null, $context->get_data() + array( 'batch_size' => $this->batch_size ) );
 
-		if ( $context->get_offset() + $this->batch_size < $context->get_count() ) {
+		if ( ( $context->get_count() - $context->get_offset() ) >= 0 ) {
 			$context->set_offset( $context->get_offset() + $this->batch_size )->set_updated( time() );
 			$this->set_info( $context );
 			return State::items_in_queue();
