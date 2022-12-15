@@ -3,27 +3,90 @@
 namespace Wordlift\Task\Background\Action_Scheduler;
 
 use Wordlift\Common\Background_Process\Action_Scheduler\Action_Scheduler_Background_Process;
+use Wordlift\Common\Background_Process\Action_Scheduler\State;
 use Wordlift\Task\Background\Background_Route_Task;
+use Wordlift\Task\Task;
 
 class Background_Task extends Action_Scheduler_Background_Process implements Background_Route_Task {
+	/**
+	 * The option prefix to store state.
+	 * @var string $option_prefix
+	 */
+	private $option_prefix;
+	/**
+	 * @var Task
+	 */
+	private $task;
+
+
+	const STATE_STARTED = 'started';
+	const STATE_STOPPED = 'stopped';
+	/**
+	 * @var int
+	 */
+	private $batch_size;
+
+
+	public function __construct( $hook, $group, $task, $option_prefix, $batch_size = 5 ) {
+		parent::__construct( $hook, $group );
+		$this->task          = $task;
+		$this->option_prefix = $option_prefix;
+		$this->batch_size    = $batch_size;
+	}
+
 
 	public function do_task( $args ) {
-		// TODO: Implement do_task() method.
+		if ( self::STATE_STOPPED === $this->get_process_state() ) {
+			return State::complete();
+		}
+		$context = $this->get_info();
+		$this->task->tick( null, $context->get_data() + array( 'batch_size' => $this->batch_size ) );
+		$context->set_offset( $context->get_offset() + $this->batch_size )->set_updated( time() );
+		$this->set_info( $context );
+		return $context->get_offset() + $this->batch_size < $context->get_count() ? State::items_in_queue() : State::complete();
 	}
 
 	public function start() {
-		// TODO: Implement start() method.
+		$this->set_process_state( self::STATE_STARTED );
+		$this->schedule();
 	}
 
 	public function stop() {
-		// TODO: Implement stop() method.
+		$this->set_process_state( self::STATE_STOPPED );
+		$this->unschedule();
 	}
 
 	public function resume() {
-		// TODO: Implement resume() method.
+		$this->set_process_state( self::STATE_STARTED );
+		$this->schedule();
 	}
 
 	public function get_info() {
-		// TODO: Implement get_info() method.
+		$data = get_option(
+			"{$this->option_prefix}_state",
+			null
+		);
+		if ( null === $data ) {
+			return Context::from( $this->task->starting() );
+		}
+
+		return Context::from_data( $data );
+	}
+
+	/**
+	 * @param $context Context
+	 *
+	 * @return void
+	 */
+	public function set_info( $context ) {
+		update_option( "{$this->option_prefix}_state", $context->get_data() );
+	}
+
+	private function get_process_state() {
+		return get_option( "{$this->option_prefix}_action_scheduler_state", self::STATE_STOPPED );
+	}
+
+	private function set_process_state( $state ): void {
+		update_option( "{$this->option_prefix}_action_scheduler_state", $state );
 	}
 }
