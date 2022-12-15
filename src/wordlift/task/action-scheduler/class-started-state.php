@@ -2,9 +2,12 @@
 
 namespace Wordlift\Task\Background\Action_Scheduler;
 
-use Wordlift\Task\Background\Abstract_Background_Task_State;
+use Wordlift\Task\Background\Background_Task;
 
-class Started_State extends Abstract_Background_Task_State {
+class Started_State extends State {
+	public function __construct( $option_prefix ) {
+		parent::__construct( $option_prefix, Background_Task::STATE_STARTED );
+	}
 
 	public function enter() {
 		// TODO: Implement enter() method.
