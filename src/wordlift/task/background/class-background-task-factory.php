@@ -43,8 +43,17 @@ class Background_Task_Factory {
 	 * @return void
 	 * @throws Exception in case of invalid arguments.
 	 */
-	public static function create_action_scheduler_task( $task, $route, $page_id, $page_title) {
+	public static function create_action_scheduler_task( $hook, $group, $task, $route, $page_id, $page_title, $batch_size = 5 ) {
 		self::assertions( $task, $route );
+		$background_task       = new \Wordlift\Task\Background\Action_Scheduler\Background_Task(
+			$hook,
+			$group,
+			$task,
+			"_{$hook}_",
+			$batch_size
+		);
+		$background_task_route = Background_Task_Route::create( $background_task, $route );
+		Background_Task_Page::create( $page_title, $page_id, $background_task_route );
 	}
 
 	/**
