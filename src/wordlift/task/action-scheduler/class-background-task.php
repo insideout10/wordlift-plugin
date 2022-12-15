@@ -41,14 +41,13 @@ class Background_Task extends Action_Scheduler_Background_Process implements Bac
 		}
 		$context = $this->get_context();
 		$this->task->tick( null, $context->get_data() + array( 'batch_size' => $this->batch_size ) );
-		$context->set_offset( $context->get_offset() + $this->batch_size )->set_updated( time() );
-		$this->set_info( $context );
 
 		if ( $context->get_offset() + $this->batch_size < $context->get_count() ) {
+			$context->set_offset( $context->get_offset() + $this->batch_size )->set_updated( time() );
+			$this->set_info( $context );
 			return State::items_in_queue();
-		}
-		else {
-			$this->set_process_state(self::STATE_STOPPED);
+		} else {
+			$this->set_process_state( self::STATE_STOPPED );
 			return State::complete();
 		}
 
@@ -97,7 +96,7 @@ class Background_Task extends Action_Scheduler_Background_Process implements Bac
 	}
 
 	private function delete_info() {
-		delete_option("{$this->option_prefix}_state");
+		delete_option( "{$this->option_prefix}_state" );
 	}
 
 	private function get_process_state() {
