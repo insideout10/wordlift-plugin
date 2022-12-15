@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Task\Background\Action_Scheduler;
+namespace Wordlift\Task\Action_Scheduler;
 
 use Wordlift\Common\Background_Process\Action_Scheduler\Action_Scheduler_Background_Process;
 use Wordlift\Common\Background_Process\Action_Scheduler\State;
@@ -39,7 +39,7 @@ class Background_Task extends Action_Scheduler_Background_Process implements Bac
 		if ( self::STATE_STOPPED === $this->get_process_state() ) {
 			return State::complete();
 		}
-		$context = $this->get_info();
+		$context = $this->get_context();
 		$this->task->tick( null, $context->get_data() + array( 'batch_size' => $this->batch_size ) );
 		$context->set_offset( $context->get_offset() + $this->batch_size )->set_updated( time() );
 		$this->set_info( $context );
@@ -62,6 +62,10 @@ class Background_Task extends Action_Scheduler_Background_Process implements Bac
 	}
 
 	public function get_info() {
+		return $this->get_context()->get_data();
+	}
+
+	public function get_context() {
 		$data = get_option(
 			"{$this->option_prefix}_state",
 			null

@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Task\Background\Action_Scheduler;
+namespace Wordlift\Task\Action_Scheduler;
 
 class Context {
 
@@ -96,7 +96,12 @@ class Context {
 	}
 
 	public function get_data() {
-		return (array) $this;
+		return array(
+			'count'   => $this->count,
+			'updated' => $this->updated,
+			'started' => $this->started,
+			'offset'  => $this->offset,
+		);
 	}
 
 	/**

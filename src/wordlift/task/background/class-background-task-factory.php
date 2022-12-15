@@ -45,7 +45,7 @@ class Background_Task_Factory {
 	 */
 	public static function create_action_scheduler_task( $hook, $group, $task, $route, $page_id, $page_title, $batch_size = 5 ) {
 		self::assertions( $task, $route );
-		$background_task       = new \Wordlift\Task\Background\Action_Scheduler\Background_Task(
+		$background_task       = new \Wordlift\Task\Action_Scheduler\Background_Task(
 			$hook,
 			$group,
 			$task,
