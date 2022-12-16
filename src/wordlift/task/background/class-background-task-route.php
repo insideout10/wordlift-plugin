@@ -11,7 +11,7 @@ class Background_Task_Route {
 	const VERSION_STRING = 'wordlift/v1';
 
 	/**
-	 * @var Background_Task
+	 * @var Background_Route_Task
 	 */
 	private $background_task;
 
@@ -44,7 +44,9 @@ class Background_Task_Route {
 			$this->route_name,
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => array( $this->background_task, 'start' ),
+				'callback'            => function () {
+					return $this->background_task->start();
+				},
 				'permission_callback' => array( $this, 'permission_callback' ),
 			)
 		);
@@ -54,7 +56,9 @@ class Background_Task_Route {
 			$this->route_name,
 			array(
 				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => array( $this->background_task, 'get_info' ),
+				'callback'            => function () {
+					return $this->background_task->get_info();
+				},
 				'permission_callback' => array( $this, 'permission_callback' ),
 			)
 		);
@@ -64,7 +68,9 @@ class Background_Task_Route {
 			$this->route_name,
 			array(
 				'methods'             => WP_REST_Server::DELETABLE,
-				'callback'            => array( $this->background_task, 'stop' ),
+				'callback'            => function () {
+					return $this->background_task->stop();
+				},
 				'permission_callback' => array( $this, 'permission_callback' ),
 			)
 		);
@@ -74,7 +80,9 @@ class Background_Task_Route {
 			$this->route_name,
 			array(
 				'methods'             => 'PUT',
-				'callback'            => array( $this->background_task, 'resume' ),
+				'callback'            => function () {
+					return $this->background_task->resume();
+				},
 				'permission_callback' => array( $this, 'permission_callback' ),
 			)
 		);

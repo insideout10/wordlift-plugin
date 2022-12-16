@@ -6,8 +6,11 @@ window.addEventListener("load", function () {
     const updateProgressBar = function () {
         wp.apiRequest({path: restPath}).success(
             (data) => {
+                const count = data.count;
+                // Prevent overflow when index exceeds offset.
+                const index = data.index > data.count ? data.count : data.index;
                 document.querySelector(".wl-task__progress__bar").style.width =
-                    (data.index * 100.0) / data.count + "%";
+                    (index * 100.0) / count + "%";
 
                 if ("started" === data.state) {
                     if (!startBtn.classList.contains("hidden"))
