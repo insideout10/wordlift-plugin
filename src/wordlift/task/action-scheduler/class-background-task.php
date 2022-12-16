@@ -33,6 +33,7 @@ class Background_Task extends Action_Scheduler_Background_Process implements Bac
 		$this->batch_size    = $batch_size;
 	}
 
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function do_task( $args ) {
 		if ( self::STATE_STOPPED === $this->get_process_state() ) {
 			return State::complete();

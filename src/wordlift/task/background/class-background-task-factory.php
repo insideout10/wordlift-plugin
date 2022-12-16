@@ -61,7 +61,7 @@ class Background_Task_Factory {
 	 * @param $route
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws Exception in case of invalid arguments.
 	 */
 	private static function assertions( Task $task, $route ) {
 		Assertions::is_a( $task, 'Wordlift\Task\Task' );
