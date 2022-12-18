@@ -65,6 +65,28 @@ Cypress.Commands.add('bulkActions', (selector) => {
     get('#doaction').click();
 });
 
+/**
+ * Create a post or page.
+ *
+ * @param {string} header The post title.
+ * @param {string} content The post content.
+ * @param {string} type The post type.
+ * @param {string} status The post status.
+ *
+ * @author: Mahbub Hasan Imon <mahbub@wordlift.io>
+ */
+Cypress.Commands.add('createPostOrPage', (header, content, type, status) => {
+    content = content || 'default';
+    type = type || 'post';
+    status = 'publish' === status ? '.editor-post-publish-button__button' : '.editor-post-save-draft';
+    cy.visit(`/wp-admin/post-new.php?post_type=${type}`).
+    get('.editor-post-title__input').type(header).
+    get('.wp-block-post-content').click().
+    get('.wp-block-post-content > p').type(content).wait(1000).
+    get(status).wait(500).click().wait(1000);
+});
+
+
 Cypress.Commands.add('createPost', (header, content) => {
     content = content || 'default';
     cy.visit('/wp-admin/post-new.php').
