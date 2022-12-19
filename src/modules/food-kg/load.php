@@ -71,7 +71,9 @@ function __wl_foodkg__load() {
 
 	// Main Ingredient Background Task.
 	$main_ingredient_recipe_lift = $container_builder->get( 'Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy' );
-	Background_Task_Factory::create(
+	Background_Task_Factory::create_action_scheduler_task(
+		'wl_main_ingredient_sync',
+		'wordlift',
 		new All_Posts_Task(
 			array( $main_ingredient_recipe_lift, 'process' ),
 			'wprm_recipe',
