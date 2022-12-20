@@ -58,3 +58,7 @@ wordlift-*.zip
 # Ignore Docker Sync files.
 .docker-sync/
 docker-compose-custom.yml
+
+# Cypress screenshots and videos.
+cypress/videos/
+cypress/screenshots/
