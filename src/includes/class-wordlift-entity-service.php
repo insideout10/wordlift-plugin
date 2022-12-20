@@ -408,7 +408,7 @@ class Wordlift_Entity_Service {
 		// Print all the currently set alternative labels.
 		foreach ( $this->get_alternative_labels( $post->ID ) as $alt_label ) {
 
-			echo wp_kses( $this->get_alternative_label_input( $alt_label ), wp_kses_allowed_html( 'post' ) );
+			echo wp_kses( $this->get_alternative_label_input( $alt_label ), Wordlift_UI_Service::get_template_allowed_html() );
 
 		};
 

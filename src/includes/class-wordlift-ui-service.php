@@ -21,6 +21,8 @@ class Wordlift_UI_Service {
 	 */
 	const TEMPLATE_HTML = '<script id="%s" type="text/template">%s</script>';
 
+
+
 	/**
 	 * Get the button HTML.
 	 *
@@ -83,26 +85,33 @@ class Wordlift_UI_Service {
 
 		echo wp_kses(
 			self::get_template_html( $element_id, $body ),
-			array(
-				'div'    => array( 'class' => array() ),
-				'label'  => array(
-					'class' => array(),
-					'id'    => array(),
-					'for'   => array(),
-				),
-				'input'  => array(
-					'name'  => array(),
-					'size'  => array(),
-					'value' => array(),
-					'id'    => array(),
-					'type'  => array(),
-				),
-				'button' => array( 'class' => array() ),
-				'script' => array(
-					'id'   => array(),
-					'type' => array(),
-				),
-			)
+			self::get_template_allowed_html()
+		);
+	}
+
+	/**
+	 * @return array[]
+	 */
+	public static function get_template_allowed_html() {
+		return array(
+			'div'    => array( 'class' => array() ),
+			'label'  => array(
+				'class' => array(),
+				'id'    => array(),
+				'for'   => array(),
+			),
+			'input'  => array(
+				'name'  => array(),
+				'size'  => array(),
+				'value' => array(),
+				'id'    => array(),
+				'type'  => array(),
+			),
+			'button' => array( 'class' => array() ),
+			'script' => array(
+				'id'   => array(),
+				'type' => array(),
+			),
 		);
 	}
 
