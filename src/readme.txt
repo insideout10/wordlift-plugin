@@ -143,7 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.40.5 (2022-12-19) =
+= 3.40.5 (2022-12-20) =
 * Fix [#1646](https://github.com/insideout10/wordlift-plugin/issues/1640): Dont show local entities on match terms screen.
 * Fix [#1648](https://github.com/insideout10/wordlift-plugin/issues/1648): Replace main ingredient background process with action scheduler.
 
