@@ -50,7 +50,8 @@
     "test:jest": "cd ./src-js/webpack/ && yarn install && yarn test",
     "test:php5.3-compat": "./vendor/bin/phpcs src/ --extensions=php --ignore=class-wordlift-entity-types-taxonomy-walker-5-3.php,autoload_static.php --standard=PHPCompatibilityWP --runtime-set testVersion 5.3",
     "prepare": "husky install",
-    "cypress:open": "node_modules/.bin/cypress open"
+    "cypress:open": "node_modules/.bin/cypress open",
+    "percy:run": "percy exec -- node_modules/.bin/cypress run"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -94,6 +95,8 @@
     "extends": "react-app"
   },
   "devDependencies": {
+    "@percy/cli": "^1.16.0",
+    "@percy/cypress": "^3.1.2",
     "autoprefixer": "7.1.2",
     "babel-core": "6.25.0",
     "babel-eslint": "7.2.3",

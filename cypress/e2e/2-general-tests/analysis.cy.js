@@ -8,5 +8,6 @@ describe( 'Analysis', () => {
 			cy.wrap( $el ).eq( 0 ).find( 'img' ).should( 'have.length', 0 );
 			cy.wrap( $el ).eq( 1 ).find( 'img' ).should( 'have.length', 1 );
 		});
+		cy.percySnapshot();
     });
 });
