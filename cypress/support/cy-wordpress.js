@@ -82,8 +82,17 @@ Cypress.Commands.add('createPostOrPage', (header, content, type, status) => {
     cy.visit(`/wp-admin/post-new.php?post_type=${type}`).
     get('.editor-post-title__input').type(header).
     get('.wp-block-post-content').click().
-    get('.wp-block-post-content > p').type(content).wait(1000).
-    get(status).wait(500).click().wait(1000);
+    get('.wp-block-post-content > p').type(content).wait(1000);
+
+    'publish' === status ?
+        cy.get('.editor-post-publish-button__button').click()
+            .wait(1000)
+            .get('.editor-post-publish-panel__header-publish-button > button').click()
+            .wait(1000)
+            .get('.editor-post-publish-panel__header > button').click()
+        : cy.get('.editor-post-save-draft').wait(500).click();
+    
+    cy.wait(500);
 });
 
 
