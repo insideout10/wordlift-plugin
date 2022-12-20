@@ -21,8 +21,6 @@ class Wordlift_UI_Service {
 	 */
 	const TEMPLATE_HTML = '<script id="%s" type="text/template">%s</script>';
 
-
-
 	/**
 	 * Get the button HTML.
 	 *
