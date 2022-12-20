@@ -20,7 +20,10 @@ class Jsonld {
 	public function __recipe_metadata( $metadata, $recipe ) {
 
 		$ingredients = get_the_terms( $recipe->id(), 'wprm_ingredient' );
-		$jsonlds     = array_filter( array_map( array( $this, '__term_id_to_jsonld' ), $ingredients ) );
+		if ( ! $ingredients ) {
+			return $metadata;
+		}
+		$jsonlds = array_filter( array_map( array( $this, '__term_id_to_jsonld' ), $ingredients ) );
 
 		if ( empty( $jsonlds ) ) {
 			return $metadata;
