@@ -101,7 +101,7 @@ class Wordlift_Key_Validation_Service {
 
 		$url = $res_body['url'];
 
-		$enabled_features = array_keys( $res_body['features'] );
+		$enabled_features = array_keys( array_filter( $res_body['features'] ) );
 		$plugin_features  = array( Entity_Type_Setter::STARTER_PLAN, Entity_Type_Setter::PROFESSIONAL_PLAN, Entity_Type_Setter::BUSINESS_PLAN );
 
 		if ( count( array_intersect( $enabled_features, $plugin_features ) ) === 0 ) {
