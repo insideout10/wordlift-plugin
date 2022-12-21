@@ -164,6 +164,19 @@ class Wordlift_Key_Validation_Service {
 		$home_url = get_option( 'home' );
 		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( $home_url ) );
 
+		$enabled_features = $res_body['features'];
+		$plugin_features  = array( Entity_Type_Setter::STARTER_PLAN, Entity_Type_Setter::PROFESSIONAL_PLAN, Entity_Type_Setter::BUSINESS_PLAN );
+
+		if ( count( array_intersect( $enabled_features, $plugin_features ) ) === 0 ) {
+			Wordlift_Configuration_Service::get_instance()->set_key( '' );
+			wp_send_json_success(
+				array(
+					'valid'   => false,
+					'message' => __( 'This key is not valid. Start building your Knowledge Graph by purchasing a WordLift subscription <a href=\'https://wordlift.io/pricing/\'>here</a>.', 'wordlift' ),
+				)
+			);
+		}
+
 		// If the URL isn't set or matches, then it's valid.
 		if ( $url === null || $url === $site_url ) {
 			// Invalidate the cache key
