@@ -12,6 +12,7 @@
 
 use Wordlift\Api\Default_Api_Service;
 use Wordlift\Cache\Ttl_Cache;
+use Wordlift\Entity_Type\Entity_Type_Setter;
 
 /**
  * Define the {@link Wordlift_Key_Validation_Service} class.
@@ -107,9 +108,17 @@ class Wordlift_Key_Validation_Service {
 
 		$url = $res_body['url'];
 
+		$enabled_features = $res_body['features'];
+		$plugin_features  = array( Entity_Type_Setter::STARTER_PLAN, Entity_Type_Setter::PROFESSIONAL_PLAN, Entity_Type_Setter::BUSINESS_PLAN );
+
+		if ( count( array_intersect( $enabled_features, $plugin_features ) ) === 0 ) {
+			return false;
+		}
+
 		// Considering that production URL may be filtered.
 		$home_url = get_option( 'home' );
 		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( $home_url ) );
+
 		if ( $url === null || $url === $site_url ) {
 			return true;
 		}
