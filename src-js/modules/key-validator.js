@@ -36,6 +36,9 @@ const KeyValidator = (selector) => {
       // Post the validation request.
       wp.ajax.post('wl_validate_key', {key: $this.val()})
         .done(function (data) {
+          if ( data.message) {
+              $this.next().html( data.message )
+          }
           // If the key is valid then set the process class.
           if (data && data.valid) {
             $this.addClass('valid')
