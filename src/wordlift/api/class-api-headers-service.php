@@ -16,10 +16,13 @@ class Api_Headers_Service {
 	 * @return array
 	 */
 	public function get_wp_headers() {
-		return array(
+		$is_plugin_subscription = apply_filters( 'wl_feature__enable__entity-types-professional', false ) ||
+										   apply_filters( 'wl_feature__enable__entity-types-business', false ) ||
+										   apply_filters( 'wl_feature__enable__entity-types-starter', false );
+		return $is_plugin_subscription ? array(
 			'X-Wordlift-Plugin-Wp-Admin' => untrailingslashit( get_admin_url() ),
 			'X-Wordlift-Plugin-Wp-Json'  => untrailingslashit( get_rest_url() ),
-		);
+		) : array();
 	}
 
 	/**
