@@ -53,7 +53,7 @@ class Recipe_Maker_Warning {
 			?>
 			<div class="notice notice-warning is-dismissible">
 				<h3><?php esc_html_e( 'WordLift', 'wordlift' ); ?></h3>
-				<p><?php esc_html_e( 'The following recipes didn\'t have minimum image size of 1200 x 1200 px', 'wordlift' ); ?></p>
+				<p><?php esc_html_e( 'The following recipes don\'t have minimum image size of 1200 x 1200 px. This size is required for channels like Google Discover', 'wordlift' ); ?></p>
 				<ol>
 					<?php
 					foreach ( $warnings as $warning ) {
