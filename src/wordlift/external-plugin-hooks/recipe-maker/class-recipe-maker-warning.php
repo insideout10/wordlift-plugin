@@ -18,8 +18,13 @@ class Recipe_Maker_Warning {
 
 	public function __construct( $recipe_maker_validation_service ) {
 		$this->recipe_maker_validation_service = $recipe_maker_validation_service;
+		add_action(
+			'load-post.php',
+			function () {
+				add_action( 'wordlift_admin_notices', array( $this, 'display_image_size_warning' ) );
+			}
+		);
 
-		add_action( 'wordlift_admin_notices', array( $this, 'display_image_size_warning' ) );
 	}
 
 	/**
@@ -54,7 +59,7 @@ class Recipe_Maker_Warning {
 					foreach ( $warnings as $warning ) {
 						$image_link = get_edit_post_link( $warning['image_id'] );
 						?>
-						<li><a href="<?php echo esc_attr( $image_link ); ?>"><?php echo esc_html( get_the_title( $warning['recipe_id'] ) ); ?></a></li>
+						<li><?php echo esc_html( get_the_title( $warning['recipe_id'] ) ); ?> <a href="<?php echo esc_attr( $image_link ); ?>"><?php esc_html_e( '[edit image]', 'wordlift' ); ?></a></li>
 						<?php
 					}
 					?>
