@@ -18,17 +18,13 @@ class Recipe_Maker_Warning {
 
 	public function __construct( $recipe_maker_validation_service ) {
 		$this->recipe_maker_validation_service = $recipe_maker_validation_service;
-		/**
-		 * Filter: wl_feature__enable__notices.
-		 *
-		 * @param bool whether the notices needs to be enabled or not.
-		 *
-		 * @return bool
-		 * @since 3.27.6
-		 */
-		if ( apply_filters( 'wl_feature__enable__notices', true ) ) {
-			add_action( 'admin_notices', array( $this, 'display_image_size_warning' ) );
-		}
+		add_action(
+			'load-post.php',
+			function () {
+				add_action( 'wordlift_admin_notices', array( $this, 'display_image_size_warning' ) );
+			}
+		);
+
 	}
 
 	/**
@@ -50,17 +46,21 @@ class Recipe_Maker_Warning {
 			return false;
 		}
 
-		$recipe_with_image_warnings = $this->get_warnings( $post_id );
+		$warnings = $this->get_warnings( $post_id );
 
-		if ( count( $recipe_with_image_warnings ) > 0 ) {
+		if ( count( $warnings ) > 0 ) {
 			// Show notification.
 			?>
 			<div class="notice notice-warning is-dismissible">
-				<p><?php echo wp_kses( __( 'The following recipes didnt have minimum image size of 1200 x 1200 px', 'wordlift' ), array() ); ?></p>
+				<h3><?php esc_html_e( 'WordLift', 'wordlift' ); ?></h3>
+				<p><?php esc_html_e( 'The following recipes didn\'t have minimum image size of 1200 x 1200 px', 'wordlift' ); ?></p>
 				<ol>
 					<?php
-					foreach ( $recipe_with_image_warnings as $post_id ) {
-						echo '<li>' . esc_html( get_the_title( $post_id ) ) . '</li>';
+					foreach ( $warnings as $warning ) {
+						$image_link = get_edit_post_link( $warning['image_id'] );
+						?>
+						<li><?php echo esc_html( get_the_title( $warning['recipe_id'] ) ); ?> <a href="<?php echo esc_attr( $image_link ); ?>"><?php esc_html_e( '[edit image]', 'wordlift' ); ?></a></li>
+						<?php
 					}
 					?>
 				</ol>
@@ -102,7 +102,10 @@ class Recipe_Maker_Warning {
 
 			if ( $image_height < 1200 || $image_width < 1200 ) {
 				// Image size not present in 1200 * 1200, show a warning.
-				$recipe_with_image_warnings[] = $recipe_id;
+				$recipe_with_image_warnings[] = array(
+					'recipe_id' => $recipe_id,
+					'image_id'  => $image_id,
+				);
 			}
 		}
 
