@@ -1,6 +1,7 @@
 describe( 'Analysis', () => {
+	const postTitle = 'Test Draft';
 	it( 'Analyze a WP draft', () => {
-        cy.createPostOrPage( 'Test Draft', 'Test Draft Content', 'post', 'draft' );
+        cy.createPostOrPage( postTitle, 'Test Draft Content', 'post', 'draft' );
         cy.get('button[aria-label="WordLift"]').click();
 		cy.wait(500);
 		cy.get('.wl-tab-wrap').find('ul li').then( ( $el ) => {
@@ -10,4 +11,9 @@ describe( 'Analysis', () => {
 		});
 		cy.percySnapshot();
     });
+
+	after( () => {
+		cy.visit('/wp-admin/edit.php?post_type=post');
+		cy.deletePost( postTitle, 'post' );
+	});
 });

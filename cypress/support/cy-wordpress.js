@@ -78,7 +78,6 @@ Cypress.Commands.add('bulkActions', (selector) => {
 Cypress.Commands.add('createPostOrPage', (header, content, type, status) => {
     content = content || 'default';
     type = type || 'post';
-    status = 'publish' === status ? '.editor-post-publish-button__button' : '.editor-post-save-draft';
     cy.visit(`/wp-admin/post-new.php?post_type=${type}`).
     get('.editor-post-title__input').type(header).
     get('.wp-block-post-content').click().

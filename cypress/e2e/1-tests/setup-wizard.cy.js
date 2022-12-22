@@ -118,12 +118,12 @@ describe('Setup Wizard', () => {
         cy.get('#name').should( 'have.class', 'valid' );
         cy.get('.add-logo').click();
         cy.get('#menu-item-browse').click();
-        cy.get('li[data-id="5"]').find('.thumbnail').click();
+        cy.get(`li[data-id="${Cypress.env('logo_id')}"]`).find('.thumbnail').click();
         cy.get('.media-toolbar-primary > .button').click();
         cy.get('.wl-logo-preview > .fa').click();
 		cy.get('.add-logo').click();
         cy.get('#menu-item-browse').click();
-        cy.get('li[data-id="5"]').find('.thumbnail').click();
+        cy.get(`li[data-id="${Cypress.env('logo_id')}"]`).find('.thumbnail').click();
         cy.get('.media-toolbar-primary > .button').click();
         cy.get('#btn-finish').click();
 
