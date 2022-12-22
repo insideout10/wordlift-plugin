@@ -59,6 +59,6 @@ wordlift-*.zip
 .docker-sync/
 docker-compose-custom.yml
 
-# Cypress screenshots and videos.
-cypress/videos/
-cypress/screenshots/
+# Cypress test run output
+/cypress/videos
+/cypress/screenshots
