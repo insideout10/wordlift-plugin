@@ -91,7 +91,7 @@ class Background_Task extends Action_Scheduler_Background_Process implements Bac
 	 * @return void
 	 */
 	public function set_info( $context ) {
-		update_option( "{$this->option_prefix}_state", $context->get_data() );
+		update_option( "{$this->option_prefix}_state", $context->get_data(), false );
 	}
 
 	private function delete_info() {
