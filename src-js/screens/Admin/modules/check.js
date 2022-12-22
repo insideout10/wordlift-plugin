@@ -18,7 +18,12 @@
 export default function check ($, ajax, title, postId, message, callback) {
   // Use `wp.ajax` to post a request to find an existing entity with the
   // specified title.
-  ajax.post('entity_by_title', {title: title}).done(function (response) {
+  ajax.post(
+    window['wlSettings'].ajax_url,
+    {
+      action: 'entity_by_title',
+      title: title
+    }).done(function (response) {
     // Prepare the html code to show in the error div.
     const html = $.map(response.results, function (item) {
       // If the item is the current post, ignore it.

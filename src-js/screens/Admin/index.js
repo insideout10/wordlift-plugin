@@ -135,7 +135,7 @@ import check from "./modules/check";
         $this,
         check,
         $,
-        wp.ajax,
+        jQuery,
         $this.val(),
         wlSettings.post_id,
         wlSettings.l10n["You already published an entity with the same name"],
