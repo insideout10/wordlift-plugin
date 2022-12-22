@@ -12,6 +12,7 @@
 
 use Wordlift\Api\Default_Api_Service;
 use Wordlift\Cache\Ttl_Cache;
+use Wordlift\Entity_Type\Entity_Type_Setter;
 
 /**
  * Define the {@link Wordlift_Key_Validation_Service} class.
@@ -89,6 +90,35 @@ class Wordlift_Key_Validation_Service {
 		return $response->get_response();
 	}
 
+	private function key_validation_request( $key ) {
+		$response = $this->get_account_info( $key );
+
+		if ( is_wp_error( $response ) || 2 !== (int) $response['response']['code'] / 100 ) {
+			throw new \Exception( __( 'An error occurred, please contact us at hello@wordlift.io', 'wordlift' ) );
+		}
+
+		$res_body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+		$url = $res_body['url'];
+
+		$enabled_features = array_keys( array_filter( $res_body['features'] ) );
+		$plugin_features  = array( Entity_Type_Setter::STARTER_PLAN, Entity_Type_Setter::PROFESSIONAL_PLAN, Entity_Type_Setter::BUSINESS_PLAN );
+
+		if ( count( array_intersect( $enabled_features, $plugin_features ) ) === 0 ) {
+			throw new \Exception( __( 'This key is not valid. Start building your Knowledge Graph by purchasing a WordLift subscription <a href=\'https://wordlift.io/pricing/\'>here</a>.', 'wordlift' ) );
+		}
+
+		// Considering that production URL may be filtered.
+		$home_url = get_option( 'home' );
+		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( $home_url ) );
+
+		if ( $url !== $site_url ) {
+			throw new \Exception( __( 'The key is already used on another site, please contact us at hello@wordlift.io to move the key to another site.', 'wordlift' ) );
+		}
+
+		return true;
+	}
+
 	/**
 	 * Check if key is valid
 	 *
@@ -97,24 +127,12 @@ class Wordlift_Key_Validation_Service {
 	 * @return bool
 	 */
 	public function is_key_valid( $key ) {
-
-		$response = $this->get_account_info( $key );
-
-		if ( is_wp_error( $response ) || 2 !== (int) $response['response']['code'] / 100 ) {
+		try {
+			$this->key_validation_request( $key );
+			return true;
+		} catch ( \Exception $e ) {
 			return false;
 		}
-		$res_body = json_decode( wp_remote_retrieve_body( $response ), true );
-
-		$url = $res_body['url'];
-
-		// Considering that production URL may be filtered.
-		$home_url = get_option( 'home' );
-		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( $home_url ) );
-		if ( $url === null || $url === $site_url ) {
-			return true;
-		}
-
-		return false;
 	}
 
 	/**
@@ -132,59 +150,27 @@ class Wordlift_Key_Validation_Service {
 			wp_send_json_error( 'The key parameter is required.' );
 		}
 
-		$response = $this->get_account_info( sanitize_text_field( wp_unslash( (string) $_POST['key'] ) ) );  //phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$this->ttl_cache_service->delete( 'is_key_valid' );
 
-		// If we got an error, return invalid.
-		if ( is_wp_error( $response ) || 2 !== (int) $response['response']['code'] / 100 ) {
-			wp_send_json_success(
-				array(
-					'valid'    => false,
-					'message'  => '',
-					'response' => $response,
-					'api_url'  => Default_Api_Service::get_instance()->get_base_url(),
-				)
-			);
-		}
-
-		$res_body = json_decode( wp_remote_retrieve_body( $response ), true );
-
-		// The URL stored in WLS. If this is the initial install the URL may be null.
-		$url = $res_body['url'];
-
-		// Considering that production URL may be filtered.
-		$home_url = get_option( 'home' );
-		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( $home_url ) );
-
-		// If the URL isn't set or matches, then it's valid.
-		if ( $url === null || $url === $site_url ) {
-			// Invalidate the cache key
-			$this->ttl_cache_service->delete( 'is_key_valid' );
+		try {
+			$this->key_validation_request( sanitize_text_field( wp_unslash( (string) $_POST['key'] ) ) ); //phpcs:ignore WordPress.Security.NonceVerification.Missing
 			wp_send_json_success(
 				array(
 					'valid'   => true,
 					'message' => '',
 				)
 			);
-		}
 
-		// If the URL doesn't match it means that this key has been configured elsewhere already.
-		if ( $url !== $site_url ) {
+		} catch ( \Exception $e ) {
 			Wordlift_Configuration_Service::get_instance()->set_key( '' );
 			wp_send_json_success(
 				array(
 					'valid'   => false,
-					'message' => __( 'The key is already used on another site, please contact us at hello@wordlift.io to move the key to another site.', 'wordlift' ),
+					'message' => $e->getMessage(),
+					'api_url' => Default_Api_Service::get_instance()->get_base_url(),
 				)
 			);
 		}
-
-		// Set a response with valid set to true or false according to the key validity with message.
-		wp_send_json_success(
-			array(
-				'valid'   => false,
-				'message' => __( 'An error occurred, please contact us at hello@wordlift.io', 'wordlift' ),
-			)
-		);
 	}
 
 	/**
