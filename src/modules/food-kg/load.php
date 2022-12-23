@@ -70,8 +70,8 @@ function __wl_foodkg__load() {
 	$main_ingredient_jsonld->register_hooks();
 
 	// Main Ingredient Background Task.
-	$main_ingredient_recipe_lift = $container_builder->get( 'Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy' );
-	Background_Task_Factory::create_action_scheduler_task(
+	$main_ingredient_recipe_lift     = $container_builder->get( 'Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy' );
+	$main_ingredient_background_task = Background_Task_Factory::create_action_scheduler_task(
 		'wl_main_ingredient_sync',
 		'wordlift',
 		new All_Posts_Task(
@@ -85,8 +85,8 @@ function __wl_foodkg__load() {
 	);
 
 	// Ingredients Taxonomy Background Task.
-	$ingredients_taxonomy_recipe_lift = $container_builder->get( 'Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy' );
-	Background_Task_Factory::create(
+	$ingredients_taxonomy_recipe_lift     = $container_builder->get( 'Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy' );
+	$ingredients_taxonomy_background_task = Background_Task_Factory::create(
 		new Single_Call_Task(
 			array( $ingredients_taxonomy_recipe_lift, 'run' ),
 			'sync-ingredients-taxonomy'
@@ -94,6 +94,14 @@ function __wl_foodkg__load() {
 		'/sync-ingredients-taxonomy',
 		'sync-ingredients-taxonomy',
 		__( 'Synchronize Ingredients Taxonomy', 'wordlift' )
+	);
+
+	add_action(
+		$module::RUN_EVENT,
+		function () use ( $main_ingredient_background_task, $ingredients_taxonomy_background_task ) {
+			$main_ingredient_background_task->start();
+			$ingredients_taxonomy_background_task->start();
+		}
 	);
 
 	if ( is_admin() ) {
