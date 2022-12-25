@@ -6,5 +6,10 @@ import './commands'
 import '@percy/cypress';
 
 beforeEach( () => {
+    if (Cypress.mocha.getRunner().suite.ctx.currentTest._testConfig.unverifiedTestConfig.skipBeforeEach) {
+        cy.log('skipping beforeEach hook')
+        return
+    }
+    
     cy.login( Cypress.env('wp_user'), Cypress.env('wp_pass') );
 });

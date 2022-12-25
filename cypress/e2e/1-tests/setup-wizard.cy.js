@@ -82,8 +82,8 @@ describe('Setup Wizard', () => {
         cy.wait(200);
         cy.get('#wl-country-code > option').should( 'have.length.greaterThan', 50 );
 
-        cy.get('#wl-country-code').select('bd');
-        cy.get('#wl-country-code').should( 'have.value', 'bd' );
+        cy.get('#wl-country-code').select('us');
+        cy.get('#wl-country-code').should( 'have.value', 'us' );
 
         cy.get(':nth-child(5) > :nth-child(1) > .btn-wrapper > .wl-default-action').click();
 		cy.wait(200);
@@ -107,8 +107,8 @@ describe('Setup Wizard', () => {
         cy.wait(200);
         cy.get('#wl-country-code > option').should( 'have.length.greaterThan', 50 );
 
-        cy.get('#wl-country-code').select('bd');
-        cy.get('#wl-country-code').should( 'have.value', 'bd' );
+        cy.get('#wl-country-code').select('us');
+        cy.get('#wl-country-code').should( 'have.value', 'us' );
 
         cy.get(':nth-child(5) > :nth-child(1) > .btn-wrapper > .wl-default-action').click();
         cy.get('[for="company"] > .radio').click();
