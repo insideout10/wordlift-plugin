@@ -22,7 +22,7 @@ class Background_Task_Factory {
 	 * @param string $page_id The page id.
 	 * @param string $page_title The page title.
 	 *
-	 * @return void
+	 * @return Background_Task
 	 * @throws Exception in case of invalid arguments.
 	 */
 	public static function create( $task, $route, $page_id, $page_title ) {
@@ -30,6 +30,7 @@ class Background_Task_Factory {
 		$background_task       = Background_Task::create( $task );
 		$background_task_route = Background_Task_Route::create( $background_task, $route );
 		Background_Task_Page::create( $page_title, $page_id, $background_task_route );
+		return $background_task;
 	}
 
 	/**
@@ -40,7 +41,7 @@ class Background_Task_Factory {
 	 * @param string $page_id The page id.
 	 * @param string $page_title The page title.
 	 *
-	 * @return void
+	 * @return \Wordlift\Task\Action_Scheduler\Background_Task
 	 * @throws Exception in case of invalid arguments.
 	 */
 	public static function create_action_scheduler_task( $hook, $group, $task, $route, $page_id, $page_title, $batch_size = 5 ) {
@@ -54,6 +55,7 @@ class Background_Task_Factory {
 		);
 		$background_task_route = Background_Task_Route::create( $background_task, $route );
 		Background_Task_Page::create( $page_title, $page_id, $background_task_route );
+		return $background_task;
 	}
 
 	/**

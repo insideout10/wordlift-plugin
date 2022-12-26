@@ -21,6 +21,7 @@
             <group>no-vocabulary-terms</group>
             <group>rel-item-id</group>
             <group>woocommerce-extension</group>
+            <group>food-kg</group>
         </exclude>
     </groups>
     <php>
