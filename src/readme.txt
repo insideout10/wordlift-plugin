@@ -143,6 +143,13 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.40.6 (2022-12-26) =
+* Fix [#1650](https://github.com/insideout10/wordlift-plugin/issues/1650): Fix synonyms not saved in classic editor.
+* Fix [#1654](https://github.com/insideout10/wordlift-plugin/issues/1654): Remove count column from entity types taxonomy.
+* Fix [#1651](https://github.com/insideout10/wordlift-plugin/issues/1651): Improve food kg notice.
+* Fix [#1656](https://github.com/insideout10/wordlift-plugin/issues/1656): When the unsupported key is added, it now displays an error message.
+* Fix [#1658](https://github.com/insideout10/wordlift-plugin/issues/1658): Fix food kg daily sync.
+
 = 3.40.5 (2022-12-20) =
 * Fix [#1646](https://github.com/insideout10/wordlift-plugin/issues/1640): Dont show local entities on match terms screen.
 * Fix [#1648](https://github.com/insideout10/wordlift-plugin/issues/1648): Replace main ingredient background process with action scheduler.
