@@ -68,7 +68,7 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 			$post_id = wl_shortcode_chord_most_referenced_entity_id();
 
 			if ( null === $post_id ) {
-				return 'WordLift Chord: no entities found.';
+				return __( 'WordLift Chord: no entities found.', 'wordlift' );
 			}
 
 			// Use the provided height if any, otherwise use a default of 200px.
