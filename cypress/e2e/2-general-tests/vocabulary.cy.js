@@ -5,6 +5,13 @@ describe( 'Vocabulary', () => {
         cy.wait(500);
         cy.get('button[aria-label="WordLift"]').click();
         cy.wait(1000);
+
+        cy.get('.fudeeb').find('li').then( ( $li ) => {
+            cy.get( $li ).each( ( li ) => {
+                cy.wrap( li ).click();
+            });
+        });
+
         cy.get('.wp-block-paragraph').type('{enter}').type('{enter}');
         cy.get('.wp-block-paragraph').last().type('/vocabulary');
 
@@ -19,6 +26,7 @@ describe( 'Vocabulary', () => {
             cy.get('.wl-vocabulary').should('be.visible');
         });
         
+        cy.wait(2000);
     });
 
     after( () => {

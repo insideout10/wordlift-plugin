@@ -5,6 +5,12 @@ describe( 'Chord', () => {
         cy.wait(500);
         cy.get('button[aria-label="WordLift"]').click();
         cy.wait(1000);
+        cy.get('.fudeeb').find('li').then( ( $li ) => {
+            cy.get( $li ).each( ( li ) => {
+                cy.wrap( li ).click();
+            });
+        });
+
         cy.get('.wp-block-paragraph').type('{enter}').type('{enter}');
         cy.get('.wp-block-paragraph').last().type('/chord');
 
@@ -18,7 +24,7 @@ describe( 'Chord', () => {
             cy.visit( `${href}?amp=1` );
             cy.get('.wl-chord').should('be.visible');
         });
-        
+        cy.wait(2000);
     });
 
     after( () => {

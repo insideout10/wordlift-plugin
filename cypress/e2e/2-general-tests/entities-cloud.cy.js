@@ -26,6 +26,7 @@ describe( 'Entities Cloud', () => {
             cy.get('.wl-related-entities-cloud').find('a').should('have.length.at.least', 2);
         });
         
+        cy.wait(2000);
     });
 
     after( () => {
