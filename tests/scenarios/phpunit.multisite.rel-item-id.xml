@@ -15,12 +15,9 @@
         </testsuite>
     </testsuites>
     <groups>
-        <exclude>
-            <group>ajax</group>
-            <group>no-editor</group>
-            <group>no-vocabulary-terms</group>
-            <group>woocommerce-extension</group>
-        </exclude>
+        <include>
+            <group>rel-item-id</group>
+        </include>
     </groups>
     <php>
         <ini name="display_errors" value="true"/>

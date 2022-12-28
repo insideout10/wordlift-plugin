@@ -151,6 +151,18 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		 */
 		add_filter( 'wpseo_sitemap_exclude_taxonomy', array( $this, 'wpseo_sitemap_exclude_taxonomy' ), 10, 2 );
 
+		$this->hide_posts_count();
+	}
+
+	private function hide_posts_count() {
+		$name = self::TAXONOMY_NAME;
+		add_filter(
+			"manage_edit-{$name}_columns",
+			function ( $columns ) {
+				unset( $columns['posts'] );
+				return $columns;
+			}
+		);
 	}
 
 	/**

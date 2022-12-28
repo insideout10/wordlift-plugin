@@ -6,5 +6,4 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Wordlift\\Modules\\Food_Kg\\' => array($baseDir . '/includes'),
 );

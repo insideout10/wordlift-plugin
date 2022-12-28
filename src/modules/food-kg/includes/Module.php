@@ -29,7 +29,6 @@ class Module {
 
 	public function register_hooks() {
 		add_action( 'wl_key_updated', array( $this, '__key_updated' ) );
-		add_action( self::RUN_EVENT, array( $this, '__run' ) );
 		add_action( 'wp_ajax_wl_food_kg__run', array( $this, '__run' ) );
 	}
 
@@ -52,12 +51,6 @@ class Module {
 			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 		} catch ( \Exception $e ) {
 			// Do nothing.
-		}
-	}
-
-	public function __run() {
-		foreach ( $this->recipe_lift_strategies as $recipe_lift_strategy ) {
-			$recipe_lift_strategy->run();
 		}
 	}
 

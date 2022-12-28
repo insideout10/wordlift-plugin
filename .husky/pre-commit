@@ -1,10 +1,10 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-FILES=$(git diff --cached --name-only --diff-filter=ACMR -- '***.php' | sed 's| |\\ |g')
+FILES=$(git diff --cached --name-only --diff-filter=ACMR -- '***.php' |  tr '\n' ' ' | paste -sd ' ')
 
-## TODO: enable precommit hook.
 
-#if [ -n "$FILES" ]; then
-#  ./vendor/bin/phpcbf --standard=phpcs.xml.dist "$FILES"
-#fi
+
+if [ -n "$FILES" ]; then
+  echo "$FILES" | xargs ./vendor/bin/phpcbf --standard=phpcs.xml.dist
+fi
