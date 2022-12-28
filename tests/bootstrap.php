@@ -43,7 +43,7 @@ echo version_compare( $wordpress_version, '5.2', '>=' ) ? "Loading polyfill libr
 	: "Not loading polyfill library since WordPress < 5.2\n";
 
 if ( version_compare( $wordpress_version, '5.2', '>=' ) ) {
-	require_once __DIR__ . "/polyfill/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php";
+	require_once __DIR__ . '/polyfill/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
 }
 
 function _manually_load_plugin() {
@@ -54,7 +54,18 @@ function _manually_load_plugin() {
 		add_filter( 'wl_feature__enable__include-exclude', $include_exclude_env, PHP_INT_MAX );
 	}
 
-	require dirname( __FILE__ ) . '/../src/wordlift.php';
+	require __DIR__ . '/../src/wordlift.php';
+
+	if ( defined( 'WL_TESTS_INSTALL_RECIPE_MAKER' ) ) {
+		if ( ! file_exists( ABSPATH . 'wp-content/plugins/wp-recipe-maker/' ) ) {
+			download( 'https://downloads.wordpress.org/plugin/wp-recipe-maker.zip', '/tmp/wp-recipe-maker.zip' );
+			unzip( '/tmp/wp-recipe-maker.zip', ABSPATH . 'wp-content/plugins/' );
+		}
+		update_option(
+			'active_plugins',
+			array_unique( array_merge( get_option( 'active_plugins' ), array( 'wp-recipe-maker/wp-recipe-maker.php' ) ) )
+		);
+	}
 
 	if ( version_compare( get_bloginfo( 'version' ), '5.5', '>=' ) ) {
 
@@ -73,7 +84,8 @@ function _manually_load_plugin() {
 			unzip( '/tmp/wpsso-wc-shipping-delivery-time.2.2.1.zip', ABSPATH . 'wp-content/plugins/' );
 		}
 
-		update_option( 'active_plugins',
+		update_option(
+			'active_plugins',
 			array(
 				'woocommerce/woocommerce.php',
 				'wpsso/wpsso.php',
@@ -96,25 +108,24 @@ require __DIR__ . '/bootstrap.features.php';
 
 require $_tests_dir . '/includes/bootstrap.php';
 
-require_once( 'functions.php' );
-require_once( 'class-wordlift-unittest-factory-for-entity.php' );
-require_once( 'class-wordlift-unit-test-case.php' );
+require_once 'functions.php';
+require_once 'class-wordlift-unittest-factory-for-entity.php';
+require_once 'class-wordlift-unit-test-case.php';
 /**
  * @since 3.30.0
  * We add a new test case for wordlift vocabulary
  */
-require_once( 'class-wordlift-vocabulary-unit-test-case.php' );
-require_once( 'class-wordlift-videoobject-unit-test-case.php' );
-require_once( 'class-wordlift-vocabulary-terms-unit-test-case.php' );
-require_once( 'class-wordlift-no-editor-analysis-unit-test-case.php' );
-require_once( 'class-wordlift-ajax-unit-test-case.php' );
-require_once( 'class-wordlift-test.php' );
+require_once 'class-wordlift-vocabulary-unit-test-case.php';
+require_once 'class-wordlift-videoobject-unit-test-case.php';
+require_once 'class-wordlift-vocabulary-terms-unit-test-case.php';
+require_once 'class-wordlift-no-editor-analysis-unit-test-case.php';
+require_once 'class-wordlift-ajax-unit-test-case.php';
+require_once 'class-wordlift-test.php';
 
 // Enable mappings for the tests
 if ( ! defined( 'WL_ENABLE_MAPPINGS' ) ) {
 	define( 'WL_ENABLE_MAPPINGS', true );
 }
-
 
 // Add a amp function to support tests
 if ( ! function_exists( 'is_amp_endpoint' ) ) {

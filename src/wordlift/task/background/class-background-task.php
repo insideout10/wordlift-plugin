@@ -5,7 +5,7 @@ namespace Wordlift\Task\Background;
 use Wordlift\Task\Task;
 use Wordlift_Plugin_WP_Background_Process;
 
-class Background_Task extends Wordlift_Plugin_WP_Background_Process {
+class Background_Task extends Wordlift_Plugin_WP_Background_Process implements Background_Route_Task {
 
 	const STATE_STARTED = 'started';
 	const STATE_STOPPED = 'stopped';

@@ -23,7 +23,7 @@ class Options_Cache implements Cache {
 
 	public function put( $cache_key, $value ) {
 
-		return update_option( $this->namespace . '__' . $cache_key, $value );
+		return update_option( $this->namespace . '__' . $cache_key, $value, false );
 
 	}
 

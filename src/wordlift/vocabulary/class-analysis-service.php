@@ -182,7 +182,7 @@ class Analysis_Service {
 	public function get_scope() {
 		$service = \Wordlift_Configuration_Service::get_instance();
 
-		return count( $service->get_network_dataset_ids() ) > 0 ? 'network-only' : 'cloud';
+		return count( $service->get_network_dataset_ids() ) > 0 ? 'network-only' : 'cloud-only';
 	}
 
 }
