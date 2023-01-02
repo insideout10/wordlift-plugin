@@ -100,23 +100,19 @@ class Wl_Metabox_Field_Date extends Wl_Metabox_Field {
 	public function html_wrapper_close() {
 
 		// Should the widget include time picker?
-		$timepicker  = wp_json_encode( $this->timepicker );
-		$date_format = wp_json_encode( $this->date_format );
-		$no_calendar = wp_json_encode( $this->no_calendar );
 
 		// Set up the datetimepicker.
 		//
 		// See https://github.com/trentrichardson/jQuery-Timepicker-Addon
 		// See in http://trentrichardson.com/examples/timepicker.
 
-		$js = wp_json_encode(
+		$js =
 			array(
-				'enableTime' => $timepicker,
-				'noCalendar' => $no_calendar,
+				'enableTime' => $this->timepicker,
+				'noCalendar' => $this->no_calendar,
 				'time_24hr'  => true,
-				'dateFormat' => $date_format,
-			)
-		);
+				'dateFormat' => $this->date_format,
+			);
 
         // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@ob_start();
@@ -124,7 +120,7 @@ class Wl_Metabox_Field_Date extends Wl_Metabox_Field {
 		<script type='text/javascript'>
 			(function ($) {
 				$(function () {
-					$('.<?php echo esc_js( $this->meta_name ); ?>[type=text]').flatpickr(<?php echo esc_html( $js ); ?>);
+					$('.<?php echo esc_js( $this->meta_name ); ?>[type=text]').flatpickr(<?php echo wp_json_encode( $js ); ?>);
 				});
 			})(jQuery);
 		</script>
