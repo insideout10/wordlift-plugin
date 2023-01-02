@@ -143,7 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.40.6 (2022-12-26) =
+= 3.40.6 (2023-01-02) =
 * Fix [#1650](https://github.com/insideout10/wordlift-plugin/issues/1650): Fix synonyms not saved in classic editor.
 * Fix [#1654](https://github.com/insideout10/wordlift-plugin/issues/1654): Remove count column from entity types taxonomy.
 * Fix [#1651](https://github.com/insideout10/wordlift-plugin/issues/1651): Improve food kg notice.
