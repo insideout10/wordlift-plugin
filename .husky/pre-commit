@@ -1,10 +1,8 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-FILES=$(git diff --cached --name-only --diff-filter=ACMR -- '***.php' |  tr '\n' ' ' | paste -sd ' ')
-
-
+FILES=$(git diff --cached --name-only --diff-filter=ACMR -- '***.php' | sed 's| |\\ |g' | tr '\n' ' ')
 
 if [ -n "$FILES" ]; then
-  echo "$FILES" | xargs ./vendor/bin/phpcbf --standard=phpcs.xml.dist
+  xargs ./vendor/bin/phpcbf --standard=phpcs.xml.dist "$FILES"
 fi
