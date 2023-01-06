@@ -115,7 +115,7 @@ class Wordlift_Key_Validation_Service {
 		$home_url = get_option( 'home' );
 		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( $home_url ) );
 
-		if ( empty( $url ) && $url !== $site_url ) {
+		if ( ! empty( $url ) && $url !== $site_url ) {
 			throw new \Exception( __( 'The key is already used on another site, please contact us at hello@wordlift.io to move the key to another site.', 'wordlift' ) );
 		}
 

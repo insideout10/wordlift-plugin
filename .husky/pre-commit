@@ -3,6 +3,6 @@
 
 FILES=$(git diff --cached --name-only --diff-filter=ACMR -- '***.php' | sed 's| |\\ |g' | tr '\n' ' ')
 
-if [ -n "$FILES" ]; then
-  xargs ./vendor/bin/phpcbf --standard=phpcs.xml.dist "$FILES"
-fi
+#if [ -n "$FILES" ]; then
+#  xargs ./vendor/bin/phpcbf --standard=phpcs.xml.dist "$FILES"
+#fi

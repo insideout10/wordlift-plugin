@@ -143,6 +143,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.40.8 (2023-01-06) =
+* Fix: Fix key displaying not valid.
+
 = 3.40.7 (2023-01-05) =
 * Fix: When installing WLP with a new key, we shouldn't check if the remote and local URLs match, since there's no remote URL.
 
