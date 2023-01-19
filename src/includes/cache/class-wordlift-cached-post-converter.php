@@ -66,7 +66,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * Wordlift_Cached_Post_Converter constructor.
 	 *
 	 * @param \Wordlift_Post_Converter $converter The {@link Wordlift_Post_Converter} implementation.
-	 * @param Ttl_Cache $cache The {@link Ttl_Cache} cache instance.
+	 * @param Ttl_Cache                $cache The {@link Ttl_Cache} cache instance.
 	 */
 	public function __construct( $converter, $cache ) {
 
@@ -233,7 +233,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 *
 	 * The function will prepare the provided results and will ask the {@link Ttl_Cache} to cache them.
 	 *
-	 * @param int $post_id The {@link WP_Post} id.
+	 * @param int   $post_id The {@link WP_Post} id.
 	 * @param array $references An array of references.
 	 * @param array $jsonld A JSON-LD structure.
 	 *
@@ -274,8 +274,8 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * Hook to meta changed for a {@link WP_Post}, will cause the cause to
 	 * invalidate.
 	 *
-	 * @param int $id The {@link WP_Post} meta id.
-	 * @param int $post_id The {@link WP_Post} id.
+	 * @param int    $id The {@link WP_Post} meta id.
+	 * @param int    $post_id The {@link WP_Post} id.
 	 * @param string $meta_key The meta key.
 	 *
 	 * @since 3.16.0
@@ -337,7 +337,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * When in Ajax, prints an http header with the information whether the
 	 * response is cached or not.
 	 *
-	 * @param int $post_id The {@link WP_Post} id.
+	 * @param int  $post_id The {@link WP_Post} id.
 	 * @param bool $cache Whether the response fragment is cached.
 	 *
 	 * @since 3.16.0

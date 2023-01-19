@@ -137,7 +137,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		 * @since 3.20.0
 		 */
 		$post_content = apply_filters( 'wl_post_content', $post->post_content, $post );
-		if ( ! empty( $post_content ) || in_array( 'Product', (array) $type ) ) {
+		if ( ! empty( $post_content ) || in_array( 'Product', (array) $type, true ) ) {
 			// We're setting the `mainEntityOfPage` to signal which one is the
 			// main entity for the specified URL. It might be however that the
 			// post/page is actually about another specific entity. How WL deals
@@ -155,7 +155,14 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			 *
 			 * @since 3.27.7
 			 */
-			if ( in_array( $type, array( 'Occupation', 'OccupationAggregationByEmployer' ), true ) ) {
+			if ( in_array(
+				$type,
+				array(
+					'Occupation',
+					'OccupationAggregationByEmployer',
+				),
+				true
+			) ) {
 				$jsonld['mainEntityOfPage'] = array(
 					'@type'        => 'WebPage',
 					'lastReviewed' => get_post_time( 'Y-m-d\TH:i:sP', true, $post, false ),
