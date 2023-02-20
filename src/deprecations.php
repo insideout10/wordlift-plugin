@@ -71,7 +71,7 @@ add_action( 'admin_enqueue_scripts', 'wordlift_admin_enqueue_scripts' );
 /**
  * Hooked to *wp_kses_allowed_html* filter, adds microdata attributes.
  *
- * @param array  $allowedtags The array with the currently configured elements and attributes.
+ * @param array $allowedtags The array with the currently configured elements and attributes.
  * @param string $context The context.
  *
  * @return array An array which contains allowed microdata attributes.
@@ -108,15 +108,15 @@ add_filter( 'wp_kses_allowed_html', 'wordlift_allowed_html', 10, 2 );
 function wl_get_image_urls( $post_id ) {
 
 	return Wordlift_Storage_Factory::get_instance()
-								   ->post_images()
-								   ->get( $post_id );
+	                               ->post_images()
+	                               ->get( $post_id );
 
 }
 
 /**
  * Get an attachment with the specified parent post ID and source URL.
  *
- * @param int    $parent_post_id The parent post ID.
+ * @param int $parent_post_id The parent post ID.
  * @param string $source_url The source URL.
  *
  * @return WP_Post|null A post instance or null if not found.
@@ -148,7 +148,7 @@ function wl_get_attachment_for_source_url( $parent_post_id, $source_url ) {
 /**
  * Set the source URL.
  *
- * @param int    $post_id The post ID.
+ * @param int $post_id The post ID.
  * @param string $source_url The source URL.
  */
 function wl_set_source_url( $post_id, $source_url ) {
@@ -199,7 +199,7 @@ function wl_replace_item_id_with_uri( $content ) {
 
 			// Get the post bound to that item ID (looking both in the 'official' URI and in the 'same-as' .
 			$post = Wordlift_Entity_Service::get_instance()
-										   ->get_entity_post_by_uri( $item_id );
+			                               ->get_entity_post_by_uri( $item_id );
 
 			// If no entity is found, continue to the next one.
 			if ( null === $post ) {

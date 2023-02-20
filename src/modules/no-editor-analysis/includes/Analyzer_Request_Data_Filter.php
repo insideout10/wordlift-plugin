@@ -5,7 +5,7 @@ namespace Wordlift\Modules\No_Editor_Analysis;
 class Analyzer_Request_Data_Filter {
 
 	public function register_hooks() {
-		add_action( 'wl_analyzer__request__data', array( $this, 'request__data' ) );
+		add_filter( 'wl_analyzer__request__data', array( $this, 'request__data' ) );
 	}
 
 	/**
@@ -22,7 +22,7 @@ class Analyzer_Request_Data_Filter {
 	 */
 	public function request__data( $data ) {
 		try {
-			$json = json_decode( wp_unslash( $data ), true );
+			$json = json_decode( $data, true );
 
 			// Check prerequisites.
 			if ( ! $this->should_load_content_from_webpage( $json ) ) {

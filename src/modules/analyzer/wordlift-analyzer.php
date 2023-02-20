@@ -45,7 +45,7 @@ function wl_ajax_analyze_action() {
 	}
 
 	wp_send_json_success( wl_analyze_content(
-		apply_filters( 'wl_analyzer__request__data', $data ),
+		apply_filters( 'wl_analyzer__request__data', wp_unslash( $data ) ),
 		'application/json; charset=' . strtolower( get_bloginfo( 'charset' ) )
 	) );
 

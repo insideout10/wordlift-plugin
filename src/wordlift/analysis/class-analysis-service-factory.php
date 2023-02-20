@@ -24,7 +24,7 @@ class Analysis_Service_Factory {
 
 		return apply_filters(
 			'wl_analysis_service_factory__get_instance',
-			V1_Analysis_Service::get_instance()
+			V2_Analysis_Service::get_instance()
 		);
 
 	}

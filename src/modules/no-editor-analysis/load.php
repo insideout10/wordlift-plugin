@@ -31,10 +31,6 @@ function __wl_no_editor_analysis__load() {
 	$request_data_Filter = $container_builder->get( 'Wordlift\Modules\No_Editor_Analysis\Analyzer_Request_Data_Filter' );
 	$request_data_Filter->register_hooks();
 
-	/** @var V2_Analysis_Client $v2_analysis_client */
-	$v2_analysis_client = $container_builder->get( 'Wordlift\Modules\No_Editor_Analysis\V2_Analysis_Client' );
-	$v2_analysis_client->register_hooks();
-
 }
 
 __wl_no_editor_analysis__load();
