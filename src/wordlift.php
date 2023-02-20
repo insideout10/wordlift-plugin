@@ -43,6 +43,7 @@ define( 'WORDLIFT_VERSION', '3.40.8' );
 require_once plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-scheduler.php';
 require_once __DIR__ . '/modules/common/load.php';
 require_once __DIR__ . '/modules/include-exclude/load.php';
+require_once __DIR__ . '/modules/no-editor-analysis/load.php';
 
 /**
  * Filter to disable WLP on any request, defaults to true.

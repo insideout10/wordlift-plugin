@@ -30162,6 +30162,9 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
         } else {
           data.scope = 'local';
         }
+        if (wlSettings.post_id != null) {
+          data.post_id = wlSettings.post_id;
+        }
       }
       return $q(function(resolve, reject) {
         return wp.ajax.post('wl_analyze', {

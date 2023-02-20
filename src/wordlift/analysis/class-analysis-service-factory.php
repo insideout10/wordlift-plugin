@@ -21,12 +21,12 @@ class Analysis_Service_Factory {
 	 * @return Analysis_Service
 	 */
 	public static function get_instance( $post_id ) {
-		// We want this analysis to happen only when the editor is not present.
-		if ( No_Editor_Analysis_Feature::can_no_editor_analysis_be_used( $post_id ) ) {
-			return No_Editor_Analysis_Service::get_instance();
-		}
 
-		return V1_Analysis_Service::get_instance();
+		return apply_filters(
+			'wl_analysis_service_factory__get_instance',
+			V1_Analysis_Service::get_instance()
+		);
+
 	}
 
 }

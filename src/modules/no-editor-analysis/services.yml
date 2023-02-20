@@ -1,0 +1,11 @@
+services:
+  Wordlift\Api\Api_Service:
+    factory: [ 'Wordlift\Api\Default_Api_Service', 'get_instance' ]
+    class: Wordlift\Api\Default_Api_Service
+
+  Wordlift\Modules\No_Editor_Analysis\Analyzer_Request_Data_Filter:
+    class: Wordlift\Modules\No_Editor_Analysis\Analyzer_Request_Data_Filter
+
+  Wordlift\Modules\No_Editor_Analysis\V2_Analysis_Client:
+    class: Wordlift\Modules\No_Editor_Analysis\V2_Analysis_Client
+    arguments: [ '@Wordlift\Api\Api_Service' ]

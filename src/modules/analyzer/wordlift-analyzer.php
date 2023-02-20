@@ -44,7 +44,10 @@ function wl_ajax_analyze_action() {
 		$data          = $filtered_data['data'];
 	}
 
-	wp_send_json_success( wl_analyze_content( $data, 'application/json; charset=' . strtolower( get_bloginfo( 'charset' ) ) ) );
+	wp_send_json_success( wl_analyze_content(
+		apply_filters( 'wl_analyzer__request__data', $data ),
+		'application/json; charset=' . strtolower( get_bloginfo( 'charset' ) )
+	) );
 
 }
 
@@ -87,27 +90,27 @@ function wl_analyze_content( $data, $content_type ) {
 	if ( ! apply_filters( 'wl_feature__enable__dataset', true ) ) {
 
 		return Analysis_Response_Ops_Factory::get_instance()
-											->create( $default_response, $post_id )
-											->make_entities_local()
-											->add_occurrences( $request_body['content'] )
-											->add_local_entities()
-											->get_json();
+		                                    ->create( $default_response, $post_id )
+		                                    ->make_entities_local()
+		                                    ->add_occurrences( $request_body['content'] )
+		                                    ->add_local_entities()
+		                                    ->get_json();
 	}
 
 	add_filter( 'wl_api_service_api_url_path', 'wl_use_analysis_on_api_wordlift_io' );
 
 	$json = Analysis_Service_Factory::get_instance( $post_id )
-									->get_analysis_response( $data, $content_type, $post_id );
+	                                ->get_analysis_response( $data, $content_type, $post_id );
 
 	remove_filter( 'wl_api_service_api_url_path', 'wl_use_analysis_on_api_wordlift_io' );
 
 	// If it's an error log it.
 	if ( is_wp_error( $json ) ) {
 		return Analysis_Response_Ops_Factory::get_instance()
-											->create( $default_response, $post_id )
-											->make_entities_local()
-											->add_occurrences( $request_body['content'] )
-											->get_json();
+		                                    ->create( $default_response, $post_id )
+		                                    ->make_entities_local()
+		                                    ->add_occurrences( $request_body['content'] )
+		                                    ->get_json();
 	}
 
 	/*
@@ -126,11 +129,11 @@ function wl_analyze_content( $data, $content_type ) {
 	}
 
 	return Analysis_Response_Ops_Factory::get_instance()
-										->create( $json, $post_id )
-										->make_entities_local()
-										->remove_excluded_entities( $excluded_uris )
-										->add_occurrences( $request_content )
-										->get_json();
+	                                    ->create( $json, $post_id )
+	                                    ->make_entities_local()
+	                                    ->remove_excluded_entities( $excluded_uris )
+	                                    ->add_occurrences( $request_content )
+	                                    ->get_json();
 
 }
 
