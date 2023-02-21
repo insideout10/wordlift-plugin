@@ -8,8 +8,6 @@
 
 namespace Wordlift\Analysis;
 
-use Wordlift\No_Editor_Analysis\No_Editor_Analysis_Feature;
-
 /**
  * Factory class to construct @link \Wordlift_Api_Service
  */

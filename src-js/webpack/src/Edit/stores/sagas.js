@@ -8,7 +8,7 @@
 /**
  * External dependencies
  */
-import { delay, put, select, takeEvery, takeLatest } from "redux-saga/effects";
+import {delay, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 /**
  * Internal dependencies
  */
@@ -20,8 +20,8 @@ import {
   TOGGLE_LINK
 } from "../constants/ActionTypes";
 import EditPostWidgetController from "../angular/EditPostWidgetController";
-import { getEntity } from "./selectors";
-import { toggleLinkSuccess } from "../actions";
+import {getEntity} from "./selectors";
+import {toggleLinkSuccess} from "../actions";
 import {
   addEntityRequest,
   addEntitySuccess,
@@ -39,29 +39,46 @@ import {doAction} from "@wordpress/hooks";
  */
 function* toggleEntity(payload) {
   const entity = yield select(getEntity, payload.entity.id);
-  EditPostWidgetController().$apply(EditPostWidgetController().onSelectedEntityTile(entity));
+  // @@todo
+  //
+  // $.ajax({
+  //   url: wpApiSettings.root + 'wordlift/v1/entities/1',
+  //   method: 'POST',
+  //   beforeSend: function (xhr) {
+  //     xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+  //   },
+  //   data: {
+  //     'title': 'Hello Moon'
+  //   }
+  // }).done(function (response) {
+  //   console.log(response);
+  // });
+
+  EditPostWidgetController().$apply(
+      EditPostWidgetController().onSelectedEntityTile(entity));
 }
 
-function* toggleLink({ entity }) {
+function* toggleLink({entity}) {
   const linkService = LinkServiceFactory.getInstance();
   // Toggle the link/no link on entity's occurrences.
   // Toggle the link on the occurrences.
   linkService.setLink(entity.occurrences, !entity.link);
 
   yield put(
-    toggleLinkSuccess({
-      id: entity.id,
-      link: linkService.getLink(entity.occurrences)
-    })
+      toggleLinkSuccess({
+        id: entity.id,
+        link: linkService.getLink(entity.occurrences)
+      })
   );
 }
 
-function* setCurrentEntity({ entity }) {
+function* setCurrentEntity({entity}) {
   // Call the `EditPostWidgetController` to set the current entity.
-  EditPostWidgetController().$apply(EditPostWidgetController().setCurrentEntity(entity, "entity"));
+  EditPostWidgetController().$apply(
+      EditPostWidgetController().setCurrentEntity(entity, "entity"));
 }
 
-function* addEntity({ payload }) {
+function* addEntity({payload}) {
   const ctrl = EditPostWidgetController();
   ctrl.$apply(() => {
     // Create the text annotation.
@@ -82,7 +99,7 @@ function* addEntity({ payload }) {
   yield put(addEntitySuccess());
 }
 
-function* createEntity({ payload }) {
+function* createEntity({payload}) {
   const ctrl = EditPostWidgetController();
 
   ctrl.$apply(ctrl.setCurrentEntity(undefined, undefined, payload));
@@ -94,14 +111,16 @@ export const getMainType = types => {
   for (let i = 0; i < window._wlEntityTypes.length; i++) {
     const type = window._wlEntityTypes[i];
 
-    if (-1 < types.indexOf(type.uri)) return type.slug;
+    if (-1 < types.indexOf(type.uri)) {
+      return type.slug;
+    }
   }
   return "thing";
 };
 
 let popover;
 
-function* handleEditorSelectionChanged({ payload }) {
+function* handleEditorSelectionChanged({payload}) {
   yield delay(300);
 
   console.log("handleEditorSelectionChanged", payload);
@@ -109,15 +128,20 @@ function* handleEditorSelectionChanged({ payload }) {
 
   // Get the selection. Bail out is the selection is collapsed (is just a caret).
   const selection = editor.selection;
-  if (selection.isCollapsed() || "" === selection.getContent({ format: "text" })) {
-    if (popover) popover.unmount();
+  if (selection.isCollapsed() || "" === selection.getContent(
+      {format: "text"})) {
+    if (popover) {
+      popover.unmount();
+    }
     return;
   }
 
   // Get the selection range and bail out if it's null.
   const range = selection.getRng();
   if (null == range) {
-    if (popover) popover.unmount();
+    if (popover) {
+      popover.unmount();
+    }
     return;
   }
 

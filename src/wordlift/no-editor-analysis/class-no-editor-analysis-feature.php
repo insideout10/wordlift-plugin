@@ -20,25 +20,26 @@ class No_Editor_Analysis_Feature {
 
 		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		return apply_filters( 'wl_feature__enable__no-editor-analysis', false )
-			&& (
-				// If the post doesnt have `editor` attribute
-				Post_Type::is_no_editor_analysis_enabled_for_post_type( get_post_type( $post_id ) )
-				// check if Divi is enabled, then we can use no editor analysis.
-				|| self::is_divi_page_builder_enabled( $post_id )
-				// Check if elementor is enabled, then we can use no editor analysis.
-				|| self::is_elementor_enabled( $post_id )
-				// Check if WP Bakery is enabled, then we can use no editor analysis.
-				|| self::is_wp_bakery_enabled( $post_id )
-				// Custom builders can hook in to this filter to enable no editor analysis.
-				/**
-				* @param $post_id
-				*
-				* @return bool | False by default.
-				* @since 3.33.0
-				* Filter name : wl_no_editor_analysis_should_be_enabled_for_post_id
-				*/
-				|| apply_filters( 'wl_no_editor_analysis_should_be_enabled_for_post_id', false, $post_id )
-			);
+		       && (
+			       // If the post doesnt have `editor` attribute
+			       Post_Type::is_no_editor_analysis_enabled_for_post_type( get_post_type( $post_id ) )
+			       // check if Divi is enabled, then we can use no editor analysis.
+			       || self::is_divi_page_builder_enabled( $post_id )
+			       // Check if elementor is enabled, then we can use no editor analysis.
+			       || self::is_elementor_enabled( $post_id )
+			       // Check if WP Bakery is enabled, then we can use no editor analysis.
+			       || self::is_wp_bakery_enabled( $post_id )
+			       // Custom builders can hook in to this filter to enable no editor analysis.
+			       /**
+			        * @param $post_id
+			        *
+			        * @return bool | False by default.
+			        * @since 3.33.0
+			        * Filter name : wl_no_editor_analysis_should_be_enabled_for_post_id
+			        */
+			       || apply_filters( 'wl_no_editor_analysis_should_be_enabled_for_post_id', false, $post_id )
+//			       || empty( trim( wp_strip_all_tags( get_post( $post_id )->post_content ) ) )
+		       );
 	}
 
 	private static function is_divi_page_builder_enabled( $post_id ) {

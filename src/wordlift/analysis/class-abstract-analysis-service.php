@@ -13,7 +13,7 @@ use Wordlift\Common\Singleton;
 /**
  * The abstract analysis service is extended by the v1, v2 analysis services.
  */
-abstract class Abstract_Analysis_Service extends Singleton implements  Analysis_Service {
+abstract class Abstract_Analysis_Service extends Singleton implements Analysis_Service {
 
 	/**
 	 * Wordlift api service.

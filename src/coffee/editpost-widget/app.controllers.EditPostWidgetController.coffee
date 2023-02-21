@@ -327,7 +327,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     # Detect if the entity has to be selected or unselected
     action = 'entitySelected'
     # If bottom / up disambiguation mode is on
-    # and the current annotation is already included in occurrences collaction
+    # and the current annotation is already included in occurrences collection
     # then entity has to be deselected
     if $scope.annotation?
       if $scope.annotation in entity.occurrences
