@@ -3,12 +3,12 @@ name: CI
 on:
   push:
     branches:
-      - master
+      - main
       - develop
       - 'release/**'
   pull_request:
     branches:
-      - master
+      - main
       - develop
 
 jobs:
@@ -89,8 +89,8 @@ jobs:
 
   adthrive:
     runs-on: ubuntu-latest
-    # Run only for master branch push
-    if: ${{ success() && github.ref == 'refs/heads/master' }}
+    # Run only for main branch push
+    if: ${{ success() && github.ref == 'refs/heads/main' }}
     needs: [linter, wordpress]
     steps:
       - name: Checkout
