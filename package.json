@@ -138,7 +138,7 @@
     "husky": "^8.0.2",
     "jasmine-core": "^2",
     "jest": "20.0.4",
-    "karma": "^1",
+    "karma": "^6",
     "karma-chrome-launcher": "^2",
     "karma-coffee-preprocessor": "^1",
     "karma-firefox-launcher": "^1",
