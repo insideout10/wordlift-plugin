@@ -23,6 +23,7 @@ class Config {
 		$this->admin_setup            = $admin_setup;
 		$this->key_validation_service = $key_validation_service;
 		add_action( 'wp_ajax_nopriv_wl_config_plugin', array( $this, 'config' ) );
+		add_action( 'wp_ajax_wl_config_plugin', array( $this, 'config' ) );
 
 	}
 
@@ -41,7 +42,7 @@ class Config {
 		 * before setting it, we should check if the url is null.
 		 */
 		if ( is_wp_error( $account_info )
-			 || wp_remote_retrieve_response_code( $account_info ) !== 200 ) {
+		     || wp_remote_retrieve_response_code( $account_info ) !== 200 ) {
 			return false;
 		}
 
@@ -78,7 +79,7 @@ class Config {
 			'vocabulary',
 			// Don't ask for language from webapp.
 			// 'language',
-				'country',
+			'country',
 			'publisherName',
 			'publisher',
 			'license',
@@ -130,11 +131,16 @@ class Config {
 		$attachment_id = $this->may_be_get_attachment_id();
 
 		$params = array(
-			'key'             => isset( $_POST['license'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['license'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			'vocabulary'      => isset( $_POST['vocabulary'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['vocabulary'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			'wl-country-code' => isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['country'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			'name'            => isset( $_POST['publisherName'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['publisherName'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			'user_type'       => isset( $_POST['publisher'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['publisher'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			'key'             => isset( $_POST['license'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['license'] ) ) : '',
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			'vocabulary'      => isset( $_POST['vocabulary'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['vocabulary'] ) ) : '',
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			'wl-country-code' => isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['country'] ) ) : '',
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			'name'            => isset( $_POST['publisherName'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['publisherName'] ) ) : '',
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			'user_type'       => isset( $_POST['publisher'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['publisher'] ) ) : '',
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
 			'logo'            => $attachment_id,
 		);
 

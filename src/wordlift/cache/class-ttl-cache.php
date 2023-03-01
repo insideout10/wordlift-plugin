@@ -62,7 +62,7 @@ class Ttl_Cache {
 	 * Create a {@link Ttl_Cache} with the specified TTL, default 900 secs.
 	 *
 	 * @param string $name The cache name.
-	 * @param int    $ttl The cache TTL, default 900 secs.
+	 * @param int $ttl The cache TTL, default 900 secs.
 	 *
 	 * @since 3.21.2
 	 */
@@ -125,6 +125,7 @@ class Ttl_Cache {
 
 			return null;
 		}
+
 
 		$this->log->trace( "Cache HIT.\n" );
 
