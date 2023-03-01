@@ -86,7 +86,6 @@ jobs:
               ziodave/wordpress-tests:${{ matrix.image }} -c ${{ matrix.phpunit-xml }} --stop-on-error --stop-on-fail
 
 
-
   adthrive:
     runs-on: ubuntu-latest
     # Run only for main branch push
