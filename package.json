@@ -45,6 +45,7 @@
     "test": "node scripts/test.js --env=jsdom",
     "test:js": "grunt travis:js",
     "test:php": "./vendor/bin/phpunit --stop-on-error --stop-on-fail",
+    "test:phpunit": "docker compose run --rm phpunit",
     "test:php-test-coverage": "./vendor/bin/phpunit -c phpunit-test-coverage.xml",
     "test:multisite": "./vendor/bin/phpunit -c phpunit-multisite.xml",
     "test:jest": "cd ./src-js/webpack/ && yarn install && yarn test",
