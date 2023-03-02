@@ -51,5 +51,13 @@ services:
       - ./.docker/nginx/conf.d:/etc/nginx/conf.d:ro
       - ./wp-content:/var/www/html/blog/wp-content:ro
 
+  phpunit:
+    image: ziodave/wordpress-tests:php8.0-phpunit7.5woo-wordpress5.6
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    command: [ "-c", "tests/scenarios/phpunit.default.xml", "--stop-on-error", "--stop-on-fail" ]
+
 volumes:
   db-data-6:

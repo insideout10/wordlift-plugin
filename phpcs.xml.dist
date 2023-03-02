@@ -63,6 +63,7 @@
 
   <rule ref="WordPress.Files.FileName.InvalidClassFileName">
     <exclude-pattern>*/modules/**/includes/*</exclude-pattern>
+    <exclude-pattern>tests/*</exclude-pattern>
   </rule>
 
   <rule ref="WordPress.Files.FileName.NotHyphenatedLowercase">
