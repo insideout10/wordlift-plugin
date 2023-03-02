@@ -3,7 +3,7 @@ name: wordpress.org
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   wordpress:

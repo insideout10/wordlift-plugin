@@ -100,7 +100,7 @@ class Wordlift_Key_Validation_Service {
 
 		$url = $res_body['url'];
 
-		$enabled_features = array_keys( array_filter( $res_body['features'] ) );
+		$enabled_features = array_keys( array_filter( (array) $res_body['features'] ) );
 		$plugin_features  = array(
 			Entity_Type_Setter::STARTER_PLAN,
 			Entity_Type_Setter::PROFESSIONAL_PLAN,
@@ -115,7 +115,7 @@ class Wordlift_Key_Validation_Service {
 		$home_url = get_option( 'home' );
 		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( $home_url ) );
 
-		if ( empty( $url ) && $url !== $site_url ) {
+		if ( ! empty( $url ) && $url !== $site_url ) {
 			throw new \Exception( __( 'The key is already used on another site, please contact us at hello@wordlift.io to move the key to another site.', 'wordlift' ) );
 		}
 
@@ -201,9 +201,9 @@ class Wordlift_Key_Validation_Service {
 	public function wl_key_update_notice() {
 		if ( get_transient( 'wl-key-error-msg' ) ) {
 			?>
-		  <div class="updated notice is-dismissible error">
-			<p><?php esc_html( get_transient( 'wl-key-error-msg' ) ); ?></p>
-		  </div>
+          <div class="updated notice is-dismissible error">
+            <p><?php esc_html( get_transient( 'wl-key-error-msg' ) ); ?></p>
+          </div>
 			<?php
 		}
 	}

@@ -208,12 +208,15 @@ class Mentions {
 		}
 
 		$entity_references = Object_Relation_Service::get_instance()
-													->get_references( $post_id, Object_Type_Enum::POST );
+		                                            ->get_references( $post_id, Object_Type_Enum::POST );
 
 		$about_id = array();
 		if ( array_key_exists( 'about', $jsonld[0] ) && is_array( $jsonld[0]['about'] ) ) {
 			foreach ( $jsonld[0]['about'] as $about ) {
-				$about_id[] = $about['@id'];
+				// see https://trello.com/c/PbZMJmMs/1269-matt-artz-error-in-wlp
+				if ( isset( $about['@id'] ) ) {
+					$about_id[] = $about['@id'];
+				}
 			}
 		}
 

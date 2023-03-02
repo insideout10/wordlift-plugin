@@ -1,0 +1,118 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  namespace: wordlift-plugin-dev
+  labels:
+    app: wordpress
+spec:
+  selector:
+    matchLabels:
+      app: wordpress
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        version: "2"
+    spec:
+      initContainers:
+        # This init container will clone the code
+        - name: install
+          image: alpine/git:v2.32.0
+          command: ["/bin/sh", "-c", "/etc/app-init/git.sh"]
+          env:
+            - name: GIT_BRANCH
+              value: "__BRANCH__"
+          volumeMounts:
+            - name: wordpress
+              mountPath: /bitnami/wordpress
+            - name: app-init
+              mountPath: /etc/app-init
+      containers:
+        - name: wordpress
+          image: wordlift/wordpress-nginx:6.1.1
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: config
+            - secretRef:
+                name: wordpress
+          ports:
+            # bitnami/wordpress-nginx uses port 8080
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "1"
+              memory: "512Mi"
+            limits:
+              cpu: "1"
+              memory: "512Mi"
+          volumeMounts:
+            - name: wordpress
+              mountPath: /bitnami/wordpress
+            # Files declared in the local ConfigMap
+            - name: config
+              mountPath: /opt/bitnami/wordpress/robots.txt
+              subPath: robots-txt
+            - name: config
+              mountPath: /opt/bitnami/nginx/conf/bitnami/protect-hidden-files.conf
+              subPath: allow-well-known-conf
+            - name: config
+              mountPath: /opt/bitnami/nginx/conf/bitnami/php-fpm.conf
+              subPath: php-fpm-conf
+            # Fix the libpersistence.sh script to work with existing /bitnami/wordpress folders
+            - name: config
+              mountPath: /opt/bitnami/scripts/libpersistence.sh
+              subPath: libpersistence.sh
+            # Initialize the WP database
+            - name: config
+              mountPath: /docker-entrypoint-initdb.d/10-init.sh
+              subPath: 10-init.sh
+            # Add extra WP configuration
+            - name: config
+              mountPath: /tmp/wp-config-extra.php
+              subPath: wp-config-extra.php
+            # Additional WP configuration (e.g. rewrite path)
+            - name: config
+              mountPath: /docker-entrypoint-init.d/10-post-init.sh
+              subPath: 10-post-init.sh
+          livenessProbe:
+            httpGet:
+              path: "/wp-login.php"
+              port: 8080
+              httpHeaders:
+                - name: "X-Forwarded-Host"
+                  value: "__HOST__"
+                - name: "X-Forwarded-Proto"
+                  value: "https"
+            initialDelaySeconds: 20
+            periodSeconds: 30
+            timeoutSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: "/wp-login.php"
+              port: 8080
+              httpHeaders:
+                - name: "X-Forwarded-Host"
+                  value: "__HOST__"
+                - name: "X-Forwarded-Proto"
+                  value: "https"
+            initialDelaySeconds: 20
+            periodSeconds: 30
+            timeoutSeconds: 30
+      imagePullSecrets:
+        - name: dockerconfigjson-hub-docker-com
+      nodeSelector:
+        "kubernetes.io/os": linux
+      volumes:
+        # This volume is matched between the container and the initContainer.
+        # The init container runs git to clone the files to this volume.
+        - name: wordpress
+          emptyDir: {}
+        - name: app-init
+          configMap:
+            name: app-init
+            defaultMode: 511
+        - name: config
+          configMap:
+            name: config
