@@ -1,10 +1,14 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-FILES=$(git diff --cached --name-only --diff-filter=ACMR -- '***.php' |  tr '\n' ' ' | paste -sd ' ')
+FILES=$(git diff --cached --diff-filter=d --name-only | grep '.php$' | tr '\n' ' ')
 
-
+echo "$FILES"
 
 if [ -n "$FILES" ]; then
-  echo "$FILES" | xargs ./vendor/bin/phpcbf --standard=phpcs.xml.dist
+  echo "** Cleanup **"
+  # shellcheck disable=SC2086
+  composer format -q $FILES
+  # shellcheck disable=SC2086
+  composer lint -q $FILES
 fi
