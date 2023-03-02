@@ -109,21 +109,27 @@ class Ttl_Cache {
 	 * @return mixed|null
 	 * @since 3.21.2
 	 */
-	public function get( $key ) {
+	public function get( $key, $mintime = 0 ) {
 
 		$filename = $this->get_filename( $key );
 
-		// If the cache file exists and it's not too old, then return it.
-		if ( file_exists( $filename ) && $this->ttl >= time() - filemtime( $filename ) ) {
-			$this->log->trace( "Cache HIT.\n" );
-
-			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-			return json_decode( file_get_contents( $filename ), true );
+		// No cache.
+		if ( ! file_exists( $filename ) ) {
+			return null;
 		}
 
-		$this->log->trace( "Cache MISS, filename $filename." );
+		// The cache is not updated or the ttl expired. Delete.
+		$filemtime = filemtime( $filename );
+		if ( $filemtime < $mintime || $this->ttl < ( time() - $filemtime ) ) {
+			$this->delete( $key );
 
-		return null;
+			return null;
+		}
+
+		$this->log->trace( "Cache HIT.\n" );
+
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		return json_decode( file_get_contents( $filename ), true );
 	}
 
 	public function put( $key, $data ) {

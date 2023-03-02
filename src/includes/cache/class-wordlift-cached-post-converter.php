@@ -195,7 +195,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	/**
 	 * Try to get the cached contents.
 	 *
-	 * @param int   $post_id The {@link WP_Post} id.
+	 * @param int $post_id The {@link WP_Post} id.
 	 * @param array $references The referenced posts.
 	 *
 	 * @return mixed|bool The cached contents or false if the cached isn't found.
@@ -210,7 +210,8 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		$this->log->trace( "Getting cached contents for post $post_id..." );
 
 		// Get the cache.
-		$contents = $this->cache->get( $post_id );
+		$modified_date_time = get_post_datetime( $post_id, 'modified', 'gmt' );
+		$contents           = $this->cache->get( $post_id, $modified_date_time ? $modified_date_time->getTimestamp() : 0 );
 
 		// Bail out if we don't have cached contents or the cached contents are
 		// invalid.

@@ -48,8 +48,6 @@ class Wordlift_Key_Validation_Service {
 		/**
 		 * Filter: wl_feature__enable__notices.
 		 *
-		 * @param bool whether notices need to be enabled or not.
-		 *
 		 * @return bool
 		 * @since 3.27.6
 		 */
@@ -81,9 +79,10 @@ class Wordlift_Key_Validation_Service {
 		);
 
 		/**
+		 * @param $response \Wordlift\Api\Response
+		 *
 		 * @since 3.38.5
 		 * This action is fired when the key is validated.
-		 * @param $response \Wordlift\Api\Response
 		 */
 		do_action( 'wl_key_validation_response', $response );
 
@@ -101,8 +100,12 @@ class Wordlift_Key_Validation_Service {
 
 		$url = $res_body['url'];
 
-		$enabled_features = array_keys( array_filter( $res_body['features'] ) );
-		$plugin_features  = array( Entity_Type_Setter::STARTER_PLAN, Entity_Type_Setter::PROFESSIONAL_PLAN, Entity_Type_Setter::BUSINESS_PLAN );
+		$enabled_features = array_keys( array_filter( (array) $res_body['features'] ) );
+		$plugin_features  = array(
+			Entity_Type_Setter::STARTER_PLAN,
+			Entity_Type_Setter::PROFESSIONAL_PLAN,
+			Entity_Type_Setter::BUSINESS_PLAN,
+		);
 
 		if ( count( array_intersect( $enabled_features, $plugin_features ) ) === 0 ) {
 			throw new \Exception( __( 'This key is not valid. Start building your Knowledge Graph by purchasing a WordLift subscription <a href=\'https://wordlift.io/pricing/\'>here</a>.', 'wordlift' ) );
@@ -112,7 +115,7 @@ class Wordlift_Key_Validation_Service {
 		$home_url = get_option( 'home' );
 		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( $home_url ) );
 
-		if ( $url !== $site_url ) {
+		if ( ! empty( $url ) && $url !== $site_url ) {
 			throw new \Exception( __( 'The key is already used on another site, please contact us at hello@wordlift.io to move the key to another site.', 'wordlift' ) );
 		}
 
@@ -129,6 +132,7 @@ class Wordlift_Key_Validation_Service {
 	public function is_key_valid( $key ) {
 		try {
 			$this->key_validation_request( $key );
+
 			return true;
 		} catch ( \Exception $e ) {
 			return false;
@@ -197,9 +201,9 @@ class Wordlift_Key_Validation_Service {
 	public function wl_key_update_notice() {
 		if ( get_transient( 'wl-key-error-msg' ) ) {
 			?>
-			<div class="updated notice is-dismissible error">
-				<p><?php esc_html( get_transient( 'wl-key-error-msg' ) ); ?></p>
-			</div>
+		  <div class="updated notice is-dismissible error">
+			<p><?php esc_html( get_transient( 'wl-key-error-msg' ) ); ?></p>
+		  </div>
 			<?php
 		}
 	}

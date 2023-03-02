@@ -8,7 +8,7 @@ echo "$FILES"
 if [ -n "$FILES" ]; then
   echo "** Cleanup **"
   # shellcheck disable=SC2086
-  composer format -q $FILES
+  composer format $FILES
   # shellcheck disable=SC2086
-  composer lint -q $FILES
+  composer lint $FILES
 fi
