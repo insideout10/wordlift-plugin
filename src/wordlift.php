@@ -310,6 +310,7 @@ add_filter(
 
 require_once __DIR__ . '/modules/food-kg/load.php';
 require_once __DIR__ . '/modules/acf4so/load.php';
+require_once __DIR__ . '/modules/dashboard/load.php';
 require_once __DIR__ . '/modules/pods/load.php';
 require_once __DIR__ . '/modules/include-exclude-push-config/load.php';
 

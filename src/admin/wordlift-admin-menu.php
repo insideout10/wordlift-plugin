@@ -21,10 +21,10 @@ function wl_admin_menu() {
 	// see http://codex.wordpress.org/Function_Reference/add_menu_page
 	add_menu_page(
 		__( 'WordLift', 'wordlift' ), // page title
-		__( 'WordLift', 'wordlift' ), // menu title
+		__( 'Dashboard', 'wordlift' ), // menu title
 		$capability,                 // capabilities
 		$menu_slug,                  // menu slug
-		// 'wl_admin_menu_callback',  // TODO: function callback to draw the coming dashboard
+		'__wl_dashboard__main',  // TODO: function callback to draw the coming dashboard
 		'wl_configuration_admin_menu_callback',
 		WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-logo-icon.svg'
 	);  // icon URL 20x20 px
