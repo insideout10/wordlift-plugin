@@ -1,0 +1,73 @@
+openapi: 3.1.0
+info:
+  title: WordLift Plugin
+  description: The WordLift Plugin API
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /synchronizations:
+    post:
+      summary: Create a Synchronization
+      description: Creates a new synchronization
+      responses:
+        "200":
+          description: Synchronization created
+          content:
+            "application/json":
+              schema:
+                $ref: '#/components/schemas/Synchronization'
+        "409":
+          description: Another Synchronization is running
+          content:
+        "401":
+          description: Unauthorized
+          content:
+        "403":
+          description: Forbidden
+          content:
+    get:
+      summary: List Synchronizations
+      description: List the synchronizations
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+        - name: sort
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The list of synchronizations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Synchronization'
+        "401":
+          description: Unauthorized
+          content:
+        "403":
+          description: Forbidden
+          content:
+components:
+  schemas:
+    Synchronization:
+      type: object
+      properties:
+        created_at:
+          type: integer
+        modified_at:
+          type: integer
+        started_at:
+          type: integer
+        stopped_at:
+          type: integer
+        total:
+          type: integer
+        offset:
+          type: integer
+
+

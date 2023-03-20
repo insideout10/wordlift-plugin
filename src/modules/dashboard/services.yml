@@ -1,1 +1,6 @@
 services:
+  Wordlift\Modules\Dashboard\Plugin_App:
+    class: Wordlift\Modules\Dashboard\Plugin_App
+
+  Wordlift\Modules\Dashboard\Bootstrap\Controller:
+    class: Wordlift\Modules\Dashboard\Bootstrap\Controller
