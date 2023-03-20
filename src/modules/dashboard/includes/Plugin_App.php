@@ -9,7 +9,7 @@ class Plugin_App {
 	}
 
 	public function dashboard__main() {
-		$iframe_src = esc_url( plugin_dir_url( __FILE__ ) . 'app/index.html' );
+		$iframe_src = esc_url( plugin_dir_url( __DIR__ ) . 'app/index.html' );
 		$params     = wp_json_encode(
 			array(
 				'synchronization' => array(
@@ -17,6 +17,7 @@ class Plugin_App {
 					'last_sync' => date_create( '2022-01-31 23:45:23' )->getTimestamp(),
 					'next_sync' => date_create( '2024-01-31 23:45:23' )->getTimestamp(),
 				),
+				'api_url'         => rest_url( '/wl-dashboard/v1' ),
 			)
 		);
 
@@ -29,7 +30,7 @@ class Plugin_App {
 			      min-height: 1340px;
 			    }
 		    </style>
-			<script type=\"text/javascript\">const __wlPluginAppSettings = $params</script>
+			<script type=\"text/javascript\">window._wlPluginAppSettings = $params</script>
 			<iframe id='wlx-plugin-app' src='$iframe_src'></iframe>
 		";
 	}

@@ -8,6 +8,7 @@ servers:
 paths:
   /synchronizations:
     post:
+      operationId: createSynchronization
       summary: Create a Synchronization
       description: Creates a new synchronization
       responses:
@@ -27,6 +28,7 @@ paths:
           description: Forbidden
           content:
     get:
+      operationId: listSynchronizations
       summary: List Synchronizations
       description: List the synchronizations
       parameters:
@@ -45,7 +47,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Synchronization'
+                $ref: '#/components/schemas/PageSynchronization'
         "401":
           description: Unauthorized
           content:
@@ -56,6 +58,11 @@ components:
   schemas:
     Synchronization:
       type: object
+      required:
+        - created_at
+        - modified_at
+        - total
+        - offset
       properties:
         created_at:
           type: integer
@@ -69,5 +76,22 @@ components:
           type: integer
         offset:
           type: integer
-
-
+    PageSynchronization:
+      type: object
+      required:
+        - items
+      properties:
+        self:
+          type: string
+        first:
+          type: string
+        prev:
+          type: string
+        next:
+          type: string
+        last:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Synchronization'
