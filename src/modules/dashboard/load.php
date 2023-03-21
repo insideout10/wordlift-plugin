@@ -10,6 +10,7 @@ use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Wordlift\Modules\Dashboard\Plugin_App;
+use Wordlift\Modules\Dashboard\Synchronization\Rest_Controller;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -33,10 +34,16 @@ function __wl_dashboard__load() {
 	$container_builder->compile();
 
 	/**
-	 * @var $controller \Wordlift\Modules\Dashboard\Bootstrap\Controller
+	 * @var $rest_controller Rest_Controller
 	 */
-	$controller = $container_builder->get( 'Wordlift\Modules\Dashboard\Bootstrap\Controller' );
-	$controller->register_hooks();
+	$rest_controller = $container_builder->get( 'Wordlift\Modules\Dashboard\Synchronization\Rest_Controller' );
+	$rest_controller->register_hooks();
+
+	// **
+	// * @var $scheduler Scheduler
+	// */
+	// $scheduler = $container_builder->get( 'Wordlift\Modules\Dashboard\Synchronization\Scheduler' );
+	// $scheduler->register_hooks(); // Hook to the run function
 
 	/**
 	 * @var $plugin_app Plugin_App

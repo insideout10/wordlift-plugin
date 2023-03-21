@@ -1,6 +1,8 @@
 <?php
 
-namespace Wordlift\Modules\Gardening_Kg;
+namespace Wordlift\Modules\Gardening_Kg\Main_Entity;
+
+use Wordlift\Modules\Gardening_Kg\Gardening_Kg_Store;
 
 class Gardening_Kg_Post_Store implements Gardening_Kg_Store {
 

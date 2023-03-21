@@ -6,9 +6,13 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'ComposerAutoloaderInit8bd2b6d4ccd6b50e0809e5ba62169420' => $vendorDir . '/composer/autoload_real.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Wordlift\\Modules\\Common\\Installer' => $baseDir . '/Installer.php',
     'Wordlift\\Modules\\Common\\Plugin' => $baseDir . '/Plugin.php',
     'Wordlift\\Modules\\Common\\Quiet_Skin' => $baseDir . '/Quiet_Skin.php',
     'Wordlift\\Modules\\Common\\Remote_Plugin' => $baseDir . '/Remote_Plugin.php',
+    'Wordlift\\Modules\\Common\\Synchronization\\Runner' => $baseDir . '/Synchronization/Runner.php',
+    'Wordlift_Modules_Common_Composer\\Autoload\\ClassLoader' => $vendorDir . '/composer/ClassLoader.php',
+    'Wordlift_Modules_Common_Composer\\Autoload\\ComposerStaticInit8bd2b6d4ccd6b50e0809e5ba62169420' => $vendorDir . '/composer/autoload_static.php',
 );

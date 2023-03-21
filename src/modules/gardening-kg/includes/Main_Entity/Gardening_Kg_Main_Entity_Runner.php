@@ -3,11 +3,11 @@
 namespace Wordlift\Modules\Gardening_Kg\Main_Entity;
 
 use Wordlift\Api\Api_Service;
-use Wordlift\Modules\Gardening_Kg\Gardening_Kg_Runner;
+use Wordlift\Modules\Common\Synchronization\Runner;
 use Wordlift\Modules\Gardening_Kg\Gardening_Kg_Store;
 use Wordlift\Object_Type_Enum;
 
-class Gardening_Kg_Main_Entity_Runner implements Gardening_Kg_Runner {
+class Gardening_Kg_Main_Entity_Runner implements Runner {
 
 	/**
 	 * @var Gardening_Kg_Store $store
@@ -32,7 +32,7 @@ class Gardening_Kg_Main_Entity_Runner implements Gardening_Kg_Runner {
 
 		// If it's stopped, start it
 		if ( ! $state->is_running() ) {
-			$state->set_count( $this->count() );
+			$state->set_count( $this->get_total() );
 			$state->set_offset( 0 );
 			$state->set_last_id( 0 );
 			$state->set_started_at( time() );
@@ -132,7 +132,7 @@ class Gardening_Kg_Main_Entity_Runner implements Gardening_Kg_Runner {
 	 *
 	 * @return int
 	 */
-	private function count() {
+	public function get_total() {
 		global $wpdb;
 
 		return intval( $wpdb->get_var( "SELECT COUNT(1) FROM $wpdb->posts WHERE post_status = 'publish'" ) );

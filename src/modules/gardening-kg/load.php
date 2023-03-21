@@ -42,8 +42,23 @@ function __wl_gardening_kg__load() {
 	/**
 	 * @var $scheduler Gardening_Kg_Scheduler
 	 */
-	$scheduler = $container_builder->get( 'Wordlift\Modules\Gardening_Kg\Gardening_Kg_Scheduler' );
-	$scheduler->hook();
+	// $scheduler = $container_builder->get( 'Wordlift\Modules\Gardening_Kg\Gardening_Kg_Scheduler' );
+	// $scheduler->hook();
+
+	// Get the runners
+	$main_entity_runner = $container_builder->get( 'Wordlift\Modules\Gardening_Kg\Main_Entity\Gardening_Kg_Main_Entity_Runner' );
+	$term_entity_runner = $container_builder->get( 'Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Entity_Runner' );
+
+	// Add the runners, this is called by the Dashboard Synchronization.
+	add_filter(
+		'wl_dashboard__synchronization__runners',
+		function ( $runners ) use ( $main_entity_runner, $term_entity_runner ) {
+			$runners[] = $main_entity_runner;
+			$runners[] = $term_entity_runner;
+
+			return $runners;
+		}
+	);
 
 }
 

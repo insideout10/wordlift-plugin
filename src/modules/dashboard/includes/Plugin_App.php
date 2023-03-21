@@ -27,7 +27,7 @@ class Plugin_App {
 			    #wlx-plugin-app {
 			      margin-left: -20px;
 			      width: calc(100% + 20px);
-			      min-height: 1340px;
+			      min-height: 1500px;
 			    }
 		    </style>
 			<script type=\"text/javascript\">window._wlPluginAppSettings = $params</script>

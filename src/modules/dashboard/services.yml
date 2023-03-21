@@ -2,5 +2,15 @@ services:
   Wordlift\Modules\Dashboard\Plugin_App:
     class: Wordlift\Modules\Dashboard\Plugin_App
 
-  Wordlift\Modules\Dashboard\Bootstrap\Controller:
-    class: Wordlift\Modules\Dashboard\Bootstrap\Controller
+  Wordlift\Modules\Dashboard\Synchronization\Rest_Controller:
+    class: Wordlift\Modules\Dashboard\Synchronization\Rest_Controller
+    arguments: [ '@Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service' ]
+
+  Wordlift\Modules\Dashboard\Synchronization\Runner:
+    class: Wordlift\Modules\Dashboard\Synchronization\Runner
+
+  Wordlift\Modules\Dashboard\Synchronization\Scheduler:
+    class: Wordlift\Modules\Dashboard\Synchronization\Scheduler
+
+  Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service:
+    class: Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service
