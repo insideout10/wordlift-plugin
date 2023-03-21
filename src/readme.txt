@@ -6,7 +6,7 @@ Tags: SEO, SERP, FAQ Markup, Schema Markup, structured data, schema.org, schema 
 Requires at least: 4.9
 Tested up to: 6.1
 Requires PHP: 5.6
-Stable tag: 3.38.5
+Stable tag: 3.40.9
 License: GPLv2 or later
 
 Search engines are looking for meaning, not keywords. WordLift tells Google how your content relates to your brand, products, and stakeholders.
