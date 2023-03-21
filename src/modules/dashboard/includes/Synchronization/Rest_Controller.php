@@ -29,6 +29,15 @@ class Rest_Controller {
 				'callback' => array( $this, 'create_sync' ),
 			)
 		);
+
+		register_rest_route(
+			'wl-dashboard/v1',
+			'/synchronizations',
+			array(
+				'methods'  => 'GET',
+				'callback' => array( $this, 'list_syncs' ),
+			)
+		);
 	}
 
 	public function create_sync() {
@@ -37,6 +46,17 @@ class Rest_Controller {
 		} catch ( \Exception $e ) {
 			return new \WP_Error( 'wl_error_synchronization_running', esc_html__( 'Another synchronization is already running.', 'wordlift' ), array( 'status' => 409 ) );
 		}
+	}
+
+	public function list_syncs() {
+		$last_synchronization = $this->synchronization_service->get();
+		if ( is_a( $last_synchronization, 'Wordlift\Modules\Dashboard\Synchronization\Synchronization' ) ) {
+			$data = array( $last_synchronization );
+		} else {
+			$data = array();
+		}
+
+		return rest_ensure_response( array( 'items' => $data ) );
 	}
 
 }

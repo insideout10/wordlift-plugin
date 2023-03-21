@@ -140,28 +140,24 @@ class Synchronization implements Serializable, JsonSerializable {
 	 * @throws Exception when dates cannot be set.
 	 */
 	public function __unserialize( array $data ) {
-		$inst = new self();
-
 		if ( isset( $data['created_at'] ) ) {
-			$inst->set_created_at( $data['created_at'] );
+			$this->set_created_at( $data['created_at'] );
 		}
 		if ( isset( $data['modified_at'] ) ) {
-			$inst->set_modified_at( $data['modified_at'] );
+			$this->set_modified_at( $data['modified_at'] );
 		}
 		if ( isset( $data['started_at'] ) ) {
-			$inst->set_started_at( $data['started_at'] );
+			$this->set_started_at( $data['started_at'] );
 		}
 		if ( isset( $data['stopped_at'] ) ) {
-			$inst->set_stopped_at( $data['stopped_at'] );
+			$this->set_stopped_at( $data['stopped_at'] );
 		}
 		if ( isset( $data['total'] ) ) {
-			$inst->set_total( $data['total'] );
+			$this->set_total( $data['total'] );
 		}
 		if ( isset( $data['offset'] ) ) {
-			$inst->set_offset( $data['offset'] );
+			$this->set_offset( $data['offset'] );
 		}
-
-		return $inst;
 	}
 
 	/**

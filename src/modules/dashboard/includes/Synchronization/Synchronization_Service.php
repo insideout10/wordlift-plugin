@@ -23,7 +23,7 @@ class Synchronization_Service {
 	 */
 	public function create() {
 		// Get the last synchronization and check if it's running
-		$last_synchronization = $this->load();
+		$last_synchronization = $this->get();
 		if ( is_a( $last_synchronization, 'Wordlift\Modules\Dashboard\Synchronization\Synchronization' ) && $last_synchronization->is_running() ) {
 			throw new SynchronizationAlreadyRunningException();
 		}
@@ -66,7 +66,7 @@ class Synchronization_Service {
 		// $offset  = $last_synchronization->get_offset();
 		// $runners = $this->get_runners();
 		// foreach ( $runners as $runner ) {
-			// $offset += $runner->run();
+		// $offset += $runner->run();
 		// }
 
 		// as_enqueue_async_action( self::HOOK, array(), self::GROUP );
@@ -75,12 +75,12 @@ class Synchronization_Service {
 	/**
 	 * @return Synchronization|null
 	 */
-	private function load() {
+	public function get() {
 		return get_option( '_wl_dashboard__synchronization', null );
 	}
 
 	private function save( $synchronization ) {
-		update_option( '_wl_dashboard__synchronization', $synchronization );
+		update_option( '_wl_dashboard__synchronization', $synchronization, false );
 
 		return $synchronization;
 	}
