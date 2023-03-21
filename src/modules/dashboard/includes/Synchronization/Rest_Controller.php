@@ -49,7 +49,7 @@ class Rest_Controller {
 	}
 
 	public function list_syncs() {
-		$last_synchronization = $this->synchronization_service->get();
+		$last_synchronization = $this->synchronization_service->load();
 		if ( is_a( $last_synchronization, 'Wordlift\Modules\Dashboard\Synchronization\Synchronization' ) ) {
 			$data = array( $last_synchronization );
 		} else {

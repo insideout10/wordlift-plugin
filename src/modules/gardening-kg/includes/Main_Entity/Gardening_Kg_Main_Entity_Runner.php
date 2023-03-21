@@ -2,17 +2,25 @@
 
 namespace Wordlift\Modules\Gardening_Kg\Main_Entity;
 
+use DateTimeImmutable;
+use DateTimeZone;
+use Exception;
 use Wordlift\Api\Api_Service;
 use Wordlift\Modules\Common\Synchronization\Runner;
+use Wordlift\Modules\Common\Synchronization\Runner_State;
 use Wordlift\Modules\Gardening_Kg\Gardening_Kg_Store;
 use Wordlift\Object_Type_Enum;
 
 class Gardening_Kg_Main_Entity_Runner implements Runner {
 
+	const HOOK  = 'wl_gardening_kg__main_entity__runner';
+	const GROUP = 'wl_gardening_kg';
+
 	/**
 	 * @var Gardening_Kg_Store $store
 	 */
 	private $store;
+
 	/**
 	 * @var Api_Service
 	 */
@@ -27,19 +35,25 @@ class Gardening_Kg_Main_Entity_Runner implements Runner {
 		$this->api_service = $api_service;
 	}
 
-	public function run( $batch_size ) {
-		$state = Gardening_Kg_Main_Entity_State::from_db();
+	/**
+	 * @throws Exception when the date format is invalid.
+	 */
+	public function start() {
+		$state = new Runner_State();
+		$state->set_started_at( new DateTimeImmutable( 'now', new DateTimeZone( 'UTC' ) ) );
+		$state->set_stopped_at( null );
+		$state->set_offset( 0 );
+		$state->set_last_id( 0 );
+		$state->set_total( $this->calculate_total() );
+		$this->update_state( $state );
 
-		// If it's stopped, start it
-		if ( ! $state->is_running() ) {
-			$state->set_count( $this->get_total() );
-			$state->set_offset( 0 );
-			$state->set_last_id( 0 );
-			$state->set_started_at( time() );
-			$state->set_stopped_at( null );
-		}
+		as_schedule_single_action( 0, self::HOOK, array(), self::GROUP );
+	}
 
-		$items = (array) $this->store->list_items( $state->get_last_id(), $batch_size );
+	public function run() {
+		$batch_size = 20;
+		$state      = $this->load_state();
+		$items      = (array) $this->store->list_items( $state->get_last_id(), $batch_size );
 
 		foreach ( $items as $item ) {
 			$this->process( $item );
@@ -53,10 +67,12 @@ class Gardening_Kg_Main_Entity_Runner implements Runner {
 		// If we don't have pending items, we can stop here.
 		if ( $count_items < $batch_size ) {
 			$state->set_stopped_at( time() );
+		} else {
+			as_schedule_single_action( 0, self::HOOK, array(), self::GROUP );
 		}
 
 		// Persist
-		$state->to_db();
+		$this->update_state( $state );
 
 		// Finally return the count.
 		return $count_items;
@@ -132,10 +148,58 @@ class Gardening_Kg_Main_Entity_Runner implements Runner {
 	 *
 	 * @return int
 	 */
-	public function get_total() {
+	private function calculate_total() {
 		global $wpdb;
 
 		return intval( $wpdb->get_var( "SELECT COUNT(1) FROM $wpdb->posts WHERE post_status = 'publish'" ) );
+	}
+
+	public function get_total() {
+		$state = $this->load_state();
+		if ( ! is_a( $state, 'Wordlift\Modules\Common\Synchronization\Runner_State' ) ) {
+			return null;
+		}
+
+		// Sanity checks.
+		if ( ! is_numeric( $state->get_total() ) ) {
+			return 0;
+		}
+
+		return $state->get_total();
+	}
+
+	public function get_offset() {
+		$state = $this->load_state();
+		if ( ! is_a( $state, 'Wordlift\Modules\Common\Synchronization\Runner_State' ) ) {
+			return null;
+		}
+
+		// Sanity checks.
+		if ( ! is_numeric( $state->get_offset() ) ) {
+			return 0;
+		}
+
+		return $state->get_offset();
+	}
+
+	/**
+	 * @var Runner_State $state
+	 */
+	private $state;
+
+	/**
+	 * @return Runner_State|null
+	 */
+	private function load_state() {
+		if ( ! isset( $this->state ) ) {
+			$this->state = get_option( '_wl_gardening_kg__main_entity__runner_state', null );
+		}
+
+		return $this->state;
+	}
+
+	private function update_state( $value ) {
+		update_option( '_wl_gardening_kg__main_entity__runner_state', $value, false );
 	}
 
 }

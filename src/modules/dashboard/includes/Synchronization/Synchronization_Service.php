@@ -23,27 +23,16 @@ class Synchronization_Service {
 	 */
 	public function create() {
 		// Get the last synchronization and check if it's running
-		$last_synchronization = $this->get();
+		$last_synchronization = $this->load();
 		if ( is_a( $last_synchronization, 'Wordlift\Modules\Dashboard\Synchronization\Synchronization' ) && $last_synchronization->is_running() ) {
 			throw new SynchronizationAlreadyRunningException();
 		}
 
 		// Create a new synchronization and populate it with initial data.
 		$new_synchronization = new Synchronization();
-		$runners             = $this->get_runners();
 
 		// Get the total number of items.
-		$total = array_reduce(
-			$runners,
-			/**
-			 * @param Runner $runner
-			 */
-			function ( $carry, $runner ) {
-				return $carry + $runner->get_total();
-			},
-			0
-		);
-
+		$total = $this->get_total();
 		$new_synchronization->set_total( $total );
 		$new_synchronization->set_started_at( new DateTimeImmutable( 'now', new DateTimeZone( 'UTC' ) ) );
 		$synchronization = $this->save( $new_synchronization );
@@ -63,6 +52,11 @@ class Synchronization_Service {
 			throw new SynchronizationNotRunningException();
 		}
 
+		$runners = $this->get_runners();
+		foreach ( $runners as $runner ) {
+			$runner->run();
+		}
+
 		// $offset  = $last_synchronization->get_offset();
 		// $runners = $this->get_runners();
 		// foreach ( $runners as $runner ) {
@@ -75,7 +69,7 @@ class Synchronization_Service {
 	/**
 	 * @return Synchronization|null
 	 */
-	public function get() {
+	public function load() {
 		return get_option( '_wl_dashboard__synchronization', null );
 	}
 

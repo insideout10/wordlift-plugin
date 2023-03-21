@@ -4,9 +4,12 @@ namespace Wordlift\Modules\Common\Synchronization;
 
 interface Runner {
 
-	/**
-	 * @return int The total number of items.
-	 */
+	public function start();
+
+	public function run();
+
+	public function get_offset();
+
 	public function get_total();
 
 }
