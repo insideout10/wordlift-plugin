@@ -143,6 +143,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.40.9 (2023-03-21) =
+* Fix: Update WPRM support version
+
 = 3.40.8 (2023-01-06) =
 * Fix: Fix key displaying not valid.
 
