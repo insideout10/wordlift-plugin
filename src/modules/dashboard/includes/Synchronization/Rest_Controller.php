@@ -37,8 +37,6 @@ class Rest_Controller {
 		} catch ( \Exception $e ) {
 			return new \WP_Error( 'wl_error_synchronization_running', esc_html__( 'Another synchronization is already running.', 'wordlift' ), array( 'status' => 409 ) );
 		}
-
-		// return as_enqueue_async_action( Scheduler::HOOK, array(), Scheduler::GROUP );
 	}
 
 }

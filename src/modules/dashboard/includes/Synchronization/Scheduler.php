@@ -4,20 +4,8 @@ namespace Wordlift\Modules\Dashboard\Synchronization;
 
 class Scheduler {
 
-	/** Migration action hook. */
-	const HOOK = 'wordlift/dashboard_sync';
-
-	/** Migration action group. */
+	const HOOK  = 'wordlift/dashboard_sync';
 	const GROUP = 'wordlift-dashboard';
-
-	/**
-	 * @var Runner $runner
-	 */
-	private $runner;
-
-	public function __construct( Runner $runner ) {
-		$this->runner = $runner;
-	}
 
 	/**
 	 * Set up the callback for the scheduled job.
