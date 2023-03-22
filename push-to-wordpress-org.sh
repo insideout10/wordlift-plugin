@@ -13,21 +13,10 @@ svn up
 
 echo "Checking out updated src..."
 rm -fr src
-git checkout master
+git checkout main
 git pull --all
 git checkout svn
-git checkout master -- src
-
-# echo "Checking make-zip.sh from master branch..."
-# git checkout master -- make-zip.sh
-# echo "Remove dist and wordlift folders..."
-# rm -fr dist wordlift
-# echo "Making wordlift.zip..."
-# ./make-zip.sh master > /dev/null
-# echo "Unzipping to wordlift/..."
-# unzip dist/wordlift-*.zip > /dev/null
-# echo "Remove dist folder..."
-# rm -fr dist
+git checkout main -- src
 
 VERSION=`pcregrep -o1 "Version:\s+(\d+\.\d+\.\d+)(\.\d+)?" $FILE`
 
