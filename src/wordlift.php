@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.41.0-dev.1
+ * Version:           3.42.0-dev
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -35,12 +35,8 @@ use Wordlift\Post\Post_Adapter;
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-define(
-	'WORDLIFT_PLUGIN_FILE',
-	__FILE__
-);
-
-define( 'WORDLIFT_VERSION', '3.41.0-dev.1' );
+define( 'WORDLIFT_PLUGIN_FILE', __FILE__ );
+define( 'WORDLIFT_VERSION', '3.42.0-dev' );
 
 require_once plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-scheduler.php';
 require_once __DIR__ . '/modules/common/load.php';
@@ -58,10 +54,10 @@ if ( ! apply_filters( 'wl_is_enabled', true ) ) {
 require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 
 /*
-	 * We introduce the WordLift autoloader, since we start using classes in namespaces, i.e. Wordlift\Http.
-	 *
-	 * @since 3.21.2
-	 */
+ * We introduce the WordLift autoloader, since we start using classes in namespaces, i.e. Wordlift\Http.
+ *
+ * @since 3.21.2
+ */
 wordlift_plugin_autoload_register();
 
 // Include WordLift constants.
