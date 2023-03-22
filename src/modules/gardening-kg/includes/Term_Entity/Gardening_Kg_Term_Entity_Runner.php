@@ -20,7 +20,7 @@ class Gardening_Kg_Term_Entity_Runner implements Runner {
 	}
 
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-	public function run( $count ) {
+	public function run() {
 		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 		// $items = $this->store->list_items( $offset, $limit );
 		// foreach ( $items as $item ) {
@@ -46,4 +46,11 @@ class Gardening_Kg_Term_Entity_Runner implements Runner {
 		return intval( $wpdb->get_var( "SELECT COUNT(1) FROM $wpdb->posts WHERE post_status = 'publish'" ) );
 	}
 
+	public function start() {
+		// TODO: Implement start() method.
+	}
+
+	public function get_offset() {
+		// TODO: Implement get_offset() method.
+	}
 }
