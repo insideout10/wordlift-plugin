@@ -35,11 +35,7 @@ use Wordlift\Post\Post_Adapter;
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-define(
-	'WORDLIFT_PLUGIN_FILE',
-	__FILE__
-);
-
+define( 'WORDLIFT_PLUGIN_FILE', __FILE__ );
 define( 'WORDLIFT_VERSION', '3.41.0-dev.1' );
 
 require_once plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-scheduler.php';
