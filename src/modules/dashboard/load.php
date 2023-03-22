@@ -11,10 +11,7 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuild
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Wordlift\Modules\Dashboard\Plugin_App;
 use Wordlift\Modules\Dashboard\Synchronization\Rest_Controller;
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+use Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service;
 
 /**
  * Load Include Exclude Module.
@@ -39,11 +36,16 @@ function __wl_dashboard__load() {
 	$rest_controller = $container_builder->get( 'Wordlift\Modules\Dashboard\Synchronization\Rest_Controller' );
 	$rest_controller->register_hooks();
 
-	// **
-	// * @var $scheduler Scheduler
-	// */
-	// $scheduler = $container_builder->get( 'Wordlift\Modules\Dashboard\Synchronization\Scheduler' );
-	// $scheduler->register_hooks(); // Hook to the run function
+	/**
+	 * @var $synchronization_service Synchronization_Service
+	 */
+	$synchronization_service = $container_builder->get( 'Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service' );
+	add_action(
+		'init',
+		function () use ( $synchronization_service ) {
+			$synchronization_service->register_hooks();
+		}
+	);
 
 	/**
 	 * @var $plugin_app Plugin_App

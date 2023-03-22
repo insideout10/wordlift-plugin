@@ -16,10 +16,3 @@ services:
   Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Entity_Runner:
     class: Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Entity_Runner
     arguments: [ '@Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Store', '@Wordlift\Api\Api_Service' ]
-
-  Wordlift\Modules\Gardening_Kg\Gardening_Kg_Scheduler:
-    class: Wordlift\Modules\Gardening_Kg\Gardening_Kg_Scheduler
-    arguments: [ '@Wordlift\Modules\Gardening_Kg\Main_Entity\Gardening_Kg_Main_Entity_Runner' ]
-
-  Wordlift\Modules\Gardening_Kg\Rest\Gardening_Kg_Controller:
-    class: Wordlift\Modules\Gardening_Kg\Rest\Gardening_Kg_Controller

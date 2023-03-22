@@ -37,7 +37,6 @@ class Synchronization_Service {
 		$new_synchronization->set_started_at( new DateTimeImmutable( 'now', new DateTimeZone( 'UTC' ) ) );
 		$synchronization = $this->save( $new_synchronization );
 
-		// Start the synchronization.
 		as_enqueue_async_action( self::HOOK, array(), self::GROUP );
 
 		return $synchronization;
@@ -52,18 +51,34 @@ class Synchronization_Service {
 			throw new SynchronizationNotRunningException();
 		}
 
-		$runners = $this->get_runners();
-		foreach ( $runners as $runner ) {
-			$runner->run();
+		$last_runner_idx = $last_synchronization->get_last_runner_idx();
+		$last_id         = $last_synchronization->get_last_id();
+		$runners         = $this->get_runners();
+
+		// Not completed?
+		if ( $last_runner_idx < count( $runners ) ) {
+			// Run the runner from the last known id.
+			list( $count, $new_last_id ) = $runners[ $last_runner_idx ]->run( $last_id );
+			// Update the offset.
+			$last_synchronization->set_offset( $last_synchronization->get_offset() + $count );
+
+			// Set the next runner in case the last ID is `null` (i.e. there isn't).
+			$new_last_runner_idx = ( isset( $new_last_id ) ? $last_runner_idx : $last_runner_idx + 1 );
+			// Set the next last ID in case there is one or `0` to restart.
+			$new_last_id = ( isset( $new_last_id ) ? $new_last_id : 0 );
+			$last_synchronization->set_last_runner_idx( $new_last_runner_idx );
+			$last_synchronization->set_last_id( $new_last_id );
+			$this->save( $last_synchronization );
+
+			as_enqueue_async_action( self::HOOK, array(), self::GROUP );
 		}
 
-		// $offset  = $last_synchronization->get_offset();
-		// $runners = $this->get_runners();
-		// foreach ( $runners as $runner ) {
-		// $offset += $runner->run();
-		// }
+		// Completed?
+		if ( $last_runner_idx >= count( $runners ) ) {
+			$last_synchronization->set_stopped_at( new DateTimeImmutable( 'now', new DateTimeZone( 'UTC' ) ) );
+			$this->save( $last_synchronization );
+		}
 
-		// as_enqueue_async_action( self::HOOK, array(), self::GROUP );
 	}
 
 	/**

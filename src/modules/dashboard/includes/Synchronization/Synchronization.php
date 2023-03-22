@@ -2,26 +2,45 @@
 
 namespace Wordlift\Modules\Dashboard\Synchronization;
 
-use DateTimeImmutable;
-use DateTimeZone;
+use DateTimeInterface;
 use Exception;
 use JsonSerializable;
 use Serializable;
+use Wordlift\Modules\Common\Date_Utils;
 
 class Synchronization implements Serializable, JsonSerializable {
 
+	/**
+	 * @var DateTimeInterface $created_at
+	 */
 	private $created_at;
+
+	/**
+	 * @var DateTimeInterface $modified_at
+	 */
 	private $modified_at;
+
+	/**
+	 * @var DateTimeInterface $started_at
+	 */
 	private $started_at;
+
+	/**
+	 * @var DateTimeInterface $stopped_at
+	 */
 	private $stopped_at;
+
 	private $total;
 	private $offset;
+
+	private $last_id;
+	private $last_runner_idx;
 
 	/**
 	 * @throws Exception when the created at date can't be set.
 	 */
 	public function __construct() {
-		$this->set_created_at( new DateTimeImmutable( 'now', new DateTimeZone( 'UTC' ) ) );
+		$this->set_created_at( Date_Utils::now_utc() );
 		$this->set_offset( 0 );
 	}
 
@@ -67,7 +86,7 @@ class Synchronization implements Serializable, JsonSerializable {
 	 */
 	public function set_started_at( $started_at ) {
 		$this->started_at = $started_at;
-		$this->set_modified_at( new DateTimeImmutable( 'now', new DateTimeZone( 'UTC' ) ) );
+		$this->set_modified_at( Date_Utils::now_utc() );
 	}
 
 	/**
@@ -84,7 +103,7 @@ class Synchronization implements Serializable, JsonSerializable {
 	 */
 	public function set_stopped_at( $stopped_at ) {
 		$this->stopped_at = $stopped_at;
-		$this->set_modified_at( new DateTimeImmutable( 'now', new DateTimeZone( 'UTC' ) ) );
+		$this->set_modified_at( Date_Utils::now_utc() );
 	}
 
 	/**
@@ -101,7 +120,7 @@ class Synchronization implements Serializable, JsonSerializable {
 	 */
 	public function set_total( $total ) {
 		$this->total = $total;
-		$this->set_modified_at( new DateTimeImmutable( 'now', new DateTimeZone( 'UTC' ) ) );
+		$this->set_modified_at( Date_Utils::now_utc() );
 	}
 
 	/**
@@ -118,21 +137,43 @@ class Synchronization implements Serializable, JsonSerializable {
 	 */
 	public function set_offset( $offset ) {
 		$this->offset = $offset;
-		$this->set_modified_at( new DateTimeImmutable( 'now', new DateTimeZone( 'UTC' ) ) );
+		$this->set_modified_at( Date_Utils::now_utc() );
+	}
+
+	public function get_last_id() {
+		return $this->last_id;
+	}
+
+	public function set_last_id( $last_id ) {
+		$this->last_id = $last_id;
+		$this->set_modified_at( Date_Utils::now_utc() );
+	}
+
+	public function get_last_runner_idx() {
+		return $this->last_runner_idx;
+	}
+
+	public function set_last_runner_idx( $last_runner_idx ) {
+		$this->last_runner_idx = $last_runner_idx;
+		$this->set_modified_at( Date_Utils::now_utc() );
 	}
 
 	public function is_running() {
-		return isset( $this->started_at ) && ! isset( $this->stopped_at );
+		return isset( $this->started_at ) && ! isset( $this->stopped_at )
+			   // Timeout after 10 minutes of inactivity.
+			   && ( Date_Utils::now_utc()->getTimestamp() - $this->modified_at->getTimestamp() < 600 );
 	}
 
 	public function __serialize() {
 		return array(
-			'created_at'  => $this->created_at,
-			'modified_at' => $this->modified_at,
-			'started_at'  => $this->started_at,
-			'stopped_at'  => $this->stopped_at,
-			'total'       => $this->total,
-			'offset'      => $this->offset,
+			'created_at'      => $this->created_at,
+			'modified_at'     => $this->modified_at,
+			'started_at'      => $this->started_at,
+			'stopped_at'      => $this->stopped_at,
+			'total'           => $this->total,
+			'offset'          => $this->offset,
+			'last_id'         => $this->last_id,
+			'last_runner_idx' => $this->last_runner_idx,
 		);
 	}
 
@@ -141,23 +182,26 @@ class Synchronization implements Serializable, JsonSerializable {
 	 */
 	public function __unserialize( array $data ) {
 		if ( isset( $data['created_at'] ) ) {
-			$this->set_created_at( $data['created_at'] );
+			$this->created_at = $data['created_at'];
 		}
 		if ( isset( $data['modified_at'] ) ) {
-			$this->set_modified_at( $data['modified_at'] );
+			$this->modified_at = $data['modified_at'];
 		}
 		if ( isset( $data['started_at'] ) ) {
-			$this->set_started_at( $data['started_at'] );
+			$this->started_at = $data['started_at'];
 		}
 		if ( isset( $data['stopped_at'] ) ) {
-			$this->set_stopped_at( $data['stopped_at'] );
+			$this->stopped_at = $data['stopped_at'];
 		}
 		if ( isset( $data['total'] ) ) {
-			$this->set_total( $data['total'] );
+			$this->total = $data['total'];
 		}
 		if ( isset( $data['offset'] ) ) {
-			$this->set_offset( $data['offset'] );
+			$this->offset = $data['offset'];
 		}
+		$this->last_id         = isset( $data['last_id'] ) ? $data['last_id'] : 0;
+		$this->last_runner_idx = isset( $data['last_runner_idx'] ) ? $data['last_runner_idx'] : 0;
+
 	}
 
 	/**

@@ -9,8 +9,6 @@
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Wordlift\Modules\Gardening_Kg\Gardening_Kg_Scheduler;
-use Wordlift\Modules\Gardening_Kg\Rest\Gardening_Kg_Controller;
 
 // if ( ! defined( 'ABSPATH' ) ) {
 // exit;
@@ -32,18 +30,6 @@ function __wl_gardening_kg__load() {
 	$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
 	$loader->load( 'services.yml' );
 	$container_builder->compile();
-
-	/**
-	 * @var $controller Gardening_Kg_Controller
-	 */
-	$controller = $container_builder->get( 'Wordlift\Modules\Gardening_Kg\Rest\Gardening_Kg_Controller' );
-	$controller->register_hooks();
-
-	/**
-	 * @var $scheduler Gardening_Kg_Scheduler
-	 */
-	// $scheduler = $container_builder->get( 'Wordlift\Modules\Gardening_Kg\Gardening_Kg_Scheduler' );
-	// $scheduler->hook();
 
 	// Get the runners
 	$main_entity_runner = $container_builder->get( 'Wordlift\Modules\Gardening_Kg\Main_Entity\Gardening_Kg_Main_Entity_Runner' );

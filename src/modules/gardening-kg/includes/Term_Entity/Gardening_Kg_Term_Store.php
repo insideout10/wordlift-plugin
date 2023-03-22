@@ -6,13 +6,21 @@ use Wordlift\Modules\Gardening_Kg\Gardening_Kg_Store;
 
 class Gardening_Kg_Term_Store implements Gardening_Kg_Store {
 
-	public function count() {
-		// Count posts
-		// Count terms
-	}
-
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-	public function list_items( $offset, $batch_size ) {
-		// TODO: Implement list() method.
+	public function list_items( $id_greater_than, $batch_size ) {
+		global $wpdb;
+
+		return array_map(
+			function ( $value ) {
+				return (int) $value;
+			},
+			$wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT ID FROM $wpdb->terms WHERE ID > %d LIMIT %d",
+					$id_greater_than,
+					$batch_size
+				)
+			)
+		);
 	}
 }
