@@ -54,10 +54,10 @@ if ( ! apply_filters( 'wl_is_enabled', true ) ) {
 require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 
 /*
-	 * We introduce the WordLift autoloader, since we start using classes in namespaces, i.e. Wordlift\Http.
-	 *
-	 * @since 3.21.2
-	 */
+ * We introduce the WordLift autoloader, since we start using classes in namespaces, i.e. Wordlift\Http.
+ *
+ * @since 3.21.2
+ */
 wordlift_plugin_autoload_register();
 
 // Include WordLift constants.
