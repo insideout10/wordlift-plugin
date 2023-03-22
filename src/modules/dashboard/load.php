@@ -58,7 +58,8 @@ function __wl_dashboard__load() {
 		'admin_menu',
 		function () {
 			add_submenu_page( 'wl_admin_menu', __( 'Dashboard', 'wordlift' ), __( 'Dashboard', 'wordlift' ), 'manage_options', 'wl_admin_menu', '_wl_dashboard__main' );
-		}
+		},
+		9
 	);
 
 }

@@ -92,7 +92,7 @@ class Gardening_Kg_Main_Entity_Runner implements Runner {
 			$title
 		);
 
-		$response_body = $response->get_body();
+		$response_body = trim( $response->get_body() );
 		$lines         = explode( "\n", $response_body );
 		$fields        = explode( "\t", $lines[0] );
 		$jsonld        = isset( $fields[1] ) ? trim( $fields[1] ) : '';

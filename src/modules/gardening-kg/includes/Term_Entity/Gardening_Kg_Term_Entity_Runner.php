@@ -102,6 +102,7 @@ class Gardening_Kg_Term_Entity_Runner implements Runner {
 	}
 
 	private function should_process( $term ) {
+
 		return is_a( $term, 'WP_Term' ) &&
 			in_array(
 				$term->taxonomy,

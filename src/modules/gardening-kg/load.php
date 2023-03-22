@@ -39,8 +39,8 @@ function __wl_gardening_kg__load() {
 	add_filter(
 		'wl_dashboard__synchronization__runners',
 		function ( $runners ) use ( $main_entity_runner, $term_entity_runner ) {
-			$runners[] = $main_entity_runner;
 			$runners[] = $term_entity_runner;
+			$runners[] = $main_entity_runner;
 
 			return $runners;
 		}

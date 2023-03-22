@@ -16,7 +16,7 @@ class Gardening_Kg_Term_Store implements Gardening_Kg_Store {
 			},
 			$wpdb->get_col(
 				$wpdb->prepare(
-					"SELECT ID FROM $wpdb->terms WHERE ID > %d LIMIT %d",
+					"SELECT term_id FROM $wpdb->terms WHERE term_id > %d LIMIT %d",
 					$id_greater_than,
 					$batch_size
 				)
