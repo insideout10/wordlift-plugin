@@ -193,14 +193,16 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 	  */
 	public function create_term_match( $request ) {
 		global $wpdb;
-		$body = $request->get_json_params();
+
 		// since we dont have the match_id, we would need to get the match_id by querying the term_id
 		$match_id = $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT id FROM {$wpdb->prefix}_wl_entities WHERE content_id = %d",
-				$request->get_param( 'term_id' )
+				"SELECT id FROM {$wpdb->prefix}wl_entities WHERE content_id = %d AND content_type = %d",
+				$request->get_param( 'term_id' ),
+				Object_Type_Enum::TERM
 			)
 		);
+
 		if ( ! $match_id ) {
 			return new \WP_REST_Response(
 				array(
@@ -211,7 +213,7 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 			);
 		}
 
-		return $this->set_jsonld_from_match_id( $wpdb, $body, $match_id );
+		return $this->set_jsonld_from_match_id( $request->get_json_params(), $match_id );
 
 	}
 
@@ -298,15 +300,17 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 		global $wpdb;
 		$wpdb->query(
 			$wpdb->prepare(
-				"UPDATE {$wpdb->prefix}_wl_entities SET about_jsonld = %s WHERE id = %d",
+				"UPDATE {$wpdb->prefix}wl_entities SET about_jsonld = %s WHERE id = %d",
 				wp_json_encode( $jsonld ),
-				$match_id
+				$match_id,
+				Object_Type_Enum::TERM
 			)
 		);
 
 		$query = "SELECT e.content_id as match_id, e.about_jsonld as match_jsonld,  t.name,  e.id FROM {$wpdb->prefix}wl_entities e
                   LEFT JOIN {$wpdb->prefix}terms t ON e.content_id = t.term_id
-                  WHERE  AND e.id = %d";
+                  WHERE  e.id = %d";
+
 
 		return $wpdb->get_row( $wpdb->prepare( $query, $match_id ) );
 	}
