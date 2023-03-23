@@ -4,7 +4,6 @@ namespace Wordlift\Modules\Dashboard;
 
 use Wordlift\Modules\Dashboard\Stats\Stats;
 use Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service;
-use Wordlift\Object_Type_Enum;
 
 class Plugin_App {
 	/**
