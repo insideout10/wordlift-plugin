@@ -2,6 +2,7 @@
 
 namespace Wordlift\Modules\Dashboard\Api;
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Object_Type_Enum;
 
 class Term_Matches_Rest_Controller extends \WP_REST_Controller {
@@ -113,7 +114,7 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 		}
 		$operator = $cursor_args['direction'] === 'forward' ? '>' : '<';
 
-		$query = "SELECT e.content_id as match_id, e.about_jsonld as match_jsonld,  t.name,  e.id FROM {$wpdb->prefix}wl_entities e
+		$query = "SELECT e.content_id as id, e.about_jsonld as match_jsonld,  t.name,  e.id AS match_id FROM {$wpdb->prefix}wl_entities e
                   LEFT JOIN {$wpdb->prefix}terms t ON e.content_id = t.term_id
                   INNER JOIN {$wpdb->prefix}term_taxonomy tt ON t.term_id = tt.term_id
                   WHERE e.content_type = %d AND tt.taxonomy = %s AND e.id {$operator} %d LIMIT %d";
@@ -185,20 +186,44 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 	}
 
 
-	//
-	// **
-	// * Create a new match for a term.
-	// */
-	// public function create_term_match( $request ) {
-	// Implement the function here
-	// }
-	//
-	// **
-	// * Update an existing term match.
-	// */
-	// public function update_term_match( $request ) {
-	// Implement the function here
-	// }
+
+	 /**
+	 * Create a new match for a term.
+	  * @var $request \WP_REST_Request
+	  */
+	public function create_term_match( $request ) {
+		global $wpdb;
+		$body = $request->get_json_params();
+		// since we dont have the match_id, we would need to get the match_id by querying the term_id
+		$match_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT id FROM {$wpdb->prefix}_wl_entities WHERE content_id = %d",
+				$request->get_param( 'term_id' )
+			)
+		);
+		if ( ! $match_id ) {
+			return new \WP_REST_Response(
+				array(
+					'code'    => 'error',
+					'message' => __( 'The term_id is not valid.', 'wordlift' ),
+				),
+				400
+			);
+		}
+
+		return $this->set_jsonld_from_match_id( $wpdb, $body, $match_id );
+
+	}
+
+	 /**
+	  * @var $request \WP_REST_Request
+	 */
+	 public function update_term_match( $request ) {
+		return $this->set_jsonld_from_match_id(
+			$request->get_json_params(),
+			$request->get_param('match_id')
+		);
+	 }
 
 	// **
 	// * Retrieves the term match schema, conforming to JSON Schema.
@@ -257,13 +282,39 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 	// }
 	private function format( $rows ) {
 		return array_map(
-			function ( $item ) {
-				$jsonld             = json_decode( $item['match_jsonld'], true );
-				$item['match_name'] = $jsonld != null ? $jsonld['name'] : null;
-				return $item;
-			},
+			array( $this, 'set_name' ),
 			$rows
 		);
+	}
+
+	/**
+	 * @param \wpdb $wpdb
+	 * @param array $jsonld
+	 * @param $match_id
+	 *
+	 * @return array|object|\stdClass|null
+	 */
+	public function set_jsonld_from_match_id(  $jsonld, $match_id ) {
+		global $wpdb;
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->prefix}_wl_entities SET about_jsonld = %s WHERE id = %d",
+				wp_json_encode( $jsonld ),
+				$match_id
+			)
+		);
+
+		$query = "SELECT e.content_id as match_id, e.about_jsonld as match_jsonld,  t.name,  e.id FROM {$wpdb->prefix}wl_entities e
+                  LEFT JOIN {$wpdb->prefix}terms t ON e.content_id = t.term_id
+                  WHERE  AND e.id = %d";
+
+		return $wpdb->get_row( $wpdb->prepare( $query, $match_id ) );
+	}
+
+	private function set_name( $item ) {
+		$jsonld             = json_decode( $item['match_jsonld'], true );
+		$item['match_name'] = $jsonld != null ? $jsonld['name'] : null;
+		return $item;
 	}
 
 }
