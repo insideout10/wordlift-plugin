@@ -16,6 +16,7 @@ class ComposerStaticInit8bd2b6d4ccd6b50e0809e5ba62169420
         'Wordlift\\Modules\\Common\\Remote_Plugin' => __DIR__ . '/../..' . '/Remote_Plugin.php',
         'Wordlift\\Modules\\Common\\Synchronization\\Runner' => __DIR__ . '/../..' . '/Synchronization/Runner.php',
         'Wordlift\\Modules\\Common\\Synchronization\\Runner_State' => __DIR__ . '/../..' . '/Synchronization/Runner_State.php',
+        'Wordlift\\Modules\\Common\\Synchronization\\Store' => __DIR__ . '/../..' . '/Synchronization/Store.php',
         'Wordlift_Modules_Common_Composer\\Autoload\\ClassLoader' => __DIR__ . '/..' . '/composer/ClassLoader.php',
         'Wordlift_Modules_Common_Composer\\Autoload\\ComposerStaticInit8bd2b6d4ccd6b50e0809e5ba62169420' => __DIR__ . '/..' . '/composer/autoload_static.php',
     );

@@ -1,8 +1,8 @@
 <?php
 
-namespace Wordlift\Modules\Gardening_Kg;
+namespace Wordlift\Modules\Common\Synchronization;
 
-interface Gardening_Kg_Store {
+interface Store {
 
 	/**
 	 * @param int $offset The starting offset (excluded).

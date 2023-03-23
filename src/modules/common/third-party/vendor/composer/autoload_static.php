@@ -4,7 +4,7 @@
 
 namespace Wordlift_Modules_Common_Composer\Autoload;
 
-class ComposerStaticInit67391e53aec9a79db2a1401be286c908
+class ComposerStaticInit03e13e77acbe09ad9dfd761141568d7d
 {
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
@@ -277,7 +277,7 @@ class ComposerStaticInit67391e53aec9a79db2a1401be286c908
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit67391e53aec9a79db2a1401be286c908::$classMap;
+            $loader->classMap = ComposerStaticInit03e13e77acbe09ad9dfd761141568d7d::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -15,6 +15,7 @@ return array(
     'Wordlift\\Modules\\Common\\Remote_Plugin' => $baseDir . '/Remote_Plugin.php',
     'Wordlift\\Modules\\Common\\Synchronization\\Runner' => $baseDir . '/Synchronization/Runner.php',
     'Wordlift\\Modules\\Common\\Synchronization\\Runner_State' => $baseDir . '/Synchronization/Runner_State.php',
+    'Wordlift\\Modules\\Common\\Synchronization\\Store' => $baseDir . '/Synchronization/Store.php',
     'Wordlift_Modules_Common_Composer\\Autoload\\ClassLoader' => $vendorDir . '/composer/ClassLoader.php',
     'Wordlift_Modules_Common_Composer\\Autoload\\ComposerStaticInit8bd2b6d4ccd6b50e0809e5ba62169420' => $vendorDir . '/composer/autoload_static.php',
 );

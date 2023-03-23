@@ -116,4 +116,24 @@ class Wordpress_Dataset_Content_Service implements Content_Service {
 			}
 		}
 	}
+
+	public function get_about_jsonld( $content_id ) {
+		foreach ( $this->delegates as $delegate ) {
+			if ( $delegate->supports( $content_id ) ) {
+				return $delegate->get_about_jsonld( $content_id );
+			}
+		}
+
+		return null;
+	}
+
+	public function set_about_jsonld( $content_id, $value ) {
+		foreach ( $this->delegates as $delegate ) {
+			if ( $delegate->supports( $content_id ) ) {
+				return $delegate->set_about_jsonld( $content_id, $value );
+			}
+		}
+
+		return false;
+	}
 }

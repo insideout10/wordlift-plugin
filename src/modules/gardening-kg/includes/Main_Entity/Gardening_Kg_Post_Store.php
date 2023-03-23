@@ -2,9 +2,9 @@
 
 namespace Wordlift\Modules\Gardening_Kg\Main_Entity;
 
-use Wordlift\Modules\Gardening_Kg\Gardening_Kg_Store;
+use Wordlift\Modules\Common\Synchronization\Store;
 
-class Gardening_Kg_Post_Store implements Gardening_Kg_Store {
+class Gardening_Kg_Post_Store implements Store {
 
 	public function list_items( $id_greater_than, $batch_size ) {
 		global $wpdb;

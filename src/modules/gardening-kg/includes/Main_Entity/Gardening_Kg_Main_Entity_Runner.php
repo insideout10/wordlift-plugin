@@ -4,16 +4,13 @@ namespace Wordlift\Modules\Gardening_Kg\Main_Entity;
 
 use Wordlift\Api\Api_Service;
 use Wordlift\Modules\Common\Synchronization\Runner;
-use Wordlift\Modules\Gardening_Kg\Gardening_Kg_Store;
+use Wordlift\Modules\Common\Synchronization\Store;
 use Wordlift\Object_Type_Enum;
 
 class Gardening_Kg_Main_Entity_Runner implements Runner {
 
-	const HOOK  = 'wl_gardening_kg__main_entity__runner';
-	const GROUP = 'wl_gardening_kg';
-
 	/**
-	 * @var Gardening_Kg_Store $store
+	 * @var Store $store
 	 */
 	private $store;
 
@@ -23,10 +20,10 @@ class Gardening_Kg_Main_Entity_Runner implements Runner {
 	private $api_service;
 
 	/**
-	 * @param Gardening_Kg_Store $store
-	 * @param Api_Service        $api_service
+	 * @param Store       $store
+	 * @param Api_Service $api_service
 	 */
-	public function __construct( Gardening_Kg_Store $store, Api_Service $api_service ) {
+	public function __construct( Store $store, Api_Service $api_service ) {
 		$this->store       = $store;
 		$this->api_service = $api_service;
 	}
