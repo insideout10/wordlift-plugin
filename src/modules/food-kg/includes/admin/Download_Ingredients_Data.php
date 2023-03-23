@@ -2,10 +2,19 @@
 
 namespace Wordlift\Modules\Food_Kg\Admin;
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+
 class Download_Ingredients_Data {
 
 	public function register_hooks() {
-		add_action( 'wp_ajax_wl_download_ingredients_data', array( $this, 'wl_download_ingredients_data' ) );
+		add_action(
+			'wp_ajax_wl_download_ingredients_data',
+			array(
+				$this,
+				'wl_download_ingredients_data',
+			)
+		);
 	}
 
 	public function wl_download_ingredients_data() {
@@ -23,16 +32,16 @@ class Download_Ingredients_Data {
 					    p1.post_title AS recipe_name,
 					    p2.ID AS post_ID,
 					    p2.post_title
-						FROM $wpdb->postmeta pm1
+						FROM {$wpdb->prefix}wl_entities pm1
 						    INNER JOIN $wpdb->posts p1
-						        ON p1.ID = pm1.post_ID AND p1.post_type = 'wprm_recipe'
+						        ON p1.ID = pm1.content_id AND p1.post_type = 'wprm_recipe'
 							INNER JOIN $wpdb->postmeta pm2
-								ON pm2.post_ID = pm1.post_ID AND pm2.meta_key = 'wprm_parent_post_id'
+								ON pm2.post_ID = pm1.content_id AND pm2.meta_key = 'wprm_parent_post_id'
 						    INNER JOIN $wpdb->posts p2"
 			// The following ignore rule is used against the `LIKE CONCAT`. We only have const values.
 			// phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.LikeWildcardsInQuery
 			. " ON p2.post_status = 'publish' AND p2.ID = pm2.meta_value
-							WHERE pm1.meta_key = '_wl_main_ingredient_jsonld'"
+							WHERE pm1.content_type = 0 AND pm1.about_jsonld IS NOT NULL"
 		);
 
 		if ( ! $items ) {
@@ -65,9 +74,13 @@ class Download_Ingredients_Data {
 			"\t"
 		);
 
+		$content_service = Wordpress_Content_Service::get_instance();
 		// Insert Data.
 		foreach ( $items as $item ) {
-			$recipe_json_ld = get_post_meta( $item->recipe_ID, '_wl_main_ingredient_jsonld', true ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			$recipe_id      = $item->recipe_ID;
+			$content_id     = Wordpress_Content_Id::create_post( $recipe_id );
+			$recipe_json_ld = $content_service->get_about_jsonld( $content_id );
 			$recipe         = json_decode( $recipe_json_ld, true );
 			fputcsv(
 				$output,
@@ -75,7 +88,7 @@ class Download_Ingredients_Data {
 					$recipe ? $recipe['name'] : 'null',
 					$item->recipe_name,
 					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-					$item->recipe_ID,
+					$recipe_id,
 					$item->post_title,
 					$item->post_ID,
 					esc_url( get_the_permalink( $item->post_ID ) ),
