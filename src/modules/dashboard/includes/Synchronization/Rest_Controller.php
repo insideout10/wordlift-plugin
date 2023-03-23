@@ -38,6 +38,12 @@ class Rest_Controller {
 			array(
 				'methods'  => 'GET',
 				'callback' => array( $this, 'list_syncs' ),
+				'args'     => array(
+					'is_running' => array(
+						'description' => esc_html__( 'Filter the is_running', 'wordlift' ),
+						'type'        => 'boolean',
+					),
+				),
 			)
 		);
 	}
@@ -51,10 +57,10 @@ class Rest_Controller {
 	}
 
 	public function list_syncs( WP_REST_Request $request ) {
-		$last_synchronization   = $this->synchronization_service->load();
-		$dont_filter_is_running = ( $request->get_param( 'is_running' ) !== 'true' );
+		$last_synchronization = $this->synchronization_service->load();
+		$is_running_all       = ! $request->has_param( 'is_running' );
 		if ( is_a( $last_synchronization, 'Wordlift\Modules\Dashboard\Synchronization\Synchronization' )
-			 && ( $dont_filter_is_running || $last_synchronization->is_running() ) ) {
+			 && ( $is_running_all || $request->get_param( 'is_running' ) === $last_synchronization->is_running() ) ) {
 			$data = array( $last_synchronization );
 		} else {
 			$data = array();
