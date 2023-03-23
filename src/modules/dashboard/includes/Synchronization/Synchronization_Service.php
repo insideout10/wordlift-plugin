@@ -144,8 +144,7 @@ class Synchronization_Service {
 	public function get_last_sync() {
 		$last_synchronization = $this->load();
 		if ( ! is_a( $last_synchronization, 'Wordlift\Modules\Dashboard\Synchronization\Synchronization' )
-			 || $last_synchronization->is_running()
-			 || ! isset( $last_synchronization->get_stopped_at ) ) {
+			 || $last_synchronization->is_running() ) {
 			return null;
 		}
 
