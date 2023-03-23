@@ -85,10 +85,13 @@ services:
     class: Wordlift\Modules\Food_Kg\Ingredients_API
     arguments: [ '@Wordlift\Modules\Food_Kg\Services\Ingredients' ]
 
+  Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Post_Store:
+    class: Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Post_Store
+
   Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Main_Entity_Runner:
     class: Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Main_Entity_Runner
-    arguments: [ '@Wordlift\Modules\Food_Kg\Ingredients_Client' ]
+    arguments: [ '@Wordlift\Content\Wordpress\Wordpress_Content_Service', '@Wordlift\Modules\Food_Kg\Ingredients_Client', '@Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Post_Store' ]
 
   Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Term_Entity_Runner:
     class: Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Term_Entity_Runner
-    arguments: [ '@Wordlift\Modules\Food_Kg\Ingredients_Client' ]
+    arguments: [ '@Wordlift\Content\Wordpress\Wordpress_Content_Service', '@Wordlift\Modules\Food_Kg\Ingredients_Client' ]

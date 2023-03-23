@@ -2,63 +2,74 @@
 
 namespace Wordlift\Modules\Food_Kg\Main_Entity;
 
+use Wordlift\Content\Content_Service;
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Modules\Common\Synchronization\Runner;
+use Wordlift\Modules\Common\Synchronization\Store;
 use Wordlift\Modules\Food_Kg\Ingredients_Client;
 
 class Food_Kg_Main_Entity_Runner implements Runner {
+
+	/**
+	 * @var Content_Service
+	 */
+	private $content_service;
+
+	/**
+	 * @var Store
+	 */
+	private $store;
 
 	/**
 	 * @var Ingredients_Client
 	 */
 	private $ingredients_client;
 
-	public function __construct( Ingredients_Client $ingredients_client ) {
+	public function __construct( Content_Service $content_service, Ingredients_Client $ingredients_client, Store $store ) {
+		$this->store              = $store;
 		$this->ingredients_client = $ingredients_client;
+		$this->content_service    = $content_service;
 	}
 
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function run( $last_id ) {
-		$recipes = get_posts(
-			array(
-				'post_type'   => 'wprm_recipe',
-				'numberposts' => - 1,
-			)
-		);
-		$count   = count( $recipes );
+		$items = $this->store->list_items( $last_id, 100 );
 
-		foreach ( $recipes as $recipe ) {
-			$this->process( $recipe->ID );
+		// Count the processed items.
+		$count_items = count( $items );
+
+		foreach ( $items as $recipe_id ) {
+			$this->process( $recipe_id );
 		}
 
-		return $count;
+		// Get the last ID.
+		$last_id = end( $items );
+
+		// Finally return the count.
+		return array( $count_items, $last_id );
 	}
 
 	public function process( $post_id ) {
 
-		$content_service = Wordpress_Content_Service::get_instance();
-		$content_id      = Wordpress_Content_Id::create_post( $post_id );
+		$content_id = Wordpress_Content_Id::create_post( $post_id );
 
 		// Skip posts with existing data.
-		$existing = $content_service->get_about_jsonld( $content_id );
+		$existing = $this->content_service->get_about_jsonld( $content_id );
 		if ( ! empty( $existing ) ) {
 			return true;
 		}
 
 		$post = get_post( $post_id );
 
-		$jsonld          = $this->ingredients_client->main_ingredient( $post->post_title );
-		$content_service = Wordpress_Content_Service::get_instance();
-		$content_id      = Wordpress_Content_Id::create_post( $post_id );
+		$jsonld = $this->ingredients_client->main_ingredient( $post->post_title );
 
 		if ( $this->validate( $jsonld ) ) {
-			$content_service->set_about_jsonld( $content_id, $jsonld );
+			$this->content_service->set_about_jsonld( $content_id, $jsonld );
 
 			return true;
 		} else {
 			// No ingredient found.
-			$content_service->set_about_jsonld( $content_id, null );
+			$this->content_service->set_about_jsonld( $content_id, null );
 
 			return false;
 		}
@@ -80,14 +91,13 @@ class Food_Kg_Main_Entity_Runner implements Runner {
 	}
 
 	public function get_total() {
-		$recipes = get_posts(
-			array(
-				'post_type'   => 'wprm_recipe',
-				'numberposts' => - 1,
-			)
-		);
+		global $wpdb;
 
-		return count( $recipes );
+		return $wpdb->get_var(
+			"
+			SELECT COUNT(1) FROM $wpdb->posts WHERE post_type = 'wprm_recipe'
+		"
+		);
 	}
 
 }

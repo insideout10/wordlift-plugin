@@ -12,6 +12,7 @@ use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Wordlift\Modules\Food_Kg\Jsonld;
+use Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld;
 use Wordlift\Modules\Food_Kg\Preconditions;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -54,6 +55,10 @@ function __wl_foodkg__load() {
 	/** @var Jsonld $jsonld */
 	$jsonld = $container_builder->get( 'Wordlift\Modules\Food_Kg\Jsonld' );
 	$jsonld->register_hooks();
+
+	/** @var Main_Ingredient_Jsonld $jsonld */
+	$main_ingredient_jsonld = $container_builder->get( 'Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld' );
+	$main_ingredient_jsonld->register_hooks();
 
 	// Get the runners
 	$main_entity_runner = $container_builder->get( 'Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Main_Entity_Runner' );

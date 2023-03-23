@@ -15,6 +15,7 @@ class ComposerStaticInit718e370ed095fd597a1f1d468c2b59f4
         'Wordlift\\Modules\\Food_Kg\\Ingredients_Taxonomy_Recipe_Lift_Strategy' => __DIR__ . '/../..' . '/includes/Ingredients_Taxonomy_Recipe_Lift_Strategy.php',
         'Wordlift\\Modules\\Food_Kg\\Jsonld' => __DIR__ . '/../..' . '/includes/Jsonld.php',
         'Wordlift\\Modules\\Food_Kg\\Main_Entity\\Food_Kg_Main_Entity_Runner' => __DIR__ . '/../..' . '/includes/Main_Entity/Food_Kg_Main_Entity_Runner.php',
+        'Wordlift\\Modules\\Food_Kg\\Main_Entity\\Food_Kg_Recipe_Post_Store' => __DIR__ . '/../..' . '/includes/Main_Entity/Food_Kg_Recipe_Post_Store.php',
         'Wordlift\\Modules\\Food_Kg\\Main_Ingredient_Jsonld' => __DIR__ . '/../..' . '/includes/Main_Ingredient_Jsonld.php',
         'Wordlift\\Modules\\Food_Kg\\Main_Ingredient_Recipe_Lift_Strategy' => __DIR__ . '/../..' . '/includes/Main_Ingredient_Recipe_Lift_Strategy.php',
         'Wordlift\\Modules\\Food_Kg\\Module' => __DIR__ . '/../..' . '/includes/Module.php',

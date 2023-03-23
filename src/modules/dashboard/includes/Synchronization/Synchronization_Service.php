@@ -15,6 +15,10 @@ class Synchronization_Service {
 
 	public function register_hooks() {
 		add_action( self::HOOK, array( $this, 'run' ) );
+
+		if ( ! as_next_scheduled_action( self::HOOK ) ) {
+			as_schedule_recurring_action( strtotime( 'yesterday' ), DAY_IN_SECONDS, self::HOOK, array(), self::GROUP, true );
+		}
 	}
 
 	/**
@@ -47,6 +51,7 @@ class Synchronization_Service {
 	 */
 	public function run() {
 		$last_synchronization = $this->load();
+
 		if ( ! is_a( $last_synchronization, 'Wordlift\Modules\Dashboard\Synchronization\Synchronization' ) || ! $last_synchronization->is_running() ) {
 			throw new SynchronizationNotRunningException();
 		}
@@ -63,9 +68,9 @@ class Synchronization_Service {
 			$last_synchronization->set_offset( $last_synchronization->get_offset() + $count );
 
 			// Set the next runner in case the last ID is `null` (i.e. there isn't).
-			$new_last_runner_idx = ( isset( $new_last_id ) ? $last_runner_idx : $last_runner_idx + 1 );
+			$new_last_runner_idx = ( is_numeric( $new_last_id ) ? $last_runner_idx : $last_runner_idx + 1 );
 			// Set the next last ID in case there is one or `0` to restart.
-			$new_last_id = ( isset( $new_last_id ) ? $new_last_id : 0 );
+			$new_last_id = ( is_numeric( $new_last_id ) ? $new_last_id : 0 );
 			$last_synchronization->set_last_runner_idx( $new_last_runner_idx );
 			$last_synchronization->set_last_id( $new_last_id );
 			$this->save( $last_synchronization );
