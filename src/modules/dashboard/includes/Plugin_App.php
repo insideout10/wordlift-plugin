@@ -2,7 +2,28 @@
 
 namespace Wordlift\Modules\Dashboard;
 
+use Wordlift\Modules\Dashboard\Stats\Stats;
+use Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service;
+use Wordlift\Object_Type_Enum;
+
 class Plugin_App {
+	/**
+	 * @var Synchronization_Service
+	 */
+	private $synchronization_service;
+	/**
+	 * @var Stats
+	 */
+	private $stats;
+
+	/**
+	 * @param $stats Stats
+	 * @param $synchronization_service Synchronization_Service
+	 */
+	public function __construct( $stats, $synchronization_service ) {
+		$this->stats = $stats;
+		$this->synchronization_service = $synchronization_service;
+	}
 
 	public function register_hooks() {
 		add_action( '_wl_dashboard__main', array( $this, 'dashboard__main' ) );
@@ -38,31 +59,40 @@ class Plugin_App {
 
 	private function get_lifted_items() {
 
+		$ingredient_stats = $this->stats->taxonomy( 'wprm_ingredient' );
+		$recipe_stats     = $this->stats->post_type( 'wprm_recipe' );
+		$last_sync =  $this->synchronization_service->load();
+		$updated_at = null;
+		if ( $last_sync ) {
+			$updated_at = $last_sync->get_stopped_at()->format('l, M j, Y');
+		}
+
+
 		return array(
 			array(
-				'description'   => 'Boosted Ingredient are the ones Wordlift matched with KG. Some Explanation how it helps them.',
-				'title'         => 'Lifted Ingredients',
-				'total'         => 120,
+				'description'   => __( 'Boosted Ingredient are the ones Wordlift matched with KG. Some Explanation how it helps them.', 'wordlift' ),
+				'title'         => __( 'Lifted Ingredients', 'wordlift' ),
+				'total'         => $ingredient_stats['total'],
 				'color'         => '#0076f6',
-				'show_all_link' => 'https://foo.com/bar',
-				'lifted'        => 70,
-				'updated_at'    => 'Wednesday, Feb 22, 2023',
+				'show_all_link' => '../ingredients', // @TODO should this be the concern of plugin to route ?
+				'lifted'        => $ingredient_stats['lifted'],
+				'updated_at'    => $updated_at,
 			),
 			array(
-				'description'   => 'Boosted Recipes are the ones Wordlift matched with KG. Some Explanation how it helps them.',
-				'title'         => 'Lifted Recipes',
-				'total'         => 70,
+				'description'   => __( 'Boosted Recipes are the ones Wordlift matched with KG. Some Explanation how it helps them.', 'wordlift' ),
+				'title'         => __( 'Lifted Recipes', 'wordlift' ),
 				'color'         => '#00c48c',
-				'show_all_link' => 'https://foo.com/bar',
-				'lifted'        => 25,
-				'updated_at'    => 'Wednesday, Feb 22, 2023',
+				'show_all_link' => '../recipes', // @TODO should this be the concern of plugin to route ?
+				'total'         => $recipe_stats['total'],
+				'lifted'        => $recipe_stats['lifted'],
+				'updated_at'    => $updated_at,
 			),
 		);
 	}
 
-	private function get_taxonomy_data( $taxonomy ) {
+	private function get_recipe_data( $taxonomy ) {
 		global $wpdb;
-		$sql = "SELECT e.content_id as match_id, t.name,  e.id FROM {$wpdb->prefix}wl_entities e
+		$sql = "SELECT count(1) as total, count(e.about_jsonld) as lifted FROM {$wpdb->prefix}wl_entities e
                   LEFT JOIN {$wpdb->prefix}terms t ON e.content_id = t.term_id
                   INNER JOIN {$wpdb->prefix}term_taxonomy tt ON t.term_id = tt.term_id
                   WHERE e.content_type = %d AND tt.taxonomy = %s";
@@ -71,6 +101,11 @@ class Plugin_App {
 			'total'  => '',
 			'lifted' => '',
 		);
+
+	}
+
+
+	private function get_taxonomy_data( $taxonomy ) {
 
 	}
 
