@@ -5,6 +5,14 @@ namespace Wordlift\Modules\Dashboard\Api;
 use Wordlift\Object_Type_Enum;
 
 class Post_Matches_Rest_Controller extends \WP_REST_Controller {
+	/**
+	 * @var Match_Service
+	 */
+	private $match_service;
+
+	public function __construct($match_service) {
+		$this->match_service = $match_service;
+	}
 
 	public function register() {
 		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
@@ -114,7 +122,10 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 		$operator = $cursor_args['direction'] === 'forward' ? '>' : '<';
 
 		$position = $cursor_args['position'];
-		$items    = $this->format(
+		$items    = array_map(
+			function ($e) {
+				return Match::from($e);
+			},
 			$wpdb->get_results(
 				$wpdb->prepare(
 					"SELECT e.content_id as id, e.about_jsonld as match_jsonld,  p.post_title,  e.id AS match_id FROM {$wpdb->prefix}wl_entities e
@@ -188,29 +199,17 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 	  * @var $request \WP_REST_Request
 	  */
 	public function create_post_match( $request ) {
-		global $wpdb;
 
-		// since we dont have the match_id, we would need to get the match_id by querying the post_id
-		$match_id = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT id FROM {$wpdb->prefix}wl_entities WHERE content_id = %d AND content_type = %d",
-				$request->get_param( 'post_id' ),
-				Object_Type_Enum::POST
-			)
+		$match_id = $this->match_service->get_id(
+			$request->get_param( 'post_id' ),
+			Object_Type_Enum::POST
 		);
 
-
-
-		if ( ! $match_id ) {
-			return new \WP_REST_Response(
-				array(
-					'code'    => 'error',
-					'message' => __( 'The post_id is not valid.', 'wordlift' ),
-				),
-				400
-			);
-		}
-		return $this->set_jsonld_from_match_id( $request->get_json_params(), $match_id );
+		return $this->match_service->set_jsonld(
+			$request->get_param( 'post_id' ),
+			$match_id,
+			$request->get_json_params()
+		);
 
 	}
 
@@ -218,47 +217,14 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 	  * @var $request \WP_REST_Request
 	  */
 	public function update_post_match( $request ) {
-		return $this->set_jsonld_from_match_id(
-			$request->get_json_params(),
-			$request->get_param( 'match_id' )
+
+		return $this->match_service->set_jsonld(
+			$request->get_param( 'post_id' ),
+			$request->get_param( 'match_id' ),
+			$request->get_json_params()
 		);
 	}
 
-	private function format( $rows ) {
-		return array_map(
-			array( $this, 'set_name' ),
-			$rows
-		);
-	}
 
-	/**
-	 * @param \wpdb    $wpdb
-	 * @param array    $jsonld
-	 * @param $match_id
-	 *
-	 * @return array|object|\stdClass|null
-	 */
-	public function set_jsonld_from_match_id( $jsonld, $match_id ) {
-		global $wpdb;
-		$wpdb->query(
-			$wpdb->prepare(
-				"UPDATE {$wpdb->prefix}wl_entities SET about_jsonld = %s WHERE id = %d",
-				wp_json_encode( $jsonld ),
-				$match_id
-			)
-		);
-
-		$query = "SELECT e.content_id as match_id, e.about_jsonld as match_jsonld,  p.name,  e.id FROM {$wpdb->prefix}wl_entities e
-                  LEFT JOIN {$wpdb->prefix}posts p ON e.content_id = p.ID
-                  WHERE  e.id = %d";
-
-		return $wpdb->get_row( $wpdb->prepare( $query, $match_id ) );
-	}
-
-	private function set_name( $item ) {
-		$jsonld             = json_decode( $item['match_jsonld'], true );
-		$item['match_name'] = $jsonld != null ? $jsonld['name'] : null;
-		return $item;
-	}
 
 }

@@ -13,6 +13,7 @@ class Match_Service {
 	 * @param $jsonld
 	 *
 	 * @return Match
+	 * @throws \Exception
 	 */
 	public function set_jsonld( $content_id, $match_id, $jsonld ) {
 
