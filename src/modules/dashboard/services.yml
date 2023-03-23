@@ -1,6 +1,7 @@
 services:
   Wordlift\Modules\Dashboard\Plugin_App:
     class: Wordlift\Modules\Dashboard\Plugin_App
+    arguments: [ '@Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service' ]
 
   Wordlift\Modules\Dashboard\Synchronization\Rest_Controller:
     class: Wordlift\Modules\Dashboard\Synchronization\Rest_Controller

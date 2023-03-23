@@ -2,7 +2,19 @@
 
 namespace Wordlift\Modules\Dashboard;
 
+use Wordlift\Modules\Common\Date_Utils;
+use Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service;
+
 class Plugin_App {
+
+	/**
+	 * @var Synchronization_Service
+	 */
+	private $synchronization_service;
+
+	public function __construct( Synchronization_Service $synchronization_service ) {
+		$this->synchronization_service = $synchronization_service;
+	}
 
 	public function register_hooks() {
 		add_action( '_wl_dashboard__main', array( $this, 'dashboard__main' ) );
@@ -14,8 +26,8 @@ class Plugin_App {
 			array(
 				'synchronization' => array(
 					'state'     => 'idle',
-					'last_sync' => date_create( '2022-01-31 23:45:23' )->getTimestamp(),
-					'next_sync' => date_create( '2024-01-31 23:45:23' )->getTimestamp(),
+					'last_sync' => Date_Utils::to_iso_string( $this->synchronization_service->get_last_sync() ),
+					'next_sync' => Date_Utils::to_iso_string( $this->synchronization_service->get_next_sync() ),
 				),
 				'api_url'         => rest_url( '/wl-dashboard/v1' ),
 			)
