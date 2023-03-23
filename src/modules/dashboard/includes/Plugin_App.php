@@ -89,23 +89,6 @@ class Plugin_App {
 		);
 	}
 
-	private function get_recipe_data( $taxonomy ) {
-		global $wpdb;
-		$sql = "SELECT count(1) as total, count(e.about_jsonld) as lifted FROM {$wpdb->prefix}wl_entities e
-                  LEFT JOIN {$wpdb->prefix}terms t ON e.content_id = t.term_id
-                  INNER JOIN {$wpdb->prefix}term_taxonomy tt ON t.term_id = tt.term_id
-                  WHERE e.content_type = %d AND tt.taxonomy = %s";
 
-		return array(
-			'total'  => '',
-			'lifted' => '',
-		);
-
-	}
-
-
-	private function get_taxonomy_data( $taxonomy ) {
-
-	}
 
 }

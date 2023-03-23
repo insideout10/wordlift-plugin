@@ -14,7 +14,7 @@ class Stats {
 
 
 	public function post_type( $post_type ) {
-		return $this->get( Object_Type_Enum::TERM, $post_type );
+		return $this->get( Object_Type_Enum::POST, $post_type );
 	}
 
 	/**
@@ -48,6 +48,7 @@ class Stats {
 				$type,
 				$identifier
 			);
+
 
 			return $wpdb->get_row( $query, ARRAY_A );
 		}
