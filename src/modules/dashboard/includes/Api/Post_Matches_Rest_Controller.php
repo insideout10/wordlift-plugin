@@ -25,12 +25,12 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 
 		// Get post matches by taxonomy name
 		register_rest_route(
-			'wordlift/v1',
+			'/wl-dashboard/v1/wordlift/v1',
 			'/post-matches',
 			array(
-				'methods'             => 'GET',
-				'callback'            => array( $this, 'get_post_matches' ),
-				'args'                => array(
+				'methods'  => 'GET',
+				'callback' => array( $this, 'get_post_matches' ),
+				'args'     => array(
 					'post_type' => array(
 						'required'          => true,
 						'validate_callback' => 'rest_validate_request_arg',
@@ -49,10 +49,10 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 						'sanitize_callback' => 'absint',
 					),
 				),
-
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
+			//
+			// 'permission_callback' => function () {
+			// return current_user_can( 'manage_options' );
+			// },
 			)
 		);
 
@@ -140,10 +140,9 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 			)
 		);
 
-		$page =  new Page( $items, $limit, $position);
+		$page = new Page( $items, $limit, $position );
 		return $page->serialize();
 	}
-
 
 	 /**
 	  * Create a new match for a post.
@@ -178,7 +177,5 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 			$request->get_json_params()
 		)->serialize();
 	}
-
-
 
 }

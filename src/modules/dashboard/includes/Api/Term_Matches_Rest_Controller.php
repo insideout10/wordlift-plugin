@@ -24,12 +24,12 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 
 		// Get term matches by taxonomy name
 		register_rest_route(
-			'wordlift/v1',
+			'/wl-dashboard/v1/wordlift/v1',
 			'/term-matches',
 			array(
-				'methods'             => 'GET',
-				'callback'            => array( $this, 'get_term_matches' ),
-				'args'                => array(
+				'methods'  => 'GET',
+				'callback' => array( $this, 'get_term_matches' ),
+				'args'     => array(
 					'taxonomy' => array(
 						'required'          => true,
 						'validate_callback' => 'rest_validate_request_arg',
@@ -48,16 +48,16 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 						'sanitize_callback' => 'absint',
 					),
 				),
-
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
+			//
+			// 'permission_callback' => function () {
+			// return current_user_can( 'manage_options' );
+			// },
 			)
 		);
 
 		// Create a new match for a term
 		register_rest_route(
-			'wordlift/v1',
+			'/wl-dashboard/v1/wordlift/v1',
 			'/term-matches/(?P<term_id>\d+)/matches',
 			array(
 				'methods'             => 'POST',
@@ -76,7 +76,7 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 
 		// Update an existing term match
 		register_rest_route(
-			'wordlift/v1',
+			'/wl-dashboard/v1/wordlift/v1',
 			'/term-matches/(?P<term_id>\d+)/matches/(?P<match_id>\d+)',
 			array(
 				'methods'             => 'PUT',
@@ -120,7 +120,6 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 		}
 		$operator = $cursor_args['direction'] === Page::FORWARD ? '>' : '<';
 
-
 		$position = $cursor_args['position'];
 
 		$query = $wpdb->prepare(
@@ -134,7 +133,7 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 			$cursor_args['limit']
 		);
 
-		error_log($query);
+		error_log( $query );
 
 		$items = array_map(
 			function ( $e ) {
