@@ -20,7 +20,7 @@ class Plugin_App {
 	 * @param $synchronization_service Synchronization_Service
 	 */
 	public function __construct( $stats, $synchronization_service ) {
-		$this->stats = $stats;
+		$this->stats                   = $stats;
 		$this->synchronization_service = $synchronization_service;
 	}
 
@@ -30,7 +30,8 @@ class Plugin_App {
 
 	public function dashboard__main() {
 		$iframe_src = esc_url( plugin_dir_url( __DIR__ ) . 'app/iframe.html' );
-		$params     = wp_json_encode(
+
+		$params = wp_json_encode(
 			array(
 				'synchronization' => array(
 					'state'     => 'idle',
@@ -60,17 +61,17 @@ class Plugin_App {
 
 		$ingredient_stats = $this->stats->taxonomy( 'wprm_ingredient' );
 		$recipe_stats     = $this->stats->post_type( 'wprm_recipe' );
-		$last_sync =  $this->synchronization_service->load();
-		$updated_at = null;
+		$last_sync        = $this->synchronization_service->load();
+		$updated_at       = null;
 		if ( $last_sync && $last_sync->get_stopped_at() ) {
-			$updated_at = $last_sync->get_stopped_at()->format('l, M j, Y');
+			$updated_at = $last_sync->get_stopped_at()->format( 'l, M j, Y' );
 		}
-
 
 		return array(
 			array(
 				'description'   => __( 'Boosted Ingredient are the ones Wordlift matched with KG. Some Explanation how it helps them.', 'wordlift' ),
 				'title'         => __( 'Lifted Ingredients', 'wordlift' ),
+				'label'         => __( 'Ingredients', 'wordlift' ),
 				'total'         => (int) $ingredient_stats['total'],
 				'color'         => '#0076f6',
 				'show_all_link' => '../ingredients', // @TODO should this be the concern of plugin to route ?
@@ -80,6 +81,7 @@ class Plugin_App {
 			array(
 				'description'   => __( 'Boosted Recipes are the ones Wordlift matched with KG. Some Explanation how it helps them.', 'wordlift' ),
 				'title'         => __( 'Lifted Recipes', 'wordlift' ),
+				'label'         => __( 'Recipes', 'wordlift' ),
 				'color'         => '#00c48c',
 				'show_all_link' => '../recipes', // @TODO should this be the concern of plugin to route ?
 				'total'         => (int) $recipe_stats['total'],
@@ -88,7 +90,5 @@ class Plugin_App {
 			),
 		);
 	}
-
-
 
 }
