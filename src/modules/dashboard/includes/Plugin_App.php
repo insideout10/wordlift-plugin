@@ -62,7 +62,7 @@ class Plugin_App {
 		$recipe_stats     = $this->stats->post_type( 'wprm_recipe' );
 		$last_sync =  $this->synchronization_service->load();
 		$updated_at = null;
-		if ( $last_sync ) {
+		if ( $last_sync && $last_sync->get_stopped_at() ) {
 			$updated_at = $last_sync->get_stopped_at()->format('l, M j, Y');
 		}
 
@@ -71,10 +71,10 @@ class Plugin_App {
 			array(
 				'description'   => __( 'Boosted Ingredient are the ones Wordlift matched with KG. Some Explanation how it helps them.', 'wordlift' ),
 				'title'         => __( 'Lifted Ingredients', 'wordlift' ),
-				'total'         => $ingredient_stats['total'],
+				'total'         => (int) $ingredient_stats['total'],
 				'color'         => '#0076f6',
 				'show_all_link' => '../ingredients', // @TODO should this be the concern of plugin to route ?
-				'lifted'        => $ingredient_stats['lifted'],
+				'lifted'        => (int) $ingredient_stats['lifted'],
 				'updated_at'    => $updated_at,
 			),
 			array(
@@ -82,8 +82,8 @@ class Plugin_App {
 				'title'         => __( 'Lifted Recipes', 'wordlift' ),
 				'color'         => '#00c48c',
 				'show_all_link' => '../recipes', // @TODO should this be the concern of plugin to route ?
-				'total'         => $recipe_stats['total'],
-				'lifted'        => $recipe_stats['lifted'],
+				'total'         => (int) $recipe_stats['total'],
+				'lifted'        => (int) $recipe_stats['lifted'],
 				'updated_at'    => $updated_at,
 			),
 		);
