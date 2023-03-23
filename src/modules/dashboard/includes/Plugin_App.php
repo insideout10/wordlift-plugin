@@ -9,7 +9,7 @@ class Plugin_App {
 	}
 
 	public function dashboard__main() {
-		$iframe_src = esc_url( plugin_dir_url( __DIR__ ) . 'app/index.html' );
+		$iframe_src = esc_url( plugin_dir_url( __DIR__ ) . 'app/iframe.html' );
 		$params     = wp_json_encode(
 			array(
 				'synchronization' => array(

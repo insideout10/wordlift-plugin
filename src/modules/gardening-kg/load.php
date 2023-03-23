@@ -9,6 +9,7 @@
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Wordlift\Modules\Gardening_Kg\Preconditions;
 
 // if ( ! defined( 'ABSPATH' ) ) {
 // exit;
@@ -30,6 +31,14 @@ function __wl_gardening_kg__load() {
 	$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
 	$loader->load( 'services.yml' );
 	$container_builder->compile();
+
+	/**
+	 * @var Preconditions $preconditions
+	 */
+	$preconditions = $container_builder->get( 'Wordlift\Modules\Gardening_Kg\Preconditions' );
+	if ( ! $preconditions->pass() ) {
+		return;
+	}
 
 	// Get the runners
 	$main_entity_runner = $container_builder->get( 'Wordlift\Modules\Gardening_Kg\Main_Entity\Gardening_Kg_Main_Entity_Runner' );
