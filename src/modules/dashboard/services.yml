@@ -16,3 +16,5 @@ services:
     class: Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service
   Wordlift\Modules\Dashboard\Stats\Stats:
     class: Wordlift\Modules\Dashboard\Stats\Stats
+  Wordlift\Modules\Dashboard\Api\Term_Matches_Rest_Controller:
+    class: Wordlift\Modules\Dashboard\Api\Term_Matches_Rest_Controller

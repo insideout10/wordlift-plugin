@@ -6,14 +6,14 @@ use Wordlift\Object_Type_Enum;
 
 class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 
-	public function __construct() {
-		add_action( 'rest_api_init', array( $this, 'register' ) );
+	public function register() {
+		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
 	}
 
 	/**
 	 * Register the routes for the objects of the controller.
 	 */
-	public function register() {
+	public function register_routes() {
 
 		// Get term matches by taxonomy name
 		register_rest_route(
