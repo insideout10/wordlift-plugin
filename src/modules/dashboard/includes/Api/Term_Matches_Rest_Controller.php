@@ -133,8 +133,8 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 		);
 
 		return array(
-			'first' => $position === 0 ? null : $this->cursor( $limit, 0, 'forwards' ),
-			'last'  => $position === PHP_INT_MAX ? null : $this->cursor( $limit, PHP_INT_MAX, 'backwards' ),
+			'first' => 0 === $position ? null : $this->cursor( $limit, 0, 'forwards' ),
+			'last'  => PHP_INT_MAX === $position ? null : $this->cursor( $limit, PHP_INT_MAX, 'backwards' ),
 			'next'  => $this->next( $items, $limit, $position ),
 			'prev'  => $this->prev( $items, $limit, $position ),
 			'items' => $items,
