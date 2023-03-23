@@ -9,31 +9,47 @@ class Match_Service {
 
 	/**
 	 * @param $content_id
+	 * @param $content_type
 	 * @param $match_id
 	 * @param $jsonld
 	 *
-	 * @return Match
+	 * @return Match_Entry
 	 * @throws \Exception
 	 */
-	public function set_jsonld( $content_id, $match_id, $jsonld ) {
+	public function set_jsonld( $content_id, $content_type, $match_id, $jsonld ) {
 
 		global $wpdb;
 		$wpdb->query(
 			$wpdb->prepare(
-				"UPDATE {$wpdb->prefix}wl_entities SET about_jsonld = %s WHERE id = %d AND content_id = %d",
+				"UPDATE {$wpdb->prefix}wl_entities SET about_jsonld = %s WHERE id = %d AND content_id = %d AND content_type = %d",
 				wp_json_encode( $jsonld ),
 				$match_id,
-				$content_id
+				$content_id,
+				$content_type
 			)
 		);
 
-		$query = "SELECT e.content_id as match_id, e.about_jsonld as match_jsonld,  t.name,  e.id FROM {$wpdb->prefix}wl_entities e
+		if ( Object_Type_Enum::TERM === $content_type ) {
+			$query   = "SELECT e.content_id as match_id, e.about_jsonld as match_jsonld,  t.name,  e.id FROM {$wpdb->prefix}wl_entities e
                   LEFT JOIN {$wpdb->prefix}terms t ON e.content_id = t.term_id
-                  WHERE  e.id = %d AND content_id = %d";
+                  WHERE  e.id = %d AND e.content_id = %d AND e.content_type = %d";
+			$results = $wpdb->get_row( $wpdb->prepare( $query, $match_id, $content_id, $content_type ), ARRAY_A );
 
-		return Match::from( $wpdb->get_row( $wpdb->prepare( $query, $match_id, $content_id ), ARRAY_A ) );
+			return Match_Entry::from( $results );
+		}
+
+		if ( Object_Type_Enum::POST === $content_type ) {
+			$query   = "SELECT e.content_id as match_id, e.about_jsonld as match_jsonld,  p.post_title,  e.id FROM {$wpdb->prefix}wl_entities e
+                  LEFT JOIN {$wpdb->prefix}posts p ON e.content_id = p.ID
+                  WHERE  e.id = %d AND e.content_id = %d AND e.content_type = %d";
+			$results = $wpdb->get_row( $wpdb->prepare( $query, $match_id, $content_id, $content_type ), ARRAY_A );
+
+			return Match_Entry::from( $results );
+		}
 
 	}
+
+
 
 	/**
 	 * @param $content_id int

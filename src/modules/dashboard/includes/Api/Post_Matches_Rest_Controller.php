@@ -10,7 +10,7 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 	 */
 	private $match_service;
 
-	public function __construct($match_service) {
+	public function __construct( $match_service ) {
 		$this->match_service = $match_service;
 	}
 
@@ -36,11 +36,11 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 						'validate_callback' => 'rest_validate_request_arg',
 						'sanitize_callback' => 'sanitize_text_field',
 					),
-					'cursor'   => array(
+					'cursor'    => array(
 						'type'              => 'string',
 						'validate_callback' => 'rest_validate_request_arg',
 					),
-					'limit'    => array(
+					'limit'     => array(
 						'type'              => 'integer',
 						'validate_callback' => 'rest_validate_request_arg',
 						'default'           => 20,
@@ -108,7 +108,7 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 	public function get_post_matches( $request ) {
 		global $wpdb;
 		$query_params = $request->get_query_params();
-		$post_type     = $query_params['post_type'];
+		$post_type    = $query_params['post_type'];
 		$limit        = $query_params['limit'] ? $query_params['limit'] : 10;
 
 		$cursor_args = array(
@@ -123,12 +123,12 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 
 		$position = $cursor_args['position'];
 		$items    = array_map(
-			function ($e) {
-				return Match::from($e);
+			function ( $e ) {
+				return Match_Entry::from( $e )->serialize();
 			},
 			$wpdb->get_results(
 				$wpdb->prepare(
-					"SELECT e.content_id as id, e.about_jsonld as match_jsonld,  p.post_title,  e.id AS match_id FROM {$wpdb->prefix}wl_entities e
+					"SELECT e.content_id as id, e.about_jsonld as match_jsonld,  p.post_title as name,  e.id AS match_id FROM {$wpdb->prefix}wl_entities e
                   LEFT JOIN {$wpdb->prefix}posts p ON e.content_id = p.ID
                   WHERE e.content_type = %d AND p.post_type = %s AND e.id {$operator} %d LIMIT %d",
 					Object_Type_Enum::POST,
@@ -139,8 +139,6 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 				ARRAY_A
 			)
 		);
-
-
 
 		return array(
 			'first' => 0 === $position ? null : $this->cursor( $limit, 0, 'forwards' ),
@@ -207,6 +205,7 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 
 		return $this->match_service->set_jsonld(
 			$request->get_param( 'post_id' ),
+			Object_Type_Enum::POST,
 			$match_id,
 			$request->get_json_params()
 		);

@@ -24,3 +24,5 @@ services:
     arguments: [ '@Wordlift\Modules\Dashboard\Api\Match_Service' ]
   Wordlift\Modules\Dashboard\Api\Match_Service:
     class: Wordlift\Modules\Dashboard\Api\Match_Service
+  Wordlift\Modules\Dashboard\Api\MatchEntry:
+    class: Wordlift\Modules\Dashboard\Api\MatchEntry

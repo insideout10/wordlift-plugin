@@ -4,7 +4,7 @@ namespace Wordlift\Modules\Dashboard\Api;
 
 use Wordlift\Assertions;
 
-class Match {
+class Match_Entry {
 
 	private $id;
 	private $match_jsonld;
@@ -26,7 +26,7 @@ class Match {
 	}
 
 
-	public function __serialize() {
+	public function serialize() {
 		return array(
 			'id'           => $this->id,
 			'name'         => $this->name,
@@ -45,7 +45,7 @@ class Match {
 		Assertions::array_key_exists( $data, 'match_jsonld' );
 		Assertions::array_key_exists( $data, 'name' );
 		Assertions::array_key_exists( $data, 'id' );
-		return new Match(
+		return new Match_Entry(
 			$data['id'],
 			$data['name'],
 			$data['match_jsonld'],
