@@ -4,7 +4,7 @@ namespace Wordlift\Modules\Dashboard\Api;
 
 use Wordlift\Object_Type_Enum;
 
-class Term_Matches_Rest_Controller extends \WP_REST_Controller {
+class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 
 	public function register() {
 		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
@@ -15,15 +15,15 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 	 */
 	public function register_routes() {
 
-		// Get term matches by taxonomy name
+		// Get post matches by taxonomy name
 		register_rest_route(
 			'wordlift/v1',
-			'/term-matches',
+			'/post-matches',
 			array(
 				'methods'             => 'GET',
-				'callback'            => array( $this, 'get_term_matches' ),
+				'callback'            => array( $this, 'get_post_matches' ),
 				'args'                => array(
-					'taxonomy' => array(
+					'post_type' => array(
 						'required'          => true,
 						'validate_callback' => 'rest_validate_request_arg',
 						'sanitize_callback' => 'sanitize_text_field',
@@ -48,15 +48,15 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 			)
 		);
 
-		// Create a new match for a term
+		// Create a new match for a post
 		register_rest_route(
 			'wordlift/v1',
-			'/term-matches/(?P<term_id>\d+)/matches',
+			'/post-matches/(?P<post_id>\d+)/matches',
 			array(
 				'methods'             => 'POST',
-				'callback'            => array( $this, 'create_term_match' ),
+				'callback'            => array( $this, 'create_post_match' ),
 				'args'                => array(
-					'term_id' => array(
+					'post_id' => array(
 						'required'          => true,
 						'validate_callback' => 'rest_validate_request_arg',
 					),
@@ -67,15 +67,15 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 			)
 		);
 
-		// Update an existing term match
+		// Update an existing post match
 		register_rest_route(
 			'wordlift/v1',
-			'/term-matches/(?P<term_id>\d+)/matches/(?P<match_id>\d+)',
+			'/post-matches/(?P<post_id>\d+)/matches/(?P<match_id>\d+)',
 			array(
 				'methods'             => 'PUT',
-				'callback'            => array( $this, 'update_term_match' ),
+				'callback'            => array( $this, 'update_post_match' ),
 				'args'                => array(
-					'term_id'  => array(
+					'post_id'  => array(
 						'required'          => true,
 						'validate_callback' => 'rest_validate_request_arg',
 					),
@@ -93,14 +93,14 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 	}
 
 	/**
-	 * Get the term matches by taxonomy name.
+	 * Get the post matches by taxonomy name.
 	 *
 	 * @var $request \WP_REST_Request
 	 */
-	public function get_term_matches( $request ) {
+	public function get_post_matches( $request ) {
 		global $wpdb;
 		$query_params = $request->get_query_params();
-		$taxonomy     = $query_params['taxonomy'];
+		$post_type     = $query_params['post_type'];
 		$limit        = $query_params['limit'] ? $query_params['limit'] : 10;
 
 		$cursor_args = array(
@@ -117,18 +117,19 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 		$items    = $this->format(
 			$wpdb->get_results(
 				$wpdb->prepare(
-					"SELECT e.content_id as id, e.about_jsonld as match_jsonld,  t.name,  e.id AS match_id FROM {$wpdb->prefix}wl_entities e
-                  LEFT JOIN {$wpdb->prefix}terms t ON e.content_id = t.term_id
-                  INNER JOIN {$wpdb->prefix}term_taxonomy tt ON t.term_id = tt.term_id
-                  WHERE e.content_type = %d AND tt.taxonomy = %s AND e.id {$operator} %d LIMIT %d",
-					Object_Type_Enum::TERM,
-					$taxonomy,
+					"SELECT e.content_id as id, e.about_jsonld as match_jsonld,  p.post_title,  e.id AS match_id FROM {$wpdb->prefix}wl_entities e
+                  LEFT JOIN {$wpdb->prefix}posts p ON e.content_id = p.ID
+                  WHERE e.content_type = %d AND p.post_type = %s AND e.id {$operator} %d LIMIT %d",
+					Object_Type_Enum::POST,
+					$post_type,
 					$position,
 					$cursor_args['limit']
 				),
 				ARRAY_A
 			)
 		);
+
+
 
 		return array(
 			'first' => 0 === $position ? null : $this->cursor( $limit, 0, 'forwards' ),
@@ -182,40 +183,42 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 	}
 
 	 /**
-	  * Create a new match for a term.
+	  * Create a new match for a post.
 	  *
 	  * @var $request \WP_REST_Request
 	  */
-	public function create_term_match( $request ) {
+	public function create_post_match( $request ) {
 		global $wpdb;
 
-		// since we dont have the match_id, we would need to get the match_id by querying the term_id
+		// since we dont have the match_id, we would need to get the match_id by querying the post_id
 		$match_id = $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT id FROM {$wpdb->prefix}wl_entities WHERE content_id = %d AND content_type = %d",
-				$request->get_param( 'term_id' ),
-				Object_Type_Enum::TERM
+				$request->get_param( 'post_id' ),
+				Object_Type_Enum::POST
 			)
 		);
+
+
 
 		if ( ! $match_id ) {
 			return new \WP_REST_Response(
 				array(
 					'code'    => 'error',
-					'message' => __( 'The term_id is not valid.', 'wordlift' ),
+					'message' => __( 'The post_id is not valid.', 'wordlift' ),
 				),
 				400
 			);
 		}
-		return $this->set_jsonld( $request->get_json_params(), $match_id );
+		return $this->set_jsonld_from_match_id( $request->get_json_params(), $match_id );
 
 	}
 
 	 /**
 	  * @var $request \WP_REST_Request
 	  */
-	public function update_term_match( $request ) {
-		return $this->set_jsonld(
+	public function update_post_match( $request ) {
+		return $this->set_jsonld_from_match_id(
 			$request->get_json_params(),
 			$request->get_param( 'match_id' )
 		);
@@ -235,7 +238,7 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 	 *
 	 * @return array|object|\stdClass|null
 	 */
-	public function set_jsonld( $jsonld, $match_id ) {
+	public function set_jsonld_from_match_id( $jsonld, $match_id ) {
 		global $wpdb;
 		$wpdb->query(
 			$wpdb->prepare(
@@ -245,8 +248,8 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 			)
 		);
 
-		$query = "SELECT e.content_id as match_id, e.about_jsonld as match_jsonld,  t.name,  e.id FROM {$wpdb->prefix}wl_entities e
-                  LEFT JOIN {$wpdb->prefix}terms t ON e.content_id = t.term_id
+		$query = "SELECT e.content_id as match_id, e.about_jsonld as match_jsonld,  p.name,  e.id FROM {$wpdb->prefix}wl_entities e
+                  LEFT JOIN {$wpdb->prefix}posts p ON e.content_id = p.ID
                   WHERE  e.id = %d";
 
 		return $wpdb->get_row( $wpdb->prepare( $query, $match_id ) );
