@@ -2,7 +2,6 @@
 
 namespace Wordlift\Modules\Dashboard\Api;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Object_Type_Enum;
 
 class Term_Matches_Rest_Controller extends \WP_REST_Controller {
@@ -102,7 +101,7 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 		global $wpdb;
 		$query_params = $request->get_query_params();
 		$taxonomy     = $query_params['taxonomy'];
-		$limit        = $query_params['limit'] ?: 10;
+		$limit        = $query_params['limit'] ? $query_params['limit'] : 10;
 
 		$cursor_args = array(
 			'limit'     => $limit,
@@ -114,16 +113,14 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 		}
 		$operator = $cursor_args['direction'] === 'forward' ? '>' : '<';
 
-		$query = "SELECT e.content_id as id, e.about_jsonld as match_jsonld,  t.name,  e.id AS match_id FROM {$wpdb->prefix}wl_entities e
-                  LEFT JOIN {$wpdb->prefix}terms t ON e.content_id = t.term_id
-                  INNER JOIN {$wpdb->prefix}term_taxonomy tt ON t.term_id = tt.term_id
-                  WHERE e.content_type = %d AND tt.taxonomy = %s AND e.id {$operator} %d LIMIT %d";
-
 		$position = $cursor_args['position'];
 		$items    = $this->format(
 			$wpdb->get_results(
 				$wpdb->prepare(
-					$query,
+					"SELECT e.content_id as id, e.about_jsonld as match_jsonld,  t.name,  e.id AS match_id FROM {$wpdb->prefix}wl_entities e
+                  LEFT JOIN {$wpdb->prefix}terms t ON e.content_id = t.term_id
+                  INNER JOIN {$wpdb->prefix}term_taxonomy tt ON t.term_id = tt.term_id
+                  WHERE e.content_type = %d AND tt.taxonomy = %s AND e.id {$operator} %d LIMIT %d",
 					Object_Type_Enum::TERM,
 					$taxonomy,
 					$position,
@@ -142,7 +139,6 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 		);
 
 	}
-
 
 	private function cursor( $limit, $position, $direction ) {
 		return base64_encode(
@@ -185,10 +181,9 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 		return $this->cursor( current( $items )['id'], $position, 'forward' );
 	}
 
-
-
 	 /**
-	 * Create a new match for a term.
+	  * Create a new match for a term.
+	  *
 	  * @var $request \WP_REST_Request
 	  */
 	public function create_term_match( $request ) {
@@ -212,76 +207,20 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 				400
 			);
 		}
-
 		return $this->set_jsonld_from_match_id( $request->get_json_params(), $match_id );
 
 	}
 
 	 /**
 	  * @var $request \WP_REST_Request
-	 */
-	 public function update_term_match( $request ) {
+	  */
+	public function update_term_match( $request ) {
 		return $this->set_jsonld_from_match_id(
 			$request->get_json_params(),
-			$request->get_param('match_id')
+			$request->get_param( 'match_id' )
 		);
-	 }
+	}
 
-	// **
-	// * Retrieves the term match schema, conforming to JSON Schema.
-	// *
-	// * @return array
-	// */
-	// public function get_item_schema() {
-	// return array(
-	// '$schema'    => 'http://json-schema.org/draft-04/schema#',
-	// 'title'      => 'term-match',
-	// 'type'       => 'object',
-	// 'properties' => array(
-	// 'id'           => array(
-	// 'description' => __( 'Unique identifier for the term match.' ),
-	// 'type'        => 'integer',
-	// 'readonly'    => true,
-	// ),
-	// 'name'         => array(
-	// 'description' => __( 'The term name.' ),
-	// 'type'        => 'string',
-	// 'required'    => true,
-	// ),
-	// 'match_id'     => array(
-	// 'description' => __( 'Unique identifier for the matched term.' ),
-	// 'type'        => 'integer',
-	// 'required'    => true,
-	// ),
-	// 'match_name'   => array(
-	// 'description' => __( 'The name of the matched term.' ),
-	// 'type'        => 'string',
-	// 'required'    => true,
-	// ),
-	// 'match_jsonld' => array(
-	// 'description' => __( 'The JSON-LD representation of the matched term.' ),
-	// 'type'        => 'object',
-	// 'properties'  => array(
-	// '@context' => array(
-	// 'description' => __( 'The context for the JSON-LD data.' ),
-	// 'type'        => 'string',
-	// 'required'    => true,
-	// ),
-	// '@type'    => array(
-	// 'description' => __( 'The type of the JSON-LD data.' ),
-	// 'type'        => 'string',
-	// 'required'    => true,
-	// ),
-	// 'name'     => array(
-	// 'description' => __( 'The name of the matched term.' ),
-	// 'type'        => 'string',
-	// 'required'    => true,
-	// ),
-	// ),
-	// ),
-	// ),
-	// );
-	// }
 	private function format( $rows ) {
 		return array_map(
 			array( $this, 'set_name' ),
@@ -290,13 +229,13 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 	}
 
 	/**
-	 * @param \wpdb $wpdb
-	 * @param array $jsonld
+	 * @param \wpdb    $wpdb
+	 * @param array    $jsonld
 	 * @param $match_id
 	 *
 	 * @return array|object|\stdClass|null
 	 */
-	public function set_jsonld_from_match_id(  $jsonld, $match_id ) {
+	public function set_jsonld_from_match_id( $jsonld, $match_id ) {
 		global $wpdb;
 		$wpdb->query(
 			$wpdb->prepare(
@@ -310,7 +249,6 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 		$query = "SELECT e.content_id as match_id, e.about_jsonld as match_jsonld,  t.name,  e.id FROM {$wpdb->prefix}wl_entities e
                   LEFT JOIN {$wpdb->prefix}terms t ON e.content_id = t.term_id
                   WHERE  e.id = %d";
-
 
 		return $wpdb->get_row( $wpdb->prepare( $query, $match_id ) );
 	}
