@@ -128,9 +128,9 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 			},
 			$wpdb->get_results(
 				$wpdb->prepare(
-					"SELECT e.content_id as id, e.about_jsonld as match_jsonld,  p.post_title as name,  e.id AS match_id FROM {$wpdb->prefix}wl_entities e
-                  LEFT JOIN {$wpdb->prefix}posts p ON e.content_id = p.ID
-                  WHERE e.content_type = %d AND p.post_type = %s AND e.id {$operator} %d LIMIT %d",
+					"SELECT e.content_id as id, e.about_jsonld as match_jsonld,  p.post_title as name,  e.id AS match_id FROM
+                  {$wpdb->prefix}posts  p LEFT JOIN {$wpdb->prefix}wl_entities e ON p.ID = e.content_id
+                  WHERE e.content_type = %d AND p.post_type = %s AND p.ID {$operator} %d LIMIT %d",
 					Object_Type_Enum::POST,
 					$post_type,
 					$position,
