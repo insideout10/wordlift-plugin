@@ -208,7 +208,7 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 			Object_Type_Enum::POST,
 			$match_id,
 			$request->get_json_params()
-		);
+		)->serialize();
 
 	}
 
@@ -219,9 +219,10 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 
 		return $this->match_service->set_jsonld(
 			$request->get_param( 'post_id' ),
+			Object_Type_Enum::POST,
 			$request->get_param( 'match_id' ),
 			$request->get_json_params()
-		);
+		)->serialize();
 	}
 
 

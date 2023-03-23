@@ -60,7 +60,7 @@ class Assertions {
 	 */
 	public static function array_key_exists( $arr, $key ) {
 		if ( ! array_key_exists($key, $arr) ) {
-			throw new Exception( "The key {$key} doesn't exist in array " . var_export( $arr) );
+			throw new Exception( "The key {$key} doesn't exist in array " . var_export( $arr, true ) );
 		}
 	}
 

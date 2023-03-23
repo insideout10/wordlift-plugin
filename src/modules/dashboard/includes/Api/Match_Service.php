@@ -39,7 +39,7 @@ class Match_Service {
 		}
 
 		if ( Object_Type_Enum::POST === $content_type ) {
-			$query   = "SELECT e.content_id as match_id, e.about_jsonld as match_jsonld,  p.post_title,  e.id FROM {$wpdb->prefix}wl_entities e
+			$query   = "SELECT e.content_id as match_id, e.about_jsonld as match_jsonld,  p.post_title AS name,  e.id FROM {$wpdb->prefix}wl_entities e
                   LEFT JOIN {$wpdb->prefix}posts p ON e.content_id = p.ID
                   WHERE  e.id = %d AND e.content_id = %d AND e.content_type = %d";
 			$results = $wpdb->get_row( $wpdb->prepare( $query, $match_id, $content_id, $content_type ), ARRAY_A );
