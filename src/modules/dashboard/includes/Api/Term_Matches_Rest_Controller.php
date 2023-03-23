@@ -113,39 +113,43 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 		$cursor_args = array(
 			'limit'     => $limit,
 			'position'  => 0,
-			'direction' => 'forward',
+			'direction' => Page::FORWARD,
 		);
 		if ( isset( $query_params['cursor'] ) && is_string( $query_params['cursor'] ) ) {
 			$cursor_args = wp_parse_args( json_decode( base64_decode( $query_params['cursor'] ), true ), $cursor_args );
 		}
-		$operator = $cursor_args['direction'] === 'forward' ? '>' : '<';
+		$operator = $cursor_args['direction'] === Page::FORWARD ? '>' : '<';
+
 
 		$position = $cursor_args['position'];
-		$items    = array_map(
+
+		$query = $wpdb->prepare(
+			"SELECT t.term_id as id, e.about_jsonld as match_jsonld,  t.name,  e.id AS match_id FROM {$wpdb->prefix}terms t
+     INNER JOIN {$wpdb->prefix}term_taxonomy tt ON t.term_id = tt.term_id
+     LEFT JOIN {$wpdb->prefix}wl_entities e ON t.term_id = e.content_id
+     WHERE e.content_type = %d AND tt.taxonomy = %s AND t.term_id {$operator} %d LIMIT %d",
+			Object_Type_Enum::TERM,
+			$taxonomy,
+			$position,
+			$cursor_args['limit']
+		);
+
+		error_log($query);
+
+		$items = array_map(
 			function ( $e ) {
 				return Match_Entry::from( $e )->serialize();
 			},
 			$wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT e.content_id as id, e.about_jsonld as match_jsonld,  t.name,  e.id AS match_id FROM {$wpdb->prefix}wl_entities e
-                  LEFT JOIN {$wpdb->prefix}terms t ON e.content_id = t.term_id
-                  INNER JOIN {$wpdb->prefix}term_taxonomy tt ON t.term_id = tt.term_id
-                  WHERE e.content_type = %d AND tt.taxonomy = %s AND e.id {$operator} %d LIMIT %d",
-					Object_Type_Enum::TERM,
-					$taxonomy,
-					$position,
-					$cursor_args['limit']
-				),
+				$query,
 				ARRAY_A
 			)
 		);
 
-		$page =  new Page( $items, $limit, $position);
+		$page = new Page( $items, $limit, $position );
 		return $page->serialize();
 
 	}
-
-
 
 	 /**
 	  * Create a new match for a term.
@@ -179,10 +183,5 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 			$request->get_json_params()
 		)->serialize();
 	}
-
-
-
-
-
 
 }

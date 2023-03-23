@@ -4,6 +4,9 @@ namespace Wordlift\Modules\Dashboard\Api;
 
 class Page {
 
+	const FORWARD = 'FORWARD';
+	const BACKWARD = 'BACKWARD';
+
 	private $items;
 	private $limit;
 	private $position;
@@ -16,8 +19,8 @@ class Page {
 
 	public function serialize() {
 		return array(
-			'first' => 0 === $this->position ? null : $this->cursor( $this->limit, 0, 'forwards' ),
-			'last'  => PHP_INT_MAX === $this->position ? null : $this->cursor( $this->limit, PHP_INT_MAX, 'backwards' ),
+			'first' => 0 === $this->position ? null : $this->cursor( $this->limit, 0, Page::FORWARD ),
+			'last'  => PHP_INT_MAX === $this->position ? null : $this->cursor( $this->limit, PHP_INT_MAX, self::BACKWARD ),
 			'next'  => $this->next(),
 			'prev'  => $this->prev(),
 			'items' => $this->items,
@@ -46,7 +49,7 @@ class Page {
 		$last_item_position = end( $this->items )['id'];
 
 		// Generate the next cursor
-		return $this->cursor( $this->limit, $last_item_position, 'forward' );
+		return $this->cursor( $this->limit, $last_item_position, self::FORWARD );
 	}
 
 	private function prev( ) {
@@ -59,10 +62,10 @@ class Page {
 		}
 
 		if ( count( $this->items ) <= 0 ) {
-			return $this->cursor( $this->limit, $this->position, 'backward' );
+			return $this->cursor( $this->limit, $this->position, self::BACKWARD );
 		}
 
-		return $this->cursor( current( $this->items )['id'], $this->position, 'forward' );
+		return $this->cursor( $this->limit, current( $this->items )['id'], self::BACKWARD );
 	}
 
 }
