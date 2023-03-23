@@ -113,44 +113,35 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 		}
 		$operator = $cursor_args['direction'] === 'forward' ? '>' : '<';
 
-		$query = "SELECT e.content_id as match_id, t.name,  e.id FROM {$wpdb->prefix}wl_entities e
+		$query = "SELECT e.content_id as match_id, e.about_jsonld as match_jsonld,  t.name,  e.id FROM {$wpdb->prefix}wl_entities e
                   LEFT JOIN {$wpdb->prefix}terms t ON e.content_id = t.term_id
                   INNER JOIN {$wpdb->prefix}term_taxonomy tt ON t.term_id = tt.term_id
                   WHERE e.content_type = %d AND tt.taxonomy = %s AND e.id {$operator} %d LIMIT %d";
 
-		$items = $wpdb->get_results(
-			$wpdb->prepare(
-				$query,
-				Object_Type_Enum::TERM,
-				$taxonomy,
-				$cursor_args['position'],
-				$cursor_args['limit']
+		$position = $cursor_args['position'];
+		$items    = $this->format(
+			$wpdb->get_results(
+				$wpdb->prepare(
+					$query,
+					Object_Type_Enum::TERM,
+					$taxonomy,
+					$position,
+					$cursor_args['limit']
+				),
+				ARRAY_A
 			)
 		);
 
 		return array(
-			'first'     => $this->cursor( $limit, 0, 'forwards' ),
-			'last'      => $this->cursor( $limit, PHP_INT_MAX, 'backwards' ),
-
-			// 'next'  => $this->next($items, $limit, $cursor_args['position']),
-			// 'prev'  => $this->prev($items, $limit, $cursor_args['position']),
-
-				'items' => $items,
+			'first' => $position === 0 ? null : $this->cursor( $limit, 0, 'forwards' ),
+			'last'  => $position === PHP_INT_MAX ? null : $this->cursor( $limit, PHP_INT_MAX, 'backwards' ),
+			'next'  => $this->next( $items, $limit, $position ),
+			'prev'  => $this->prev( $items, $limit, $position ),
+			'items' => $items,
 		);
 
 	}
 
-	private function next( $items, $limit ) {
-
-	}
-
-	private function prev( $items, $limit, $position ) {
-		/**
-		 * If i want to go to previous page i would need to be sure that such page exists.
-		 * I would just need to reverse the direction.
-		 */
-		// return $this->cursor( $limit,)
-	}
 
 	private function cursor( $limit, $position, $direction ) {
 		return base64_encode(
@@ -163,6 +154,37 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 			)
 		);
 	}
+
+	private function next( $items, $limit, $position ) {
+		// Check if we have reached the end of the results
+		if ( count( $items ) < $limit ) {
+			return null;
+		}
+
+		// Get the position of the last item in the current result set
+		$last_item_position = end( $items )['id'];
+
+		// Generate the next cursor
+		return $this->cursor( $limit, $last_item_position, 'forward' );
+	}
+
+	private function prev( $items, $limit, $position ) {
+		/**
+		 * If i want to go to previous page i would need to be sure that such page exists.
+		 * I would just need to reverse the direction.
+		 */
+		if ( $position === 0 ) {
+			return null;
+		}
+
+		if ( count( $items ) <= 0 ) {
+			return $this->cursor( $limit, $position, 'backward' );
+		}
+
+		return $this->cursor( current( $items )['id'], $position, 'forward' );
+	}
+
+
 	//
 	// **
 	// * Create a new match for a term.
@@ -233,5 +255,15 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 	// ),
 	// );
 	// }
+	private function format( $rows ) {
+		return array_map(
+			function ( $item ) {
+				$jsonld             = json_decode( $item['match_jsonld'], true );
+				$item['match_name'] = $jsonld != null ? $jsonld['name'] : null;
+				return $item;
+			},
+			$rows
+		);
+	}
 
 }
