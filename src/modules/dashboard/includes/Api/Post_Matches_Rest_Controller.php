@@ -140,56 +140,10 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 			)
 		);
 
-		return array(
-			'first' => 0 === $position ? null : $this->cursor( $limit, 0, 'forwards' ),
-			'last'  => PHP_INT_MAX === $position ? null : $this->cursor( $limit, PHP_INT_MAX, 'backwards' ),
-			'next'  => $this->next( $items, $limit, $position ),
-			'prev'  => $this->prev( $items, $limit, $position ),
-			'items' => $items,
-		);
-
+		$page =  new Page( $items, $limit, $position);
+		return $page->serialize();
 	}
 
-	private function cursor( $limit, $position, $direction ) {
-		return base64_encode(
-			json_encode(
-				array(
-					'limit'     => $limit,
-					'position'  => $position,
-					'direction' => $direction,
-				)
-			)
-		);
-	}
-
-	private function next( $items, $limit, $position ) {
-		// Check if we have reached the end of the results
-		if ( count( $items ) < $limit ) {
-			return null;
-		}
-
-		// Get the position of the last item in the current result set
-		$last_item_position = end( $items )['id'];
-
-		// Generate the next cursor
-		return $this->cursor( $limit, $last_item_position, 'forward' );
-	}
-
-	private function prev( $items, $limit, $position ) {
-		/**
-		 * If i want to go to previous page i would need to be sure that such page exists.
-		 * I would just need to reverse the direction.
-		 */
-		if ( $position === 0 ) {
-			return null;
-		}
-
-		if ( count( $items ) <= 0 ) {
-			return $this->cursor( $limit, $position, 'backward' );
-		}
-
-		return $this->cursor( current( $items )['id'], $position, 'forward' );
-	}
 
 	 /**
 	  * Create a new match for a post.
