@@ -20,6 +20,12 @@ use Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service;
  */
 function __wl_dashboard__load() {
 
+	// Dashboard is available only for Food Kg and Gardening Kg atm
+	// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+	if ( ! apply_filters( 'wl_feature__enable__food-kg', false ) && ! apply_filters( 'wl_feature__enable__gardening-kg', false ) ) {
+		return;
+	}
+
 	// Autoloader for plugin itself.
 	if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 		require_once __DIR__ . '/vendor/autoload.php';

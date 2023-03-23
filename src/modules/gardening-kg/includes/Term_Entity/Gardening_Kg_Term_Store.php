@@ -2,9 +2,9 @@
 
 namespace Wordlift\Modules\Gardening_Kg\Term_Entity;
 
-use Wordlift\Modules\Gardening_Kg\Gardening_Kg_Store;
+use Wordlift\Modules\Common\Synchronization\Store;
 
-class Gardening_Kg_Term_Store implements Gardening_Kg_Store {
+class Gardening_Kg_Term_Store implements Store {
 
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function list_items( $id_greater_than, $batch_size ) {

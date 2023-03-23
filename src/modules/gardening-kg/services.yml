@@ -16,3 +16,6 @@ services:
   Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Entity_Runner:
     class: Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Entity_Runner
     arguments: [ '@Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Store', '@Wordlift\Api\Api_Service' ]
+
+  Wordlift\Modules\Gardening_Kg\Preconditions:
+    class: Wordlift\Modules\Gardening_Kg\Preconditions

@@ -1,35 +1,25 @@
 <?php
 
-namespace Wordlift\Modules\Food_Kg;
+namespace Wordlift\Modules\Food_Kg\Main_Entity;
 
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Modules\Common\Synchronization\Runner;
+use Wordlift\Modules\Food_Kg\Ingredients_Client;
 
-class Main_Ingredient_Recipe_Lift_Strategy implements Recipe_Lift_Strategy {
+class Food_Kg_Main_Entity_Runner implements Runner {
 
 	/**
 	 * @var Ingredients_Client
 	 */
 	private $ingredients_client;
 
-	/**
-	 * @var Notices
-	 */
-	private $notices;
-
-	public function __construct( Ingredients_Client $ingredients_client, Notices $notices ) {
+	public function __construct( Ingredients_Client $ingredients_client ) {
 		$this->ingredients_client = $ingredients_client;
-		$this->notices            = $notices;
 	}
 
-	public function get_json_ld_data( $ingredient ) {
-		// Get JSON LD Data.
-		return $this->ingredients_client->main_ingredient( $ingredient );
-	}
-
-	public function run() {
-		$this->notices->queue( 'info', __( 'WordLift detected WP Recipe Maker and, it is lifting the ingredients...', 'wordlift' ) );
-
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public function run( $last_id ) {
 		$recipes = get_posts(
 			array(
 				'post_type'   => 'wprm_recipe',
@@ -38,25 +28,11 @@ class Main_Ingredient_Recipe_Lift_Strategy implements Recipe_Lift_Strategy {
 		);
 		$count   = count( $recipes );
 
-		$count_lifted = 0;
 		foreach ( $recipes as $recipe ) {
-			/* translators: 1: The number of lifted recipes, 2: The total number of recipes. */
-			$this->notices->queue( 'info', sprintf( __( 'WordLift is adding the main ingredient to recipes. So far it lifted %1$d of %2$d recipe(s).', 'wordlift' ), $count_lifted, $count ) );
-
-			// Emit something to keep the connection alive.
-			echo esc_html( "$count_lifted\n" );
-
-			if ( $this->process( $recipe->ID ) ) {
-				$count_lifted ++;
-			}
+			$this->process( $recipe->ID );
 		}
 
-		/**
-		 * @@todo add notification that procedure is complete, with information about the number of processed items vs
-		 *   total items
-		 */
-		/* translators: 1: The number of lifted recipes, 2: The total number of recipes. */
-		$this->notices->queue( 'info', sprintf( __( 'WordLift lifted %1$d of %2$d recipe(s).', 'wordlift' ), $count_lifted, $count ) );
+		return $count;
 	}
 
 	public function process( $post_id ) {
@@ -102,5 +78,16 @@ class Main_Ingredient_Recipe_Lift_Strategy implements Recipe_Lift_Strategy {
 
 		return true;
 	}
-}
 
+	public function get_total() {
+		$recipes = get_posts(
+			array(
+				'post_type'   => 'wprm_recipe',
+				'numberposts' => - 1,
+			)
+		);
+
+		return count( $recipes );
+	}
+
+}

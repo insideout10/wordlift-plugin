@@ -2,6 +2,8 @@
 
 namespace Wordlift\Modules\Dashboard\Synchronization;
 
+use WP_REST_Request;
+
 class Rest_Controller {
 
 	/**
@@ -48,9 +50,11 @@ class Rest_Controller {
 		}
 	}
 
-	public function list_syncs() {
-		$last_synchronization = $this->synchronization_service->load();
-		if ( is_a( $last_synchronization, 'Wordlift\Modules\Dashboard\Synchronization\Synchronization' ) ) {
+	public function list_syncs( WP_REST_Request $request ) {
+		$last_synchronization   = $this->synchronization_service->load();
+		$dont_filter_is_running = ( $request->get_param( 'is_running' ) !== 'true' );
+		if ( is_a( $last_synchronization, 'Wordlift\Modules\Dashboard\Synchronization\Synchronization' )
+			 && ( $dont_filter_is_running || $last_synchronization->is_running() ) ) {
 			$data = array( $last_synchronization );
 		} else {
 			$data = array();

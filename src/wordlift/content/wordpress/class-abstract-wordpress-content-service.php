@@ -46,4 +46,45 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 		return $uri;
 	}
 
+	/**
+	 * @param Wordpress_Content_Id $content_id
+	 *
+	 * @return string|null
+	 */
+	public function get_about_jsonld( $content_id ) {
+		global $wpdb;
+
+		return $wpdb->get_var(
+			$wpdb->prepare(
+				"
+			SELECT about_jsonld FROM {$wpdb->prefix}wl_entities
+			WHERE content_id = %d AND content_type = %d
+			",
+				$content_id->get_id(),
+				$content_id->get_type()
+			)
+		);
+	}
+
+	/**
+	 * @param Wordpress_Content_Id $content_id
+	 * @param string               $value
+	 */
+	public function set_about_jsonld( $content_id, $value ) {
+		global $wpdb;
+
+		return $wpdb->query(
+			$wpdb->prepare(
+				"
+			UPDATE {$wpdb->prefix}wl_entities
+			SET about_jsonld = %s
+			WHERE content_id = %d AND content_type = %d
+			",
+				$value,
+				$content_id->get_id(),
+				$content_id->get_type()
+			)
+		);
+	}
+
 }

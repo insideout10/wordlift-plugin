@@ -3,20 +3,20 @@
 namespace Wordlift\Modules\Gardening_Kg\Term_Entity;
 
 use Wordlift\Modules\Common\Synchronization\Runner;
-use Wordlift\Modules\Gardening_Kg\Gardening_Kg_Store;
+use Wordlift\Modules\Common\Synchronization\Store;
 use Wordlift\Object_Type_Enum;
 
 class Gardening_Kg_Term_Entity_Runner implements Runner {
 
 	/**
-	 * @var Gardening_Kg_Store $store
+	 * @var Store $store
 	 */
 	private $store;
 
 	/**
 	 * @paramm Gardening_Kg_Store $store
 	 */
-	public function __construct( Gardening_Kg_Store $store ) {
+	public function __construct( Store $store ) {
 		$this->store = $store;
 	}
 
@@ -127,11 +127,4 @@ class Gardening_Kg_Term_Entity_Runner implements Runner {
 		return intval( $wpdb->get_var( "SELECT COUNT(1) FROM $wpdb->posts WHERE post_status = 'publish'" ) );
 	}
 
-	public function start() {
-		// TODO: Implement start() method.
-	}
-
-	public function get_offset() {
-		// TODO: Implement get_offset() method.
-	}
 }

@@ -41,6 +41,10 @@ paths:
           in: query
           schema:
             type: string
+        - name: is_running
+          in: query
+          schema:
+            type: boolean
       responses:
         "200":
           description: The list of synchronizations
