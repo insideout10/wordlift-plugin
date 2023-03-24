@@ -117,18 +117,19 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 		$cursor_args = array(
 			'limit'     => $limit,
 			'position'  => 0,
-			'direction' => 'forward',
+			'direction' => Page::FORWARD,
 		);
 		if ( isset( $query_params['cursor'] ) && is_string( $query_params['cursor'] ) ) {
 			$cursor_args = wp_parse_args( json_decode( base64_decode( $query_params['cursor'] ), true ), $cursor_args );
 		}
-		$operator = $cursor_args['direction'] === 'forward' ? '>' : '<';
+		$operator       = $cursor_args['direction'] === Page::FORWARD ? '>' : '<';
+		$sort_direction = $cursor_args['direction'] === Page::FORWARD ? 'ASC' : 'DESC';
 
 		$position = $cursor_args['position'];
 		$query    = $wpdb->prepare(
 			"SELECT e.content_id as id, e.about_jsonld as match_jsonld,  p.post_title as name,  e.id AS match_id FROM
                   {$wpdb->prefix}posts  p LEFT JOIN {$wpdb->prefix}wl_entities e ON p.ID = e.content_id
-                  WHERE e.content_type = %d AND p.post_type = %s AND p.ID {$operator} %d LIMIT %d",
+                  WHERE e.content_type = %d AND p.post_type = %s AND p.ID {$operator} %d ORDER BY p.ID {$sort_direction}  LIMIT %d",
 			Object_Type_Enum::POST,
 			$post_type,
 			$position,
