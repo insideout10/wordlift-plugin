@@ -125,20 +125,22 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 		$operator = $cursor_args['direction'] === 'forward' ? '>' : '<';
 
 		$position = $cursor_args['position'];
-		$items    = array_map(
+		$query    = $wpdb->prepare(
+			"SELECT e.content_id as id, e.about_jsonld as match_jsonld,  p.post_title as name,  e.id AS match_id FROM
+                  {$wpdb->prefix}posts  p LEFT JOIN {$wpdb->prefix}wl_entities e ON p.ID = e.content_id
+                  WHERE e.content_type = %d AND p.post_type = %s AND p.ID {$operator} %d LIMIT %d",
+			Object_Type_Enum::POST,
+			$post_type,
+			$position,
+			$cursor_args['limit']
+		);
+		error_log( $query );
+		$items = array_map(
 			function ( $e ) {
 				return Match_Entry::from( $e )->serialize();
 			},
 			$wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT e.content_id as id, e.about_jsonld as match_jsonld,  p.post_title as name,  e.id AS match_id FROM
-                  {$wpdb->prefix}posts  p LEFT JOIN {$wpdb->prefix}wl_entities e ON p.ID = e.content_id
-                  WHERE e.content_type = %d AND p.post_type = %s AND p.ID {$operator} %d LIMIT %d",
-					Object_Type_Enum::POST,
-					$post_type,
-					$position,
-					$cursor_args['limit']
-				),
+				$query,
 				ARRAY_A
 			)
 		);
