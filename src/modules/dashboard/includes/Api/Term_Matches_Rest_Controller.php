@@ -60,7 +60,7 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 
 		// Create a new match for a term
 		register_rest_route(
-			'/wl-dashboard/v1/wordlift/v1',
+			'/wordlift/v1',
 			'/term-matches/(?P<term_id>\d+)/matches',
 			array(
 				'methods'             => 'POST',
@@ -79,7 +79,7 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 
 		// Update an existing term match
 		register_rest_route(
-			'/wl-dashboard/v1/wordlift/v1',
+			'/wordlift/v1',
 			'/term-matches/(?P<term_id>\d+)/matches/(?P<match_id>\d+)',
 			array(
 				'methods'             => 'PUT',
