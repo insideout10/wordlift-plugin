@@ -38,7 +38,6 @@ class Plugin_App {
 					'last_sync' => date_create( '2022-01-31 23:45:23' )->getTimestamp(),
 					'next_sync' => date_create( '2024-01-31 23:45:23' )->getTimestamp(),
 				),
-				'api_url'         => rest_url( '/wl-dashboard/v1' ),
 				'liftedItems'     => $this->get_lifted_items(),
 				// @see https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/
 				'api_nonce'       => wp_create_nonce( 'wp_rest' ),

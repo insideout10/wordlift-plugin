@@ -27,7 +27,7 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 
 		// Get term matches by taxonomy name
 		register_rest_route(
-			'/wl-dashboard/v1/wordlift/v1',
+			'wordlift/v1',
 			'/term-matches',
 			array(
 				'methods'             => 'GET',

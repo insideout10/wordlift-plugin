@@ -28,7 +28,7 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 
 		// Get post matches by taxonomy name
 		register_rest_route(
-			'/wl-dashboard/v1/wordlift/v1',
+			'wordlift/v1',
 			'/post-matches',
 			array(
 				'methods'             => 'GET',
