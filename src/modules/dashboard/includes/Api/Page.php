@@ -4,7 +4,7 @@ namespace Wordlift\Modules\Dashboard\Api;
 
 class Page {
 
-	const FORWARD = 'FORWARD';
+	const FORWARD  = 'FORWARD';
 	const BACKWARD = 'BACKWARD';
 
 	private $items;
@@ -19,9 +19,9 @@ class Page {
 
 	public function serialize() {
 		return array(
-			'first' => 0 === $this->position ? null : $this->cursor( $this->limit, 0, Page::FORWARD ),
+			'first' => 0 === $this->position ? null : $this->cursor( $this->limit, 0, self::FORWARD ),
 			'last'  => PHP_INT_MAX === $this->position ? null : $this->cursor( $this->limit, PHP_INT_MAX, self::BACKWARD ),
-			'next'  => $this->next(),
+			'next'  => PHP_INT_MAX === $this->position ? null : $this->next(),
 			'prev'  => $this->prev(),
 			'items' => $this->items,
 		);
@@ -39,7 +39,7 @@ class Page {
 		);
 	}
 
-	private function next( ) {
+	private function next() {
 		// Check if we have reached the end of the results
 		if ( count( $this->items ) < $this->limit ) {
 			return null;
@@ -52,7 +52,7 @@ class Page {
 		return $this->cursor( $this->limit, $last_item_position, self::FORWARD );
 	}
 
-	private function prev( ) {
+	private function prev() {
 		/**
 		 * If i want to go to previous page i would need to be sure that such page exists.
 		 * I would just need to reverse the direction.
