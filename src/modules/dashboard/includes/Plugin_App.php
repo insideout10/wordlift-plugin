@@ -40,6 +40,9 @@ class Plugin_App {
 				),
 				'api_url'         => rest_url( '/wl-dashboard/v1' ),
 				'liftedItems'     => $this->get_lifted_items(),
+				// @see https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/
+				'api_nonce'       => wp_create_nonce( 'wp_rest' ),
+				'api_base'        => rest_url(),
 			)
 		);
 

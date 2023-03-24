@@ -31,9 +31,9 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 			'/wl-dashboard/v1/wordlift/v1',
 			'/post-matches',
 			array(
-				'methods'  => 'GET',
-				'callback' => array( $this, 'get_post_matches' ),
-				'args'     => array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'get_post_matches' ),
+				'args'                => array(
 					'post_type' => array(
 						'required'          => true,
 						'validate_callback' => 'rest_validate_request_arg',
@@ -52,10 +52,10 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 						'sanitize_callback' => 'absint',
 					),
 				),
-			//
-			// 'permission_callback' => function () {
-			// return current_user_can( 'manage_options' );
-			// },
+
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
 			)
 		);
 
