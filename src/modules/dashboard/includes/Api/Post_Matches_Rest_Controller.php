@@ -126,10 +126,17 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 		$sort_direction = $cursor_args['direction'] === Page::FORWARD ? 'ASC' : 'DESC';
 
 		$position = $cursor_args['position'];
-		$query    = $wpdb->prepare(
-			"SELECT e.content_id as id, e.about_jsonld as match_jsonld,  p.post_title as name,  e.id AS match_id FROM
-                  {$wpdb->prefix}posts  p LEFT JOIN {$wpdb->prefix}wl_entities e ON p.ID = e.content_id
-                  WHERE e.content_type = %d AND p.post_type = %s AND p.ID {$operator} %d ORDER BY p.ID {$sort_direction}  LIMIT %d",
+
+		// I would need to select all the
+
+		$query = $wpdb->prepare(
+			"SELECT e.content_id as id, e.about_jsonld as match_jsonld, parent.post_title as name, p.post_title as recipe_name, e.id AS match_id 
+FROM {$wpdb->prefix}posts p 
+INNER JOIN {$wpdb->prefix}postmeta pm ON p.ID = pm.post_id AND pm.meta_key = 'wprm_parent_post_id' 
+INNER JOIN {$wpdb->prefix}posts parent ON pm.meta_value = parent.ID 
+LEFT JOIN {$wpdb->prefix}wl_entities e ON p.ID = e.content_id 
+WHERE e.content_type = %d AND p.post_type = %s AND p.ID {$operator} %d AND pm.meta_value IS NOT NULL 
+ORDER BY p.ID {$sort_direction} LIMIT %d;",
 			Object_Type_Enum::POST,
 			$post_type,
 			$position,
@@ -138,7 +145,13 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 		error_log( $query );
 		$items = array_map(
 			function ( $e ) {
-				return Match_Entry::from( $e )->serialize();
+				return array_merge(
+					Match_Entry::from( $e )->serialize(),
+					array(
+						'recipe_name'    => $e['recipe_name'],
+						'post_permalink' => get_permalink( $e['id'] ),
+					)
+				);
 			},
 			$wpdb->get_results(
 				$query,
