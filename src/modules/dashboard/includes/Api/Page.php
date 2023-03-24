@@ -7,6 +7,9 @@ class Page {
 	const FORWARD  = 'FORWARD';
 	const BACKWARD = 'BACKWARD';
 
+	const SORT_ASC  = 'ASC';
+	const SORT_DESC = 'DESC';
+
 	private $items;
 	private $limit;
 	private $position;
@@ -19,21 +22,22 @@ class Page {
 
 	public function serialize() {
 		return array(
-			'first' => 0 === $this->position ? null : $this->cursor( $this->limit, 0, self::FORWARD ),
-			'last'  => PHP_INT_MAX === $this->position ? null : $this->cursor( $this->limit, PHP_INT_MAX, self::BACKWARD ),
+			'first' => $this->first(),
+			'last'  => PHP_INT_MAX === $this->position ? null : $this->cursor( $this->limit, PHP_INT_MAX, self::BACKWARD, self::SORT_DESC ),
 			'next'  => PHP_INT_MAX === $this->position ? null : $this->next(),
 			'prev'  => $this->prev(),
 			'items' => $this->items,
 		);
 	}
 
-	private function cursor( $limit, $position, $direction ) {
+	private function cursor( $limit, $position, $direction, $sort ) {
 		return base64_encode(
 			json_encode(
 				array(
 					'limit'     => $limit,
 					'position'  => $position,
 					'direction' => $direction,
+					'sort'      => $sort,
 				)
 			)
 		);
@@ -49,10 +53,11 @@ class Page {
 		$last_item_position = end( $this->items )['id'];
 
 		// Generate the next cursor
-		return $this->cursor( $this->limit, $last_item_position, self::FORWARD );
+		return $this->cursor( $this->limit, $last_item_position, self::FORWARD, self::SORT_ASC );
 	}
 
 	private function prev() {
+
 		/**
 		 * If i want to go to previous page i would need to be sure that such page exists.
 		 * I would just need to reverse the direction.
@@ -62,10 +67,23 @@ class Page {
 		}
 
 		if ( count( $this->items ) <= 0 ) {
-			return $this->cursor( $this->limit, $this->position, self::BACKWARD );
+			return $this->cursor( $this->limit, $this->position, self::BACKWARD, self::SORT_ASC );
 		}
 
-		return $this->cursor( $this->limit, current( $this->items )['id'], self::BACKWARD );
+		if ( current( $this->items )['id'] == $this->position ) {
+			return null;
+		}
+
+		return $this->cursor( $this->limit, current( $this->items )['id'], self::BACKWARD, self::SORT_ASC );
+	}
+
+	private function first() {
+
+		if ( 0 === $this->position ) {
+			return null;
+		}
+
+		return $this->cursor( $this->limit, 0, self::FORWARD, self::SORT_ASC );
 	}
 
 }

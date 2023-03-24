@@ -118,12 +118,13 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 			'limit'     => $limit,
 			'position'  => 0,
 			'direction' => Page::FORWARD,
+			'sort'      => Page::SORT_ASC,
 		);
 		if ( isset( $query_params['cursor'] ) && is_string( $query_params['cursor'] ) ) {
 			$cursor_args = wp_parse_args( json_decode( base64_decode( $query_params['cursor'] ), true ), $cursor_args );
 		}
-		$operator       = $cursor_args['direction'] === Page::FORWARD ? '>' : '<';
-		$sort_direction = $cursor_args['direction'] === Page::FORWARD ? 'ASC' : 'DESC';
+		$operator       = $cursor_args['direction'] === Page::FORWARD ? '>=' : '<=';
+		$sort_direction = $cursor_args['sort'] === Page::SORT_ASC ? 'ASC' : 'DESC';
 
 		$position = $cursor_args['position'];
 
