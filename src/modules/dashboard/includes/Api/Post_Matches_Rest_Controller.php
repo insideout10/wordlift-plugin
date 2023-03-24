@@ -2,6 +2,9 @@
 
 namespace Wordlift\Modules\Dashboard\Api;
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Entity\Entity_Uri_Generator;
 use Wordlift\Object_Type_Enum;
 
 class Post_Matches_Rest_Controller extends \WP_REST_Controller {
@@ -150,14 +153,23 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 	  * @var $request \WP_REST_Request
 	  */
 	public function create_post_match( $request ) {
+		$post_id = $request->get_param( 'post_id' );
+
+		// If we dont have a entry on the match table, then add one.
+		$content_id = Wordpress_Content_Id::create_post( $post_id );
+		if ( ! Wordpress_Content_Service::get_instance()
+										->get_entity_id( $content_id ) ) {
+			$uri = Entity_Uri_Generator::create_uri( $content_id->get_type(), $content_id->get_id() );
+			Wordpress_Content_Service::get_instance()->set_entity_id( $content_id, $uri );
+		}
 
 		$match_id = $this->match_service->get_id(
-			$request->get_param( 'post_id' ),
+			$post_id,
 			Object_Type_Enum::POST
 		);
 
 		return $this->match_service->set_jsonld(
-			$request->get_param( 'post_id' ),
+			$post_id,
 			Object_Type_Enum::POST,
 			$match_id,
 			$request->get_json_params()

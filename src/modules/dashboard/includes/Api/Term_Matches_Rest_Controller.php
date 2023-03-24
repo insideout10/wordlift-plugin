@@ -2,6 +2,9 @@
 
 namespace Wordlift\Modules\Dashboard\Api;
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Entity\Entity_Uri_Generator;
 use Wordlift\Object_Type_Enum;
 
 class Term_Matches_Rest_Controller extends \WP_REST_Controller {
@@ -157,13 +160,23 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 	  */
 	public function create_term_match( $request ) {
 
+		$term_id = $request->get_param( 'term_id' );
+
+		// If we dont have a entry on the match table, then add one.
+		$content_id = Wordpress_Content_Id::create_term( $term_id );
+		if ( ! Wordpress_Content_Service::get_instance()
+										->get_entity_id( $content_id ) ) {
+			$uri = Entity_Uri_Generator::create_uri( $content_id->get_type(), $content_id->get_id() );
+			Wordpress_Content_Service::get_instance()->set_entity_id( $content_id, $uri );
+		}
+
 		$match_id = $this->match_service->get_id(
-			$request->get_param( 'term_id' ),
+			$term_id,
 			Object_Type_Enum::TERM
 		);
 
 		return $this->match_service->set_jsonld(
-			$request->get_param( 'term_id' ),
+			$term_id,
 			Object_Type_Enum::TERM,
 			$match_id,
 			$request->get_json_params()
