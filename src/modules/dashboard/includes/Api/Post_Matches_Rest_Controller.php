@@ -109,13 +109,11 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 	 * @var $request \WP_REST_Request
 	 */
 	public function get_post_matches( $request ) {
-		global $wpdb;
+
 		$query_params = $request->get_query_params();
-		$post_type    = $query_params['post_type'];
-		$limit        = $query_params['limit'] ? $query_params['limit'] : 10;
 
 		$cursor_args = array(
-			'limit'     => $limit,
+			'limit'     => $query_params['limit'] ? $query_params['limit'] : 10,
 			'position'  => 0,
 			'direction' => Page::FORWARD,
 			'sort'      => Page::SORT_ASC,
@@ -123,44 +121,16 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 		if ( isset( $query_params['cursor'] ) && is_string( $query_params['cursor'] ) ) {
 			$cursor_args = wp_parse_args( json_decode( base64_decode( $query_params['cursor'] ), true ), $cursor_args );
 		}
-		$operator       = $cursor_args['direction'] === Page::FORWARD ? '>=' : '<=';
-		$sort_direction = $cursor_args['sort'] === Page::SORT_ASC ? 'ASC' : 'DESC';
 
-		$position = $cursor_args['position'];
-
-		// I would need to select all the
-
-		$query = $wpdb->prepare(
-			"SELECT e.content_id as id, e.about_jsonld as match_jsonld, parent.post_title as name, p.post_title as recipe_name, e.id AS match_id 
-FROM {$wpdb->prefix}posts p 
-INNER JOIN {$wpdb->prefix}postmeta pm ON p.ID = pm.post_id AND pm.meta_key = 'wprm_parent_post_id' 
-INNER JOIN {$wpdb->prefix}posts parent ON pm.meta_value = parent.ID 
-LEFT JOIN {$wpdb->prefix}wl_entities e ON p.ID = e.content_id 
-WHERE e.content_type = %d AND p.post_type = %s AND p.ID {$operator} %d AND pm.meta_value IS NOT NULL 
-ORDER BY p.ID {$sort_direction} LIMIT %d;",
-			Object_Type_Enum::POST,
-			$post_type,
-			$position,
-			$cursor_args['limit']
-		);
-		error_log( $query );
-		$items = array_map(
-			function ( $e ) {
-				return array_merge(
-					Match_Entry::from( $e )->serialize(),
-					array(
-						'recipe_name'    => $e['recipe_name'],
-						'post_permalink' => get_permalink( $e['id'] ),
-					)
-				);
-			},
-			$wpdb->get_results(
-				$query,
-				ARRAY_A
-			)
+		$items = $this->match_service->get_post_matches(
+			$query_params['post_type'],
+			$cursor_args['position'],
+			$cursor_args['limit'],
+			$cursor_args['direction'],
+			$cursor_args['sort']
 		);
 
-		$page = new Page( $items, $limit, $position );
+		$page = new Page( $items, $cursor_args['limit'], $cursor_args['position'] );
 		return $page->serialize();
 	}
 
