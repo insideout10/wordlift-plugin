@@ -1,7 +1,6 @@
 <?php
 namespace Wordlift\Modules\Food_Kg\Api;
 
-use PHPUnit\Util\Exception;
 use Wordlift\Object_Type_Enum;
 
 class Match_Service {
