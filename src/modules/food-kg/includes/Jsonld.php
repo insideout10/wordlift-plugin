@@ -51,12 +51,17 @@ class Jsonld {
 	/**
 	 * @param WP_Term $ingredient
 	 *
-	 * @return array void
+	 * @return array|null
 	 */
 	private function __term_id_to_jsonld( $ingredient ) {
 		$content_id = Wordpress_Content_Id::create_term( $ingredient->term_id );
+		$jsonld     = $this->content_service->get_about_jsonld( $content_id );
 
-		return json_decode( $this->content_service->get_about_jsonld( $content_id ), true );
+		if ( ! is_string( $jsonld ) ) {
+			return null;
+		}
+
+		return json_decode( $jsonld, true );
 	}
 
 }

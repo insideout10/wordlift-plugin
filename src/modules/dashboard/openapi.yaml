@@ -67,15 +67,18 @@ components:
         - modified_at
         - total
         - offset
+        - is_running
       properties:
         created_at:
-          type: integer
+          type: string
         modified_at:
-          type: integer
+          type: string
         started_at:
-          type: integer
+          type: string
         stopped_at:
-          type: integer
+          type: string
+        is_running:
+          type: boolean
         total:
           type: integer
         offset:

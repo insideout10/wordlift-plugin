@@ -15,6 +15,7 @@ return array(
     'Wordlift\\Modules\\Food_Kg\\Ingredients_Taxonomy_Recipe_Lift_Strategy' => $baseDir . '/includes/Ingredients_Taxonomy_Recipe_Lift_Strategy.php',
     'Wordlift\\Modules\\Food_Kg\\Jsonld' => $baseDir . '/includes/Jsonld.php',
     'Wordlift\\Modules\\Food_Kg\\Main_Entity\\Food_Kg_Main_Entity_Runner' => $baseDir . '/includes/Main_Entity/Food_Kg_Main_Entity_Runner.php',
+    'Wordlift\\Modules\\Food_Kg\\Main_Entity\\Food_Kg_Recipe_Post_Store' => $baseDir . '/includes/Main_Entity/Food_Kg_Recipe_Post_Store.php',
     'Wordlift\\Modules\\Food_Kg\\Main_Ingredient_Jsonld' => $baseDir . '/includes/Main_Ingredient_Jsonld.php',
     'Wordlift\\Modules\\Food_Kg\\Main_Ingredient_Recipe_Lift_Strategy' => $baseDir . '/includes/Main_Ingredient_Recipe_Lift_Strategy.php',
     'Wordlift\\Modules\\Food_Kg\\Module' => $baseDir . '/includes/Module.php',

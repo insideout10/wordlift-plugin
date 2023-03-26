@@ -2,6 +2,7 @@
 
 namespace Wordlift\Modules\Dashboard;
 
+use Wordlift\Modules\Common\Date_Utils;
 use Wordlift\Modules\Dashboard\Stats\Stats;
 use Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service;
 
@@ -35,8 +36,8 @@ class Plugin_App {
 			array(
 				'synchronization' => array(
 					'state'     => 'idle',
-					'last_sync' => date_create( '2022-01-31 23:45:23' )->getTimestamp(),
-					'next_sync' => date_create( '2024-01-31 23:45:23' )->getTimestamp(),
+					'last_sync' => Date_Utils::to_iso_string( $this->synchronization_service->get_last_sync() ),
+					'next_sync' => Date_Utils::to_iso_string( $this->synchronization_service->get_next_sync() ),
 				),
 				'liftedItems'     => $this->get_lifted_items(),
 				// @see https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/
@@ -76,7 +77,8 @@ class Plugin_App {
 				'label'         => __( 'Ingredients', 'wordlift' ),
 				'total'         => (int) $ingredient_stats['total'],
 				'color'         => '#0076f6',
-				'show_all_link' => '../ingredients', // @TODO should this be the concern of plugin to route ?
+				'show_all_link' => '../ingredients',
+				// @TODO should this be the concern of plugin to route ?
 				'lifted'        => (int) $ingredient_stats['lifted'],
 				'updated_at'    => $updated_at,
 			),
@@ -85,7 +87,8 @@ class Plugin_App {
 				'title'         => __( 'Lifted Recipes', 'wordlift' ),
 				'label'         => __( 'Recipes', 'wordlift' ),
 				'color'         => '#00c48c',
-				'show_all_link' => '../recipes', // @TODO should this be the concern of plugin to route ?
+				'show_all_link' => '../recipes',
+				// @TODO should this be the concern of plugin to route ?
 				'total'         => (int) $recipe_stats['total'],
 				'lifted'        => (int) $recipe_stats['lifted'],
 				'updated_at'    => $updated_at,

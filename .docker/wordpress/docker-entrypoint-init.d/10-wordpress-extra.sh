@@ -12,4 +12,5 @@ sed -i "s/'WP_DEBUG', false/'WP_DEBUG', true/g" /opt/bitnami/wordpress/wp-config
 echo "** Set the rewrite structure **"
 wp --skip-plugins --skip-themes rewrite structure '/%postname%/'
 
-
+echo "** Installing and Activating plugins **"
+wp plugin install wordpress-seo wp-recipe-maker --force --activate

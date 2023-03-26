@@ -2,17 +2,25 @@
 
 namespace Wordlift\Modules\Food_Kg\Term_Entity;
 
+use Wordlift\Content\Content_Service;
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Modules\Common\Synchronization\Runner;
 use Wordlift\Modules\Food_Kg\Ingredients_Client;
 
 class Food_Kg_Term_Entity_Runner implements Runner {
 
 	/**
+	 * @var Content_Service
+	 */
+	private $content_service;
+
+	/**
 	 * @var Ingredients_Client
 	 */
 	private $ingredients_client;
 
-	public function __construct( Ingredients_Client $ingredients_client ) {
+	public function __construct( Content_Service $content_service, Ingredients_Client $ingredients_client ) {
+		$this->content_service    = $content_service;
 		$this->ingredients_client = $ingredients_client;
 	}
 
@@ -35,14 +43,14 @@ class Food_Kg_Term_Entity_Runner implements Runner {
 			if ( ! isset( $term ) ) {
 				continue;
 			}
-			update_term_meta( $term->term_id, '_wl_jsonld', wp_slash( $value ) );
 
-			/**
-			 * @@todo update notification with progress
-			 */
+			$content_id = Wordpress_Content_Id::create_term( $term->term_id );
+			$this->content_service->set_about_jsonld( $content_id, $value );
 		}
 
-		return count( $terms );
+		$count = count( $terms );
+
+		return array( $count, null );
 	}
 
 	/**
@@ -53,15 +61,13 @@ class Food_Kg_Term_Entity_Runner implements Runner {
 	 * @return int
 	 */
 	public function get_total() {
-		$terms = get_terms(
-			array(
-				'taxonomy'   => 'wprm_ingredient',
-				'fields'     => 'names',
-				'hide_empty' => false,
-			)
-		);
+		global $wpdb;
 
-		return count( $terms );
+		return $wpdb->get_var(
+			"
+			SELECT COUNT(1) FROM $wpdb->term_taxonomy where taxonomy = 'wprm_ingredient'
+		"
+		);
 	}
 
 }
