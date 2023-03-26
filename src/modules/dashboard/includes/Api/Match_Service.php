@@ -38,6 +38,8 @@ class Match_Service {
 
 		$query = $this->filters( $filter, $query );
 
+		error_log($query);
+
 		return array_map(
 			function ( $e ) {
 				return Match_Entry::from( $e )->serialize();
@@ -72,7 +74,7 @@ FROM {$wpdb->prefix}posts p
 INNER JOIN {$wpdb->prefix}postmeta pm ON p.ID = pm.post_id AND pm.meta_key = 'wprm_parent_post_id' 
 INNER JOIN {$wpdb->prefix}posts parent ON pm.meta_value = parent.ID 
 LEFT JOIN {$wpdb->prefix}wl_entities e ON p.ID = e.content_id 
-WHERE e.content_type = %d AND p.post_type = %s AND p.ID {$operator} %d AND pm.meta_value IS NOT NULL {{filter}}
+WHERE e.content_type = %d AND p.post_type = %s AND p.ID {$operator} %d AND pm.meta_value IS NOT NULL {{filter}} 
 ORDER BY p.ID {$sort} LIMIT %d;",
 			Object_Type_Enum::POST,
 			$post_type,
@@ -183,10 +185,10 @@ ORDER BY p.ID {$sort} LIMIT %d;",
 	public function filters( $filter, $query ) {
 		switch ( $filter ) {
 			case 'MATCHED':
-				$query = str_replace( '{{filter}}', 'AND e.about_jsonld != NULL', $query );
+				$query = str_replace( '{{filter}}', ' AND ( e.about_jsonld IS NOT NULL AND  e.about_jsonld != "{}" ) ', $query );
 				break;
 			case 'UNMATCHED':
-				$query = str_replace( '{{filter}}', 'AND e.about_jsonld = NULL', $query );
+				$query = str_replace( '{{filter}}', ' AND ( e.about_jsonld IS NULL OR e.about_jsonld="{}" ) ', $query );
 				break;
 			default:
 				$query = str_replace( '{{filter}}', '', $query );
