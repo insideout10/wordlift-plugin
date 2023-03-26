@@ -51,6 +51,14 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 						'maximum'           => 100,
 						'sanitize_callback' => 'absint',
 					),
+					'filter'    => array(
+						'required'          => false,
+						'type'              => 'string',
+						'enum'              => array( 'ALL', 'MATCHED', 'UNMATCHED' ),
+						'sanitize_callback' => 'sanitize_text_field',
+						'validate_callback' => 'rest_validate_request_arg',
+					),
+
 				),
 
 				'permission_callback' => function () {
@@ -127,7 +135,8 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 			$cursor_args['position'],
 			$cursor_args['limit'],
 			$cursor_args['direction'],
-			$cursor_args['sort']
+			$cursor_args['sort'],
+			$query_params['filter']
 		);
 
 		$page = new Page( $items, $cursor_args['limit'], $cursor_args['position'] );

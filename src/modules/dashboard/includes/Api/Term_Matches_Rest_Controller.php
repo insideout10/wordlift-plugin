@@ -50,6 +50,13 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 						'maximum'           => 100,
 						'sanitize_callback' => 'absint',
 					),
+					'filter'   => array(
+						'required'          => false,
+						'type'              => 'string',
+						'enum'              => array( 'ALL', 'MATCHED', 'UNMATCHED' ),
+						'sanitize_callback' => 'sanitize_text_field',
+						'validate_callback' => 'rest_validate_request_arg',
+					),
 				),
 
 				'permission_callback' => function () {
@@ -122,15 +129,14 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 			$cursor_args = wp_parse_args( json_decode( base64_decode( $query_params['cursor'] ), true ), $cursor_args );
 		}
 
-
 		$items = $this->match_service->get_term_matches(
 			$query_params['taxonomy'],
 			$cursor_args['position'],
 			$cursor_args['limit'],
 			$cursor_args['direction'],
-			$cursor_args['sort']
+			$cursor_args['sort'],
+			$query_params['filter']
 		);
-
 
 		$page = new Page( $items, $cursor_args['limit'], $cursor_args['position'] );
 		return $page->serialize();
