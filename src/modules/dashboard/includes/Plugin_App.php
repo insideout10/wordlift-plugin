@@ -27,6 +27,7 @@ class Plugin_App {
 
 	public function register_hooks() {
 		add_action( '_wl_dashboard__main', array( $this, 'dashboard__main' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
 	public function dashboard__main() {
@@ -58,6 +59,11 @@ class Plugin_App {
 			<script type=\"text/javascript\">window._wlPluginAppSettings = $params</script>
 			<iframe id='wlx-plugin-app' src='$iframe_src'></iframe>
 		";
+	}
+
+	public function admin_enqueue_scripts() {
+		// Required to support notices that close themselves (like the `WooCommerce needs to be installed ...` message).
+		wp_enqueue_script( 'wp-util' );
 	}
 
 	private function get_lifted_items() {

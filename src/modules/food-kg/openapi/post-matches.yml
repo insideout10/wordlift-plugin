@@ -1,0 +1,198 @@
+openapi: 3.0.0
+info:
+  title: Wordlift Term Matches API
+  version: 1.0.0
+servers:
+  - url: https://example.com
+components:
+  schemas:
+    PostMatch:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the post
+          required: true
+        id:
+          type: integer
+          format: int64
+          description: The ID of the post.
+          required: true
+        match_name:
+          type: string
+          description: The name of the matched post.
+        recipe_name:
+          type: string
+          description: The name of the recipe
+        post_permalink:
+          type: string
+          description: The link of the parent post.
+        match_id:
+          type: integer
+          format: int64
+          description: The ID of the matched post.
+        match_jsonld:
+          type: object
+          description: The JSON-LD of the matched post.
+      required:
+        - name
+        - id
+        - match_name
+        - match_id
+
+    Page:
+      type: object
+      properties:
+        self:
+          type: string
+          description: The URL of the current page.
+          required: true
+
+        first:
+          type: string
+          description: The URL of the first page.
+
+        prev:
+          type: string
+          description: The URL of the previous page.
+
+        next:
+          type: string
+          description: The URL of the next page.
+
+        last:
+          type: string
+          description: The URL of the last page.
+
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/PostMatch"
+          required: true
+
+paths:
+  /wordlift/v1/post-matches:
+    get:
+      operationId: list
+      description: Returns a list of post matches for a given post type.
+      parameters:
+        - name: post_type
+          in: query
+          description: Name of the post_type to retrieve post matches for.
+          required: true
+          schema:
+            type: string
+        - name: cursor
+          in: query
+          description: Cursor for pagination.
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Limit
+          schema:
+            type: number
+        - name: filter
+          in: query
+          description: Filter
+          schema:
+            type: string
+            enum:
+              - MATCHED
+              - UNMATCHED
+              - ALL
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Page"
+
+  /wordlift/v1/post-matches/{post_id}/matches:
+    post:
+      operationId: create
+      description: Creates a post match for the given post ID.
+      parameters:
+        - name: post_id
+          in: path
+          description: The ID of the post to create a match for.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: The JSON-LD of the post match.
+        required: true
+        content:
+          application/ld+json:
+            example:
+              name: "lorem"
+              id: 123
+              match_name: "ipsum"
+              match_id: 456
+              match_jsonld: {}
+
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostMatch"
+                example:
+                  name: "lorem"
+                  id: 123
+                  match_name: "ipsum"
+                  match_id: 456
+                  match_jsonld: {}
+
+  /wordlift/v1/post-matches/{post_id}/matches/{match_id}:
+    put:
+      operationId: update
+      description: Updates a post match for the given post and match IDs.
+      parameters:
+        - name: post_id
+          in: path
+          description: The ID of the post to update a match for.
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: match_id
+          in: path
+          description: The ID of the match to update.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: The JSON-LD of the post match.
+        required: true
+        content:
+          application/ld+json:
+            example:
+              name: "lorem"
+              id: 123
+              match_name: "ipsum"
+              match_id: 456
+              match_jsonld: {}
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostMatch"
+                example:
+                  name: "lorem"
+                  id: 123
+                  match_name: "ipsum"
+                  match_id: 456
+                  match_jsonld: {}
+        "404":
+          description: Not Found
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
