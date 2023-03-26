@@ -21,9 +21,7 @@ class Match_Service {
 
 		$operator = Page::FORWARD === $direction ? '>=' : '<=';
 
-		if ( ! in_array( $sort, array( Page::SORT_ASC, Page::SORT_DESC ) ) ) {
-			throw new \Exception( 'Invalid sort order specified' );
-		}
+		$this->validate_args( $sort );
 
 		global $wpdb;
 
@@ -64,9 +62,7 @@ class Match_Service {
 
 		$operator = $direction === Page::FORWARD ? '>=' : '<=';
 
-		if ( ! in_array( $sort, array( Page::SORT_ASC, Page::SORT_DESC ) ) ) {
-			throw new \Exception( 'Invalid sort order specified' );
-		}
+		$this->validate_args( $sort );
 
 		$query = $wpdb->prepare(
 			"SELECT e.content_id as id, e.about_jsonld as match_jsonld, parent.post_title as name, p.post_title as recipe_name, e.id AS match_id 
@@ -160,6 +156,18 @@ ORDER BY p.ID {$sort} LIMIT %d;",
 			throw new Exception( "Unable to find match id for {$content_id} and {$content_type}" );
 		}
 		return $result;
+	}
+
+	/**
+	 * @param $sort
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	private function validate_args( $sort ) {
+		if ( ! in_array( $sort, array( Page::SORT_ASC, Page::SORT_DESC ) ) ) {
+			throw new \Exception( 'Invalid sort order specified' );
+		}
 	}
 
 }
