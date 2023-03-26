@@ -13,8 +13,10 @@ class Page {
 	private $items;
 	private $limit;
 	private $position;
+	private $self;
 
-	public function __construct( $items, $limit, $position ) {
+	public function __construct( $cursor, $items, $limit, $position ) {
+		$this->self     = $cursor;
 		$this->items    = $items;
 		$this->limit    = $limit;
 		$this->position = $position;
@@ -23,6 +25,7 @@ class Page {
 	public function serialize() {
 		return array(
 			'first' => $this->first(),
+			'self'  => $this->self,
 			'last'  => PHP_INT_MAX === $this->position ? null : $this->cursor( $this->limit, PHP_INT_MAX, self::BACKWARD, self::SORT_DESC ),
 			'next'  => PHP_INT_MAX === $this->position ? null : $this->next(),
 			'prev'  => $this->prev(),

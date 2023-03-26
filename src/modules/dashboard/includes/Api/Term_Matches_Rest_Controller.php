@@ -138,7 +138,7 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 			$query_params['filter']
 		);
 
-		$page = new Page( $items, $cursor_args['limit'], $cursor_args['position'] );
+		$page = new Page( $query_params['cursor'], $items, $cursor_args['limit'], $cursor_args['position'] );
 		return $page->serialize();
 
 	}
