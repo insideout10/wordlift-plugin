@@ -3,7 +3,7 @@
         'name' => 'wordlift/gardening-kg',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => '94d4b60b85d683eed6886d62f48aedf1a5467da6',
+        'reference' => 'a6f60db960d392e48ddb7d7b1c4c4e32b9b3251d',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'wordlift/gardening-kg' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => '94d4b60b85d683eed6886d62f48aedf1a5467da6',
+            'reference' => 'a6f60db960d392e48ddb7d7b1c4c4e32b9b3251d',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

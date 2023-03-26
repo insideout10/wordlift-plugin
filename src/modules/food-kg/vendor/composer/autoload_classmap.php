@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Wordlift\\Modules\\Food_Kg\\Admin\\Meta_Box' => $baseDir . '/includes/admin/Meta_Box.php',
+    'Wordlift\\Modules\\Food_Kg\\Api\\Main_Ingredients_Rest_Controller' => $baseDir . '/includes/Api/Main_Ingredients_Rest_Controller.php',
     'Wordlift\\Modules\\Food_Kg\\Ingredients' => $baseDir . '/includes/Ingredients.php',
     'Wordlift\\Modules\\Food_Kg\\Ingredients_API' => $baseDir . '/includes/Ingredients_API.php',
     'Wordlift\\Modules\\Food_Kg\\Ingredients_Client' => $baseDir . '/includes/Ingredients_Client.php',

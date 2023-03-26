@@ -56,6 +56,15 @@ class Assertions {
 	}
 
 	/**
+	 * @throws Exception when actual doesn't match expected.
+	 */
+	public static function array_key_exists( $arr, $key ) {
+		if ( ! array_key_exists($key, $arr) ) {
+			throw new Exception( "The key {$key} doesn't exist in array " . var_export( $arr, true ) );
+		}
+	}
+
+	/**
 	 * @throws Exception when the value doesn't match the pattern.
 	 */
 	public static function matches( $value, $pattern, $message = "Value doesn't match" ) {

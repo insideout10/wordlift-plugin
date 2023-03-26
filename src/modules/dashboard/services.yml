@@ -1,7 +1,7 @@
 services:
   Wordlift\Modules\Dashboard\Plugin_App:
     class: Wordlift\Modules\Dashboard\Plugin_App
-    arguments: [ '@Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service' ]
+    arguments: [ '@Wordlift\Modules\Dashboard\Stats\Stats',  '@Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service' ]
 
   Wordlift\Modules\Dashboard\Synchronization\Rest_Controller:
     class: Wordlift\Modules\Dashboard\Synchronization\Rest_Controller
@@ -15,3 +15,13 @@ services:
 
   Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service:
     class: Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service
+  Wordlift\Modules\Dashboard\Stats\Stats:
+    class: Wordlift\Modules\Dashboard\Stats\Stats
+  Wordlift\Modules\Dashboard\Api\Term_Matches_Rest_Controller:
+    class: Wordlift\Modules\Dashboard\Api\Term_Matches_Rest_Controller
+    arguments: [ '@Wordlift\Modules\Dashboard\Api\Match_Service' ]
+  Wordlift\Modules\Dashboard\Api\Post_Matches_Rest_Controller:
+    class: Wordlift\Modules\Dashboard\Api\Post_Matches_Rest_Controller
+    arguments: [ '@Wordlift\Modules\Dashboard\Api\Match_Service' ]
+  Wordlift\Modules\Dashboard\Api\Match_Service:
+    class: Wordlift\Modules\Dashboard\Api\Match_Service
