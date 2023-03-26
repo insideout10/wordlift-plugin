@@ -1,5 +1,5 @@
 <?php
-namespace Wordlift\Modules\Dashboard\Api;
+namespace Wordlift\Modules\Food_Kg\Api;
 
 use PHPUnit\Util\Exception;
 use Wordlift\Object_Type_Enum;
@@ -37,8 +37,6 @@ class Match_Service {
 		);
 
 		$query = $this->filters( $filter, $query );
-
-		error_log($query);
 
 		return array_map(
 			function ( $e ) {

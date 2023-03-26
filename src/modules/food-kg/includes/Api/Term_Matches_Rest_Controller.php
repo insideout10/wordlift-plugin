@@ -1,13 +1,13 @@
 <?php
 
-namespace Wordlift\Modules\Dashboard\Api;
+namespace Wordlift\Modules\Food_Kg\Api;
 
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Entity\Entity_Uri_Generator;
 use Wordlift\Object_Type_Enum;
 
-class Post_Matches_Rest_Controller extends \WP_REST_Controller {
+class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 	/**
 	 * @var Match_Service
 	 */
@@ -16,7 +16,6 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 	public function __construct( $match_service ) {
 		$this->match_service = $match_service;
 	}
-
 	public function register() {
 		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
 	}
@@ -26,24 +25,24 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 	 */
 	public function register_routes() {
 
-		// Get post matches by taxonomy name
+		// Get term matches by taxonomy name
 		register_rest_route(
 			'wordlift/v1',
-			'/post-matches',
+			'/term-matches',
 			array(
 				'methods'             => 'GET',
-				'callback'            => array( $this, 'get_post_matches' ),
+				'callback'            => array( $this, 'get_term_matches' ),
 				'args'                => array(
-					'post_type' => array(
+					'taxonomy' => array(
 						'required'          => true,
 						'validate_callback' => 'rest_validate_request_arg',
 						'sanitize_callback' => 'sanitize_text_field',
 					),
-					'cursor'    => array(
+					'cursor'   => array(
 						'type'              => 'string',
 						'validate_callback' => 'rest_validate_request_arg',
 					),
-					'limit'     => array(
+					'limit'    => array(
 						'type'              => 'integer',
 						'validate_callback' => 'rest_validate_request_arg',
 						'default'           => 20,
@@ -51,14 +50,13 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 						'maximum'           => 100,
 						'sanitize_callback' => 'absint',
 					),
-					'filter'    => array(
+					'filter'   => array(
 						'required'          => false,
 						'type'              => 'string',
 						'enum'              => array( 'ALL', 'MATCHED', 'UNMATCHED' ),
 						'sanitize_callback' => 'sanitize_text_field',
 						'validate_callback' => 'rest_validate_request_arg',
 					),
-
 				),
 
 				'permission_callback' => function () {
@@ -67,15 +65,15 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 			)
 		);
 
-		// Create a new match for a post
+		// Create a new match for a term
 		register_rest_route(
-			'wordlift/v1',
-			'/post-matches/(?P<post_id>\d+)/matches',
+			'/wordlift/v1',
+			'/term-matches/(?P<term_id>\d+)/matches',
 			array(
 				'methods'             => 'POST',
-				'callback'            => array( $this, 'create_post_match' ),
+				'callback'            => array( $this, 'create_term_match' ),
 				'args'                => array(
-					'post_id' => array(
+					'term_id' => array(
 						'required'          => true,
 						'validate_callback' => 'rest_validate_request_arg',
 					),
@@ -86,15 +84,15 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 			)
 		);
 
-		// Update an existing post match
+		// Update an existing term match
 		register_rest_route(
-			'wordlift/v1',
-			'/post-matches/(?P<post_id>\d+)/matches/(?P<match_id>\d+)',
+			'/wordlift/v1',
+			'/term-matches/(?P<term_id>\d+)/matches/(?P<match_id>\d+)',
 			array(
 				'methods'             => 'PUT',
-				'callback'            => array( $this, 'update_post_match' ),
+				'callback'            => array( $this, 'update_term_match' ),
 				'args'                => array(
-					'post_id'  => array(
+					'term_id'  => array(
 						'required'          => true,
 						'validate_callback' => 'rest_validate_request_arg',
 					),
@@ -112,11 +110,11 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 	}
 
 	/**
-	 * Get the post matches by taxonomy name.
+	 * Get the term matches by taxonomy name.
 	 *
 	 * @var $request \WP_REST_Request
 	 */
-	public function get_post_matches( $request ) {
+	public function get_term_matches( $request ) {
 
 		$query_params = $request->get_query_params();
 
@@ -126,12 +124,13 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 			'direction' => Page::FORWARD,
 			'sort'      => Page::SORT_ASC,
 		);
+
 		if ( isset( $query_params['cursor'] ) && is_string( $query_params['cursor'] ) ) {
 			$cursor_args = wp_parse_args( json_decode( base64_decode( $query_params['cursor'] ), true ), $cursor_args );
 		}
 
-		$items = $this->match_service->get_post_matches(
-			$query_params['post_type'],
+		$items = $this->match_service->get_term_matches(
+			$query_params['taxonomy'],
 			$cursor_args['position'],
 			$cursor_args['limit'],
 			$cursor_args['direction'],
@@ -141,18 +140,20 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 
 		$page = new Page( $query_params['cursor'], $items, $cursor_args['limit'], $cursor_args['position'] );
 		return $page->serialize();
+
 	}
 
 	 /**
-	  * Create a new match for a post.
+	  * Create a new match for a term.
 	  *
 	  * @var $request \WP_REST_Request
 	  */
-	public function create_post_match( $request ) {
-		$post_id = $request->get_param( 'post_id' );
+	public function create_term_match( $request ) {
+
+		$term_id = $request->get_param( 'term_id' );
 
 		// If we dont have a entry on the match table, then add one.
-		$content_id = Wordpress_Content_Id::create_post( $post_id );
+		$content_id = Wordpress_Content_Id::create_term( $term_id );
 		if ( ! Wordpress_Content_Service::get_instance()
 										->get_entity_id( $content_id ) ) {
 			$uri = Entity_Uri_Generator::create_uri( $content_id->get_type(), $content_id->get_id() );
@@ -160,13 +161,13 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 		}
 
 		$match_id = $this->match_service->get_id(
-			$post_id,
-			Object_Type_Enum::POST
+			$term_id,
+			Object_Type_Enum::TERM
 		);
 
 		return $this->match_service->set_jsonld(
-			$post_id,
-			Object_Type_Enum::POST,
+			$term_id,
+			Object_Type_Enum::TERM,
 			$match_id,
 			$request->get_json_params()
 		)->serialize();
@@ -176,11 +177,10 @@ class Post_Matches_Rest_Controller extends \WP_REST_Controller {
 	 /**
 	  * @var $request \WP_REST_Request
 	  */
-	public function update_post_match( $request ) {
-
+	public function update_term_match( $request ) {
 		return $this->match_service->set_jsonld(
-			$request->get_param( 'post_id' ),
-			Object_Type_Enum::POST,
+			$request->get_param( 'term_id' ),
+			Object_Type_Enum::TERM,
 			$request->get_param( 'match_id' ),
 			$request->get_json_params()
 		)->serialize();

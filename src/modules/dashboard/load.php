@@ -9,8 +9,6 @@
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Wordlift\Modules\Dashboard\Api\Post_Matches_Rest_Controller;
-use Wordlift\Modules\Dashboard\Api\Term_Matches_Rest_Controller;
 use Wordlift\Modules\Dashboard\Plugin_App;
 use Wordlift\Modules\Dashboard\Synchronization\Rest_Controller;
 use Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service;
@@ -69,18 +67,6 @@ function __wl_dashboard__load() {
 		},
 		9
 	);
-
-	/**
-	 * @var $term_matches_controller Term_Matches_Rest_Controller
-	 */
-	$term_matches_controller = $container_builder->get( Term_Matches_Rest_Controller::class );
-	$term_matches_controller->register();
-
-	/**
-	 * @var $term_matches_controller Term_Matches_Rest_Controller
-	 */
-	$term_matches_controller = $container_builder->get( Post_Matches_Rest_Controller::class );
-	$term_matches_controller->register();
 }
 
 __wl_dashboard__load();

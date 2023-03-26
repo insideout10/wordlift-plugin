@@ -12,6 +12,8 @@ use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Wordlift\Modules\Food_Kg\Api\Main_Ingredients_Rest_Controller;
+use Wordlift\Modules\Food_Kg\Api\Post_Matches_Rest_Controller;
+use Wordlift\Modules\Food_Kg\Api\Term_Matches_Rest_Controller;
 use Wordlift\Modules\Food_Kg\Jsonld;
 use Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld;
 use Wordlift\Modules\Food_Kg\Preconditions;
@@ -82,6 +84,17 @@ function __wl_foodkg__load() {
 	$main_ingredients_rest_controller = $container_builder->get( Main_Ingredients_Rest_Controller::class );
 	$main_ingredients_rest_controller->register();
 
+	/**
+	 * @var $term_matches_controller Term_Matches_Rest_Controller
+	 */
+	$term_matches_controller = $container_builder->get( Term_Matches_Rest_Controller::class );
+	$term_matches_controller->register();
+
+	/**
+	 * @var $term_matches_controller Post_Matches_Rest_Controller
+	 */
+	$post_matches_controller = $container_builder->get( Post_Matches_Rest_Controller::class );
+	$post_matches_controller->register();
 }
 
 add_action( 'plugins_loaded', '__wl_foodkg__load' );

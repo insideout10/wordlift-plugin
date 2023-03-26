@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Modules\Dashboard\Api;
+namespace Wordlift\Modules\Food_Kg\Api;
 
 class Page {
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Modules\Dashboard\Api;
+namespace Wordlift\Modules\Food_Kg\Api;
 
 use Wordlift\Assertions;
 
@@ -24,7 +24,6 @@ class Match_Entry {
 		$this->name         = $name;
 		$this->match_id     = $match_id;
 	}
-
 
 	public function serialize() {
 		return array(
@@ -64,6 +63,5 @@ class Match_Entry {
 		}
 		return $data['name'];
 	}
-
 
 }
