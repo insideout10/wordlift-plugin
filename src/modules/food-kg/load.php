@@ -13,10 +13,10 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuild
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Wordlift\Modules\Food_Kg\Api\Main_Ingredients_Rest_Controller;
 use Wordlift\Modules\Food_Kg\Api\Post_Matches_Rest_Controller;
-use Wordlift\Modules\Food_Kg\Api\Term_Matches_Rest_Controller;
 use Wordlift\Modules\Food_Kg\Jsonld;
 use Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld;
 use Wordlift\Modules\Food_Kg\Preconditions;
+use Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Term_Match_Rest_Controller;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -87,7 +87,7 @@ function __wl_foodkg__load() {
 	/**
 	 * @var $term_matches_controller Term_Matches_Rest_Controller
 	 */
-	$term_matches_controller = $container_builder->get( Term_Matches_Rest_Controller::class );
+	$term_matches_controller = $container_builder->get( Food_Kg_Term_Match_Rest_Controller::class );
 	$term_matches_controller->register();
 
 	/**

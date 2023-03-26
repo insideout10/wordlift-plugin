@@ -8,12 +8,13 @@ $baseDir = dirname($vendorDir);
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Wordlift\\Modules\\Food_Kg\\Admin\\Meta_Box' => $baseDir . '/includes/admin/Meta_Box.php',
+    'Wordlift\\Modules\\Food_Kg\\Api\\Cursor' => $baseDir . '/includes/Api/Cursor.php',
+    'Wordlift\\Modules\\Food_Kg\\Api\\Cursor_Page' => $baseDir . '/includes/Api/Cursor_Page.php',
     'Wordlift\\Modules\\Food_Kg\\Api\\Main_Ingredients_Rest_Controller' => $baseDir . '/includes/Api/Main_Ingredients_Rest_Controller.php',
     'Wordlift\\Modules\\Food_Kg\\Api\\Match_Entry' => $baseDir . '/includes/Api/Match_Entry.php',
     'Wordlift\\Modules\\Food_Kg\\Api\\Match_Service' => $baseDir . '/includes/Api/Match_Service.php',
     'Wordlift\\Modules\\Food_Kg\\Api\\Page' => $baseDir . '/includes/Api/Page.php',
     'Wordlift\\Modules\\Food_Kg\\Api\\Post_Matches_Rest_Controller' => $baseDir . '/includes/Api/Post_Matches_Rest_Controller.php',
-    'Wordlift\\Modules\\Food_Kg\\Api\\Term_Matches_Rest_Controller' => $baseDir . '/includes/Api/Term_Matches_Rest_Controller.php',
     'Wordlift\\Modules\\Food_Kg\\Ingredients' => $baseDir . '/includes/Ingredients.php',
     'Wordlift\\Modules\\Food_Kg\\Ingredients_API' => $baseDir . '/includes/Ingredients_API.php',
     'Wordlift\\Modules\\Food_Kg\\Ingredients_Client' => $baseDir . '/includes/Ingredients_Client.php',
@@ -28,5 +29,7 @@ return array(
     'Wordlift\\Modules\\Food_Kg\\Preconditions' => $baseDir . '/includes/Preconditions.php',
     'Wordlift\\Modules\\Food_Kg\\Recipe_Lift_Strategy' => $baseDir . '/includes/Recipe_Lift_Strategy.php',
     'Wordlift\\Modules\\Food_Kg\\Services\\Ingredients' => $baseDir . '/includes/services/Ingredients.php',
+    'Wordlift\\Modules\\Food_Kg\\Term_Entity\\Food_Kg_Term_Entity_Match_Service' => $baseDir . '/includes/Term_Entity/Food_Kg_Term_Entity_Match_Service.php',
     'Wordlift\\Modules\\Food_Kg\\Term_Entity\\Food_Kg_Term_Entity_Runner' => $baseDir . '/includes/Term_Entity/Food_Kg_Term_Entity_Runner.php',
+    'Wordlift\\Modules\\Food_Kg\\Term_Entity\\Food_Kg_Term_Match_Rest_Controller' => $baseDir . '/includes/Term_Entity/Food_Kg_Term_Match_Rest_Controller.php',
 );

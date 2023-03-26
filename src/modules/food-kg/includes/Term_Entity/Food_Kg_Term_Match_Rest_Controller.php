@@ -1,21 +1,25 @@
 <?php
 
-namespace Wordlift\Modules\Food_Kg\Api;
+namespace Wordlift\Modules\Food_Kg\Term_Entity;
 
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Entity\Entity_Uri_Generator;
+use Wordlift\Modules\Food_Kg\Api\Cursor;
+use Wordlift\Modules\Food_Kg\Api\Cursor_Page;
 use Wordlift\Object_Type_Enum;
 
-class Term_Matches_Rest_Controller extends \WP_REST_Controller {
+class Food_Kg_Term_Match_Rest_Controller extends \WP_REST_Controller {
+
 	/**
-	 * @var Match_Service
+	 * @var Food_Kg_Term_Entity_Match_Service
 	 */
 	private $match_service;
 
 	public function __construct( $match_service ) {
 		$this->match_service = $match_service;
 	}
+
 	public function register() {
 		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
 	}
@@ -33,16 +37,13 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 				'methods'             => 'GET',
 				'callback'            => array( $this, 'get_term_matches' ),
 				'args'                => array(
-					'taxonomy' => array(
-						'required'          => true,
-						'validate_callback' => 'rest_validate_request_arg',
-						'sanitize_callback' => 'sanitize_text_field',
-					),
-					'cursor'   => array(
+					'cursor'    => array(
 						'type'              => 'string',
+						'default'           => Cursor::EMPTY_CURSOR_AS_BASE64_STRING,
 						'validate_callback' => 'rest_validate_request_arg',
+						'sanitize_callback' => array( Cursor::class, 'rest_sanitize_request_arg' ),
 					),
-					'limit'    => array(
+					'limit'     => array(
 						'type'              => 'integer',
 						'validate_callback' => 'rest_validate_request_arg',
 						'default'           => 20,
@@ -50,11 +51,14 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 						'maximum'           => 100,
 						'sanitize_callback' => 'absint',
 					),
-					'filter'   => array(
-						'required'          => false,
-						'type'              => 'string',
-						'enum'              => array( 'ALL', 'MATCHED', 'UNMATCHED' ),
+					'taxonomy'  => array(
+						'required'          => true,
+						'validate_callback' => 'rest_validate_request_arg',
 						'sanitize_callback' => 'sanitize_text_field',
+					),
+					'has_match' => array(
+						'required'          => false,
+						'type'              => 'boolean',
 						'validate_callback' => 'rest_validate_request_arg',
 					),
 				),
@@ -116,38 +120,60 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 	 */
 	public function get_term_matches( $request ) {
 
-		$query_params = $request->get_query_params();
-
-		$cursor_args = array(
-			'limit'     => $query_params['limit'] ? $query_params['limit'] : 10,
-			'position'  => 0,
-			'direction' => Page::FORWARD,
-			'sort'      => Page::SORT_ASC,
-		);
-
-		if ( isset( $query_params['cursor'] ) && is_string( $query_params['cursor'] ) ) {
-			$cursor_args = wp_parse_args( json_decode( base64_decode( $query_params['cursor'] ), true ), $cursor_args );
+		$cursor = $request->get_param( 'cursor' );
+		if ( $request->has_param( 'limit' ) ) {
+			$cursor['limit'] = $request->get_param( 'limit' );
+		}
+		if ( $request->has_param( 'sort' ) ) {
+			$cursor['sort'] = $request->get_param( 'sort' );
+		}
+		if ( $request->has_param( 'taxonomy' ) ) {
+			$cursor['query']['taxonomy'] = $request->get_param( 'taxonomy' );
+		}
+		if ( $request->has_param( 'has_match' ) ) {
+			$cursor['query']['has_match'] = $request->get_param( 'has_match' );
 		}
 
-		$items = $this->match_service->get_term_matches(
-			$query_params['taxonomy'],
-			$cursor_args['position'],
-			$cursor_args['limit'],
-			$cursor_args['direction'],
-			$cursor_args['sort'],
-			$query_params['filter']
+		// $position  = isset( $cursor['position'] ) ? $cursor['position'] : null;
+		// $element   = isset( $cursor['element'] ) ? $cursor['element'] : 'INCLUDED';
+		// $direction = isset( $cursor['direction'] ) ? $cursor['direction'] : 'ASCENDING';
+		// $limit     = isset( $cursor['limit'] ) ? $cursor['limit'] : 20;
+		// $sort      = isset( $cursor['sort'] ) ? $cursor['sort'] : '+id';
+		// Query.
+		$taxonomy  = isset( $cursor['query']['taxonomy'] ) ? $cursor['query']['taxonomy'] : 'wprm_ingredients';
+		$has_match = isset( $cursor['query']['has_match'] ) ? $cursor['query']['has_match'] : null;
+
+		$items = $this->match_service->list_items(
+			array(
+				// Query
+				'taxonomy'  => $taxonomy,
+				'has_match' => $has_match,
+				// Cursor-Pagination
+				'position'  => $cursor['position'],
+				'element'   => $cursor['element'],
+				'direction' => $cursor['direction'],
+				// `+1` to check if we have other results.
+				'limit'     => $cursor['limit'] + 1,
+				'sort'      => $cursor['sort'],
+			)
 		);
 
-		$page = new Page( $query_params['cursor'], $items, $cursor_args['limit'], $cursor_args['position'] );
-		return $page->serialize();
-
+		return new Cursor_Page(
+			$items,
+			$cursor['position'],
+			$cursor['element'],
+			$cursor['direction'],
+			$cursor['sort'],
+			$cursor['limit'],
+			$cursor['query']
+		);
 	}
 
-	 /**
-	  * Create a new match for a term.
-	  *
-	  * @var $request \WP_REST_Request
-	  */
+	/**
+	 * Create a new match for a term.
+	 *
+	 * @var $request \WP_REST_Request
+	 */
 	public function create_term_match( $request ) {
 
 		$term_id = $request->get_param( 'term_id' );
@@ -174,9 +200,9 @@ class Term_Matches_Rest_Controller extends \WP_REST_Controller {
 
 	}
 
-	 /**
-	  * @var $request \WP_REST_Request
-	  */
+	/**
+	 * @var $request \WP_REST_Request
+	 */
 	public function update_term_match( $request ) {
 		return $this->match_service->set_jsonld(
 			$request->get_param( 'term_id' ),

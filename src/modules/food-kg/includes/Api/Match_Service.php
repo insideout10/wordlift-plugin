@@ -1,8 +1,10 @@
 <?php
+
 namespace Wordlift\Modules\Food_Kg\Api;
 
 use Wordlift\Object_Type_Enum;
 
+// phpcs:disable
 class Match_Service {
 
 	/**
@@ -12,6 +14,7 @@ class Match_Service {
 	 * @param $direction string @enum { 'FORWARD', 'BACKWARD'}
 	 * @param $sort string @enum { 'ASC', 'DESC'}
 	 * @param $filter string @enum { 'MATCHED', 'UNMATCHED', 'ALL'}
+	 *
 	 * @return array|array[]
 	 * @throws \Exception
 	 */
@@ -55,6 +58,7 @@ class Match_Service {
 	 * @param $direction string @enum { 'FORWARD', 'BACKWARD'}
 	 * @param $sort string @enum { 'ASC', 'DESC'}
 	 * @param $filter string @enum { 'MATCHED', 'UNMATCHED', 'ALL'}
+	 *
 	 * @return array|array[]
 	 * @throws \Exception
 	 */
@@ -158,6 +162,7 @@ ORDER BY p.ID {$sort} LIMIT %d;",
 		if ( null === $result ) {
 			throw new Exception( "Unable to find match id for {$content_id} and {$content_type}" );
 		}
+
 		return $result;
 	}
 

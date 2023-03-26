@@ -9,12 +9,13 @@ class ComposerStaticInit718e370ed095fd597a1f1d468c2b59f4
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Wordlift\\Modules\\Food_Kg\\Admin\\Meta_Box' => __DIR__ . '/../..' . '/includes/admin/Meta_Box.php',
+        'Wordlift\\Modules\\Food_Kg\\Api\\Cursor' => __DIR__ . '/../..' . '/includes/Api/Cursor.php',
+        'Wordlift\\Modules\\Food_Kg\\Api\\Cursor_Page' => __DIR__ . '/../..' . '/includes/Api/Cursor_Page.php',
         'Wordlift\\Modules\\Food_Kg\\Api\\Main_Ingredients_Rest_Controller' => __DIR__ . '/../..' . '/includes/Api/Main_Ingredients_Rest_Controller.php',
         'Wordlift\\Modules\\Food_Kg\\Api\\Match_Entry' => __DIR__ . '/../..' . '/includes/Api/Match_Entry.php',
         'Wordlift\\Modules\\Food_Kg\\Api\\Match_Service' => __DIR__ . '/../..' . '/includes/Api/Match_Service.php',
         'Wordlift\\Modules\\Food_Kg\\Api\\Page' => __DIR__ . '/../..' . '/includes/Api/Page.php',
         'Wordlift\\Modules\\Food_Kg\\Api\\Post_Matches_Rest_Controller' => __DIR__ . '/../..' . '/includes/Api/Post_Matches_Rest_Controller.php',
-        'Wordlift\\Modules\\Food_Kg\\Api\\Term_Matches_Rest_Controller' => __DIR__ . '/../..' . '/includes/Api/Term_Matches_Rest_Controller.php',
         'Wordlift\\Modules\\Food_Kg\\Ingredients' => __DIR__ . '/../..' . '/includes/Ingredients.php',
         'Wordlift\\Modules\\Food_Kg\\Ingredients_API' => __DIR__ . '/../..' . '/includes/Ingredients_API.php',
         'Wordlift\\Modules\\Food_Kg\\Ingredients_Client' => __DIR__ . '/../..' . '/includes/Ingredients_Client.php',
@@ -29,7 +30,9 @@ class ComposerStaticInit718e370ed095fd597a1f1d468c2b59f4
         'Wordlift\\Modules\\Food_Kg\\Preconditions' => __DIR__ . '/../..' . '/includes/Preconditions.php',
         'Wordlift\\Modules\\Food_Kg\\Recipe_Lift_Strategy' => __DIR__ . '/../..' . '/includes/Recipe_Lift_Strategy.php',
         'Wordlift\\Modules\\Food_Kg\\Services\\Ingredients' => __DIR__ . '/../..' . '/includes/services/Ingredients.php',
+        'Wordlift\\Modules\\Food_Kg\\Term_Entity\\Food_Kg_Term_Entity_Match_Service' => __DIR__ . '/../..' . '/includes/Term_Entity/Food_Kg_Term_Entity_Match_Service.php',
         'Wordlift\\Modules\\Food_Kg\\Term_Entity\\Food_Kg_Term_Entity_Runner' => __DIR__ . '/../..' . '/includes/Term_Entity/Food_Kg_Term_Entity_Runner.php',
+        'Wordlift\\Modules\\Food_Kg\\Term_Entity\\Food_Kg_Term_Match_Rest_Controller' => __DIR__ . '/../..' . '/includes/Term_Entity/Food_Kg_Term_Match_Rest_Controller.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
