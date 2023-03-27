@@ -10,6 +10,11 @@ use Wordlift\Modules\Food_Kg\Ingredients_Client;
 class Food_Kg_Term_Entity_Runner implements Runner {
 
 	/**
+	 * @var Food_Kg_Ingredients_Term_Store
+	 */
+	private $store;
+
+	/**
 	 * @var Content_Service
 	 */
 	private $content_service;
@@ -19,24 +24,19 @@ class Food_Kg_Term_Entity_Runner implements Runner {
 	 */
 	private $ingredients_client;
 
-	public function __construct( Content_Service $content_service, Ingredients_Client $ingredients_client ) {
+	public function __construct( Food_Kg_Ingredients_Term_Store $store, Content_Service $content_service, Ingredients_Client $ingredients_client ) {
+		$this->store              = $store;
 		$this->content_service    = $content_service;
 		$this->ingredients_client = $ingredients_client;
 	}
 
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function run( $last_id ) {
-		/**
-		 * @var string[] $terms
-		 */
-		$terms       = get_terms(
-			array(
-				'taxonomy'   => 'wprm_ingredient',
-				'fields'     => 'names',
-				'hide_empty' => false,
-			)
-		);
-		$ingredients = $this->ingredients_client->ingredients( $terms );
+
+		$items = $this->store->list_items( $last_id, 100 );
+		$names = array_column( $items, 'name' );
+
+		$ingredients = $this->ingredients_client->ingredients( $names );
 
 		foreach ( $ingredients as $key => $value ) {
 			$term = get_term_by( 'name', $key, 'wprm_ingredient' );
@@ -48,9 +48,11 @@ class Food_Kg_Term_Entity_Runner implements Runner {
 			$this->content_service->set_about_jsonld( $content_id, $value );
 		}
 
-		$count = count( $terms );
+		$count        = count( $items );
+		$last_item    = end( $items );
+		$last_item_id = ( isset( $last_item->term_id ) ? $last_item->term_id : null );
 
-		return array( $count, null );
+		return array( $count, $last_item_id );
 	}
 
 	/**
@@ -61,13 +63,7 @@ class Food_Kg_Term_Entity_Runner implements Runner {
 	 * @return int
 	 */
 	public function get_total() {
-		global $wpdb;
-
-		return $wpdb->get_var(
-			"
-			SELECT COUNT(1) FROM $wpdb->term_taxonomy where taxonomy = 'wprm_ingredient'
-		"
-		);
+		return $this->store->get_total();
 	}
 
 }

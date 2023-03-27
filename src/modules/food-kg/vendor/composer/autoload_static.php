@@ -30,6 +30,7 @@ class ComposerStaticInit718e370ed095fd597a1f1d468c2b59f4
         'Wordlift\\Modules\\Food_Kg\\Preconditions' => __DIR__ . '/../..' . '/includes/Preconditions.php',
         'Wordlift\\Modules\\Food_Kg\\Recipe_Lift_Strategy' => __DIR__ . '/../..' . '/includes/Recipe_Lift_Strategy.php',
         'Wordlift\\Modules\\Food_Kg\\Services\\Ingredients' => __DIR__ . '/../..' . '/includes/services/Ingredients.php',
+        'Wordlift\\Modules\\Food_Kg\\Term_Entity\\Food_Kg_Ingredients_Term_Store' => __DIR__ . '/../..' . '/includes/Term_Entity/Food_Kg_Ingredients_Term_Store.php',
         'Wordlift\\Modules\\Food_Kg\\Term_Entity\\Food_Kg_Term_Entity_Runner' => __DIR__ . '/../..' . '/includes/Term_Entity/Food_Kg_Term_Entity_Runner.php',
     );
 

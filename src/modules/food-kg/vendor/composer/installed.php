@@ -3,7 +3,7 @@
         'name' => 'wordlift/food-kg',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => '8b64b1d997567b1c4ab43a5f3545d05334e27fe9',
+        'reference' => '6344fb2d8d447db3a425429247f5fcae5a3bc68e',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'wordlift/food-kg' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => '8b64b1d997567b1c4ab43a5f3545d05334e27fe9',
+            'reference' => '6344fb2d8d447db3a425429247f5fcae5a3bc68e',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
