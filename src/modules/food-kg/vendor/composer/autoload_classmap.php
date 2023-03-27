@@ -29,7 +29,5 @@ return array(
     'Wordlift\\Modules\\Food_Kg\\Preconditions' => $baseDir . '/includes/Preconditions.php',
     'Wordlift\\Modules\\Food_Kg\\Recipe_Lift_Strategy' => $baseDir . '/includes/Recipe_Lift_Strategy.php',
     'Wordlift\\Modules\\Food_Kg\\Services\\Ingredients' => $baseDir . '/includes/services/Ingredients.php',
-    'Wordlift\\Modules\\Food_Kg\\Term_Entity\\Food_Kg_Term_Entity_Match_Service' => $baseDir . '/includes/Term_Entity/Food_Kg_Term_Entity_Match_Service.php',
     'Wordlift\\Modules\\Food_Kg\\Term_Entity\\Food_Kg_Term_Entity_Runner' => $baseDir . '/includes/Term_Entity/Food_Kg_Term_Entity_Runner.php',
-    'Wordlift\\Modules\\Food_Kg\\Term_Entity\\Food_Kg_Term_Match_Rest_Controller' => $baseDir . '/includes/Term_Entity/Food_Kg_Term_Match_Rest_Controller.php',
 );

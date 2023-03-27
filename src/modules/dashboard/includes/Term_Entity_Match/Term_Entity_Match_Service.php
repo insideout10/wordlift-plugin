@@ -1,10 +1,10 @@
 <?php
 
-namespace Wordlift\Modules\Food_Kg\Term_Entity;
+namespace Wordlift\Modules\Dashboard\Term_Entity_Match;
 
 use Wordlift\Object_Type_Enum;
 
-class Food_Kg_Term_Entity_Match_Service {
+class Term_Entity_Match_Service {
 
 	public function list_items( $args ) {
 		global $wpdb;
@@ -30,13 +30,14 @@ class Food_Kg_Term_Entity_Match_Service {
 			WHERE e.content_type = %d
 		";
 
-		$sort_ascending  = $this->is_sort_ascending( $params['sort'] );
-		$sort_field_name = $this->get_sort_field_name( $params['sort'] );
+		$sort_ascending      = $this->is_sort_ascending( $params['sort'] );
+		$sort_sql_field_name = $this->get_sort_sql_field_name( $params['sort'] );
+		$sort_property_name  = $this->get_sort_property_name( $params['sort'] );
 
-		$this->build_sql_cursor( $sql, $sort_field_name, $params['element'], $params['direction'], $params['position'], $params['sort'] );
+		$this->build_sql_cursor( $sql, $sort_sql_field_name, $params['element'], $params['direction'], $params['position'], $params['sort'] );
 		$this->build_sql_query_taxonomy( $sql, $params['taxonomy'] );
 		$this->build_sql_query_has_match( $sql, $params['has_match'] );
-		$this->build_sql_order_by( $sql, $params['direction'], $sort_ascending, $sort_field_name );
+		$this->build_sql_order_by( $sql, $params['direction'], $sort_ascending, $sort_sql_field_name );
 		$this->build_sql_limit( $sql, $params['limit'] );
 
 		$items = $wpdb->get_results(
@@ -47,14 +48,14 @@ class Food_Kg_Term_Entity_Match_Service {
 
 		usort(
 			$items,
-			function ( $a, $b ) use ( $sort_ascending, $sort_field_name ) {
-				if ( $a->{$sort_field_name} === $b->{$sort_field_name} ) {
+			function ( $a, $b ) use ( $sort_ascending, $sort_property_name ) {
+				if ( $a->{$sort_property_name} === $b->{$sort_property_name} ) {
 					return 0;
 				}
 
 				switch ( array(
 					$sort_ascending,
-					$a->{$sort_field_name} > $b->{$sort_field_name},
+					$a->{$sort_property_name} > $b->{$sort_property_name},
 				) ) {
 					case array( true, true ):
 					case array( false, false ):
@@ -69,14 +70,6 @@ class Food_Kg_Term_Entity_Match_Service {
 		);
 
 		return $items;
-	}
-
-	private function get_cursor_colname( $sort ) {
-		if ( $sort === '+name' || $sort === '-name' ) {
-			return 't.name';
-		} else {
-			return 't.term_id';
-		}
 	}
 
 	private function build_sql_cursor( &$sql, $cursor_field, $element, $direction, $position, $sort ) {
@@ -141,12 +134,21 @@ class Food_Kg_Term_Entity_Match_Service {
 		$sql       .= " ORDER BY $sort_field_name $sort_order";
 	}
 
-	private function get_sort_field_name( $sort ) {
+	private function get_sort_sql_field_name( $sort ) {
 		$tmp_sort_field_name = substr( $sort, 1 );
 		if ( $tmp_sort_field_name === 'id' ) {
 			return 't.term_id';
 		} else {
 			return 't.name';
+		}
+	}
+
+	private function get_sort_property_name( $sort ) {
+		$tmp_sort_field_name = substr( $sort, 1 );
+		if ( $tmp_sort_field_name === 'id' ) {
+			return 'id';
+		} else {
+			return 'name';
 		}
 	}
 

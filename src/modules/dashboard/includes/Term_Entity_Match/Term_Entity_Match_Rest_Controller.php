@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Modules\Food_Kg\Term_Entity;
+namespace Wordlift\Modules\Dashboard\Term_Entity_Match;
 
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
@@ -9,18 +9,15 @@ use Wordlift\Modules\Food_Kg\Api\Cursor;
 use Wordlift\Modules\Food_Kg\Api\Cursor_Page;
 use Wordlift\Object_Type_Enum;
 
-class Food_Kg_Term_Match_Rest_Controller extends \WP_REST_Controller {
+class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 
-	/**
-	 * @var Food_Kg_Term_Entity_Match_Service
-	 */
 	private $match_service;
 
 	public function __construct( $match_service ) {
 		$this->match_service = $match_service;
 	}
 
-	public function register() {
+	public function register_hooks() {
 		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
 	}
 
@@ -52,17 +49,17 @@ class Food_Kg_Term_Match_Rest_Controller extends \WP_REST_Controller {
 						'sanitize_callback' => 'absint',
 					),
 					'taxonomy'  => array(
+						'type'              => 'string',
 						'required'          => true,
 						'validate_callback' => 'rest_validate_request_arg',
 						'sanitize_callback' => 'sanitize_text_field',
 					),
 					'has_match' => array(
-						'required'          => false,
 						'type'              => 'boolean',
+						'required'          => false,
 						'validate_callback' => 'rest_validate_request_arg',
 					),
 				),
-
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
@@ -134,13 +131,8 @@ class Food_Kg_Term_Match_Rest_Controller extends \WP_REST_Controller {
 			$cursor['query']['has_match'] = $request->get_param( 'has_match' );
 		}
 
-		// $position  = isset( $cursor['position'] ) ? $cursor['position'] : null;
-		// $element   = isset( $cursor['element'] ) ? $cursor['element'] : 'INCLUDED';
-		// $direction = isset( $cursor['direction'] ) ? $cursor['direction'] : 'ASCENDING';
-		// $limit     = isset( $cursor['limit'] ) ? $cursor['limit'] : 20;
-		// $sort      = isset( $cursor['sort'] ) ? $cursor['sort'] : '+id';
 		// Query.
-		$taxonomy  = isset( $cursor['query']['taxonomy'] ) ? $cursor['query']['taxonomy'] : 'wprm_ingredients';
+		$taxonomy  = isset( $cursor['query']['taxonomy'] ) ? $cursor['query']['taxonomy'] : null;
 		$has_match = isset( $cursor['query']['has_match'] ) ? $cursor['query']['has_match'] : null;
 
 		$items = $this->match_service->list_items(

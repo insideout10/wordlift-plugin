@@ -77,7 +77,7 @@ class Cursor_Page implements \Serializable, \JsonSerializable {
 				array(
 					'position'  => null,
 					'element'   => 'INCLUDED',
-					'direction' => $this->direction,
+					'direction' => 'ASCENDING',
 					'sort'      => $this->sort,
 					'limit'     => $this->limit,
 					'query'     => $this->query,
@@ -88,7 +88,7 @@ class Cursor_Page implements \Serializable, \JsonSerializable {
 	}
 
 	public function get_prev() {
-		return $this->position === '' ? null :
+		return ! $this->has_prev() ? null :
 			// `base64_encode` used to push the cursor to the query string.
 			// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 			base64_encode(
@@ -105,9 +105,14 @@ class Cursor_Page implements \Serializable, \JsonSerializable {
 			);
 	}
 
+	private function has_prev() {
+		return ( $this->direction === 'ASCENDING' && isset( $this->position ) )
+			   || ( $this->direction === 'DESCENDING' && count( $this->items ) > $this->limit );
+	}
+
 	public function get_next() {
 		// The items always have one more item beyond the limit to calculate the next cursor.
-		return count( $this->items ) <= $this->limit ? null :
+		return ! $this->has_next() ? null :
 			// `base64_encode` used to push the cursor to the query string.
 			// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 			base64_encode(
@@ -122,6 +127,11 @@ class Cursor_Page implements \Serializable, \JsonSerializable {
 					)
 				)
 			);
+	}
+
+	private function has_next() {
+		return ( $this->direction === 'ASCENDING' && count( $this->items ) > $this->limit )
+			   || ( $this->direction === 'DESCENDING' && isset( $this->position ) );
 	}
 
 	public function get_last() {

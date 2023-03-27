@@ -16,7 +16,6 @@ use Wordlift\Modules\Food_Kg\Api\Post_Matches_Rest_Controller;
 use Wordlift\Modules\Food_Kg\Jsonld;
 use Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld;
 use Wordlift\Modules\Food_Kg\Preconditions;
-use Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Term_Match_Rest_Controller;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -83,12 +82,6 @@ function __wl_foodkg__load() {
 	 */
 	$main_ingredients_rest_controller = $container_builder->get( Main_Ingredients_Rest_Controller::class );
 	$main_ingredients_rest_controller->register();
-
-	/**
-	 * @var $term_matches_controller Term_Matches_Rest_Controller
-	 */
-	$term_matches_controller = $container_builder->get( Food_Kg_Term_Match_Rest_Controller::class );
-	$term_matches_controller->register();
 
 	/**
 	 * @var $term_matches_controller Post_Matches_Rest_Controller

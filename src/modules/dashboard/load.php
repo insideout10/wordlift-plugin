@@ -12,6 +12,7 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFil
 use Wordlift\Modules\Dashboard\Plugin_App;
 use Wordlift\Modules\Dashboard\Synchronization\Rest_Controller;
 use Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service;
+use Wordlift\Modules\Dashboard\Term_Entity_Match\Term_Entity_Match_Rest_Controller;
 
 /**
  * Load Include Exclude Module.
@@ -41,6 +42,12 @@ function __wl_dashboard__load() {
 	 */
 	$rest_controller = $container_builder->get( 'Wordlift\Modules\Dashboard\Synchronization\Rest_Controller' );
 	$rest_controller->register_hooks();
+
+	/**
+	 * @var $term_entity_match_rest_controller Term_Entity_Match_Rest_Controller
+	 */
+	$term_entity_match_rest_controller = $container_builder->get( Term_Entity_Match_Rest_Controller::class );
+	$term_entity_match_rest_controller->register_hooks();
 
 	/**
 	 * @var $synchronization_service Synchronization_Service
