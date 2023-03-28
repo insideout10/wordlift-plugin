@@ -34,7 +34,15 @@ class Food_Kg_Term_Entity_Runner implements Runner {
 	public function run( $last_id ) {
 
 		$items = $this->store->list_items( $last_id, 100 );
-		$names = array_column( $items, 'name' );
+		$names = array_column(
+			array_map(
+				function ( $item ) {
+					return (array) $item;
+				},
+				$items
+			),
+			'name'
+		);
 
 		$ingredients = $this->ingredients_client->ingredients( $names );
 

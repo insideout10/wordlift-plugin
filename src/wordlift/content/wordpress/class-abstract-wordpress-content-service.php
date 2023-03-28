@@ -4,6 +4,7 @@ namespace Wordlift\Content\Wordpress;
 
 use Wordlift\Assertions;
 use Wordlift\Content\Content_Service;
+use Wordlift\Object_Type_Enum;
 use Wordlift_Configuration_Service;
 
 // phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledClassName
@@ -72,6 +73,22 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 	 */
 	public function set_about_jsonld( $content_id, $value ) {
 		global $wpdb;
+
+		// This `hack` is necessary to ensure the entity exists in the entities table, but we
+		// should revise how this works really.
+		//
+		// This is currently needed because rel_uri is required in the table.
+		switch ( $content_id->get_type() ) {
+			case Object_Type_Enum::POST:
+				Wordpress_Dataset_Content_Service_Hooks::insert_post( $content_id->get_id() );
+				break;
+			case Object_Type_Enum::TERM:
+				Wordpress_Dataset_Content_Service_Hooks::created_term( $content_id->get_id() );
+				break;
+			case Object_Type_Enum::USER:
+				Wordpress_Dataset_Content_Service_Hooks::user_register( $content_id->get_id() );
+				break;
+		}
 
 		return $wpdb->query(
 			$wpdb->prepare(

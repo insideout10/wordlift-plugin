@@ -42,6 +42,8 @@ class Synchronization implements Serializable, JsonSerializable {
 	public function __construct() {
 		$this->set_created_at( Date_Utils::now_utc() );
 		$this->set_offset( 0 );
+		$this->set_last_runner_idx( 0 );
+		$this->set_last_id( 0 );
 	}
 
 	/**

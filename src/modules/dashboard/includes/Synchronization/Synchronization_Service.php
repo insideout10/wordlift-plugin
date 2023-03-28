@@ -61,6 +61,14 @@ class Synchronization_Service {
 		$last_id         = $last_synchronization->get_last_id();
 		$runners         = $this->get_runners();
 
+		// Completed?
+		if ( ! is_numeric( $last_runner_idx ) || $last_runner_idx >= count( $runners ) ) {
+			do_action( 'wl_ttl_cache_cleaner__flush' );
+
+			$last_synchronization->set_stopped_at( new DateTimeImmutable( 'now', new DateTimeZone( 'UTC' ) ) );
+			$this->save( $last_synchronization );
+		}
+
 		// Not completed?
 		if ( $last_runner_idx < count( $runners ) ) {
 			// Run the runner from the last known id.
@@ -77,14 +85,6 @@ class Synchronization_Service {
 			$this->save( $last_synchronization );
 
 			as_enqueue_async_action( self::HOOK, array(), self::GROUP );
-		}
-
-		// Completed?
-		if ( $last_runner_idx >= count( $runners ) ) {
-			do_action( 'wl_ttl_cache_cleaner__flush' );
-
-			$last_synchronization->set_stopped_at( new DateTimeImmutable( 'now', new DateTimeZone( 'UTC' ) ) );
-			$this->save( $last_synchronization );
 		}
 
 	}
