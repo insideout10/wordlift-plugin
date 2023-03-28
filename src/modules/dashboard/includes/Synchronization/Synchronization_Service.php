@@ -172,5 +172,9 @@ class Synchronization_Service {
 		return new DateTimeImmutable( "@$timestamp" );
 	}
 
+	public function delete_syncs() {
+		delete_option( '_wl_dashboard__synchronization' );
+	}
+
 }
 

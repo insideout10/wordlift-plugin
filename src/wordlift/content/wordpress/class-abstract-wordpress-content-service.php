@@ -74,6 +74,9 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 	public function set_about_jsonld( $content_id, $value ) {
 		global $wpdb;
 
+		// Cleanup value.
+		$value = ( is_string( $value ) && strlen( $value ) > 2 ) ? $value : null;
+
 		// This `hack` is necessary to ensure the entity exists in the entities table, but we
 		// should revise how this works really.
 		//

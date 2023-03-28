@@ -3,6 +3,7 @@
 namespace Wordlift\Modules\Dashboard\Synchronization;
 
 use WP_REST_Request;
+use WP_REST_Response;
 
 class Rest_Controller {
 
@@ -46,6 +47,15 @@ class Rest_Controller {
 				),
 			)
 		);
+
+		register_rest_route(
+			'wl-dashboard/v1',
+			'/synchronizations',
+			array(
+				'methods'  => 'DELETE',
+				'callback' => array( $this, 'delete_syncs' ),
+			)
+		);
 	}
 
 	public function create_sync() {
@@ -67,6 +77,12 @@ class Rest_Controller {
 		}
 
 		return rest_ensure_response( array( 'items' => $data ) );
+	}
+
+	public function delete_syncs() {
+		$this->synchronization_service->delete_syncs();
+
+		return new WP_REST_Response();
 	}
 
 }
