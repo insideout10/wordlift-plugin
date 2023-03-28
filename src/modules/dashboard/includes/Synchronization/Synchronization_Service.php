@@ -4,6 +4,7 @@ namespace Wordlift\Modules\Dashboard\Synchronization;
 
 use DateTimeImmutable;
 use DateTimeZone;
+use Exception;
 use Wordlift\Modules\Common\Synchronization\Runner;
 use Wordlift\Modules\Dashboard\Synchronization\Exception\SynchronizationAlreadyRunningException;
 use Wordlift\Modules\Dashboard\Synchronization\Exception\SynchronizationNotRunningException;
@@ -15,9 +16,12 @@ class Synchronization_Service {
 
 	public function register_hooks() {
 		add_action( self::HOOK, array( $this, 'run' ) );
-		add_action( 'wl_dashboard__synchronization__create', array( $this, 'create' ) );
+		add_action( 'wl_dashboard__synchronization__create', array( $this, 'scheduled_create' ) );
+		add_action( 'init', array( $this, 'init' ) );
+	}
 
-		if ( ! as_next_scheduled_action( 'wl_dashboard__synchronization__create' ) ) {
+	public function init() {
+		if ( function_exists( 'as_next_scheduled_action' ) && ! as_next_scheduled_action( 'wl_dashboard__synchronization__create' ) ) {
 			as_schedule_recurring_action( strtotime( 'yesterday' ), DAY_IN_SECONDS, 'wl_dashboard__synchronization__create', array(), self::GROUP, true );
 		}
 	}
@@ -45,6 +49,14 @@ class Synchronization_Service {
 		as_enqueue_async_action( self::HOOK, array(), self::GROUP );
 
 		return $synchronization;
+	}
+
+	public function scheduled_create() {
+		try {
+			return $this->create();
+		} catch ( Exception $e ) {
+			return $e->getMessage();
+		}
 	}
 
 	/**

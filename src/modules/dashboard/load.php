@@ -53,12 +53,7 @@ function __wl_dashboard__load() {
 	 * @var $synchronization_service Synchronization_Service
 	 */
 	$synchronization_service = $container_builder->get( 'Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service' );
-	add_action(
-		'init',
-		function () use ( $synchronization_service ) {
-			$synchronization_service->register_hooks();
-		}
-	);
+	$synchronization_service->register_hooks();
 
 	/**
 	 * @var $plugin_app Plugin_App

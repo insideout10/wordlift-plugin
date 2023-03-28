@@ -10,9 +10,6 @@ services:
   Wordlift\Modules\Dashboard\Synchronization\Runner:
     class: Wordlift\Modules\Dashboard\Synchronization\Runner
 
-  Wordlift\Modules\Dashboard\Synchronization\Scheduler:
-    class: Wordlift\Modules\Dashboard\Synchronization\Scheduler
-
   Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service:
     class: Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service
 
