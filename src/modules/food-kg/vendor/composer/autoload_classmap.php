@@ -22,6 +22,7 @@ return array(
     'Wordlift\\Modules\\Food_Kg\\Jsonld' => $baseDir . '/includes/Jsonld.php',
     'Wordlift\\Modules\\Food_Kg\\Main_Entity\\Food_Kg_Main_Entity_Runner' => $baseDir . '/includes/Main_Entity/Food_Kg_Main_Entity_Runner.php',
     'Wordlift\\Modules\\Food_Kg\\Main_Entity\\Food_Kg_Recipe_Post_Store' => $baseDir . '/includes/Main_Entity/Food_Kg_Recipe_Post_Store.php',
+    'Wordlift\\Modules\\Food_Kg\\Main_Entity\\Food_Kg_Recipe_Stats' => $baseDir . '/includes/Main_Entity/Food_Kg_Recipe_Stats.php',
     'Wordlift\\Modules\\Food_Kg\\Main_Ingredient_Jsonld' => $baseDir . '/includes/Main_Ingredient_Jsonld.php',
     'Wordlift\\Modules\\Food_Kg\\Main_Ingredient_Recipe_Lift_Strategy' => $baseDir . '/includes/Main_Ingredient_Recipe_Lift_Strategy.php',
     'Wordlift\\Modules\\Food_Kg\\Module' => $baseDir . '/includes/Module.php',
@@ -29,6 +30,7 @@ return array(
     'Wordlift\\Modules\\Food_Kg\\Preconditions' => $baseDir . '/includes/Preconditions.php',
     'Wordlift\\Modules\\Food_Kg\\Recipe_Lift_Strategy' => $baseDir . '/includes/Recipe_Lift_Strategy.php',
     'Wordlift\\Modules\\Food_Kg\\Services\\Ingredients' => $baseDir . '/includes/services/Ingredients.php',
+    'Wordlift\\Modules\\Food_Kg\\Term_Entity\\Food_Kg_Ingredient_Stats' => $baseDir . '/includes/Term_Entity/Food_Kg_Ingredient_Stats.php',
     'Wordlift\\Modules\\Food_Kg\\Term_Entity\\Food_Kg_Ingredients_Term_Store' => $baseDir . '/includes/Term_Entity/Food_Kg_Ingredients_Term_Store.php',
     'Wordlift\\Modules\\Food_Kg\\Term_Entity\\Food_Kg_Term_Entity_Runner' => $baseDir . '/includes/Term_Entity/Food_Kg_Term_Entity_Runner.php',
 );

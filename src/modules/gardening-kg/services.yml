@@ -19,3 +19,9 @@ services:
 
   Wordlift\Modules\Gardening_Kg\Preconditions:
     class: Wordlift\Modules\Gardening_Kg\Preconditions
+
+  Wordlift\Modules\Gardening_Kg\Main_Entity\Gardening_Kg_Post_Stats:
+    class: Wordlift\Modules\Gardening_Kg\Main_Entity\Gardening_Kg_Post_Stats
+
+  Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Stats:
+    class: Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Stats

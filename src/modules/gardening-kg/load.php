@@ -9,7 +9,9 @@
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Wordlift\Modules\Gardening_Kg\Main_Entity\Gardening_Kg_Post_Stats;
 use Wordlift\Modules\Gardening_Kg\Preconditions;
+use Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Stats;
 
 // if ( ! defined( 'ABSPATH' ) ) {
 // exit;
@@ -54,6 +56,18 @@ function __wl_gardening_kg__load() {
 			return $runners;
 		}
 	);
+
+	/**
+	 * @var Gardening_Kg_Post_Stats $post_stats
+	 */
+	$post_stats = $container_builder->get( Gardening_Kg_Post_Stats::class );
+	$post_stats->register_hooks();
+
+	/**
+	 * @var Gardening_Kg_Term_Stats $term_stats
+	 */
+	$term_stats = $container_builder->get( Gardening_Kg_Term_Stats::class );
+	$term_stats->register_hooks();
 
 }
 

@@ -14,8 +14,10 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFil
 use Wordlift\Modules\Food_Kg\Api\Main_Ingredients_Rest_Controller;
 use Wordlift\Modules\Food_Kg\Api\Post_Matches_Rest_Controller;
 use Wordlift\Modules\Food_Kg\Jsonld;
+use Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Stats;
 use Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld;
 use Wordlift\Modules\Food_Kg\Preconditions;
+use Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Ingredient_Stats;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -88,6 +90,19 @@ function __wl_foodkg__load() {
 	 */
 	$post_matches_controller = $container_builder->get( Post_Matches_Rest_Controller::class );
 	$post_matches_controller->register();
+
+	/**
+	 * @var $recipe_stats Food_Kg_Recipe_Stats
+	 */
+	$recipe_stats = $container_builder->get( Food_Kg_Recipe_Stats::class );
+	$recipe_stats->register_hooks();
+
+	/**
+	 * @var $recipe_stats Food_Kg_Ingredient_Stats
+	 */
+	$recipe_stats = $container_builder->get( Food_Kg_Ingredient_Stats::class );
+	$recipe_stats->register_hooks();
+
 }
 
 add_action( 'plugins_loaded', '__wl_foodkg__load' );
