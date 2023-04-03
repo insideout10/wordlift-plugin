@@ -2,8 +2,6 @@
 
 namespace Wordlift\Modules\Dashboard\Term_Entity_Match;
 
-use Wordlift\Modules\Dashboard\Sort;
-
 class Query_Builder {
 
 	private $sql;
@@ -55,6 +53,8 @@ class Query_Builder {
 		$this->sql .= $wpdb->prepare( $tmp_sql, $position );
 
 	}
+
+
 
 	public function has_match( $value ) {
 		switch ( $value ) {

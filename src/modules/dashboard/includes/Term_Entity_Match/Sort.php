@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Modules\Dashboard;
+namespace Wordlift\Modules\Dashboard\Term_Entity_Match;
 
 class Sort {
 	/**
