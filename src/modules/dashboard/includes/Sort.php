@@ -11,7 +11,7 @@ class Sort {
 	public function __construct( $sort ) {
 		$this->sort = $sort;
 	}
-	public function field_name() {
+	public function get_field_name() {
 		$tmp_sort_field_name = substr( $this->sort, 1 );
 		if ( 'id' === $tmp_sort_field_name ) {
 			return 't.term_id';

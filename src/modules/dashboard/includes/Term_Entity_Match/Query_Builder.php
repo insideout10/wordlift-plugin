@@ -13,7 +13,18 @@ class Query_Builder {
 	 */
 	private $sort;
 
-	public function __construct( $cursor_field, $element, $direction, $position, $sort ) {
+
+	/**
+	 * @param $cursor_field
+	 * @param $element
+	 * @param $direction
+	 * @param $position
+	 * @param $sort Sort
+	 */
+	public function __construct( $element, $direction, $position, $sort ) {
+
+		$this->sort = $sort;
+
 		global $wpdb;
 		$this->sql           = "
 		SELECT t.term_id as id, e.about_jsonld as match_jsonld, t.name, e.id AS match_id FROM {$wpdb->prefix}terms t
@@ -21,10 +32,10 @@ class Query_Builder {
 			LEFT JOIN {$wpdb->prefix}wl_entities e ON t.term_id = e.content_id
 			WHERE e.content_type = %d
 		";
-		$tmp_sql             = " AND $cursor_field ";
+		$tmp_sql             = " AND {$this->sort->get_field_name()} ";
 		$is_included         = ( $element !== 'EXCLUDED' );
 		$is_ascending        = ( $direction !== 'DESCENDING' );
-		$is_sorted_ascending = ( strpos( $sort, '-' ) !== 0 );
+		$is_sorted_ascending = $sort->is_ascending();
 		switch ( array( $is_ascending, $is_sorted_ascending ) ) {
 			case array( true, true ):   // Forward & Ascending Order
 			case array( false, false ): // Backward & Descending Order
@@ -44,7 +55,7 @@ class Query_Builder {
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$this->sql .= $wpdb->prepare( $tmp_sql, $position );
 
-		$this->sort = new Sort( $sort );
+
 	}
 
 	public function has_match( $value ) {
@@ -76,9 +87,9 @@ class Query_Builder {
 		return $this;
 	}
 
-	public function order_by( $direction, $sort_ascending, $sort_field_name ) {
-		$sort_order = $this->sort->get_sort_order( $direction, $sort_ascending );
-		$this->sql .= " ORDER BY $sort_field_name $sort_order";
+	public function order_by( $direction ) {
+		$sort_order = $this->sort->get_sort_order( $direction, $this->sort->is_ascending() );
+		$this->sql .= " ORDER BY {$this->sort->get_field_name()} $sort_order";
 		return $this;
 	}
 

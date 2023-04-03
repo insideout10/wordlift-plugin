@@ -29,21 +29,18 @@ class Term_Entity_Match_Service {
 		 */
 		$sort = new Sort( $params['sort'] );
 
-		$sort_ascending      = $sort->is_ascending(  );
-		$sort_sql_field_name = $sort->field_name(  );
-		$sort_property_name  = $sort->property_name();
+
 
 		$query_builder = new Query_Builder(
-			$sort_sql_field_name,
 			$params['element'],
 			$params['direction'],
 			$params['position'],
-			$params['sort']
+			$sort
 		);
 		$query         = $query_builder
 			->taxonomy( $params['taxonomy'] )
 			->has_match( $params['has_match'] )
-			->order_by( $params['direction'], $sort_ascending, $sort_sql_field_name )
+			->order_by( $params['direction'] )
 			->limit( $params['limit'] )
 			->build();
 
@@ -53,6 +50,9 @@ class Term_Entity_Match_Service {
 			$wpdb->prepare( $query, Object_Type_Enum::TERM )
 		);
 
+
+		$sort_ascending     = $sort->is_ascending();
+		$sort_property_name = $sort->property_name();
 		usort(
 			$items,
 			function ( $a, $b ) use ( $sort_ascending, $sort_property_name ) {
@@ -78,8 +78,5 @@ class Term_Entity_Match_Service {
 
 		return $items;
 	}
-
-
-
 
 }
