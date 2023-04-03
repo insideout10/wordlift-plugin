@@ -2,6 +2,7 @@
 
 namespace Wordlift\Modules\Dashboard\Term_Entity_Match;
 
+use Wordlift\Modules\Dashboard\Sort;
 use Wordlift\Object_Type_Enum;
 
 class Term_Entity_Match_Service {
@@ -23,10 +24,14 @@ class Term_Entity_Match_Service {
 			)
 		);
 
+		/**
+		 * @var $sort Sort
+		 */
+		$sort = new Sort( $params['sort'] );
 
-		$sort_ascending      = $this->is_sort_ascending( $params['sort'] );
-		$sort_sql_field_name = $this->get_sort_sql_field_name( $params['sort'] );
-		$sort_property_name  = $this->get_sort_property_name( $params['sort'] );
+		$sort_ascending      = $sort->is_ascending(  );
+		$sort_sql_field_name = $sort->field_name(  );
+		$sort_property_name  = $sort->property_name();
 
 		$query_builder = new Query_Builder(
 			$sort_sql_field_name,
@@ -41,7 +46,6 @@ class Term_Entity_Match_Service {
 			->order_by( $params['direction'], $sort_ascending, $sort_sql_field_name )
 			->limit( $params['limit'] )
 			->build();
-
 
 		$items = $wpdb->get_results(
 		// Each function above is preparing `$sql` by using `$wpdb->prepare`.
@@ -75,29 +79,6 @@ class Term_Entity_Match_Service {
 		return $items;
 	}
 
-
-
-	private function get_sort_sql_field_name( $sort ) {
-		$tmp_sort_field_name = substr( $sort, 1 );
-		if ( $tmp_sort_field_name === 'id' ) {
-			return 't.term_id';
-		} else {
-			return 't.name';
-		}
-	}
-
-	private function get_sort_property_name( $sort ) {
-		$tmp_sort_field_name = substr( $sort, 1 );
-		if ( $tmp_sort_field_name === 'id' ) {
-			return 'id';
-		} else {
-			return 'name';
-		}
-	}
-
-	private function is_sort_ascending( $sort ) {
-		return strpos( $sort, '-' ) !== 0;
-	}
 
 
 

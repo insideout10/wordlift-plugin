@@ -11,7 +11,7 @@ class Sort {
 	public function __construct( $sort ) {
 		$this->sort = $sort;
 	}
-	private function field_name() {
+	public function field_name() {
 		$tmp_sort_field_name = substr( $this->sort, 1 );
 		if ( 'id' === $tmp_sort_field_name ) {
 			return 't.term_id';
@@ -20,7 +20,7 @@ class Sort {
 		}
 	}
 
-	private function property_name() {
+	public function property_name() {
 		$tmp_sort_field_name = substr( $this->sort, 1 );
 		if ( 'id' === $tmp_sort_field_name ) {
 			return 'id';
@@ -29,7 +29,7 @@ class Sort {
 		}
 	}
 
-	private function is_sort_ascending() {
+	public function is_ascending() {
 		return strpos( $this->sort, '-' ) !== 0;
 	}
 
