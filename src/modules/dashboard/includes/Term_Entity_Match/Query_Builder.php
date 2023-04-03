@@ -6,9 +6,7 @@ use Wordlift\Modules\Dashboard\Sort;
 
 class Query_Builder {
 
-
 	private $sql;
-
 
 	/**
 	 * @var Sort
@@ -46,9 +44,8 @@ class Query_Builder {
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$this->sql .= $wpdb->prepare( $tmp_sql, $position );
 
-		$this->sort = new Sort($sort);
+		$this->sort = new Sort( $sort );
 	}
-
 
 	public function has_match( $value ) {
 		switch ( $value ) {
@@ -85,12 +82,8 @@ class Query_Builder {
 		return $this;
 	}
 
-
-
-
 	public function build() {
 		return $this->sql;
 	}
-
 
 }
