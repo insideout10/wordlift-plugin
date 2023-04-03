@@ -29,8 +29,6 @@ class Term_Entity_Match_Service {
 		 */
 		$sort = new Sort( $params['sort'] );
 
-
-
 		$query_builder = new Query_Builder(
 			$params['element'],
 			$params['direction'],
@@ -49,7 +47,6 @@ class Term_Entity_Match_Service {
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$wpdb->prepare( $query, Object_Type_Enum::TERM )
 		);
-
 
 		$sort_ascending     = $sort->is_ascending();
 		$sort_property_name = $sort->property_name();

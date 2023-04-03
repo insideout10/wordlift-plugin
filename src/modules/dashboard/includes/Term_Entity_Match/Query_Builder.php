@@ -13,7 +13,6 @@ class Query_Builder {
 	 */
 	private $sort;
 
-
 	/**
 	 * @param $cursor_field
 	 * @param $element
@@ -54,7 +53,6 @@ class Query_Builder {
 		// `$tmp_sql` is built dynamically in this function
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$this->sql .= $wpdb->prepare( $tmp_sql, $position );
-
 
 	}
 
