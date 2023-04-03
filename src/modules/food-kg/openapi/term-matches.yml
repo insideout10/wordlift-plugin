@@ -85,15 +85,12 @@ paths:
           description: Limit
           schema:
             type: number
-        - name: filter
+        - name: has_match
           in: query
-          description: Filter
+          description: Has match
           schema:
-            type: string
-            enum:
-              - MATCHED
-              - UNMATCHED
-              - ALL
+            type: boolean
+
       responses:
         "200":
           description: OK
