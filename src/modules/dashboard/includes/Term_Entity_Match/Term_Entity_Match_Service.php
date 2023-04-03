@@ -34,6 +34,20 @@ class Term_Entity_Match_Service {
 		$sort_sql_field_name = $this->get_sort_sql_field_name( $params['sort'] );
 		$sort_property_name  = $this->get_sort_property_name( $params['sort'] );
 
+		$query_builder = new Query_Builder(
+			$sort_sql_field_name,
+			$params['element'],
+			$params['direction'],
+			$params['position'],
+			$params['sort']
+		);
+		$query         = $query_builder
+			->taxonomy( $params['taxonomy'] )
+			->has_match( $params['has_match'] )
+			->order_by( $params['direction'], $sort_ascending, $sort_sql_field_name )
+			->limit( $params['limit'] )
+			->build();
+
 		$this->build_sql_cursor( $sql, $sort_sql_field_name, $params['element'], $params['direction'], $params['position'], $params['sort'] );
 		$this->build_sql_query_taxonomy( $sql, $params['taxonomy'] );
 		$this->build_sql_query_has_match( $sql, $params['has_match'] );
@@ -43,7 +57,7 @@ class Term_Entity_Match_Service {
 		$items = $wpdb->get_results(
 		// Each function above is preparing `$sql` by using `$wpdb->prepare`.
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$wpdb->prepare( $sql, Object_Type_Enum::TERM )
+			$wpdb->prepare( $query, Object_Type_Enum::TERM )
 		);
 
 		usort(
