@@ -143,6 +143,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= Prerelease 3.42.0-0 (2023-04-03) =
+* Feature [#1672](https://github.com/insideout10/wordlift-plugin/issues/1672): Article Wrapper can be now used in API calls too by adding the `article_wrapper=true` query parameter.
+
 = 3.40.9 (2023-03-21) =
 * Fix: Update WPRM support version
 

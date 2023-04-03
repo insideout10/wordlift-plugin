@@ -1,4 +1,8 @@
 <?php
+
+// Load deps including Polyfills, see https://make.wordpress.org/core/2021/09/27/changes-to-the-wordpress-core-php-test-suite/
+require_once './vendor/autoload.php';
+
 /**
  * empty() needs to access the value by reference (in order to check whether that reference points to something that exists),
  * and PHP before 5.5 didn't support references to temporary values returned from functions.

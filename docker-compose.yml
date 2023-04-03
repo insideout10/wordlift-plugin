@@ -52,7 +52,7 @@ services:
       - ./wp-content:/var/www/html/blog/wp-content:ro
 
   phpunit:
-    image: ziodave/wordpress-tests:php7.0-phpunit4.8-wordpress5.2
+    image: ziodave/wordpress-tests:php7.4-phpunit7.5-wordpress5.9
     depends_on:
       - db
     volumes:

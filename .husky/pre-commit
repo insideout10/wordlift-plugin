@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-FILES=$(git diff --cached --diff-filter=d --name-only | grep '.php$' | tr '\n' ' ')
+FILES=$(git diff --cached --diff-filter=d --name-only | grep '^src/.*.php$' | tr '\n' ' ')
 
 echo "$FILES"
 

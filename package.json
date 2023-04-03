@@ -46,6 +46,7 @@
     "test:js": "grunt travis:js",
     "test:php": "./vendor/bin/phpunit --stop-on-error --stop-on-fail",
     "test:phpunit": "docker compose run --rm phpunit",
+    "test:phpunit:xdebug": "docker compose run --rm -e PHP_IDE_CONFIG=serverName=phpunit -e XDEBUG_SESSION=1 phpunit",
     "test:php-test-coverage": "./vendor/bin/phpunit -c phpunit-test-coverage.xml",
     "test:multisite": "./vendor/bin/phpunit -c phpunit-multisite.xml",
     "test:jest": "cd ./src-js/webpack/ && yarn install && yarn test",
