@@ -2,9 +2,10 @@
 
 namespace Wordlift\Modules\Dashboard\Term_Entity_Match;
 
+use Wordlift\Modules\Dashboard\Match\Match_Service;
 use Wordlift\Object_Type_Enum;
 
-class Term_Entity_Match_Service {
+class Term_Entity_Match_Service extends Match_Service {
 
 	public function list_items( $args ) {
 		global $wpdb;

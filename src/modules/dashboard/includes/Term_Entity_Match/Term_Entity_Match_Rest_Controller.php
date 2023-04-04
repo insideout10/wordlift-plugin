@@ -188,7 +188,7 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 			Object_Type_Enum::TERM,
 			$match_id,
 			$request->get_json_params()
-		)->serialize();
+		);
 
 	}
 
@@ -196,12 +196,13 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 	 * @var $request \WP_REST_Request
 	 */
 	public function update_term_match( $request ) {
+
 		return $this->match_service->set_jsonld(
 			$request->get_param( 'term_id' ),
 			Object_Type_Enum::TERM,
 			$request->get_param( 'match_id' ),
 			$request->get_json_params()
-		)->serialize();
+		);
 	}
 
 }
