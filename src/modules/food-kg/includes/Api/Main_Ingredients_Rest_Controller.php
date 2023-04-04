@@ -58,6 +58,6 @@ class Main_Ingredients_Rest_Controller {
 			return new \WP_REST_Response( null, 400 );
 		}
 
-		return $data;
+		return array( $data );
 	}
 }

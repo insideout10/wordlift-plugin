@@ -78,8 +78,8 @@ class Term_Entity_Match_Service {
 	private function map( array $items ) {
 		return array_map(
 			function ( $item ) {
-				$data               = json_decode( $item['match_jsonld'], true );
-				$item['match_name'] = array_key_exists( 'name', $data ) ? $data['name'] : null;
+				$data             = json_decode( $item->match_jsonld, true );
+				$item->match_name = $data && is_array( $data ) && array_key_exists( 'name', $data ) ? $data['name'] : null;
 				return $item;
 			},
 			$items
