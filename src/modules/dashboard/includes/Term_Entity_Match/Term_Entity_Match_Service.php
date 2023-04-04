@@ -2,7 +2,6 @@
 
 namespace Wordlift\Modules\Dashboard\Term_Entity_Match;
 
-
 use Wordlift\Object_Type_Enum;
 
 class Term_Entity_Match_Service {

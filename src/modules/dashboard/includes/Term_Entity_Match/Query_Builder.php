@@ -24,7 +24,9 @@ class Query_Builder {
 
 		global $wpdb;
 		$this->sql           = "
-		SELECT t.term_id as id, e.about_jsonld as match_jsonld, t.name, e.id AS match_id FROM {$wpdb->prefix}terms t
+		SELECT t.term_id as id, e.about_jsonld as match_jsonld,
+		       JSON_UNQUOTE(JSON_EXTRACT(e.about_jsonld, '$.name')) as match_name,
+		       t.name, e.id AS match_id FROM {$wpdb->prefix}terms t
 			INNER JOIN {$wpdb->prefix}term_taxonomy tt ON t.term_id = tt.term_id
 			LEFT JOIN {$wpdb->prefix}wl_entities e ON t.term_id = e.content_id
 			WHERE e.content_type = %d
@@ -53,8 +55,6 @@ class Query_Builder {
 		$this->sql .= $wpdb->prepare( $tmp_sql, $position );
 
 	}
-
-
 
 	public function has_match( $value ) {
 		switch ( $value ) {
