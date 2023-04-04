@@ -72,7 +72,18 @@ class Term_Entity_Match_Service {
 			}
 		);
 
-		return $items;
+		return $this->map( $items );
+	}
+
+	private function map( array $items ) {
+		return array_map(
+			function ( $item ) {
+				$data               = json_decode( $item['match_jsonld'], true );
+				$item['match_name'] = array_key_exists( 'name', $data ) ? $data['name'] : null;
+				return $item;
+			},
+			$items
+		);
 	}
 
 }
