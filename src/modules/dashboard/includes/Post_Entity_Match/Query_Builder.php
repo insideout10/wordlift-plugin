@@ -32,11 +32,11 @@ class Query_Builder extends Match_Query_Builder {
 			LEFT JOIN {$wpdb->prefix}wl_entities e ON p.ID = e.content_id
 			WHERE e.content_type = %d
 		";
-		$this->cursor();
-		$this->post_type();
-		$this->has_match();
-		$this->order_by();
-		$this->limit();
+		$this->cursor()
+		->post_type()
+		->has_match()
+		->order_by()
+		->limit();
 	}
 
 	public function post_type() {

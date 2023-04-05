@@ -23,8 +23,7 @@ class Query_Builder extends Match_Query_Builder {
 			WHERE e.content_type = %d
 		";
 
-		$this
-			->cursor()
+		$this->cursor()
 			->taxonomy()
 			->has_match()
 			->order_by()
