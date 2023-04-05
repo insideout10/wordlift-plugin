@@ -54,7 +54,6 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 					'post_types' => array(
 						'type'              => 'array',
 						'validate_callback' => 'rest_validate_request_arg',
-						'sanitize_callback' => 'sanitize_text_field',
 					),
 					'has_match'  => array(
 						'type'              => 'boolean',
