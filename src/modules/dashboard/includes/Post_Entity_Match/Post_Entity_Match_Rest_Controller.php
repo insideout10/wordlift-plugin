@@ -52,10 +52,16 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 						'sanitize_callback' => 'absint',
 					),
 					'post_type' => array(
-						'type'              => 'string',
-						'required'          => true,
+						'type'              => 'array',
 						'validate_callback' => 'rest_validate_request_arg',
 						'sanitize_callback' => 'sanitize_text_field',
+						'default'           => apply_filters(
+							'wl_dashboard__post_entity_match__post_types',
+							array(
+								'post',
+								'page',
+							)
+						),
 					),
 					'has_match' => array(
 						'type'              => 'boolean',
