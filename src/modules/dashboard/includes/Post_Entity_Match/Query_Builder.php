@@ -2,6 +2,7 @@
 
 namespace Wordlift\Modules\Dashboard\Post_Entity_Match;
 
+use Wordlift\Escape;
 use Wordlift\Modules\Dashboard\Match\Match_Query_Builder;
 
 /**
@@ -40,13 +41,14 @@ class Query_Builder extends Match_Query_Builder {
 	}
 
 	public function post_type() {
-		$post_type = $this->params['post_type'];
-		global $wpdb;
-		if ( ! isset( $post_type ) ) {
+		$post_types = $this->params['post_types'];
+
+		if ( ! isset( $post_types ) ) {
 			return $this;
 		}
+		$post_types_sql = Escape::sql_array( $post_types );
+		$this->sql     .= " AND p.post_type IN ({$post_types_sql}) ";
 
-		$this->sql .= $wpdb->prepare( ' AND p.post_type = %s', $post_type );
 		return $this;
 	}
 

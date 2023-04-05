@@ -37,13 +37,13 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 				'methods'             => 'GET',
 				'callback'            => array( $this, 'get_post_matches' ),
 				'args'                => array(
-					'cursor'    => array(
+					'cursor'     => array(
 						'type'              => 'string',
 						'default'           => Cursor::EMPTY_CURSOR_AS_BASE64_STRING,
 						'validate_callback' => 'rest_validate_request_arg',
 						'sanitize_callback' => array( Cursor::class, 'rest_sanitize_request_arg' ),
 					),
-					'limit'     => array(
+					'limit'      => array(
 						'type'              => 'integer',
 						'validate_callback' => 'rest_validate_request_arg',
 						'default'           => 20,
@@ -51,7 +51,7 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 						'maximum'           => 100,
 						'sanitize_callback' => 'absint',
 					),
-					'post_type' => array(
+					'post_types' => array(
 						'type'              => 'array',
 						'validate_callback' => 'rest_validate_request_arg',
 						'sanitize_callback' => 'sanitize_text_field',
@@ -63,7 +63,7 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 							)
 						),
 					),
-					'has_match' => array(
+					'has_match'  => array(
 						'type'              => 'boolean',
 						'required'          => false,
 						'validate_callback' => 'rest_validate_request_arg',
@@ -134,8 +134,8 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 		if ( $request->has_param( 'sort' ) ) {
 			$cursor['sort'] = $request->get_param( 'sort' );
 		}
-		if ( $request->has_param( 'post_type' ) ) {
-			$cursor['query']['taxonomy'] = $request->get_param( 'post_type' );
+		if ( $request->has_param( 'post_types' ) ) {
+			$cursor['query']['post_types'] = $request->get_param( 'post_types' );
 		}
 		if ( $request->has_param( 'has_match' ) ) {
 			$cursor['query']['has_match'] = $request->get_param( 'has_match' );
