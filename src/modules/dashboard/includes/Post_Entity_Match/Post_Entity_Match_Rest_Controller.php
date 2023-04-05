@@ -55,13 +55,6 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 						'type'              => 'array',
 						'validate_callback' => 'rest_validate_request_arg',
 						'sanitize_callback' => 'sanitize_text_field',
-						'default'           => apply_filters(
-							'wl_dashboard__post_entity_match__post_types',
-							array(
-								'post',
-								'page',
-							)
-						),
 					),
 					'has_match'  => array(
 						'type'              => 'boolean',
@@ -142,7 +135,13 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 		}
 
 		// Query.
-		$post_types = isset( $cursor['query']['post_types'] ) ? $cursor['query']['post_types'] : null;
+		$post_types = isset( $cursor['query']['post_types'] ) ? $cursor['query']['post_types'] : apply_filters(
+			'wl_dashboard__post_entity_match__post_types',
+			array(
+				'post',
+				'page',
+			)
+		);
 		$has_match  = isset( $cursor['query']['has_match'] ) ? $cursor['query']['has_match'] : null;
 
 		$items = $this->match_service->list_items(

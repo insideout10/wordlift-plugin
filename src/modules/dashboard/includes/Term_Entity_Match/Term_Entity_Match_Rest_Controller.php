@@ -52,13 +52,6 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 						'type'              => 'array',
 						'validate_callback' => 'rest_validate_request_arg',
 						'sanitize_callback' => 'sanitize_text_field',
-						'default'           => apply_filters(
-							'wl_dashboard__post_entity_match__taxonomies',
-							array(
-								'post_tag',
-								'category',
-							)
-						),
 					),
 					'has_match'  => array(
 						'type'              => 'boolean',
@@ -138,8 +131,15 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 		}
 
 		// Query.
-		$taxonomies = isset( $cursor['query']['taxonomies'] ) ? $cursor['query']['taxonomies'] : null;
-		$has_match  = isset( $cursor['query']['has_match'] ) ? $cursor['query']['has_match'] : null;
+		$taxonomies = isset( $cursor['query']['taxonomies'] ) ? $cursor['query']['taxonomies'] : apply_filters(
+			'wl_dashboard__post_entity_match__taxonomies',
+			array(
+				'post_tag',
+				'category',
+			)
+		);
+
+		$has_match = isset( $cursor['query']['has_match'] ) ? $cursor['query']['has_match'] : null;
 
 		$items = $this->match_service->list_items(
 			array(

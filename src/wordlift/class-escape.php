@@ -22,9 +22,7 @@ class Escape {
 	 * @throws Exception When supplied argument is not an array, throw exception.
 	 */
 	public static function sql_array( $arr ) {
-
 		Assertions::is_array( $arr );
-
 		$arr = array_map(
 			function ( $item ) {
 				Assertions::is_string( $item );
