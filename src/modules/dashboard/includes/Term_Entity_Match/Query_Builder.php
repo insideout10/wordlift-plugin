@@ -2,6 +2,7 @@
 
 namespace Wordlift\Modules\Dashboard\Term_Entity_Match;
 
+use Wordlift\Escape;
 use Wordlift\Modules\Dashboard\Match\Match_Query_Builder;
 
 class Query_Builder extends Match_Query_Builder {
@@ -32,13 +33,13 @@ class Query_Builder extends Match_Query_Builder {
 	}
 
 	public function taxonomy() {
-		$taxonomy = $this->params['taxonomy'];
-		global $wpdb;
-		if ( ! isset( $taxonomy ) ) {
+		$taxonomies = $this->params['taxonomies'];
+
+		if ( ! isset( $taxonomies ) ) {
 			return $this;
 		}
-
-		$this->sql .= $wpdb->prepare( ' AND tt.taxonomy = %s', $taxonomy );
+		$sql        = Escape::sql_array( $taxonomies );
+		$this->sql .= " AND tt.taxonomy IN ($sql)";
 		return $this;
 	}
 

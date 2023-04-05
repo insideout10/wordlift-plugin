@@ -148,15 +148,15 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 		$items = $this->match_service->list_items(
 			array(
 				// Query
-				'post_type' => $post_types,
-				'has_match' => $has_match,
+				'post_types' => $post_types,
+				'has_match'  => $has_match,
 				// Cursor-Pagination
-				'position'  => $cursor['position'],
-				'element'   => $cursor['element'],
-				'direction' => $cursor['direction'],
+				'position'   => $cursor['position'],
+				'element'    => $cursor['element'],
+				'direction'  => $cursor['direction'],
 				// `+1` to check if we have other results.
-				'limit'     => $cursor['limit'] + 1,
-				'sort'      => $cursor['sort'],
+				'limit'      => $cursor['limit'] + 1,
+				'sort'       => $cursor['sort'],
 			)
 		);
 
