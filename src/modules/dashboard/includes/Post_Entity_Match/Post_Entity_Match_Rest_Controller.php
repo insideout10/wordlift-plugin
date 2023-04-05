@@ -142,13 +142,13 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 		}
 
 		// Query.
-		$post_type = isset( $cursor['query']['post_type'] ) ? $cursor['query']['post_type'] : null;
-		$has_match = isset( $cursor['query']['has_match'] ) ? $cursor['query']['has_match'] : null;
+		$post_types = isset( $cursor['query']['post_types'] ) ? $cursor['query']['post_types'] : null;
+		$has_match  = isset( $cursor['query']['has_match'] ) ? $cursor['query']['has_match'] : null;
 
 		$items = $this->match_service->list_items(
 			array(
 				// Query
-				'post_type' => $post_type,
+				'post_type' => $post_types,
 				'has_match' => $has_match,
 				// Cursor-Pagination
 				'position'  => $cursor['position'],
