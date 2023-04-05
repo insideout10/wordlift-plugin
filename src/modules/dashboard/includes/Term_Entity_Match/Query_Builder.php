@@ -2,27 +2,11 @@
 
 namespace Wordlift\Modules\Dashboard\Term_Entity_Match;
 
-use Wordlift\Modules\Dashboard\Match\Match_Sort;
+use Wordlift\Modules\Dashboard\Match\Match_Query_Builder;
 
-class Query_Builder {
+class Query_Builder extends Match_Query_Builder {
 
-	private $sql;
-
-	/**
-	 * @var Match_Sort
-	 */
-	private $sort;
-
-	/**
-	 * @param $cursor_field
-	 * @param $element
-	 * @param $direction
-	 * @param $position
-	 * @param $sort Sort
-	 */
-	public function __construct( $element, $direction, $position, $sort ) {
-
-		$this->sort = $sort;
+	public function build() {
 
 		global $wpdb;
 		/**
@@ -39,51 +23,16 @@ class Query_Builder {
 			WHERE e.content_type = %d
 		";
 
-		$tmp_sql             = " AND {$this->sort->get_field_name()} ";
-		$is_included         = ( $element !== 'EXCLUDED' );
-		$is_ascending        = ( $direction !== 'DESCENDING' );
-		$is_sorted_ascending = $sort->is_ascending();
-		switch ( array( $is_ascending, $is_sorted_ascending ) ) {
-			case array( true, true ):   // Forward & Ascending Order
-			case array( false, false ): // Backward & Descending Order
-				$tmp_sql .= ' >';
-				break;
-			case array( true, false ):  // Forward & Ascending Order
-			case array( false, true ):  // Backward & Descending Order
-				$tmp_sql .= ' <';
-				break;
-		}
-		if ( $is_included ) {
-			$tmp_sql .= '=';
-		}
-		$tmp_sql .= ' %s';
-
-		// `$tmp_sql` is built dynamically in this function
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		$this->sql .= $wpdb->prepare( $tmp_sql, $position );
+		$this->cursor();
+			$this->taxonomy();
+			$this->has_match();
+			$this->order_by();
+			$this->limit();
 
 	}
 
-	public function has_match( $value ) {
-		switch ( $value ) {
-			case true:
-				$this->sql .= ' AND e.about_jsonld IS NOT NULL ';
-				break;
-			case false:
-				$this->sql .= ' AND e.about_jsonld IS NULL ';
-				break;
-			default:
-		}
-		return $this;
-	}
-
-	public function limit( $limit ) {
-		global $wpdb;
-		$this->sql .= $wpdb->prepare( ' LIMIT %d', $limit );
-		return $this;
-	}
-
-	public function taxonomy( $taxonomy ) {
+	public function taxonomy() {
+		$taxonomy = $this->params['taxonomy'];
 		global $wpdb;
 		if ( ! isset( $taxonomy ) ) {
 			return $this;
@@ -91,15 +40,6 @@ class Query_Builder {
 
 		$this->sql .= $wpdb->prepare( ' AND tt.taxonomy = %s', $taxonomy );
 		return $this;
-	}
-
-	public function order_by( $direction ) {
-		$this->sql .= $this->sort->get_orderby_clause( $direction );
-		return $this;
-	}
-
-	public function build() {
-		return $this->sql;
 	}
 
 }
