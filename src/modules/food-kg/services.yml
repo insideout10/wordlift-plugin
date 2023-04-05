@@ -76,9 +76,6 @@ services:
 
 
 
-  Wordlift\Modules\Food_Kg\Api\Match_Service:
-    class: Wordlift\Modules\Food_Kg\Api\Match_Service
-
   Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Stats:
     class: Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Stats
 
