@@ -30,22 +30,14 @@ class Post_Entity_Match_Service extends Match_Service {
 		$sort = new Sort( $params['sort'] );
 
 		$query_builder = new Query_Builder(
-			$params['element'],
-			$params['direction'],
-			$params['position'],
+			$params,
 			$sort
 		);
-		$query         = $query_builder
-			->post_type( $params['post_type'] )
-			->has_match( $params['has_match'] )
-			->order_by( $params['direction'] )
-			->limit( $params['limit'] )
-			->build();
 
 		$items = $wpdb->get_results(
 			// Each function above is preparing `$sql` by using `$wpdb->prepare`.
 			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$wpdb->prepare( $query, Object_Type_Enum::POST )
+			$wpdb->prepare( $query_builder->get(), Object_Type_Enum::POST )
 		);
 
 		$sort_ascending     = $sort->is_ascending();

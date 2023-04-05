@@ -31,13 +31,14 @@ class Query_Builder {
 		 * 5.6, The JSON_* functions are introduced on 5.7 which will break the
 		 * compatibility.
 		 */
-		$this->sql           = "
+		$this->sql = "
 		SELECT t.term_id as id, e.about_jsonld as match_jsonld,
 		       t.name, e.id AS match_id FROM {$wpdb->prefix}terms t
 			INNER JOIN {$wpdb->prefix}term_taxonomy tt ON t.term_id = tt.term_id
 			LEFT JOIN {$wpdb->prefix}wl_entities e ON t.term_id = e.content_id
 			WHERE e.content_type = %d
 		";
+
 		$tmp_sql             = " AND {$this->sort->get_field_name()} ";
 		$is_included         = ( $element !== 'EXCLUDED' );
 		$is_ascending        = ( $direction !== 'DESCENDING' );

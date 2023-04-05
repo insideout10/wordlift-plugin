@@ -14,6 +14,8 @@ abstract class Match_Query_Builder {
 	 */
 	protected $sort;
 
+	protected $sql = '';
+
 	/**
 	 * @param $params array
 	 * @param $sort Match_Sort
@@ -35,6 +37,72 @@ abstract class Match_Query_Builder {
 	 *
 	 * @return string
 	 */
-	abstract public function build();
+	public function get() {
+		$this->build();
+		return $this->sql;
+	}
+
+	/**
+	 * @return void
+	 */
+	abstract protected function build();
+
+	/**
+	 * Apply the sort for the cursor.
+	 *
+	 * @return void
+	 */
+	protected function cursor() {
+		global $wpdb;
+		$tmp_sql             = " AND {$this->sort->get_field_name()} ";
+		$is_included         = ( $this->params['element'] !== 'EXCLUDED' );
+		$is_ascending        = ( $this->params['direction'] !== 'DESCENDING' );
+		$is_sorted_ascending = $this->sort->is_ascending();
+		switch ( array( $is_ascending, $is_sorted_ascending ) ) {
+			case array( true, true ):   // Forward & Ascending Order
+			case array( false, false ): // Backward & Descending Order
+				$tmp_sql .= ' >';
+				break;
+			case array( true, false ):  // Forward & Ascending Order
+			case array( false, true ):  // Backward & Descending Order
+				$tmp_sql .= ' <';
+				break;
+		}
+		if ( $is_included ) {
+			$tmp_sql .= '=';
+		}
+		$tmp_sql .= ' %s';
+
+		// `$tmp_sql` is built dynamically in this function
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$this->sql .= $wpdb->prepare( $tmp_sql, $this->params['position'] );
+	}
+
+	protected function has_match() {
+		$value = $this->params['has_match'];
+		switch ( $value ) {
+			case true:
+				$this->sql .= ' AND e.about_jsonld IS NOT NULL ';
+				break;
+			case false:
+				$this->sql .= ' AND e.about_jsonld IS NULL ';
+				break;
+			default:
+		}
+		return $this;
+	}
+
+	protected function limit() {
+		$limit = $this->params['limit'];
+		global $wpdb;
+		$this->sql .= $wpdb->prepare( ' LIMIT %d', $limit );
+		return $this;
+	}
+
+	protected function order_by() {
+		$direction  = $this->params['direction'];
+		$this->sql .= $this->sort->get_orderby_clause( $direction );
+		return $this;
+	}
 
 }
