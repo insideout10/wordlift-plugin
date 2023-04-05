@@ -65,6 +65,49 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 			)
 		);
 
+		// Create a new match for a post
+		register_rest_route(
+			'wordlift/v1',
+			'/post-matches/(?P<post_id>\d+)/matches',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'create_post_match' ),
+				'args'                => array(
+					'post_id' => array(
+						'required'          => true,
+						'validate_callback' => 'rest_validate_request_arg',
+					),
+				),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
+		// Update an existing post match
+		register_rest_route(
+			'wordlift/v1',
+			'/post-matches/(?P<post_id>\d+)/matches/(?P<match_id>\d+)',
+			array(
+				'methods'             => 'PUT',
+				'callback'            => array( $this, 'update_post_match' ),
+				'args'                => array(
+					'post_id'  => array(
+						'required'          => true,
+						'validate_callback' => 'rest_validate_request_arg',
+					),
+					'match_id' => array(
+						'required'          => true,
+						'validate_callback' => 'rest_validate_request_arg',
+					),
+				),
+				'permission_callback' => function () {
+
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
 	}
 
 	/**
