@@ -81,15 +81,13 @@ abstract class Match_Query_Builder {
 
 	protected function has_match() {
 		$value = $this->params['has_match'];
-		switch ( $value ) {
-			case true:
-				$this->sql .= ' AND e.about_jsonld IS NOT NULL ';
-				break;
-			case false:
-				$this->sql .= ' AND e.about_jsonld IS NULL ';
-				break;
-			default:
+
+		if ( true === $value ) {
+			$this->sql .= ' AND e.about_jsonld IS NOT NULL ';
+		} elseif ( false === $value ) {
+			$this->sql .= ' AND e.about_jsonld IS NULL ';
 		}
+
 		return $this;
 	}
 
