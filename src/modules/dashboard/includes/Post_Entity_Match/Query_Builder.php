@@ -2,6 +2,8 @@
 
 namespace Wordlift\Modules\Dashboard\Post_Entity_Match;
 
+use Wordlift\Modules\Dashboard\Match\Match_Sort;
+
 /**
  * This class builds the query to extract the following parameters from
  * the various table by applying the criteria on the post_type. The following columns are
@@ -16,7 +18,7 @@ class Query_Builder {
 	private $sql;
 
 	/**
-	 * @var Sort
+	 * @var Match_Sort
 	 */
 	private $sort;
 
@@ -101,8 +103,7 @@ class Query_Builder {
 	}
 
 	public function order_by( $direction ) {
-		$sort_order = $this->sort->get_sort_order( $direction, $this->sort->is_ascending() );
-		$this->sql .= " ORDER BY {$this->sort->get_field_name()} $sort_order";
+		$this->sql .= $this->sort->get_orderby_clause( $direction );
 		return $this;
 	}
 

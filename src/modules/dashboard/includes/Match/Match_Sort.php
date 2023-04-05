@@ -16,12 +16,35 @@ abstract class Match_Sort {
 	}
 	abstract public function get_field_name();
 
-	abstract public function property_name();
+	public function property_name() {
+		$tmp_sort_field_name = substr( $this->sort, 1 );
+		if ( 'id' === $tmp_sort_field_name ) {
+			return 'id';
+		} else {
+			return 'name';
+		}
+	}
 
-	abstract public function is_ascending();
+	public function is_ascending() {
+		return strpos( $this->sort, '-' ) !== 0;
+	}
 
-	abstract public function get_sort_order( $direction, $sort_ascending );
+	private function get_sort_order( $direction, $sort_ascending ) {
+		switch ( array( $sort_ascending, $direction ) ) {
+			case array( true, 'ASCENDING' ):
+			case array( false, 'DESCENDING' ):
+				return 'ASC';
+			case array( true, 'DESCENDING' ):
+			case array( false, 'ASCENDING' ):
+				return 'DESC';
+		}
 
-	abstract public function get_orderby_clause( $direction );
+		return 'ASC';
+	}
+
+	public function get_orderby_clause( $direction ) {
+		$sort_order = $this->get_sort_order( $direction, $this->is_ascending() );
+		return " ORDER BY {$this->get_field_name()} $sort_order";
+	}
 
 }
