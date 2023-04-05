@@ -23,11 +23,12 @@ class Query_Builder extends Match_Query_Builder {
 			WHERE e.content_type = %d
 		";
 
-		$this->cursor();
-			$this->taxonomy();
-			$this->has_match();
-			$this->order_by();
-			$this->limit();
+		$this
+			->cursor()
+			->taxonomy()
+			->has_match()
+			->order_by()
+			->limit();
 
 	}
 

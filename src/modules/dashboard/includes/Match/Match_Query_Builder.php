@@ -50,7 +50,7 @@ abstract class Match_Query_Builder {
 	/**
 	 * Apply the sort for the cursor.
 	 *
-	 * @return void
+	 * @return Match_Query_Builder
 	 */
 	protected function cursor() {
 		global $wpdb;
@@ -76,6 +76,7 @@ abstract class Match_Query_Builder {
 		// `$tmp_sql` is built dynamically in this function
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$this->sql .= $wpdb->prepare( $tmp_sql, $this->params['position'] );
+		return $this;
 	}
 
 	protected function has_match() {
