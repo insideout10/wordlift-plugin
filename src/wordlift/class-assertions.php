@@ -59,8 +59,8 @@ class Assertions {
 	 * @throws Exception when actual doesn't match expected.
 	 */
 	public static function array_key_exists( $arr, $key ) {
-		if ( ! array_key_exists($key, $arr) ) {
-			throw new Exception( "The key {$key} doesn't exist in array " . var_export( $arr, true ) );
+		if ( ! array_key_exists( $key, $arr ) ) {
+			throw new Exception( "The key {$key} doesn't exist in array" );
 		}
 	}
 
@@ -100,6 +100,12 @@ class Assertions {
 
 	public static function not_empty( $value, $message = "Value can't be empty" ) {
 		if ( empty( $value ) ) {
+			throw new Exception( $message );
+		}
+	}
+
+	public static function is_array( $value, $message = 'Value should be array' ) {
+		if ( ! is_array( $value ) ) {
 			throw new Exception( $message );
 		}
 	}

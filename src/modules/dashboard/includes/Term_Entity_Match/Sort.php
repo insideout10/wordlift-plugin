@@ -2,15 +2,10 @@
 
 namespace Wordlift\Modules\Dashboard\Term_Entity_Match;
 
-class Sort {
-	/**
-	 * @var string
-	 */
-	private $sort;
+use Wordlift\Modules\Dashboard\Match\Match_Sort;
 
-	public function __construct( $sort ) {
-		$this->sort = $sort;
-	}
+class Sort extends Match_Sort {
+
 	public function get_field_name() {
 		$tmp_sort_field_name = substr( $this->sort, 1 );
 		if ( 'id' === $tmp_sort_field_name ) {
@@ -46,4 +41,8 @@ class Sort {
 		return 'ASC';
 	}
 
+	public function get_orderby_clause( $direction ) {
+		$sort_order = $this->get_sort_order( $direction, $this->is_ascending() );
+		return " ORDER BY {$this->get_field_name()} $sort_order";
+	}
 }
