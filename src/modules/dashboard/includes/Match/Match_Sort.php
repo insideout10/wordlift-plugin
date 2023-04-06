@@ -47,4 +47,31 @@ abstract class Match_Sort {
 		return " ORDER BY {$this->get_field_name()} $sort_order";
 	}
 
+	public function apply( &$items ) {
+		$sort_ascending     = $this->is_ascending();
+		$sort_property_name = $this->property_name();
+		usort(
+			$items,
+			function ( $a, $b ) use ( $sort_ascending, $sort_property_name ) {
+				if ( $a->{$sort_property_name} === $b->{$sort_property_name} ) {
+					return 0;
+				}
+
+				switch ( array(
+					$sort_ascending,
+					$a->{$sort_property_name} > $b->{$sort_property_name},
+				) ) {
+					case array( true, true ):
+					case array( false, false ):
+						return 1;
+					case array( true, false ):
+					case array( false, true ):
+						return - 1;
+				}
+
+				return 0;
+			}
+		);
+	}
+
 }

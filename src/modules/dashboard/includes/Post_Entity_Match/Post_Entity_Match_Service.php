@@ -40,30 +40,7 @@ class Post_Entity_Match_Service extends Match_Service {
 			$wpdb->prepare( $query_builder->get(), Object_Type_Enum::POST )
 		);
 
-		$sort_ascending     = $sort->is_ascending();
-		$sort_property_name = $sort->property_name();
-		usort(
-			$items,
-			function ( $a, $b ) use ( $sort_ascending, $sort_property_name ) {
-				if ( $a->{$sort_property_name} === $b->{$sort_property_name} ) {
-					return 0;
-				}
-
-				switch ( array(
-					$sort_ascending,
-					$a->{$sort_property_name} > $b->{$sort_property_name},
-				) ) {
-					case array( true, true ):
-					case array( false, false ):
-						return 1;
-					case array( true, false ):
-					case array( false, true ):
-						return - 1;
-				}
-
-				return 0;
-			}
-		);
+		$sort->apply( $items );
 
 		return $this->map( $items );
 	}
