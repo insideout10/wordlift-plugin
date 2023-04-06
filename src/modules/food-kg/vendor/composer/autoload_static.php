@@ -11,7 +11,6 @@ class ComposerStaticInit718e370ed095fd597a1f1d468c2b59f4
         'Wordlift\\Modules\\Food_Kg\\Admin\\Meta_Box' => __DIR__ . '/../..' . '/includes/admin/Meta_Box.php',
         'Wordlift\\Modules\\Food_Kg\\Api\\Cursor' => __DIR__ . '/../..' . '/includes/Api/Cursor.php',
         'Wordlift\\Modules\\Food_Kg\\Api\\Cursor_Page' => __DIR__ . '/../..' . '/includes/Api/Cursor_Page.php',
-        'Wordlift\\Modules\\Food_Kg\\Api\\Main_Ingredients_Rest_Controller' => __DIR__ . '/../..' . '/includes/Api/Main_Ingredients_Rest_Controller.php',
         'Wordlift\\Modules\\Food_Kg\\Ingredients' => __DIR__ . '/../..' . '/includes/Ingredients.php',
         'Wordlift\\Modules\\Food_Kg\\Ingredients_API' => __DIR__ . '/../..' . '/includes/Ingredients_API.php',
         'Wordlift\\Modules\\Food_Kg\\Ingredients_Client' => __DIR__ . '/../..' . '/includes/Ingredients_Client.php',

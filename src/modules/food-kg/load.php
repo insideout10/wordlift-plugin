@@ -11,7 +11,6 @@
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Wordlift\Modules\Food_Kg\Api\Main_Ingredients_Rest_Controller;
 use Wordlift\Modules\Food_Kg\Jsonld;
 use Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Stats;
 use Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld;
@@ -77,12 +76,6 @@ function __wl_foodkg__load() {
 			return $runners;
 		}
 	);
-
-	/**
-	 * @var $main_ingredients_rest_controller Main_Ingredients_Rest_Controller
-	 */
-	$main_ingredients_rest_controller = $container_builder->get( Main_Ingredients_Rest_Controller::class );
-	$main_ingredients_rest_controller->register();
 
 	/**
 	 * @var $recipe_stats Food_Kg_Recipe_Stats

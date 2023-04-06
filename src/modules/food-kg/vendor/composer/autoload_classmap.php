@@ -10,7 +10,6 @@ return array(
     'Wordlift\\Modules\\Food_Kg\\Admin\\Meta_Box' => $baseDir . '/includes/admin/Meta_Box.php',
     'Wordlift\\Modules\\Food_Kg\\Api\\Cursor' => $baseDir . '/includes/Api/Cursor.php',
     'Wordlift\\Modules\\Food_Kg\\Api\\Cursor_Page' => $baseDir . '/includes/Api/Cursor_Page.php',
-    'Wordlift\\Modules\\Food_Kg\\Api\\Main_Ingredients_Rest_Controller' => $baseDir . '/includes/Api/Main_Ingredients_Rest_Controller.php',
     'Wordlift\\Modules\\Food_Kg\\Ingredients' => $baseDir . '/includes/Ingredients.php',
     'Wordlift\\Modules\\Food_Kg\\Ingredients_API' => $baseDir . '/includes/Ingredients_API.php',
     'Wordlift\\Modules\\Food_Kg\\Ingredients_Client' => $baseDir . '/includes/Ingredients_Client.php',

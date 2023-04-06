@@ -70,12 +70,6 @@ services:
     class: Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Term_Entity_Runner
     arguments: [ '@Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Ingredients_Term_Store', '@Wordlift\Content\Wordpress\Wordpress_Content_Service', '@Wordlift\Modules\Food_Kg\Ingredients_Client' ]
 
-  Wordlift\Modules\Food_Kg\Api\Main_Ingredients_Rest_Controller:
-    class: Wordlift\Modules\Food_Kg\Api\Main_Ingredients_Rest_Controller
-    arguments: [ '@Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy' ]
-
-
-
   Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Stats:
     class: Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Stats
 
