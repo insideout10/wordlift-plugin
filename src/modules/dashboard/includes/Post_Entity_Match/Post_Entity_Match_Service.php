@@ -74,7 +74,7 @@ class Post_Entity_Match_Service extends Match_Service {
 				$data             = json_decode( $item->match_jsonld, true );
 				$item->match_name = $data && is_array( $data ) && array_key_exists( 'name', $data ) ? $data['name'] : null;
 				// @TODO: review which link needs to be shown.
-				$item->post_permalink = get_edit_post_link( $item->id, 'ui' );
+				$item->post_permalink = get_edit_post_link( $item->parent_post_id, 'ui' );
 				return $item;
 			},
 			$items

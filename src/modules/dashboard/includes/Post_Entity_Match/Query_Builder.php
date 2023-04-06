@@ -26,7 +26,7 @@ class Query_Builder extends Match_Query_Builder {
 		 * compatibility.
 		 */
 		$this->sql = "
-		SELECT p.ID as id, e.about_jsonld as match_jsonld,
+		SELECT p.ID as id, parent.ID as parent_post_id, e.about_jsonld as match_jsonld,
 		       parent.post_title as name, p.post_title as recipe_name, e.id AS match_id FROM {$wpdb->prefix}posts p
 			LEFT JOIN {$wpdb->prefix}postmeta pm ON p.ID = pm.post_id AND pm.meta_key = 'wprm_parent_post_id' 
 			LEFT JOIN {$wpdb->prefix}posts parent ON pm.meta_value = parent.ID 
