@@ -42,6 +42,7 @@ class Match_Entry implements Serializable, JsonSerializable {
 	public function __serialize() {
 		return array(
 			'id'           => $this->id,
+
 			'match_jsonld' => $this->match_jsonld,
 			'name'         => $this->name,
 			'match_id'     => $this->match_id,
@@ -97,7 +98,13 @@ class Match_Entry implements Serializable, JsonSerializable {
 	}
 
 	public function jsonSerialize() {
-		return $this->__serialize();
+		return array(
+			'id'           => $this->id,
+			'match_jsonld' => $this->match_jsonld,
+			'name'         => $this->name,
+			'match_id'     => $this->match_id,
+			'match_name'   => $this->get_name(),
+		);
 	}
 
 }

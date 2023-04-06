@@ -195,7 +195,7 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 			Object_Type_Enum::POST,
 			$match_id,
 			$request->get_json_params()
-		)->serialize();
+		);
 
 	}
 
@@ -209,6 +209,6 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 			Object_Type_Enum::POST,
 			$request->get_param( 'match_id' ),
 			$request->get_json_params()
-		)->serialize();
+		);
 	}
 }
