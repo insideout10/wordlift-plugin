@@ -24,10 +24,23 @@ class Query_Builder extends Match_Query_Builder {
 		 * As of now the min wp compatibility is 5.3 which requires min mysql version
 		 * 5.6, The JSON_* functions are introduced on 5.7 which will break the
 		 * compatibility.
+		 *
+		 *  Returns an array of rows where each row contains
+		 * 'post_title' => The title of the post
+		 * 'id'   => The id of the post
+		 * 'parent_post_title' => The title of the post linked to this post via wprm_parent_post_id property
+		 * ( this is only applicable when the post is wprm_recipe, returns null if not present )
+		 * 'parent_post_id'  => The id of the linked parent post.
+		 * 'match_jsonld' => The matched `about_jsonld` column from wl_entities.
+		 * 'match_id' => This id points to id column of wl_entities table.
 		 */
 		$this->sql = "
-		SELECT p.ID as id, parent.ID as parent_post_id, e.about_jsonld as match_jsonld,
-		       parent.post_title as name, p.post_title as recipe_name, e.id AS match_id FROM {$wpdb->prefix}posts p
+		SELECT p.ID as id,
+		       p.post_title as post_title,
+		       parent.post_title as parent_post_title,
+		       parent.ID as parent_post_id,
+		       e.about_jsonld as match_jsonld,
+		       e.id AS match_id FROM {$wpdb->prefix}posts p
 			LEFT JOIN {$wpdb->prefix}postmeta pm ON p.ID = pm.post_id AND pm.meta_key = 'wprm_parent_post_id' 
 			LEFT JOIN {$wpdb->prefix}posts parent ON pm.meta_value = parent.ID 
 			LEFT JOIN {$wpdb->prefix}wl_entities e ON p.ID = e.content_id

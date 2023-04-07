@@ -45,13 +45,31 @@ class Post_Entity_Match_Service extends Match_Service {
 		return $this->map( $items );
 	}
 
+	/** Returns an array of rows where each row contains
+	 * 'post_title' => The title of the post
+	 * 'id'   => The id of the post
+	 * 'post_link' => The edit post link
+	 * 'parent_post_title' => The title of the post linked to this post via wprm_parent_post_id property
+	 * ( this is only applicable when the post is wprm_recipe, returns null if not present )
+	 * 'parent_post_id'  => The id of the linked parent post.
+	 * 'parent_post_link' => The link to parent post.
+	 * 'match_jsonld' => The matched `about_jsonld` column from wl_entities.
+	 * 'match_id' => This id points to id column of wl_entities table.
+	 */
 	private function map( array $items ) {
 		return array_map(
 			function ( $item ) {
 				$data             = json_decode( $item->match_jsonld, true );
 				$item->match_name = $data && is_array( $data ) && array_key_exists( 'name', $data ) ? $data['name'] : null;
-				// @TODO: review which link needs to be shown.
-				$item->post_permalink = get_edit_post_link( $item->parent_post_id, 'ui' );
+
+				if ( $item->id ) {
+					$item->post_link = get_edit_post_link( $item->id, 'ui' );
+				}
+
+				if ( $item->parent_post_id ) {
+					$item->parent_post_link = get_edit_post_link( $item->parent_post_id, 'ui' );
+				}
+
 				return $item;
 			},
 			$items
