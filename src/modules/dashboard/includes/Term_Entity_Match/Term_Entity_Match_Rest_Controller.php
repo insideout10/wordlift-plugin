@@ -5,8 +5,8 @@ namespace Wordlift\Modules\Dashboard\Term_Entity_Match;
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Entity\Entity_Uri_Generator;
-use Wordlift\Modules\Food_Kg\Api\Cursor;
-use Wordlift\Modules\Food_Kg\Api\Cursor_Page;
+use Wordlift\Modules\Common\Api\Cursor;
+use Wordlift\Modules\Common\Api\Cursor_Page;
 use Wordlift\Object_Type_Enum;
 
 class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
