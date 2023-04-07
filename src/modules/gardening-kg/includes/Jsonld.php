@@ -29,8 +29,11 @@ class Jsonld {
 			return $jsonld;
 		}
 
+		$decoded_jsonld = json_decode( $about_jsonld, true );
+		$value          = wp_is_numeric_array( $decoded_jsonld ) ? $decoded_jsonld : array( $decoded_jsonld );
+
 		$jsonld['about'] = isset( $jsonld['about'] ) ? $jsonld['about'] : array();
-		$jsonld['about'] = array_merge( $jsonld['about'], array( json_decode( $about_jsonld, true ) ) );
+		$jsonld['about'] = array_merge( $jsonld['about'], $value );
 		return $jsonld;
 	}
 
