@@ -20,21 +20,27 @@ function wl_admin_menu() {
 
 	// see http://codex.wordpress.org/Function_Reference/add_menu_page
 	add_menu_page(
-		__( 'WordLift', 'wordlift' ), // page title
-		__( 'WordLift', 'wordlift' ), // menu title
+		__( 'WordLift', 'wordlift' ),
+		__( 'WordLift', 'wordlift' ),
 		$capability,                 // capabilities
 		$menu_slug,                  // menu slug
-		// 'wl_admin_menu_callback',  // TODO: function callback to draw the coming dashboard
-		'wl_configuration_admin_menu_callback',
-		WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-logo-icon.svg'
-	);  // icon URL 20x20 px
+		'_wl_dashboard__main',  // TODO: function callback to draw the coming dashboard
+		WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-logo-icon.svg',
+		58.9
+	);
 
 	// Call hooked functions.
 	do_action( 'wl_admin_menu', $menu_slug, $capability );
 
-	// Remove duplicate 'WordLift' subpage created by WordPress.
-	remove_submenu_page( $menu_slug, $menu_slug );
+}
 
+/**
+ * Relay the function call to an action.
+ *
+ * @return void
+ */
+function _wl_dashboard__main() {
+	do_action( '_wl_dashboard__main' );
 }
 
 add_action( 'admin_menu', 'wl_admin_menu' );

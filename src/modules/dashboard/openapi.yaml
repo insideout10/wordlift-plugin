@@ -1,0 +1,104 @@
+openapi: 3.1.0
+info:
+  title: WordLift Plugin
+  description: The WordLift Plugin API
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /synchronizations:
+    post:
+      operationId: createSynchronization
+      summary: Create a Synchronization
+      description: Creates a new synchronization
+      responses:
+        "200":
+          description: Synchronization created
+          content:
+            "application/json":
+              schema:
+                $ref: '#/components/schemas/Synchronization'
+        "409":
+          description: Another Synchronization is running
+          content:
+        "401":
+          description: Unauthorized
+          content:
+        "403":
+          description: Forbidden
+          content:
+    get:
+      operationId: listSynchronizations
+      summary: List Synchronizations
+      description: List the synchronizations
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+        - name: sort
+          in: query
+          schema:
+            type: string
+        - name: is_running
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: The list of synchronizations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageSynchronization'
+        "401":
+          description: Unauthorized
+          content:
+        "403":
+          description: Forbidden
+          content:
+components:
+  schemas:
+    Synchronization:
+      type: object
+      required:
+        - created_at
+        - modified_at
+        - total
+        - offset
+        - is_running
+      properties:
+        created_at:
+          type: string
+        modified_at:
+          type: string
+        started_at:
+          type: string
+        stopped_at:
+          type: string
+        is_running:
+          type: boolean
+        total:
+          type: integer
+        offset:
+          type: integer
+    PageSynchronization:
+      type: object
+      required:
+        - items
+      properties:
+        self:
+          type: string
+        first:
+          type: string
+        prev:
+          type: string
+        next:
+          type: string
+        last:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Synchronization'

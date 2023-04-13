@@ -8,21 +8,17 @@ class ComposerStaticInit718e370ed095fd597a1f1d468c2b59f4
 {
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Wordlift\\Modules\\Food_Kg\\Admin\\Download_Ingredients_Data' => __DIR__ . '/../..' . '/includes/admin/Download_Ingredients_Data.php',
-        'Wordlift\\Modules\\Food_Kg\\Admin\\Full_Page_Delegate' => __DIR__ . '/../..' . '/includes/admin/Full_Page_Delegate.php',
-        'Wordlift\\Modules\\Food_Kg\\Admin\\Ingredients_Full_Page_Delegate' => __DIR__ . '/../..' . '/includes/admin/Ingredients_Full_Page_Delegate.php',
-        'Wordlift\\Modules\\Food_Kg\\Admin\\Ingredients_List_Table' => __DIR__ . '/../..' . '/includes/admin/Ingredients_List_Table.php',
-        'Wordlift\\Modules\\Food_Kg\\Admin\\Ingredients_Modal_Page_Delegate' => __DIR__ . '/../..' . '/includes/admin/Ingredients_Modal_Page_Delegate.php',
-        'Wordlift\\Modules\\Food_Kg\\Admin\\Main_Ingredient_List_Table' => __DIR__ . '/../..' . '/includes/admin/Main_Ingredient_List_Table.php',
-        'Wordlift\\Modules\\Food_Kg\\Admin\\Main_Ingredient_Modal_Page_Delegate' => __DIR__ . '/../..' . '/includes/admin/Main_Ingredient_Modal_Page_Delegate.php',
         'Wordlift\\Modules\\Food_Kg\\Admin\\Meta_Box' => __DIR__ . '/../..' . '/includes/admin/Meta_Box.php',
-        'Wordlift\\Modules\\Food_Kg\\Admin\\Page' => __DIR__ . '/../..' . '/includes/admin/Page.php',
-        'Wordlift\\Modules\\Food_Kg\\Admin\\Page_Delegate' => __DIR__ . '/../..' . '/includes/admin/Page_Delegate.php',
+        'Wordlift\\Modules\\Food_Kg\\Api\\Cursor' => __DIR__ . '/../..' . '/includes/Api/Cursor.php',
+        'Wordlift\\Modules\\Food_Kg\\Api\\Cursor_Page' => __DIR__ . '/../..' . '/includes/Api/Cursor_Page.php',
         'Wordlift\\Modules\\Food_Kg\\Ingredients' => __DIR__ . '/../..' . '/includes/Ingredients.php',
         'Wordlift\\Modules\\Food_Kg\\Ingredients_API' => __DIR__ . '/../..' . '/includes/Ingredients_API.php',
         'Wordlift\\Modules\\Food_Kg\\Ingredients_Client' => __DIR__ . '/../..' . '/includes/Ingredients_Client.php',
         'Wordlift\\Modules\\Food_Kg\\Ingredients_Taxonomy_Recipe_Lift_Strategy' => __DIR__ . '/../..' . '/includes/Ingredients_Taxonomy_Recipe_Lift_Strategy.php',
         'Wordlift\\Modules\\Food_Kg\\Jsonld' => __DIR__ . '/../..' . '/includes/Jsonld.php',
+        'Wordlift\\Modules\\Food_Kg\\Main_Entity\\Food_Kg_Main_Entity_Runner' => __DIR__ . '/../..' . '/includes/Main_Entity/Food_Kg_Main_Entity_Runner.php',
+        'Wordlift\\Modules\\Food_Kg\\Main_Entity\\Food_Kg_Recipe_Post_Store' => __DIR__ . '/../..' . '/includes/Main_Entity/Food_Kg_Recipe_Post_Store.php',
+        'Wordlift\\Modules\\Food_Kg\\Main_Entity\\Food_Kg_Recipe_Stats' => __DIR__ . '/../..' . '/includes/Main_Entity/Food_Kg_Recipe_Stats.php',
         'Wordlift\\Modules\\Food_Kg\\Main_Ingredient_Jsonld' => __DIR__ . '/../..' . '/includes/Main_Ingredient_Jsonld.php',
         'Wordlift\\Modules\\Food_Kg\\Main_Ingredient_Recipe_Lift_Strategy' => __DIR__ . '/../..' . '/includes/Main_Ingredient_Recipe_Lift_Strategy.php',
         'Wordlift\\Modules\\Food_Kg\\Module' => __DIR__ . '/../..' . '/includes/Module.php',
@@ -30,6 +26,9 @@ class ComposerStaticInit718e370ed095fd597a1f1d468c2b59f4
         'Wordlift\\Modules\\Food_Kg\\Preconditions' => __DIR__ . '/../..' . '/includes/Preconditions.php',
         'Wordlift\\Modules\\Food_Kg\\Recipe_Lift_Strategy' => __DIR__ . '/../..' . '/includes/Recipe_Lift_Strategy.php',
         'Wordlift\\Modules\\Food_Kg\\Services\\Ingredients' => __DIR__ . '/../..' . '/includes/services/Ingredients.php',
+        'Wordlift\\Modules\\Food_Kg\\Term_Entity\\Food_Kg_Ingredient_Stats' => __DIR__ . '/../..' . '/includes/Term_Entity/Food_Kg_Ingredient_Stats.php',
+        'Wordlift\\Modules\\Food_Kg\\Term_Entity\\Food_Kg_Ingredients_Term_Store' => __DIR__ . '/../..' . '/includes/Term_Entity/Food_Kg_Ingredients_Term_Store.php',
+        'Wordlift\\Modules\\Food_Kg\\Term_Entity\\Food_Kg_Term_Entity_Runner' => __DIR__ . '/../..' . '/includes/Term_Entity/Food_Kg_Term_Entity_Runner.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

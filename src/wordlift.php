@@ -31,10 +31,6 @@ use Wordlift\Cache\Ttl_Cache_Cleaner;
 use Wordlift\Features\Features_Registry;
 use Wordlift\Post\Post_Adapter;
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
 define( 'WORDLIFT_PLUGIN_FILE', __FILE__ );
 define( 'WORDLIFT_VERSION', '3.42.0-0' );
 
@@ -305,7 +301,9 @@ add_filter(
 );
 
 require_once __DIR__ . '/modules/food-kg/load.php';
+require_once __DIR__ . '/modules/gardening-kg/load.php';
 require_once __DIR__ . '/modules/acf4so/load.php';
+require_once __DIR__ . '/modules/dashboard/load.php';
 require_once __DIR__ . '/modules/pods/load.php';
 require_once __DIR__ . '/modules/include-exclude-push-config/load.php';
 

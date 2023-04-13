@@ -74,6 +74,8 @@ class Wordlift_Install_Service {
 		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-39-1.php';
 		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-40-1.php';
 		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-40-2.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-41-0.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-42-0.php';
 
 		// Get the install services.
 		$this->installs = array(
@@ -112,6 +114,9 @@ class Wordlift_Install_Service {
 
 			// @link https://github.com/insideout10/wordlift-plugin/issues/1627
 			new Wordlift_Install_3_40_2(),
+
+			new Wordlift_Install_3_41_0(),
+			new Wordlift_Install_3_42_0(),
 		);
 		self::$instance = $this;
 

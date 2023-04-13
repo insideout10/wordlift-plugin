@@ -9,3 +9,8 @@ define( 'WP_DEBUG_DISPLAY', false );
 define( 'SCRIPT_DEBUG', true );
 
 define( 'WL_DEBUG', WP_DEBUG );
+
+// Set that we're in development mode. We use this to load the new Angular app from the localhost.
+define( 'WL_ENV', 'dev' );
+
+define( 'JETPACK_STAGING_MODE', true );

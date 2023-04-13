@@ -2,6 +2,9 @@
 
 namespace Wordlift\Modules\Food_Kg;
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+
 class Main_Ingredient_Recipe_Lift_Strategy implements Recipe_Lift_Strategy {
 
 	/**
@@ -58,22 +61,28 @@ class Main_Ingredient_Recipe_Lift_Strategy implements Recipe_Lift_Strategy {
 
 	public function process( $post_id ) {
 
+		$content_service = Wordpress_Content_Service::get_instance();
+		$content_id      = Wordpress_Content_Id::create_post( $post_id );
+
 		// Skip posts with existing data.
-		$existing = get_post_meta( $post_id, '_wl_main_ingredient_jsonld', true );
+		$existing = $content_service->get_about_jsonld( $content_id );
 		if ( ! empty( $existing ) ) {
 			return true;
 		}
 
 		$post = get_post( $post_id );
 
-		$jsonld = $this->ingredients_client->main_ingredient( $post->post_title );
+		$jsonld          = $this->ingredients_client->main_ingredient( $post->post_title );
+		$content_service = Wordpress_Content_Service::get_instance();
+		$content_id      = Wordpress_Content_Id::create_post( $post_id );
+
 		if ( $this->validate( $jsonld ) ) {
-			add_post_meta( $post_id, '_wl_main_ingredient_jsonld', wp_slash( $jsonld ) );
+			$content_service->set_about_jsonld( $content_id, $jsonld );
 
 			return true;
 		} else {
 			// No ingredient found.
-			delete_post_meta( $post_id, '_wl_main_ingredient_jsonld' );
+			$content_service->set_about_jsonld( $content_id, null );
 
 			return false;
 		}

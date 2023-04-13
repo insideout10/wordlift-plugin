@@ -30,7 +30,7 @@ class Wordpress_Dataset_Content_Service implements Content_Service {
 			self::$instance = new self();
 
 			self::$instance->register_delegate( Wordpress_Post_Content_Service::get_instance() );
-			self::$instance->register_delegate( Wordpress_Term_Content_Legacy_Service::get_instance() );
+			self::$instance->register_delegate( Wordpress_Term_Content_Service::get_instance() );
 			self::$instance->register_delegate( Wordpress_User_Content_Legacy_Service::get_instance() );
 
 			Wordpress_Dataset_Content_Service_Hooks::register();
@@ -115,5 +115,25 @@ class Wordpress_Dataset_Content_Service implements Content_Service {
 				break;
 			}
 		}
+	}
+
+	public function get_about_jsonld( $content_id ) {
+		foreach ( $this->delegates as $delegate ) {
+			if ( $delegate->supports( $content_id ) ) {
+				return $delegate->get_about_jsonld( $content_id );
+			}
+		}
+
+		return null;
+	}
+
+	public function set_about_jsonld( $content_id, $value ) {
+		foreach ( $this->delegates as $delegate ) {
+			if ( $delegate->supports( $content_id ) ) {
+				return $delegate->set_about_jsonld( $content_id, $value );
+			}
+		}
+
+		return false;
 	}
 }

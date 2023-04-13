@@ -2,9 +2,20 @@
 
 namespace Wordlift\Modules\Food_Kg;
 
+use Wordlift\Content\Content_Service;
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use WPRM_Recipe;
 
 class Main_Ingredient_Jsonld {
+
+	/**
+	 * @var Content_Service $content_service
+	 */
+	private $content_service;
+
+	public function __construct( Content_Service $content_service ) {
+		$this->content_service = $content_service;
+	}
 
 	public function register_hooks() {
 		add_action( 'wprm_recipe_metadata', array( $this, '__recipe_metadata' ), 10, 2 );
@@ -17,8 +28,9 @@ class Main_Ingredient_Jsonld {
 	 * @return array
 	 */
 	public function __recipe_metadata( $metadata, $recipe ) {
-
-		$jsonld = get_post_meta( $recipe->id(), '_wl_main_ingredient_jsonld', true );
+		$jsonld = $this->content_service->get_about_jsonld(
+			Wordpress_Content_Id::create_post( $recipe->id() )
+		);
 
 		if ( empty( $jsonld ) ) {
 			return $metadata;
