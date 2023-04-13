@@ -164,4 +164,14 @@ class Wordpress_Permalink_Content_Service implements Content_Service {
 	public function delete( $content_id ) {
 		// Ignore, we don't store any data.
 	}
+
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public function get_about_jsonld( $content_id ) {
+		// This is not implemented as of now
+	}
+
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public function set_about_jsonld( $content_id, $value ) {
+		// This is not implemented as of now
+	}
 }
