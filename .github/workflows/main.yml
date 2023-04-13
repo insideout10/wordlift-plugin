@@ -98,6 +98,10 @@ jobs:
       - name: Update branch in deployment.yaml
         run: sed -i'' "s~__BRANCH__~$(echo \${GITHUB_REF#refs/heads/})~" .kubernetes/deployment.yaml
 
+      - name: Update branch in deployment.yaml
+        run: echo $(echo \${GITHUB_REF#refs/heads/}) | xargs -I{} sed -i'' "s~__BRANCH__~{}~" .kubernetes/deployment.yaml
+
+
 #        run: sed -i'' "s~__BRANCH__~${{ env.BRANCH_NAME }}~" .kubernetes/deployment.yaml
 
       - name: Update URL in deployment.yaml
