@@ -95,7 +95,7 @@ jobs:
       - name: Update branch in deployment.yaml
         run: sed -i'' "s~__BRANCH__~${{ env.BRANCH_NAME }}~" .kubernetes/deployment.yaml
         env:
-          BRANCH_NAME: ${{ basename ${{ github.ref }} }}
+          BRANCH_NAME: ${{ (split('/', replace(github.ref, 'refs/heads/', '')))[0] }}
       - name: Update URL in deployment.yaml
         run: sed -i'' "s~__HOST__~$HOST~" .kubernetes/deployment.yaml
         env:
