@@ -9,6 +9,8 @@ class ComposerStaticInit8bd2b6d4ccd6b50e0809e5ba62169420
     public static $classMap = array (
         'ComposerAutoloaderInit8bd2b6d4ccd6b50e0809e5ba62169420' => __DIR__ . '/..' . '/composer/autoload_real.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Wordlift\\Modules\\Common\\Api\\Cursor' => __DIR__ . '/../..' . '/Api/Cursor.php',
+        'Wordlift\\Modules\\Common\\Api\\Cursor_Page' => __DIR__ . '/../..' . '/Api/Cursor_Page.php',
         'Wordlift\\Modules\\Common\\Date_Utils' => __DIR__ . '/../..' . '/Date_Utils.php',
         'Wordlift\\Modules\\Common\\Installer' => __DIR__ . '/../..' . '/Installer.php',
         'Wordlift\\Modules\\Common\\Plugin' => __DIR__ . '/../..' . '/Plugin.php',

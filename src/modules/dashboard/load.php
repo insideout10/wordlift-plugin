@@ -50,6 +50,12 @@ function __wl_dashboard__load() {
 	$term_entity_match_rest_controller->register_hooks();
 
 	/**
+	 * @var $term_entity_match_rest_controller \Wordlift\Modules\Dashboard\Post_Entity_Match\Post_Entity_Match_Rest_Controller
+	 */
+	$post_entity_match_rest_controller = $container_builder->get( \Wordlift\Modules\Dashboard\Post_Entity_Match\Post_Entity_Match_Rest_Controller::class );
+	$post_entity_match_rest_controller->register_hooks();
+
+	/**
 	 * @var $synchronization_service Synchronization_Service
 	 */
 	$synchronization_service = $container_builder->get( 'Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service' );

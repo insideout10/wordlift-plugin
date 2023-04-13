@@ -42,8 +42,10 @@ class Plugin_App {
 				// Allows Stats Card to populate the settings.
 				'stats'           => apply_filters( 'wl_dashboard__stats__settings', array() ),
 				// @see https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/
-				'api_nonce'       => wp_create_nonce( 'wp_rest' ),
-				'api_base'        => untrailingslashit( rest_url() ),
+				'wp_api_nonce'    => wp_create_nonce( 'wp_rest' ),
+				'wp_api_base'     => untrailingslashit( rest_url() ),
+				'remote_api_base' => apply_filters( 'wl_api_base_url', WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE ),
+				'remote_api_key'  => \Wordlift_Configuration_Service::get_instance()->get_key(),
 			)
 		);
 

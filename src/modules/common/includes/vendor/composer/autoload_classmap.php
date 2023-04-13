@@ -8,6 +8,8 @@ $baseDir = dirname($vendorDir);
 return array(
     'ComposerAutoloaderInit8bd2b6d4ccd6b50e0809e5ba62169420' => $vendorDir . '/composer/autoload_real.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'Wordlift\\Modules\\Common\\Api\\Cursor' => $baseDir . '/Api/Cursor.php',
+    'Wordlift\\Modules\\Common\\Api\\Cursor_Page' => $baseDir . '/Api/Cursor_Page.php',
     'Wordlift\\Modules\\Common\\Date_Utils' => $baseDir . '/Date_Utils.php',
     'Wordlift\\Modules\\Common\\Installer' => $baseDir . '/Installer.php',
     'Wordlift\\Modules\\Common\\Plugin' => $baseDir . '/Plugin.php',

@@ -25,3 +25,11 @@ services:
 
   Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Stats:
     class: Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Stats
+
+  Wordlift\Modules\Gardening_Kg\Jsonld:
+    class: Wordlift\Modules\Gardening_Kg\Jsonld
+    arguments: [ '@Wordlift\Content\Wordpress\Wordpress_Content_Service' ]
+
+  Wordlift\Content\Wordpress\Wordpress_Content_Service:
+    factory: [ 'Wordlift\Content\Wordpress\Wordpress_Content_Service', 'get_instance' ]
+    class: Wordlift\Content\Wordpress\Wordpress_Content_Service

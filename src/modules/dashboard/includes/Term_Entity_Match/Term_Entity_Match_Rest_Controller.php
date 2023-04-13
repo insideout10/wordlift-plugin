@@ -5,8 +5,8 @@ namespace Wordlift\Modules\Dashboard\Term_Entity_Match;
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Entity\Entity_Uri_Generator;
-use Wordlift\Modules\Food_Kg\Api\Cursor;
-use Wordlift\Modules\Food_Kg\Api\Cursor_Page;
+use Wordlift\Modules\Common\Api\Cursor;
+use Wordlift\Modules\Common\Api\Cursor_Page;
 use Wordlift\Object_Type_Enum;
 
 class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
@@ -34,13 +34,13 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 				'methods'             => 'GET',
 				'callback'            => array( $this, 'get_term_matches' ),
 				'args'                => array(
-					'cursor'    => array(
+					'cursor'     => array(
 						'type'              => 'string',
 						'default'           => Cursor::EMPTY_CURSOR_AS_BASE64_STRING,
 						'validate_callback' => 'rest_validate_request_arg',
 						'sanitize_callback' => array( Cursor::class, 'rest_sanitize_request_arg' ),
 					),
-					'limit'     => array(
+					'limit'      => array(
 						'type'              => 'integer',
 						'validate_callback' => 'rest_validate_request_arg',
 						'default'           => 20,
@@ -48,13 +48,11 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 						'maximum'           => 100,
 						'sanitize_callback' => 'absint',
 					),
-					'taxonomy'  => array(
-						'type'              => 'string',
-						'required'          => true,
+					'taxonomies' => array(
+						'type'              => 'array',
 						'validate_callback' => 'rest_validate_request_arg',
-						'sanitize_callback' => 'sanitize_text_field',
 					),
-					'has_match' => array(
+					'has_match'  => array(
 						'type'              => 'boolean',
 						'required'          => false,
 						'validate_callback' => 'rest_validate_request_arg',
@@ -124,29 +122,36 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 		if ( $request->has_param( 'sort' ) ) {
 			$cursor['sort'] = $request->get_param( 'sort' );
 		}
-		if ( $request->has_param( 'taxonomy' ) ) {
-			$cursor['query']['taxonomy'] = $request->get_param( 'taxonomy' );
+		if ( $request->has_param( 'taxonomies' ) ) {
+			$cursor['query']['taxonomies'] = $request->get_param( 'taxonomies' );
 		}
 		if ( $request->has_param( 'has_match' ) ) {
 			$cursor['query']['has_match'] = $request->get_param( 'has_match' );
 		}
 
 		// Query.
-		$taxonomy  = isset( $cursor['query']['taxonomy'] ) ? $cursor['query']['taxonomy'] : null;
+		$taxonomies = isset( $cursor['query']['taxonomies'] ) ? $cursor['query']['taxonomies'] : apply_filters(
+			'wl_dashboard__post_entity_match__taxonomies',
+			array(
+				'post_tag',
+				'category',
+			)
+		);
+
 		$has_match = isset( $cursor['query']['has_match'] ) ? $cursor['query']['has_match'] : null;
 
 		$items = $this->match_service->list_items(
 			array(
 				// Query
-				'taxonomy'  => $taxonomy,
-				'has_match' => $has_match,
+				'taxonomies' => $taxonomies,
+				'has_match'  => $has_match,
 				// Cursor-Pagination
-				'position'  => $cursor['position'],
-				'element'   => $cursor['element'],
-				'direction' => $cursor['direction'],
+				'position'   => $cursor['position'],
+				'element'    => $cursor['element'],
+				'direction'  => $cursor['direction'],
 				// `+1` to check if we have other results.
-				'limit'     => $cursor['limit'] + 1,
-				'sort'      => $cursor['sort'],
+				'limit'      => $cursor['limit'] + 1,
+				'sort'       => $cursor['sort'],
 			)
 		);
 
@@ -188,7 +193,7 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 			Object_Type_Enum::TERM,
 			$match_id,
 			$request->get_json_params()
-		)->serialize();
+		);
 
 	}
 
@@ -196,12 +201,13 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 	 * @var $request \WP_REST_Request
 	 */
 	public function update_term_match( $request ) {
+
 		return $this->match_service->set_jsonld(
 			$request->get_param( 'term_id' ),
 			Object_Type_Enum::TERM,
 			$request->get_param( 'match_id' ),
 			$request->get_json_params()
-		)->serialize();
+		);
 	}
 
 }

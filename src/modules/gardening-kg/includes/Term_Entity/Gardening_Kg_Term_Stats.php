@@ -2,6 +2,7 @@
 
 namespace Wordlift\Modules\Gardening_Kg\Term_Entity;
 
+use Wordlift\Escape;
 use Wordlift\Modules\Dashboard\Stats\Stats_Settings;
 use Wordlift\Object_Type_Enum;
 
@@ -30,8 +31,17 @@ class Gardening_Kg_Term_Stats {
 
 	public function get_data() {
 		global $wpdb;
-
+		$taxonomies     = apply_filters(
+			'wl_dashboard__post_entity_match__taxonomies',
+			array(
+				'post_tag',
+				'category',
+			)
+		);
+		$taxonomies_sql = Escape::sql_array( $taxonomies );
 		return $wpdb->get_row(
+		// $taxonomies_sql is already escaped using esc_sql.
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$wpdb->prepare(
 				"
 				SELECT COUNT(1) as total, COUNT(e.about_jsonld) AS lifted
@@ -40,11 +50,12 @@ class Gardening_Kg_Term_Stats {
 			        ON t.term_id = tt.term_id
 			    LEFT JOIN {$wpdb->prefix}wl_entities e
 			        ON e.content_id = t.term_id
-				WHERE e.content_type = %d AND tt.taxonomy IN ( 'post_tag', 'category' )
+				WHERE e.content_type = %d AND tt.taxonomy IN ( {$taxonomies_sql} )
 				",
 				Object_Type_Enum::TERM
 			)
 		);
+		// phpcs:enable
 	}
 
 }

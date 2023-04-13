@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Modules\Food_Kg\Api;
+namespace Wordlift\Modules\Common\Api;
 
 class Cursor {
 

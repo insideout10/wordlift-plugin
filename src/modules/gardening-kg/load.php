@@ -9,6 +9,7 @@
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Wordlift\Modules\Gardening_Kg\Jsonld;
 use Wordlift\Modules\Gardening_Kg\Main_Entity\Gardening_Kg_Post_Stats;
 use Wordlift\Modules\Gardening_Kg\Preconditions;
 use Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Stats;
@@ -68,6 +69,9 @@ function __wl_gardening_kg__load() {
 	 */
 	$term_stats = $container_builder->get( Gardening_Kg_Term_Stats::class );
 	$term_stats->register_hooks();
+
+	$jsonld_hooks = $container_builder->get( Jsonld::class );
+	$jsonld_hooks->register_hooks();
 
 }
 
