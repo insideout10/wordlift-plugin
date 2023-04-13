@@ -93,7 +93,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Update branch in deployment.yaml
-        run: sed -i'' "s~__BRANCH__~${{ env.GITHUB_REF#refs/heads/ }}~" .kubernetes/deployment.yaml
+        run: sed -i'' "s~__BRANCH__~${{ basename(github.ref) }}~" .kubernetes/deployment.yaml
 #        run: sed -i'' "s~__BRANCH__~${{ env.BRANCH_NAME }}~" .kubernetes/deployment.yaml
 
       - name: Update URL in deployment.yaml
