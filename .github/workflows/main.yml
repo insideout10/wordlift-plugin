@@ -87,7 +87,7 @@ jobs:
   publish-to-dev:
     runs-on: ubuntu-latest
     # Run only for develop branch push
-    if: ${{ github.ref == 'refs/heads/develop' }}
+    if: ${{ github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/release/') }}
     needs: [ linter, wordpress ]
     steps:
       - name: Checkout
