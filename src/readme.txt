@@ -6,7 +6,7 @@ Tags: SEO, SERP, FAQ Markup, Schema Markup, structured data, schema.org, schema 
 Requires at least: 5.3
 Tested up to: 6.1
 Requires PHP: 5.6
-Stable tag: 3.40.9
+Stable tag: 3.42.0
 License: GPLv2 or later
 
 Search engines are looking for meaning, not keywords. WordLift tells Google how your content relates to your brand, products, and stakeholders.
@@ -143,8 +143,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= Prerelease 3.42.0-0 (2023-04-03) =
+= 3.42.0 (2023-04-13) =
 * Feature [#1672](https://github.com/insideout10/wordlift-plugin/issues/1672): Article Wrapper can be now used in API calls too by adding the `article_wrapper=true` query parameter.
+* Feature [#1668](https://github.com/insideout10/wordlift-plugin/issues/1668): Brand new Dashboard for Food and Gardening Knowledge Graphs users
 
 = 3.40.9 (2023-03-21) =
 * Fix: Update WPRM support version
