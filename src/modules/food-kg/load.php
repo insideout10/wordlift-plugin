@@ -12,11 +12,10 @@ use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Wordlift\Modules\Food_Kg\Jsonld;
+use Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Stats;
 use Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld;
 use Wordlift\Modules\Food_Kg\Preconditions;
-use Wordlift\Task\All_Posts_Task;
-use Wordlift\Task\Background\Background_Task_Factory;
-use Wordlift\Task\Single_Call_Task;
+use Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Ingredient_Stats;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -59,62 +58,37 @@ function __wl_foodkg__load() {
 	$jsonld = $container_builder->get( 'Wordlift\Modules\Food_Kg\Jsonld' );
 	$jsonld->register_hooks();
 
-	/**
-	 * Ingredients API.
-	 */
-	$ingredients_api = $container_builder->get( 'Wordlift\Modules\Food_Kg\Ingredients_API' );
-	$ingredients_api->register_hooks();
-
 	/** @var Main_Ingredient_Jsonld $jsonld */
 	$main_ingredient_jsonld = $container_builder->get( 'Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld' );
 	$main_ingredient_jsonld->register_hooks();
 
-	// Main Ingredient Background Task.
-	$main_ingredient_recipe_lift     = $container_builder->get( 'Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy' );
-	$main_ingredient_background_task = Background_Task_Factory::create_action_scheduler_task(
-		'wl_main_ingredient_sync',
-		'wordlift',
-		new All_Posts_Task(
-			array( $main_ingredient_recipe_lift, 'process' ),
-			'wprm_recipe',
-			'sync-main-ingredient'
-		),
-		'/main-ingredient',
-		'sync-main-ingredient',
-		__( 'Synchronize Main Ingredient', 'wordlift' )
-	);
+	// Get the runners
+	$main_entity_runner = $container_builder->get( 'Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Main_Entity_Runner' );
+	$term_entity_runner = $container_builder->get( 'Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Term_Entity_Runner' );
 
-	// Ingredients Taxonomy Background Task.
-	$ingredients_taxonomy_recipe_lift     = $container_builder->get( 'Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy' );
-	$ingredients_taxonomy_background_task = Background_Task_Factory::create(
-		new Single_Call_Task(
-			array( $ingredients_taxonomy_recipe_lift, 'run' ),
-			'sync-ingredients-taxonomy'
-		),
-		'/sync-ingredients-taxonomy',
-		'sync-ingredients-taxonomy',
-		__( 'Synchronize Ingredients Taxonomy', 'wordlift' )
-	);
+	// Add the runners, this is called by the Dashboard Synchronization.
+	add_filter(
+		'wl_dashboard__synchronization__runners',
+		function ( $runners ) use ( $main_entity_runner, $term_entity_runner ) {
+			$runners[] = $term_entity_runner;
+			$runners[] = $main_entity_runner;
 
-	add_action(
-		$module::RUN_EVENT,
-		function () use ( $main_ingredient_background_task, $ingredients_taxonomy_background_task ) {
-			$main_ingredient_background_task->start();
-			$ingredients_taxonomy_background_task->start();
+			return $runners;
 		}
 	);
 
-	if ( is_admin() ) {
-		$page = $container_builder->get( 'Wordlift\Modules\Food_Kg\Admin\Page' );
-		$page->register_hooks();
+	/**
+	 * @var $recipe_stats Food_Kg_Recipe_Stats
+	 */
+	$recipe_stats = $container_builder->get( Food_Kg_Recipe_Stats::class );
+	$recipe_stats->register_hooks();
 
-		$page = $container_builder->get( 'Wordlift\Modules\Food_Kg\Admin\Ingredients_Taxonomy_Page' );
-		$page->register_hooks();
+	/**
+	 * @var $recipe_stats Food_Kg_Ingredient_Stats
+	 */
+	$recipe_stats = $container_builder->get( Food_Kg_Ingredient_Stats::class );
+	$recipe_stats->register_hooks();
 
-		// Download Ingredients Data.
-		$download_ingredients_data = $container_builder->get( 'Wordlift\Modules\Food_Kg\Admin\Download_Ingredients_Data' );
-		$download_ingredients_data->register_hooks();
-	}
 }
 
 add_action( 'plugins_loaded', '__wl_foodkg__load' );

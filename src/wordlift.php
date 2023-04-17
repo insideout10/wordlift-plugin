@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.41.0
+ * Version:           3.42.0
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -31,12 +31,8 @@ use Wordlift\Cache\Ttl_Cache_Cleaner;
 use Wordlift\Features\Features_Registry;
 use Wordlift\Post\Post_Adapter;
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
 define( 'WORDLIFT_PLUGIN_FILE', __FILE__ );
-define( 'WORDLIFT_VERSION', '3.41.0' );
+define( 'WORDLIFT_VERSION', '3.42.0' );
 
 require_once plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-scheduler.php';
 require_once __DIR__ . '/modules/common/load.php';
@@ -305,7 +301,9 @@ add_filter(
 );
 
 require_once __DIR__ . '/modules/food-kg/load.php';
+require_once __DIR__ . '/modules/gardening-kg/load.php';
 require_once __DIR__ . '/modules/acf4so/load.php';
+require_once __DIR__ . '/modules/dashboard/load.php';
 require_once __DIR__ . '/modules/pods/load.php';
 require_once __DIR__ . '/modules/include-exclude-push-config/load.php';
 

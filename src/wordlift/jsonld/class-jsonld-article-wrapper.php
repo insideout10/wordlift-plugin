@@ -51,7 +51,15 @@ class Jsonld_Article_Wrapper {
 
 		$this->post_to_jsonld_converter = $post_to_jsonld_converter->new_instance_with_filters_disabled();
 
-		add_filter( 'wl_after_get_jsonld', array( $this, 'after_get_jsonld' ), PHP_INT_MAX - 100, 3 );
+		add_filter(
+			'wl_after_get_jsonld',
+			array(
+				$this,
+				'after_get_jsonld',
+			),
+			PHP_INT_MAX - 100,
+			3
+		);
 
 		$this->cached_postid_to_jsonld_converter = $cached_postid_to_jsonld_converter;
 
@@ -60,8 +68,14 @@ class Jsonld_Article_Wrapper {
 
 	public function after_get_jsonld( $jsonld, $post_id, $context ) {
 
-		if ( Jsonld_Context_Enum::PAGE !== $context || ! is_array( $jsonld ) || ! isset( $jsonld[0] )
-			 || ! is_array( $jsonld[0] ) ) {
+		// Invalid data structure
+		if ( ! is_array( $jsonld ) || ! isset( $jsonld[0] ) || ! is_array( $jsonld[0] ) ) {
+			return $jsonld;
+		}
+
+		if ( Jsonld_Context_Enum::PAGE !== $context
+			 // Returns true for "1", "true", "on" and "yes". Returns false otherwise.
+			 && ! filter_input( INPUT_GET, 'article_wrapper', FILTER_VALIDATE_BOOLEAN ) ) {
 			return $jsonld;
 		}
 

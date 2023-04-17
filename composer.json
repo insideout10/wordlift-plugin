@@ -15,7 +15,8 @@
   },
   "require-dev": {
     "wp-phpunit/wp-phpunit": "^5.9",
-    "automattic/jetpack-codesniffer": "^2.6"
+    "automattic/jetpack-codesniffer": "^2.6",
+    "yoast/phpunit-polyfills": "^1.0"
   },
   "require": {
     "composer/installers": "~1.12",

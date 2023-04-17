@@ -9,6 +9,7 @@ namespace Wordlift\Content\Wordpress;
 
 use Wordlift\Content\Content_Migration;
 use Wordlift\Content\Content_Service;
+use Wordlift\Content\Main_Ingredient_Content_Migration;
 
 // phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledClassName
 class Wordpress_Post_Content_Service {
@@ -32,6 +33,10 @@ class Wordpress_Post_Content_Service {
 				// Migrate `entity_url` from post-meta to wl_entities.
 				$content_migration = new Content_Migration();
 				$content_migration->migrate();
+
+				// Migrate `main_ingredient`.
+				$main_ingredient_content_migration = new Main_Ingredient_Content_Migration();
+				$main_ingredient_content_migration->migrate();
 
 				// Create the post content service that uses wl_entities.
 				self::$instance = Wordpress_Post_Content_Table_Service::get_instance();

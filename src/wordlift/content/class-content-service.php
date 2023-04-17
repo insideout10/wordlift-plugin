@@ -65,4 +65,19 @@ interface Content_Service {
 	 */
 	public function delete( $content_id );
 
+	/**
+	 * Get the JSON-LD for the specified Content_Id.
+	 *
+	 * @param Content_Id $content_id
+	 */
+	public function get_about_jsonld( $content_id );
+
+	/**
+	 * Set the JSON-LD for the specified Content_Id.
+	 *
+	 * @param Content_Id $content_id
+	 * @param string     $value
+	 */
+	public function set_about_jsonld( $content_id, $value );
+
 }
