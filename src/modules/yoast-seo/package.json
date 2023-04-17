@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "make": "rm -fr vendor third-party && composer install"
+  }
+}
