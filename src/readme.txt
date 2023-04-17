@@ -143,7 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.42.0 (2023-04-13) =
+= 3.42.0 (2023-04-17) =
 * Feature [#1672](https://github.com/insideout10/wordlift-plugin/issues/1672): Article Wrapper can be now used in API calls too by adding the `article_wrapper=true` query parameter.
 * Feature [#1668](https://github.com/insideout10/wordlift-plugin/issues/1668): Brand new Dashboard for Food and Gardening Knowledge Graphs users
 

@@ -12,91 +12,91 @@ on:
       - develop
 
 jobs:
-#  linter:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: checkout
-#        uses: actions/checkout@v2
-#      - name: lint
-#        run: >
-#          composer install && composer lint src/
-#  cancel_running_workflows:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: cancel running workflows
-#        uses: styfle/cancel-workflow-action@0.6.0
-#        with:
-#          access_token: ${{ github.TOKEN }}
-#  wordpress:
-#    name: ${{ matrix.image }}_${{ matrix.phpunit-xml }}
-#    runs-on: ubuntu-latest
-#    strategy:
-#      matrix:
-#        image:
-#          - "php7.1-phpunit4.8-wordpress5.3"
-#          - "php7.2-phpunit4.8-wordpress5.4"
-#          - "php7.3-phpunit7.5-wordpress5.5"
-#          - "php7.3-phpunit7.5-wordpress5.6"
-#          - "php7.3-phpunit7.5-wordpress5.7"
-#          - "php7.3-phpunit7.5-wordpress5.8"
-#          - "php7.4-phpunit7.5-wordpress5.9"
-#          - "php8.0-phpunit7.5woo-wordpress5.6"
-#        phpunit-xml:
-#          - tests/scenarios/phpunit.ajax.xml
-#          - tests/scenarios/phpunit.default.xml
-#          - tests/scenarios/phpunit.no-editor.xml
-#          - tests/scenarios/phpunit.no-vocabulary-terms.xml
-#          - tests/scenarios/phpunit.rel-item-id.xml
-#          - tests/scenarios/phpunit.woocommerce-extension.xml
-#          - tests/scenarios/phpunit.multisite.ajax.xml
-#          - tests/scenarios/phpunit.multisite.default.xml
-#          - tests/scenarios/phpunit.multisite.no-editor.xml
-#          - tests/scenarios/phpunit.multisite.no-vocabulary-terms.xml
-#          - tests/scenarios/phpunit.multisite.rel-item-id.xml
-#          - tests/scenarios/phpunit.multisite.woocommerce-extension.xml
-#    env:
-#      ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
-#      ACF_PRO_ENABLED: ${{ matrix.acf-pro-enabled }}
-#      WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
-#      YOUTUBE_DATA_API_KEY: ${{  secrets.YOUTUBE_DATA_API_KEY }}
-#      VIMEO_API_KEY: ${{  secrets.VIMEO_API_KEY }}
-#      WORDPRESS_VERSION: ${{ matrix.image }}
-#
-#    services:
-#      db:
-#        # WP set up uses SET storage_engine=InnoDB; which is removed after MySQL 5.6
-#        image: mysql:5.6
-#        env:
-#          MYSQL_ROOT_PASSWORD: password
-#          MYSQL_USER: wordpress
-#          MYSQL_PASSWORD: password
-#          MYSQL_DATABASE: wordpress
-#        ports:
-#          - 3306:3306
-#    steps:
-#      - name: checkout
-#        uses: actions/checkout@v2
-#      - name: phpunit
-#        run: >
-#          docker run  --mount type=bind,source="$PWD/tests/php.ini",target=/usr/local/etc/php/php.ini --workdir /github/workspace --rm -v "/var/run/docker.sock":"/var/run/docker.sock" \
-#            -e ACF_PRO_ENABLED -e YOUTUBE_DATA_API_KEY -e VIMEO_API_KEY -e ACF_PRO_KEY -e WORDLIFT_API_URL -e WORDLIFT_KEY \
-#            -e WORDPRESS_VERSION -v $GITHUB_WORKSPACE:"/github/workspace" \
-#            --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
-#              ziodave/wordpress-tests:${{ matrix.image }} -c ${{ matrix.phpunit-xml }} --stop-on-error --stop-on-fail
-#  adthrive:
-#    runs-on: ubuntu-latest
-#    # Run only for main branch push
-#    if: ${{ success() && github.ref == 'refs/heads/main' }}
-#    needs: [ linter, wordpress ]
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v3
-#        with:
-#          fetch-depth: 2
-#      - name: Package and upload to blob storage
-#        run: ./.github/workflows/adthrive.sh
-#        env:
-#          AZURE_STORAGE_SHARED_KEY_QUERY_PARAM: ${{ secrets.AZURE_STORAGE_SHARED_KEY_QUERY_PARAM }}
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: lint
+        run: >
+          composer install && composer lint src/
+  cancel_running_workflows:
+    runs-on: ubuntu-latest
+    steps:
+      - name: cancel running workflows
+        uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          access_token: ${{ github.TOKEN }}
+  wordpress:
+    name: ${{ matrix.image }}_${{ matrix.phpunit-xml }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image:
+          - "php7.1-phpunit4.8-wordpress5.3"
+          - "php7.2-phpunit4.8-wordpress5.4"
+          - "php7.3-phpunit7.5-wordpress5.5"
+          - "php7.3-phpunit7.5-wordpress5.6"
+          - "php7.3-phpunit7.5-wordpress5.7"
+          - "php7.3-phpunit7.5-wordpress5.8"
+          - "php7.4-phpunit7.5-wordpress5.9"
+          - "php8.0-phpunit7.5woo-wordpress5.6"
+        phpunit-xml:
+          - tests/scenarios/phpunit.ajax.xml
+          - tests/scenarios/phpunit.default.xml
+          - tests/scenarios/phpunit.no-editor.xml
+          - tests/scenarios/phpunit.no-vocabulary-terms.xml
+          - tests/scenarios/phpunit.rel-item-id.xml
+          - tests/scenarios/phpunit.woocommerce-extension.xml
+          - tests/scenarios/phpunit.multisite.ajax.xml
+          - tests/scenarios/phpunit.multisite.default.xml
+          - tests/scenarios/phpunit.multisite.no-editor.xml
+          - tests/scenarios/phpunit.multisite.no-vocabulary-terms.xml
+          - tests/scenarios/phpunit.multisite.rel-item-id.xml
+          - tests/scenarios/phpunit.multisite.woocommerce-extension.xml
+    env:
+      ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
+      ACF_PRO_ENABLED: ${{ matrix.acf-pro-enabled }}
+      WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
+      YOUTUBE_DATA_API_KEY: ${{  secrets.YOUTUBE_DATA_API_KEY }}
+      VIMEO_API_KEY: ${{  secrets.VIMEO_API_KEY }}
+      WORDPRESS_VERSION: ${{ matrix.image }}
+
+    services:
+      db:
+        # WP set up uses SET storage_engine=InnoDB; which is removed after MySQL 5.6
+        image: mysql:5.6
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_USER: wordpress
+          MYSQL_PASSWORD: password
+          MYSQL_DATABASE: wordpress
+        ports:
+          - 3306:3306
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: phpunit
+        run: >
+          docker run  --mount type=bind,source="$PWD/tests/php.ini",target=/usr/local/etc/php/php.ini --workdir /github/workspace --rm -v "/var/run/docker.sock":"/var/run/docker.sock" \
+            -e ACF_PRO_ENABLED -e YOUTUBE_DATA_API_KEY -e VIMEO_API_KEY -e ACF_PRO_KEY -e WORDLIFT_API_URL -e WORDLIFT_KEY \
+            -e WORDPRESS_VERSION -v $GITHUB_WORKSPACE:"/github/workspace" \
+            --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
+              ziodave/wordpress-tests:${{ matrix.image }} -c ${{ matrix.phpunit-xml }} --stop-on-error --stop-on-fail
+  adthrive:
+    runs-on: ubuntu-latest
+    # Run only for main branch push
+    if: ${{ success() && github.ref == 'refs/heads/main' }}
+    needs: [ linter, wordpress ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Package and upload to blob storage
+        run: ./.github/workflows/adthrive.sh
+        env:
+          AZURE_STORAGE_SHARED_KEY_QUERY_PARAM: ${{ secrets.AZURE_STORAGE_SHARED_KEY_QUERY_PARAM }}
   publish-to-dev:
     runs-on: ubuntu-latest
     # Run only for develop branch push
