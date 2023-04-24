@@ -148,7 +148,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * @inheritdoc
 	 */
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-	public function convert( $post_id, &$references = array(), &$references_infos = array(), &$cache = false ) {
+	public function convert( $post_id, &$references = array(), &$references_infos = array(), &$reference_objects = array(), &$cache = false ) {
 
 		// Ensure post ID is `int`. Otherwise we may have issues with caching, since caching is strict about
 		// key var types.

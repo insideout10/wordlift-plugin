@@ -12,7 +12,7 @@
 namespace Wordlift\Relation;
 
 use Wordlift\Common\Singleton;
-use Wordlift\Content\Wordpress\Wordpress_Term_Content_Legacy_Service;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Jsonld\Term_Reference;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Types\Term_Relation;
@@ -86,20 +86,21 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 	public function get_relations_from_entity_uris( $subject_type, $entity_uris ) {
 		$that = $this;
 
+		$content_service = Wordpress_Content_Service::get_instance();
+
 		return array_map(
-			function ( $entity_uri ) use ( $subject_type, $that ) {
+			function ( $entity_uri ) use ( $content_service, $that ) {
 
 				try {
-					  $content = Wordpress_Term_Content_Legacy_Service::get_instance()
-															->get_by_entity_id( $entity_uri );
-
-					if ( ! isset( $content ) ) {
+					// We're working with terms here.
+					$content = $content_service->get_by_entity_id( $entity_uri );
+					if ( $content->get_object_type_enum() !== Object_Type_Enum::TERM ) {
 						return false;
 					}
 
 					$term_id = $content->get_bag()->term_id;
 
-					return new Term_Relation( $term_id, $that->get_relation_type( $term_id ), $subject_type );
+					return new Term_Relation( $term_id, $that->get_relation_type( $term_id ) );
 				} catch ( \Exception $e ) {
 					return false;
 				}

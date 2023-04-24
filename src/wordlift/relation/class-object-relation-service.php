@@ -14,15 +14,17 @@ namespace Wordlift\Relation;
 
 use Wordlift\Common\Singleton;
 use Wordlift\Jsonld\Reference;
+use Wordlift_Relation_Service;
 
 class Object_Relation_Service extends Singleton implements Relation_Service_Interface {
 
 	/**
-	 * @var \Wordlift_Relation_Service
+	 * @var Wordlift_Relation_Service $post_relation_service
 	 */
 	protected $post_relation_service;
+
 	/**
-	 * @var Term_Relation_Service
+	 * @var Term_Relation_Service $term_relation_service
 	 */
 	protected $term_relation_service;
 
@@ -33,6 +35,7 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 
 	public function __construct() {
 		parent::__construct();
+
 		$this->post_relation_service = Post_Relation_Service::get_instance();
 		$this->term_relation_service = Term_Relation_Service::get_instance();
 		$this->log                   = \Wordlift_Log_Service::get_logger( get_class() );
@@ -57,6 +60,7 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 	public function get_relations_from_content( $content, $subject_type, $local_entity_uris ) {
 		$post_relations = $this->post_relation_service->get_relations_from_content( $content, $subject_type, $local_entity_uris );
 		$term_relations = $this->term_relation_service->get_relations_from_content( $content, $subject_type, $local_entity_uris );
+
 		return array_filter( array_merge( $post_relations, $term_relations ) );
 	}
 
@@ -82,6 +86,7 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 	public function get_relations_from_entity_uris( $subject_type, $entity_uris ) {
 		$post_relations = $this->post_relation_service->get_relations_from_entity_uris( $subject_type, $entity_uris );
 		$term_relations = $this->term_relation_service->get_relations_from_entity_uris( $subject_type, $entity_uris );
+
 		return array_filter( array_merge( $post_relations, $term_relations ) );
 	}
 }

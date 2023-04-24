@@ -15,26 +15,32 @@ use Wordlift\Common\Singleton;
 use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Relation\Types\Post_Relation;
 use Wordlift\Relation\Types\Relation;
+use Wordlift_Entity_Service;
+use Wordlift_Entity_Uri_Service;
+use Wordlift_Relation_Service;
 
 class Post_Relation_Service extends Singleton implements Relation_Service_Interface {
+
 	/**
-	 * @var \Wordlift_Relation_Service
+	 * @var Wordlift_Relation_Service
 	 */
 	private $legacy_post_relation_service;
+
 	/**
-	 * @var \Wordlift_Entity_Uri_Service
+	 * @var Wordlift_Entity_Uri_Service
 	 */
 	private $entity_uri_service;
+
 	/**
-	 * @var \Wordlift_Entity_Service
+	 * @var Wordlift_Entity_Service
 	 */
 	private $entity_service;
 
 	public function __construct() {
 		parent::__construct();
-		$this->legacy_post_relation_service = \Wordlift_Relation_Service::get_instance();
-		$this->entity_uri_service           = \Wordlift_Entity_Uri_Service::get_instance();
-		$this->entity_service               = \Wordlift_Entity_Service::get_instance();
+		$this->legacy_post_relation_service = Wordlift_Relation_Service::get_instance();
+		$this->entity_uri_service           = Wordlift_Entity_Uri_Service::get_instance();
+		$this->entity_service               = Wordlift_Entity_Service::get_instance();
 	}
 
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
@@ -69,7 +75,7 @@ class Post_Relation_Service extends Singleton implements Relation_Service_Interf
 			function ( $entity_uri ) use ( $subject_type, $that ) {
 				$entity = $that->entity_uri_service->get_entity( $entity_uri );
 				if ( ! $entity ) {
-					  return false;
+					return false;
 				}
 
 				return new Post_Relation( $entity->ID, $that->entity_service->get_classification_scope_for( $entity->ID ), $subject_type );

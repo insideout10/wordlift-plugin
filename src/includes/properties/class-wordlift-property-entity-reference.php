@@ -39,6 +39,7 @@ class Wordlift_Property_Entity_Reference {
 	private $id;
 
 	private $required;
+
 	/**
 	 * @var int
 	 */
@@ -47,16 +48,16 @@ class Wordlift_Property_Entity_Reference {
 	/**
 	 * Create a Wordlift_Property_Entity_Reference instance with the provided URL.
 	 *
-	 * @param string $url The URL.
+	 * @param string $entity_uri The URL.
 	 * @param int    $id The entity post id.
 	 * @param bool   $required Whether this property is always required in SD output, default false.
 	 * @param int    $type Instance of Object_Enum_Type
 	 *
 	 * @since 3.8.0
 	 */
-	public function __construct( $url, $id, $required = false, $type = Object_Type_Enum::POST ) {
+	public function __construct( $entity_uri, $id, $required = false, $type = Object_Type_Enum::POST ) {
 
-		$this->url      = $url;
+		$this->url      = $entity_uri;
 		$this->id       = $id;
 		$this->required = $required;
 		$this->type     = $type;

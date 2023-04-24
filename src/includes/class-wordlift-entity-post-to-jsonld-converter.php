@@ -59,7 +59,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	 * @return array A JSON-LD array.
 	 * @since 3.8.0
 	 */
-	public function convert( $post_id, &$references = array(), &$references_infos = array() ) {
+	public function convert( $post_id, &$references = array(), &$references_infos = array(), &$reference_objects = array() ) {
 
 		// Get the post instance.
 		$post = get_post( $post_id );

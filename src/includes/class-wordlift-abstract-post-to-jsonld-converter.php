@@ -91,7 +91,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * @since 3.10.0
 	 */
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-	public function convert( $post_id, &$references = array(), &$references_infos = array() ) {
+	public function convert( $post_id, &$references = array(), &$references_infos = array(), &$reference_objects = array() ) {
 
 		// Get the post instance.
 		$post = get_post( $post_id );
@@ -174,11 +174,16 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 
 		$this->set_images( $this->attachment_service, $post, $jsonld );
 
-		// Get the entities referenced by this post and set it to the `references`
+		// Naveen: Get the entities referenced by this post and set it to the `references`
 		// array so that the caller can do further processing, such as printing out
 		// more of those references.
-		$references_without_locations = Object_Relation_Service::get_instance()
-															   ->get_references( $post_id, Object_Type_Enum::POST );
+		//
+		// David: you can't set this to the `references`, because `references` it's an array of post
+		// IDs and client are using this. As of 3.42.1 (2023-04-20) I am refactoring this to use a
+		// new variable $reference_objects.
+		/** @var Object_Relation_Service $object_relation_service */
+		$object_relation_service      = Object_Relation_Service::get_instance();
+		$references_without_locations = $object_relation_service->get_references( $post_id, Object_Type_Enum::POST );
 
 		/*
 		 * Add the locations to the references.
@@ -221,6 +226,34 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 
 		return $jsonld;
 	}
+
+	// private function add_location_reference_objects() {
+	// array_reduce(
+	// $references_without_locations,
+	// function ( $carry, $reference ) use ( $entity_type_service ) {
+	// **
+	// * @var $reference Reference
+	// */
+	// @see https://schema.org/location for the schema.org types using the `location` property.
+	// if ( ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Action' )
+	// && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Event' )
+	// && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Organization' ) ) {
+	//
+	// return $carry;
+	// }
+	// $post_location_ids        = get_post_meta( $reference->get_id(), Wordlift_Schema_Service::FIELD_LOCATION );
+	// $post_location_references = array_map(
+	// function ( $post_id ) {
+	// return new Post_Reference( $post_id );
+	// },
+	// $post_location_ids
+	// );
+	//
+	// return array_merge( $carry, $post_location_references );
+	// },
+	// array()
+	// );
+	// }
 
 	/**
 	 * If the provided value starts with the schema.org context, we remove the schema.org

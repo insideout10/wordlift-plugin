@@ -9,6 +9,7 @@
 use Wordlift\Jsonld\Jsonld_Context_Enum;
 use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Jsonld\Term_Reference;
+use Wordlift\Object_Type_Enum;
 
 /**
  * This class exports an entity using JSON-LD.
@@ -103,7 +104,7 @@ class Wordlift_Jsonld_Service {
 		//
 		// See https://github.com/insideout10/wordlift-plugin/issues/406.
 		// See https://codex.wordpress.org/AJAX_in_Plugins.
-        // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@ob_clean();
 
 		// Get the parameter from the request.
@@ -124,7 +125,7 @@ class Wordlift_Jsonld_Service {
 	 * @since 3.18.5
 	 */
 	private function send_jsonld( $response ) {
-        // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@header( 'Content-Type: application/ld+json; charset=' . get_option( 'blog_charset' ) );
 		echo wp_json_encode( $response );
 		if ( apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
@@ -194,11 +195,11 @@ class Wordlift_Jsonld_Service {
 				// via the `@id` but no other properties are loaded.
 				$ignored = array();
 				if ( $item instanceof Term_Reference ) {
-                    // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
-					  $term_jsonld = $that->term_jsonld_adapter->get( $item->get_id(), $context );
+					// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
+					$term_jsonld = $that->term_jsonld_adapter->get( $item->get_id(), $context );
 
-					  // For term references, we publish a jsonld array on the page, use only the first item.
-					  return count( $term_jsonld ) > 0 ? $term_jsonld[0] : false;
+					// For term references, we publish a jsonld array on the page, use only the first item.
+					return count( $term_jsonld ) > 0 ? $term_jsonld[0] : false;
 				} elseif ( $item instanceof Post_Reference ) {
 					$item = $item->get_id();
 				}
@@ -222,11 +223,20 @@ class Wordlift_Jsonld_Service {
 			$references_infos,
 			function ( $item ) use ( $references ) {
 
-				return isset( $item['reference'] ) &&
-				   // Check that the reference is required
-				   $item['reference']->get_required() &&
-				   // Check that the reference isn't being output already.
-				   ! in_array( $item['reference']->get_id(), $references, true );
+				if ( ! isset( $item['reference'] ) ) {
+					return false;
+				}
+
+				/** @var Wordlift_Property_Entity_Reference $reference */
+				$reference = $item['reference'];
+
+				// Check that the reference is required
+				return $reference->get_required() &&
+					   // Check that the reference isn't being output already.
+					   // @@todo $references only contains post IDs, so we would need to check
+					   // the type of reference
+					   ( $reference->get_type() !== Object_Type_Enum::POST ||
+						 ! in_array( $reference->get_id(), $references, true ) );
 			}
 		);
 
@@ -237,10 +247,12 @@ class Wordlift_Jsonld_Service {
 					function ( $item ) use ( $references, $entity_to_jsonld_converter ) {
 
 						if ( ! isset( $item['reference'] ) ) {
-							  return null;
+							return null;
 						}
 
-						$post_id = $item['reference']->get_id();
+						/** @var Wordlift_Property_Entity_Reference $reference */
+						$reference = $item['reference'];
+						$post_id   = $reference->get_id();
 						if ( in_array( $post_id, $references, true ) ) {
 							return null;
 						}
@@ -284,7 +296,7 @@ class Wordlift_Jsonld_Service {
 		$jsonld = wp_json_encode( $this->get_jsonld( $is_homepage, $post_id, Jsonld_Context_Enum::PAGE ) );
 		?>
 		<script type="application/ld+json"><?php echo esc_html( $jsonld ); ?></script>
-													  <?php
+		<?php
 	}
 
 }

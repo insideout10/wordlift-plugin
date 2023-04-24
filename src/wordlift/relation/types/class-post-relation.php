@@ -16,8 +16,8 @@ use Wordlift\Object_Type_Enum;
 
 class Post_Relation extends Relation {
 
-	public function get_object_type() {
-		return Object_Type_Enum::POST;
+	public function __construct( $id, $relation_type ) {
+		parent::__construct( $id, $relation_type, Object_Type_Enum::POST );
 	}
 
 }

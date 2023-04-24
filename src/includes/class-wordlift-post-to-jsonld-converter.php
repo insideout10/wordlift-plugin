@@ -82,7 +82,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * @return array A JSON-LD array.
 	 * @since 3.10.0
 	 */
-	public function convert( $post_id, &$references = array(), &$references_infos = array() ) {
+	public function convert( $post_id, &$references = array(), &$references_infos = array(), &$reference_objects = array() ) {
 
 		// Get the post instance.
 		$post = get_post( $post_id );
@@ -92,7 +92,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		}
 
 		// Get the base JSON-LD and the list of entities referenced by this entity.
-		$jsonld = parent::convert( $post_id, $references, $references_infos );
+		$jsonld = parent::convert( $post_id, $references, $references_infos, $reference_objects );
 
 		// Set WebPage by default.
 		if ( empty( $jsonld['@type'] ) ) {
@@ -168,7 +168,8 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			}
 			$jsonld['commentCount'] = $comment_count;
 			$jsonld['inLanguage']   = $locale;
-			$post_adapter->add_references( $post_id, $references );
+
+			$post_adapter->add_references( $post_id, $references, $references_infos );
 		}
 
 		// Set the publisher.
@@ -204,8 +205,9 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		$ret_val = apply_filters(
 			'wl_post_jsonld_array',
 			array(
-				'jsonld'     => $jsonld,
-				'references' => $references,
+				'jsonld'           => $jsonld,
+				'references'       => $references, // This one is only an array of post IDs.
+				'references_infos' => $references_infos,
 			),
 			$post_id
 		);
@@ -547,7 +549,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 				// Legacy code may still push numerical references to this
 				// $references variable, so convert it to post references.
 				if ( is_numeric( $reference ) ) {
-					  return new Post_Reference( $reference );
+					return new Post_Reference( $reference );
 				}
 
 				return $reference;

@@ -251,7 +251,24 @@ class Wordlift_Post_Adapter {
 	 * @param $post_id int
 	 * @param $references int[]
 	 */
-	public function add_references( $post_id, &$references ) {
+	public function add_references( $post_id, &$references, &$reference_infos ) {
+
+		// We need to get 2 reference types:
+		// 1. post references, they go both in reference infos and references.
+		// 2. term references, they only go in reference infos.
+
+		$this->add_post_references( $post_id, $references, $reference_infos );
+		$this->add_term_references( $post_id, $references, $reference_infos );
+
+	}
+
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	private function add_post_references( $post_id, &$references, &$reference_infos ) {
+
+	}
+
+	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	private function add_term_references( $post_id, &$references, &$reference_infos ) {
 		$tags = get_the_tags( $post_id );
 
 		if ( $tags && ! is_wp_error( $tags ) ) {

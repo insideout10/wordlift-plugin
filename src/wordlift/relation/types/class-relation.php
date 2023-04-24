@@ -11,7 +11,9 @@
 
 namespace Wordlift\Relation\Types;
 
-abstract class Relation {
+use Wordlift\Relation\Hashable;
+
+abstract class Relation implements Hashable {
 
 	/**
 	 * @var int
@@ -23,14 +25,14 @@ abstract class Relation {
 	/**
 	 * Represents a subject type.
 	 *
-	 * @var int {@link Object_Type_Enum}
+	 * @var int $subject_type One of Object_Type_Enum
 	 */
-	private $subject_type;
+	private $object_type_enum;
 
-	public function __construct( $id, $relation_type, $subject_type ) {
-		$this->id            = $id;
-		$this->relation_type = $relation_type;
-		$this->subject_type  = $subject_type;
+	public function __construct( $id, $classification_scope, $object_type_enum ) {
+		$this->id               = $id;
+		$this->relation_type    = $classification_scope;
+		$this->object_type_enum = $object_type_enum;
 	}
 
 	/**
@@ -45,7 +47,9 @@ abstract class Relation {
 	/**
 	 * @return int Represents the {@link Object_Type_Enum}
 	 */
-	abstract public function get_object_type();
+	public function get_object_type() {
+		return $this->object_type_enum;
+	}
 
 	/**
 	 * @return int Represents the {@link Object_Type_Enum}
@@ -63,4 +67,23 @@ abstract class Relation {
 		return $this->relation_type;
 	}
 
+	public function hash() {
+		// Define the hash algorithm for your object
+		// Here's an example using the md5 hash function
+		return md5(
+		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
+			serialize(
+				array(
+					$this->id,
+					$this->relation_type,
+					$this->subject_type,
+					$this->get_object_type(),
+				)
+			)
+		);
+	}
+
+	public function equals( Hashable $obj ) {
+		return $this->hash() === $obj->hash();
+	}
 }
