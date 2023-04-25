@@ -249,7 +249,6 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		$this->cache->put(
 			$post_id,
 			array(
-				// @@todo check the `references`.
 				'references' => $references,
 				'jsonld'     => $jsonld,
 				'relations'  => $relations,

@@ -241,6 +241,11 @@ class Wordlift_Jsonld_Service {
 	private static $instance;
 
 	/**
+	 * @var Wordlift_Entity_Type_Service|null
+	 */
+	private $entity_type_service;
+
+	/**
 	 * Create a JSON-LD service.
 	 *
 	 * @param \Wordlift_Entity_Service           $entity_service A {@link Wordlift_Entity_Service} instance.
@@ -256,6 +261,7 @@ class Wordlift_Jsonld_Service {
 		$this->converter           = $converter;
 		$this->website_converter   = $website_converter;
 		$this->term_jsonld_adapter = $term_jsonld_adapter;
+		$this->entity_type_service = Wordlift_Entity_Type_Service::get_instance();
 		self::$instance            = $this;
 
 	}
@@ -373,15 +379,24 @@ class Wordlift_Jsonld_Service {
 				$object_type = $object->get_type();
 
 				if ( $object_type === Object_Type_Enum::POST ) {
+					$post_status = get_post_status( $object_id );
+
+					// Do not add unpublished posts.
+					if ( 'publish' !== $post_status ) {
+						continue;
+					}
+
+					// Do not add Articles.
+					if ( $this->entity_type_service->has_entity_type( $object_id, 'http://schema.org/Article' ) ) {
+						continue;
+					}
+
 					$references_2      = array();
 					$reference_infos_2 = array();
 					$relations_2       = new Relations();
 					$jsonld[]          = $entity_to_jsonld_converter->convert( $object_id, $references_2, $reference_infos_2, $relations_2 );
-				} elseif ( $object_type === Object_Type_Enum::TERM ) {
-					// Skip the Uncategorized term.
-					if ( 1 === $object_id ) {
-						continue;
-					}
+					$this->add_location( $jsonld, $object );
+				} elseif ( $object_type === Object_Type_Enum::TERM && 1 !== $object_id ) { // Skip the Uncategorized term.
 					$jsonld[] = $this->term_jsonld_adapter->get( $object_id, $context );
 				} else {
 					continue;
@@ -483,6 +498,34 @@ class Wordlift_Jsonld_Service {
 		$jsonld = apply_filters( 'wl_after_get_jsonld', $jsonld, $post_id, $context );
 
 		return $jsonld;
+	}
+
+	private function add_location( &$jsonld, $content_id ) {
+		/*
+		 * Add the locations to the references.
+		 *
+		 * @since 3.19.5
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/858.
+		 */
+		// We do support only post targets here, because of the Entity_Type_Service limitation.
+		if ( $content_id->get_type() !== Object_Type_Enum::POST ) {
+			return;
+		}
+
+		$object_id = $content_id->get_id();
+		if ( $this->entity_type_service->has_entity_type( $object_id, 'http://schema.org/Action' )
+			 || $this->entity_type_service->has_entity_type( $object_id, 'http://schema.org/Event' )
+			 || $this->entity_type_service->has_entity_type( $object_id, 'http://schema.org/Organization' ) ) {
+
+			$post_ids = get_post_meta( $object_id, Wordlift_Schema_Service::FIELD_LOCATION );
+			foreach ( $post_ids as $post_id ) {
+				$references      = array();
+				$reference_infos = array();
+				$relations       = new Relations();
+				$jsonld[]        = $this->converter->convert( $post_id, $references, $reference_infos, $relations );
+			}
+		}
 	}
 
 	/**

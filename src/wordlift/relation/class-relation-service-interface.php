@@ -29,6 +29,7 @@ interface  Relation_Service_Interface {
 	 * Add the relations for the provided {@link Wordpress_Content_Id} to the provided {@link Relations_Interface}
 	 *
 	 * @param Wordpress_Content_Id $content_id
+	 * @param Relations            $relations
 	 */
 	public function add_relations( $content_id, $relations );
 
