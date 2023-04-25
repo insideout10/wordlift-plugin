@@ -2,7 +2,7 @@
 
 namespace Wordlift\Relation;
 
-use Wordlift\Relation\Types\Relation;
+use JsonSerializable;
 
 /**
  * Try to keep this interface to conform to https://www.php.net/manual/en/class.ds-set.php
@@ -10,15 +10,20 @@ use Wordlift\Relation\Types\Relation;
  * We can't use https://www.php.net/manual/en/class.ds-set.php because we're still PHP 5.6 compatible
  * (as of 2023-04-20).
  */
-class Relations_Impl implements Relations {
+class Relations implements Relations_Interface, JsonSerializable {
 
 	/**
 	 * @var array<Relation> $container
 	 */
 	private $container = array();
 
-	public static function create() {
+	public static function from_json( $json ) {
+		$relations = new self();
+		foreach ( $json as $item ) {
+			$relations->add( Relation::from_json( $item ) );
+		}
 
+		return $relations;
 	}
 
 	public function add( Relation ...$values ) {
@@ -76,4 +81,11 @@ class Relations_Impl implements Relations {
 		return isset( $this->container[ $offset ] ) ? $this->container[ $offset ] : null;
 	}
 
+	public function toArray() {
+		return $this->container;
+	}
+
+	public function jsonSerialize() {
+		return $this->container;
+	}
 }

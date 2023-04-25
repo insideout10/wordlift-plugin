@@ -6,11 +6,13 @@
 
 namespace Wordlift\Content\Wordpress;
 
+use JsonSerializable;
+use Wordlift\Assertions;
 use Wordlift\Content\Content_Id;
 use Wordlift\Object_Type_Enum;
 
 // phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledClassName
-class Wordpress_Content_Id implements Content_Id {
+class Wordpress_Content_Id implements Content_Id, JsonSerializable {
 
 	/**
 	 * @var int $id The post/page/term/user ID.
@@ -39,8 +41,15 @@ class Wordpress_Content_Id implements Content_Id {
 	 * @param int $type The content type, post/page/term/user.
 	 */
 	public function __construct( $id, $type ) {
-		$this->id   = $id;
-		$this->type = $type;
+		Assertions::is_numeric( $id );
+		Assertions::is_numeric( $type );
+
+		$this->id   = (int) $id;
+		$this->type = (int) $type;
+	}
+
+	public static function from_json( $json ) {
+		return new self( $json['id'], $json['type'] );
 	}
 
 	public function get_id() {
@@ -51,4 +60,10 @@ class Wordpress_Content_Id implements Content_Id {
 		return $this->type;
 	}
 
+	public function jsonSerialize() {
+		return array(
+			'id'   => $this->id,
+			'type' => $this->type,
+		);
+	}
 }

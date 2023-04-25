@@ -1,6 +1,6 @@
 <?php
 
-use Wordlift\Relation\Term_Relation_Service;
+use Wordlift\Relation\Post_Terms_Relation_Service;
 use Wordlift\Term\Type_Service;
 
 /**
@@ -36,7 +36,7 @@ class No_Vocabulary_Terms_Save extends Wordlift_Vocabulary_Terms_Unit_Test_Case 
 	public function test_should_return_relation_type_correctly_for_terms() {
 		$term_data     = wp_insert_term( 'no_vocabulary_term_3', self::NO_VOCABULARY_TERM_TAXONOMY );
 		$term_id       = $term_data['term_id'];
-		$term_relation = Term_Relation_Service::get_instance();
+		$term_relation = Post_Terms_Relation_Service::get_instance();
 		$this->assertSame( WL_WHAT_RELATION, $term_relation->get_relation_type( $term_id ), 'For Thing we should get WL_WHAT_RELATION' );
 	}
 

@@ -8,9 +8,8 @@
  * @package Wordlift
  */
 
-use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Jsonld\Reference;
-use Wordlift\Relation\Object_Relation_Service;
+use Wordlift\Relation\Relations;
 
 /**
  * Define the {@link Wordlift_Post_To_Jsonld_Converter} class.
@@ -37,24 +36,19 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * @var false
 	 */
 	private $disable_convert_filters;
-	/**
-	 * @var Object_Relation_Service
-	 */
-	private $object_relation_service;
 
 	/**
 	 * Wordlift_Post_To_Jsonld_Converter constructor.
 	 *
-	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_User_Service        $user_service A {@link Wordlift_User_Service} instance.
-	 * @param \Wordlift_Attachment_Service  $attachment_service A {@link Wordlift_Attachment_Service} instance.
+	 * @param Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
+	 * @param Wordlift_User_Service        $user_service A {@link Wordlift_User_Service} instance.
+	 * @param Wordlift_Attachment_Service  $attachment_service A {@link Wordlift_Attachment_Service} instance.
 	 *
 	 * @since 3.10.0
 	 */
 	public function __construct( $entity_type_service, $user_service, $attachment_service, $disable_convert_filters = false ) {
 		parent::__construct( $entity_type_service, $user_service, $attachment_service, Wordlift_Property_Getter_Factory::create() );
 		$this->disable_convert_filters = $disable_convert_filters;
-		$this->object_relation_service = Object_Relation_Service::get_instance();
 		// Set a reference to the logger.
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Post_To_Jsonld_Converter' );
 
@@ -82,7 +76,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * @return array A JSON-LD array.
 	 * @since 3.10.0
 	 */
-	public function convert( $post_id, &$references = array(), &$references_infos = array(), &$reference_objects = array() ) {
+	public function convert( $post_id, &$references = array(), &$references_infos = array(), $relations = null ) {
 
 		// Get the post instance.
 		$post = get_post( $post_id );
@@ -92,7 +86,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		}
 
 		// Get the base JSON-LD and the list of entities referenced by this entity.
-		$jsonld = parent::convert( $post_id, $references, $references_infos, $reference_objects );
+		$jsonld = parent::convert( $post_id, $references, $references_infos, $relations );
 
 		// Set WebPage by default.
 		if ( empty( $jsonld['@type'] ) ) {
@@ -168,17 +162,10 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			}
 			$jsonld['commentCount'] = $comment_count;
 			$jsonld['inLanguage']   = $locale;
-
-			$post_adapter->add_references( $post_id, $references, $references_infos );
 		}
 
 		// Set the publisher.
 		$this->set_publisher( $jsonld );
-
-		$references = $this->convert_references( $references );
-
-		// Process the references if any.
-		$this->set_mentions_and_about( $references, $post, $jsonld );
 
 		// Finally set the author.
 		$jsonld['author'] = $this->get_author( $post->post_author, $references );
@@ -195,8 +182,10 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		 *
 		 * @type array $jsonld The JSON-LD structure.
 		 * @type int[] $references An array of post IDs.
+		 * @type Relations $relations A set of `Relation`s.
 		 * }
 		 * @since 3.25.0
+		 * @since 3.43.0 The filter provides a `Relations` instance.
 		 *
 		 * @see https://www.geeklab.info/2010/04/wordpress-pass-variables-by-reference-with-apply_filter/
 		 *
@@ -208,6 +197,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 				'jsonld'           => $jsonld,
 				'references'       => $references, // This one is only an array of post IDs.
 				'references_infos' => $references_infos,
+				'relations'        => $relations,
 			),
 			$post_id
 		);
@@ -445,117 +435,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			'url'    => $uploads_dir['baseurl'] . substr( $publisher_logo_path, strlen( $uploads_dir['basedir'] ) ),
 			'width'  => $size['width'],
 			'height' => $size['height'],
-		);
-	}
-
-	/**
-	 * @param $references
-	 * @param $post
-	 * @param $jsonld
-	 *
-	 * @return void
-	 */
-	private function set_mentions_and_about( $references, $post, &$jsonld ) {
-
-		if ( count( $references ) === 0 ) {
-			return;
-		}
-
-		// Prepare the `about` and `mentions` array.
-		$mentions = array();
-		$about    = array();
-
-		// If the entity is in the title, then it should be an `about`.
-		foreach ( $references as $reference ) {
-
-			if ( ! $reference instanceof Reference ) {
-				// This condition should never be reached.
-				continue;
-			}
-
-			// Get the entity labels.
-			$labels = Wordlift_Entity_Service::get_instance()->get_labels( $reference->get_id(), $reference->get_type() );
-			// Get the entity URI.
-			$item = array(
-				'@id' => Wordlift_Entity_Service::get_instance()->get_uri( $reference->get_id(), $reference->get_type() ),
-			);
-
-			$escaped_labels = array_map(
-				function ( $value ) {
-					return preg_quote( $value, '/' );
-				},
-				$labels
-			);
-
-			$matches = false;
-
-			// When the title is empty, then we shouldn't yield a match to about section.
-			if ( array_filter( $escaped_labels ) ) {
-				// Check if the labels match any part of the title.
-				$matches = $this->check_title_match( $escaped_labels, $post->post_title );
-			}
-
-			// If the title matches, assign the entity to the about, otherwise to the mentions.
-			if ( $matches ) {
-				$about[] = $item;
-			} else {
-				$mentions[] = $item;
-			}
-		}
-
-		// If we have abouts, assign them to the JSON-LD.
-		if ( 0 < count( $about ) ) {
-			$jsonld['about'] = $about;
-		}
-
-		// If we have mentions, assign them to the JSON-LD.
-		if ( 0 < count( $mentions ) ) {
-			$jsonld['mentions'] = $mentions;
-		}
-
-		return $jsonld;
-	}
-
-	/**
-	 * Check if the labels match any part of the title.
-	 *
-	 * @param $labels array The labels to check.
-	 * @param $title string The title to check.
-	 *
-	 * @return boolean
-	 */
-	public function check_title_match( $labels, $title ) {
-
-		// If the title is empty, then we shouldn't yield a match to about section.
-		if ( empty( $title ) ) {
-			return false;
-		}
-
-		// Check if the labels match any part of the title.
-		return 1 === preg_match( '/\b(' . implode( '|', $labels ) . ')\b/iu', $title );
-
-	}
-
-	/**
-	 * Convert references to abstract data type if we find any.
-	 *
-	 * @param $references array<int|Reference>
-	 *
-	 * @return Reference[]
-	 */
-	private function convert_references( $references ) {
-		return array_map(
-			function ( $reference ) {
-				// Legacy code may still push numerical references to this
-				// $references variable, so convert it to post references.
-				if ( is_numeric( $reference ) ) {
-					return new Post_Reference( $reference );
-				}
-
-				return $reference;
-
-			},
-			$references
 		);
 	}
 

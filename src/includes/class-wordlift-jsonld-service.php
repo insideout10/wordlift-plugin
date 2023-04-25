@@ -6,10 +6,11 @@
  * @package Wordlift
  */
 
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Jsonld\Jsonld_Context_Enum;
-use Wordlift\Jsonld\Post_Reference;
-use Wordlift\Jsonld\Term_Reference;
 use Wordlift\Object_Type_Enum;
+use Wordlift\Relation\Relation;
+use Wordlift\Relation\Relations;
 
 /**
  * This class exports an entity using JSON-LD.
@@ -17,6 +18,182 @@ use Wordlift\Object_Type_Enum;
  * @since 3.8.0
  */
 class Wordlift_Jsonld_Service {
+
+	private static $creative_work_types = array(
+		'AmpStory',
+		'ArchiveComponent',
+		'Article',
+		'Atlas',
+		'Blog',
+		'Book',
+		'Chapter',
+		'Claim',
+		'Clip',
+		'Code',
+		'Collection',
+		'ComicStory',
+		'Comment',
+		'Conversation',
+		'Course',
+		'CreativeWork',
+		'CreativeWorkSeason',
+		'CreativeWorkSeries',
+		'DataCatalog',
+		'Dataset',
+		'DefinedTermSet',
+		'Diet',
+		'DigitalDocument',
+		'Drawing',
+		'EducationalOccupationalCredential',
+		'Episode',
+		'ExercisePlan',
+		'Game',
+		'Guide',
+		'HowTo',
+		'HowToDirection',
+		'HowToSection',
+		'HowToStep',
+		'HowToTip',
+		'HyperToc',
+		'HyperTocEntry',
+		'LearningResource',
+		'Legislation',
+		'Manuscript',
+		'Map',
+		'MathSolver',
+		'MediaObject',
+		'Menu',
+		'MenuSection',
+		'Message',
+		'Movie',
+		'MusicComposition',
+		'MusicPlaylist',
+		'MusicRecording',
+		'Painting',
+		'Photograph',
+		'Play',
+		'Poster',
+		'PublicationIssue',
+		'PublicationVolume',
+		'Quotation',
+		'Review',
+		'Sculpture',
+		'Season',
+		'SheetMusic',
+		'ShortStory',
+		'SoftwareApplication',
+		'SoftwareSourceCode',
+		'SpecialAnnouncement',
+		'Thesis',
+		'TvSeason',
+		'TvSeries',
+		'VisualArtwork',
+		'WebContent',
+		'WebPage',
+		'WebPageElement',
+		'WebSite',
+		'AdvertiserContentArticle',
+		'NewsArticle',
+		'Report',
+		'SatiricalArticle',
+		'ScholarlyArticle',
+		'SocialMediaPosting',
+		'TechArticle',
+		'AnalysisNewsArticle',
+		'AskPublicNewsArticle',
+		'BackgroundNewsArticle',
+		'OpinionNewsArticle',
+		'ReportageNewsArticle',
+		'ReviewNewsArticle',
+		'MedicalScholarlyArticle',
+		'BlogPosting',
+		'DiscussionForumPosting',
+		'LiveBlogPosting',
+		'ApiReference',
+		'Audiobook',
+		'MovieClip',
+		'RadioClip',
+		'TvClip',
+		'VideoGameClip',
+		'ProductCollection',
+		'ComicCoverArt',
+		'Answer',
+		'CorrectionComment',
+		'Question',
+		'PodcastSeason',
+		'RadioSeason',
+		'TvSeason',
+		'BookSeries',
+		'MovieSeries',
+		'Periodical',
+		'PodcastSeries',
+		'RadioSeries',
+		'TvSeries',
+		'VideoGameSeries',
+		'ComicSeries',
+		'Newspaper',
+		'DataFeed',
+		'CompleteDataFeed',
+		'CategoryCodeSet',
+		'NoteDigitalDocument',
+		'PresentationDigitalDocument',
+		'SpreadsheetDigitalDocument',
+		'TextDigitalDocument',
+		'PodcastEpisode',
+		'RadioEpisode',
+		'TvEpisode',
+		'VideoGame',
+		'Recipe',
+		'Course',
+		'Quiz',
+		'LegislationObject',
+		'AudioObject',
+		'DModel',
+		'DataDownload',
+		'ImageObject',
+		'LegislationObject',
+		'MusicVideoObject',
+		'VideoObject',
+		'Audiobook',
+		'Barcode',
+		'EmailMessage',
+		'MusicAlbum',
+		'MusicRelease',
+		'ComicIssue',
+		'ClaimReview',
+		'CriticReview',
+		'EmployerReview',
+		'MediaReview',
+		'Recommendation',
+		'UserReview',
+		'ReviewNewsArticle',
+		'MobileApplication',
+		'VideoGame',
+		'WebApplication',
+		'CoverArt',
+		'ComicCoverArt',
+		'HealthTopicContent',
+		'AboutPage',
+		'CheckoutPage',
+		'CollectionPage',
+		'ContactPage',
+		'FaqPage',
+		'ItemPage',
+		'MedicalWebPage',
+		'ProfilePage',
+		'QaPage',
+		'RealEstateListing',
+		'SearchResultsPage',
+		'MediaGallery',
+		'ImageGallery',
+		'VideoGallery',
+		'SiteNavigationElement',
+		'Table',
+		'WpAdBlock',
+		'WpFooter',
+		'WpHeader',
+		'WpSideBar',
+	);
 
 	/**
 	 * A {@link Wordlift_Entity_Service} instance.
@@ -185,86 +362,115 @@ class Wordlift_Jsonld_Service {
 		// Set a reference to the entity_to_jsonld_converter to use in the closures.
 		$entity_to_jsonld_converter = $this->converter;
 
-		$jsonld = array( $entity_to_jsonld_converter->convert( $post_id, $references, $references_infos ) );
+		$relations = new Relations();
+		$jsonld    = array( $entity_to_jsonld_converter->convert( $post_id, $references, $references_infos, $relations ) );
 
-		$that                       = $this;
-		$expanded_references_jsonld = array_map(
-			function ( $item ) use ( $context, $entity_to_jsonld_converter, &$references_infos, $that ) {
-				// "2nd level properties" may not output here, e.g. a post
-				// mentioning an event, located in a place: the place is referenced
-				// via the `@id` but no other properties are loaded.
-				$ignored = array();
-				if ( $item instanceof Term_Reference ) {
-					// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
-					$term_jsonld = $that->term_jsonld_adapter->get( $item->get_id(), $context );
+		// Add `about`/`mentions` only for `CreativeWork` and descendants.
+		if ( array_intersect( (array) $jsonld[0]['@type'], self::$creative_work_types ) ) {
+			foreach ( $relations->toArray() as $relation ) {
+				$object      = $relation->get_object();
+				$object_id   = $object->get_id();
+				$object_type = $object->get_type();
 
-					// For term references, we publish a jsonld array on the page, use only the first item.
-					return count( $term_jsonld ) > 0 ? $term_jsonld[0] : false;
-				} elseif ( $item instanceof Post_Reference ) {
-					$item = $item->get_id();
+				if ( $object_type === Object_Type_Enum::POST ) {
+					$references_2      = array();
+					$reference_infos_2 = array();
+					$relations_2       = new Relations();
+					$jsonld[]          = $entity_to_jsonld_converter->convert( $object_id, $references_2, $reference_infos_2, $relations_2 );
+				} elseif ( $object_type === Object_Type_Enum::TERM ) {
+					// Skip the Uncategorized term.
+					if ( 1 === $object_id ) {
+						continue;
+					}
+					$jsonld[] = $this->term_jsonld_adapter->get( $object_id, $context );
+				} else {
+					continue;
 				}
 
-				// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
-				return $entity_to_jsonld_converter->convert( $item, $ignored, $references_infos );
-			},
-			array_unique( $references )
-		);
+				// Add the `mentions`/`about` prop.
+				$this->add_mention_or_about( $jsonld, $post_id, $relation );
+			}
+		}
 
+		//
+		// $that                       = $this;
+		// $expanded_references_jsonld = array_map(
+		// function ( $item ) use ( $context, $entity_to_jsonld_converter, &$references_infos, $that, $relations ) {
+		// "2nd level properties" may not output here, e.g. a post
+		// mentioning an event, located in a place: the place is referenced
+		// via the `@id` but no other properties are loaded.
+		// $ignored = array();
+		// if ( $item instanceof Term_Reference ) {
+//					// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
+		// $term_jsonld = $that->term_jsonld_adapter->get( $item->get_id(), $context );
+		//
+		// For term references, we publish a jsonld array on the page, use only the first item.
+		// return count( $term_jsonld ) > 0 ? $term_jsonld[0] : false;
+		// } elseif ( $item instanceof Post_Reference ) {
+		// $item = $item->get_id();
+		// }
+		//
+//				// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
+		// return $entity_to_jsonld_converter->convert( $item, $ignored, $references_infos, $relations );
+		// },
+		// array_unique( $references )
+		// );
+		//
 		// Convert each URI to a JSON-LD array, while gathering referenced entities.
 		// in the references array.
-		$jsonld = array_merge(
-			$jsonld,
-			// Convert each URI in the references array to JSON-LD. We don't output
-			// entities already output above (hence the array_diff).
-			array_filter( $expanded_references_jsonld )
-		);
-
-		$required_references = array_filter(
-			$references_infos,
-			function ( $item ) use ( $references ) {
-
-				if ( ! isset( $item['reference'] ) ) {
-					return false;
-				}
-
-				/** @var Wordlift_Property_Entity_Reference $reference */
-				$reference = $item['reference'];
-
-				// Check that the reference is required
-				return $reference->get_required() &&
-					   // Check that the reference isn't being output already.
-					   // @@todo $references only contains post IDs, so we would need to check
-					   // the type of reference
-					   ( $reference->get_type() !== Object_Type_Enum::POST ||
-						 ! in_array( $reference->get_id(), $references, true ) );
-			}
-		);
-
-		$jsonld = array_merge(
-			$jsonld,
-			array_filter(
-				array_map(
-					function ( $item ) use ( $references, $entity_to_jsonld_converter ) {
-
-						if ( ! isset( $item['reference'] ) ) {
-							return null;
-						}
-
-						/** @var Wordlift_Property_Entity_Reference $reference */
-						$reference = $item['reference'];
-						$post_id   = $reference->get_id();
-						if ( in_array( $post_id, $references, true ) ) {
-							return null;
-						}
-
-						$references[] = $post_id;
-
-						return $entity_to_jsonld_converter->convert( $post_id, $references );
-					},
-					$required_references
-				)
-			)
-		);
+		// $jsonld = array_merge(
+		// $jsonld,
+		// Convert each URI in the references array to JSON-LD. We don't output
+		// entities already output above (hence the array_diff).
+		// array_filter( $expanded_references_jsonld )
+		// );
+		//
+		// $required_references = array_filter(
+		// $references_infos,
+		// function ( $item ) use ( $references ) {
+		//
+		// if ( ! isset( $item['reference'] ) ) {
+		// return false;
+		// }
+		//
+		// ** @var Wordlift_Property_Entity_Reference $reference */
+		// $reference = $item['reference'];
+		//
+		// Check that the reference is required
+		// return $reference->get_required() &&
+		// Check that the reference isn't being output already.
+		// @@todo $references only contains post IDs, so we would need to check
+		// the type of reference
+		// ( $reference->get_type() !== Object_Type_Enum::POST ||
+		// ! in_array( $reference->get_id(), $references, true ) );
+		// }
+		// );
+		//
+		// $jsonld = array_merge(
+		// $jsonld,
+		// array_filter(
+		// array_map(
+		// function ( $item ) use ( $references, $entity_to_jsonld_converter ) {
+		//
+		// if ( ! isset( $item['reference'] ) ) {
+		// return null;
+		// }
+		//
+		// ** @var Wordlift_Property_Entity_Reference $reference */
+		// $reference = $item['reference'];
+		// $post_id   = $reference->get_id();
+		// if ( in_array( $post_id, $references, true ) ) {
+		// return null;
+		// }
+		//
+		// $references[] = $post_id;
+		//
+		// return $entity_to_jsonld_converter->convert( $post_id, $references );
+		// },
+		// $required_references
+		// )
+		// )
+		// );
 
 		/**
 		 * Filter name: wl_after_get_jsonld
@@ -297,6 +503,62 @@ class Wordlift_Jsonld_Service {
 		?>
 		<script type="application/ld+json"><?php echo esc_html( $jsonld ); ?></script>
 		<?php
+	}
+
+	/**
+	 * @param array    $jsonld
+	 * @param Relation $relation
+	 *
+	 * @return void
+	 */
+	private function add_mention_or_about( &$jsonld, $post_id, $relation ) {
+		$content_service = Wordpress_Content_Service::get_instance();
+		$entity_service  = Wordlift_Entity_Service::get_instance();
+
+		$object     = $relation->get_object();
+		$entity_uri = $content_service->get_entity_id( $object );
+		$labels     = $entity_service->get_labels( $object->get_id(), $object->get_type() );
+
+		$escaped_labels = array_map(
+			function ( $value ) {
+				return preg_quote( $value, '/' );
+			},
+			$labels
+		);
+
+		$matches = false;
+
+		// When the title is empty, then we shouldn't yield a match to about section.
+		if ( array_filter( $escaped_labels ) ) {
+			// Check if the labels match any part of the title.
+			$post    = get_post( $post_id );
+			$matches = $this->check_title_match( $escaped_labels, $post->post_title );
+		}
+
+		// If the title matches, assign the entity to the about, otherwise to the mentions.
+		$property_name                 = $matches ? 'about' : 'mentions';
+		$jsonld[0][ $property_name ]   = isset( $jsonld[0][ $property_name ] ) ? (array) $jsonld[0][ $property_name ] : array();
+		$jsonld[0][ $property_name ][] = array( '@id' => $entity_uri );
+	}
+
+	/**
+	 * Check if the labels match any part of the title.
+	 *
+	 * @param $labels array The labels to check.
+	 * @param $title string The title to check.
+	 *
+	 * @return boolean
+	 */
+	private function check_title_match( $labels, $title ) {
+
+		// If the title is empty, then we shouldn't yield a match to about section.
+		if ( empty( $title ) ) {
+			return false;
+		}
+
+		// Check if the labels match any part of the title.
+		return 1 === preg_match( '/\b(' . implode( '|', $labels ) . ')\b/iu', $title );
+
 	}
 
 }

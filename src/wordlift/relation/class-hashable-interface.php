@@ -7,9 +7,9 @@ namespace Wordlift\Relation;
  *
  * When we would cut support for PHP 5.x we could migrate to the official Hashable.
  */
-interface Hashable {
+interface Hashable_Interface {
 
-	public function equals( Hashable $obj );
+	public function equals( Hashable_Interface $obj );
 
 	public function hash();
 

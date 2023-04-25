@@ -12,7 +12,7 @@
  */
 
 use Wordlift\Cache\Ttl_Cache;
-use Wordlift\Jsonld\Reference_Processor;
+use Wordlift\Relation\Relations;
 
 /**
  * Define the {@link Wordlift_Cached_Post_Converter} class.
@@ -57,10 +57,6 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * @var Ttl_Cache
 	 */
 	private $cache;
-	/**
-	 * @var Reference_Processor
-	 */
-	private $reference_processor;
 
 	/**
 	 * Wordlift_Cached_Post_Converter constructor.
@@ -72,9 +68,8 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
-		$this->cache               = $cache;
-		$this->converter           = $converter;
-		$this->reference_processor = Reference_Processor::get_instance();
+		$this->cache     = $cache;
+		$this->converter = $converter;
 		$this->init_hooks();
 
 	}
@@ -148,7 +143,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * @inheritdoc
 	 */
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-	public function convert( $post_id, &$references = array(), &$references_infos = array(), &$reference_objects = array(), &$cache = false ) {
+	public function convert( $post_id, &$references = array(), &$references_infos = array(), $relations = null, &$cache = false ) {
 
 		// Ensure post ID is `int`. Otherwise we may have issues with caching, since caching is strict about
 		// key var types.
@@ -157,10 +152,17 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		$this->log->trace( "Converting post $post_id..." );
 
 		// Try to get a cached result.
-		$contents = $this->get_cache( $post_id, $references );
+		$arr = $this->get_cache( $post_id );
 
 		// Return the cached contents if any.
-		if ( false !== $contents ) {
+		if ( false !== $arr ) {
+			$contents = $arr['jsonld'];
+
+			// Add the cached relations if any.
+			if ( is_a( $arr['relations'], 'Wordlift\Relation\Relations' ) ) {
+				$relations->add( ...$arr['relations']->toArray() );
+			}
+
 			$this->log->debug( "Cached contents found for post $post_id." );
 
 			// Inform the caller that this is cached result.
@@ -178,7 +180,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		$this->add_http_header( $post_id, false );
 
 		// Convert the post.
-		$jsonld = $this->converter->convert( $post_id, $references, $references_infos );
+		$jsonld = $this->converter->convert( $post_id, $references, $references_infos, $relations );
 
 		/**
 		 * @since 3.32.0
@@ -186,7 +188,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		 * it here before saving it on cache.
 		 */
 		// Cache the results.
-		$this->set_cache( $post_id, $references, $jsonld );
+		$this->set_cache( $post_id, $references, $jsonld, $relations );
 
 		// Finally return the JSON-LD.
 		return $jsonld;
@@ -202,7 +204,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 * @since 3.16.0
 	 */
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-	private function get_cache( $post_id, &$references = array() ) {
+	private function get_cache( $post_id ) {
 
 		// Ensure post ID is int, because cache is strict about var types.
 		$post_id = (int) $post_id;
@@ -215,17 +217,18 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 
 		// Bail out if we don't have cached contents or the cached contents are
 		// invalid.
-		if ( null === $contents || ! isset( $contents['jsonld'] ) || ! isset( $contents['references'] ) ) {
+		if ( null === $contents || ! isset( $contents['jsonld'] ) || ! isset( $contents['references'] ) || ! isset( $contents['relations'] ) ) {
 			$this->log->debug( "Cached contents for post $post_id not found." );
 
 			return false;
 		}
 
-		// Remap the cache.
-		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		$references = $this->reference_processor->deserialize_references( $contents['references'] );
-
-		return $contents['jsonld'];
+		return $contents['jsonld']
+			? array(
+				'jsonld'    => $contents['jsonld'],
+				'relations' => Relations::from_json( $contents['relations'] ),
+			)
+			: false;
 	}
 
 	/**
@@ -239,15 +242,17 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 *
 	 * @since 3.16.0
 	 */
-	private function set_cache( $post_id, $references, $jsonld ) {
+	private function set_cache( $post_id, $references, $jsonld, $relations ) {
 
 		$this->log->trace( "Caching result for post $post_id..." );
 
 		$this->cache->put(
 			$post_id,
 			array(
-				'references' => $this->reference_processor->serialize_references( $references ),
+				// @@todo check the `references`.
+				'references' => $references,
 				'jsonld'     => $jsonld,
+				'relations'  => $relations,
 			)
 		);
 

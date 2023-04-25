@@ -59,7 +59,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	 * @return array A JSON-LD array.
 	 * @since 3.8.0
 	 */
-	public function convert( $post_id, &$references = array(), &$references_infos = array(), &$reference_objects = array() ) {
+	public function convert( $post_id, &$references = array(), &$references_infos = array(), $relations = null ) {
 
 		// Get the post instance.
 		$post = get_post( $post_id );
@@ -70,9 +70,9 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 
 		// Get the base JSON-LD and the list of entities referenced by this entity.
 		if ( has_term( 'article', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $post_id ) ) {
-			$jsonld = $this->post_to_jsonld_converter->convert( $post_id, $references, $references_infos );
+			$jsonld = $this->post_to_jsonld_converter->convert( $post_id, $references, $references_infos, $relations );
 		} else {
-			$jsonld = parent::convert( $post_id, $references, $references_infos );
+			$jsonld = parent::convert( $post_id, $references, $references_infos, $relations );
 		}
 
 		// Get the entity name.

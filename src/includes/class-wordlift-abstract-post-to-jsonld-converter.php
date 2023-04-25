@@ -9,10 +9,11 @@
  * @subpackage Wordlift/includes
  */
 
-use Wordlift\Jsonld\Post_Reference;
-use Wordlift\Jsonld\Reference;
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Object_Type_Enum;
-use Wordlift\Relation\Object_Relation_Service;
+use Wordlift\Relation\Relation;
+use Wordlift\Relation\Relation_Service;
+use Wordlift\Relation\Relations;
 
 /**
  * Define the {@link Wordlift_Abstract_Post_To_Jsonld_Converter} class.
@@ -85,13 +86,13 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 *
 	 * @param int $post_id The post id.
 	 * @param array $references An array of entity references.
-	 * @param array $references_infos
+	 * @param array $relations
 	 *
 	 * @return array A JSON-LD array.
 	 * @since 3.10.0
 	 */
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-	public function convert( $post_id, &$references = array(), &$references_infos = array(), &$reference_objects = array() ) {
+	public function convert( $post_id, &$references = array(), &$references_infos = array(), $relations = null ) {
 
 		// Get the post instance.
 		$post = get_post( $post_id );
@@ -180,10 +181,15 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		//
 		// David: you can't set this to the `references`, because `references` it's an array of post
 		// IDs and client are using this. As of 3.42.1 (2023-04-20) I am refactoring this to use a
-		// new variable $reference_objects.
-		/** @var Object_Relation_Service $object_relation_service */
-		$object_relation_service      = Object_Relation_Service::get_instance();
-		$references_without_locations = $object_relation_service->get_references( $post_id, Object_Type_Enum::POST );
+		// new variable $relations.
+		// ** @var Object_Relation_Service $object_relation_service */
+		// $object_relation_service      = Object_Relation_Service::get_instance();
+		// $references_without_locations = $object_relation_service->get_references( $post_id, Object_Type_Enum::POST );
+
+		$relation_service = Relation_Service::get_instance();
+		$content_id       = Wordpress_Content_Id::create_post( $post_id );
+		$relation_service->add_relations( $content_id, $relations );
+		$this->add_relations_to_references( $relations, $references );
 
 		/*
 		 * Add the locations to the references.
@@ -193,38 +199,55 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/858.
 		 */
 		// A reference to use in closure.
-		$entity_type_service = $this->entity_type_service;
-		$locations           = array_reduce(
-			$references_without_locations,
-			function ( $carry, $reference ) use ( $entity_type_service ) {
-				/**
-				 * @var $reference Reference
-				 */
-				// @see https://schema.org/location for the schema.org types using the `location` property.
-				if ( ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Action' )
-					 && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Event' )
-					 && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Organization' ) ) {
-
-					return $carry;
-				}
-				$post_location_ids        = get_post_meta( $reference->get_id(), Wordlift_Schema_Service::FIELD_LOCATION );
-				$post_location_references = array_map(
-					function ( $post_id ) {
-						return new Post_Reference( $post_id );
-					},
-					$post_location_ids
-				);
-
-				return array_merge( $carry, $post_location_references );
-			},
-			array()
-		);
-
+		// @@todo check that we output the location
+		// $entity_type_service = $this->entity_type_service;
+		// $locations           = array_reduce(
+		// $references_without_locations,
+		// function ( $carry, $reference ) use ( $entity_type_service ) {
+		// **
+		// * @var $reference Reference
+		// */
+		// @see https://schema.org/location for the schema.org types using the `location` property.
+		// if ( ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Action' )
+		// && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Event' )
+		// && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Organization' ) ) {
+		//
+		// return $carry;
+		// }
+		// $post_location_ids        = get_post_meta( $reference->get_id(), Wordlift_Schema_Service::FIELD_LOCATION );
+		// $post_location_references = array_map(
+		// function ( $post_id ) {
+		// return new Post_Reference( $post_id );
+		// },
+		// $post_location_ids
+		// );
+		//
+		// return array_merge( $carry, $post_location_references );
+		// },
+		// array()
+		// );
+		//
 		// Merge the references with the referenced locations if any.
-		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		$references = array_merge( $references_without_locations, $locations );
+//		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		// $references = array_merge( $references_without_locations, $locations );
 
 		return $jsonld;
+	}
+
+	/**
+	 * Copies the Post relations to referenced post IDs (legacy).
+	 *
+	 * @param Relations $relations
+	 */
+	private function add_relations_to_references( $relations, &$references ) {
+		/** @var Relation $relation */
+		foreach ( $relations->toArray() as $relation ) {
+			$object    = $relation->get_object();
+			$object_id = $object->get_id();
+			if ( $object->get_type() === Object_Type_Enum::POST && ! in_array( $object_id, $references, true ) ) {
+				$references[] = $object_id;
+			}
+		}
 	}
 
 	// private function add_location_reference_objects() {

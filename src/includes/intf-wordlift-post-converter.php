@@ -9,7 +9,7 @@
  * @package Wordlift
  */
 
-use Wordlift\Relation\Relations;
+use Wordlift\Relation\Relations_Interface;
 
 /**
  * Interface Wordlift_Post_Converter
@@ -22,10 +22,10 @@ interface Wordlift_Post_Converter {
 	/**
 	 * Convert the specified post id.
 	 *
-	 * @param int       $post_id The post id.
-	 * @param array     $references An array of posts referenced by the specified post.
-	 * @param array     $references_infos
-	 * @param Relations $relations The relations
+	 * @param int                 $post_id The post id.
+	 * @param array               $references An array of posts referenced by the specified post.
+	 * @param array               $references_infos
+	 * @param Relations_Interface $relations The relations
 	 *
 	 * @return mixed The conversion result.
 	 * @since 3.42.1 $reference_objects argument added.

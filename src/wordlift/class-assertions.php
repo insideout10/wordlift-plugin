@@ -110,4 +110,10 @@ class Assertions {
 		}
 	}
 
+	public static function is_numeric( $value, $message = 'Value should be numeric' ) {
+		if ( ! is_numeric( $value ) ) {
+			throw new Exception( $message );
+		}
+	}
+
 }
