@@ -306,6 +306,7 @@ require_once __DIR__ . '/modules/acf4so/load.php';
 require_once __DIR__ . '/modules/dashboard/load.php';
 require_once __DIR__ . '/modules/pods/load.php';
 require_once __DIR__ . '/modules/include-exclude-push-config/load.php';
+require_once __DIR__ . '/modules/super-resolution/load.php';
 
 add_action(
 	'update_plugins_adthrive.wordlift.io',
