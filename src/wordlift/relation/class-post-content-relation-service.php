@@ -62,7 +62,7 @@ class Post_Content_Relation_Service extends Abstract_Relation_Service {
 
 			$object_id = new Wordpress_Content_Id( $content->get_id(), $content->get_object_type_enum() );
 
-			$predicate = $entity_service->get_classification_scope_for( $content_id->get_id() );
+			$predicate = $entity_service->get_classification_scope_for( $content->get_id() );
 			$relation  = new Relation( $content_id, $object_id, $predicate );
 			$relations->add( $relation );
 		}
