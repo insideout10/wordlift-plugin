@@ -147,7 +147,15 @@ class Jsonld_Article_Wrapper {
 			return false;
 		}
 
-		return $this->cached_postid_to_jsonld_converter->convert( $author_entity_post->ID );
+		$references      = array();
+		$reference_infos = array();
+
+		return $this->cached_postid_to_jsonld_converter->convert(
+			$author_entity_post->ID,
+			$references,
+			$reference_infos,
+			new Relations()
+		);
 
 	}
 

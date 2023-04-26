@@ -843,7 +843,7 @@ class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit
 		$referenced_entity_uri = Wordpress_Content_Service::get_instance()
 											  ->get_entity_id( Wordpress_Content_Id::create_post( $referenced_entity ) );
 		$post_content          = <<<EOF
-		<span itemid="$referenced_entity_uri">test</span>
+		<span class="textannotation disambiguated" itemid="$referenced_entity_uri">test</span>
 EOF;
 
 		$parent_entity = $this->factory()->post->create(
@@ -856,10 +856,12 @@ EOF;
 
 		// set entity to creative work.
 		Wordlift_Entity_Type_Service::get_instance()->set( $parent_entity, 'http://schema.org/CreativeWork' );
+
 		$jsonld = Wordlift_Jsonld_Service::get_instance()->get_jsonld(
 			false,
 			$parent_entity
 		);
+
 
 		$this->assertTrue( array_key_exists( 'mentions', $jsonld[0] ), 'Entity since its descendant of CreativeWork should have mentions property' );
 		$this->assertCount( 1, $jsonld[0]['mentions'] );

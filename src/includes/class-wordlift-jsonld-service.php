@@ -367,6 +367,7 @@ class Wordlift_Jsonld_Service {
 
 		// Add `about`/`mentions` only for `CreativeWork` and descendants.
 		if ( array_intersect( (array) $jsonld[0]['@type'], self::$creative_work_types ) ) {
+
 			foreach ( $relations->toArray() as $relation ) {
 				$object      = $relation->get_object();
 				$object_id   = $object->get_id();
