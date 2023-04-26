@@ -9,6 +9,7 @@
 use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Jsonld\Term_Reference;
 use Wordlift\Object_Type_Enum;
+use Wordlift\Relation\Relations;
 
 /**
  * Define the {@link Wordlift_Post_To_Jsonld_Converter_Test} class.
@@ -118,7 +119,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$permalink = get_permalink( $post->ID );
 
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we don't have reference.
 		$this->assertCount( 0, $references );
@@ -163,7 +164,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$permalink = get_permalink( $post->ID );
 
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 
 		// Check that we don't have reference.
@@ -223,7 +224,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$permalink = get_permalink( $post->ID );
 
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we don't have reference.
 		$this->assertCount( 0, $references );
@@ -276,7 +277,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$permalink = get_permalink( $post->ID );
 
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we don't have reference.
 		$this->assertCount( 0, $references );
@@ -377,7 +378,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$permalink = get_permalink( $post->ID );
 
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we don't have reference.
 		$this->assertCount( 0, $references );
@@ -456,7 +457,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we have 2 references.
 		$this->assertCount( 2, $references );
@@ -527,7 +528,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we have 2 references.
 		$this->assertCount( 2, $references );
@@ -599,7 +600,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we have 2 references.
 		$this->assertCount( 2, $references );
@@ -641,7 +642,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$title  = 'Example Post Title';
 		$labels = array( 'o', 'Post' );
 
-		$check_matches = Wordlift_Post_To_Jsonld_Converter::get_instance()->check_title_match( $labels, $title );
+		$check_matches = Wordlift_Jsonld_Service::get_instance()->check_title_match( $labels, $title );
 
 		$this->assertTrue( $check_matches );
 	}
@@ -655,7 +656,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$title  = 'Example Post Title';
 		$labels = array( 'o', 'WordLift' );
 
-		$check_matches = Wordlift_Post_To_Jsonld_Converter::get_instance()->check_title_match( $labels, $title );
+		$check_matches = Wordlift_Jsonld_Service::get_instance()->check_title_match( $labels, $title );
 
 		$this->assertFalse( $check_matches );
 	}
@@ -703,7 +704,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we have 2 references.
 		$this->assertCount( 2, $references );
@@ -792,7 +793,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we have 2 references.
 		$this->assertCount( 2, $references );
@@ -885,7 +886,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we have 2 references.
 		$this->assertCount( 2, $references );
@@ -991,7 +992,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we have 2 references.
 		$this->assertCount( 2, $references );
@@ -1098,7 +1099,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we have 2 references.
 		$this->assertCount( 2, $references );
@@ -1170,7 +1171,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
 		$this->assertEquals( $author_uri, $jsonld['author']['@id'] );
@@ -1210,7 +1211,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		$this->assertEquals( $entity_uri, $jsonld['author']['@id'] );
 
@@ -1256,7 +1257,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		$this->assertEquals( $entity_uri, $jsonld['author']['@id'] );
 
@@ -1316,7 +1317,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		);
 
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		$this->assertEquals( $entity_uri, $jsonld['author']['@id'] );
 		$this->assertArraySubset( array( $entity_id ), $references );
@@ -1325,14 +1326,15 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertGreaterThan( 0, $this->user_service->set_entity( $author_id, $entity_id_2 ) );
 
 		$references_2 = array();
-		$jsonld_2     = $this->post_to_jsonld_converter->convert( $post->ID, $references_2 );
+		$jsonld_2     = $this->post_to_jsonld_converter->convert( $post->ID, $references_2, $references_2, new Relations() );
 
 		$this->assertEquals( $entity_uri_2, $jsonld_2['author']['@id'] );
 		$this->assertArraySubset( array( $entity_id_2 ), $references_2 );
 
 		// Delete the author entity and check that the author triple is properly generated.
 		delete_user_meta( $author_id, Wordlift_User_Service::ENTITY_META_KEY );
-		$jsonld_3 = $this->post_to_jsonld_converter->convert( $post->ID );
+		$references_3 = array();
+		$jsonld_3 = $this->post_to_jsonld_converter->convert( $post->ID, $references_3, $references_3, new Relations() );
 		$this->assertEquals( $author_uri, $jsonld_3['author']['@id'] );
 
 	}
@@ -1352,7 +1354,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 			$called ++;
 		} );
 
-		$result = $this->post_to_jsonld_converter->convert( PHP_INT_MAX );
+		$result = $this->post_to_jsonld_converter->convert( PHP_INT_MAX , $references, $references, new Relations());
 
 		$this->assertNull( $result, "Calling convert on a post not found returns NULL." );
 
@@ -1381,7 +1383,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		$post_id = $this->factory()->post->create();
 
-		$result = $this->post_to_jsonld_converter->convert( $post_id );
+		$references = array();
+		$result = $this->post_to_jsonld_converter->convert( $post_id, $references, $references, new Relations() );
 
 		$this->assertTrue( is_array( $result ), 'Convert returns an array.' );
 
@@ -1427,7 +1430,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		// Convert the post to json-ld.
 		$references = array();
-		$this->post_to_jsonld_converter->convert( $post_id, $references );
+		$this->post_to_jsonld_converter->convert( $post_id, $references, $references, new Relations()  );
 
 		$references = array_map( function ( $reference ) {
 			return $reference->get_id();
@@ -1450,7 +1453,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		// Convert the post to json-ld.
 		$references = array();
-		$json_ld    = $this->post_to_jsonld_converter->convert( $post_id, $references );
+		$json_ld    = $this->post_to_jsonld_converter->convert( $post_id, $references, $references, new Relations() );
 
 		$this->assertArrayNotHasKey( 'wordCount', $json_ld, '`wordCount` must not be set when the entity type is unknown or `WebPage`.' );
 
@@ -1481,7 +1484,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		// Convert the post to json-ld.
 		$references = array();
-		$json_ld    = $this->post_to_jsonld_converter->convert( $post_id, $references );
+		$json_ld    = $this->post_to_jsonld_converter->convert( $post_id, $references, $references, new Relations() );
 
 		$this->assertArrayNotHasKey( 'wordCount', $json_ld, '`wordCount` must not be set when the entity type is unknown or `WebPage`.' );
 

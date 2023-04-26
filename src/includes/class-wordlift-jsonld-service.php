@@ -549,7 +549,7 @@ class Wordlift_Jsonld_Service {
 	 *
 	 * @return boolean
 	 */
-	private function check_title_match( $labels, $title ) {
+	public function check_title_match( $labels, $title ) {
 
 		// If the title is empty, then we shouldn't yield a match to about section.
 		if ( empty( $title ) ) {
