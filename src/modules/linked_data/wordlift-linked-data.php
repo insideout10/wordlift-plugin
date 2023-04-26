@@ -9,6 +9,7 @@
 
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\No_Editor_Analysis\No_Editor_Analysis_Feature;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Relation;
 use Wordlift\Relation\Relation_Service;
@@ -210,8 +211,10 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	$content_id = Wordpress_Content_Id::create_post( $post->ID );
 	$relations  = Relation_Service::get_instance()->get_relations( $content_id );
-	$relations->add( ...Relation_Service::get_relations_from_uris( $content_id, $internal_entity_uris ) );
 
+	if ( No_Editor_Analysis_Feature::can_no_editor_analysis_be_used( $post_id ) ) {
+		$relations->add( ...Relation_Service::get_relations_from_uris( $content_id, $internal_entity_uris ) );
+	}
 	/**
 	 * Filter the relations, we dont want to create a relation
 	 * to uncategorized term, we are already filtering this on jsonld,
