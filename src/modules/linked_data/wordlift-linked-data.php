@@ -9,6 +9,7 @@
 
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Relation;
 use Wordlift\Relation\Relation_Service;
 
@@ -209,10 +210,30 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	$content_id = Wordpress_Content_Id::create_post( $post->ID );
 	$relations  = Relation_Service::get_instance()->get_relations( $content_id );
+	$relations->add( ...Relation_Service::get_relations_from_uris( $content_id, $internal_entity_uris ) );
+
+	/**
+	 * Filter the relations, we dont want to create a relation
+	 * to uncategorized term, we are already filtering this on jsonld,
+	 *
+	 * @todo: do i need to move this to post-term-relation-service ?
+	 */
+	$filtered_relations = array_filter(
+		$relations->toArray(),
+		function ( $item ) {
+			/**
+			 * @var $item Relation
+			 */
+			$object = $item->get_object();
+
+			return ! ( $object->get_type() === Object_Type_Enum::TERM
+			&& $object->get_id() === 1 );
+		}
+	);
 
 	// Save relation instances
 	/** @var Relation $relation */
-	foreach ( $relations->toArray() as $relation ) {
+	foreach ( $filtered_relations  as $relation ) {
 		$subject = $relation->get_subject();
 		$object  = $relation->get_object();
 

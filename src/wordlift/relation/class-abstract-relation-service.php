@@ -26,14 +26,4 @@ abstract class Abstract_Relation_Service implements Relation_Service_Interface {
 		return $relations;
 	}
 
-	// **
-	// * This method takes a list of entity uris and return the relation
-	// * from the uris.
-	// */
-	// public function get_relations_from_entity_uris( $content_id, $entity_uris ) {
-	//
-	// $relations = new Relations();
-	//
-	// }
-
 }
