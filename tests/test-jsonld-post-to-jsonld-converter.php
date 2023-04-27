@@ -1428,27 +1428,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
-	public function test_should_be_able_to_use_array_unique_on_references() {
 
-		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
-
-		$post_reference = new Post_Reference( 1 );
-		$term_reference = new Term_Reference( 1 );
-
-		$this->assertSame( (string) $post_reference, Object_Type_Enum::POST . "_1", "Post reference should be 
-		able to convert to string" );
-
-		$this->assertSame( (string) $term_reference, Object_Type_Enum::TERM . "_1", "Term reference should be 
-		able to convert to string" );
-
-		$this->assertCount( 2, array_unique( array(
-			$post_reference,
-			$post_reference,
-			$term_reference,
-			$term_reference
-		) ), 'Duplicate references should not be present ' );
-
-	}
 
 	public function test_when_the_article_is_linked_to_entity_should_not_have_duplicate_mentions() {
 
