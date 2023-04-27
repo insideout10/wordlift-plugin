@@ -445,13 +445,13 @@ class Wordlift_Jsonld_Service {
 			$matches = $this->check_title_match( $escaped_labels, $post->post_title );
 		}
 
-		// If the title matches, assign the entity to the about, otherwise to the mentions.
-		$property_name            = $matches ? 'about' : 'mentions';
-		$jsonld[ $property_name ] = isset( $jsonld[ $property_name ] ) ? (array) $jsonld[ $property_name ] : array();
-
 		if ( $entity_uri ) {
+			// If the title matches, assign the entity to the about, otherwise to the mentions.
+			$property_name              = $matches ? 'about' : 'mentions';
+			$jsonld[ $property_name ]   = isset( $jsonld[ $property_name ] ) ? (array) $jsonld[ $property_name ] : array();
 			$jsonld[ $property_name ][] = array( '@id' => $entity_uri );
 		}
+
 	}
 
 	/**
