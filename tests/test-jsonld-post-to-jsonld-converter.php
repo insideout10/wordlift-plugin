@@ -1368,6 +1368,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		// Convert the post to json-ld.
 		$references = array();
 		$reference_infos = array();
+
+
 		$this->post_to_jsonld_converter->convert( $post_id, $references, $reference_infos, new Relations()  );
 
 

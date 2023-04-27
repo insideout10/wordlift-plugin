@@ -378,8 +378,7 @@ class Wordlift_Jsonld_Service {
 		}
 
 		$jsonld_arr = $graph->add_references( $references )
-			// we might have second level references which needs to be pushed to references ( for example event
-			->add_relations( $relations, $references )
+			->add_relations( $relations )
 			->add_required_reference_infos( $references_infos )
 			->render( $context );
 
