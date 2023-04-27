@@ -30,6 +30,7 @@
 
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Cache\Ttl_Cache_Cleaner;
+use Wordlift\Relation\Relations;
 
 /**
  * Define the {@link Wordlift_Issue_626} class.
@@ -116,7 +117,8 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$post_to_jsonld_converter = new Wordlift_Post_To_Jsonld_Converter(
 			Wordlift_Entity_Type_Service::get_instance(),
 			Wordlift_User_Service::get_instance(),
-			Wordlift_Attachment_Service::get_instance() );
+			Wordlift_Attachment_Service::get_instance()
+		);
 
 		$entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter(
 			Wordlift_Entity_Type_Service::get_instance(),
@@ -124,23 +126,27 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 			Wordlift_Attachment_Service::get_instance(),
 			$property_getter,
 			Wordlift_Schemaorg_Property_Service::get_instance(),
-			$post_to_jsonld_converter );
+			$post_to_jsonld_converter
+		);
 
 		$this->postid_to_jsonld_converter = new Wordlift_Postid_To_Jsonld_Converter(
 			$entity_post_to_jsonld_converter,
-			$post_to_jsonld_converter );
+			$post_to_jsonld_converter
+		);
 
 		$jsonld_cache = new Ttl_Cache( 'jsonld', 86400 );
 
 		$this->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter(
-			$this->postid_to_jsonld_converter, $jsonld_cache );
+			$this->postid_to_jsonld_converter,
+			$jsonld_cache
+		);
 
 		$this->relation_service = Wordlift_Relation_Service::get_instance();
 		$this->entity_service   = Wordlift_Entity_Service::get_instance();
 		$this->user_service     = Wordlift_User_Service::get_instance();
 
 		// Clear the cache.
-//		do_action( 'wl_ttl_cache_cleaner__flush' );
+		//      do_action( 'wl_ttl_cache_cleaner__flush' );
 		$ttl_cache_cleaner = new Ttl_Cache_Cleaner();
 		$ttl_cache_cleaner->flush();
 	}
@@ -188,10 +194,12 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$this->assert_no_cache_and_then_cache( $post->ID );
 
 		// Now change the post title and check that the cache is deleted.
-		$result = wp_update_post( array(
-			'ID'         => $post->ID,
-			'post_title' => uniqid( 'title-' ),
-		) );
+		$result = wp_update_post(
+			array(
+				'ID'         => $post->ID,
+				'post_title' => uniqid( 'title-' ),
+			)
+		);
 
 		$this->assertFalse( is_wp_error( $result ) );
 
@@ -254,10 +262,12 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$this->assert_no_cache_and_then_cache( $author_post_id );
 
 		// Update and check again.
-		wp_update_post( array(
-			'ID'         => $author_post_id,
-			'post_title' => 'Stephen King',
-		) );
+		wp_update_post(
+			array(
+				'ID'         => $author_post_id,
+				'post_title' => 'Stephen King',
+			)
+		);
 
 		// Check that author post isn't cached and then cached.
 		$this->assert_no_cache_and_then_cache( $author_post_id );
@@ -267,10 +277,12 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$this->assert_cache( $post->ID, true );
 
 		// Now try updating the publisher.
-		wp_update_post( array(
-			'ID'         => $this->publisher_id,
-			'post_title' => uniqid( 'Acme Inc. ' ),
-		) );
+		wp_update_post(
+			array(
+				'ID'         => $this->publisher_id,
+				'post_title' => uniqid( 'Acme Inc. ' ),
+			)
+		);
 
 		// Check that author post isn't cached and then cached.
 		$this->assert_no_cache_and_then_cache( $post->ID );
@@ -295,11 +307,13 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 	private function get_post( $post_name ) {
 
 		// Get the post #5 which is the one that binds to all the entities.
-		$posts = get_posts( array(
-			'name'        => $post_name,
-			'numberposts' => 1,
-			'post_type'   => 'any'
-		) );
+		$posts = get_posts(
+			array(
+				'name'        => $post_name,
+				'numberposts' => 1,
+				'post_type'   => 'any',
+			)
+		);
 
 		// Check that we got one post.
 		$this->assertCount( 1, $posts );
@@ -331,8 +345,9 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$num_queries = $wpdb->num_queries;
 
 		// Get the cached response.
-		$references_infos = array();
-		$cached           = $this->cached_postid_to_jsonld_converter->convert( $post_id, $cached_references, $references_infos, $reference_objects, $cache );
+		$cahced_references_infos = array();
+		$cached_references       = array();
+		$cached                  = $this->cached_postid_to_jsonld_converter->convert( $post_id, $cached_references, $cahced_references_infos, new Relations(), $cache );
 
 		// Expect the first response not to be cached.
 		$this->assertEquals( $expect, $cache, "The first response for post $post_id " . ( $expect ? 'should' : 'shouldn`t' ) . ' be cached.' );
@@ -340,8 +355,11 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		// If the response is cached we expect no queries.
 		$this->assertEquals( $cache, $num_queries === $wpdb->num_queries );
 
+		$original_references      = array();
+		$original_reference_infos = array();
+
 		// Get the original - non-cached - response.
-		$original = $this->postid_to_jsonld_converter->convert( $post_id, $original_references );
+		$original = $this->postid_to_jsonld_converter->convert( $post_id, $original_references, $original_reference_infos, new Relations() );
 
 		// Check that the responses match.
 		$this->assertEquals( $original, $cached );

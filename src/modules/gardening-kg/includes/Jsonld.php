@@ -36,8 +36,9 @@ class Jsonld {
 
 		$existing_mentions = array_key_exists( 'mentions', $jsonld ) ? $jsonld['mentions'] : array();
 
-		$jsonld['mentions'] = array_merge( $existing_mentions, $mentions );
-
+		if ( count( $mentions ) > 0 ) {
+			$jsonld['mentions'] = array_merge( $existing_mentions, $mentions );
+		}
 		return $jsonld;
 	}
 

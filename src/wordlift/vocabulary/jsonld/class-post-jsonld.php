@@ -47,7 +47,7 @@ class Post_Jsonld {
 			return;
 		}
 
-		if ( ! array_key_exists( 'mentions', $jsonld ) ) {
+		if ( ! array_key_exists( 'mentions', $jsonld ) && count( $terms ) > 0 ) {
 			$jsonld['mentions'] = array();
 		}
 
@@ -65,7 +65,9 @@ class Post_Jsonld {
 				continue;
 			}
 
-			$jsonld['mentions'] = array_merge( $jsonld['mentions'], self::add_additional_attrs( $term, $entities ) );
+			$add_additional_attrs = self::add_additional_attrs( $term, $entities );
+
+			$jsonld['mentions'] = array_merge( $jsonld['mentions'], $add_additional_attrs );
 		}
 
 	}

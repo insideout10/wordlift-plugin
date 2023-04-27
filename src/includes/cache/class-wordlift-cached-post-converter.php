@@ -163,6 +163,10 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 				$relations->add( ...$arr['relations']->toArray() );
 			}
 
+			if ( is_array( $arr['references'] ) ) {
+				$references = $arr['references'];
+			}
+
 			$this->log->debug( "Cached contents found for post $post_id." );
 
 			// Inform the caller that this is cached result.
@@ -225,8 +229,9 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 
 		return $contents['jsonld']
 			? array(
-				'jsonld'    => $contents['jsonld'],
-				'relations' => Relations::from_json( $contents['relations'] ),
+				'jsonld'     => $contents['jsonld'],
+				'relations'  => Relations::from_json( $contents['relations'] ),
+				'references' => $contents['references'],
 			)
 			: false;
 	}

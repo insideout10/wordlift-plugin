@@ -44,7 +44,10 @@ class No_Annotation_Strategy extends Singleton implements Occurrences {
 		foreach ( $relations->toArray() as $relation ) {
 			$object = $relation->get_object();
 			// @@todo is this working okey with term id?
-			$entity_uri                    = $this->content_service->get_entity_id( $relation->get_object() );
+			$entity_uri = $this->content_service->get_entity_id( $relation->get_object() );
+			if ( ! $entity_uri ) {
+				continue;
+			}
 			$entity_data                   = wl_serialize_entity( $object->get_id() );
 			$entity_data['occurrences']    = array( 'placeholder-occurrence' );
 			$json->entities->{$entity_uri} = $entity_data;

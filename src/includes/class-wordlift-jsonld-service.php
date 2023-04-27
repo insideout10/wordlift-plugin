@@ -7,6 +7,7 @@
  */
 
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Jsonld\Graph;
 use Wordlift\Jsonld\Jsonld_Context_Enum;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Relation;
@@ -329,7 +330,6 @@ class Wordlift_Jsonld_Service {
 	 * @since 3.15.1
 	 */
 	public function get_jsonld( $is_homepage = false, $post_id = null, $context = Jsonld_Context_Enum::UNKNOWN ) {
-
 		// Tell NewRelic to ignore us, otherwise NewRelic customers might receive
 		// e-mails with a low apdex score.
 		//
@@ -369,10 +369,14 @@ class Wordlift_Jsonld_Service {
 		$entity_to_jsonld_converter = $this->converter;
 
 		$relations = new Relations();
-		$jsonld    = array( $entity_to_jsonld_converter->convert( $post_id, $references, $references_infos, $relations ) );
+		$jsonld    = $entity_to_jsonld_converter->convert( $post_id, $references, $references_infos, $relations );
 
+		$graph = new Graph( $jsonld, $entity_to_jsonld_converter, Wordlift_Term_JsonLd_Adapter::get_instance() );
+
+		$schema_type = is_array( $jsonld['@type'] ) ? $jsonld['@type'] : array( $jsonld['@type'] );
 		// Add `about`/`mentions` only for `CreativeWork` and descendants.
-		if ( array_intersect( (array) $jsonld[0]['@type'], self::$creative_work_types ) ) {
+		if ( array_intersect( $schema_type, self::$creative_work_types ) ) {
+
 			foreach ( $relations->toArray() as $relation ) {
 				$object      = $relation->get_object();
 				$object_id   = $object->get_id();
@@ -405,87 +409,13 @@ class Wordlift_Jsonld_Service {
 				// Add the `mentions`/`about` prop.
 				$this->add_mention_or_about( $jsonld, $post_id, $relation );
 			}
+			$graph->set_main_jsonld( $jsonld );
 		}
 
-		//
-		// $that                       = $this;
-		// $expanded_references_jsonld = array_map(
-		// function ( $item ) use ( $context, $entity_to_jsonld_converter, &$references_infos, $that, $relations ) {
-		// "2nd level properties" may not output here, e.g. a post
-		// mentioning an event, located in a place: the place is referenced
-		// via the `@id` but no other properties are loaded.
-		// $ignored = array();
-		// if ( $item instanceof Term_Reference ) {
-//					// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
-		// $term_jsonld = $that->term_jsonld_adapter->get( $item->get_id(), $context );
-		//
-		// For term references, we publish a jsonld array on the page, use only the first item.
-		// return count( $term_jsonld ) > 0 ? $term_jsonld[0] : false;
-		// } elseif ( $item instanceof Post_Reference ) {
-		// $item = $item->get_id();
-		// }
-		//
-//				// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
-		// return $entity_to_jsonld_converter->convert( $item, $ignored, $references_infos, $relations );
-		// },
-		// array_unique( $references )
-		// );
-		//
-		// Convert each URI to a JSON-LD array, while gathering referenced entities.
-		// in the references array.
-		// $jsonld = array_merge(
-		// $jsonld,
-		// Convert each URI in the references array to JSON-LD. We don't output
-		// entities already output above (hence the array_diff).
-		// array_filter( $expanded_references_jsonld )
-		// );
-		//
-		// $required_references = array_filter(
-		// $references_infos,
-		// function ( $item ) use ( $references ) {
-		//
-		// if ( ! isset( $item['reference'] ) ) {
-		// return false;
-		// }
-		//
-		// ** @var Wordlift_Property_Entity_Reference $reference */
-		// $reference = $item['reference'];
-		//
-		// Check that the reference is required
-		// return $reference->get_required() &&
-		// Check that the reference isn't being output already.
-		// @@todo $references only contains post IDs, so we would need to check
-		// the type of reference
-		// ( $reference->get_type() !== Object_Type_Enum::POST ||
-		// ! in_array( $reference->get_id(), $references, true ) );
-		// }
-		// );
-		//
-		// $jsonld = array_merge(
-		// $jsonld,
-		// array_filter(
-		// array_map(
-		// function ( $item ) use ( $references, $entity_to_jsonld_converter ) {
-		//
-		// if ( ! isset( $item['reference'] ) ) {
-		// return null;
-		// }
-		//
-		// ** @var Wordlift_Property_Entity_Reference $reference */
-		// $reference = $item['reference'];
-		// $post_id   = $reference->get_id();
-		// if ( in_array( $post_id, $references, true ) ) {
-		// return null;
-		// }
-		//
-		// $references[] = $post_id;
-		//
-		// return $entity_to_jsonld_converter->convert( $post_id, $references );
-		// },
-		// $required_references
-		// )
-		// )
-		// );
+		$jsonld_arr = $graph->add_references( $references )
+							->add_relations( $relations )
+							->add_required_reference_infos( $references_infos )
+							->render( $context );
 
 		/**
 		 * Filter name: wl_after_get_jsonld
@@ -495,9 +425,9 @@ class Wordlift_Jsonld_Service {
 		 * @var $jsonld array The final jsonld before outputting to page.
 		 * @var $post_id int The post id for which the jsonld is generated.
 		 */
-		$jsonld = apply_filters( 'wl_after_get_jsonld', $jsonld, $post_id, $context );
+		$jsonld_arr = apply_filters( 'wl_after_get_jsonld', $jsonld_arr, $post_id, $context );
 
-		return $jsonld;
+		return $jsonld_arr;
 	}
 
 	private function add_location( &$jsonld, $content_id ) {
@@ -578,10 +508,13 @@ class Wordlift_Jsonld_Service {
 			$matches = $this->check_title_match( $escaped_labels, $post->post_title );
 		}
 
-		// If the title matches, assign the entity to the about, otherwise to the mentions.
-		$property_name                 = $matches ? 'about' : 'mentions';
-		$jsonld[0][ $property_name ]   = isset( $jsonld[0][ $property_name ] ) ? (array) $jsonld[0][ $property_name ] : array();
-		$jsonld[0][ $property_name ][] = array( '@id' => $entity_uri );
+		if ( $entity_uri ) {
+			// If the title matches, assign the entity to the about, otherwise to the mentions.
+			$property_name              = $matches ? 'about' : 'mentions';
+			$jsonld[ $property_name ]   = isset( $jsonld[ $property_name ] ) ? (array) $jsonld[ $property_name ] : array();
+			$jsonld[ $property_name ][] = array( '@id' => $entity_uri );
+		}
+
 	}
 
 	/**
@@ -592,7 +525,7 @@ class Wordlift_Jsonld_Service {
 	 *
 	 * @return boolean
 	 */
-	private function check_title_match( $labels, $title ) {
+	public function check_title_match( $labels, $title ) {
 
 		// If the title is empty, then we shouldn't yield a match to about section.
 		if ( empty( $title ) ) {

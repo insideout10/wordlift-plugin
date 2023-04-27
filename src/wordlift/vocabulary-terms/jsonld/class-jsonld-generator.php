@@ -139,7 +139,7 @@ class Jsonld_Generator {
 						/**
 						 * @var $property_entity_reference \Wordlift_Property_Entity_Reference
 						 */
-						return $property_entity_reference->to_reference();
+						return $property_entity_reference->get_id();
 					},
 					$value
 				)

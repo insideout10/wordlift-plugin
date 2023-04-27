@@ -102,7 +102,8 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );
 		// Get the json ld data for this post.
 		$jsonlds       = $this->jsonld_service->get_jsonld( false, $post_id );
-		$target_jsonld = end( $jsonlds );
+
+		$target_jsonld = reset( $jsonlds );
 		$this->assertTrue( is_array( $target_jsonld ), "JSON-LD must be an array:\n" . var_export( $target_jsonld, true ) );
 		$this->assertArrayHasKey( '@type', $target_jsonld, "JSON-LD is missing @type:\n" . var_export( $target_jsonld, true ) );
 		$this->assertEquals( 'HowTo', $target_jsonld['@type'], "@type is incorrect: " . $target_jsonld['@type'] );
@@ -132,7 +133,7 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );
 		// Get the json ld data for this post.
 		$jsonlds       = $this->jsonld_service->get_jsonld( false, $post_id );
-		$target_jsonld = end( $jsonlds );
+		$target_jsonld = reset( $jsonlds );
 		$this->assertArrayHasKey( '@type', $target_jsonld );
 		$this->assertEquals( 'HowTo', $target_jsonld['@type'] );
 	}
@@ -159,7 +160,7 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );
 		// Get the json ld data for this post.
 		$jsonlds       = $this->jsonld_service->get_jsonld( false, $post_id );
-		$target_jsonld = end( $jsonlds );
+		$target_jsonld = reset( $jsonlds );
 		$this->assertArrayHasKey( 'weight', $target_jsonld );
 		$this->assertArrayHasKey( 'foo', $target_jsonld['weight'] );
 		$this->assertArrayHasKey( '@type', $target_jsonld['weight']['foo'] );
@@ -194,7 +195,7 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );
 		// Get the json ld data for this post.
 		$jsonlds       = $this->jsonld_service->get_jsonld( false, $post_id );
-		$target_jsonld = end( $jsonlds );
+		$target_jsonld = reset( $jsonlds );
 		$this->assertArrayHasKey( 'weight', $target_jsonld );
 		$this->assertArrayHasKey( 'foo', $target_jsonld['weight'] );
 		$this->assertArrayHasKey( '@type', $target_jsonld['weight']['foo'] );
@@ -225,7 +226,7 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );
 		// Get the json ld data for this post.
 		$jsonlds       = $this->jsonld_service->get_jsonld( false, $post_id );
-		$target_jsonld = end( $jsonlds );
+		$target_jsonld = reset( $jsonlds );
 		$this->assertFalse( array_key_exists( 'foo', $target_jsonld ) );
 	}
 

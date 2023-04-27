@@ -3,6 +3,9 @@
 namespace Wordlift\Relation;
 
 use Wordlift\Assertions;
+use Wordlift\Content\Content;
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 
 class Relation_Service extends Abstract_Relation_Service {
 
@@ -46,6 +49,40 @@ class Relation_Service extends Abstract_Relation_Service {
 		foreach ( $this->delegates as $delegate ) {
 			$delegate->add_relations( $content_id, $relations );
 		}
+	}
+
+	/**
+	 * This helper method is used to create relations from entity_uris.
+	 * Its only purpose as of now is to process the entity_uris emitted
+	 * from disambiguation widget.
+	 *
+	 * @param $subject Wordpress_Content_Id
+	 * @param $uris
+	 *
+	 * @return array<Relation>
+	 */
+	public static function get_relations_from_uris( $subject, $uris ) {
+
+		$entity_service = \Wordlift_Entity_Service::get_instance();
+
+		return array_filter(
+			array_map(
+				function ( $uri ) use ( $entity_service, $subject ) {
+					/**
+					 * @var $content Content|null
+					 */
+					$content = Wordpress_Content_Service::get_instance()->get_by_entity_id_or_same_as( $uri );
+					$bag     = $content->get_bag();
+					if ( $bag instanceof \WP_Post || $bag instanceof \WP_Term ) {
+						$predicate = $bag instanceof \WP_Term ? WL_WHAT_RELATION : $entity_service->get_classification_scope_for( $content->get_id() );
+						return new Relation( $subject, new Wordpress_Content_Id( $content->get_id(), $content->get_object_type_enum() ), $predicate );
+					}
+					return false;
+				},
+				$uris
+			)
+		);
+
 	}
 
 }

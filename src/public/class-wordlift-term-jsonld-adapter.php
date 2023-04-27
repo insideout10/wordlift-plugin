@@ -10,8 +10,8 @@
  */
 
 use Wordlift\Jsonld\Jsonld_Context_Enum;
-use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Jsonld\Term_Reference;
+use Wordlift\Relation\Relations;
 
 /**
  * Define the {@link Wordlift_Term_JsonLd_Adapter} class.
@@ -275,14 +275,13 @@ class Wordlift_Term_JsonLd_Adapter {
 		$references_jsonld = array();
 		// Expand the references.
 		foreach ( $references as $reference ) {
-			if ( $reference instanceof Post_Reference ) {
-				$post_id             = $reference->get_id();
-				$references_jsonld[] = $this->post_id_to_jsonld_converter->convert( $post_id );
-			} elseif ( $reference instanceof Term_Reference ) {
+			if ( $reference instanceof Term_Reference ) {
 				// Second level references won't be expanded.
 				$references_jsonld[] = current( $this->get( $reference->get_id(), Jsonld_Context_Enum::UNKNOWN, true ) );
 			} elseif ( is_numeric( $reference ) ) {
-				$references_jsonld[] = $this->post_id_to_jsonld_converter->convert( $reference );
+				$ref_2               = array();
+				$ref_info_2          = array();
+				$references_jsonld[] = $this->post_id_to_jsonld_converter->convert( $reference, $ref_2, $ref_info_2, new Relations() );
 			}
 		}
 

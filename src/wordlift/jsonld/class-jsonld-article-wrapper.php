@@ -2,6 +2,7 @@
 
 namespace Wordlift\Jsonld;
 
+use Wordlift\Relation\Relations;
 use Wordlift_Post_To_Jsonld_Converter;
 
 class Jsonld_Article_Wrapper {
@@ -88,8 +89,11 @@ class Jsonld_Article_Wrapper {
 			return $jsonld;
 		}
 
+		$references      = array();
+		$reference_infos = array();
+
 		// Convert the post as Article.
-		$article_jsonld = $this->post_to_jsonld_converter->convert( $post_id );
+		$article_jsonld = $this->post_to_jsonld_converter->convert( $post_id, $references, $reference_infos, new Relations() );
 
 		$article_jsonld['@id'] = $post_jsonld['@id'] . '#article';
 		// Reset the type, since by default the type assigned via the Entity Type taxonomy is used.
@@ -143,7 +147,15 @@ class Jsonld_Article_Wrapper {
 			return false;
 		}
 
-		return $this->cached_postid_to_jsonld_converter->convert( $author_entity_post->ID );
+		$references      = array();
+		$reference_infos = array();
+
+		return $this->cached_postid_to_jsonld_converter->convert(
+			$author_entity_post->ID,
+			$references,
+			$reference_infos,
+			new Relations()
+		);
 
 	}
 
