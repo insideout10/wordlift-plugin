@@ -323,7 +323,6 @@ class Wordlift_Jsonld_Service {
 	 * @since 3.15.1
 	 */
 	public function get_jsonld( $is_homepage = false, $post_id = null, $context = Jsonld_Context_Enum::UNKNOWN ) {
-
 		// Tell NewRelic to ignore us, otherwise NewRelic customers might receive
 		// e-mails with a low apdex score.
 		//
@@ -379,7 +378,8 @@ class Wordlift_Jsonld_Service {
 		}
 
 		$jsonld_arr = $graph->add_references( $references )
-			->add_relations( $relations )
+			// we might have second level references which needs to be pushed to references ( for example event
+			->add_relations( $relations, $references )
 			->add_required_reference_infos( $references_infos )
 			->render( $context );
 

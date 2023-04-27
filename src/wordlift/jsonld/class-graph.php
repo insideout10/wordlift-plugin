@@ -7,6 +7,7 @@ use Wordlift\Content\Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Relations;
+use Wordlift_Schema_Service;
 
 /**
  * This class represents a jsonld graph, This is an abstraction layer over the
@@ -102,10 +103,35 @@ class Graph {
 	 *
 	 * @return Graph
 	 */
-	public function add_relations( $relations ) {
+	public function add_relations( $relations, &$references ) {
+
+		$entity_type_service = \Wordlift_Entity_Type_Service::get_instance();
+
 		foreach ( $relations->toArray() as $relation ) {
+
 			$this->referenced_content_ids[] = $relation->get_object();
+
+			$object = $relation->get_object();
+
+			if ( Object_Type_Enum::POST !== $object->get_type() ) {
+				continue;
+			}
+
+			// @see https://schema.org/location for the schema.org types using the `location` property.
+			if ( ! $entity_type_service->has_entity_type( $object->get_id(), 'http://schema.org/Action' )
+			&& ! $entity_type_service->has_entity_type( $object->get_id(), 'http://schema.org/Event' )
+			&& ! $entity_type_service->has_entity_type( $object->get_id(), 'http://schema.org/Organization' ) ) {
+
+				continue;
+			}
+			$post_location_ids = get_post_meta( $object->get_id(), Wordlift_Schema_Service::FIELD_LOCATION );
+			$post_location_ids = is_array( $post_location_ids ) ? $post_location_ids : array();
+			$references        = array_merge( $post_location_ids, $references );
+
+			$this->add_references( $post_location_ids );
+
 		}
+
 		return $this;
 	}
 
