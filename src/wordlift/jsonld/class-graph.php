@@ -40,6 +40,14 @@ class Graph {
 		$this->term_converter = $term_converter;
 	}
 
+	public function set_main_jsonld( $main_jsonld ) {
+		$this->main_jsonld = $main_jsonld;
+	}
+
+	public function get_main_jsonld() {
+		return $this->main_jsonld;
+	}
+
 	/**
 	 * @param $references array<int>
 	 *
@@ -102,7 +110,7 @@ class Graph {
 
 	/**
 	 * @param $content_id Wordpress_Content_Id
-	 * @param $context Jsonld_Context_Enum
+	 * @param $context int
 	 * @return array|bool
 	 */
 	private function expand( $content_id, $context ) {
@@ -126,7 +134,7 @@ class Graph {
 	}
 
 	/**
-	 * @param $context Jsonld_Context_Enum
+	 * @param $context int Instance of Jsonld_Context_Enum
 	 *
 	 * @return array
 	 */
