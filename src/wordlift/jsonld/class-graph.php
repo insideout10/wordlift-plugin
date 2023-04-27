@@ -5,6 +5,7 @@ namespace Wordlift\Jsonld;
 use Wordlift\Assertions;
 use Wordlift\Content\Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Relations;
 
 /**
@@ -21,39 +22,131 @@ class Graph {
 	private $main_jsonld;
 
 	/**
-	 * @var Content_Id
+	 * @var array<Content_Id>
 	 */
-	private $references = array();
+	private $referenced_content_ids = array();
+	/**
+	 * @var \Wordlift_Post_Converter
+	 */
+	private $post_converter;
+	/**
+	 * @var \Wordlift_Term_JsonLd_Adapter
+	 */
+	private $term_converter;
 
-	public function __construct( $main_jsonld ) {
-		$this->main_jsonld = $main_jsonld;
+	public function __construct( $main_jsonld, $post_converter, $term_converter ) {
+		$this->main_jsonld    = $main_jsonld;
+		$this->post_converter = $post_converter;
+		$this->term_converter = $term_converter;
 	}
 
 	/**
 	 * @param $references array<int>
 	 *
-	 * @return void
+	 * @return Graph
 	 */
 	public function add_references( $refs ) {
 		Assertions::is_array( $refs );
 		foreach ( $refs as $ref ) {
-			$this->references[] = Wordpress_Content_Id::create_post( $ref );
+			$this->referenced_content_ids[] = Wordpress_Content_Id::create_post( $ref );
 		}
+		return $this;
 	}
 
-	// public function add_reference_infos( $references ) {
-	//
-	// }
+	/**
+	 * @param $reference_infos array
+	 *     Structure: [
+	 *         [
+	 *             'reference' => \Wordlift_Property_Entity_Reference,
+	 *         ],
+	 *         // more array items ...
+	 *     ]
+	 *
+	 * @return Graph
+	 */
+	public function add_required_reference_infos( $references_infos ) {
+
+		/**
+		 * @var $required_references array<\Wordlift_Property_Entity_Reference>
+		 */
+		$required_references = array_filter(
+			$references_infos,
+			function ( $item ) {
+				return isset( $item['reference'] ) &&
+					   // Check that the reference is required
+					   $item['reference']->get_required();
+			}
+		);
+
+		foreach ( $required_references as $required_reference ) {
+			$this->referenced_content_ids[] = new Wordpress_Content_Id(
+				$required_reference->get_id(),
+				$required_reference->get_type()
+			);
+		}
+		return $this;
+
+	}
 
 	/**
 	 * @param $relations Relations
 	 *
-	 * @return void
+	 * @return Graph
 	 */
 	public function add_relations( $relations ) {
 		foreach ( $relations->toArray() as $relation ) {
-			$this->references[] = $relation->get_object();
+			$this->referenced_content_ids[] = $relation->get_object();
 		}
+		return $this;
+	}
+
+	/**
+	 * @param $content_id Wordpress_Content_Id
+	 * @param $context Jsonld_Context_Enum
+	 * @return array|bool
+	 */
+	private function expand( $content_id, $context ) {
+		$object_id   = $content_id->get_id();
+		$object_type = $content_id->get_type();
+
+		if ( $object_type === Object_Type_Enum::POST ) {
+			$references     = array();
+			$reference_info = array();
+			$relations      = new Relations();
+			return $this->post_converter->convert( $object_id, $references, $reference_info, $relations );
+		} elseif ( $object_type === Object_Type_Enum::TERM ) {
+			// Skip the Uncategorized term.
+			if ( 1 === $object_id ) {
+				return false;
+			}
+			return $this->term_jsonld_adapter->get( $object_id, $context );
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * @param $context Jsonld_Context_Enum
+	 *
+	 * @return array
+	 */
+	public function render( $context ) {
+
+		/**
+		 * This is possible because the toString() method of
+		 * Wordpress_Content_Id is used to get the unique value.
+		 */
+		$unique_content_ids = array_unique( $this->referenced_content_ids, SORT_STRING );
+
+		$result = array( $this->main_jsonld );
+
+		foreach ( $unique_content_ids as $unique_content_id ) {
+			$result[] = $this->expand( $unique_content_id, $context );
+		}
+
+		// Filter out the false and empty results.
+		return array_filter( $result );
+
 	}
 
 }

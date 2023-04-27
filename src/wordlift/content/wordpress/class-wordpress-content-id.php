@@ -66,4 +66,9 @@ class Wordpress_Content_Id implements Content_Id, JsonSerializable {
 			'type' => $this->type,
 		);
 	}
+
+	public function __toString() {
+		return sprintf( '%d_%d', $this->type, $this->id );
+	}
+
 }
