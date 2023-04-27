@@ -910,6 +910,7 @@ EOF;
 			$parent_entity
 		);
 
+
 		$this->assertCount( 1, $jsonld[0]['mentions'], 'One entity needs to be present on the mentions instead of two' );
 		$this->assertCount( 1, $jsonld[0]['about'], 'One entity needs to be present on the about' );
 	}
