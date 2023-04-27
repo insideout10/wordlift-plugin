@@ -365,10 +365,11 @@ class Wordlift_Jsonld_Service {
 		$relations = new Relations();
 		$jsonld    = $entity_to_jsonld_converter->convert( $post_id, $references, $references_infos, $relations );
 
-		$graph = new Graph( $jsonld, $entity_to_jsonld_converter, $this->term_jsonld_adapter );
+		$graph = new Graph( $jsonld, $entity_to_jsonld_converter, Wordlift_Term_JsonLd_Adapter::get_instance() );
 
+		$schema_type = is_array( $jsonld['@type'] ) ? $jsonld['@type'] : array( $jsonld['@type'] );
 		// Add `about`/`mentions` only for `CreativeWork` and descendants.
-		if ( array_intersect( $jsonld['@type'], self::$creative_work_types ) ) {
+		if ( array_intersect( $schema_type, self::$creative_work_types ) ) {
 
 			foreach ( $relations->toArray() as $relation ) {
 				// Add the `mentions`/`about` prop.

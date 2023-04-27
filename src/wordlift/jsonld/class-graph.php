@@ -128,7 +128,7 @@ class Graph {
 			if ( 1 === $object_id ) {
 				return false;
 			}
-			return $this->term_jsonld_adapter->get( $object_id, $context );
+			return $this->term_converter->get( $object_id, $context );
 		} else {
 			return false;
 		}
