@@ -55,6 +55,7 @@ class Graph {
 	 */
 	public function add_references( $refs ) {
 		Assertions::is_array( $refs );
+
 		foreach ( $refs as $ref ) {
 			$this->referenced_content_ids[] = Wordpress_Content_Id::create_post( $ref );
 		}
