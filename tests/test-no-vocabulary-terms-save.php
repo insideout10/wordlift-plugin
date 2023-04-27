@@ -32,12 +32,12 @@ class No_Vocabulary_Terms_Save extends Wordlift_Vocabulary_Terms_Unit_Test_Case 
 		$this->assertTrue( $entity_types[0] instanceof WP_Term );
 		$this->assertSame( 'Thing', $entity_types[0]->name );
 	}
-
-	public function test_should_return_relation_type_correctly_for_terms() {
-		$term_data     = wp_insert_term( 'no_vocabulary_term_3', self::NO_VOCABULARY_TERM_TAXONOMY );
-		$term_id       = $term_data['term_id'];
-		$term_relation = Post_Terms_Relation_Service::get_instance();
-		$this->assertSame( WL_WHAT_RELATION, $term_relation->get_relation_type( $term_id ), 'For Thing we should get WL_WHAT_RELATION' );
-	}
+	// After refactor on 3.43.0, terms are by default linked via WL_WHAT relation.
+//	public function test_should_return_relation_type_correctly_for_terms() {
+//		$term_data     = wp_insert_term( 'no_vocabulary_term_3', self::NO_VOCABULARY_TERM_TAXONOMY );
+//		$term_id       = $term_data['term_id'];
+//		$term_relation = Post_Terms_Relation_Service::get_instance();
+//		$this->assertSame( WL_WHAT_RELATION, $term_relation->get_relation_type( $term_id ), 'For Thing we should get WL_WHAT_RELATION' );
+//	}
 
 }
