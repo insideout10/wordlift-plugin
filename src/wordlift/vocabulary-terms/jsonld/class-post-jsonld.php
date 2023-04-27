@@ -38,7 +38,7 @@ class Post_Jsonld {
 		$relations = $data['relations'];
 		$relations->add( ...$term_relations );
 
-		$term_mentions = $this->get_term_mentions( $jsonld );
+		$term_mentions = $this->get_term_mentions( $term_relations );
 		if ( count( $term_mentions ) > 0 ) {
 			$existing_mentions  = array_key_exists( 'mentions', $jsonld ) ? $jsonld['mentions'] : array();
 			$jsonld['mentions'] = array_merge( $existing_mentions, $term_mentions );
@@ -104,11 +104,11 @@ class Post_Jsonld {
 	}
 
 	/**
-
-	 * @param $term_references array<Relation>
+	 * @param $term_relations array<Relation>
+	 *
 	 * @return array
 	 */
-	private function get_term_mentions( $term_references ) {
+	private function get_term_mentions( $term_relations ) {
 
 		return array_map(
 			function ( $term_relation ) {
@@ -117,7 +117,7 @@ class Post_Jsonld {
 															  ->get_entity_id( $term_relation->get_object() ),
 				);
 			},
-			$term_references
+			$term_relations
 		);
 
 	}
