@@ -10,7 +10,8 @@ namespace Wordlift\Vocabulary_Terms\Jsonld;
 
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Term_Content_Legacy_Service;
-use Wordlift\Jsonld\Term_Reference;
+use Wordlift\Relation\Relation;
+use Wordlift\Relation\Relations;
 use WP_Taxonomy;
 use WP_Term;
 
@@ -22,29 +23,38 @@ class Post_Jsonld {
 
 	public function wl_post_jsonld_array( $data, $post_id ) {
 
-		$term_references = $this->get_term_references( $post_id );
+		$term_relations = $this->get_term_relations( $post_id );
 
-		if ( ! $term_references ) {
+		if ( ! $term_relations ) {
 			return $data;
 		}
 
-		$references = $data['references'];
-		$jsonld     = $data['jsonld'];
+		$references       = $data['references'];
+		$jsonld           = $data['jsonld'];
+		$references_infos = $data['references_infos'];
+		/**
+		 * @var $relations Relations
+		 */
+		$relations = $data['relations'];
+		$relations->add( ...$term_relations );
 
-		$jsonld['mentions'] = $this->append_term_mentions( $jsonld, $term_references );
+		$jsonld['mentions'] = $this->append_term_mentions( $jsonld, $term_relations );
 
 		return array(
-			'jsonld'     => $jsonld,
-			'references' => array_merge( $references, $term_references ),
+			'jsonld'           => $jsonld,
+			'references'       => $references,
+			'references_infos' => $references_infos,
+			'relations'        => $relations,
 		);
 	}
 
 	/**
 	 * @param $post_id
+	 * @param $relations Relations
 	 *
-	 * @return array Returns a list of term references, Returns empty array if none found.
+	 * @return array<Relation> Returns a list of term relations.
 	 */
-	private function get_term_references( $post_id ) {
+	private function get_term_relations( $post_id ) {
 
 		/** @var WP_Taxonomy[] $taxonomies_for_post */
 		$taxonomies_for_post = get_object_taxonomies( get_post_type( $post_id ), 'objects' );
@@ -67,14 +77,18 @@ class Post_Jsonld {
 		// Convert everything to the Term Reference.
 		return array_filter(
 			array_map(
-				function ( $term ) {
+				function ( $term ) use ( $post_id ) {
 					/**
 					 * @var WP_Term $term
 					 */
 					if ( Wordpress_Term_Content_Legacy_Service::get_instance()
 													  ->get_entity_id( Wordpress_Content_Id::create_term( $term->term_id ) )
 					) {
-						  return new Term_Reference( $term->term_id );
+						return new Relation(
+							Wordpress_Content_Id::create_post( $post_id ),
+							Wordpress_Content_Id::create_term( $term->term_id ),
+							WL_WHAT_RELATION
+						);
 					}
 
 					return false;
@@ -87,7 +101,7 @@ class Post_Jsonld {
 
 	/**
 	 * @param $jsonld array
-	 * @param $term_references array<Term_Reference>
+	 * @param $term_references array<Relation>
 	 */
 	private function append_term_mentions( $jsonld, $term_references ) {
 
@@ -97,7 +111,7 @@ class Post_Jsonld {
 			function ( $term_reference ) {
 				return array(
 					'@id' => Wordpress_Term_Content_Legacy_Service::get_instance()
-															  ->get_entity_id( Wordpress_Content_Id::create_term( $term_reference->get_id() ) ),
+															  ->get_entity_id( Wordpress_Content_Id::create_term( $term_reference->get_object()->get_id() ) ),
 				);
 			},
 			$term_references

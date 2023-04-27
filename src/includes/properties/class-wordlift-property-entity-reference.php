@@ -6,8 +6,6 @@
  * @package Wordlift
  */
 
-use Wordlift\Jsonld\Post_Reference;
-use Wordlift\Jsonld\Term_Reference;
 use Wordlift\Object_Type_Enum;
 
 /**
@@ -124,16 +122,6 @@ class Wordlift_Property_Entity_Reference {
 
 		$this->required = $value;
 
-	}
-
-	public function to_reference() {
-
-		if ( Object_Type_Enum::POST === $this->type ) {
-			return new Post_Reference( $this->id );
-		}
-		if ( Object_Type_Enum::TERM === $this->type ) {
-			return new Term_Reference( $this->id );
-		}
 	}
 
 }

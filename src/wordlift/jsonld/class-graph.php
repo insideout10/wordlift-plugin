@@ -132,7 +132,7 @@ class Graph {
 			if ( 1 === $object_id ) {
 				return false;
 			}
-			return $this->term_converter->get( $object_id, $context );
+			return current( $this->term_converter->get( $object_id, $context ) );
 		} else {
 			return false;
 		}

@@ -189,6 +189,7 @@ class No_Vocabulary_Terms_Jsonld extends Wordlift_Vocabulary_Terms_Unit_Test_Cas
 
 		// we should have the term entity in mentions.
 		$term_entity_uri = Wordpress_Content_Service::get_instance()->get_entity_id( Wordpress_Content_Id::create_term( $term_id ) );
+
 		$this->assertSame( array( '@id' => $term_entity_uri ), $jsonld[0]['mentions'][0] );
 		$this->assertSame( $term_entity_uri, $jsonld[1]['@id'] );
 
