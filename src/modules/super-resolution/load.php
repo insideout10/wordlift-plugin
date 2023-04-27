@@ -37,14 +37,28 @@ function __wl_super_resolution__load() {
 
 __wl_super_resolution__load();
 
-// function my_custom_attachment_fields_to_edit( $form_fields, $post ) {
-// Add your custom HTML code here
-// $form_fields['my_custom_field'] = array(
-// 'label' => 'My Custom Field',
-// 'input' => 'html',
-// 'html'  => '<p>My custom HTML code goes here</p>',
-// );
-//
-// return $form_fields;
-// }
-// add_filter( 'attachment_fields_to_edit', 'my_custom_attachment_fields_to_edit', 10, 2 );
+// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+function my_custom_attachment_fields_to_edit( $form_fields, $post ) {
+	// Add your custom HTML code here
+	$form_fields['wl_super_resolution'] = array(
+		'label'  => __( 'Super Resolution', 'wordlift' ),
+		'input'  => 'custom',
+		'html'   => '',
+		'custom' => '<button onclick="tb_show(\'Your Modal Title\', \'https://example.org\', {\'class\': \'wl-super-resolution-modal\'})">Upsample</button>',
+	);
+
+	return $form_fields;
+}
+
+add_filter( 'attachment_fields_to_edit', 'my_custom_attachment_fields_to_edit', 10, 2 );
+
+function enqueue_script_on_featured_image_screen( $hook ) {
+	if ( 'post.php' === $hook && 'post' === get_post_type() ) {
+		$screen = get_current_screen();
+		if ( 'edit' !== $screen->base && 'post' === $screen->post_type ) {
+			wp_enqueue_style( 'wl-super-resolution', WL_DIR_URL . 'modules/super-resolution/css/super-resolution.css', array( 'thickbox' ), WORDLIFT_VERSION, true );
+		}
+	}
+}
+
+add_action( 'admin_enqueue_scripts', 'enqueue_script_on_featured_image_screen' );
