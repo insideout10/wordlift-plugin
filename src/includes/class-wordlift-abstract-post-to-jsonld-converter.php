@@ -191,47 +191,30 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		$relation_service->add_relations( $content_id, $relations );
 		$this->add_relations_to_references( $relations, $references );
 
-		/*
-		 * Add the locations to the references.
-		 *
-		 * @since 3.19.5
-		 *
-		 * @see https://github.com/insideout10/wordlift-plugin/issues/858.
-		 */
-		// A reference to use in closure.
-		// @@todo check that we output the location
-		// $entity_type_service = $this->entity_type_service;
-		// $locations           = array_reduce(
-		// $references_without_locations,
-		// function ( $carry, $reference ) use ( $entity_type_service ) {
-		// **
-		// * @var $reference Reference
-		// */
-		// @see https://schema.org/location for the schema.org types using the `location` property.
-		// if ( ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Action' )
-		// && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Event' )
-		// && ! $entity_type_service->has_entity_type( $reference->get_id(), 'http://schema.org/Organization' ) ) {
-		//
-		// return $carry;
-		// }
-		// $post_location_ids        = get_post_meta( $reference->get_id(), Wordlift_Schema_Service::FIELD_LOCATION );
-		// $post_location_references = array_map(
-		// function ( $post_id ) {
-		// return new Post_Reference( $post_id );
-		// },
-		// $post_location_ids
-		// );
-		//
-		// return array_merge( $carry, $post_location_references );
-		// },
-		// array()
-		// );
-		//
-		// Merge the references with the referenced locations if any.
-//		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		// $references = array_merge( $references_without_locations, $locations );
+		$this->expand_references_with_location( $references );
 
 		return $jsonld;
+	}
+
+	public function expand_references_with_location( &$references ) {
+		$entity_type_service = Wordlift_Entity_Type_Service::get_instance();
+
+		// check if any of the references has the entity type set to Action, Event or organisation.
+		$references_with_location = array_filter(
+			$references,
+			function ( $post_id ) use ( $entity_type_service ) {
+				return ( $entity_type_service->has_entity_type( $post_id, 'http://schema.org/Action' )
+				|| $entity_type_service->has_entity_type( $post_id, 'http://schema.org/Event' )
+				|| $entity_type_service->has_entity_type( $post_id, 'http://schema.org/Organization' ) );
+			}
+		);
+
+		// If set, then get all the location ids and push them to references.
+		foreach ( $references_with_location as $post_id ) {
+			$post_location_ids = get_post_meta( $post_id, Wordlift_Schema_Service::FIELD_LOCATION );
+			$post_location_ids = is_array( $post_location_ids ) ? $post_location_ids : array();
+			$references        = array_merge( $post_location_ids, $references );
+		}
 	}
 
 	/**
