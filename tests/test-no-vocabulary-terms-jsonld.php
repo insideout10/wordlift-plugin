@@ -159,8 +159,10 @@ class No_Vocabulary_Terms_Jsonld extends Wordlift_Vocabulary_Terms_Unit_Test_Cas
 		// Check the jsonld of the post
 		$jsonld = Wordlift_Jsonld_Service::get_instance()
 										 ->get_jsonld( false, $post_id, Jsonld_Context_Enum::PAGE );
+
 		$this->assertCount( 1, $jsonld, 'We should have no term references' );
 
+		var_dump($jsonld);
 		$this->assertFalse( array_key_exists( 'mentions', $jsonld[0] ), 'Shouldnt be added to mentions since it doesnt have dataset uri' );
 	}
 

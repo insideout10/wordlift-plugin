@@ -38,7 +38,11 @@ class Post_Jsonld {
 		$relations = $data['relations'];
 		$relations->add( ...$term_relations );
 
-		$jsonld['mentions'] = $this->append_term_mentions( $jsonld, $term_relations );
+		$term_mentions = $this->get_term_mentions( $jsonld );
+		if ( count( $term_mentions ) > 0 ) {
+			$existing_mentions  = array_key_exists( 'mentions', $jsonld ) ? $jsonld['mentions'] : array();
+			$jsonld['mentions'] = array_merge( $existing_mentions, $term_mentions );
+		}
 
 		return array(
 			'jsonld'           => $jsonld,
@@ -100,24 +104,22 @@ class Post_Jsonld {
 	}
 
 	/**
-	 * @param $jsonld array
+
 	 * @param $term_references array<Relation>
+	 * @return array
 	 */
-	private function append_term_mentions( $jsonld, $term_references ) {
+	private function get_term_mentions( $term_references ) {
 
-		$existing_mentions = array_key_exists( 'mentions', $jsonld ) ? $jsonld['mentions'] : array();
-
-		$term_mentions = array_map(
-			function ( $term_reference ) {
+		return array_map(
+			function ( $term_relation ) {
 				return array(
 					'@id' => Wordpress_Term_Content_Legacy_Service::get_instance()
-															  ->get_entity_id( Wordpress_Content_Id::create_term( $term_reference->get_object()->get_id() ) ),
+															  ->get_entity_id( $term_relation->get_object() ),
 				);
 			},
 			$term_references
 		);
 
-		return array_merge( $existing_mentions, $term_mentions );
 	}
 
 }
