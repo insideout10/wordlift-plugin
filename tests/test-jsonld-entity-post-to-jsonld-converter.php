@@ -891,8 +891,8 @@ EOF;
 										->get_entity_id( Wordpress_Content_Id::create_post( $referenced_entity_2 ) );
 
 		$post_content          = <<<EOF
-		<span itemid="$referenced_entity_uri_1">test</span>
-		<span itemid="$referenced_entity_uri_2">test</span>
+		<span class="textannotation disambiguated" itemid="$referenced_entity_uri_1">test</span>
+		<span class="textannotation disambiguated" itemid="$referenced_entity_uri_2">test</span>
 EOF;
 
 		$parent_entity = $this->factory()->post->create(
