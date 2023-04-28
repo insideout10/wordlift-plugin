@@ -30,7 +30,10 @@ class Relation_Service extends Abstract_Relation_Service {
 			self::$instance = new self();
 
 			self::$instance->register_delegate( Relation_Instances_Relation_Service::get_instance() );
-			self::$instance->register_delegate( Post_Terms_Relation_Service::get_instance() );
+			// Disabled, as of now terms are not expanded by default,it happens only when
+			// no-vocabulary-term feature is enabled  and it has specific rules
+			// on which term to expand, so this delegate is disabled to retain the behaviour.
+			// self::$instance->register_delegate( Post_Terms_Relation_Service::get_instance() );
 			self::$instance->register_delegate( Post_Content_Relation_Service::get_instance() );
 		}
 
