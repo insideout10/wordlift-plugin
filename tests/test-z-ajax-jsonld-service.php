@@ -788,13 +788,20 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 			'post_type'    => 'entity',
 			'post_title'   => 'Entity 2',
 			'post_content' => 'Content 2',
+			'post_status' => 'publish'
 		) );
+
+		\Wordlift_Entity_Type_Service::get_instance()->set( $entity_1, 'http://schema.org/Thing');
 
 		$entity_2 = $this->factory()->post->create( array(
 			'post_type'    => 'entity',
 			'post_title'   => 'Entity 3',
 			'post_content' => 'Content 3',
+			'post_status' => 'publish'
 		) );
+
+		\Wordlift_Entity_Type_Service::get_instance()->set( $entity_2, 'http://schema.org/Thing');
+
 		// add duplicates to references.
 		$references = array( $entity_1, $entity_2, $entity_1 );
 
@@ -809,7 +816,6 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		$post_jsonld = Wordlift_Jsonld_Service::get_instance()
 		                                      ->get_jsonld( false, $post_id );
-
 
 		$this->assertCount( 3, $post_jsonld );
 

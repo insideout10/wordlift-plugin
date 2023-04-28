@@ -352,7 +352,7 @@ class Wordlift_Entity_Type_Service {
 			return has_term( '', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $post_id );
 		}
 
-		$has_entity_type = ( null !== $this->has_post_term_by_uri( $post_id, $uri ) );
+		$has_entity_type = $this->has_post_term_by_uri( $post_id, $uri );
 
 		$this->log->debug( "Post $post_id has $uri type: " . ( $has_entity_type ? 'yes' : 'no' ) );
 
@@ -404,7 +404,6 @@ class Wordlift_Entity_Type_Service {
 		// Look for a term if the specified URI.
 		foreach ( $terms as $term ) {
 			$term_uri = get_term_meta( $term->term_id, '_wl_uri', true );
-
 			if ( $uri === $term_uri ) {
 				return true;
 			}
