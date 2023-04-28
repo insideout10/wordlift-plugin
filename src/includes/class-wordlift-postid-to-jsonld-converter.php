@@ -48,24 +48,24 @@ class Wordlift_Postid_To_Jsonld_Converter implements Wordlift_Post_Converter {
 	/**
 	 * Convert a post to JSON-LD.
 	 *
-	 * @param string $id A post id (post or entity).
+	 * @param string $post_id A post id (post or entity).
 	 * @param array  $references
-	 * @param array  $references_infos
+	 * @param array  $relations
 	 *
 	 * @return array|NULL A JSON-LD array representation of the post with the provided id, or NULL if not found.
 	 * @since 3.8.0
 	 */
-	public function convert( $id, &$references = array(), &$references_infos = array() ) {
+	public function convert( $post_id, &$references = array(), &$references_infos = array(), $relations = null ) {
 
-		$this->log->trace( "Converting post $id..." );
+		$this->log->trace( "Converting post $post_id..." );
 
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
-		return $entity_service->is_entity( $id )
+		return $entity_service->is_entity( $post_id )
 			// Entity.
-			? $this->entity_post_to_jsonld_converter->convert( $id, $references, $references_infos )
+			? $this->entity_post_to_jsonld_converter->convert( $post_id, $references, $references_infos, $relations )
 			// Post/Page.
-			: $this->post_to_jsonld_converter->convert( $id, $references );
+			: $this->post_to_jsonld_converter->convert( $post_id, $references, $references_infos, $relations );
 	}
 
 }

@@ -81,12 +81,12 @@ class Wordlift_Relation_Service {
 	 *
 	 * @param int|array     $object_id The entity {@link WP_Post}'s id.
 	 * @param string        $fields The fields to return, 'ids' to only return ids or
-	 *                                      '*' to return all fields, by default '*'.
+	 *                                             '*' to return all fields, by default '*'.
 	 * @param null|string   $predicate The predicate (who|what|...), by default all.
 	 * @param null|string   $status The status, by default all.
 	 * @param array         $excludes An array of ids to exclude from the results.
 	 * @param null|int      $limit The maximum number of results, by default
-	 *                                    no limit.
+	 *                                         no limit.
 	 * @param null|array    $include The {@link WP_Post}s' ids to include.
 	 *
 	 * @param null | string $order_by
@@ -299,7 +299,7 @@ class Wordlift_Relation_Service {
 	 *
 	 * @param int         $object_id The object {@link WP_Post}'s id.
 	 * @param string      $fields The fields to return, 'ids' to only return ids or
-	 *                                    '*' to return all fields, by default '*'.
+	 *                                         '*' to return all fields, by default '*'.
 	 * @param null|string $status The status, by default all.
 	 *
 	 * @return array|object|null Database query results
@@ -329,11 +329,13 @@ class Wordlift_Relation_Service {
 	 *
 	 * @param int         $subject_id The {@link WP_Post}'s id.
 	 * @param string      $fields The fields to return, 'ids' to only return ids or
-	 *                                     '*' to return all fields, by default '*'.
+	 *                                          '*' to return all fields, by default '*'.
 	 * @param null|string $predicate The predicate (who|what|...), by default all.
 	 * @param null|string $status The status, by default all.
 	 *
 	 * @return array|object|null Database query results
+	 *
+	 * @deprecated since it doesn't handle the subject_type nor the object_type
 	 * @since 3.15.0
 	 */
 	public function get_objects( $subject_id, $fields = '*', $predicate = null, $status = null ) {

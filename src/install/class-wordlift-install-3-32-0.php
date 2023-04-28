@@ -38,7 +38,7 @@ class Wordlift_Install_3_32_0 extends Wordlift_Install {
 			// Add object_type column
 			$wpdb->query(
 				"ALTER TABLE {$wpdb->prefix}wl_relation_instances
-ADD object_type TINYINT DEFAULT 0;"
+					ADD object_type TINYINT DEFAULT 0;"
 			);
 		}
 
@@ -46,7 +46,7 @@ ADD object_type TINYINT DEFAULT 0;"
 			// Add subject_type column.
 			$wpdb->query(
 				"ALTER TABLE {$wpdb->prefix}wl_relation_instances
-ADD subject_type TINYINT DEFAULT 0;"
+					ADD subject_type TINYINT DEFAULT 0;"
 			);
 		}
 	}

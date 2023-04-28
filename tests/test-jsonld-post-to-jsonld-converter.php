@@ -9,6 +9,7 @@
 use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Jsonld\Term_Reference;
 use Wordlift\Object_Type_Enum;
+use Wordlift\Relation\Relations;
 
 /**
  * Define the {@link Wordlift_Post_To_Jsonld_Converter_Test} class.
@@ -118,7 +119,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$permalink = get_permalink( $post->ID );
 
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we don't have reference.
 		$this->assertCount( 0, $references );
@@ -163,7 +164,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$permalink = get_permalink( $post->ID );
 
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 
 		// Check that we don't have reference.
@@ -223,7 +224,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$permalink = get_permalink( $post->ID );
 
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we don't have reference.
 		$this->assertCount( 0, $references );
@@ -276,7 +277,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$permalink = get_permalink( $post->ID );
 
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we don't have reference.
 		$this->assertCount( 0, $references );
@@ -377,7 +378,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$permalink = get_permalink( $post->ID );
 
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we don't have reference.
 		$this->assertCount( 0, $references );
@@ -456,7 +457,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we have 2 references.
 		$this->assertCount( 2, $references );
@@ -464,7 +465,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		// Check that we have ... properties, not one more than that.
 		//
 		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 16, $jsonld );
+		$this->assertCount( 15, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -481,84 +482,14 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( mysql2date( 'Y-m-d\TH:i', $post->post_modified_gmt, false ), $jsonld['dateModified'] );
 		$this->assertEquals( self::word_count( $post->ID ), $jsonld['wordCount'] );
 
-		//
-		$this->assertCount( 2, $jsonld['mentions'] );
-		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
-		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
+		// disabled since mentions is moved to class-wordlift-jsonld-service.php since 3.43.0
+//		$this->assertCount( 2, $jsonld['mentions'] );
+//		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
+//		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
 
 	}
 
-	/**
-	 * Test a post with a `mentions` and an `about`.
-	 *
-	 * @since 3.12.0
-	 */
-	public function test_a_post_with_one_mentions_and_one_about() {
 
-		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
-
-		// Create a post.
-		$post      = $this->factory()->post->create_and_get( array(
-			'post_title'  => 'Test Post To Json-Ld Converter test_a_post_with_one_mentions_and_one_about 0',
-			'post_author' => $this->author->ID,
-		) );
-		$post_uri  = $this->entity_service->get_uri( $post->ID );
-		$permalink = get_permalink( $post->ID );
-
-		// Create a couple of entities.
-		$entity_1 = $this->entity_factory->create_and_get( array(
-			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_one_mentions_and_one_about 1',
-		) );
-		Wordlift_Entity_Type_Service::get_instance()->set( $entity_1->ID, 'http://schema.org/Organization' );
-		$entity_1_uri = $this->entity_service->get_uri( $entity_1->ID );
-
-		// The Post Title is contained in the first Post Title so that this is output as `about` in JSON-LD.
-		$entity_2 = $this->entity_factory->create_and_get( array(
-			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_one_mentions_and_one_about',
-		) );
-		Wordlift_Entity_Type_Service::get_instance()->set( $entity_2->ID, 'http://schema.org/Person' );
-		$entity_2_uri = $this->entity_service->get_uri( $entity_2->ID );
-
-		// Bind the entities to the post.
-		wl_core_add_relation_instances( $post->ID, WL_WHO_RELATION, array(
-			$entity_1->ID,
-			$entity_2->ID,
-		) );
-
-		//
-		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
-
-		// Check that we have 2 references.
-		$this->assertCount( 2, $references );
-
-		// Check that we have ... properties, not one more than that.
-		//
-		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 17, $jsonld, "The number of properties doesn`t match:\n" . var_export( array_keys( $jsonld ), true ) );
-
-		// Check the json-ld values.
-		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
-		$this->assertEquals( $post_uri, $jsonld['@id'] );
-		$this->assertEquals( 'Article', $jsonld['@type'] );
-		$this->assertEquals( $post->post_excerpt, $jsonld['description'] );
-		$this->assertEquals( $post->post_title, $jsonld['headline'] );
-		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage'] );
-		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
-		$this->assertEquals( $this->author_uri, $jsonld['author']['@id'] );
-		$this->assertEquals( $this->author->display_name, $jsonld['author']['name'] );
-		$this->assertEquals( mysql2date( 'Y-m-d\TH:i', $post->post_date_gmt, false ), $jsonld['datePublished'] );
-		$this->assertEquals( mysql2date( 'Y-m-d\TH:i', $post->post_modified_gmt, false ), $jsonld['dateModified'] );
-		$this->assertEquals( self::word_count( $post->ID ), $jsonld['wordCount'] );
-
-		//
-		$this->assertCount( 1, $jsonld['mentions'] );
-		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
-
-		$this->assertCount( 1, $jsonld['about'] );
-		$this->assertEquals( $entity_2_uri, $jsonld['about'][0]['@id'] );
-
-	}
 
 	/**
 	 * Test a post with a `mentions` and an `about`.
@@ -599,7 +530,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we have 2 references.
 		$this->assertCount( 2, $references );
@@ -607,7 +538,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		// Check that we have ... properties, not one more than that.
 		//
 		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 17, $jsonld );
+		// since 3.43.0, mentions and about is moved to class-wordlift-jsonld-service.php
+		$this->assertCount( 15, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -623,12 +555,12 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( mysql2date( 'Y-m-d\TH:i', $post->post_modified_gmt, false ), $jsonld['dateModified'] );
 		$this->assertEquals( self::word_count( $post->ID ), $jsonld['wordCount'] );
 
-		//
-		$this->assertCount( 1, $jsonld['mentions'] );
-		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
-
-		$this->assertCount( 1, $jsonld['about'] );
-		$this->assertEquals( $entity_2_uri, $jsonld['about'][0]['@id'] );
+		// disabled since the mentions and about is moved to class-wordlift-jsonld-service.php in 3.43.0
+//		$this->assertCount( 1, $jsonld['mentions'] );
+//		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
+//
+//		$this->assertCount( 1, $jsonld['about'] );
+//		$this->assertEquals( $entity_2_uri, $jsonld['about'][0]['@id'] );
 
 	}
 
@@ -641,7 +573,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$title  = 'Example Post Title';
 		$labels = array( 'o', 'Post' );
 
-		$check_matches = Wordlift_Post_To_Jsonld_Converter::get_instance()->check_title_match( $labels, $title );
+		$check_matches = Wordlift_Jsonld_Service::get_instance()->check_title_match( $labels, $title );
 
 		$this->assertTrue( $check_matches );
 	}
@@ -655,7 +587,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$title  = 'Example Post Title';
 		$labels = array( 'o', 'WordLift' );
 
-		$check_matches = Wordlift_Post_To_Jsonld_Converter::get_instance()->check_title_match( $labels, $title );
+		$check_matches = Wordlift_Jsonld_Service::get_instance()->check_title_match( $labels, $title );
 
 		$this->assertFalse( $check_matches );
 	}
@@ -703,7 +635,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we have 2 references.
 		$this->assertCount( 2, $references );
@@ -711,7 +643,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		// Check that we have ... properties, not one more than that.
 		//
 		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 17, $jsonld );
+		// since 3.43.0, mentions and about is moved to class-wordlift-jsonld-service.php
+		$this->assertCount( 16, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -738,10 +671,10 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 200, $jsonld['image']['0']['width'] );
 		$this->assertEquals( 100, $jsonld['image']['0']['height'] );
 
-		//
-		$this->assertCount( 2, $jsonld['mentions'] );
-		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
-		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
+		// disabled since mentions is moved to class-wordlift-jsonld-service.php since 3.43.0
+//		$this->assertCount( 2, $jsonld['mentions'] );
+//		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
+//		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
 
 	}
 
@@ -792,7 +725,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we have 2 references.
 		$this->assertCount( 2, $references );
@@ -800,7 +733,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		// Check that we have ... properties, not one more than that.
 		//
 		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 17, $jsonld );
+		// since 3.43.0, mentions and about is moved to class-wordlift-jsonld-service.php
+		$this->assertCount( 16, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -827,10 +761,10 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 200, $jsonld['image']['0']['width'] );
 		$this->assertEquals( 100, $jsonld['image']['0']['height'] );
 
-		//
-		$this->assertCount( 2, $jsonld['mentions'] );
-		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
-		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
+		// disabled since mentions is moved to class-wordlift-jsonld-service.php since 3.43.0
+//		$this->assertCount( 2, $jsonld['mentions'] );
+//		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
+//		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
 	}
 
 	/**
@@ -885,15 +819,17 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we have 2 references.
 		$this->assertCount( 2, $references );
 
+
 		// Check that we have ... properties, not one more than that.
 		//
 		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 17, $jsonld );
+		// since 3.43.0, mentions and about is moved to class-wordlift-jsonld-service.php
+		$this->assertCount( 16, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -932,10 +868,10 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		// $this->assertEquals( 300, $jsonld['image']['1']['width'] );
 		// $this->assertEquals( 200, $jsonld['image']['1']['height'] );
 
-		//
-		$this->assertCount( 2, $jsonld['mentions'] );
-		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
-		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
+		// disabled since the mentions is moved to class-wordlift-jsonld-service.php in 3.43.0
+//		$this->assertCount( 2, $jsonld['mentions'] );
+//		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
+//		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
 	}
 
 	/**
@@ -991,7 +927,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we have 2 references.
 		$this->assertCount( 2, $references );
@@ -999,7 +935,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		// Check that we have ... properties, not one more than that.
 		//
 		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 17, $jsonld );
+		// since 3.43.0, mentions and about is moved to class-wordlift-jsonld-service.php
+		$this->assertCount( 16, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -1034,10 +971,10 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 //		$this->assertEquals( 150, $jsonld['image']['1']['width'] );
 //		$this->assertEquals( 150, $jsonld['image']['1']['height'] );
 
-		//
-		$this->assertCount( 2, $jsonld['mentions'] );
-		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
-		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
+		// disabled since mentions is moved to class-wordlift-jsonld-service.php since 3.43.0
+//		$this->assertCount( 2, $jsonld['mentions'] );
+//		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
+//		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
 	}
 
 	/**
@@ -1098,7 +1035,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		// Check that we have 2 references.
 		$this->assertCount( 2, $references );
@@ -1106,7 +1043,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		// Check that we have ... properties, not one more than that.
 		//
 		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 17, $jsonld );
+		// since 3.43.0, mentions and about is moved to class-wordlift-jsonld-service.php
+		$this->assertCount( 16, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -1142,10 +1080,10 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 200, $jsonld['image']['0']['width'] );
 		$this->assertEquals( 300, $jsonld['image']['0']['height'] );
 
-		//
-		$this->assertCount( 2, $jsonld['mentions'] );
-		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
-		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
+		// disabled since mentions is moved to class-wordlift-jsonld-service.php since 3.43.0
+//		$this->assertCount( 2, $jsonld['mentions'] );
+//		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
+//		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
 
 	}
 
@@ -1170,7 +1108,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
 		$this->assertEquals( $author_uri, $jsonld['author']['@id'] );
@@ -1210,7 +1148,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		$this->assertEquals( $entity_uri, $jsonld['author']['@id'] );
 
@@ -1256,7 +1194,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		$this->assertEquals( $entity_uri, $jsonld['author']['@id'] );
 
@@ -1316,7 +1254,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		);
 
 		$references = array();
-		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		$this->assertEquals( $entity_uri, $jsonld['author']['@id'] );
 		$this->assertArraySubset( array( $entity_id ), $references );
@@ -1325,14 +1263,15 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertGreaterThan( 0, $this->user_service->set_entity( $author_id, $entity_id_2 ) );
 
 		$references_2 = array();
-		$jsonld_2     = $this->post_to_jsonld_converter->convert( $post->ID, $references_2 );
+		$jsonld_2     = $this->post_to_jsonld_converter->convert( $post->ID, $references_2, $references_2, new Relations() );
 
 		$this->assertEquals( $entity_uri_2, $jsonld_2['author']['@id'] );
 		$this->assertArraySubset( array( $entity_id_2 ), $references_2 );
 
 		// Delete the author entity and check that the author triple is properly generated.
 		delete_user_meta( $author_id, Wordlift_User_Service::ENTITY_META_KEY );
-		$jsonld_3 = $this->post_to_jsonld_converter->convert( $post->ID );
+		$references_3 = array();
+		$jsonld_3 = $this->post_to_jsonld_converter->convert( $post->ID, $references_3, $references_3, new Relations() );
 		$this->assertEquals( $author_uri, $jsonld_3['author']['@id'] );
 
 	}
@@ -1352,7 +1291,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 			$called ++;
 		} );
 
-		$result = $this->post_to_jsonld_converter->convert( PHP_INT_MAX );
+		$result = $this->post_to_jsonld_converter->convert( PHP_INT_MAX , $references, $references, new Relations());
 
 		$this->assertNull( $result, "Calling convert on a post not found returns NULL." );
 
@@ -1381,7 +1320,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		$post_id = $this->factory()->post->create();
 
-		$result = $this->post_to_jsonld_converter->convert( $post_id );
+		$references = array();
+		$result = $this->post_to_jsonld_converter->convert( $post_id, $references, $references, new Relations() );
 
 		$this->assertTrue( is_array( $result ), 'Convert returns an array.' );
 
@@ -1427,11 +1367,12 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		// Convert the post to json-ld.
 		$references = array();
-		$this->post_to_jsonld_converter->convert( $post_id, $references );
+		$reference_infos = array();
 
-		$references = array_map( function ( $reference ) {
-			return $reference->get_id();
-		}, $references );
+
+		$this->post_to_jsonld_converter->convert( $post_id, $references, $reference_infos, new Relations()  );
+
+
 		// Check that the references contain both the event and the place.
 		$this->assertContains( $event_post_id, $references, 'References must contain the event post id.' );
 		$this->assertContains( $place_post_id, $references, 'References must contain the place post id.' );
@@ -1450,7 +1391,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		// Convert the post to json-ld.
 		$references = array();
-		$json_ld    = $this->post_to_jsonld_converter->convert( $post_id, $references );
+		$json_ld    = $this->post_to_jsonld_converter->convert( $post_id, $references, $references, new Relations() );
 
 		$this->assertArrayNotHasKey( 'wordCount', $json_ld, '`wordCount` must not be set when the entity type is unknown or `WebPage`.' );
 
@@ -1481,33 +1422,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		// Convert the post to json-ld.
 		$references = array();
-		$json_ld    = $this->post_to_jsonld_converter->convert( $post_id, $references );
+		$json_ld    = $this->post_to_jsonld_converter->convert( $post_id, $references, $references, new Relations() );
 
 		$this->assertArrayNotHasKey( 'wordCount', $json_ld, '`wordCount` must not be set when the entity type is unknown or `WebPage`.' );
 
 	}
 
-	public function test_should_be_able_to_use_array_unique_on_references() {
 
-		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
-
-		$post_reference = new Post_Reference( 1 );
-		$term_reference = new Term_Reference( 1 );
-
-		$this->assertSame( (string) $post_reference, Object_Type_Enum::POST . "_1", "Post reference should be 
-		able to convert to string" );
-
-		$this->assertSame( (string) $term_reference, Object_Type_Enum::TERM . "_1", "Term reference should be 
-		able to convert to string" );
-
-		$this->assertCount( 2, array_unique( array(
-			$post_reference,
-			$post_reference,
-			$term_reference,
-			$term_reference
-		) ), 'Duplicate references should not be present ' );
-
-	}
 
 	public function test_when_the_article_is_linked_to_entity_should_not_have_duplicate_mentions() {
 

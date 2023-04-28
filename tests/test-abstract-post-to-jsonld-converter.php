@@ -9,6 +9,8 @@
  * @subpackage Wordlift/tests
  */
 
+use Wordlift\Relation\Relations;
+
 /**
  * Define the Wordlift_Abstract_Post_To_Jsonld_Converter_Test class.
  *
@@ -61,19 +63,26 @@ class Wordlift_Abstract_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test
 	 */
 	public function test_convert() {
 
-		$post_id = $this->factory()->post->create( array(
-			'post_type'  => 'entity',
-			'post_title' => 'Abstract Post to Json-Ld Converter test_convert'
-		) );
+		$post_id = $this->factory()->post->create(
+			array(
+				'post_type'  => 'entity',
+				'post_title' => 'Abstract Post to Json-Ld Converter test_convert',
+			)
+		);
 		// Add 3 entity type terms.
-		wp_set_object_terms( $post_id, array(
-			'person',
-			'creative-work',
-			'local-business',
-		), Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		wp_set_object_terms(
+			$post_id,
+			array(
+				'person',
+				'creative-work',
+				'local-business',
+			),
+			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME
+		);
 
-		$references = array();
-		$json       = $this->converter->convert( $post_id, $references );
+		$references      = array();
+		$reference_infos = array();
+		$json            = $this->converter->convert( $post_id, $references, $reference_infos, new Relations() );
 
 		$this->assertArrayHasKey( '@context', $json, 'Key `@context` must exist.' );
 		$this->assertEquals( 'http://schema.org', $json['@context'] );
