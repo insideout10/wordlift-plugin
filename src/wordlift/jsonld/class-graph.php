@@ -114,6 +114,8 @@ class Graph {
 	}
 
 	/**
+	 * This method expands the content id and return only the jsonld.
+	 *
 	 * @param $content_id Wordpress_Content_Id
 	 * @param $context int
 	 * @return array|bool
@@ -123,19 +125,13 @@ class Graph {
 		$object_type = $content_id->get_type();
 
 		if ( $object_type === Object_Type_Enum::POST ) {
-			$references     = array();
-			$reference_info = array();
-			$relations      = new Relations();
-			return $this->post_converter->convert( $object_id, $references, $reference_info, $relations );
+			return $this->expand_post( $object_id );
 		} elseif ( $object_type === Object_Type_Enum::TERM ) {
-			// Skip the Uncategorized term.
-			if ( 1 === $object_id ) {
-				return false;
-			}
-			return current( $this->term_converter->get( $object_id, $context ) );
-		} else {
-			return false;
+			return $this->expand_term( $object_id, $context );
 		}
+
+		return false;
+
 	}
 
 	/**
@@ -160,6 +156,41 @@ class Graph {
 		// Filter out the false and empty results.
 		return array_filter( $result );
 
+	}
+
+	/**
+	 * @param $object_id
+	 *
+	 * @return false|mixed
+	 */
+	public function expand_post( $object_id ) {
+		if ( get_post_status( $object_id ) !== 'publish' || \Wordlift_Entity_Type_Service::get_instance()->has_entity_type(
+			$object_id,
+			'http://schema.org/Article'
+		) ) {
+			return false;
+		}
+
+		$references     = array();
+		$reference_info = array();
+		$relations      = new Relations();
+
+		return $this->post_converter->convert( $object_id, $references, $reference_info, $relations );
+	}
+
+	/**
+	 * @param $object_id
+	 * @param $context
+	 *
+	 * @return false|mixed
+	 */
+	public function expand_term( $object_id, $context ) {
+		// Skip the Uncategorized term.
+		if ( 1 === $object_id ) {
+			return false;
+		}
+
+		return current( $this->term_converter->get( $object_id, $context ) );
 	}
 
 }
