@@ -180,6 +180,7 @@ class No_Vocabulary_Terms_Jsonld extends Wordlift_Vocabulary_Terms_Unit_Test_Cas
 											  ->get_jsonld( false, $post_id, Jsonld_Context_Enum::PAGE );
 		$post_jsonld = $jsonld[0];
 		$this->assertTrue( array_key_exists( 'mentions', $post_jsonld ), 'Mentions should have the terms' );
+
 		$this->assertCount( 1, $post_jsonld['mentions'], 'The term mention should be present' );
 
 	}

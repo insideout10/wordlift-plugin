@@ -10,6 +10,7 @@
  */
 
 use Wordlift\Jsonld\Jsonld_Context_Enum;
+use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Jsonld\Term_Reference;
 use Wordlift\Relation\Relations;
 
@@ -282,6 +283,10 @@ class Wordlift_Term_JsonLd_Adapter {
 				$ref_2               = array();
 				$ref_info_2          = array();
 				$references_jsonld[] = $this->post_id_to_jsonld_converter->convert( $reference, $ref_2, $ref_info_2, new Relations() );
+			} elseif ( $reference instanceof Post_Reference ) {
+				$ref_2               = array();
+				$ref_info_2          = array();
+				$references_jsonld[] = $this->post_id_to_jsonld_converter->convert( $reference->get_id(), $ref_2, $ref_info_2, new Relations() );
 			}
 		}
 

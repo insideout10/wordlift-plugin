@@ -9,6 +9,7 @@
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Jsonld\Graph;
 use Wordlift\Jsonld\Jsonld_Context_Enum;
+use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Relation;
 use Wordlift\Relation\Relations;
 
@@ -367,10 +368,17 @@ class Wordlift_Jsonld_Service {
 		$graph = new Graph( $jsonld, $entity_to_jsonld_converter, Wordlift_Term_JsonLd_Adapter::get_instance() );
 
 		$schema_type = is_array( $jsonld['@type'] ) ? $jsonld['@type'] : array( $jsonld['@type'] );
+
 		// Add `about`/`mentions` only for `CreativeWork` and descendants.
 		if ( array_intersect( $schema_type, self::$creative_work_types ) ) {
 
 			foreach ( $relations->toArray() as $relation ) {
+
+				// Setting about or mentions by label match is currently supported only for posts
+				if ( Object_Type_Enum::POST !== $relation->get_object()->get_type() ) {
+					continue;
+				}
+
 				// Add the `mentions`/`about` prop.
 				$this->add_mention_or_about( $jsonld, $post_id, $relation );
 			}
