@@ -9,7 +9,7 @@
 namespace Wordlift\Vocabulary_Terms\Jsonld;
 
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Term_Content_Legacy_Service;
+use Wordlift\Content\Wordpress\Wordpress_Term_Content_Service;
 use Wordlift\Relation\Relation;
 use Wordlift\Relation\Relations;
 use WP_Taxonomy;
@@ -39,6 +39,7 @@ class Post_Jsonld {
 		$relations->add( ...$term_relations );
 
 		$term_mentions = $this->get_term_mentions( $term_relations );
+
 		if ( count( $term_mentions ) > 0 ) {
 			$existing_mentions  = array_key_exists( 'mentions', $jsonld ) ? $jsonld['mentions'] : array();
 			$jsonld['mentions'] = array_merge( $existing_mentions, $term_mentions );
@@ -85,7 +86,7 @@ class Post_Jsonld {
 					/**
 					 * @var WP_Term $term
 					 */
-					if ( Wordpress_Term_Content_Legacy_Service::get_instance()
+					if ( Wordpress_Term_Content_Service::get_instance()
 													  ->get_entity_id( Wordpress_Content_Id::create_term( $term->term_id ) )
 					) {
 						return new Relation(
@@ -113,7 +114,7 @@ class Post_Jsonld {
 		return array_map(
 			function ( $term_relation ) {
 				return array(
-					'@id' => Wordpress_Term_Content_Legacy_Service::get_instance()
+					'@id' => Wordpress_Term_Content_Service::get_instance()
 															  ->get_entity_id( $term_relation->get_object() ),
 				);
 			},
