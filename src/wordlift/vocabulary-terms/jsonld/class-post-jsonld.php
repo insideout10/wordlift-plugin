@@ -83,6 +83,11 @@ class Post_Jsonld {
 		return array_filter(
 			array_map(
 				function ( $term ) use ( $post_id ) {
+
+					if ( 1 === $term->term_id ) {
+						return false;
+					}
+
 					/**
 					 * @var WP_Term $term
 					 */
