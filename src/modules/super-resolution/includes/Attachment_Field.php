@@ -32,17 +32,22 @@ class Attachment_Field {
 		return $form_fields;
 	}
 
-	public function admin_enqueue_scripts( $hook ) {
-		if ( 'post.php' === $hook && 'post' === get_post_type() ) {
-			$screen = get_current_screen();
-			if ( 'edit' !== $screen->base && 'post' === $screen->post_type ) {
+	public function admin_enqueue_scripts() {
+
+		// @TODO: enqueue the styles.
+		// if ( 'post.php' === $hook && 'post' === get_post_type() ) {
+		// $screen = get_current_screen();
+		// if ( 'edit' !== $screen->base && 'post' === $screen->post_type ) {
 				wp_enqueue_style( 'wl-super-resolution', WL_DIR_URL . 'modules/super-resolution/css/super-resolution.css', array( 'thickbox' ), WORDLIFT_VERSION );
-			}
-		}
+			// }
+		// }
+
+		wp_enqueue_script( 'thickbox' );
+
 	}
 
 	private function get_html( $attachment_id ) {
-		$base_url = plugins_url( '/', __FILE__ );
+		$base_url = plugin_dir_url( dirname( dirname( __DIR__ ) ) );
 
 		return '<div>' . ( $this->is_smaller_than_the_required_width( $attachment_id )
 				? sprintf(
@@ -55,7 +60,7 @@ class Attachment_Field {
 					__( 'Size is good', 'wordlift' ),
 					__( 'no recommended actions', 'wordlift' )
 				) ) .
-			   '</div><button onclick="tb_show(\'WordLift\', \'' . $base_url . '/modules/dashboard/app/iframe.html\', {\'class\': \'wl-super-resolution-modal\'})">Upscale Image</button>';
+			   '</div><button class="wl-super-resolution-upscale-button" onclick="tb_show(\'WordLift\', \'' . $base_url . '/modules/dashboard/app/iframe.html\', {\'class\': \'wl-super-resolution-modal\'})">Upscale Image</button>';
 	}
 
 	private function is_smaller_than_the_required_width( $attachment_id ) {
