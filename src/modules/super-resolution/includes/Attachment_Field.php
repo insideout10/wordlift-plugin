@@ -49,6 +49,13 @@ class Attachment_Field {
 	private function get_html( $attachment_id ) {
 		$base_url = plugin_dir_url( dirname( dirname( __DIR__ ) ) );
 
+		/**
+		 * why ?TB_iframe=true on the end of the url ?
+		 *
+		 * @see https://codex.wordpress.org/Javascript_Reference/ThickBox
+		 * This parameter instructs thickbox to load the url in iframe.
+		 */
+
 		return '<div>' . ( $this->is_smaller_than_the_required_width( $attachment_id )
 				? sprintf(
 					'<strong class="wl-warning-icon">%s</strong>: %s',
@@ -60,7 +67,7 @@ class Attachment_Field {
 					__( 'Size is good', 'wordlift' ),
 					__( 'no recommended actions', 'wordlift' )
 				) ) .
-			   '</div><button class="wl-super-resolution-upscale-button" onclick="tb_show(\'WordLift\', \'' . $base_url . '/modules/dashboard/app/iframe.html\', {\'class\': \'wl-super-resolution-modal\'})">Upscale Image</button>';
+			   '</div><button class="wl-super-resolution-upscale-button" onclick="tb_show(\'WordLift\', \'' . $base_url . '/modules/dashboard/app/iframe.html?TB_iframe=true\', {\'class\': \'wl-super-resolution-modal\'})">Upscale Image</button>';
 	}
 
 	private function is_smaller_than_the_required_width( $attachment_id ) {
