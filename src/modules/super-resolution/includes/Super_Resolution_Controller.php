@@ -189,7 +189,7 @@ class Super_Resolution_Controller {
 		wp_update_attachment_metadata( $attachment_id, $attachment_metadata );
 
 		// Regenerate the resized images
-		$metadata_updated = wp_generate_attachment_metadata( $attachment_id, $new_image_path );
+		$metadata_updated = wp_generate_attachment_metadata( $attachment_id, get_attached_file( $attachment_id ) );
 		if ( is_wp_error( $metadata_updated ) ) {
 			/**
 			 * @var $metadata_updated WP_Error
