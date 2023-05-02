@@ -6,13 +6,13 @@ info:
 servers:
   - url: 'https'
 paths:
-  /posts/{postId}/featured-image:
+  /attachments/{attachmentId}/image:
     get:
-      operationId: getPostFeaturedImage
-      summary: Get the Featured Image
-      description: Get the featured image of the post with the specified ID. The image will be returned as response.
+      operationId: getAttachmentImage
+      summary: Get the Image
+      description: Get the image of the attachment with the specified ID. The image will be returned as response.
       parameters:
-        - name: postId
+        - name: attachmentId
           in: path
           required: true
           schema:
@@ -20,7 +20,7 @@ paths:
             minimum: 1
       responses:
         "200":
-          description: The featured image
+          description: The image
           content:
             "image/*":
               # The following line is required for ng-openapi-gen compatibility
@@ -40,11 +40,11 @@ paths:
       tags:
         - Super Resolution
     put:
-      operationId: replacePostFeaturedImage
-      summary: Replace the Featured Image
-      description: Replace the featured image of the post with the specified ID
+      operationId: replaceAttachmentImage
+      summary: Replace the Image
+      description: Replace the image of the attachment with the specified ID
       parameters:
-        - name: postId
+        - name: attachmentId
           in: path
           required: true
           schema:
@@ -75,13 +75,13 @@ paths:
           content:
       tags:
         - Super Resolution
-  /posts/{postId}/featured-image-upscale:
+  /attachments/{attachmentId}/image-upscale:
     get:
-      operationId: getPostFeaturedImageUpscale
-      summary: Get the upscaled Featured Image
-      description: Get the upscaled featured image of the post with the specified ID. The image will be returned as response.
+      operationId: getAttachmentImageUpscale
+      summary: Get the upscaled Image
+      description: Get the upscaled image of the attachment with the specified ID. The image will be returned as response.
       parameters:
-        - name: postId
+        - name: attachmentId
           in: path
           required: true
           schema:
@@ -89,7 +89,7 @@ paths:
             minimum: 1
       responses:
         "200":
-          description: The upscaled featured image
+          description: The upscaled image
           content:
             image/*:
               # The following line is required for ng-openapi-gen compatibility
