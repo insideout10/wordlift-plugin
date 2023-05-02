@@ -139,8 +139,6 @@ class Super_Resolution_Controller {
 
 	/**
 	 * @param $request WP_REST_Request
-	 *
-	 * @throws \Exception Throws exception if it cant replace the featured image.
 	 */
 	public function replace_post_featured_image( $request ) {
 
@@ -156,7 +154,7 @@ class Super_Resolution_Controller {
 		$files = $request->get_file_params();
 
 		if ( ! array_key_exists( 'image', $files ) ) {
-			throw new \Exception( 'Image needs to be present on the request' );
+			return new WP_Error( '404', 'Image not found.', array( 'status' => 404 ) );
 		}
 
 		$request_file = $files['image'];
@@ -164,13 +162,13 @@ class Super_Resolution_Controller {
 		// Get the attachment metadata
 		$attachment_metadata = wp_get_attachment_metadata( $attachment_id );
 		if ( ! $attachment_metadata ) {
-			throw new \Exception( 'Unable to retrieve attachment metadata' );
+			return new WP_Error( '404', 'Image not found.', array( 'status' => 404 ) );
 		}
 
 		// Get the original image file path
 		$original_image_path = get_attached_file( $attachment_id );
 		if ( ! $original_image_path ) {
-			throw new \Exception( 'Unable to retrieve original image path' );
+			return new WP_Error( '404', 'Image path not found.', array( 'status' => 404 ) );
 		}
 
 		// Delete the existing resized images
@@ -196,7 +194,7 @@ class Super_Resolution_Controller {
 			/**
 			 * @var $metadata_updated WP_Error
 			 */
-			throw new \Exception( 'An error occurred when updating attachment metadata ' . $metadata_updated->get_error_message() );
+			return new WP_Error( '500', 'Unable to generate resized images.', array( 'status' => 500 ) );
 		}
 
 		// Update the attachment metadata with the regenerated sizes
