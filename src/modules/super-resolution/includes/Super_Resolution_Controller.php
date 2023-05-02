@@ -158,6 +158,11 @@ class Super_Resolution_Controller {
 
 	public function replace_post_featured_image() {
 
+		// It receives the image binary data (**not** base64 encoded) in the `image` field.
+
+		// Will replace the original image for the post featured image with the upscaled image.
+
+		// Will make sure that the WL image sizes (1:1, 4:3 and 16:9) will be regenerated.
 	}
 
 }
