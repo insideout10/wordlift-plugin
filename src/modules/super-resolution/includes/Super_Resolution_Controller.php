@@ -159,6 +159,13 @@ class Super_Resolution_Controller {
 
 		$request_file = $files['image'];
 
+		$extension          = pathinfo( $request_file['name'], PATHINFO_EXTENSION );
+		$allowed_extensions = array( 'png', 'jpeg', 'jpg' );
+
+		if ( ! in_array( $extension, $allowed_extensions, true ) ) {
+			return new WP_Error( '400', 'Only image files are supported', array( 'status' => 400 ) );
+		}
+
 		// Get the attachment metadata
 		$attachment_metadata = wp_get_attachment_metadata( $attachment_id );
 		if ( ! $attachment_metadata ) {
