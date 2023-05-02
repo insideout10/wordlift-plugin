@@ -5,3 +5,51 @@
 #TB_window {
   z-index: 300050 !important; /* Above DFW. */
 }
+
+.compat-field-wl_super_resolution {
+  border-top: 1px solid #dcdcde;
+}
+
+.compat-field-wl_super_resolution label {
+  font-weight: 600;
+  color: #646970;
+  margin-bottom: 16px;
+}
+
+.compat-field-wl_super_resolution .field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  gap: 16px;
+}
+
+.compat-field-wl_super_resolution button {
+  border: 1px solid #007aff;
+  background: transparent;
+  border-radius: 4px;
+  height: 32px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #007aff;
+}
+
+.wl-warning-icon::before {
+  content: "\f348";
+  color: #FAAD14;
+  font-family: dashicons;
+  display: inline-block;
+  line-height: 1;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: inherit;
+  text-transform: none;
+  text-rendering: auto;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  vertical-align: top;
+  text-align: center;
+  transition: color 0.1s ease-in;
+}

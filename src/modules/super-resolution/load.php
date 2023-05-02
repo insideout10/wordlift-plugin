@@ -10,6 +10,7 @@
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Wordlift\Modules\Super_Resolution\Attachment_Field;
 use Wordlift\Modules\Super_Resolution\Super_Resolution_Controller;
 
 /**
@@ -34,35 +35,13 @@ function __wl_super_resolution__load() {
 	$loader->load( 'services.yml' );
 	$container_builder->compile();
 
-	/** @var Super_Resolution_Controller $ctrl */
-	$ctrl = $container_builder->get( 'Wordlift\Modules\Super_Resolution\Super_Resolution_Controller' );
-	$ctrl->register_hooks();
+	/** @var Attachment_Field $attachment_field */
+	$attachment_field = $container_builder->get( 'Wordlift\Modules\Super_Resolution\Attachment_Field' );
+	$attachment_field->register_hooks();
+
+	/** @var Super_Resolution_Controller $controller */
+	$controller = $container_builder->get( 'Wordlift\Modules\Super_Resolution\Super_Resolution_Controller' );
+	$controller->register_hooks();
 }
 
 __wl_super_resolution__load();
-
-// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-function my_custom_attachment_fields_to_edit( $form_fields, $post ) {
-	// Add your custom HTML code here
-	$form_fields['wl_super_resolution'] = array(
-		'label'  => __( 'Super Resolution', 'wordlift' ),
-		'input'  => 'custom',
-		'html'   => '',
-		'custom' => '<button onclick="tb_show(\'Your Modal Title\', \'https://example.org\', {\'class\': \'wl-super-resolution-modal\'})">Upsample</button>',
-	);
-
-	return $form_fields;
-}
-
-add_filter( 'attachment_fields_to_edit', 'my_custom_attachment_fields_to_edit', 10, 2 );
-
-function enqueue_script_on_featured_image_screen( $hook ) {
-	if ( 'post.php' === $hook && 'post' === get_post_type() ) {
-		$screen = get_current_screen();
-		if ( 'edit' !== $screen->base && 'post' === $screen->post_type ) {
-			wp_enqueue_style( 'wl-super-resolution', WL_DIR_URL . 'modules/super-resolution/css/super-resolution.css', array( 'thickbox' ), WORDLIFT_VERSION );
-		}
-	}
-}
-
-add_action( 'admin_enqueue_scripts', 'enqueue_script_on_featured_image_screen' );
