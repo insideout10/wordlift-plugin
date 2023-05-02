@@ -1,0 +1,110 @@
+openapi: 3.1.0
+info:
+  title: WordLift Plugin - Super Resolution
+  description: The Super Resolution API of the WordLift Plugin
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /posts/{postId}/featured-image:
+    get:
+      operationId: getPostFeaturedImage
+      summary: Get the Featured Image
+      description: Get the featured image of the post with the specified ID. The image will be returned as response.
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        "200":
+          description: The featured image
+          content:
+            "image/*":
+              # The following line is required for ng-openapi-gen compatibility
+              schema:
+                type: string
+                # Makes ng-openapi-gen use arraybuffer
+                format: binary
+        "401":
+          description: Authorization Required
+          content:
+        "403":
+          description: Forbidden
+          content:
+        "404":
+          description: Not Found
+          content:
+      tags:
+        - Super Resolution
+    put:
+      operationId: replacePostFeaturedImage
+      summary: Replace the Featured Image
+      description: Replace the featured image of the post with the specified ID
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  contentMediaType: image/*
+      responses:
+        "204":
+          description: The featured image has been replaced
+          content:
+        "401":
+          description: Authorization Required
+          content:
+        "403":
+          description: Forbidden
+          content:
+        "404":
+          description: Not Found
+          content:
+      tags:
+        - Super Resolution
+  /posts/{postId}/featured-image-upscale:
+    get:
+      operationId: getPostFeaturedImageUpscale
+      summary: Get the upscaled Featured Image
+      description: Get the upscaled featured image of the post with the specified ID. The image will be returned as response.
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        "200":
+          description: The upscaled featured image
+          content:
+            image/*:
+              # The following line is required for ng-openapi-gen compatibility
+              schema:
+                type: string
+                # Makes ng-openapi-gen use arraybuffer
+                format: binary
+        "401":
+          description: Authorization Required
+          content:
+        "403":
+          description: Forbidden
+          content:
+        "404":
+          description: Not Found
+          content:
+      tags:
+        - Super Resolution

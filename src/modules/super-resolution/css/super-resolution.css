@@ -1,3 +1,7 @@
-#TB_overlay, #TB_window {
-  z-index: 320000;
+#TB_overlay {
+  z-index: 300050 !important; /* Above DFW. */
+}
+
+#TB_window {
+  z-index: 300050 !important; /* Above DFW. */
 }

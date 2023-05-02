@@ -10,6 +10,7 @@
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Wordlift\Modules\Super_Resolution\Super_Resolution_Controller;
 
 /**
  * Load Include Exclude Module.
@@ -33,6 +34,9 @@ function __wl_super_resolution__load() {
 	$loader->load( 'services.yml' );
 	$container_builder->compile();
 
+	/** @var Super_Resolution_Controller $ctrl */
+	$ctrl = $container_builder->get( 'Wordlift\Modules\Super_Resolution\Super_Resolution_Controller' );
+	$ctrl->register_hooks();
 }
 
 __wl_super_resolution__load();
@@ -56,7 +60,7 @@ function enqueue_script_on_featured_image_screen( $hook ) {
 	if ( 'post.php' === $hook && 'post' === get_post_type() ) {
 		$screen = get_current_screen();
 		if ( 'edit' !== $screen->base && 'post' === $screen->post_type ) {
-			wp_enqueue_style( 'wl-super-resolution', WL_DIR_URL . 'modules/super-resolution/css/super-resolution.css', array( 'thickbox' ), WORDLIFT_VERSION, true );
+			wp_enqueue_style( 'wl-super-resolution', WL_DIR_URL . 'modules/super-resolution/css/super-resolution.css', array( 'thickbox' ), WORDLIFT_VERSION );
 		}
 	}
 }
