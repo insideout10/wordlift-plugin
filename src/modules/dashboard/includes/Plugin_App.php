@@ -26,12 +26,12 @@ class Plugin_App {
 	}
 
 	public function register_hooks() {
+		add_action( 'wl_render_dashboard_settings', array( $this, 'render_settings' ) );
 		add_action( '_wl_dashboard__main', array( $this, 'dashboard__main' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
-	public function dashboard__main() {
-		$iframe_src = esc_url( plugin_dir_url( __DIR__ ) . 'app/iframe.html' );
+	public function render_settings() {
 
 		$params = wp_json_encode(
 			array(
@@ -50,6 +50,15 @@ class Plugin_App {
 		);
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo "<script type=\"text/javascript\">window._wlPluginAppSettings = $params</script>";
+	}
+
+	public function dashboard__main() {
+		$iframe_src = esc_url( plugin_dir_url( __DIR__ ) . 'app/iframe.html' );
+
+		do_action( 'wl_render_dashboard_settings' );
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo "
 			<style>
 			    #wlx-plugin-app {
@@ -58,7 +67,6 @@ class Plugin_App {
 			      min-height: 1500px;
 			    }
 		    </style>
-			<script type=\"text/javascript\">window._wlPluginAppSettings = $params</script>
 			<iframe id='wlx-plugin-app' src='$iframe_src'></iframe>
 		";
 	}

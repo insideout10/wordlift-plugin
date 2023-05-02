@@ -43,6 +43,7 @@ class Attachment_Field {
 		// }
 
 		wp_enqueue_script( 'thickbox' );
+		do_action( 'wl_render_dashboard_settings' );
 
 	}
 
