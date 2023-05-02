@@ -39,7 +39,7 @@ paths:
           content:
       tags:
         - Super Resolution
-    put:
+    post:
       operationId: replaceAttachmentImage
       summary: Replace the Image
       description: Replace the image of the attachment with the specified ID

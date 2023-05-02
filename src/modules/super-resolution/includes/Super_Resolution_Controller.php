@@ -14,7 +14,7 @@ class Super_Resolution_Controller {
 	public function rest_api_init() {
 		register_rest_route(
 			'wl-super-resolution/v1',
-			'/posts/(?P<post_id>\d+)/featured-image',
+			'/attachments/(?P<attachment_id>\d+)/image',
 			array(
 				'methods'  => 'GET',
 				'callback' => array( $this, 'get_post_featured_image' ),
@@ -23,19 +23,19 @@ class Super_Resolution_Controller {
 
 		register_rest_route(
 			'wl-super-resolution/v1',
-			'/posts/(?P<post_id>\d+)/featured-image',
+			'/attachments/(?P<attachment_id>\d+)/image',
 			array(
-				'methods'  => 'PUT',
+				'methods'  => 'POST',
 				'callback' => array( $this, 'replace_post_featured_image' ),
 			)
 		);
 
 		register_rest_route(
 			'wl-super-resolution/v1',
-			'/posts/(?P<post_id>\d+)/featured-image-upsample',
+			'/attachments/(?P<attachment_id>\d+)/image-upscale',
 			array(
 				'methods'  => 'GET',
-				'callback' => array( $this, 'create_post_featured_image_upsample' ),
+				'callback' => array( $this, 'create_post_featured_image_upscale' ),
 			)
 		);
 	}
@@ -44,61 +44,46 @@ class Super_Resolution_Controller {
 	 * @param WP_REST_Request $request
 	 */
 	public function get_post_featured_image( $request ) {
-		$post_id = $request->get_param( 'post_id' );
 
-		// Check if the post has a featured image
-		if ( has_post_thumbnail( $post_id ) ) {
-			// Get the attachment ID of the featured image
-			$attachment_id = get_post_thumbnail_id( $post_id );
+		$attachment_id = $request->get_param( 'attachment_id' );
+		// Get the path to the image file on the local disk
+		$image_path = get_attached_file( $attachment_id );
 
-			// Get the path to the image file on the local disk
-			$image_path = get_attached_file( $attachment_id );
+		// Read the contents of the **local file** image file into a string
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		$image_data = file_get_contents( $image_path );
 
-			// Read the contents of the **local file** image file into a string
-			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-			$image_data = file_get_contents( $image_path );
-
-			if ( ! $image_data ) {
-				// If image data is false, return a 404 response
-				return new WP_Error( '404', 'Image not found.', array( 'status' => 404 ) );
-			}
-
-			// Set the content type header to the appropriate image MIME type
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			header( 'Content-Type: image/jpeg' );
-
-			// Sending image binary data.
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			exit( $image_data );
-		} else {
-			// Return null if the post does not have a featured image
-			return null;
+		if ( ! $image_data ) {
+			// If image data is false, return a 404 response
+			return new WP_Error( '404', 'Image not found.', array( 'status' => 404 ) );
 		}
 
+		// Set the content type header to the appropriate image MIME type
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		header( 'Content-Type: image/jpeg' );
+
+		// Sending image binary data.
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		exit( $image_data );
 	}
 
 	/**
 	 * @param WP_REST_Request $request
 	 */
-	public function create_post_featured_image_upsample( $request ) {
-		$post_id = $request->get_param( 'post_id' );
+	public function create_post_featured_image_upscale( $request ) {
+		$attachment_id = $request->get_param( 'attachment_id' );
 
-		// Check if the post has a featured image
-		if ( has_post_thumbnail( $post_id ) ) {
-			// Get the attachment ID of the featured image
-			$attachment_id = get_post_thumbnail_id( $post_id );
+		// Get the path to the image file on the local disk
+		$image_path = get_attached_file( $attachment_id );
 
-			// Get the path to the image file on the local disk
-			$image_path = get_attached_file( $attachment_id );
+		// Read the contents of the **local** image file into a string
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		$image_data = file_get_contents( $image_path );
 
-			// Read the contents of the **local** image file into a string
-			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-			$image_data = file_get_contents( $image_path );
-
-			if ( ! $image_data ) {
-				// If image data is false, return a 404 response
-				return new WP_Error( '404', 'Image not found.', array( 'status' => 404 ) );
-			}
+		if ( ! $image_data ) {
+			// If image data is false, return a 404 response
+			return new WP_Error( '404', 'Image not found.', array( 'status' => 404 ) );
+		}
 
 			$boundary = '__X_SUPER_RESOLUTION__';
 			$body     = "--$boundary\r\n";
@@ -124,45 +109,104 @@ class Super_Resolution_Controller {
 				)
 			);
 
-			if ( is_wp_error( $request ) ) {
-				// If the request resulted in an error, return it
-				return $request;
-			}
-
-			if ( wp_remote_retrieve_response_code( $request ) !== 200 ) {
-				// If the response code is not 200 OK, return an error
-				return new WP_Error(
-					'api_error',
-					wp_remote_retrieve_response_message( $request ),
-					array(
-						'status' => wp_remote_retrieve_response_code( $request ),
-					)
-				);
-			}
-
-			// Get the response body, which contains the binary data of the upscaled image
-			$response_body = wp_remote_retrieve_body( $request );
-
-			// Set the content type header to the appropriate image MIME type
-			header( 'Content-Type: image/jpeg' );
-
-			// Sending the image binary data.
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			exit( $response_body );
-		} else {
-			// Return null if the post does not have a featured image
-			return null;
+		if ( is_wp_error( $request ) ) {
+			// If the request resulted in an error, return it
+			return $request;
 		}
+
+		if ( wp_remote_retrieve_response_code( $request ) !== 200 ) {
+			// If the response code is not 200 OK, return an error
+			return new WP_Error(
+				'api_error',
+				wp_remote_retrieve_response_message( $request ),
+				array(
+					'status' => wp_remote_retrieve_response_code( $request ),
+				)
+			);
+		}
+
+		// Get the response body, which contains the binary data of the upscaled image
+		$response_body = wp_remote_retrieve_body( $request );
+
+		// Set the content type header to the appropriate image MIME type
+		header( 'Content-Type: image/jpeg' );
+
+		// Sending the image binary data.
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		exit( $response_body );
 
 	}
 
-	public function replace_post_featured_image() {
+	/**
+	 * @param $request WP_REST_Request
+	 */
+	public function replace_post_featured_image( $request ) {
 
 		// It receives the image binary data (**not** base64 encoded) in the `image` field.
 
 		// Will replace the original image for the post featured image with the upscaled image.
 
 		// Will make sure that the WL image sizes (1:1, 4:3 and 16:9) will be regenerated.
+
+		// Get the post ID from the request.
+		$attachment_id = $request->get_param( 'attachment_id' );
+
+		$files = $request->get_file_params();
+
+		if ( ! array_key_exists( 'image', $files ) ) {
+			return new WP_Error( '404', 'Image not found.', array( 'status' => 404 ) );
+		}
+
+		$request_file = $files['image'];
+
+		$extension          = pathinfo( $request_file['name'], PATHINFO_EXTENSION );
+		$allowed_extensions = array( 'png', 'jpeg', 'jpg' );
+
+		if ( ! in_array( $extension, $allowed_extensions, true ) ) {
+			return new WP_Error( '400', 'Only image files are supported', array( 'status' => 400 ) );
+		}
+
+		// Get the attachment metadata
+		$attachment_metadata = wp_get_attachment_metadata( $attachment_id );
+		if ( ! $attachment_metadata ) {
+			return new WP_Error( '404', 'Image not found.', array( 'status' => 404 ) );
+		}
+
+		// Get the original image file path
+		$original_image_path = get_attached_file( $attachment_id );
+		if ( ! $original_image_path ) {
+			return new WP_Error( '404', 'Image path not found.', array( 'status' => 404 ) );
+		}
+
+		// Delete the existing resized images
+		foreach ( $attachment_metadata['sizes'] as $size ) {
+			$resized_image_path = path_join( dirname( $original_image_path ), $size['file'] );
+			if ( file_exists( $resized_image_path ) ) {
+				unlink( $resized_image_path );
+			}
+		}
+
+		// Copy the new image to the attachment directory
+		$new_image_name = wp_unique_filename( dirname( $original_image_path ), basename( $request_file['name'] ) );
+		$new_image_path = path_join( dirname( $original_image_path ), $new_image_name );
+		copy( $request_file['tmp_name'], $new_image_path );
+
+		// Update the attachment metadata with the new image file name
+		$attachment_metadata['file'] = $new_image_name;
+		wp_update_attachment_metadata( $attachment_id, $attachment_metadata );
+
+		// Regenerate the resized images
+		$metadata_updated = wp_generate_attachment_metadata( $attachment_id, get_attached_file( $attachment_id ) );
+		if ( is_wp_error( $metadata_updated ) ) {
+			/**
+			 * @var $metadata_updated WP_Error
+			 */
+			return new WP_Error( '500', 'Unable to generate resized images.', array( 'status' => 500 ) );
+		}
+
+		// Update the attachment metadata with the regenerated sizes
+		wp_update_attachment_metadata( $attachment_id, $metadata_updated );
+
 	}
 
 }
