@@ -13,7 +13,7 @@ class Super_Resolution_Controller {
 
 	public function rest_api_init() {
 		register_rest_route(
-			'wl-super-resolution/v1',
+			'wordlift/v1/super-resolution',
 			'/attachments/(?P<attachment_id>\d+)/image',
 			array(
 				'methods'  => 'GET',
@@ -22,7 +22,7 @@ class Super_Resolution_Controller {
 		);
 
 		register_rest_route(
-			'wl-super-resolution/v1',
+			'wordlift/v1/super-resolution',
 			'/attachments/(?P<attachment_id>\d+)/image',
 			array(
 				'methods'  => 'POST',
@@ -31,7 +31,7 @@ class Super_Resolution_Controller {
 		);
 
 		register_rest_route(
-			'wl-super-resolution/v1',
+			'wordlift/v1/super-resolution',
 			'/attachments/(?P<attachment_id>\d+)/image-upscale',
 			array(
 				'methods'  => 'GET',
