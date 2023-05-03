@@ -33,6 +33,11 @@
   font-weight: 400;
   font-size: 14px;
   color: #007aff;
+  cursor: pointer;
+}
+
+.compat-field-wl_super_resolution button:disabled {
+  cursor: none;
 }
 
 .wl-warning-icon::before {
@@ -55,6 +60,26 @@
   margin-right: 6px;
 }
 
-.wl-super-resolution-upscale-button {
-  cursor: pointer;
+
+.wl-success-icon::before {
+  content: "\f12a";
+  color: #00C48C;
+  font-family: dashicons;
+  display: inline-block;
+  line-height: 1;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: inherit;
+  text-transform: none;
+  text-rendering: auto;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  vertical-align: top;
+  text-align: center;
+  transition: color 0.1s ease-in;
+  margin-right: 6px;
 }
+
+
+
