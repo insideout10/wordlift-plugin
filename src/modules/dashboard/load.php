@@ -73,7 +73,7 @@ function __wl_dashboard__load() {
 		'_wl_dashboard__main',
 		function () {
 			wp_enqueue_script( 'wl-angular-app' );
-			$iframe_src = WL_ANGULAR_APP_URL;
+			$iframe_src = WL_ANGULAR_APP_URL . '#dashboard-content';
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo "
 			<style>
