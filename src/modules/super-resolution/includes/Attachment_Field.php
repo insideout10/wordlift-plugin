@@ -69,7 +69,7 @@ class Attachment_Field {
 					__( 'Size is good', 'wordlift' ),
 					__( 'no recommended actions', 'wordlift' )
 				) ) .
-			   '</div><button ' . ( $is_smaller_than_required_size ? '' : 'disabled' ) . ' onclick="tb_show(\'WordLift\', \'' . $base_url . '\', {\'class\': \'wl-super-resolution-modal\'})">Upscale Image</button>';
+			   '</div><button ' . ( $is_smaller_than_required_size ? '' : 'disabled="disabled"' ) . ' onclick="tb_show(\'WordLift\', \'' . $base_url . '\', {\'class\': \'wl-super-resolution-modal\'})">Upscale Image</button>';
 	}
 
 	private function is_smaller_than_the_required_width( $attachment_id ) {
