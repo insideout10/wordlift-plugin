@@ -1,6 +1,4 @@
 services:
-  Wordlift\Modules\Super_Resolution\Attachment_Field:
-    class: Wordlift\Modules\Super_Resolution\Attachment_Field
+  Wordlift\Modules\App\Plugin_App:
+    class: Wordlift\Modules\App\Plugin_App
 
-  Wordlift\Modules\Super_Resolution\Super_Resolution_Controller:
-    class: Wordlift\Modules\Super_Resolution\Super_Resolution_Controller

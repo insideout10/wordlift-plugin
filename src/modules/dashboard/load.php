@@ -68,6 +68,14 @@ function __wl_dashboard__load() {
 		},
 		9
 	);
+
+	add_action(
+		'_wl_dashboard__main',
+		function () {
+			$app = new \Wordlift\Modules\App\Plugin_App();
+			$app->dashboard__main();
+		}
+	);
 }
 
 __wl_dashboard__load();

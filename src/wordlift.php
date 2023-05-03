@@ -36,6 +36,7 @@ define( 'WORDLIFT_VERSION', '3.43.0-0' );
 
 require_once plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-scheduler.php';
 require_once __DIR__ . '/modules/common/load.php';
+require_once __DIR__ . '/modules/app/load.php';
 require_once __DIR__ . '/modules/include-exclude/load.php';
 
 /**

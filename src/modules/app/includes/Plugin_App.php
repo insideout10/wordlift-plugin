@@ -4,12 +4,6 @@ namespace Wordlift\Modules\App;
 
 class Plugin_App {
 
-	public function register_hooks() {
-		add_action( 'wl_render_dashboard_settings', array( $this, 'render_settings' ) );
-		add_action( '_wl_dashboard__main', array( $this, 'dashboard__main' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-	}
-
 	public function render_settings() {
 
 		$params = wp_json_encode(
@@ -32,9 +26,10 @@ class Plugin_App {
 	}
 
 	public function dashboard__main() {
+
 		$iframe_src = esc_url( plugin_dir_url( __DIR__ ) . 'app/iframe.html' );
 
-		do_action( 'wl_render_dashboard_settings' );
+		$this->render_settings();
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo "
@@ -49,9 +44,9 @@ class Plugin_App {
 		";
 	}
 
-	public function admin_enqueue_scripts() {
-		// Required to support notices that close themselves (like the `WooCommerce needs to be installed ...` message).
-		wp_enqueue_script( 'wp-util' );
-	}
+	// public function admin_enqueue_scripts() {
+	// Required to support notices that close themselves (like the `WooCommerce needs to be installed ...` message).
+	// wp_enqueue_script( 'wp-util' );
+	// }
 
 }
