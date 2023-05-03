@@ -6,7 +6,7 @@ function wlOpenFullscreenIframe(src) {
   iframe.style.left = '0';
   iframe.style.width = '100%';
   iframe.style.height = '100%';
-  iframe.style.backgroundColor = 'transparent';
-  iframe.style.opacity = '0.25';
+  iframe.style.zIndex = 99999999;
+  iframe.style.backgroundColor = 'none transparent';
   document.body.appendChild(iframe);
 }
