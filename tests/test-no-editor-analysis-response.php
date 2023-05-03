@@ -65,10 +65,12 @@ class Test_No_Editor_Analysis_Response extends Wordlift_No_Editor_Analysis_Unit_
 
 		$strategy = No_Annotation_Strategy::get_instance();
 
+
 		$analysis_response           = new StdClass;
 		$analysis_response->entities = new StdClass;
 
-		$json = $strategy->add_occurences_to_entities( array(), $analysis_response, $post_id );
+
+		$json = $strategy->add_occurrences_to_entities( array(), $analysis_response, $post_id );
 
 		$json_arr = json_decode( wp_json_encode( $json ), true );
 		$this->assertCount( 2, array_keys( $json_arr['entities'] ) );
@@ -100,7 +102,7 @@ class Test_No_Editor_Analysis_Response extends Wordlift_No_Editor_Analysis_Unit_
 
 		// we should return two entities for no annotation relation service.
 		$json = No_Annotation_Strategy::get_instance()
-		                              ->add_occurences_to_entities( array(), $json, $post );
+		                              ->add_occurrences_to_entities( array(), $json, $post );
 
 		// convert json to array for easy assertions.
 		$json = json_decode( json_encode( $json ), true );

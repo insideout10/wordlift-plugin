@@ -3,7 +3,7 @@
 namespace Wordlift\Dataset;
 
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Term_Content_Legacy_Service;
+use Wordlift\Content\Wordpress\Wordpress_Term_Content_Service;
 use Wordlift\Object_Type_Enum;
 
 class Sync_Term_Hooks extends Abstract_Sync_Hooks {
@@ -114,7 +114,7 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 	public function delete_term( $term_id ) {
 		$args = array(
 			$term_id,
-			Wordpress_Term_Content_Legacy_Service::get_instance()
+			Wordpress_Term_Content_Service::get_instance()
 				->get_entity_id( Wordpress_Content_Id::create_term( $term_id ) ),
 		);
 		// We can't postpone the execution for a `delete` because we would miss the actual data.

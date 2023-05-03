@@ -220,7 +220,7 @@ class Analysis_Response_Ops {
 
 		if ( ! is_bool( $this->json ) && isset( $this->json->entities ) ) {
 			$occurrences_processor = Occurrences_Factory::get_instance( $this->post_id );
-			$this->json            = $occurrences_processor->add_occurences_to_entities( $occurrences, $this->json, $this->post_id );
+			$this->json            = $occurrences_processor->add_occurrences_to_entities( $occurrences, $this->json, $this->post_id );
 		}
 
 		// Add the missing annotations. This allows the analysis response to work also if we didn't receive results

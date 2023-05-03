@@ -162,7 +162,7 @@ class Wordlift_Entity_Service {
 	 * @param integer $post_id An entity post id.
 	 *
 	 * @param string  $default The default classification scope, `what` if not
-	 *                            provided.
+	 *                             provided.
 	 *
 	 * @return string Returns a classification scope (e.g. 'what').
 	 * @since 3.5.0
@@ -367,18 +367,27 @@ class Wordlift_Entity_Service {
 	/**
 	 * Retrieve the labels for an entity, i.e. the title + the synonyms.
 	 *
-	 * @param int $post_id The entity {@link WP_Post} id.
+	 * @param int $id The entity {@link WP_Post} id.
 	 * @param int $object_type The object type {@link Object_Type_Enum}
 	 *
 	 * @return array An array with the entity title and labels.
 	 * @since 3.12.0
 	 */
-	public function get_labels( $post_id, $object_type = Object_Type_Enum::POST ) {
+	public function get_labels( $id, $object_type = Object_Type_Enum::POST ) {
 		if ( Object_Type_Enum::POST === $object_type ) {
-			return array_merge( (array) get_the_title( $post_id ), $this->get_alternative_labels( $post_id ) );
+			return array_merge( (array) get_the_title( $id ), $this->get_alternative_labels( $id ) );
 		}
 
-		// Term Reference dont have synonyms yet.
+		if ( Object_Type_Enum::TERM === $object_type ) {
+			$term = get_term( $id );
+			if ( ! is_a( $term, 'WP_Term' ) ) {
+				return array();
+			}
+
+			// @@todo add support for terms' synonyms.
+			return (array) $term->name;
+		}
+
 		return array();
 	}
 

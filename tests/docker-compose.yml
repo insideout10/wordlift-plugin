@@ -16,7 +16,7 @@ services:
       MYSQL_DATABASE: wordpress
 
   phpunit:
-    image: "ziodave/wordpress-tests:php${PHP_VERSION:-7.0}-phpunit${PHPUNIT_VERSION:-4.8}-wordpress${WORDPRESS_VERSION:-5.2}"
+    image: "ziodave/wordpress-tests:php${PHP_VERSION:-7.0}-phpunit${PHPUNIT_VERSION:-4.8}-wordpress${WORDPRESS_VERSION:-5.3}"
     depends_on:
       - db
     deploy:
