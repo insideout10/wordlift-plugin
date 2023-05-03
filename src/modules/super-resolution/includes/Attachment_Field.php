@@ -43,20 +43,18 @@ class Attachment_Field {
 		// }
 
 		wp_enqueue_script( 'thickbox' );
-		do_action( 'wl_render_dashboard_settings' );
+		wp_enqueue_script( 'wl-angular-app' );
 
 	}
 
 	private function get_html( $attachment_id ) {
-		$base_url = plugin_dir_url( dirname( dirname( __DIR__ ) ) );
-
 		/**
 		 * why ?TB_iframe=true on the end of the url ?
 		 *
 		 * @see https://codex.wordpress.org/Javascript_Reference/ThickBox
 		 * This parameter instructs thickbox to load the url in iframe.
 		 */
-		$base_url = "$base_url/modules/dashboard/app/iframe.html?TB_iframe=true";
+		$base_url = WL_ANGULAR_APP_URL . '?TB_iframe=true';
 
 		return '<div>' . ( $this->is_smaller_than_the_required_width( $attachment_id )
 				? sprintf(

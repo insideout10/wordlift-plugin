@@ -72,11 +72,10 @@ function __wl_dashboard__load() {
 	add_action(
 		'_wl_dashboard__main',
 		function () {
-			$app = new \Wordlift\Modules\App\Plugin_App();
-			$app->render(
-				function ( $iframe_src ) {
-               // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					echo "
+			wp_enqueue_script( 'wl-angular-app' );
+			$iframe_src = WL_ANGULAR_APP_URL;
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo "
 			<style>
 			    #wlx-plugin-app {
 			      margin-left: -20px;
@@ -86,8 +85,6 @@ function __wl_dashboard__load() {
 		    </style>
 			<iframe id='wlx-plugin-app' src='$iframe_src'></iframe>
             ";
-				}
-			);
 
 		}
 	);
