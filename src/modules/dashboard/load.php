@@ -73,7 +73,22 @@ function __wl_dashboard__load() {
 		'_wl_dashboard__main',
 		function () {
 			$app = new \Wordlift\Modules\App\Plugin_App();
-			$app->dashboard__main();
+			$app->render(
+				function ( $iframe_src ) {
+               // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo "
+			<style>
+			    #wlx-plugin-app {
+			      margin-left: -20px;
+			      width: calc(100% + 20px);
+			      min-height: 1500px;
+			    }
+		    </style>
+			<iframe id='wlx-plugin-app' src='$iframe_src'></iframe>
+            ";
+				}
+			);
+
 		}
 	);
 }

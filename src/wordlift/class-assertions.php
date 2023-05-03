@@ -110,4 +110,11 @@ class Assertions {
 		}
 	}
 
+	public static function is_callable( $value, $message = 'Value should be a callable' ) {
+
+		if ( ! is_callable( $value ) ) {
+			throw new \Exception( $message );
+		}
+	}
+
 }

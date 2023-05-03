@@ -2,7 +2,15 @@
 
 namespace Wordlift\Modules\App;
 
+use Wordlift\Assertions;
+
 class Plugin_App {
+
+	public function render( $callable ) {
+		Assertions::is_callable( $callable );
+		$this->render_settings();
+		call_user_func( $callable, $this->get_iframe_url() );
+	}
 
 	public function render_settings() {
 
@@ -25,28 +33,8 @@ class Plugin_App {
 		echo "<script type=\"text/javascript\">window._wlPluginAppSettings = $params</script>";
 	}
 
-	public function dashboard__main() {
-
-		$iframe_src = esc_url( plugin_dir_url( __DIR__ ) . 'app/iframe.html' );
-
-		$this->render_settings();
-
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo "
-			<style>
-			    #wlx-plugin-app {
-			      margin-left: -20px;
-			      width: calc(100% + 20px);
-			      min-height: 1500px;
-			    }
-		    </style>
-			<iframe id='wlx-plugin-app' src='$iframe_src'></iframe>
-		";
+	public function get_iframe_url() {
+		return esc_url( plugin_dir_url( __DIR__ ) . 'app/iframe.html' );
 	}
-
-	// public function admin_enqueue_scripts() {
-	// Required to support notices that close themselves (like the `WooCommerce needs to be installed ...` message).
-	// wp_enqueue_script( 'wp-util' );
-	// }
 
 }
