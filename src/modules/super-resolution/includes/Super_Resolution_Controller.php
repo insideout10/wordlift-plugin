@@ -159,10 +159,11 @@ class Super_Resolution_Controller {
 
 		$request_file = $files['image'];
 
-		$extension          = pathinfo( $request_file['name'], PATHINFO_EXTENSION );
-		$allowed_extensions = array( 'png', 'jpeg', 'jpg' );
+		if ( ! isset( $request_file['type'] ) ) {
+			return new WP_Error( '400', 'File mime type is unsupported', array( 'status' => 400 ) );
+		}
 
-		if ( ! in_array( $extension, $allowed_extensions, true ) ) {
+		if ( strpos( $request_file['type'], 'image' ) === false ) {
 			return new WP_Error( '400', 'Only image files are supported', array( 'status' => 400 ) );
 		}
 
@@ -189,14 +190,16 @@ class Super_Resolution_Controller {
 		// Copy the new image to the attachment directory
 		$new_image_name = wp_unique_filename( dirname( $original_image_path ), basename( $request_file['name'] ) );
 		$new_image_path = path_join( dirname( $original_image_path ), $new_image_name );
-		copy( $request_file['tmp_name'], $new_image_path );
+		rename( $request_file['tmp_name'], $original_image_path );
 
 		// Update the attachment metadata with the new image file name
-		$attachment_metadata['file'] = $new_image_name;
+		$attachment_metadata['file'] = $new_image_path;
+
 		wp_update_attachment_metadata( $attachment_id, $attachment_metadata );
 
 		// Regenerate the resized images
 		$metadata_updated = wp_generate_attachment_metadata( $attachment_id, get_attached_file( $attachment_id ) );
+
 		if ( is_wp_error( $metadata_updated ) ) {
 			/**
 			 * @var $metadata_updated WP_Error
