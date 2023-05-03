@@ -2,8 +2,6 @@
 
 namespace Wordlift\Modules\App;
 
-use Wordlift\Assertions;
-
 class Plugin_App {
 
 	private $handle = 'wl-angular-app';
@@ -19,21 +17,10 @@ class Plugin_App {
 		);
 	}
 
-	public function render( $callable ) {
-
-		Assertions::is_callable( $callable );
-
-		call_user_func( $callable, $this->get_iframe_url() );
-	}
-
-	public static function get_iframe_url() {
-		return esc_url( plugin_dir_url( __DIR__ ) . 'app/iframe.html' );
-	}
-
 	/**
 	 * @return mixed|null
 	 */
-	public function get_settings() {
+	private function get_settings() {
 		return apply_filters(
 			'wl_plugin_app_settings',
 			array(

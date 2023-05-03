@@ -12,6 +12,7 @@ class Attachment_Field {
 			2
 		);
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+
 	}
 
 	/**
@@ -54,7 +55,7 @@ class Attachment_Field {
 		 * @see https://codex.wordpress.org/Javascript_Reference/ThickBox
 		 * This parameter instructs thickbox to load the url in iframe.
 		 */
-		$base_url = WL_ANGULAR_APP_URL . '?TB_iframe=true';
+		$base_url = WL_ANGULAR_APP_URL . "?navigate_to=(dialog:dialogs/super-resolution/$attachment_id/upscale)&TB_iframe=true";
 
 		return '<div>' . ( $this->is_smaller_than_the_required_width( $attachment_id )
 				? sprintf(
