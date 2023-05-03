@@ -39,8 +39,8 @@ class Attachment_Field {
 		// if ( 'post.php' === $hook && 'post' === get_post_type() ) {
 		// $screen = get_current_screen();
 		// if ( 'edit' !== $screen->base && 'post' === $screen->post_type ) {
-				wp_enqueue_style( 'wl-super-resolution', WL_DIR_URL . 'modules/super-resolution/css/super-resolution.css', array( 'thickbox' ), WORDLIFT_VERSION );
-			// }
+		wp_enqueue_style( 'wl-super-resolution', WL_DIR_URL . 'modules/super-resolution/css/super-resolution.css', array( 'thickbox' ), WORDLIFT_VERSION );
+		// }
 		// }
 
 		wp_enqueue_script( 'thickbox' );
@@ -69,7 +69,7 @@ class Attachment_Field {
 					__( 'Size is good', 'wordlift' ),
 					__( 'no recommended actions', 'wordlift' )
 				) ) .
-				   '</div><button ' . ( $is_smaller_than_required_size ? '' : 'disabled="disabled"' ) . ' onclick="tb_show(null, \'' . $base_url . '\', {\'class\': \'wl-super-resolution-modal\'})">Upscale Image</button>';
+			   '</div><button ' . ( $is_smaller_than_required_size ? '' : 'disabled="disabled"' ) . ' onclick="wlOpenFullscreenIframe(\'' . $base_url . '\')">Upscale Image</button>';
 	}
 
 	private function is_smaller_than_the_required_width( $attachment_id ) {

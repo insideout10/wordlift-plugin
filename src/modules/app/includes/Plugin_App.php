@@ -7,7 +7,14 @@ class Plugin_App {
 	private $handle = 'wl-angular-app';
 
 	public function register_handle() {
-		wp_register_script( $this->handle, '', array(), WORDLIFT_VERSION, true );
+		wp_register_script(
+			$this->handle,
+			plugin_dir_url( __DIR__ ) . 'js/app.js',
+			array(),
+			WORDLIFT_VERSION,
+			true
+		);
+
 		add_action(
 			'admin_enqueue_scripts',
 			function () {
