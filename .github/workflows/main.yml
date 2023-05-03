@@ -83,7 +83,7 @@ jobs:
             -e WORDPRESS_VERSION -v $GITHUB_WORKSPACE:"/github/workspace" \
             --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
               ziodave/wordpress-tests:${{ matrix.image }} -c ${{ matrix.phpunit-xml }} --stop-on-error --stop-on-fail
-  adthrive:
+  raptive:
     runs-on: ubuntu-latest
     # Run only for main branch push
     if: ${{ success() && github.ref == 'refs/heads/main' }}
@@ -94,7 +94,7 @@ jobs:
         with:
           fetch-depth: 2
       - name: Package and upload to blob storage
-        run: ./.github/workflows/adthrive.sh
+        run: ./.github/workflows/raptive.sh
         env:
           AZURE_STORAGE_SHARED_KEY_QUERY_PARAM: ${{ secrets.AZURE_STORAGE_SHARED_KEY_QUERY_PARAM }}
   publish-to-dev:
