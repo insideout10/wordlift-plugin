@@ -35,7 +35,7 @@ abstract class Wordlift_Vocabulary_Terms_Unit_Test_Case extends Wordlift_Unit_Te
 		$this->assertNotEmpty( $term_uri, 'Term URI cannot be empty.' );
 
 		$post_content = <<<EOF
-		<span itemid="$term_uri">test</span>
+		<span class="textannotation disambiguated" itemid="$term_uri">test</span>
 EOF;
 
 		$post_id = wp_insert_post( array(

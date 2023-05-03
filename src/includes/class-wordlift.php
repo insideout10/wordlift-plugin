@@ -44,7 +44,6 @@ use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
 use Wordlift\Jsonld\Jsonld_Endpoint;
 use Wordlift\Jsonld\Jsonld_Service;
 use Wordlift\Jsonld\Jsonld_User_Service;
-use Wordlift\Jsonld\Mentions;
 use Wordlift\Mappings\Formatters\Acf_Group_Formatter;
 use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
@@ -1149,12 +1148,6 @@ class Wordlift {
 
 				new Jsonld_By_Id_Endpoint( $that->jsonld_service, $that->entity_uri_service );
 
-				/**
-				 * @since 3.37.1
-				 * Add mentions property to the entity.
-				 */
-				new Mentions();
-
 				$that->key_validation_service = new Wordlift_Key_Validation_Service();
 
 				$that->content_filter_service = Wordlift_Content_Filter_Service::get_instance();
@@ -1684,7 +1677,13 @@ class Wordlift {
 		$deactivator_feedback = new Wordlift_Deactivator_Feedback();
 
 		add_action( 'admin_footer', array( $deactivator_feedback, 'render_feedback_popup' ) );
-		add_action( 'admin_enqueue_scripts', array( $deactivator_feedback, 'enqueue_popup_scripts' ) );
+		add_action(
+			'admin_enqueue_scripts',
+			array(
+				$deactivator_feedback,
+				'enqueue_popup_scripts',
+			)
+		);
 		add_action(
 			'wp_ajax_wl_deactivation_feedback',
 			array(
@@ -1908,11 +1907,27 @@ class Wordlift {
 		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( apply_filters( 'wl_feature__enable__settings-download', true ) ) {
 			Assertions::is_set( $this->download_your_data_page, "`download_your_data_page` can't be null" );
-			add_action( 'admin_menu', array( $this->download_your_data_page, 'admin_menu' ), 100, 0 );
+			add_action(
+				'admin_menu',
+				array(
+					$this->download_your_data_page,
+					'admin_menu',
+				),
+				100,
+				0
+			);
 		}
 
 		Assertions::is_set( $this->entity_type_settings_admin_page, "`entity_type_settings_admin_page` can't be null" );
-		add_action( 'admin_menu', array( $this->entity_type_settings_admin_page, 'admin_menu' ), 100, 0 );
+		add_action(
+			'admin_menu',
+			array(
+				$this->entity_type_settings_admin_page,
+				'admin_menu',
+			),
+			100,
+			0
+		);
 
 	}
 

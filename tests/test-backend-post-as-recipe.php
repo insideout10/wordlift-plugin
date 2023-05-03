@@ -1,4 +1,7 @@
 <?php
+
+use Wordlift\Relation\Relations;
+
 /**
  * @group backend
  */
@@ -60,7 +63,8 @@ class Wordlift_Post_As_Recipe_Test extends Wordlift_Unit_Test_Case {
 		) );
 
 		// JSON-LD.
-		$jsonld    = Wordlift_Post_To_Jsonld_Converter::get_instance()->convert( $post_id );
+		$empty = array();
+		$jsonld    = Wordlift_Post_To_Jsonld_Converter::get_instance()->convert( $post_id, $empty, $empty, new Relations() );
 		$permalink = get_permalink( $post_id );
 
 		// Assertions.
@@ -113,7 +117,8 @@ class Wordlift_Post_As_Recipe_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $post_id, $posts[0]->ID, 'The found post ID must match the ID of the test post.' );
 
 		// JSON-LD.
-		$jsonld    = $this->post_to_jsonld_converter->convert( $post_id );
+		$empty = array();
+		$jsonld    = $this->post_to_jsonld_converter->convert( $post_id, $empty, $empty, new Relations());
 		$permalink = get_permalink( $post_id );
 
 		// Assertions.

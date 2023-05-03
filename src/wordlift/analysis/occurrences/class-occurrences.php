@@ -5,6 +5,7 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.32.6
  */
+
 namespace Wordlift\Analysis\Occurrences;
 
 interface Occurrences {
@@ -12,6 +13,6 @@ interface Occurrences {
 	/**
 	 * @return array Return json data structure.
 	 */
-	public function add_occurences_to_entities( $occurrences, $json, $post_id );
+	public function add_occurrences_to_entities( $occurrences, $json, $post_id );
 
 }

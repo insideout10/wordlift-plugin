@@ -52,7 +52,7 @@ class EntityCreationViaPostCreationTest extends Wordlift_Unit_Test_Case {
 
 		// Reference the entity to the post content
 		$content = <<<EOF
-    <span itemid="$original_entity_uri">My entity</span>
+    <span class="textannotation disambiguated" itemid="$original_entity_uri">My entity</span>
 EOF;
 		// Be sure that the entity does not exist yet.
 		$entity = $entity_service->get_entity_post_by_uri( $original_entity_uri );
@@ -89,6 +89,7 @@ EOF;
 
 		// Create a post referincing to the created entity
 		$existing_entity_id = wl_create_post( '', 'gran-sasso', 'Gran Sasso', 'draft', 'entity' );
+
 		wl_set_entity_main_type( $existing_entity_id, 'wl-place' );
 
 		$fake  = $this->prepare_fake_global_post_array_from_file(
@@ -100,11 +101,14 @@ EOF;
 		// Reference the entity to the post content
 
 		$content = <<<EOF
-    <span itemid="$original_entity_uri">Gran Sasso</span>
+    <span class="textannotation disambiguated" itemid="$original_entity_uri">Gran Sasso</span>
 EOF;
+
 		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 		// Here the entity should be created instead
+
+
 
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
 
@@ -130,7 +134,7 @@ EOF;
 		$original_entity_uri = current( array_keys( $fake['wl_entities'] ) );
 		// Reference the entity to the post content
 		$content = <<<EOF
-    <span itemid="$original_entity_uri">Gran Sasso</span>
+    <span class="textannotation disambiguated" itemid="$original_entity_uri">Gran Sasso</span>
 EOF;
 		// Create a post referincing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
@@ -174,7 +178,7 @@ EOF;
 		);
 		$_POST = $fake;
 
-		$content = '<span itemid="local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt">Tex Willer</span>';
+		$content = '<span class="textannotation disambiguated" itemid="local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt">Tex Willer</span>';
 
 		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
@@ -212,9 +216,9 @@ EOF;
 		$_POST = $fake;
 
 		$content = <<<EOF
-    <span itemid="local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt">Ryan Carson</span>
-    <span itemid="local-entity-ld7uu78v23z69a4iivmf1io4m2h5b3xr">Ryan Carson</span>
-    <span itemid="http://dbpedia.org/resource/Ryan_Carson">Ryan Carson</span>
+    <span class="textannotation disambiguated" itemid="local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt">Ryan Carson</span>
+    <span class="textannotation disambiguated" itemid="local-entity-ld7uu78v23z69a4iivmf1io4m2h5b3xr">Ryan Carson</span>
+    <span class="textannotation disambiguated" itemid="http://dbpedia.org/resource/Ryan_Carson">Ryan Carson</span>
 EOF;
 
 		// Create a post referincing to the created entity
@@ -278,7 +282,7 @@ EOF;
 		$expected_entity_uri = $this->buildEntityUriForLabel( $raw_entity['label'] );
 		// Reference the entity to the post content
 		$content = <<<EOF
-    <span itemid="$entity_uri">My entity</span>
+    <span class="textannotation disambiguated" itemid="$entity_uri">My entity</span>
 EOF;
 		// Be sure that the entity does not exist yet
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $expected_entity_uri );
@@ -292,7 +296,7 @@ EOF;
 
 		// Check if the content was properly fixed
 		$expected_content = <<<EOF
-    <span itemid="$expected_entity_uri">My entity</span>
+    <span class="textannotation disambiguated" itemid="$expected_entity_uri">My entity</span>
 EOF;
 		$post             = get_post( $post_id );
 		$this->assertEquals( $post->post_content, $expected_content );
@@ -321,7 +325,7 @@ EOF;
 		$expected_entity_uri = 'http://data.example.org/data/entity/loreal';
 		// Reference the entity to the post content
 		$content = <<<EOF
-    <span itemid="$entity_uri">My entity</span>
+    <span class="textannotation disambiguated" itemid="$entity_uri">My entity</span>
 EOF;
 		// Be sure that the entity does not exist yet
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $expected_entity_uri );
@@ -336,7 +340,7 @@ EOF;
 
 		// Check if the content was properly fixed
 		$expected_content = <<<EOF
-    <span itemid="$expected_entity_uri">My entity</span>
+    <span class="textannotation disambiguated" itemid="$expected_entity_uri">My entity</span>
 EOF;
 		$post             = get_post( $post_id );
 		$this->assertEquals( $post->post_content, $expected_content );
@@ -370,7 +374,7 @@ EOF;
 		$expected_entity_uri = $this->buildEntityUriForLabel( $raw_entity['label'] );
 		// Reference the entity to the post content
 		$content = <<<EOF
-    <span itemid="$entity_uri">My entity</span>
+    <span class="textannotation disambiguated" itemid="$entity_uri">My entity</span>
 EOF;
 		// Be sure that the entity does not exist yet
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $expected_entity_uri );
@@ -382,7 +386,7 @@ EOF;
 		$this->assertNotNull( $entity );
 		// Check if the content was properly fixed
 		$expected_content = <<<EOF
-    <span itemid="$expected_entity_uri">My entity</span>
+    <span class="textannotation disambiguated" itemid="$expected_entity_uri">My entity</span>
 EOF;
 		$post             = get_post( $post_id );
 		$this->assertEquals( $post->post_content, $expected_content );
@@ -409,7 +413,7 @@ EOF;
 		$entity_uri = current( array_keys( $fake['wl_entities'] ) );
 		// Reference the entity to the post content
 		$content = <<<EOF
-    <span itemid="$entity_uri">My entity</span>
+    <span class="textannotation disambiguated" itemid="$entity_uri">My entity</span>
 EOF;
 		// Be sure that the entity does not exist yet
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
@@ -476,7 +480,7 @@ EOF;
 		$original_entity_uri = current( array_keys( $fake['wl_entities'] ) );
 		// Reference the entity to the post content
 		$content = <<<EOF
-    <span itemid="$original_entity_uri">My entity</span>
+    <span class="textannotation disambiguated" itemid="$original_entity_uri">My entity</span>
 EOF;
 		// Be sure that the entity does not exist yet
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
@@ -505,7 +509,7 @@ EOF;
 
 		// Reference the entity to the post content
 		$content_2 = <<<EOF
-    <span itemid="$entity_uri">My entity</span>
+    <span class="textannotation disambiguated" itemid="$entity_uri">My entity</span>
 EOF;
 
 		// Create a post referincing to the created entity
@@ -534,7 +538,7 @@ EOF;
 
 		// Reference the entity to the post content
 		$content = <<<EOF
-    <span itemid="$entity_uri">My entity</span>
+    <span class="textannotation disambiguated" itemid="$entity_uri">My entity</span>
 EOF;
 		// Create a post referincing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
@@ -599,7 +603,7 @@ EOF;
 		$original_entity_uri = current( array_keys( $fake['wl_entities'] ) );
 		// Reference the entity to the post content trough its alternative label
 		$content = <<<EOF
-    <span itemid="$original_entity_uri">$alternative_label</span>
+    <span class="textannotation disambiguated" itemid="$original_entity_uri">$alternative_label</span>
 EOF;
 		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );

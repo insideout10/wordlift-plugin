@@ -9,35 +9,27 @@
  * @package Wordlift
  * @subpackage Wordlift\Relation
  */
+
 namespace Wordlift\Relation;
 
-use Wordlift\Jsonld\Reference;
-use Wordlift\Relation\Types\Relation;
+use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 
 interface  Relation_Service_Interface {
 
 	/**
-	 * @param $subject_id int
-	 * @param int            $subject_type {@link Object_Type_Enum}
-	 * @return array<Reference>
-	 */
-	public function get_references( $subject_id, $subject_type );
-
-	/**
-	 * @param $content string
-	 * @param int            $subject_type {@link Object_Type_Enum}
-	 * @param array          $internal_entity_uris An array of internal uri present for post.
-	 * @return array<Relation>
-	 * Extracts the relations from the post content.
-	 */
-	public function get_relations_from_content( $content, $subject_type, $local_entity_uris );
-
-	/**
-	 * @param $subject_type
-	 * @param $entity_uris
+	 * Get the relations for the provided {@link Wordpress_Content_Id}
 	 *
-	 * @return Relation[] | false[]
+	 * @param Wordpress_Content_Id $content_id
+	 *
+	 * @return Relations_Interface
 	 */
-	public function get_relations_from_entity_uris( $subject_type, $entity_uris );
+	public function get_relations( $content_id );
+
+	/**
+	 * Add the relations for the provided {@link Wordpress_Content_Id} to the provided {@link Relations_Interface}
+	 *
+	 * @param Wordpress_Content_Id $content_id
+	 */
+	public function add_relations( $content_id, $relations );
 
 }

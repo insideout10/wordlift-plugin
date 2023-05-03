@@ -58,8 +58,8 @@ class Wordlift_Revision_Generation_Test extends Wordlift_Unit_Test_Case {
 		$entity_2_uri = wl_get_entity_uri( $entity_2_id );
 
 		$body_1 = <<<EOF
-            <span itemid="$entity_1_uri">Entity 1</span>
-            <span itemid="$entity_2_uri">Entity 2</span>
+            <span class="textannotation disambiguated" itemid="$entity_1_uri">Entity 1</span>
+            <span class="textannotation disambiguated" itemid="$entity_2_uri">Entity 2</span>
 EOF;
 
 		// Create a post connected to the entities
@@ -74,7 +74,7 @@ EOF;
 
 		// Create revision with only one entity.
 		$body_2 = <<<EOF
-            <span itemid="$entity_1_uri">Entity 1</span>
+            <span class="textannotation disambiguated" itemid="$entity_1_uri">Entity 1</span>
 EOF;
 
 		$post_data = array(
@@ -116,8 +116,8 @@ EOF;
 		$entity_2_uri = wl_get_entity_uri( $entity_2_id );
 
 		$body_1 = <<<EOF
-            <span itemid="$entity_1_uri">Entity 1</span>
-            <span itemid="$entity_2_uri">Entity 2</span>
+            <span class="textannotation disambiguated" itemid="$entity_1_uri">Entity 1</span>
+            <span class="textannotation disambiguated" itemid="$entity_2_uri">Entity 2</span>
 EOF;
 
 		// Create an entity connected to the entities
@@ -131,7 +131,7 @@ EOF;
 
 		// Create revision with only one entity.
 		$body_2 = <<<EOF
-            <span itemid="$entity_1_uri">Entity 1</span>
+            <span class="textannotation disambiguated" itemid="$entity_1_uri">Entity 1</span>
 EOF;
 
 		$post_data = array(

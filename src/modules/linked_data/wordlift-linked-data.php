@@ -9,8 +9,10 @@
 
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\No_Editor_Analysis\No_Editor_Analysis_Feature;
 use Wordlift\Object_Type_Enum;
-use Wordlift\Relation\Object_Relation_Factory;
+use Wordlift\Relation\Relation;
+use Wordlift\Relation\Relation_Service;
 
 /**
  * Receive events from post saves, and split them according to the post type.
@@ -207,27 +209,48 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	// Reset previously saved instances.
 	wl_core_delete_relation_instances( $post_id );
 
-	$relations = Object_Relation_Factory::get_instance( $post_id )
-										->get_relations_from_content(
-											$updated_post_content,
-											Object_Type_Enum::POST,
-											$internal_entity_uris
-										);
+	$content_id = Wordpress_Content_Id::create_post( $post->ID );
+	$relations  = Relation_Service::get_instance()->get_relations( $content_id );
+
+	if ( No_Editor_Analysis_Feature::can_no_editor_analysis_be_used( $post_id ) ) {
+		$relations->add( ...Relation_Service::get_relations_from_uris( $content_id, $internal_entity_uris ) );
+	}
+	/**
+	 * Filter the relations, we dont want to create a relation
+	 * to uncategorized term, we are already filtering this on jsonld,
+	 *
+	 * @todo: do i need to move this to post-term-relation-service ?
+	 */
+	$filtered_relations = array_filter(
+		$relations->toArray(),
+		function ( $item ) {
+			/**
+			 * @var $item Relation
+			 */
+			$object = $item->get_object();
+
+			return ! ( $object->get_type() === Object_Type_Enum::TERM
+			&& $object->get_id() === 1 );
+		}
+	);
 
 	// Save relation instances
-	foreach ( $relations as $relation ) {
+	/** @var Relation $relation */
+	foreach ( $filtered_relations  as $relation ) {
+		$subject = $relation->get_subject();
+		$object  = $relation->get_object();
 
 		wl_core_add_relation_instance(
 		// subject id.
-			$post_id,
+			$subject->get_id(),
 			// what, where, when, who
-			$relation->get_relation_type(),
+			$relation->get_predicate(),
 			// object id.
-			$relation->get_object_id(),
+			$object->get_id(),
 			// Subject type.
-			$relation->get_subject_type(),
+			$subject->get_type(),
 			// Object type.
-			$relation->get_object_type()
+			$object->get_type()
 		);
 
 	}
