@@ -18,11 +18,8 @@ function wlOpenFullscreenIframe(src) {
 	iframe.contentWindow.addEventListener(
 		"WL_ANGULAR_APP_RELOAD",
 		function () {
-			// Just reload the media frame.
-			if ( wp && wp.media && wp.media.frame) {
-				wp.media.frame.close()
-				wp.media.frame.open()
-			}
+			iframe.parentNode.removeChild( iframe );
+			wp.media.frame.close()
 		}
 	)
 }
