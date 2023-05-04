@@ -52,12 +52,12 @@ class Attachment_Field {
 
 		return '<div class="wl-super-resolution-container">' . ( $is_smaller_than_required_size
 				? sprintf(
-					'<strong class="wl-warning-icon">%s</strong>: %s',
+					'<span class="wl-warning-icon"></span><div><strong>%s</strong>: %s</div>',
 					__( 'Image too small', 'wordlift' ),
 					__( 'upscale to boost web traffic', 'wordlift' )
 				)
 				: sprintf(
-					'<strong class="wl-success-icon">%s</strong>: %s',
+					'<span class="wl-success-icon"></span><div><strong>%s</strong>: %s</div>',
 					__( 'Size is good', 'wordlift' ),
 					__( 'no recommended actions', 'wordlift' )
 				) ) .

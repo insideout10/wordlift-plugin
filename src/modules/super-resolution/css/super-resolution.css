@@ -28,6 +28,10 @@
   margin-top: 16px;
   font-style: normal;
   font-size: 13px;
+  display: flex;
+  gap: 6px;
+  width: 263px;
+  height: 34px;
 }
 
 .wl-super-resolution-container > strong {
@@ -81,7 +85,7 @@
   vertical-align: top;
   text-align: center;
   transition: color 0.1s ease-in;
-  margin-right: 6px;
+
 }
 
 
@@ -102,7 +106,7 @@
   vertical-align: top;
   text-align: center;
   transition: color 0.1s ease-in;
-  margin-right: 6px;
+
 }
 
 
