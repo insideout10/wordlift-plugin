@@ -78,7 +78,7 @@ function __wl_dashboard__load() {
 			echo "
 			<style>
 			    #wlx-plugin-app {
-			      margin-left: -20px;
+			      margin-left: 20px;
 			      width: calc(100% + 20px);
 			      min-height: 1500px;
 			    }
