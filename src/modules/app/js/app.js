@@ -9,4 +9,12 @@ function wlOpenFullscreenIframe(src) {
   iframe.style.zIndex = 99999999;
   iframe.style.backgroundColor = 'none transparent';
   document.body.appendChild(iframe);
+  iframe.contentWindow.addEventListener("WL_ANGULAR_APP_CLOSE", function () {
+    iframe.parentNode.removeChild(iframe);
+  })
+  iframe.contentWindow.addEventListener("WL_ANGULAR_APP_RELOAD", function () {
+    window.location.reload()
+  })
 }
+
+
