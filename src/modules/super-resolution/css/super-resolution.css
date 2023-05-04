@@ -10,7 +10,13 @@
   border-top: 1px solid #dcdcde;
 }
 
+
+.compat-field-wl_super_resolution label {
+  cursor: auto;
+}
+
 .compat-field-wl_super_resolution label span {
+
   padding: 0px;
   margin-top: 17px;
   margin-left: 0px;

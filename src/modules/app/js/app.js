@@ -9,6 +9,7 @@ function wlOpenFullscreenIframe(src) {
 	iframe.style.backgroundColor = 'none transparent';
 	document.body.appendChild( iframe );
 	iframe.addEventListener('load', function () {
+		// When the zindex is set immediately it causes flicker when It's attached to document.
 		iframe.style.zIndex          = 99999999;
 	})
 	iframe.contentWindow.addEventListener(
