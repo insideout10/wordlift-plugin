@@ -46,7 +46,7 @@ class Jsonld {
 		global $wpdb;
 		$result = $wpdb->get_col(
 			$wpdb->prepare(
-				"SELECT r.term_id from {$wpdb->prefix}term_relationships r 
+				"SELECT tt.term_id from {$wpdb->prefix}term_relationships r 
     INNER JOIN {$wpdb->prefix}term_taxonomy tt ON r.term_taxonomy_id=tt.term_taxonomy_id WHERE r.object_id= %d",
 				$post_id
 			)
