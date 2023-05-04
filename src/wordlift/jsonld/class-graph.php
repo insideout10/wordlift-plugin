@@ -82,12 +82,14 @@ class Graph {
 			$references_infos,
 			function ( $item ) {
 				return isset( $item['reference'] ) &&
+					   $item['reference'] instanceof \Wordlift_Property_Entity_Reference &&
 					   // Check that the reference is required
 					   $item['reference']->get_required();
 			}
 		);
 
-		foreach ( $required_references as $required_reference ) {
+		foreach ( $required_references as $data ) {
+			$required_reference             = $data['reference'];
 			$this->referenced_content_ids[] = new Wordpress_Content_Id(
 				$required_reference->get_id(),
 				$required_reference->get_type()
