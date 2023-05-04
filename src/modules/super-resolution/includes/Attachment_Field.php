@@ -42,20 +42,12 @@ class Attachment_Field {
 		wp_enqueue_style( 'wl-super-resolution', WL_DIR_URL . 'modules/super-resolution/css/super-resolution.css', array( 'thickbox' ), WORDLIFT_VERSION );
 		// }
 		// }
-
-		wp_enqueue_script( 'thickbox' );
 		wp_enqueue_script( 'wl-angular-app' );
 
 	}
 
 	private function get_html( $attachment_id ) {
-		/**
-		 * why ?TB_iframe=true on the end of the url ?
-		 *
-		 * @see https://codex.wordpress.org/Javascript_Reference/ThickBox
-		 * This parameter instructs thickbox to load the url in iframe.
-		 */
-		$base_url                      = WL_ANGULAR_APP_URL . "#(dialog:dialogs/super-resolution/$attachment_id/upscale)&TB_iframe=true";
+		$base_url                      = WL_ANGULAR_APP_URL . "#(dialog:dialogs/super-resolution/$attachment_id/upscale)";
 		$is_smaller_than_required_size = $this->is_smaller_than_the_required_width( $attachment_id );
 
 		return '<div>' . ( $is_smaller_than_required_size
