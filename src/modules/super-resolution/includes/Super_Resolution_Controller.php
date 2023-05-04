@@ -16,8 +16,12 @@ class Super_Resolution_Controller {
 			'wordlift/v1/super-resolution',
 			'/attachments/(?P<attachment_id>\d+)/image',
 			array(
-				'methods'  => 'GET',
-				'callback' => array( $this, 'get_post_featured_image' ),
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'get_post_featured_image' ),
+				'permission_callback' => function ( $request ) {
+					$post_id = $request->get_param( 'attachment_id' );
+					return current_user_can( 'edit_post', $post_id );
+				},
 			)
 		);
 
@@ -25,8 +29,12 @@ class Super_Resolution_Controller {
 			'wordlift/v1/super-resolution',
 			'/attachments/(?P<attachment_id>\d+)/image',
 			array(
-				'methods'  => 'POST',
-				'callback' => array( $this, 'replace_post_featured_image' ),
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'replace_post_featured_image' ),
+				'permission_callback' => function ( $request ) {
+					$post_id = $request->get_param( 'attachment_id' );
+					return current_user_can( 'edit_post', $post_id );
+				},
 			)
 		);
 
@@ -34,8 +42,12 @@ class Super_Resolution_Controller {
 			'wordlift/v1/super-resolution',
 			'/attachments/(?P<attachment_id>\d+)/image-upscale',
 			array(
-				'methods'  => 'GET',
-				'callback' => array( $this, 'create_post_featured_image_upscale' ),
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'create_post_featured_image_upscale' ),
+				'permission_callback' => function ( $request ) {
+					$post_id = $request->get_param( 'attachment_id' );
+					return current_user_can( 'edit_post', $post_id );
+				},
 			)
 		);
 	}
