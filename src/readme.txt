@@ -144,9 +144,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 
+= 3.43.1 (2023-05-04) =
+* Fix [#1681](https://github.com/insideout10/wordlift-plugin/issues/1681): Fix issues with reference infos in jsonld.
+
 = 3.43.0 (2023-05-03) =
 * Fix [#1677](https://github.com/insideout10/wordlift-plugin/issues/1677): References aren't correctly handled causing mentions not to be populated.
-
 
 = 3.42.0 (2023-04-17) =
 * Feature [#1672](https://github.com/insideout10/wordlift-plugin/issues/1672): Article Wrapper can be now used in API calls too by adding the `article_wrapper=true` query parameter.
