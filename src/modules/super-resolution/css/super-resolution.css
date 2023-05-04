@@ -10,10 +10,23 @@
   border-top: 1px solid #dcdcde;
 }
 
-.compat-field-wl_super_resolution label {
+.compat-field-wl_super_resolution label span {
+  padding: 0px;
+  margin-top: 17px;
+  margin-left: 0px;
   font-weight: 600;
   color: #646970;
-  margin-bottom: 16px;
+}
+
+.wl-super-resolution-container {
+  margin-top: 16px;
+  font-style: normal;
+  font-size: 13px;
+}
+
+.wl-super-resolution-container > strong {
+  color: #646970;
+  font-weight: 600;
 }
 
 .compat-field-wl_super_resolution .field {

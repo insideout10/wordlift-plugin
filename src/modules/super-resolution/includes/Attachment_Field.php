@@ -50,7 +50,7 @@ class Attachment_Field {
 		$base_url                      = WL_ANGULAR_APP_URL . "#(dialog:dialogs/super-resolution/$attachment_id/upscale)";
 		$is_smaller_than_required_size = $this->is_smaller_than_the_required_width( $attachment_id );
 
-		return '<div>' . ( $is_smaller_than_required_size
+		return '<div class="wl-super-resolution-container">' . ( $is_smaller_than_required_size
 				? sprintf(
 					'<strong class="wl-warning-icon">%s</strong>: %s',
 					__( 'Image too small', 'wordlift' ),
