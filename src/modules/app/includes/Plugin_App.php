@@ -18,9 +18,13 @@ class Plugin_App {
 		add_action(
 			'admin_enqueue_scripts',
 			function () {
-				$settings = wp_json_encode( $this->get_settings() );
-				wp_add_inline_script( $this->handle, "var _wlPluginAppSettings = {$settings};" );
-			}
+				// we dont want the filters to run if it was not enqueued.
+				if ( wp_script_is( $this->handle, 'enqueued' ) ) {
+					$settings = wp_json_encode( $this->get_settings() );
+					wp_add_inline_script( $this->handle, "var _wlPluginAppSettings = {$settings};" );
+				}
+			},
+			PHP_INT_MAX // This hook is running at last because we want to check if it was enqueued.
 		);
 	}
 

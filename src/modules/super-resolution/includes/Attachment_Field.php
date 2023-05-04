@@ -34,14 +34,14 @@ class Attachment_Field {
 	}
 
 	public function admin_enqueue_scripts() {
+		/**
+		 * I only need these files when the media library is rendered.
+		 */
+		if ( ! did_action( 'wp_enqueue_media' ) ) {
+			return;
+		}
 
-		// @TODO: enqueue the styles.
-		// if ( 'post.php' === $hook && 'post' === get_post_type() ) {
-		// $screen = get_current_screen();
-		// if ( 'edit' !== $screen->base && 'post' === $screen->post_type ) {
 		wp_enqueue_style( 'wl-super-resolution', WL_DIR_URL . 'modules/super-resolution/css/super-resolution.css', array( 'thickbox' ), WORDLIFT_VERSION );
-		// }
-		// }
 		wp_enqueue_script( 'wl-angular-app' );
 
 	}
