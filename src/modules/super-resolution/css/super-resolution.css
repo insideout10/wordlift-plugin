@@ -12,11 +12,13 @@
 
 
 .compat-field-wl_super_resolution label {
+  text-align: start;
   cursor: auto;
+  margin-right: 0;
 }
 
 .compat-field-wl_super_resolution label span {
-
+  text-align: start;
   padding: 0px;
   margin-top: 17px;
   margin-left: 0px;
