@@ -27,3 +27,7 @@ services:
   Wordlift\Modules\Dashboard\Post_Entity_Match\Post_Entity_Match_Rest_Controller:
     class: Wordlift\Modules\Dashboard\Post_Entity_Match\Post_Entity_Match_Rest_Controller
     arguments: [ '@Wordlift\Modules\Dashboard\Post_Entity_Match\Post_Entity_Match_Service' ]
+
+  Wordlift\Modules\Dashboard\App_Settings:
+    class: Wordlift\Modules\Dashboard\App_Settings
+    arguments: [ '@Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service' ]

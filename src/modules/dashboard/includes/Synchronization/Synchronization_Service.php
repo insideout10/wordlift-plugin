@@ -5,7 +5,6 @@ namespace Wordlift\Modules\Dashboard\Synchronization;
 use DateTimeImmutable;
 use DateTimeZone;
 use Exception;
-use Wordlift\Modules\Common\Date_Utils;
 use Wordlift\Modules\Common\Synchronization\Runner;
 use Wordlift\Modules\Dashboard\Synchronization\Exception\SynchronizationAlreadyRunningException;
 use Wordlift\Modules\Dashboard\Synchronization\Exception\SynchronizationNotRunningException;
@@ -19,18 +18,6 @@ class Synchronization_Service {
 		add_action( self::HOOK, array( $this, 'run' ) );
 		add_action( 'wl_dashboard__synchronization__create', array( $this, 'scheduled_create' ) );
 		add_action( 'init', array( $this, 'init' ) );
-		add_filter(
-			'wl_plugin_app_settings',
-			function ( $options ) {
-				$options['synchronization'] = array(
-					'last_sync' => Date_Utils::to_iso_string( $this->get_last_sync() ),
-					'next_sync' => Date_Utils::to_iso_string( $this->get_next_sync() ),
-				);
-
-				return $options;
-			}
-		);
-
 	}
 
 	public function init() {
