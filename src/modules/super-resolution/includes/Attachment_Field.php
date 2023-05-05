@@ -42,7 +42,7 @@ class Attachment_Field {
 		}
 
 		wp_enqueue_style( 'wl-super-resolution', WL_DIR_URL . 'modules/super-resolution/css/super-resolution.css', array( 'thickbox' ), WORDLIFT_VERSION );
-		wp_enqueue_script( 'wl-angular-app' );
+		wp_enqueue_script( WL_ANGULAR_APP_SCRIPT_HANDLE );
 
 	}
 

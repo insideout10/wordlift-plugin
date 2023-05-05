@@ -4,11 +4,9 @@ namespace Wordlift\Modules\App;
 
 class Plugin_App {
 
-	private $handle = 'wl-angular-app';
-
 	public function register_handle() {
 		wp_register_script(
-			$this->handle,
+			WL_ANGULAR_APP_SCRIPT_HANDLE,
 			plugin_dir_url( __DIR__ ) . 'js/app.js',
 			array(),
 			WORDLIFT_VERSION,
@@ -21,7 +19,7 @@ class Plugin_App {
 				// we dont want the filters to run if it was not enqueued.
 				// if ( wp_script_is( $this->handle, 'enqueued' ) ) {
 					$settings = wp_json_encode( $this->get_settings() );
-					wp_add_inline_script( $this->handle, "var _wlPluginAppSettings = {$settings};" );
+					wp_add_inline_script( WL_ANGULAR_APP_SCRIPT_HANDLE, "var _wlPluginAppSettings = {$settings};" );
 				// }
 			},
 			PHP_INT_MAX // This hook is running at last because we want to check if it was enqueued.
