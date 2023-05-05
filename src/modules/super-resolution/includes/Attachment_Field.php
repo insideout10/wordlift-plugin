@@ -69,7 +69,7 @@ class Attachment_Field {
 		$attachment_metadata = wp_get_attachment_metadata( $attachment_id );
 
 		// Get the image dimensions
-		return is_numeric( $attachment_metadata['width'] ) && $attachment_metadata['width'] < 1200;
+		return isset( $attachment_metadata['width'] ) && is_numeric( $attachment_metadata['width'] ) && $attachment_metadata['width'] < 1200;
 	}
 
 }
