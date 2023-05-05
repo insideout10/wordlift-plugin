@@ -36,12 +36,13 @@ class Plugin_App {
 			'wl_plugin_app_settings',
 			array(
 				// Allows Stats Card to populate the settings.
-				'stats'           => apply_filters( 'wl_dashboard__stats__settings', array() ),
+				'stats'        => apply_filters( 'wl_dashboard__stats__settings', array() ),
 				// @see https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/
-				'wp_api_nonce'    => wp_create_nonce( 'wp_rest' ),
-				'wp_api_base'     => untrailingslashit( rest_url() ),
-				'remote_api_base' => apply_filters( 'wl_api_base_url', WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE ),
-				'remote_api_key'  => \Wordlift_Configuration_Service::get_instance()->get_key(),
+				'wp_api_nonce' => wp_create_nonce( 'wp_rest' ),
+				'wp_api_base'  => untrailingslashit( rest_url() ),
+				// Load wordlift api url and key.
+				'wl_api_base'  => apply_filters( 'wl_api_base_url', WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE ),
+				'wl_api_key'   => \Wordlift_Configuration_Service::get_instance()->get_key(),
 			)
 		);
 	}
