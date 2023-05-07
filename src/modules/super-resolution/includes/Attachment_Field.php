@@ -22,6 +22,11 @@ class Attachment_Field {
 	 * @return mixed
 	 */
 	public function attachment_fields_to_edit( $form_fields, $post ) {
+		// We want to show this button only on the attachment sidebar, which is loaded via ajax.
+		if ( ! wp_doing_ajax() ) {
+			return $form_fields;
+		}
+
 		// Add your custom HTML code here
 		$form_fields['wl_super_resolution'] = array(
 			'label'  => __( 'WordLift Image Upscale', 'wordlift' ),

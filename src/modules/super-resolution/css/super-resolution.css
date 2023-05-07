@@ -7,7 +7,10 @@
 }
 
 .compat-field-wl_super_resolution {
+  padding: 17px 0;
+  margin-bottom: 17px;
   border-top: 1px solid #dcdcde;
+  display: block;
 }
 
 
@@ -19,9 +22,8 @@
 
 .compat-field-wl_super_resolution label span {
   text-align: start;
-  padding: 0px;
-  margin-top: 17px;
-  margin-left: 0px;
+  padding: 0;
+  margin-left: 0;
   font-weight: 600;
   color: #646970;
 }
