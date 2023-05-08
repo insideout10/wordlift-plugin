@@ -143,6 +143,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.44.0 (2023-05-08) =
+* Fix [#1678](https://github.com/insideout10/wordlift-plugin/issues/1678): WordLift can now supercharge your images by upscaling them (and reducing their size at the same time), AI powered.
+
 
 = 3.43.1 (2023-05-04) =
 * Fix [#1681](https://github.com/insideout10/wordlift-plugin/issues/1681): Fix issues with reference infos in jsonld.
