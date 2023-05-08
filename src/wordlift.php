@@ -36,6 +36,7 @@ define( 'WORDLIFT_VERSION', '3.44.0-0' );
 
 require_once plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-scheduler.php';
 require_once __DIR__ . '/modules/common/load.php';
+require_once __DIR__ . '/modules/app/load.php';
 require_once __DIR__ . '/modules/include-exclude/load.php';
 
 /**
@@ -306,6 +307,7 @@ require_once __DIR__ . '/modules/acf4so/load.php';
 require_once __DIR__ . '/modules/dashboard/load.php';
 require_once __DIR__ . '/modules/pods/load.php';
 require_once __DIR__ . '/modules/include-exclude-push-config/load.php';
+require_once __DIR__ . '/modules/super-resolution/load.php';
 
 add_action(
 	'update_plugins_adthrive.wordlift.io',

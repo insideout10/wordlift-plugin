@@ -9,7 +9,7 @@
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Wordlift\Modules\Dashboard\Plugin_App;
+use Wordlift\Modules\Dashboard\App_Settings;
 use Wordlift\Modules\Dashboard\Synchronization\Rest_Controller;
 use Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service;
 use Wordlift\Modules\Dashboard\Term_Entity_Match\Term_Entity_Match_Rest_Controller;
@@ -61,11 +61,8 @@ function __wl_dashboard__load() {
 	$synchronization_service = $container_builder->get( 'Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service' );
 	$synchronization_service->register_hooks();
 
-	/**
-	 * @var $plugin_app Plugin_App
-	 */
-	$plugin_app = $container_builder->get( 'Wordlift\Modules\Dashboard\Plugin_App' );
-	$plugin_app->register_hooks();
+	$app_settings = $container_builder->get( App_Settings::class );
+	$app_settings->register_hooks();
 
 	/** Admin Menu */
 	add_action(
@@ -75,6 +72,27 @@ function __wl_dashboard__load() {
 		},
 		9
 	);
+
+	add_action(
+		'_wl_dashboard__main',
+		function () {
+			wp_enqueue_script( WL_ANGULAR_APP_SCRIPT_HANDLE );
+			$iframe_src = WL_ANGULAR_APP_URL . '#dashboard-content';
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo "
+			<style>
+			    #wlx-plugin-app {
+			      margin-left: 20px;
+			      width: calc(100% + 20px);
+			      min-height: 1500px;
+			    }
+		    </style>
+			<iframe id='wlx-plugin-app' src='$iframe_src'></iframe>
+            ";
+
+		}
+	);
+
 }
 
 __wl_dashboard__load();
