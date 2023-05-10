@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.44.0-0
+ * Version:           3.45.0-0
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -32,7 +32,7 @@ use Wordlift\Features\Features_Registry;
 use Wordlift\Post\Post_Adapter;
 
 define( 'WORDLIFT_PLUGIN_FILE', __FILE__ );
-define( 'WORDLIFT_VERSION', '3.44.0-0' );
+define( 'WORDLIFT_VERSION', '3.45.0-0' );
 
 require_once plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-scheduler.php';
 require_once __DIR__ . '/modules/common/load.php';
@@ -309,27 +309,36 @@ require_once __DIR__ . '/modules/pods/load.php';
 require_once __DIR__ . '/modules/include-exclude-push-config/load.php';
 require_once __DIR__ . '/modules/super-resolution/load.php';
 
+function _wl_update_plugins_raptive_domain( $update, $plugin_data, $plugin_file ) {
+	// Bail out if it's not our plugin.
+	$update_uri = $plugin_data['UpdateURI'];
+	if ( 'wordlift/wordlift.php' !== $plugin_file || ! isset( $update_uri ) ) {
+		return $update;
+	}
+
+	$response = wp_remote_get( "$update_uri?nocache=" . time() );
+
+	if ( is_wp_error( $response ) ) {
+		return $update;
+	}
+
+	try {
+		return json_decode( wp_remote_retrieve_body( $response ) );
+	} catch ( Exception $e ) {
+		return $update;
+	}
+}
+
 add_action(
 	'update_plugins_adthrive.wordlift.io',
-	function ( $update, $plugin_data, $plugin_file ) {
-		// Bail out if it's not our plugin.
-		$update_uri = $plugin_data['UpdateURI'];
-		if ( 'wordlift/wordlift.php' !== $plugin_file || ! isset( $update_uri ) ) {
-			return $update;
-		}
+	'_wl_update_plugins_raptive_domain',
+	10,
+	3
+);
 
-		$response = wp_remote_get( "$update_uri?nocache=" . time() );
-
-		if ( is_wp_error( $response ) ) {
-			return $update;
-		}
-
-		try {
-			return json_decode( wp_remote_retrieve_body( $response ) );
-		} catch ( Exception $e ) {
-			return $update;
-		}
-	},
+add_action(
+	'update_plugins_raptive.wordlift.io',
+	'_wl_update_plugins_raptive_domain',
 	10,
 	3
 );

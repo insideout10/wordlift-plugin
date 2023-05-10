@@ -8,11 +8,11 @@ get_version() {
 
 echo "packaging the plugin..."
 cp src/ /tmp/wordlift -r
-cp .github/workflows/adthrive.json /tmp/package.json
+cp .github/workflows/raptive.json /tmp/package.json
 version="$(get_version)"
 
-sed -i -r  's/Plugin Name:(..*)WordLift/Plugin Name:\1AdThrive SEO Amplifier – Powered by WordLift/' /tmp/wordlift/wordlift.php
-sed -i -r  's#Description:(..*)#Description:        Automated schema enrichment powered by WordLift, exclusive to AdThrive publishers\n * Update URI:        https://adthrive.wordlift.io/seo/package.json#' /tmp/wordlift/wordlift.php
+sed -i -r  's/Plugin Name:(..*)WordLift/Plugin Name:\1Raptive SEO Amplifier – Powered by WordLift/' /tmp/wordlift/wordlift.php
+sed -i -r  's#Description:(..*)#Description:        Automated schema enrichment powered by WordLift, exclusive to Raptive publishers\n * Update URI:        https://raptive.wordlift.io/seo/package.json#' /tmp/wordlift/wordlift.php
 
 
 
