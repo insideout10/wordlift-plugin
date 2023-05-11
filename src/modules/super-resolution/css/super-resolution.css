@@ -6,21 +6,22 @@
   z-index: 300050 !important; /* Above DFW. */
 }
 
-.compat-field-wl_super_resolution {
+.compat-item tr.compat-field-wl_super_resolution {
   padding: 17px 0;
   margin-bottom: 17px;
   border-top: 1px solid #dcdcde;
+  border-bottom: 1px solid #dcdcde;
   display: block;
 }
 
 
-.compat-field-wl_super_resolution label {
+.compat-item tr.compat-field-wl_super_resolution label {
   text-align: start;
   cursor: auto;
   margin-right: 0;
 }
 
-.compat-field-wl_super_resolution label span {
+.compat-item tr.compat-field-wl_super_resolution label span {
   text-align: start;
   padding: 0;
   margin-left: 0;
