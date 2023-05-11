@@ -32,12 +32,10 @@ class Post_Jsonld {
 		$references       = $data['references'];
 		$jsonld           = $data['jsonld'];
 		$references_infos = $data['references_infos'];
-		/**
-		 * @var $relations Relations
-		 */
+
 		$relations = $data['relations'];
 
-		if ( $relations instanceof Relations ) {
+		if ( is_a( $relations, 'Wordlift\Relation\Relations' ) ) {
 			$relations->add( ...$term_relations );
 		}
 
