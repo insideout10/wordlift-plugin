@@ -23,11 +23,10 @@ class Post_Jsonld {
 
 		$this->add_mentions( $post_id, $jsonld );
 
-		return array(
-			'jsonld'     => $jsonld,
-			'references' => $references,
-		);
+		$arr['jsonld']     = $jsonld;
+		$arr['references'] = $references;
 
+		return $arr;
 	}
 
 	public function add_mentions( $post_id, &$jsonld ) {

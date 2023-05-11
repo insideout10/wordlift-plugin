@@ -64,10 +64,10 @@ class Recipe_Maker_Jsonld_Hook {
 			return $arr;
 		}
 
-		return array(
-			'jsonld'     => $jsonld,
-			'references' => array_merge( $recipe_ids, $references ),
-		);
+		$arr['jsonld']     = $jsonld;
+		$arr['references'] = array_merge( $recipe_ids, $references );
+
+		return $arr;
 
 	}
 

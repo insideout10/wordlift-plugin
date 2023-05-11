@@ -89,10 +89,10 @@ class Jsonld_Converter {
 		$jsonld     = $value['jsonld'];
 		$references = $value['references'];
 
-		return array(
-			'jsonld'     => $this->build_jsonld( $jsonld, $term_id, $references, self::TERM ),
-			'references' => $references,
-		);
+		$value['jsonld']     = $this->build_jsonld( $jsonld, $term_id, $references, self::TERM );
+		$value['references'] = $references;
+
+		return $value;
 	}
 
 	/**
@@ -117,10 +117,9 @@ class Jsonld_Converter {
 		$jsonld     = $value['jsonld'];
 		$references = $value['references'];
 
-		return array(
-			'jsonld'     => $this->build_jsonld( $jsonld, $post_id, $references, self::POST ),
-			'references' => $references,
-		);
+		$value['jsonld']     = $this->build_jsonld( $jsonld, $post_id, $references, self::POST );
+		$value['references'] = $references;
+		return $value;
 	}
 
 	/**
