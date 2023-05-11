@@ -144,7 +144,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 
-= 3.44.2 (2023-05-09) =
+= 3.44.2 (2023-05-11) =
 * Fix [#1685](https://github.com/insideout10/wordlift-plugin/issues/1686): Fix wl_post_jsonld_array raising error on class-post-jsonld.php.
 
 = 3.44.1 (2023-05-09) =
