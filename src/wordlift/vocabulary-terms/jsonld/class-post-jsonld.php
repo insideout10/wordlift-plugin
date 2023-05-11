@@ -36,7 +36,10 @@ class Post_Jsonld {
 		 * @var $relations Relations
 		 */
 		$relations = $data['relations'];
-		$relations->add( ...$term_relations );
+
+		if ( $relations instanceof Relations ) {
+			$relations->add( ...$term_relations );
+		}
 
 		$term_mentions = $this->get_term_mentions( $term_relations );
 
