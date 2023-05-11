@@ -23,6 +23,12 @@ class Post_Jsonld {
 
 	public function wl_post_jsonld_array( $data, $post_id ) {
 
+		$relations = $data['relations'];
+
+		if ( ! is_a( $relations, 'Wordlift\Relation\Relations' ) ) {
+			return $data;
+		}
+
 		$term_relations = $this->get_term_relations( $post_id );
 
 		if ( ! $term_relations ) {
@@ -33,12 +39,7 @@ class Post_Jsonld {
 		$jsonld           = $data['jsonld'];
 		$references_infos = $data['references_infos'];
 
-		$relations = $data['relations'];
-
-		if ( is_a( $relations, 'Wordlift\Relation\Relations' ) ) {
-			$relations->add( ...$term_relations );
-		}
-
+		$relations->add( ...$term_relations );
 		$term_mentions = $this->get_term_mentions( $term_relations );
 
 		if ( count( $term_mentions ) > 0 ) {
