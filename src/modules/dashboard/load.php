@@ -77,14 +77,14 @@ function __wl_dashboard__load() {
 		'_wl_dashboard__main',
 		function () {
 			wp_enqueue_script( WL_ANGULAR_APP_SCRIPT_HANDLE );
-			$iframe_src = WL_ANGULAR_APP_URL . '#dashboard-content';
+			$iframe_src = WL_ANGULAR_APP_URL . '#/admin/dashboard';
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo "
 			<style>
 			    #wlx-plugin-app {
-			      margin-left: 20px;
-			      width: calc(100% - 20px);
-			      min-height: 1500px;
+			      margin-left: -20px;
+			      width: calc(100% + 20px);
+			      min-height: 1600px;
 			    }
 		    </style>
 			<iframe id='wlx-plugin-app' src='$iframe_src'></iframe>

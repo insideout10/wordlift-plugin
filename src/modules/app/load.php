@@ -14,7 +14,7 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuild
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 if ( ! defined( 'WL_ANGULAR_APP_URL' ) ) {
-	define( 'WL_ANGULAR_APP_URL', esc_url( plugin_dir_url( __DIR__ ) . 'app/app/iframe.html' ) );
+	define( 'WL_ANGULAR_APP_URL', esc_url( plugin_dir_url( __DIR__ ) . 'app/app/iframe.html' ) . '?v=' . WORDLIFT_VERSION );
 }
 
 if ( ! defined( 'WL_ANGULAR_APP_SCRIPT_HANDLE' ) ) {
