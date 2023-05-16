@@ -18,15 +18,28 @@ abstract class Match_Service {
 	public function set_jsonld( $content_id, $content_type, $match_id, $jsonld ) {
 
 		global $wpdb;
-		$wpdb->query(
-			$wpdb->prepare(
-				"UPDATE {$wpdb->prefix}wl_entities SET about_jsonld = %s WHERE id = %d AND content_id = %d AND content_type = %d",
-				wp_json_encode( $jsonld ),
-				$match_id,
-				$content_id,
-				$content_type
-			)
-		);
+
+		// Setting null via wpdb->prepare is not supported.
+		if ( null === $jsonld ) {
+			$wpdb->query(
+				$wpdb->prepare(
+					"UPDATE {$wpdb->prefix}wl_entities SET about_jsonld = NULL WHERE id = %d AND content_id = %d AND content_type = %d",
+					$match_id,
+					$content_id,
+					$content_type
+				)
+			);
+		} else {
+			$wpdb->query(
+				$wpdb->prepare(
+					"UPDATE {$wpdb->prefix}wl_entities SET about_jsonld = %s WHERE id = %d AND content_id = %d AND content_type = %d",
+					wp_json_encode( $jsonld ),
+					$match_id,
+					$content_id,
+					$content_type
+				)
+			);
+		}
 
 		if ( Object_Type_Enum::TERM === $content_type ) {
 
