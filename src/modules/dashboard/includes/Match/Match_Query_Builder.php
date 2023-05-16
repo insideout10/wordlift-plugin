@@ -39,6 +39,7 @@ abstract class Match_Query_Builder {
 	 */
 	public function get() {
 		$this->build();
+
 		return $this->sql;
 	}
 

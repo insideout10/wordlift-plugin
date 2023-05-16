@@ -76,7 +76,9 @@ function __wl_dashboard__load() {
 	add_action(
 		'_wl_dashboard__main',
 		function () {
-			wp_enqueue_script( WL_ANGULAR_APP_SCRIPT_HANDLE );
+			// why not wp_enqueue_script ? because the iframe will start loading and it won't find the
+			// settings in parent window if it's not printed before.
+			wp_print_scripts( WL_ANGULAR_APP_SCRIPT_HANDLE );
 			$iframe_src = WL_ANGULAR_APP_URL . '#/admin/dashboard';
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo "
