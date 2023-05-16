@@ -18,15 +18,33 @@ abstract class Match_Service {
 	public function set_jsonld( $content_id, $content_type, $match_id, $jsonld ) {
 
 		global $wpdb;
-		$wpdb->query(
-			$wpdb->prepare(
-				"UPDATE {$wpdb->prefix}wl_entities SET about_jsonld = %s WHERE id = %d AND content_id = %d AND content_type = %d",
-				wp_json_encode( $jsonld ),
-				$match_id,
-				$content_id,
-				$content_type
-			)
-		);
+
+		/**
+		 * As of May 16 2023, $wpdb:prepare doesnt support null
+		 * values in about_jsonld, this results in NULL values being populated
+		 * as `null` if we directly pass it to the prepare function(). So its necessary
+		 * to make the query conditional based on the $value
+		 */
+		if ( null === $jsonld ) {
+			$wpdb->query(
+				$wpdb->prepare(
+					"UPDATE {$wpdb->prefix}wl_entities SET about_jsonld = NULL WHERE id = %d AND content_id = %d AND content_type = %d",
+					$match_id,
+					$content_id,
+					$content_type
+				)
+			);
+		} else {
+			$wpdb->query(
+				$wpdb->prepare(
+					"UPDATE {$wpdb->prefix}wl_entities SET about_jsonld = %s WHERE id = %d AND content_id = %d AND content_type = %d",
+					wp_json_encode( $jsonld ),
+					$match_id,
+					$content_id,
+					$content_type
+				)
+			);
+		}
 
 		if ( Object_Type_Enum::TERM === $content_type ) {
 
