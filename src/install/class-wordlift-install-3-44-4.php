@@ -1,4 +1,7 @@
 <?php
+
+use Wordlift\Cache\Ttl_Cache;
+
 /**
  * Delete the existing invalid values for about jsonld column.
  * The values might be empty or string `null` inserted by wpdb:prepare()
@@ -24,5 +27,6 @@ class Wordlift_Install_3_44_4 extends Wordlift_Install {
 		"
 		);
 
+		Ttl_Cache::flush_all();
 	}
 }
