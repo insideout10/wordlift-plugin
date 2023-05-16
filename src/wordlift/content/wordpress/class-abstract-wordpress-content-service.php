@@ -93,6 +93,26 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 				break;
 		}
 
+		/**
+		 * As of May 16 2023, $wpdb:prepare doesnt support null
+		 * values in about_jsonld, this results in NULL values being populated
+		 * as `null` if we directly pass it to the prepare function(). So its necessary
+		 * to make the query conditional based on the $value
+		 */
+		if ( null === $value ) {
+			return $wpdb->query(
+				$wpdb->prepare(
+					"
+			UPDATE {$wpdb->prefix}wl_entities
+			SET about_jsonld = NULL
+			WHERE content_id = %d AND content_type = %d
+			",
+					$content_id->get_id(),
+					$content_id->get_type()
+				)
+			);
+		}
+
 		return $wpdb->query(
 			$wpdb->prepare(
 				"
