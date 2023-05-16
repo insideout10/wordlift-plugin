@@ -19,7 +19,12 @@ abstract class Match_Service {
 
 		global $wpdb;
 
-		// Setting null via wpdb->prepare is not supported.
+		/**
+		 * As of May 16 2023, $wpdb:prepare doesnt support null
+		 * values in about_jsonld, this results in NULL values being populated
+		 * as `null` if we directly pass it to the prepare function(). So its necessary
+		 * to make the query conditional based on the $value
+		 */
 		if ( null === $jsonld ) {
 			$wpdb->query(
 				$wpdb->prepare(
