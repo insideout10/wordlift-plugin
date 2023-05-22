@@ -143,6 +143,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.44.5 (2023-05-22) =
+* Fix: an empty publisher raises an error.
+
 = 3.44.4 (2023-05-16) =
 * Fix [#1688](https://github.com/insideout10/wordlift-plugin/issues/1688): Fix Issues with dashboard.
 
