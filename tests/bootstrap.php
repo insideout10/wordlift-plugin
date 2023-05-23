@@ -7,6 +7,13 @@
  *
  * @return bool
  */
+
+$polyfills_path = getenv( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH' );
+if ( $polyfills_path ) {
+	error_log( "Setting WP_TESTS_PHPUNIT_POLYFILLS_PATH to $polyfills_path..." );
+	define( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH', $polyfills_path );
+}
+
 function wl_is_empty( $var ) {
 	return empty( $var );
 }

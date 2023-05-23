@@ -275,13 +275,13 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 		// If the publisher id isn't set don't do anything.
 		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
-		if ( null === $publisher_id ) {
+		if ( empty( $publisher_id ) ) {
 			return;
 		}
 
 		// Get the post instance.
 		$post = get_post( $publisher_id );
-		if ( null === $post ) {
+		if ( ! is_a( $post, '\WP_Post' ) ) {
 			// Publisher not found.
 			return;
 		}
