@@ -281,7 +281,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 		// Get the post instance.
 		$post = get_post( $publisher_id );
-		if ( is_a( $post, 'WP_Post' ) ) {
+		if ( ! is_a( $post, '\WP_Post' ) ) {
 			// Publisher not found.
 			return;
 		}

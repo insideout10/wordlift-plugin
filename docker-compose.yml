@@ -59,6 +59,9 @@ services:
       - db
     volumes:
       - .:/app
+      - ./vendor/yoast/phpunit-polyfills:/phpunit-polyfills
+    environment:
+      WP_TESTS_PHPUNIT_POLYFILLS_PATH: "/phpunit-polyfills"
     command: [ "-c", "tests/scenarios/phpunit.default.xml", "--stop-on-error", "--stop-on-fail" ]
 
 volumes:
