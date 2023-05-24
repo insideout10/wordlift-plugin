@@ -56,7 +56,9 @@ class Post_Content_Relation_Service extends Abstract_Relation_Service {
 
 		foreach ( $entity_uris as $entity_uri ) {
 			$content = $content_service->get_by_entity_id( $entity_uri );
-			if ( ! isset( $content ) ) {
+			if ( ! isset( $content )
+				 || ! is_a( $content, 'Wordlift\Content\Content' )
+				 || null === $content->get_id() ) {
 				continue;
 			}
 
