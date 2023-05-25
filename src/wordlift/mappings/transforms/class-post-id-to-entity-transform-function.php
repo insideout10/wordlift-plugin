@@ -65,11 +65,18 @@ class Post_Id_To_Entity_Transform_Function implements Mappings_Transform_Functio
 		$ret_val = array();
 		foreach ( (array) $data as $target_post_id ) {
 
+			// We may receive a `WP_Post` here, in which case we want the ID.
+			if ( is_a( $target_post_id, '\WP_Post' ) ) {
+				$target_post_id = $target_post_id->ID;
+			}
+
 			// We need a numeric post ID.
 			if ( ! is_numeric( $target_post_id ) ) {
 
+				$class_name = get_class( $target_post_id );
+
 				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-				@header( "X-Post-Id-To-Entity-Transform-Function: $target_post_id not numeric." );
+				@header( "X-Post-Id-To-Entity-Transform-Function: $class_name is not numeric." );
 
 				continue;
 			}
