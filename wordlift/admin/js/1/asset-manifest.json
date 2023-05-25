@@ -1,0 +1,16 @@
+{
+  "admin.js": "admin.js",
+  "admin.js.map": "admin.js.map",
+  "author.css": "author.css",
+  "author.css.map": "author.css.map",
+  "author.js": "author.js",
+  "author.js.map": "author.js.map",
+  "settings.css": "settings.css",
+  "settings.css.map": "settings.css.map",
+  "settings.js": "settings.js",
+  "settings.js.map": "settings.js.map",
+  "setup.js": "setup.js",
+  "setup.js.map": "setup.js.map",
+  "tinymce.js": "tinymce.js",
+  "tinymce.js.map": "tinymce.js.map"
+}

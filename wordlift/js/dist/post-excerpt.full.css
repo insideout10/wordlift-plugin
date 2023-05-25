@@ -1,0 +1,12 @@
+.wl-container{display:flex;justify-content:flex-start}.wl-container--row-layout{flex-direction:column}.wl-container--center{align-items:center}.wl-container--wrap{flex-wrap:wrap}.wl-container--full-width{width:100%}.wl-container__input--full-width{width:100%}.wl-container__input--height-medium{height:40px}
+
+.wl-col{padding:1em}.wl-col--sticky{align-self:flex-start;position:sticky;top:0}.wl-col--full-height{height:100%}.wl-col--center-text{justify-content:center}.wl-col--less-padding{padding:0.5em}.wl-col--low-padding{padding:0.1em}.wl-col--half-width{width:50%}.wl-col--align-center{text-align:center}.wl-col--full-width{width:100%}.wl-col--width-5{width:5%}.wl-col--width-10{width:10%}.wl-col--width-15{width:15%}.wl-col--width-20{width:20%}.wl-col--width-25{width:25%}.wl-col--width-30{width:30%}.wl-col--width-35{width:35%}.wl-col--width-40{width:40%}.wl-col--width-45{width:45%}.wl-col--width-50{width:50%}.wl-col--width-55{width:55%}.wl-col--width-60{width:60%}.wl-col--width-65{width:65%}.wl-col--width-70{width:70%}.wl-col--width-75{width:75%}.wl-col--width-80{width:80%}.wl-col--width-85{width:85%}.wl-col--width-90{width:90%}.wl-col--width-95{width:95%}.wl-col--width-100{width:100%}
+
+.wl-post-excerpt--textarea{width:95%}
+
+.wl-action-button{border-radius:8px !important;width:100%;margin:3px;padding:10px;font-size:13px;text-align:center;text-transform:capitalize;cursor:pointer;border:1px solid #eee}.wl-action-button.wl-action-button--primary{background-color:#177efb !important;color:#fff !important;font-weight:bold}.wl-action-button.wl-action-button--normal{background-color:#c2e5ff !important;color:#177efb !important;font-weight:bold}
+
+@keyframes wl-spinner-animate{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}.wl-spinner{margin:20px;height:20px;font-size:0;text-align:center}.wl-spinner--running .wl-spinner__shape{animation-name:wl-spinner-animate}.wl-spinner__shape{display:inline-block;height:20px;width:20px;animation-iteration-count:infinite;animation-timing-function:ease-in-out;animation-duration:1.2s}.wl-spinner__shape--circle{fill:#007aff}.wl-spinner__shape--rect{fill:#fcc207;animation-delay:0.4s}.wl-spinner__shape--hexagon{fill:#ff2222;animation-delay:0.8s}
+
+.wl-notification-area{position:fixed;z-index:99999;top:0;right:0;animation-duration:0.3s;animation-name:fadeIn;background-color:inherit}@keyframes fadeIn{from{opacity:0}to{opacity:1}}.wl-notification-area__close-button{cursor:pointer}
+

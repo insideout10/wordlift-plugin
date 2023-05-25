@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="1430 3804 12 26">
+  <defs>
+    <style>
+      .a {
+        clip-path: url("#b");
+      }
+      .b {
+        fill: none;
+        stroke: #007AFF;
+        stroke-width: 2px;
+      }
+    </style>
+    <clipPath id="b">
+      <rect x="1430" y="3804" width="12" height="26"/>
+    </clipPath>
+  </defs>
+  <g id="a" class="a">
+    <path class="b" d="M1281.813,3805.866l8.913,11.526-8.913,11.437" transform="translate(149.248 -0.365)"/></g>
+</svg>

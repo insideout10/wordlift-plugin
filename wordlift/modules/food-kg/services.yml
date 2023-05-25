@@ -1,0 +1,77 @@
+services:
+  Wordlift\Modules\Food_Kg\Module:
+    class: Wordlift\Modules\Food_Kg\Module
+    arguments: [ '@Wordlift\Api\Api_Service_Ext', [ '@Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy', '@Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy' ] ]
+
+  Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy:
+    class: Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy
+    arguments: [ '@Wordlift\Modules\Food_Kg\Ingredients_Client', '@Wordlift\Modules\Food_Kg\Notices' ]
+
+  Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy:
+    class: Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy
+    arguments: [ '@Wordlift\Modules\Food_Kg\Ingredients_Client', '@Wordlift\Modules\Food_Kg\Notices' ]
+
+  Wordlift\Modules\Food_Kg\Ingredients_Client:
+    class: Wordlift\Modules\Food_Kg\Ingredients_Client
+    arguments: [ '@Wordlift\Api\Api_Service' ]
+
+  Wordlift\Modules\Food_Kg\Jsonld:
+    class: Wordlift\Modules\Food_Kg\Jsonld
+    arguments: [ '@Wordlift\Content\Wordpress\Wordpress_Content_Service' ]
+
+  Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld:
+    class: Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld
+    arguments: [ '@Wordlift\Content\Wordpress\Wordpress_Content_Service' ]
+
+  Wordlift\Modules\Food_Kg\Notices:
+    class: Wordlift\Modules\Food_Kg\Notices
+
+  Wordlift\Modules\Food_Kg\Preconditions:
+    class: Wordlift\Modules\Food_Kg\Preconditions
+    arguments: [ '@Wordlift\Modules\Food_Kg\Notices' ]
+
+  Wordlift\Api\Api_Service:
+    factory: [ 'Wordlift\Api\Default_Api_Service', 'get_instance' ]
+    class: Wordlift\Api\Default_Api_Service
+
+  Wordlift\Api\Api_Service_Ext:
+    factory: [ 'Wordlift\Api\Default_Api_Service', 'get_instance' ]
+    class: Wordlift\Api\Default_Api_Service
+
+  Wordlift\Content\Wordpress\Wordpress_Content_Service:
+    factory: [ 'Wordlift\Content\Wordpress\Wordpress_Content_Service', 'get_instance' ]
+    class: Wordlift\Content\Wordpress\Wordpress_Content_Service
+
+  Wordlift\Modules\Food_Kg\Admin\Meta_Box:
+    class: Wordlift\Modules\Food_Kg\Admin\Meta_Box
+    arguments: [ '@Wordlift\Api\Api_Service_Ext', '@Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy' ]
+
+  Wordlift\Modules\Food_Kg\Admin\Download_Ingredients_Data:
+    class: Wordlift\Modules\Food_Kg\Admin\Download_Ingredients_Data
+
+  Wordlift\Modules\Food_Kg\Services\Ingredients:
+    class: Wordlift\Modules\Food_Kg\Services\Ingredients
+
+  Wordlift\Modules\Food_Kg\Ingredients_API:
+    class: Wordlift\Modules\Food_Kg\Ingredients_API
+    arguments: [ '@Wordlift\Modules\Food_Kg\Services\Ingredients' ]
+
+  Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Post_Store:
+    class: Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Post_Store
+
+  Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Main_Entity_Runner:
+    class: Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Main_Entity_Runner
+    arguments: [ '@Wordlift\Content\Wordpress\Wordpress_Content_Service', '@Wordlift\Modules\Food_Kg\Ingredients_Client', '@Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Post_Store' ]
+
+  Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Ingredients_Term_Store:
+    class: Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Ingredients_Term_Store
+
+  Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Term_Entity_Runner:
+    class: Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Term_Entity_Runner
+    arguments: [ '@Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Ingredients_Term_Store', '@Wordlift\Content\Wordpress\Wordpress_Content_Service', '@Wordlift\Modules\Food_Kg\Ingredients_Client' ]
+
+  Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Stats:
+    class: Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Stats
+
+  Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Ingredient_Stats:
+    class: Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Ingredient_Stats

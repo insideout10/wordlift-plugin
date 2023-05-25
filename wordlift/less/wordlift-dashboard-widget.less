@@ -1,0 +1,142 @@
+@import 'wordlift-functions.less';
+
+#wordlift-dashboard-widget {
+
+  h3 {
+    background: data-uri('../images/svg/wl-logo-icon.svg') 6px 50% no-repeat !important;
+    padding-left: 45px;
+  }
+
+}
+
+#wl-dashboard-widget-inner-wrapper {
+
+  overflow: hidden;
+  display: none;
+
+  h4 {
+    text-align: left;
+    font-size: 10px;
+    margin: 0.6em 0.6em 1.6em 0.6em;
+    text-transform: capitalize;
+    padding: 0;
+    line-height: 10px;
+  }
+
+  @media screen and (max-width: 460px) {
+    h4 {
+      font-size: 8px;
+    }
+  }
+
+  h5 {
+    font-size: 1.6em;
+    color: @wl-brand-color;
+    margin: 0.8em 0 0 0;
+  }
+
+  p {
+    text-align: left;
+    border-top:#eee 6px solid;
+    padding: 0.4em 0.2em;
+    margin: 0 0.6em;
+  }
+
+  .wl-stat-card {
+    float:left;
+    width:33%;
+    padding:0px;
+    text-align: center;
+    margin: auto 0;
+    position: relative;
+    border-right: #eee 1px solid;
+  }
+
+  .wl-info {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+
+    .fa-icon(@fa-var-info); 
+    color: @wl-brand-color;
+    font-size: 1.7em;
+    padding:0.2em 0.6em;
+
+  }
+
+  @media screen and (max-width: 460px) {
+    .wl-info {
+      padding: 0.2em;
+    }
+  }
+
+  .wl-stat-value {
+    font-weight: bold;
+    border-bottom:@wl-brand-color 2px solid;
+  }
+
+  .wl-triples {
+    font-size: 2.4em;
+    line-height: 2em;
+    color: @wl-brand-color;
+    text-align: center;
+    padding:1rem 0;
+    margin:0.6em;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  @media screen and (max-width: 460px) {
+    .wl-triples {
+      font-size: 2em;
+    }
+  }
+
+  .wl-triples-label {
+    font-size: 0.5em;
+    line-height: 0.4em;
+    display: block;
+    clear: both;
+  }
+
+  .wl-stat-graph-wrapper {
+    padding-bottom:10px;
+  }
+
+  #wl-posts-pie-chart {
+    width: 75%; height: auto;
+    transform: rotate(-90deg);
+    background: #fff;
+    border-radius: 50%;
+
+    circle {
+      fill: #eee;
+      stroke: @wl-brand-color;
+      stroke-width: 32;
+    }
+
+  }
+
+  #wl-entities-gauge-chart {
+    width: 65%; height: auto;
+    transform: rotate(-180deg);
+    background:#fff;
+    border-radius: 50%;
+    margin-top:1.3em;
+
+    circle.stat {
+      fill: transparent;
+      stroke: @wl-brand-color;
+      stroke-width: 14;
+    }
+
+    circle.baseline {
+      fill: transparent;
+      stroke: #eee;
+      stroke-width: 14;
+      stroke-dasharray: 50 100;
+    }
+
+  }
+
+}

@@ -1,0 +1,111 @@
+.wl-vocabulary {
+  overflow: hidden;
+}
+
+.wl-vocabulary-letter-block {
+  overflow: hidden;
+  padding-top: 30px;
+}
+
+.wl-vocabulary-letter-block aside {
+  font-weight: bold;
+  font-size: 24px;
+  color: #007aff;
+  padding-left: 20px;
+}
+
+.wl-vocabulary-selected-letter {
+  font-size: 4em;
+  margin: 0.67em 0;
+  display: block;
+  font-weight: bold;
+}
+
+.wl-vocabulary-alphabet-nav {
+  padding: 20px 0;
+  text-align: center;
+  z-index: 100;
+  border-bottom: 4px solid #007aff;
+}
+
+.wl-vocabulary-alphabet-nav .wl-active {
+  background-color: #007aff;
+  color: #fff;
+}
+
+.wl-vocabulary-alphabet-nav .wl-vocabulary-widget-disabled {
+  color: #e6e6e6;
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  margin-right: 5px;
+  font-size: 1em;
+  text-decoration: none;
+}
+.wl-vocabulary-alphabet-nav a {
+  display: inline-block;
+  padding-top: 2px;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  margin-right: 5px;
+  font-size: 1em;
+  text-decoration: none;
+  color: #999999;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease-in-out;
+}
+.wl-vocabulary-alphabet-nav a:hover {
+  background-color: #007aff;
+  color: #fff;
+}
+.wl-vocabulary-alphabet-nav a span {
+  display: block;
+  margin-top: 1px;
+}
+.wl-vocabulary-alphabet-nav a:last-child {
+  margin-right: 0;
+}
+
+.wl-vocabulary-items-list {
+  list-style: none;
+  margin-bottom: 40px;
+  padding-left: 20px;
+}
+
+.wl-vocabulary-items-list a {
+  box-shadow: none !important;
+  text-decoration: underline !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.wl-vocabulary-items-list a:hover {
+  color: #007aff;
+}
+
+.wl-vocabulary-grid {
+  overflow: hidden;
+  *zoom: 1;
+  margin-bottom: 30px;
+}
+
+.wl-right-column {
+  display: block;
+}
+
+.wl-vocabulary-left-column {
+  width: 22.77228%;
+  float: left;
+  margin-right: 2.9703%;
+  display: inline;
+  clear: both;
+}
+
+.wl-vocabulary-right-column {
+  width: 74.25743%;
+  float: right;
+  margin-right: 0;
+  display: inline;
+}

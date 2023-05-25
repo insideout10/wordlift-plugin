@@ -1,0 +1,7 @@
+.editor-block-list__block .textannotation {
+    background-color: rgba(46,146,255,.2);
+    cursor: pointer;
+}
+.editor-block-list__block .disambiguated {
+    border-bottom: #007aff 2px solid;
+}

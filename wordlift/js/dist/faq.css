@@ -1,0 +1,34 @@
+
+.wl-container{display:flex;justify-content:flex-start}.wl-container--row-layout{flex-direction:column}.wl-container--center{align-items:center}.wl-container--wrap{flex-wrap:wrap}.wl-container--full-width{width:100%}.wl-container__input--full-width{width:100%}.wl-container__input--height-medium{height:40px}
+
+.wl-col{padding:1em}.wl-col--sticky{align-self:flex-start;position:sticky;top:0}.wl-col--full-height{height:100%}.wl-col--center-text{justify-content:center}.wl-col--less-padding{padding:0.5em}.wl-col--low-padding{padding:0.1em}.wl-col--half-width{width:50%}.wl-col--align-center{text-align:center}.wl-col--full-width{width:100%}.wl-col--width-5{width:5%}.wl-col--width-10{width:10%}.wl-col--width-15{width:15%}.wl-col--width-20{width:20%}.wl-col--width-25{width:25%}.wl-col--width-30{width:30%}.wl-col--width-35{width:35%}.wl-col--width-40{width:40%}.wl-col--width-45{width:45%}.wl-col--width-50{width:50%}.wl-col--width-55{width:55%}.wl-col--width-60{width:60%}.wl-col--width-65{width:65%}.wl-col--width-70{width:70%}.wl-col--width-75{width:75%}.wl-col--width-80{width:80%}.wl-col--width-85{width:85%}.wl-col--width-90{width:90%}.wl-col--width-95{width:95%}.wl-col--width-100{width:100%}
+
+.wl-action-button{border-radius:8px !important;width:100%;margin:3px;padding:10px;font-size:13px;text-align:center;text-transform:capitalize;cursor:pointer;border:1px solid #eee}.wl-action-button.wl-action-button--primary{background-color:#177efb !important;color:#fff !important;font-weight:bold}.wl-action-button.wl-action-button--normal{background-color:#c2e5ff !important;color:#177efb !important;font-weight:bold}
+
+.wl-faq-edit-item--warning{font-size:12px;color:tomato}.wl-faq-edit-item--danger{font-size:12px;color:red}.wl-faq-edit-item--textarea{width:95%}.wl-faq-edit-item--title{font-weight:bold}
+
+.wl-faq-question-container{overflow:hidden;text-overflow:clip}.wl-faq-question-title{font-weight:bold;color:black;cursor:pointer;height:40px !important;margin:2px !important}.wl-faq-question-title:first-letter{text-transform:uppercase}
+
+.wl-faq-answer-container{height:40px !important;overflow:hidden;text-overflow:clip}.wl-faq-answer-title{color:black;cursor:pointer;padding:2px}
+
+.wl-card{border-radius:8px;border:1px solid #eee;height:80px;transition:0.1s;padding:8px;margin:8px}.wl-card:hover{box-shadow:3px 3px #eee}.wl-card.wl-card-center{text-align:center}
+
+.wl-faq-fab{border-radius:8px !important;width:100%;margin:3px;padding:10px;font-size:13px;text-align:center;text-transform:capitalize;cursor:pointer;border:1px solid #eee}
+
+.faq-edit-item-close-button{cursor:pointer}
+
+
+.wl-modal{display:none;z-index:99999 !important;height:65%;width:55%;background-color:#fff;position:fixed;left:50%;top:50%;transform:translate(-50%, -50%);border-radius:10px !important;padding:10px}.wl-modal.wl-modal--open{display:block}.wl-modal.wl-modal--closed{display:none}
+
+.wl-modal-header{background-color:white;color:black;height:20%;border-bottom:3px solid #eee}.wl-modal-header-icon{cursor:pointer;font-size:20px}
+
+.wl-modal-body{overflow-y:scroll;height:80%}
+
+.wl-bg-modal{display:none;z-index:9998 !important;position:fixed;background-color:rgba(0,0,0,0.3);left:50%;top:50%;height:100%;width:100%;transform:translate(-50%, -50%)}.wl-bg-modal.wl-bg-modal--open{display:block}.wl-bg-modal.wl-bg-modal--closed{display:none}
+
+.wl-notification-area{position:fixed;z-index:99999;top:0;right:0;animation-duration:0.3s;animation-name:fadeIn;background-color:inherit}@keyframes fadeIn{from{opacity:0}to{opacity:1}}.wl-notification-area__close-button{cursor:pointer}
+
+#wl-faq-meta-list-box{max-height:380px;overflow-y:scroll;width:100%;overflow-x:hidden}
+
+.wl-fab{position:relative;display:inline-block}.wl-fab .wl-fab-body{width:160px;padding:2px;background-color:#fff;box-shadow:1px 1px 1px 1px #888;color:#fff;border:1px solid #177efb;text-align:center;border-radius:6px;position:absolute;z-index:1;top:-5px;left:110%}.wl-fab .wl-fab-body::after{content:"";position:absolute;top:50%;right:100%;margin-top:-5px;border-width:8px;border-style:solid;border-color:transparent #177efb transparent transparent}.wl-fab-button{border-radius:8px !important;width:150px;margin:3px;padding:10px;font-size:13px;text-align:center;text-transform:capitalize;cursor:pointer;background-color:#177efb !important;color:#fff !important;font-weight:bold}
+

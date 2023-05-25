@@ -1,0 +1,40 @@
+.fa-icon(@icon) {
+
+  &:before {
+    content: @icon; 
+  }
+
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  padding: 0px 3px;
+}
+
+// Set a tile color background, foreground and icons.
+.tile(@color, @icon) {
+
+  .type {
+    
+      text-align: center;
+      font-family: FontAwesome;
+      font-style: normal;
+      font-weight: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding: 0em 0.3em;
+
+      &:before {
+          content: @icon;
+          color: @color; 
+      }
+  }
+
+  &.selected {
+    background-color: @color;
+    color: contrast(@color);
+  }
+}

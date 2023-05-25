@@ -1,0 +1,19 @@
+<div class="wl-tab-lead">
+    <div class="wl-tab-lead-wrap" ng-click="toggleCurrentSection('videoobject')">
+        <h1 class="wl-tab-lead-text">
+            Videos
+        </h1>
+        <div class="wl-tab-lead-text wl-tab-lead-btn"
+             ng-class="{ 'wl-open' : isCurrentSection('videoobject'), 'wl-close' : !isCurrentSection('videoobject') }">
+            <!-- display a triangle -->
+        </div>
+    </div>
+</div>
+
+<div class="wl-tab-wrap"
+     ng-show="isCurrentSection('videoobject')">
+    <div id="wl-video-list"></div>
+</div>
+
+
+

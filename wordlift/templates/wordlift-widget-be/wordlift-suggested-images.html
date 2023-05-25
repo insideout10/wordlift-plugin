@@ -1,0 +1,53 @@
+<!-- SUGGESTED IMAGES -->
+<div class="wl-tab-lead">
+  <div class="wl-tab-lead-wrap" ng-click="toggleCurrentSection('suggested-images')">
+    <h1 class="wl-tab-lead-text">
+      Suggested images
+    </h1>
+    <div class="wl-tab-lead-text wl-tab-lead-btn"
+      ng-class="{ 'wl-open' : isCurrentSection('suggested-images'), 'wl-close' : !isCurrentSection('suggested-images') }">
+      <!-- display a triangle -->
+    </div>
+  </div>
+</div>
+
+<div class="wl-widget-suggested-images wl-tab-wrap"
+  ng-show="isCurrentSection('suggested-images')">
+
+  <!-- SUGGESTED IMAGES WRAP -->
+  <div class="wl-widget-suggested-images-wrap">
+    <!-- SUGGESTED IMAGES TOP SECTION -->
+    <div class="wl-widget-suggested-images-top">
+
+      <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-drag-icon.svg" class="wl-widget-suggested-images-drag-icon">
+
+      <h2 class="wl-widget-suggested-images-drag">
+        drag &#38; drop
+      </h2>
+
+      <!-- SUGGESTED IMAGES BOTTOM SECTION -->
+      <div class="wl-widget-suggested-images-bottom">
+
+        <!-- SUGGESTED IMAGES GRID WRAP -->
+        <div class="wl-widget-suggested-images-grid-wrap">
+
+          <!-- SUGGESTED IMAGES GRID ROW -->
+          <div
+            class="wl-widget-suggested-images-grid-row"
+            ng-repeat="row in (images.length/3 | filterSplitInRows)">
+
+            <!-- SUGGESTED IMAGE SINGLE -->
+            <div
+            class="wl-widget-suggested-images-grid-single"
+            ng-repeat="image in images.slice(3*$index, 3*$index + 3)" >
+              <img
+                ng-src="{{image}}"
+                class="wl-widget-suggested-images-inner"
+                wl-fallback="{{configuration.defaultThumbnailPath}}" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

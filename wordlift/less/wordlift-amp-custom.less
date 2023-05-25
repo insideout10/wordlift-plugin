@@ -1,0 +1,333 @@
+#wordlift-faceted-entity-search-widget {
+  font-size: inherit;
+  padding: 0;
+  margin: 0.8em 0;
+  width: 100%;
+
+  amp-accordion {
+    section[expanded] {
+      .wl-headline {
+        &:after {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+
+  .wl-headline {
+    position: relative;
+    margin: 0.4em 0;
+    font-weight: bold;
+    background-color: inherit;
+    padding: 0;
+    border: 0;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:after {
+      content: "\25BE";
+      position: absolute;
+      right: 0;
+    }
+  }
+
+  .wl-facets {
+    margin: 0;
+    border-top: #ccc 1px solid;
+    overflow: hidden;
+
+    .wl-facets-container {
+      width: 25%;
+      float: left;
+
+      @media screen and (max-width: 460px) {
+        width: 100%;
+      }
+
+      h5 {
+        text-transform: uppercase;
+        padding: 0.3em 0 0 0;
+        margin: 0;
+        font-weight: bold;
+        color: #767676;
+      }
+
+      ul {
+        padding: 0 0 0 0.2em;
+        margin: 0.6em 0.3em;
+        font-size: .8rem;
+        list-style: none;
+        border-left: #ccc 1px dashed;
+      }
+
+      li {
+        padding: 0;
+        margin: 0 0 0.2em 0;
+        line-height: 1.2em;
+        position: relative;
+        white-space: normal;
+        color: #666;
+        cursor: pointer;
+      }
+    }
+
+  }
+
+}
+
+.wordlift-navigator{
+  .title{
+    font-size:16px;
+    margin:0.5rem 0
+  }
+
+  .cards{
+    display:flex;
+    flex-wrap:wrap;
+
+    .card{
+      background:white;
+      flex:1 0 300px;
+      box-sizing:border-box;
+      margin:1rem .25em;
+
+      @media screen and (min-width: 40em){
+        max-width:calc(50% -  1em)
+      }
+
+      @media screen and (min-width: 60em){
+        max-width:calc(25% - 1em)
+      }
+
+      a{
+        color:black;
+        text-decoration:none;
+        &:hover{
+          box-shadow:3px 3px 8px #ccc
+        }
+      }
+
+      .thumbnail{
+        width:100%;
+        padding-bottom:56.25%;
+        background-size:cover;
+
+        img{
+          display:block;
+          border:0;
+          width:100%;
+          height:auto
+        }
+      }
+
+      .card-content {
+        .title{
+          font-size: 0.9rem;
+          margin:0.3rem 0
+        }
+      }
+    }
+  }
+}
+
+.wl-amp-faceted,
+.wl-amp-products-navigator{
+  width: 100%;
+
+  .wl-headline {
+    font-size: 1rem;
+    margin: 0.5rem 0
+  }
+
+  .cards {
+    amp-carousel{
+      background: transparent;
+      margin: 0;
+
+      .amp-carousel-button-prev{
+        position: absolute;
+        top: 30%;
+      }
+
+      .amp-carousel-button-next{
+        position: absolute;
+        right: 0;
+        top: 30%;
+      }
+    }
+    amp-list div[role='list'] {
+
+      .card {
+        background: white;
+        box-sizing: border-box;
+        vertical-align: top;
+        border: 1px solid #f5f5f5;
+        border-radius: 5px;
+
+        a {
+          color: black;
+          text-decoration: none;
+
+          amp-img img {
+            object-fit: cover;
+          }
+        }
+
+        .card-content {
+          margin: 5px 10px;
+          .title {
+            font-size: 0.9rem;
+            margin: 0.3rem 0;
+            white-space: normal;
+          }
+
+          .date {
+            font-size: 10px;
+            color: #a4a4a4;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+amp-base-carousel {
+  .card {
+    margin: 10px;
+  }
+}
+
+.wl-amp-faceted {
+  .chips {
+    margin: 12px 0;
+
+    amp-list div[role='list'] {
+      overflow-x: scroll;
+      display: flex;
+
+      .chip {
+        font-size: 0.8rem;
+        font-weight: 600;
+        background: #fff;
+        border: 1px solid #e8e8e8;
+        padding: 0 8px;
+        border-radius: 5px;
+        display: inline-block;
+        margin: 2px;
+        cursor: pointer;
+        flex: 1 0 auto;
+        flex-grow: inherit;
+
+        &.active{
+          background: #5f6369;
+          border-color: #e8e8e8;
+          color: white;
+          &:hover{
+            background: #5f6369;
+          }
+        }
+
+        &:hover{
+          background: #e8e8e8;
+        }
+      }
+    }
+  }
+}
+
+.wl-amp-navigator{
+  .cards{
+    .card {
+      a {
+        amp-img img {
+          object-fit: cover;
+        }
+      }
+    }
+  }
+}
+
+.wl-amp-products-navigator{
+
+  .cards {
+    amp-list div[role='list'] {
+      .card {
+        .card-footer {
+          margin: 5px 10px;
+          border-top: 1px solid #e6e6e6;
+          display: flex;
+          flex-direction: row;
+          font-size: 0.9rem;
+          overflow: hidden;
+          .col-left{
+            text-align: left;
+            flex-grow: 0.5;
+
+            .discount{
+              font-size: 0.7em;
+              color: #767676;
+              white-space: nowrap;
+              overflow: hidden;
+
+              .regular{
+                text-decoration: line-through;
+              }
+
+              .percent{
+                color: #e02020;
+              }
+            }
+          }
+          .col-right{
+            text-align: right;
+            flex-grow: 0.5;
+
+            .star-rating{
+              float: right;
+              font-size: 0.85rem;
+              overflow: hidden;
+              position: relative;
+              height: 1.618em;
+              line-height: 1.618;
+              width: 5.3em;
+              font-weight: 400;
+              &:before{
+                content: '\2605\2605\2605\2605\2605';
+                opacity: 0.25;
+                float: left;
+                top: 0;
+                left: 0;
+                position: absolute;
+              }
+              span{
+                overflow: hidden;
+                float: left;
+                top: 0;
+                left: 0;
+                position: absolute;
+                padding-top: 1.5em;
+                &:before{
+                  color: #ffc94a;
+                  content: '\2605\2605\2605\2605\2605';
+                  top: 0;
+                  position: absolute;
+                  left: 0;
+                }
+              }
+
+            }
+
+            .reviews{
+              clear: both;
+              font-size: 0.7em;
+              color: #767676;
+            }
+          }
+        }
+      }
+    }
+  }
+}

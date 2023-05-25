@@ -1,0 +1,47 @@
+{
+  "autoload": {
+    "classmap": [
+      "ext/dependencies/"
+    ]
+  },
+  "require-dev": {
+    "coenjacobs/mozart": "^0.5.1",
+    "cweagans/composer-patches": "^1.6",
+    "phpstan/phpstan": "^1.6"
+  },
+  "extra": {
+    "patches": {
+      "coenjacobs/mozart": {
+        "Allow default packages": "https://github.com/coenjacobs/mozart/pull/34.patch",
+        "Add config option to disable deleting vendor directories": "https://github.com/coenjacobs/mozart/pull/38.patch",
+        "Classmap replacing change str_replace to regex": "https://github.com/coenjacobs/mozart/pull/39.patch",
+        "Fixed escaping of backslash": "https://github.com/coenjacobs/mozart/pull/40.patch",
+        "Run wide update for classmap": "https://github.com/coenjacobs/mozart/pull/42.patch"
+      }
+    },
+    "mozart": {
+      "dep_namespace": "Wordlift\\Dependencies\\",
+      "dep_directory": "/ext/vendor/",
+      "classmap_directory": "/ext/dependencies/",
+      "classmap_prefix": "Wordlift_Plugin_",
+      "packages": [
+        "deliciousbrains/wp-background-processing"
+      ],
+      "delete_vendor_directories": true
+    }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "\"vendor/bin/mozart\" compose",
+      "composer install --no-dev --no-scripts",
+      "composer dump-autoload"
+    ],
+    "post-update-cmd": [
+      "\"vendor/bin/mozart\" compose",
+      "composer dump-autoload"
+    ]
+  },
+  "require": {
+    "deliciousbrains/wp-background-processing": "^1.0"
+  }
+}
