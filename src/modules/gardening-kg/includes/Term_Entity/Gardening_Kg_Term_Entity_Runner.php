@@ -2,6 +2,7 @@
 
 namespace Wordlift\Modules\Gardening_Kg\Term_Entity;
 
+use Wordlift\Api\Api_Service;
 use Wordlift\Modules\Common\Synchronization\Runner;
 use Wordlift\Modules\Common\Synchronization\Store;
 use Wordlift\Object_Type_Enum;
@@ -14,10 +15,16 @@ class Gardening_Kg_Term_Entity_Runner implements Runner {
 	private $store;
 
 	/**
+	 * @var Api_Service
+	 */
+	private $api_service;
+
+	/**
 	 * @paramm Gardening_Kg_Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( Store $store, Api_Service $api_service ) {
+		$this->store       = $store;
+		$this->api_service = $api_service;
 	}
 
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable

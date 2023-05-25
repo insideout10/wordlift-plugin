@@ -17,13 +17,12 @@ class Post_Entity_Match_Service extends Match_Service {
 				'position'  => null,
 				'element'   => 'INCLUDED',
 				'direction' => 'ASCENDING',
-				'limit'     => 20,
+				'limit'     => 10,
 				'sort'      => '+id',
 				'post_type' => null,
 				'has_match' => null,
 			)
 		);
-
 		/**
 		 * @var $sort Sort
 		 */
