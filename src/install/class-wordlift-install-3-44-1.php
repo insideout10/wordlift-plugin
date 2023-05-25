@@ -12,7 +12,7 @@ class Wordlift_Install_3_44_1 extends Wordlift_Install {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected static $version = '3.45.0-0';
+	protected static $version = '3.44.1';
 
 	public function install() {
 		Ttl_Cache::flush_all();

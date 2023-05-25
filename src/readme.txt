@@ -6,7 +6,7 @@ Tags: SEO, SERP, FAQ Markup, Schema Markup, structured data, schema.org, schema 
 Requires at least: 5.3
 Tested up to: 6.2
 Requires PHP: 5.6
-Stable tag: 3.44.8
+Stable tag: 3.45.0
 License: GPLv2 or later
 
 Search engines are looking for meaning, not keywords. WordLift tells Google how your content relates to your brand, products, and stakeholders.
@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.45.0 (2023-05-25) =
+* Enhancement [#1675](https://github.com/insideout10/wordlift-plugin/issues/1675): We super power Yoast structured data markup with upscaled images.
 
 = 3.44.8 (2023-05-25) =
 * Fix [#1693](https://github.com/insideout10/wordlift-plugin/issues/1693): Uncaught Error: Object of class WP_Post could not be converted to string.
