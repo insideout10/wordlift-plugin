@@ -43,7 +43,7 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 					'limit'      => array(
 						'type'              => 'integer',
 						'validate_callback' => 'rest_validate_request_arg',
-						'default'           => 20,
+						'default'           => 10,
 						'minimum'           => 1,
 						'maximum'           => 100,
 						'sanitize_callback' => 'absint',
