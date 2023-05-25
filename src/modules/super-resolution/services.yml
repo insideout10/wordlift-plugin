@@ -4,3 +4,6 @@ services:
 
   Wordlift\Modules\Super_Resolution\Super_Resolution_Controller:
     class: Wordlift\Modules\Super_Resolution\Super_Resolution_Controller
+
+  Wordlift\Modules\Super_Resolution\Yoast_Markup:
+    class: Wordlift\Modules\Super_Resolution\Yoast_Markup
