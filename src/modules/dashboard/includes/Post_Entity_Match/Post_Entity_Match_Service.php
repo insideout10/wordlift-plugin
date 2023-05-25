@@ -23,7 +23,6 @@ class Post_Entity_Match_Service extends Match_Service {
 				'has_match' => null,
 			)
 		);
-
 		/**
 		 * @var $sort Sort
 		 */

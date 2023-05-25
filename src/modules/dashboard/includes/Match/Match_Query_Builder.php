@@ -55,6 +55,13 @@ abstract class Match_Query_Builder {
 	 */
 	protected function cursor() {
 		global $wpdb;
+
+		// If there is no position set, the condition doesnt need to be applied
+		// This is necessary in case of `last` and `first` attribute.
+		if ( empty( $this->params['position'] ) ) {
+			return $this;
+		}
+
 		$tmp_sql             = " AND {$this->sort->get_field_name()} ";
 		$is_included         = ( $this->params['element'] !== 'EXCLUDED' );
 		$is_ascending        = ( $this->params['direction'] !== 'DESCENDING' );
