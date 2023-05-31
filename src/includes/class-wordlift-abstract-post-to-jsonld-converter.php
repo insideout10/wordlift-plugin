@@ -244,7 +244,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 
 			// Only numeric values here pls
 			$post_location_ids = array_filter( $post_location_ids, 'is_numeric' );
-			$post_location_ids = array_map( $post_location_ids, 'intval' );
+			$post_location_ids = array_map( 'intval', $post_location_ids );
 			$references        = array_merge( $post_location_ids, $references );
 		}
 
