@@ -198,9 +198,6 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 
 	public function expand_references_with_location( &$references ) {
 		// Bail out if ACF isn't available.
-		if ( ! function_exists( 'get_field' ) ) {
-			return;
-		}
 		$entity_type_service = Wordlift_Entity_Type_Service::get_instance();
 
 		// check if any of the references has the entity type set to Action, Event or organisation.
@@ -213,27 +210,30 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			}
 		);
 
-		// If set, then get all the location ids and push them to references.
-		foreach ( $references_with_location as $post_id ) {
-			// We need to know whether the user chose a `Place` or smtg else (we're not interested in smtg else).
-			$target_field = get_field( 'field_wl_18117ac085e38f4fc3b077340a9548ee7c9fb9f5_radio', $post_id );
-			if ( 1 !== preg_match( '@^.*_as_place$@', $target_field ) ) {
-				continue;
-			}
-
-			// Get the target posts
-			$target_posts = get_field( $target_field, $post_id );
-			if ( ! is_array( $target_posts ) || empty( $target_posts ) ) {
-				continue;
-			}
-
-			// Add the target posts to the references
-			foreach ( $target_posts as $target_post ) {
-				if ( ! is_a( $target_post, '\WP_Post' ) ) {
+		// ACF Only
+		if ( function_exists( 'get_field' ) ) {
+			// If set, then get all the location ids and push them to references.
+			foreach ( $references_with_location as $post_id ) {
+				// We need to know whether the user chose a `Place` or smtg else (we're not interested in smtg else).
+				$target_field = get_field( 'field_wl_18117ac085e38f4fc3b077340a9548ee7c9fb9f5_radio', $post_id );
+				if ( 1 !== preg_match( '@^.*_as_place$@', $target_field ) ) {
 					continue;
 				}
 
-				$references[] = $target_post->ID;
+				// Get the target posts
+				$target_posts = get_field( $target_field, $post_id );
+				if ( ! is_array( $target_posts ) || empty( $target_posts ) ) {
+					continue;
+				}
+
+				// Add the target posts to the references
+				foreach ( $target_posts as $target_post ) {
+					if ( ! is_a( $target_post, '\WP_Post' ) ) {
+						continue;
+					}
+
+					$references[] = $target_post->ID;
+				}
 			}
 		}
 
@@ -241,8 +241,10 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		foreach ( $references_with_location as $post_id ) {
 			$post_location_ids = get_post_meta( $post_id, Wordlift_Schema_Service::FIELD_LOCATION );
 			$post_location_ids = is_array( $post_location_ids ) ? $post_location_ids : array();
+
 			// Only numeric values here pls
 			$post_location_ids = array_filter( $post_location_ids, 'is_numeric' );
+			$post_location_ids = array_map( $post_location_ids, 'intval' );
 			$references        = array_merge( $post_location_ids, $references );
 		}
 
