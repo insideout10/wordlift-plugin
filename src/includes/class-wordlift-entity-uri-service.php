@@ -134,15 +134,15 @@ class Wordlift_Entity_Uri_Service {
 				$uris = get_post_meta( $item, Wordlift_Schema_Service::FIELD_SAME_AS );
 
 				$uri = Wordpress_Content_Service::get_instance()
-											->get_entity_id( Wordpress_Content_Id::create_post( $item ) );
+												->get_entity_id( Wordpress_Content_Id::create_post( $item ) );
 
 				if ( isset( $uri ) ) {
 					$uris[] = $uri;
 				}
 
 				return $carry
-				   // Get the URI related to the post and fill them with the item id.
-				   + array_fill_keys( $uris, $item );
+					   // Get the URI related to the post and fill them with the item id.
+					   + array_fill_keys( $uris, $item );
 			},
 			array()
 		);
@@ -174,6 +174,9 @@ class Wordlift_Entity_Uri_Service {
 	 * @since 3.2.0
 	 */
 	public function get_entity( $uri ) {
+		if ( ! isset( $uri ) ) {
+			return null;
+		}
 
 		$this->log->trace( "Getting an entity post for URI $uri..." );
 
