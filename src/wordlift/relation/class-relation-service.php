@@ -75,12 +75,17 @@ class Relation_Service extends Abstract_Relation_Service {
 					 * @var $content Content|null
 					 */
 					$content = Wordpress_Content_Service::get_instance()->get_by_entity_id_or_same_as( $uri );
-					$bag     = $content->get_bag();
-					if ( $bag instanceof \WP_Post || $bag instanceof \WP_Term ) {
-						$predicate = $bag instanceof \WP_Term ? WL_WHAT_RELATION : $entity_service->get_classification_scope_for( $content->get_id() );
-						return new Relation( $subject, new Wordpress_Content_Id( $content->get_id(), $content->get_object_type_enum() ), $predicate );
+					if ( ! is_a( $content, 'Wordlift\Content\Content' ) ) {
+						return false;
 					}
-					return false;
+
+					$bag = $content->get_bag();
+					if ( ! is_a( $bag, '\WP_Post' ) && ! is_a( $bag, '\WP_Term' ) ) {
+						return false;
+					}
+					$predicate = is_a( $bag, '\WP_Term' ) ? WL_WHAT_RELATION : $entity_service->get_classification_scope_for( $content->get_id() );
+
+					return new Relation( $subject, new Wordpress_Content_Id( $content->get_id(), $content->get_object_type_enum() ), $predicate );
 				},
 				$uris
 			)
