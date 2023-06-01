@@ -154,9 +154,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		# Wordlift_Configuration_Service::get_instance()->set_dataset_uri( 'http://data.example.org/data/' );
 
-		$post      = $this->factory()->post->create_and_get( array(
-			'post_type'    => 'page',
-			'post_author'  => $this->author->ID,
+		$post = $this->factory()->post->create_and_get( array(
+			'post_type'   => 'page',
+			'post_author' => $this->author->ID,
 		) );
 		add_post_type_support( 'page', 'excerpt' );
 
@@ -488,7 +488,6 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 //		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
 
 	}
-
 
 
 	/**
@@ -1271,7 +1270,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		// Delete the author entity and check that the author triple is properly generated.
 		delete_user_meta( $author_id, Wordlift_User_Service::ENTITY_META_KEY );
 		$references_3 = array();
-		$jsonld_3 = $this->post_to_jsonld_converter->convert( $post->ID, $references_3, $references_3, new Relations() );
+		$jsonld_3     = $this->post_to_jsonld_converter->convert( $post->ID, $references_3, $references_3, new Relations() );
 		$this->assertEquals( $author_uri, $jsonld_3['author']['@id'] );
 
 	}
@@ -1291,7 +1290,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 			$called ++;
 		} );
 
-		$result = $this->post_to_jsonld_converter->convert( PHP_INT_MAX , $references, $references, new Relations());
+		$result = $this->post_to_jsonld_converter->convert( PHP_INT_MAX, $references, $references, new Relations() );
 
 		$this->assertNull( $result, "Calling convert on a post not found returns NULL." );
 
@@ -1321,7 +1320,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$post_id = $this->factory()->post->create();
 
 		$references = array();
-		$result = $this->post_to_jsonld_converter->convert( $post_id, $references, $references, new Relations() );
+		$result     = $this->post_to_jsonld_converter->convert( $post_id, $references, $references, new Relations() );
 
 		$this->assertTrue( is_array( $result ), 'Convert returns an array.' );
 
@@ -1366,16 +1365,16 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		wl_core_add_relation_instances( $event_post_id, 'where', array( $place_post_id ) );
 
 		// Convert the post to json-ld.
-		$references = array();
+		$references      = array();
 		$reference_infos = array();
 
 
-		$this->post_to_jsonld_converter->convert( $post_id, $references, $reference_infos, new Relations()  );
+		$this->post_to_jsonld_converter->convert( $post_id, $references, $reference_infos, new Relations() );
 
 
 		// Check that the references contain both the event and the place.
 		$this->assertContains( $event_post_id, $references, 'References must contain the event post id.' );
-		$this->assertContains( $place_post_id, $references, 'References must contain the place post id.' );
+		$this->assertContains( $place_post_id, $references, 'References must contain the place post id: ' . var_export( $references, true ) );
 		$this->assertCount( 2, $references, 'References must be 2.' );
 
 	}
@@ -1427,7 +1426,6 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertArrayNotHasKey( 'wordCount', $json_ld, '`wordCount` must not be set when the entity type is unknown or `WebPage`.' );
 
 	}
-
 
 
 	public function test_when_the_article_is_linked_to_entity_should_not_have_duplicate_mentions() {
