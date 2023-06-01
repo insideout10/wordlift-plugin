@@ -10,7 +10,7 @@
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Wordlift\Modules\Redeem_Code\Includes\Rest_Controller;
+use Wordlift\Modules\Redeem_Code\Rest_Controller;
 
 
 /**
@@ -30,18 +30,10 @@ function __wl_redeem_code() {
 	$loader->load( 'services.yml' );
 	$container_builder->compile();
 
-
-	// ** @var Attachment_Field $attachment_field */
-	// $attachment_field = $container_builder->get( 'Wordlift\Modules\Super_Resolution\Attachment_Field' );
-	// $attachment_field->register_hooks();
-
-		/**
+	/**
 	 * @var $rest_controller Rest_Controller
 	 */
-	// var_dump('hello a13xs');
-	// die();
-	$rest_controller = $container_builder->get( 'Wordlift\Modules\Redeem_Code\Includes\Rest_Controller' );
-	
-	// $rest_controller->register_hooks();
+	$rest_controller = $container_builder->get( 'Wordlift\Modules\Redeem_Code\Rest_Controller' );
+	$rest_controller->register_hooks();
 }
 __wl_redeem_code();

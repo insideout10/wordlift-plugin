@@ -1,3 +1,3 @@
 services:
-  Wordlift\Modules\Redeem_Code\Includes\Rest_Controller:
-    class: Wordlift\Modules\Redeem_Code\Includes\Rest_Controller
+  Wordlift\Modules\Redeem_Code\Rest_Controller:
+    class: Wordlift\Modules\Redeem_Code\Rest_Controller

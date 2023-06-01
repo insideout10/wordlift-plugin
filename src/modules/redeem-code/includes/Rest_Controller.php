@@ -1,8 +1,11 @@
 <?php
 
-namespace Wordlift\Modules\Redeem_Code\Includes;
+namespace Wordlift\Modules\Redeem_Code;
 
 use Wordlift_Configuration_Service;
+use Wordlift\Api\User_Agent;
+
+use WP_REST_Response;
 
 class Rest_Controller {
 
@@ -17,8 +20,6 @@ class Rest_Controller {
 	}
 
 	public function register_hooks() {
-		// var_dump('hello a13xs');
-		// die();
 		add_action( 'rest_api_init', array( $this, 'rest_api_init' ) );
 	}
 
@@ -75,53 +76,67 @@ class Rest_Controller {
 		 * "detail": "The redeem code has been used already, try with another redeem code."
 		 * }
 		 */
-
-		// wp_remote_post(WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . '/remote-codes');
-
-		// $this->configuration_service->set_key( ... );
-		// $this->configuration_service->set_diagnostic_preferences( ... );
 	}
 
-	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function create_sync( $request ) {
-		// $redeem_code        = $request->get_param( 'redeem_code' );
-		// $enable_diagnostics = $request->get_param( 'enable_diagnostics' );
+		$redeem_code        = $request->get_param( 'redeem_code' );
+		$enable_diagnostics = $request->get_param( 'enable_diagnostics' );
 
-		// $response = wp_remote_post(
-		// trailingslashit( WORDLIFT_API_URL ) . 'redeem-codes',
-		// array(
-		// 'timeout'    => 60,
-		// 'user-agent' => User_Agent::get_user_agent(),
-		// 'headers'    => array(
-		// 'Content-Type' => 'application/json',
-		// *
-		// * This is required to avoid CURL receiving 502 Bad Gateway errors.
-		// *
-		// * @see https://stackoverflow.com/questions/30601075/curl-to-google-compute-load-balancer-gets-error-502
-		// */
-		// 'Expect'       => '',
-		// ),
-		// 'body'       => wp_json_encode(
-		// array(
-		// 'redeem_code' => $redeem_code,
-		// )
-		// ),
-		// )
-		// );
+		$url = trailingslashit( WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE ) . 'redeem-codes';
 
-		// 200, `key` prop ---> $key
+		$body = wp_json_encode(
+			array(
+				'redeem_code' => $redeem_code,
+			)
+		);
 
-		// otherwise it's an error and you can send it back as it is
-		// The response you get from the API is already a problem/json
-		// return new \WP_REST_Response();
+		$response = wp_remote_post(
+			$url,
+			array(
+				'timeout'    => 60,
+				'user-agent' => User_Agent::get_user_agent(),
+				'headers'    => array(
+					'Content-Type'    => 'application/json',
+					'Expect'          => '',
+				),
+				'body'       => $body,
+			)
+		);
 
-		// $this->configuration_service->set_key( $key );
-		// $this->configuration_service->set_diagnostic_preferences( $enable_diagnostics );
-		// try {
-		// return rest_ensure_response( $this->synchronization_service->create() );
-		// } catch ( \Exception $e ) {
-		// return new \WP_Error( 'wl_error_synchronization_running', esc_html__( 'Another synchronization is already running.', 'wordlift' ), array( 'status' => 409 ) );
-		// }
+		$code    = wp_remote_retrieve_response_code( $response );
+		$message = wp_remote_retrieve_response_message( $response );
+
+		if ( empty( $code ) || ! is_numeric( $code ) ) {
+			wp_send_json_error( $message, $code );
+		}
+
+		if ($code == 409) {
+			return new \WP_REST_Response( array(
+				"title" => "Redeem Code already used",
+				"status" => $code,
+				"detail" => "The redeem code has been used already, try with another redeem code."
+			), $code );
+		}
+
+		if ($code == 404) {
+			return new \WP_REST_Response( array(
+				"title" => "Invalid Redeem Code",
+				"status" => $code,
+				"detail" => "The redeem code is invalid, check for typos or try with another code."
+			), $code );
+		}
+
+		$key_array = json_decode( $response['body'] );
+		$key = $key_array->key;
+
+		$this->configuration_service->set_key( $key );
+		$this->configuration_service->set_diagnostic_preferences( $enable_diagnostics );
+
+		return new \WP_REST_Response( array(
+			"key" => $key,
+			"status" => $this->configuration_service->get_dataset_uri(),
+			"language" => "en"
+		), $code );
 	}
 
 }
