@@ -1,3 +1,5 @@
 services:
+  Wordlift\Modules\Redeem_Code\Includes\Rest_Controller:
+    class: Wordlift\Modules\Redeem_Code\Includes\Rest_Controller
 #  Wordlift\Modules\Super_Resolution\Attachment_Field:
 #    class: Wordlift\Modules\Super_Resolution\Attachment_Field

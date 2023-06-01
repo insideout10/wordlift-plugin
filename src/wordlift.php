@@ -305,6 +305,7 @@ require_once __DIR__ . '/modules/food-kg/load.php';
 require_once __DIR__ . '/modules/gardening-kg/load.php';
 require_once __DIR__ . '/modules/acf4so/load.php';
 require_once __DIR__ . '/modules/dashboard/load.php';
+require_once __DIR__ . '/modules/redeem-code/load.php';
 require_once __DIR__ . '/modules/pods/load.php';
 require_once __DIR__ . '/modules/include-exclude-push-config/load.php';
 require_once __DIR__ . '/modules/super-resolution/load.php';
