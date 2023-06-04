@@ -2,10 +2,8 @@
 
 namespace Wordlift\Modules\Redeem_Code;
 
-use Wordlift_Configuration_Service;
 use Wordlift\Api\User_Agent;
-
-use WP_REST_Response;
+use Wordlift_Configuration_Service;
 
 class Rest_Controller {
 
@@ -25,12 +23,12 @@ class Rest_Controller {
 
 	public function rest_api_init() {
 		register_rest_route(
-			'wl-dashboard/v1',
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
 			'/redeem-codes',
 			array(
-				'methods'  => 'POST',
-				'callback' => array( $this, 'create_sync' ),
-				'args'     => array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'create_sync' ),
+				'args'                => array(
 					'redeem_code'        => array(
 						'required'          => true,
 						'validate_callback' => 'rest_validate_request_arg',
@@ -40,6 +38,9 @@ class Rest_Controller {
 						'validate_callback' => 'rest_validate_request_arg',
 					),
 				),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
 			)
 		);
 
@@ -96,8 +97,8 @@ class Rest_Controller {
 				'timeout'    => 60,
 				'user-agent' => User_Agent::get_user_agent(),
 				'headers'    => array(
-					'Content-Type'    => 'application/json',
-					'Expect'          => '',
+					'Content-Type' => 'application/json',
+					'Expect'       => '',
 				),
 				'body'       => $body,
 			)
@@ -110,33 +111,46 @@ class Rest_Controller {
 			wp_send_json_error( $message, $code );
 		}
 
-		if ($code == 409) {
-			return new \WP_REST_Response( array(
-				"title" => "Redeem Code already used",
-				"status" => $code,
-				"detail" => "The redeem code has been used already, try with another redeem code."
-			), $code );
+		if ( 409 === $code ) {
+			return new \WP_REST_Response(
+				array(
+					'title'  => 'Redeem Code already used',
+					'status' => $code,
+					'detail' => 'The redeem code has been used already, try with another redeem code.',
+				),
+				$code
+			);
 		}
 
-		if ($code == 404) {
-			return new \WP_REST_Response( array(
-				"title" => "Invalid Redeem Code",
-				"status" => $code,
-				"detail" => "The redeem code is invalid, check for typos or try with another code."
-			), $code );
+		if ( 404 === $code ) {
+			return new \WP_REST_Response(
+				array(
+					'title'  => 'Invalid Redeem Code',
+					'status' => $code,
+					'detail' => 'The redeem code is invalid, check for typos or try with another code.',
+				),
+				$code
+			);
+		}
+
+		if ( 500 === $code ) {
+			return new \WP_REST_Response( json_decode( $response['body'] ), $code );
 		}
 
 		$key_array = json_decode( $response['body'] );
-		$key = $key_array->key;
+		$key       = $key_array->key;
 
 		$this->configuration_service->set_key( $key );
 		$this->configuration_service->set_diagnostic_preferences( $enable_diagnostics );
 
-		return new \WP_REST_Response( array(
-			"key" => $key,
-			"status" => $this->configuration_service->get_dataset_uri(),
-			"language" => "en"
-		), $code );
+		return new \WP_REST_Response(
+			array(
+				'key'      => $key,
+				'status'   => $this->configuration_service->get_dataset_uri(),
+				'language' => 'en',
+			),
+			$code
+		);
 	}
 
 }
