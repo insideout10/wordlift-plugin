@@ -13,7 +13,7 @@ version="$(get_version)"
 
 sed -i -r  's/Plugin Name:(..*)WordLift/Plugin Name:\1Raptive SEO Amplifier – Powered by WordLift/' /tmp/wordlift/wordlift.php
 sed -i -r  's#Description:(..*)#Description:        Automated schema enrichment powered by WordLift, exclusive to Raptive publishers\n * Update URI:        https://raptive.wordlift.io/seo/package.json#' /tmp/wordlift/wordlift.php
-
+sed -i -r  's/## DO NOT REMOVE THIS LINE: WHITELABEL PLACEHOLDER ##/define( ''WL_RAPTIVE'', true );/' /tmp/wordlift/wordlift.php
 
 
 cd /tmp && zip -r -D wordlift.zip wordlift/

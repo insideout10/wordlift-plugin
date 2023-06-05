@@ -34,6 +34,9 @@ use Wordlift\Post\Post_Adapter;
 define( 'WORDLIFT_PLUGIN_FILE', __FILE__ );
 define( 'WORDLIFT_VERSION', '3.46.0-0' );
 
+// DO NOT REMOVE THIS LINE: WHITELABEL PLACEHOLDER ##
+define( 'WL_RAPTIVE', true );
+
 require_once plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-scheduler.php';
 require_once __DIR__ . '/modules/common/load.php';
 require_once __DIR__ . '/modules/app/load.php';
@@ -308,6 +311,8 @@ require_once __DIR__ . '/modules/dashboard/load.php';
 require_once __DIR__ . '/modules/pods/load.php';
 require_once __DIR__ . '/modules/include-exclude-push-config/load.php';
 require_once __DIR__ . '/modules/super-resolution/load.php';
+require_once __DIR__ . '/modules/redeem-code/load.php';
+require_once __DIR__ . '/modules/raptive-setup/load.php';
 
 function _wl_update_plugins_raptive_domain( $update, $plugin_data, $plugin_file ) {
 	// Bail out if it's not our plugin.
