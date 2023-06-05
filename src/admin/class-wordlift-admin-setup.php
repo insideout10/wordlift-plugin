@@ -216,6 +216,9 @@ class Wordlift_Admin_Setup {
 			return;
 		}
 
+		// Allow 3rd parties to provide alternative setups, this is useful for whitelabel setups.
+		do_action( 'wl_admin_setup__pre' );
+
 		// If it's a POST and the `wl-save-configuration` action is set, save the configuration.
 		if ( isset( $_POST['action'] ) && 'wl-save-configuration' === $_POST['action'] ) {
 
@@ -235,7 +238,7 @@ class Wordlift_Admin_Setup {
 			exit();
 		}
 
-        // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$language_select = $this->language_select_element;
 		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$country_select = $this->country_select_element;

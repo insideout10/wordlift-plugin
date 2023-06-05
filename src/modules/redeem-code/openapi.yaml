@@ -1,0 +1,71 @@
+openapi: 3.1.0
+info:
+  title: WordLift Plugin - Redeem Code
+  description: The Redeem Code API provides an endpoint to turn redeem codes into WordLift keys
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /redeem-codes:
+    post:
+      operationId: exchangeRedeemCodeWithKey
+      summary: Exchange a Redeem Code with a Key
+      description: The provided Redeem Code will be exchanged with a WordLift Key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RedeemCodeRequest'
+      responses:
+        "200":
+          description: The Redeem Code has been exchanged with a Key
+          content:
+        "404":
+          description: The Redeem Code cannot be found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RedeemCodeErrorResponse'
+            #  {
+            #    "title": "Invalid Redeem Code",
+            #    "status": 404,
+            #    "detail": "The redeem code is invalid, check for typos or try with another code."
+            #  }
+        "409":
+          description: The Redeem Code has already been used
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RedeemCodeErrorResponse'
+            #  {
+            #    "title": "Redeem Code already used",
+            #    "status": 409,
+            #    "detail": "The redeem code has been used already, try with another redeem code."
+            #  }
+      tags:
+        - Redeem Code
+components:
+  schemas:
+    RedeemCodeRequest:
+      type: object
+      required:
+        - redeem_code
+        - enable_diagnostics
+      properties:
+        redeem_code:
+          type: string
+        enable_diagnostics:
+          type: boolean
+    RedeemCodeErrorResponse:
+      type: object
+      required:
+        - title
+        - status
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+          format: int32
+        detail:
+          type: string
