@@ -50,7 +50,8 @@ class Gardening_Kg_Term_Stats {
 			        ON t.term_id = tt.term_id
 			    LEFT JOIN {$wpdb->prefix}wl_entities e
 			        ON e.content_id = t.term_id
-				WHERE e.content_type = %d AND tt.taxonomy IN ( {$taxonomies_sql} )
+			    		AND e.content_type = %d 
+			    WHERE tt.taxonomy IN ( {$taxonomies_sql} )
 				",
 				Object_Type_Enum::TERM
 			)

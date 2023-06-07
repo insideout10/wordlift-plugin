@@ -38,7 +38,8 @@ class Food_Kg_Recipe_Stats {
 				FROM {$wpdb->prefix}posts p
 				LEFT JOIN {$wpdb->prefix}wl_entities e
 					ON e.content_id = p.ID
-				WHERE e.content_type = %d AND p.post_type = %s
+						AND e.content_type = %d 
+				WHERE p.post_type = %s
 				",
 				Object_Type_Enum::POST,
 				'wprm_recipe'

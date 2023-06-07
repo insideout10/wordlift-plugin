@@ -49,7 +49,8 @@ class Gardening_Kg_Post_Stats {
 				FROM {$wpdb->prefix}posts p
 				LEFT JOIN {$wpdb->prefix}wl_entities e
 					ON e.content_id = p.ID
-				WHERE e.content_type = %d AND p.post_type IN ({$post_types_sql})
+						AND e.content_type = %d
+				WHERE p.post_type IN ({$post_types_sql})
 				",
 				Object_Type_Enum::POST
 			)
