@@ -73,7 +73,7 @@ class Post_Id_To_Entity_Transform_Function implements Mappings_Transform_Functio
 			// We need a numeric post ID.
 			if ( ! is_numeric( $target_post_id ) ) {
 
-				$class_name = get_class( $target_post_id );
+				$class_name = is_object( $target_post_id ) ? get_class( $target_post_id ) : 'unknown, maybe a string';
 
 				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 				@header( "X-Post-Id-To-Entity-Transform-Function: $class_name is not numeric." );
