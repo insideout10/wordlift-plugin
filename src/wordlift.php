@@ -35,7 +35,6 @@ define( 'WORDLIFT_PLUGIN_FILE', __FILE__ );
 define( 'WORDLIFT_VERSION', '3.46.0-0' );
 
 // DO NOT REMOVE THIS LINE: WHITELABEL PLACEHOLDER ##
-define( 'WL_RAPTIVE', true );
 
 require_once plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-scheduler.php';
 require_once __DIR__ . '/modules/common/load.php';
