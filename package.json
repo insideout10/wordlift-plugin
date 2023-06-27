@@ -51,7 +51,9 @@
     "test:multisite": "./vendor/bin/phpunit -c phpunit-multisite.xml",
     "test:jest": "cd ./src-js/webpack/ && yarn install && yarn test",
     "test:php5.3-compat": "./vendor/bin/phpcs src/ --extensions=php --ignore=class-wordlift-entity-types-taxonomy-walker-5-3.php,autoload_static.php --standard=PHPCompatibilityWP --runtime-set testVersion 5.3",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "wordpress:db-import": "docker compose exec -T wordpress wp --allow-root db import -",
+    "wordpress:reset-admin-password": "docker compose exec -it wordpress wp --allow-root user update admin --user_pass=password --skip-email"
   },
   "jest": {
     "collectCoverageFrom": [
