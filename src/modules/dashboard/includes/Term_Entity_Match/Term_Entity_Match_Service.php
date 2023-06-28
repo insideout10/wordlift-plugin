@@ -21,6 +21,7 @@ class Term_Entity_Match_Service extends Match_Service {
 				// Query.
 				'taxonomy'  => null,
 				'has_match' => null,
+				'ingredient_name_contains' => null,
 			)
 		);
 

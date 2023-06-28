@@ -57,6 +57,17 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 						'required'          => false,
 						'validate_callback' => 'rest_validate_request_arg',
 					),
+					'ingredient_name_contains'	=> array(
+						'type'				=> 'string',
+						'required'			=> false,
+						'validate_callback' => 'rest_validate_request_arg'
+					),
+					'sort'						=> array(
+						'type'				=> 'string',
+						'required'			=> 'false',
+						'enum'              => array( '+ingredient_term', '-ingredient_term', '+matched_ingredient', '-matched_ingredient', '+occurences', '-occurences'),
+						'validate_callback' => 'rest_validate_request_arg',
+					)
 				),
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
@@ -128,6 +139,9 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 		if ( $request->has_param( 'has_match' ) ) {
 			$cursor['query']['has_match'] = $request->get_param( 'has_match' );
 		}
+		if ( $request->has_param( 'ingredient_name_contains' )) {
+			$cursor['query']['ingredient_name_contains'] = $request->get_param('ingredient_name_contains');
+		}
 
 		// Query.
 		$taxonomies = isset( $cursor['query']['taxonomies'] ) ? $cursor['query']['taxonomies'] : apply_filters(
@@ -139,12 +153,14 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 		);
 
 		$has_match = isset( $cursor['query']['has_match'] ) ? $cursor['query']['has_match'] : null;
+		$ingredient_name_contains = isset( $cursor['query']['ingredient_name_contains']) ? $cursor['query']['ingredient_name_contains'] : null;
 
 		$items = $this->match_service->list_items(
 			array(
 				// Query
 				'taxonomies' => $taxonomies,
 				'has_match'  => $has_match,
+				'ingredient_name_contains' => $ingredient_name_contains,
 				// Cursor-Pagination
 				'position'   => $cursor['position'],
 				'element'    => $cursor['element'],
