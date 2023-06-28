@@ -37,20 +37,48 @@ class Query_Builder extends Match_Query_Builder {
 		$this->sql = "
 		SELECT p.ID as id,
 		       p.post_title as post_title,
+		       p.post_status as post_status,
 		       parent.post_title as parent_post_title,
 		       parent.ID as parent_post_id,
 		       e.about_jsonld as match_jsonld,
-		       e.id AS match_id FROM {$wpdb->prefix}posts p
+		       e.id AS match_id 
+			FROM {$wpdb->prefix}posts p
 			LEFT JOIN {$wpdb->prefix}postmeta pm ON p.ID = pm.post_id AND pm.meta_key = 'wprm_parent_post_id' 
 			LEFT JOIN {$wpdb->prefix}posts parent ON pm.meta_value = parent.ID 
-			LEFT JOIN {$wpdb->prefix}wl_entities e ON p.ID = e.content_id
-			WHERE e.content_type = %d
+			LEFT JOIN {$wpdb->prefix}wl_entities e ON p.ID = e.content_id AND e.content_type = %d
+			WHERE 1=1 
 		";
+
 		$this->cursor()
-		->post_type()
-		->has_match()
-		->order_by()
-		->limit();
+			 ->post_type()
+			 ->post_status()
+			 ->has_match()
+			 ->order_by()
+			 ->limit();
+	}
+
+	private function post_status() {
+		global $wpdb;
+
+		// If a value has been provided and it's either 'draft' or 'publish', we add the related filter.
+		if ( is_string( $this->params['post_status'] ) && in_array(
+			$this->params['post_status'],
+			array(
+				'publish',
+				'draft',
+			),
+			true
+		) ) {
+
+			$this->sql .= $wpdb->prepare( ' AND p.post_status = %s', $this->params['post_status'] );
+
+			return $this;
+		}
+
+		// By default we filter on 'draft' and 'publish'.
+		$this->sql .= " AND p.post_status IN ( 'draft', 'publish' )";
+
+		return $this;
 	}
 
 	public function post_type() {
