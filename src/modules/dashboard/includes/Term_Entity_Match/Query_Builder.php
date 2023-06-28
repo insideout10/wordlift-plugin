@@ -50,7 +50,7 @@ class Query_Builder extends Match_Query_Builder {
 		// If the ingredient_name_contains value is a non-empty string, add the filter
 		if ( is_string( $this->params['ingredient_name_contains'] ) && ! empty( $this->params['ingredient_name_contains'] ) ) {
 			$ingredient_name_contains = $this->params['ingredient_name_contains'];
-			$this->sql .= $wpdb->prepare( ' AND p.ingredient_name LIKE %s', '%' . $ingredient_name_contains . '%' );
+			$this->sql .= $wpdb->prepare( ' AND t.ingredient_name LIKE %s', '%' . $ingredient_name_contains . '%' );
 		}
 		
 		return $this;
