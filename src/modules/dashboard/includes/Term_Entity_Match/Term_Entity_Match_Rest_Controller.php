@@ -65,7 +65,7 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 					'sort'						=> array(
 						'type'				=> 'string',
 						'required'			=> 'false',
-						'enum'              => array( '+ingredient_term', '-ingredient_term', '+matched_ingredient', '-matched_ingredient', '+occurences', '-occurences'),
+						'enum'              => array( '+ingredient_term', '-ingredient_term', '+matched_ingredient', '-matched_ingredient', '+occurrences', '-occurrences'),
 						'validate_callback' => 'rest_validate_request_arg',
 					)
 				),
