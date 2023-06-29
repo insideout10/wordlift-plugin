@@ -21,7 +21,7 @@ class Query_Builder extends Match_Query_Builder {
 		       t.name, e.id AS match_id FROM {$wpdb->prefix}terms t
 			INNER JOIN {$wpdb->prefix}term_taxonomy tt ON t.term_id = tt.term_id
 			LEFT JOIN {$wpdb->prefix}wl_entities e ON t.term_id = e.content_id
-			WHERE e.content_type = %d
+			AND e.content_type = %d WHERE 1=1
 		";
 
 
