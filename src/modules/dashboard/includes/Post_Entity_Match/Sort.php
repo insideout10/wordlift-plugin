@@ -10,7 +10,11 @@ class Sort extends Match_Sort {
 		$tmp_sort_field_name = substr( $this->sort, 1 );
 		if ( 'id' === $tmp_sort_field_name ) {
 			return 'p.ID';
-		} else {
+		}
+        elseif ('date_modified_gmt' === $tmp_sort_field_name) {
+            return 'p.post_modified_gmt';
+        }
+        else {
 			return 'p.post_title';
 		}
 	}
