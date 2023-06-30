@@ -53,10 +53,20 @@ class Term_Entity_Match_Service extends Match_Service {
 			function ( $item ) {
 				$data             = json_decode( $item->match_jsonld, true );
 				$item->match_name = $data && is_array( $data ) && array_key_exists( 'name', $data ) ? $data['name'] : null;
+				$item->occurrences = $this->get_term_occurrences($item->id);
 				return $item;
 			},
 			$items
 		);
 	}
 
+	private function get_term_occurrences( $term_id ) {
+		$term = get_term( $term_id );
+
+		if ( ! is_wp_error( $term ) ) {
+			return $term->count;
+		}
+
+		return 0;
+	}
 }
