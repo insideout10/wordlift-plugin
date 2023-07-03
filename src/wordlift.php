@@ -68,7 +68,7 @@ require_once plugin_dir_path( __FILE__ ) . 'modules/core/wordlift-core.php';
 require_once plugin_dir_path( __FILE__ ) . 'deprecations.php';
 
 // Load early to enable/disable features.
-require_once plugin_dir_path( __FILE__ ) . 'wordlift/features/index.php';
+require_once plugin_dir_path( __FILE__ ) . 'classes/features/index.php';
 
 /**
  * The code that runs during plugin activation.
@@ -210,22 +210,22 @@ function run_wordlift() {
 			new Wordlift_Products_Navigator_Shortcode_REST();
 
 			// Register the Dataset module, requires `$api_service`.
-			require_once plugin_dir_path( __FILE__ ) . 'wordlift/dataset/index.php';
-			require_once plugin_dir_path( __FILE__ ) . 'wordlift/shipping-data/index.php';
+			require_once plugin_dir_path( __FILE__ ) . 'classes/dataset/index.php';
+			require_once plugin_dir_path( __FILE__ ) . 'classes/shipping-data/index.php';
 
 			/*
 			* Require the Entity annotation cleanup module.
 			*
 			* @since 3.34.6
 			*/
-			require_once plugin_dir_path( __FILE__ ) . 'wordlift/cleanup/index.php';
+			require_once plugin_dir_path( __FILE__ ) . 'classes/cleanup/index.php';
 
 			/*
 			* Import LOD entities.
 			*
 			* @since 3.35.0
 			*/
-			require_once plugin_dir_path( __FILE__ ) . 'wordlift/lod-import/index.php';
+			require_once plugin_dir_path( __FILE__ ) . 'classes/lod-import/index.php';
 
 		}
 	);
@@ -252,18 +252,23 @@ function wordlift_plugin_autoload_register() {
 
 			$class_name_lc = strtolower( str_replace( '_', '-', $class_name ) );
 
-			preg_match( '|^(?:(.*)\\\\)?(.+?)$|', $class_name_lc, $matches );
+			preg_match( '|^wordlift\\\\(?:(.*)\\\\)?(.+?)$|', $class_name_lc, $matches );
 
 			$path = str_replace( '\\', DIRECTORY_SEPARATOR, $matches[1] );
 			$file = 'class-' . $matches[2] . '.php';
 
-			$full_path = plugin_dir_path( __FILE__ ) . $path . DIRECTORY_SEPARATOR . $file;
+			$full_path = plugin_dir_path( __FILE__ ) . 'classes' . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . $file;
 
 			if ( ! file_exists( $full_path ) ) {
 				return false;
 			}
 
-			require_once $full_path;
+			try {
+				require_once $full_path;
+			} catch ( Exception $e ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+				error_log( "[WordLift] $full_path not found, cannot include." );
+			}
 
 			return true;
 		}
