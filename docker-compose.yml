@@ -30,17 +30,19 @@ services:
       # - ../../wordpress/plugins/woocommerce-6.9.2:/bitnami/wordpress/wp-content/plugins/woocommerce
       # - ../../wordpress/plugins/wp-recipe-maker-8.5.0:/bitnami/wordpress/wp-content/plugins/wp-recipe-maker
     environment:
-      # BITNAMI_DEBUG: true
+      BITNAMI_DEBUG: true
       WORDPRESS_DATABASE_HOST: db
       WORDPRESS_DATABASE_USER: wordpress
       WORDPRESS_DATABASE_PASSWORD: password
       WORDPRESS_DATABASE_NAME: wordpress
-      # WORDPRESS_TABLE_PREFIX: wp_q81ara52nh_
       WORDPRESS_ENABLE_HTTPS: "yes"
       WORDPRESS_ENABLE_REVERSE_PROXY: "yes"
       WORDPRESS_EXTRA_WP_CONFIG_CONTENT_FILE: /tmp/wp-config-extra.php
       WORDPRESS_USERNAME: admin
       WORDPRESS_PASSWORD: password
+      # When using an existing DB, set `WORDPRESS_SKIP_BOOTSTRAP` to `yes`.
+      WORDPRESS_TABLE_PREFIX: wp_q81ara52nh_
+      WORDPRESS_SKIP_BOOTSTRAP: yes
       PHP_IDE_CONFIG: serverName=wordpress
 
   nginx:
@@ -54,6 +56,8 @@ services:
       - ./wp-content:/var/www/html/blog/wp-content:ro
 
   phpunit:
+    profiles:
+      - phpunit
     image: ziodave/wordpress-tests:php7.4-phpunit7.5-wordpress5.9
     depends_on:
       - db
