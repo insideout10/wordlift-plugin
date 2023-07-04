@@ -226,6 +226,8 @@ class Jsonld_Endpoint {
 
 		$meta_key   = $request['meta_key'];
 		$meta_value = urldecode( current( $request->get_query_params( 'meta_value' ) ) );
+		// Merchant Sync stores spaces as plus, so we need to restore them.
+		$meta_value = str_replace( ' ', '+', $meta_value );
 
 		$results = $wpdb->get_results(
 			$wpdb->prepare(
