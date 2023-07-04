@@ -34,7 +34,7 @@ use Wordlift\Post\Post_Adapter;
 define( 'WORDLIFT_PLUGIN_FILE', __FILE__ );
 define( 'WORDLIFT_VERSION', '3.46.0' );
 
-// DO NOT REMOVE THIS LINE: WHITELABEL PLACEHOLDER ##
+// ## DO NOT REMOVE THIS LINE: WHITELABEL PLACEHOLDER ##
 
 require_once plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-scheduler.php';
 require_once __DIR__ . '/modules/common/load.php';
