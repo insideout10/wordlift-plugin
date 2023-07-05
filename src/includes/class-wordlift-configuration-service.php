@@ -506,7 +506,7 @@ class Wordlift_Configuration_Service {
 
 		// Check the old key value and the new one. We're going to ask for the dataset URI only if the key has changed.
 		// $old_key = isset( $old_value['key'] ) ? $old_value['key'] : '';
-		$new_key = isset( $new_value['key'] ) ? $new_value['key'] : '';
+		$new_key = isset( $new_value['key'] ) ? trim( $new_value['key'] ) : '';
 
 		// If the key hasn't changed, don't do anything.
 		// WARN The 'update_option' hook is fired only if the new and old value are not equal.
@@ -565,10 +565,10 @@ class Wordlift_Configuration_Service {
 
 		// Build the URL.
 		$url = '/accounts'
-				. '?key=' . rawurlencode( $key )
-				. '&url=' . rawurlencode( $site_url )
-				. '&country=' . $this->get_country_code()
-				. '&language=' . $this->get_language_code();
+			   . '?key=' . rawurlencode( $key )
+			   . '&url=' . rawurlencode( $site_url )
+			   . '&country=' . $this->get_country_code()
+			   . '&language=' . $this->get_language_code();
 
 		$api_service = Default_Api_Service::get_instance();
 		/**
@@ -649,7 +649,7 @@ class Wordlift_Configuration_Service {
 		// case where the key hasn't changed and the dataset URI isn't set. The
 		// other case, i.e. a new key is inserted, is handled at `update_key`.
 		$old_key = isset( $old_value['key'] ) ? $old_value['key'] : '';
-		$new_key = isset( $value['key'] ) ? $value['key'] : '';
+		$new_key = isset( $value['key'] ) ? trim( $value['key'] ) : '';
 
 		$dataset_uri = $this->get_dataset_uri();
 
