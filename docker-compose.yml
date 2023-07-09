@@ -41,7 +41,8 @@ services:
       WORDPRESS_USERNAME: admin
       WORDPRESS_PASSWORD: password
       # When using an existing DB, set `WORDPRESS_SKIP_BOOTSTRAP` to `yes`.
-      WORDPRESS_TABLE_PREFIX: wp_q81ara52nh_
+      # WORDPRESS_TABLE_PREFIX: wp_q81ara52nh_
+      WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX:-wp_}
       WORDPRESS_SKIP_BOOTSTRAP: yes
       PHP_IDE_CONFIG: serverName=wordpress
 
