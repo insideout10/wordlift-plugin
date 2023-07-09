@@ -46,6 +46,7 @@ class Post_Entity_Provider implements Entity_Provider {
 
 		return (object) array(
 			'id'          => $uri,
+			'entityId'    => $uri,
 			'label'       => $entity->post_title,
 			/*
 			 * As of 2020.06.29 we're comment out the `post_content` because Gutenberg posts will return here
