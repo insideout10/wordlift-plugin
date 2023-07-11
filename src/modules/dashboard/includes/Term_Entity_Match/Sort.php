@@ -25,8 +25,8 @@ class Sort extends Match_Sort {
 		} elseif ( 'matched_ingredient' === $tmp_sort_field_name ) {
 			return 't.match_name';
 		} elseif ( 'occurrences' === $tmp_sort_field_name ) {
-			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedElseif
-			// @todo
+			// @todo This block will be filled in the future when occurrences handling is implemented
+			return 't.name';
 		}
 
 		return 't.name';

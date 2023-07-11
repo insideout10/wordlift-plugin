@@ -238,7 +238,7 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 	 *
 	 * @return Match_Entry
 	 *
-	 * @throws \Exception If there was a problem updating the match
+	 * @throws \Exception If there was a problem updating the match.
 	 */
 	public function update_post_match( $request ) {
 
