@@ -153,12 +153,12 @@ class Food_Kg_Post_Match_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 
 		$data = $data_object->jsonSerialize();
 
-		$this->assertKeyHasStringValue('self', $data);
-        $this->assertKeyHasStringValue('first', $data);
-        $this->assertKeyHasStringValue('last', $data);
+		$this->assert_key_has_string_value( 'self', $data );
+		$this->assert_key_has_string_value( 'first', $data );
+		$this->assert_key_has_string_value( 'last', $data );
 
-        $this->assertArrayHasKey('items', $data);
-        $this->assertNotEmpty($data['items']);
+		$this->assertArrayHasKey( 'items', $data );
+		$this->assertNotEmpty( $data['items'] );
 	}
 
 	/**
@@ -212,7 +212,7 @@ class Food_Kg_Post_Match_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 	 * @param $key
 	 * @param $data
 	 */
-	protected function assertKeyHasStringValue( $key, $data ) {
+	protected function assert_key_has_string_value( $key, $data ) {
 		$this->assertArrayHasKey( $key, $data );
 		$this->assertNotEmpty( $data[ $key ] );
 		$this->assertIsString( $data[ $key ] );
