@@ -65,8 +65,11 @@ class Rest_Controller {
 		try {
 			return rest_ensure_response( $this->synchronization_service->create() );
 		} catch ( \Exception $e ) {
-			return new \WP_Error( 'wl_error_synchronization_running',
-				esc_html__( 'Another synchronization is already running.', 'wordlift' ), array( 'status' => 409 ) );
+			return new \WP_Error(
+				'wl_error_synchronization_running',
+				esc_html__( 'Another synchronization is already running.', 'wordlift' ),
+				array( 'status' => 409 )
+			);
 		}
 	}
 

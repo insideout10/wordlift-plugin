@@ -15,7 +15,7 @@ use Wordlift\Object_Type_Enum;
  *
  * @package Wordlift\Modules\Dashboard\Post_Entity_Match
  */
-class Post_Entity_Match_Rest_Controller {
+class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 
 	/**
 	 * @var Post_Entity_Match_Service
