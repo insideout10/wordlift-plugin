@@ -19,7 +19,7 @@ abstract class Match_Sort {
 	public function property_name() {
 		$tmp_sort_field_name = substr( $this->sort, 1 );
 		// @todo: Need to discuss this code due to unit tests error - Undefined property: stdClass::$name.
-		if ( 'id' === $tmp_sort_field_name || str_contains($tmp_sort_field_name, 'date_modified_gmt') ) {
+		if ( 'id' === $tmp_sort_field_name || str_contains( $tmp_sort_field_name, 'date_modified_gmt' ) ) {
 			return 'id';
 		} else {
 			return 'name';
