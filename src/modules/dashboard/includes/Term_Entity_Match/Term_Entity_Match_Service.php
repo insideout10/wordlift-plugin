@@ -5,22 +5,36 @@ namespace Wordlift\Modules\Dashboard\Term_Entity_Match;
 use Wordlift\Modules\Dashboard\Match\Match_Service;
 use Wordlift\Object_Type_Enum;
 
+/**
+ * Class Term_Entity_Match_Service
+ *
+ * @package Wordlift\Modules\Dashboard\Term_Entity_Match
+ */
 class Term_Entity_Match_Service extends Match_Service {
 
+	/**
+	 * List items.
+	 *
+	 * @param $args
+	 *
+	 * @return array
+	 *
+	 * @throws \Exception
+	 */
 	public function list_items( $args ) {
 		global $wpdb;
 
 		$params = wp_parse_args(
 			$args,
 			array(
-				'position'  => null,
-				'element'   => 'INCLUDED',
-				'direction' => 'ASCENDING',
-				'limit'     => 10,
-				'sort'      => '+id',
+				'position'                 => null,
+				'element'                  => 'INCLUDED',
+				'direction'                => 'ASCENDING',
+				'limit'                    => 10,
+				'sort'                     => '+id',
 				// Query.
-				'taxonomy'  => null,
-				'has_match' => null,
+				'taxonomy'                 => null,
+				'has_match'                => null,
 				'ingredient_name_contains' => null,
 			)
 		);
@@ -48,18 +62,33 @@ class Term_Entity_Match_Service extends Match_Service {
 		return $this->map( $items );
 	}
 
+	/**
+	 * Map.
+	 *
+	 * @param array $items
+	 *
+	 * @return array
+	 */
 	private function map( array $items ) {
 		return array_map(
 			function ( $item ) {
-				$data             = json_decode( $item->match_jsonld, true );
-				$item->match_name = $data && is_array( $data ) && array_key_exists( 'name', $data ) ? $data['name'] : null;
-				$item->occurrences = $this->get_term_occurrences($item->id);
+				$data              = json_decode( $item->match_jsonld, true );
+				$item->match_name  = $data && is_array( $data ) && array_key_exists( 'name', $data ) ? $data['name'] : null;
+				$item->occurrences = $this->get_term_occurrences( $item->id );
+
 				return $item;
 			},
 			$items
 		);
 	}
 
+	/**
+	 * Get term occurrences.
+	 *
+	 * @param $term_id
+	 *
+	 * @return int
+	 */
 	private function get_term_occurrences( $term_id ) {
 		$term = get_term( $term_id );
 

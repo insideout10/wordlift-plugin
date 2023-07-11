@@ -5,8 +5,18 @@ namespace Wordlift\Modules\Dashboard\Term_Entity_Match;
 use Wordlift\Escape;
 use Wordlift\Modules\Dashboard\Match\Match_Query_Builder;
 
+/**
+ * Class Query_Builder
+ *
+ * @package Wordlift\Modules\Dashboard\Term_Entity_Match
+ */
 class Query_Builder extends Match_Query_Builder {
 
+	/**
+	 * Build.
+	 *
+	 * @throws \Exception
+	 */
 	public function build() {
 
 		global $wpdb;
@@ -24,7 +34,6 @@ class Query_Builder extends Match_Query_Builder {
 			AND e.content_type = %d WHERE 1=1
 		";
 
-
 		$this->cursor()
 			->ingredient_name_contains()
 			->taxonomy()
@@ -34,14 +43,22 @@ class Query_Builder extends Match_Query_Builder {
 
 	}
 
+	/**
+	 * Taxonomy.
+	 *
+	 * @return $this
+	 *
+	 * @throws \Exception
+	 */
 	public function taxonomy() {
 		$taxonomies = $this->params['taxonomies'];
 
 		if ( ! isset( $taxonomies ) ) {
 			return $this;
 		}
-		$sql        = Escape::sql_array( $taxonomies );
+		$sql       = Escape::sql_array( $taxonomies );
 		$this->sql .= " AND tt.taxonomy IN ($sql)";
+
 		return $this;
 	}
 
@@ -51,7 +68,7 @@ class Query_Builder extends Match_Query_Builder {
 		// If the ingredient_name_contains value is a non-empty string, add the filter
 		if ( is_string( $this->params['ingredient_name_contains'] ) && ! empty( $this->params['ingredient_name_contains'] ) ) {
 			$ingredient_name_contains = $this->params['ingredient_name_contains'];
-			$this->sql .= $wpdb->prepare( ' AND t.name LIKE %s', '%' . $ingredient_name_contains . '%' );
+			$this->sql                .= $wpdb->prepare( ' AND t.name LIKE %s', '%' . $ingredient_name_contains . '%' );
 		}
 
 		return $this;
