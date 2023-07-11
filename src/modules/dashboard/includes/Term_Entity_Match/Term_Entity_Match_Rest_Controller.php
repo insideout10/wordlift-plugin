@@ -74,7 +74,7 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 					'ingredient_name_contains' => array(
 						'type'              => 'string',
 						'required'          => false,
-						'validate_callback' => 'rest_validate_request_arg'
+						'validate_callback' => 'rest_validate_request_arg',
 					),
 					'sort'                     => array(
 						'type'              => 'string',
@@ -85,10 +85,10 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 							'+matched_ingredient',
 							'-matched_ingredient',
 							'+occurrences',
-							'-occurrences'
+							'-occurrences',
 						),
 						'validate_callback' => 'rest_validate_request_arg',
-					)
+					),
 				),
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
@@ -142,7 +142,9 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 	/**
 	 * Get the term matches by taxonomy name.
 	 *
-	 * @var $request \WP_REST_Request
+	 * @param  $request \WP_REST_Request
+	 *
+	 * @throws \Exception If there was a problem getting the match.
 	 */
 	public function get_term_matches( $request ) {
 
@@ -207,7 +209,7 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 	 *
 	 * @param  $request \WP_REST_Request
 	 *
-	 * @throws \Exception
+	 * @throws \Exception If there was a problem creating the match.
 	 */
 	public function create_term_match( $request ) {
 
@@ -231,7 +233,6 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 			$match_id,
 			$request->get_json_params()
 		);
-
 	}
 
 	/**
@@ -241,10 +242,9 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 	 *
 	 * @return Match_Entry
 	 *
-	 * @throws \Exception
+	 * @throws \Exception If there was a problem updating the match.
 	 */
 	public function update_term_match( $request ) {
-
 		return $this->match_service->set_jsonld(
 			$request->get_param( 'term_id' ),
 			Object_Type_Enum::TERM,

@@ -19,7 +19,7 @@ class Term_Entity_Match_Service extends Match_Service {
 	 *
 	 * @return array
 	 *
-	 * @throws \Exception
+	 * @throws \Exception If there was a problem generating the list items.
 	 */
 	public function list_items( $args ) {
 		global $wpdb;

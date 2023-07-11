@@ -15,7 +15,7 @@ class Query_Builder extends Match_Query_Builder {
 	/**
 	 * Build.
 	 *
-	 * @throws \Exception
+	 * @throws \Exception If there was a problem with SQL query.
 	 */
 	public function build() {
 
@@ -48,7 +48,7 @@ class Query_Builder extends Match_Query_Builder {
 	 *
 	 * @return $this
 	 *
-	 * @throws \Exception
+	 * @throws \Exception When supplied argument is not an array, throw exception.
 	 */
 	public function taxonomy() {
 		$taxonomies = $this->params['taxonomies'];
@@ -56,22 +56,26 @@ class Query_Builder extends Match_Query_Builder {
 		if ( ! isset( $taxonomies ) ) {
 			return $this;
 		}
-		$sql       = Escape::sql_array( $taxonomies );
+		$sql        = Escape::sql_array( $taxonomies );
 		$this->sql .= " AND tt.taxonomy IN ($sql)";
 
 		return $this;
 	}
 
+	/**
+	 * Ingredient name contains.
+	 *
+	 * @return $this
+	 */
 	public function ingredient_name_contains() {
 		global $wpdb;
 
 		// If the ingredient_name_contains value is a non-empty string, add the filter
 		if ( is_string( $this->params['ingredient_name_contains'] ) && ! empty( $this->params['ingredient_name_contains'] ) ) {
-			$ingredient_name_contains = $this->params['ingredient_name_contains'];
+			$ingredient_name_contains  = $this->params['ingredient_name_contains'];
 			$this->sql                .= $wpdb->prepare( ' AND t.name LIKE %s', '%' . $ingredient_name_contains . '%' );
 		}
 
 		return $this;
 	}
-
 }
