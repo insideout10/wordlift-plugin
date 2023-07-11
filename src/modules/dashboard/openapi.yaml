@@ -58,6 +58,42 @@ paths:
         "403":
           description: Forbidden
           content:
+  /post-matches:
+    get:
+      operationId: listPostMatches
+      summary: List Post Matches
+      description: List the post matches
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+        - name: sort
+          in: query
+          schema:
+            type: string
+        - name: is_running
+          in: query
+          schema:
+            type: boolean
+        - name: post_status
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The list of post matches
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagePostMatch'
+        "401":
+          description: Unauthorized
+          content:
+        "403":
+          description: Forbidden
+          content:
 components:
   schemas:
     Synchronization:
