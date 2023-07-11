@@ -40,7 +40,8 @@ const EntityList = ({ entities, onClick, onLinkClick, onEditClick }) => {
           onClick={onClick}
           onEditClick={onEditClick}
           onLinkClick={onLinkClick}
-          key={entity.id}
+          // This should transition to `entityId` but selected entities still seem to use `id`.
+          key={entity.entityId}
         />
       ))}
     </List>

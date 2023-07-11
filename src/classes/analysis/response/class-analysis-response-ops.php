@@ -258,7 +258,11 @@ class Analysis_Response_Ops {
 
 				if ( $serialized_entity ) {
 					$serialized_entity['entityId'] = $serialized_entity['id'];
-					unset( $serialized_entity['id'] );
+					// Keep the `id` for compatibility with existing analysis, since it appears that no-editor-analysis.js
+					// is using it, ie.:
+					// `Each child in a list should have a unique "key" prop.`
+					//
+					// unset( $serialized_entity['id'] );
 
 					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 					$entities[ $entity_matches->entityId ] = $serialized_entity;

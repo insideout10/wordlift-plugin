@@ -12,7 +12,6 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuild
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Wordlift\Modules\Redeem_Code\Rest_Controller;
 
-
 /**
  * Load Include Exclude Module.
  *
@@ -20,7 +19,7 @@ use Wordlift\Modules\Redeem_Code\Rest_Controller;
  */
 function __wl_redeem_code() {
 	// Autoloader for plugin itself.
-	
+
 	if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 		require_once __DIR__ . '/vendor/autoload.php';
 	}
@@ -36,4 +35,5 @@ function __wl_redeem_code() {
 	$rest_controller = $container_builder->get( 'Wordlift\Modules\Redeem_Code\Rest_Controller' );
 	$rest_controller->register_hooks();
 }
+
 __wl_redeem_code();
