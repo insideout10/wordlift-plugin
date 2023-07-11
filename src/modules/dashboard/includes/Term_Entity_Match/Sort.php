@@ -14,7 +14,7 @@ class Sort extends Match_Sort {
 	/**
 	 * Get field name.
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function get_field_name() {
 		$tmp_sort_field_name = substr( $this->sort, 1 );
@@ -26,7 +26,7 @@ class Sort extends Match_Sort {
 			return 't.match_name';
 		} elseif ( 'occurrences' === $tmp_sort_field_name ) {
 			// @todo This block will be filled in the future when occurrences handling is implemented
-			return 't.name';
+			return null;
 		}
 
 		return 't.name';
