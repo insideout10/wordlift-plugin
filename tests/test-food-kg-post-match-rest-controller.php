@@ -212,9 +212,9 @@ class Food_Kg_Post_Match_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 	 * @param $key
 	 * @param $data
 	 */
-	protected function assertKeyHasStringValue($key, $data) {
-        $this->assertArrayHasKey($key, $data);
-        $this->assertNotEmpty($data[$key]);
-        $this->assertIsString($data[$key]);
-    }
+	protected function assertKeyHasStringValue( $key, $data ) {
+		$this->assertArrayHasKey( $key, $data );
+		$this->assertNotEmpty( $data[ $key ] );
+		$this->assertIsString( $data[ $key ] );
+	}
 }
