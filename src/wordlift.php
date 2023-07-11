@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.46.0-0
+ * Version:           3.47.0-0
  * Author:            WordLift
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -32,9 +32,9 @@ use Wordlift\Features\Features_Registry;
 use Wordlift\Post\Post_Adapter;
 
 define( 'WORDLIFT_PLUGIN_FILE', __FILE__ );
-define( 'WORDLIFT_VERSION', '3.46.0-0' );
+define( 'WORDLIFT_VERSION', '3.47.0-0' );
 
-// DO NOT REMOVE THIS LINE: WHITELABEL PLACEHOLDER ##
+// ## DO NOT REMOVE THIS LINE: WHITELABEL PLACEHOLDER ##
 
 require_once plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-scheduler.php';
 require_once __DIR__ . '/modules/common/load.php';
@@ -68,7 +68,7 @@ require_once plugin_dir_path( __FILE__ ) . 'modules/core/wordlift-core.php';
 require_once plugin_dir_path( __FILE__ ) . 'deprecations.php';
 
 // Load early to enable/disable features.
-require_once plugin_dir_path( __FILE__ ) . 'wordlift/features/index.php';
+require_once plugin_dir_path( __FILE__ ) . 'classes/features/index.php';
 
 /**
  * The code that runs during plugin activation.
@@ -210,22 +210,22 @@ function run_wordlift() {
 			new Wordlift_Products_Navigator_Shortcode_REST();
 
 			// Register the Dataset module, requires `$api_service`.
-			require_once plugin_dir_path( __FILE__ ) . 'wordlift/dataset/index.php';
-			require_once plugin_dir_path( __FILE__ ) . 'wordlift/shipping-data/index.php';
+			require_once plugin_dir_path( __FILE__ ) . 'classes/dataset/index.php';
+			require_once plugin_dir_path( __FILE__ ) . 'classes/shipping-data/index.php';
 
 			/*
 			* Require the Entity annotation cleanup module.
 			*
 			* @since 3.34.6
 			*/
-			require_once plugin_dir_path( __FILE__ ) . 'wordlift/cleanup/index.php';
+			require_once plugin_dir_path( __FILE__ ) . 'classes/cleanup/index.php';
 
 			/*
 			* Import LOD entities.
 			*
 			* @since 3.35.0
 			*/
-			require_once plugin_dir_path( __FILE__ ) . 'wordlift/lod-import/index.php';
+			require_once plugin_dir_path( __FILE__ ) . 'classes/lod-import/index.php';
 
 		}
 	);
@@ -252,18 +252,23 @@ function wordlift_plugin_autoload_register() {
 
 			$class_name_lc = strtolower( str_replace( '_', '-', $class_name ) );
 
-			preg_match( '|^(?:(.*)\\\\)?(.+?)$|', $class_name_lc, $matches );
+			preg_match( '|^wordlift\\\\(?:(.*)\\\\)?(.+?)$|', $class_name_lc, $matches );
 
 			$path = str_replace( '\\', DIRECTORY_SEPARATOR, $matches[1] );
 			$file = 'class-' . $matches[2] . '.php';
 
-			$full_path = plugin_dir_path( __FILE__ ) . $path . DIRECTORY_SEPARATOR . $file;
+			$full_path = plugin_dir_path( __FILE__ ) . 'classes' . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . $file;
 
 			if ( ! file_exists( $full_path ) ) {
 				return false;
 			}
 
-			require_once $full_path;
+			try {
+				require_once $full_path;
+			} catch ( Exception $e ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+				error_log( "[WordLift] $full_path not found, cannot include." );
+			}
 
 			return true;
 		}

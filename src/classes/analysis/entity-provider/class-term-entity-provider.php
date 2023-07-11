@@ -43,6 +43,7 @@ class Term_Entity_Provider implements Entity_Provider {
 
 		return (object) array(
 			'id'          => $uri,
+			'entityId'    => $uri,
 			'label'       => $term->name,
 			'description' => '',
 			'sameAs'      => $same_as,

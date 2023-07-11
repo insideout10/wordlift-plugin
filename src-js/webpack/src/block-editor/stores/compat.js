@@ -44,7 +44,7 @@ export default function(data) {
       ea = ref2[index];
       if (!data.entities[ea.entityId].label) {
         data.entities[ea.entityId].label = annotation.text;
-        $log.debug(`Missing label retrieved from related annotation for entity ${ea.entityId}`);
+        // $log.debug(`Missing label retrieved from related annotation for entity ${ea.entityId}`);
       }
       if (data.entities[ea.entityId].annotations == null) {
         data.entities[ea.entityId].annotations = {};
