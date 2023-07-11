@@ -148,10 +148,12 @@ class Food_Kg_Post_Match_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 			$this->routes['get_post_matches']
 		);
 
-		$response    = $this->server->dispatch( $request );
-		$data_object = $response->get_data();
+		$response = $this->server->dispatch( $request );
 
-		$data = $data_object->jsonSerialize();
+		$this->assertEquals( 200, $response->get_status() );
+
+		$data_object = $response->get_data();
+		$data        = $data_object->jsonSerialize();
 
 		$this->assert_key_has_string_value( 'self', $data );
 		$this->assert_key_has_string_value( 'first', $data );
