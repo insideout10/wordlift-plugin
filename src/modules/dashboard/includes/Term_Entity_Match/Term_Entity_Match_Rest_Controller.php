@@ -7,12 +7,27 @@ use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Entity\Entity_Uri_Generator;
 use Wordlift\Modules\Common\Api\Cursor;
 use Wordlift\Modules\Common\Api\Cursor_Page;
+use Wordlift\Modules\Dashboard\Match\Match_Entry;
+use Wordlift\Modules\Dashboard\Post_Entity_Match\Post_Entity_Match_Service;
 use Wordlift\Object_Type_Enum;
 
+/**
+ * Class Term_Entity_Match_Rest_Controller
+ *
+ * @package Wordlift\Modules\Dashboard\Term_Entity_Match
+ */
 class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 
+	/**
+	 * @var Post_Entity_Match_Service
+	 */
 	private $match_service;
 
+	/**
+	 * Construct
+	 *
+	 * @param $match_service
+	 */
 	public function __construct( $match_service ) {
 		$this->match_service = $match_service;
 	}
@@ -25,7 +40,6 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 	 * Register the routes for the objects of the controller.
 	 */
 	public function register_routes() {
-
 		// Get term matches by taxonomy name
 		register_rest_route(
 			'wordlift/v1',
@@ -34,13 +48,13 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 				'methods'             => 'GET',
 				'callback'            => array( $this, 'get_term_matches' ),
 				'args'                => array(
-					'cursor'     => array(
+					'cursor'                   => array(
 						'type'              => 'string',
 						'default'           => Cursor::EMPTY_CURSOR_AS_BASE64_STRING,
 						'validate_callback' => 'rest_validate_request_arg',
 						'sanitize_callback' => array( Cursor::class, 'rest_sanitize_request_arg' ),
 					),
-					'limit'      => array(
+					'limit'                    => array(
 						'type'              => 'integer',
 						'validate_callback' => 'rest_validate_request_arg',
 						'default'           => 10,
@@ -48,24 +62,31 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 						'maximum'           => 100,
 						'sanitize_callback' => 'absint',
 					),
-					'taxonomies' => array(
+					'taxonomies'               => array(
 						'type'              => 'array',
 						'validate_callback' => 'rest_validate_request_arg',
 					),
-					'has_match'  => array(
+					'has_match'                => array(
 						'type'              => 'boolean',
 						'required'          => false,
 						'validate_callback' => 'rest_validate_request_arg',
 					),
-					'ingredient_name_contains'	=> array(
-						'type'				=> 'string',
-						'required'			=> false,
+					'ingredient_name_contains' => array(
+						'type'              => 'string',
+						'required'          => false,
 						'validate_callback' => 'rest_validate_request_arg'
 					),
-					'sort'						=> array(
-						'type'				=> 'string',
-						'required'			=> 'false',
-						'enum'              => array( '+ingredient_term', '-ingredient_term', '+matched_ingredient', '-matched_ingredient', '+occurrences', '-occurrences'),
+					'sort'                     => array(
+						'type'              => 'string',
+						'required'          => 'false',
+						'enum'              => array(
+							'+ingredient_term',
+							'-ingredient_term',
+							'+matched_ingredient',
+							'-matched_ingredient',
+							'+occurrences',
+							'-occurrences'
+						),
 						'validate_callback' => 'rest_validate_request_arg',
 					)
 				),
@@ -112,7 +133,6 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 					),
 				),
 				'permission_callback' => function () {
-
 					return current_user_can( 'manage_options' );
 				},
 			)
@@ -139,8 +159,8 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 		if ( $request->has_param( 'has_match' ) ) {
 			$cursor['query']['has_match'] = $request->get_param( 'has_match' );
 		}
-		if ( $request->has_param( 'ingredient_name_contains' )) {
-			$cursor['query']['ingredient_name_contains'] = $request->get_param('ingredient_name_contains');
+		if ( $request->has_param( 'ingredient_name_contains' ) ) {
+			$cursor['query']['ingredient_name_contains'] = $request->get_param( 'ingredient_name_contains' );
 		}
 
 		// Query.
@@ -152,22 +172,22 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 			)
 		);
 
-		$has_match = isset( $cursor['query']['has_match'] ) ? $cursor['query']['has_match'] : null;
-		$ingredient_name_contains = isset( $cursor['query']['ingredient_name_contains']) ? $cursor['query']['ingredient_name_contains'] : null;
+		$has_match                = isset( $cursor['query']['has_match'] ) ? $cursor['query']['has_match'] : null;
+		$ingredient_name_contains = isset( $cursor['query']['ingredient_name_contains'] ) ? $cursor['query']['ingredient_name_contains'] : null;
 
 		$items = $this->match_service->list_items(
 			array(
 				// Query
-				'taxonomies' => $taxonomies,
-				'has_match'  => $has_match,
+				'taxonomies'               => $taxonomies,
+				'has_match'                => $has_match,
 				'ingredient_name_contains' => $ingredient_name_contains,
 				// Cursor-Pagination
-				'position'   => $cursor['position'],
-				'element'    => $cursor['element'],
-				'direction'  => $cursor['direction'],
+				'position'                 => $cursor['position'],
+				'element'                  => $cursor['element'],
+				'direction'                => $cursor['direction'],
 				// `+1` to check if we have other results.
-				'limit'      => $cursor['limit'] + 1,
-				'sort'       => $cursor['sort'],
+				'limit'                    => $cursor['limit'] + 1,
+				'sort'                     => $cursor['sort'],
 			)
 		);
 
@@ -185,7 +205,9 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 	/**
 	 * Create a new match for a term.
 	 *
-	 * @var $request \WP_REST_Request
+	 * @param  $request \WP_REST_Request
+	 *
+	 * @throws \Exception
 	 */
 	public function create_term_match( $request ) {
 
@@ -193,8 +215,7 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 
 		// If we dont have a entry on the match table, then add one.
 		$content_id = Wordpress_Content_Id::create_term( $term_id );
-		if ( ! Wordpress_Content_Service::get_instance()
-										->get_entity_id( $content_id ) ) {
+		if ( ! Wordpress_Content_Service::get_instance()->get_entity_id( $content_id ) ) {
 			$uri = Entity_Uri_Generator::create_uri( $content_id->get_type(), $content_id->get_id() );
 			Wordpress_Content_Service::get_instance()->set_entity_id( $content_id, $uri );
 		}
@@ -214,7 +235,13 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 	}
 
 	/**
-	 * @var $request \WP_REST_Request
+	 * Update term match.
+	 *
+	 * @param \WP_REST_Request $request
+	 *
+	 * @return Match_Entry
+	 *
+	 * @throws \Exception
 	 */
 	public function update_term_match( $request ) {
 
