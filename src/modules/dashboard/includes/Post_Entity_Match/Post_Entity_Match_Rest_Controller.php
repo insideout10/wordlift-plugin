@@ -15,7 +15,7 @@ use Wordlift\Object_Type_Enum;
  *
  * @package Wordlift\Modules\Dashboard\Post_Entity_Match
  */
-class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
+class Post_Entity_Match_Rest_Controller {
 
 	/**
 	 * @var Post_Entity_Match_Service
@@ -45,7 +45,7 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 
 		// Get term matches by taxonomy name
 		register_rest_route(
-			'wordlift/v1',
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
 			'/post-matches',
 			array(
 				'methods'             => 'GET',
@@ -96,7 +96,7 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 
 		// Create a new match for a post
 		register_rest_route(
-			'wordlift/v1',
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
 			'/post-matches/(?P<post_id>\d+)/matches',
 			array(
 				'methods'             => 'POST',
@@ -105,6 +105,7 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 					'post_id' => array(
 						'required'          => true,
 						'validate_callback' => 'rest_validate_request_arg',
+						'type'              => 'integer',
 					),
 				),
 				'permission_callback' => function () {
@@ -115,7 +116,7 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 
 		// Update an existing post match
 		register_rest_route(
-			'wordlift/v1',
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
 			'/post-matches/(?P<post_id>\d+)/matches/(?P<match_id>\d+)',
 			array(
 				'methods'             => 'PUT',
@@ -124,10 +125,12 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 					'post_id'  => array(
 						'required'          => true,
 						'validate_callback' => 'rest_validate_request_arg',
+						'type'              => 'integer',
 					),
 					'match_id' => array(
 						'required'          => true,
 						'validate_callback' => 'rest_validate_request_arg',
+						'type'              => 'integer',
 					),
 				),
 				'permission_callback' => function () {
