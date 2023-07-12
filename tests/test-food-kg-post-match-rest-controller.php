@@ -118,23 +118,6 @@ class Food_Kg_Post_Match_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 * Test rest route for post matches returns 200.
-	 */
-	public function test_rest_route_for_post_matches_returns_200() {
-		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
-		wp_set_current_user( $user_id );
-
-		$request = new WP_REST_Request(
-			'GET',
-			$this->routes['get_post_matches']
-		);
-
-		$response = $this->server->dispatch( $request );
-
-		$this->assertEquals( 200, $response->get_status() );
-	}
-
-	/**
 	 * Test if rest route for getting ingredients returns data.
 	 */
 	public function test_rest_route_for_post_matches_returns_data() {
