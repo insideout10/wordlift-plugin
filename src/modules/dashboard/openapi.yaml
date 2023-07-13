@@ -239,6 +239,17 @@ paths:
           description: Has match
           schema:
             type: boolean
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum:
+              - +ingredient_term
+              - -ingredient_term
+              - +matched_ingredient
+              - -matched_ingredient
+              - +occurrences
+              - -occurrences
       responses:
         "200":
           description: OK
@@ -465,7 +476,7 @@ components:
           format: int64
           description: The ID of the matched term.
         match_jsonld:
-          type: object
+          type: string
           description: The JSON-LD of the matched term.
         occurrences:
           type: integer
