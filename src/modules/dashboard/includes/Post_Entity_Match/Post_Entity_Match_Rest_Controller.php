@@ -77,7 +77,7 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 					'post_status' => array(
 						'type'              => 'string',
 						'required'          => false,
-						'enum'              => array( 'publish', 'draft' ),
+						'enum'              => array( 'publish', 'draft', 'all' ),
 						'validate_callback' => 'rest_validate_request_arg',
 					),
 					'sort'        => array(
