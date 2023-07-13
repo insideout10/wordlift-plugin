@@ -28,8 +28,9 @@ class Rest_Controller {
 			'wl-dashboard/v1',
 			'/synchronizations',
 			array(
-				'methods'  => 'POST',
-				'callback' => array( $this, 'create_sync' ),
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'create_sync' ),
+				'permission_callback' => '__return_true',
 			)
 		);
 
@@ -37,9 +38,10 @@ class Rest_Controller {
 			'wl-dashboard/v1',
 			'/synchronizations',
 			array(
-				'methods'  => 'GET',
-				'callback' => array( $this, 'list_syncs' ),
-				'args'     => array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'list_syncs' ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
 					'is_running' => array(
 						'description' => esc_html__( 'Filter the is_running', 'wordlift' ),
 						'type'        => 'boolean',
@@ -52,8 +54,9 @@ class Rest_Controller {
 			'wl-dashboard/v1',
 			'/synchronizations',
 			array(
-				'methods'  => 'DELETE',
-				'callback' => array( $this, 'delete_syncs' ),
+				'methods'             => 'DELETE',
+				'callback'            => array( $this, 'delete_syncs' ),
+				'permission_callback' => '__return_true',
 			)
 		);
 	}
@@ -62,7 +65,11 @@ class Rest_Controller {
 		try {
 			return rest_ensure_response( $this->synchronization_service->create() );
 		} catch ( \Exception $e ) {
-			return new \WP_Error( 'wl_error_synchronization_running', esc_html__( 'Another synchronization is already running.', 'wordlift' ), array( 'status' => 409 ) );
+			return new \WP_Error(
+				'wl_error_synchronization_running',
+				esc_html__( 'Another synchronization is already running.', 'wordlift' ),
+				array( 'status' => 409 )
+			);
 		}
 	}
 
@@ -70,7 +77,7 @@ class Rest_Controller {
 		$last_synchronization = $this->synchronization_service->load();
 		$is_running_all       = ! $request->has_param( 'is_running' );
 		if ( is_a( $last_synchronization, 'Wordlift\Modules\Dashboard\Synchronization\Synchronization' )
-			 && ( $is_running_all || $request->get_param( 'is_running' ) === $last_synchronization->is_running() ) ) {
+			&& ( $is_running_all || $request->get_param( 'is_running' ) === $last_synchronization->is_running() ) ) {
 			$data = array( $last_synchronization );
 		} else {
 			$data = array();
