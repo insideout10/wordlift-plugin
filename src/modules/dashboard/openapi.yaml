@@ -6,11 +6,13 @@ info:
 servers:
   - url: 'https'
 paths:
-  /synchronizations:
+  /wordlift/v1/synchronizations:
     post:
       operationId: createSynchronization
       summary: Create a Synchronization
       description: Creates a new synchronization
+      tags:
+        - Synchronizations
       responses:
         "200":
           description: Synchronization created
@@ -31,6 +33,8 @@ paths:
       operationId: listSynchronizations
       summary: List Synchronizations
       description: List the synchronizations
+      tags:
+        - Synchronizations
       parameters:
         - name: limit
           in: query
@@ -58,11 +62,13 @@ paths:
         "403":
           description: Forbidden
           content:
-  /post-matches:
+  /wordlift/v1/post-matches:
     get:
       operationId: listPostMatches
       summary: List Post Matches
       description: List the post matches
+      tags:
+        - Post Matches
       parameters:
         - name: cursor
           in: query
@@ -116,10 +122,12 @@ paths:
         "403":
           description: Forbidden
           content:
-  /post-matches/{post_id}/matches:
+  /wordlift/v1/post-matches/{post_id}/matches:
     post:
       operationId: createPostMatch
       description: Creates a post match for the given post ID.
+      tags:
+        - Post Matches
       parameters:
         - name: post_id
           in: path
@@ -152,10 +160,12 @@ paths:
                   match_name: "ipsum"
                   match_id: 456
                   match_jsonld: { }
-  /post-matches/{post_id}/matches/{match_id}:
+  /wordlift/v1/post-matches/{post_id}/matches/{match_id}:
     put:
       operationId: updatePostMatch
       description: Updates a post match for the given post and match IDs.
+      tags:
+        - Post Matches
       parameters:
         - name: post_id
           in: path
@@ -201,10 +211,12 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
-  /term-matches:
+  /wordlift/v1/term-matches:
     get:
       operationId: listTermMatches
       description: Returns a list of term matches for a given taxonomy.
+      tags:
+        - Term Matches
       parameters:
         - name: taxonomy
           in: query
@@ -234,10 +246,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PageTermMatch"
-  /term-matches/{term_id}/matches:
+  /wordlift/v1/term-matches/{term_id}/matches:
     post:
       operationId: createTermMatch
       description: Creates a term match for the given term ID.
+      tags:
+        - Term Matches
       parameters:
         - name: term_id
           in: path
@@ -264,10 +278,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TermMatch"
-  /term-matches/{term_id}/matches/{match_id}:
+  /wordlift/v1/term-matches/{term_id}/matches/{match_id}:
     put:
       operationId: updateTermMatch
       description: Updates a term match for the given term and match IDs.
+      tags:
+        - Term Matches
       parameters:
         - name: term_id
           in: path
@@ -386,6 +402,8 @@ components:
         parent_post_title:
           type: string
         parent_post_id:
+          type: string
+        parent_post_link:
           type: string
         match_jsonld:
           type: string

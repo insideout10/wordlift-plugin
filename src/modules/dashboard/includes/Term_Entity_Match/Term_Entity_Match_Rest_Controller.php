@@ -42,7 +42,7 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 	public function register_routes() {
 		// Get term matches by taxonomy name
 		register_rest_route(
-			'wordlift/v1',
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
 			'/term-matches',
 			array(
 				'methods'             => 'GET',
@@ -98,7 +98,7 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 
 		// Create a new match for a term
 		register_rest_route(
-			'wordlift/v1',
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
 			'/term-matches/(?P<term_id>\d+)/matches',
 			array(
 				'methods'             => 'POST',
@@ -117,7 +117,7 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 
 		// Update an existing term match
 		register_rest_route(
-			'wordlift/v1',
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
 			'/term-matches/(?P<term_id>\d+)/matches/(?P<match_id>\d+)',
 			array(
 				'methods'             => 'PUT',
