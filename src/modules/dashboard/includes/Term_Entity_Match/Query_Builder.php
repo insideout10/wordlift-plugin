@@ -35,11 +35,11 @@ class Query_Builder extends Match_Query_Builder {
 		";
 
 		$this->cursor()
-			->ingredient_name_contains()
-			->taxonomy()
-			->has_match()
-			->order_by()
-			->limit();
+			 ->ingredient_name_contains()
+			 ->taxonomy()
+			 ->has_match()
+			 ->order_by()
+			 ->limit();
 
 	}
 

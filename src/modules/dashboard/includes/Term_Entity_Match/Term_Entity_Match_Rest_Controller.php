@@ -80,6 +80,10 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 						'type'              => 'string',
 						'required'          => 'false',
 						'enum'              => array(
+							'+term_name',
+							'-term_name',
+							'+entity_name',
+							'-entity_name',
 							'+ingredient_term',
 							'-ingredient_term',
 							'+matched_ingredient',

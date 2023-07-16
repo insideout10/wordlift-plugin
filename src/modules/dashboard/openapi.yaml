@@ -218,12 +218,15 @@ paths:
       tags:
         - Term Matches
       parameters:
-        - name: taxonomy
+        - name: taxonomies
           in: query
           description: Name of the taxonomy to retrieve term matches for.
           required: true
-          schema:
+          type: array
+          items:
             type: string
+          style: form
+          explode: true
         - name: cursor
           in: query
           description: Cursor for pagination.
@@ -239,11 +242,20 @@ paths:
           description: Has match
           schema:
             type: boolean
+        - name: term_contains
+          in: query
+          description: Filter by terms that contain the provided value
+          schema:
+            type: string
         - name: sort
           in: query
           schema:
             type: string
             enum:
+              - +term_name
+              - -term_name
+              - +entity_name
+              - -entity_name
               - +ingredient_term
               - -ingredient_term
               - +matched_ingredient
