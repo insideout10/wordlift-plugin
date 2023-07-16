@@ -143,6 +143,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.47.0 (2023-07-16) =
+A new improved dashboard for our whitelabel customers.
+
 = 3.46.0 (2023-07-04) =
 We're testing a new onboarding flow to make things easier 💫
 
