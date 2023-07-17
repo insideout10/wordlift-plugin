@@ -4,6 +4,7 @@ namespace Wordlift\Modules\Dashboard\Post_Entity_Match;
 
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\Wordpress\Wordpress_Dataset_Content_Service_Hooks;
 use Wordlift\Entity\Entity_Uri_Generator;
 use Wordlift\Modules\Common\Api\Cursor;
 use Wordlift\Modules\Common\Api\Cursor_Page;
@@ -221,7 +222,7 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 			Wordpress_Content_Service::get_instance()->set_entity_id( $content_id, $uri );
 		}
 
-		$match_id = $this->match_service->get_id(
+		$match_id = Wordpress_Dataset_Content_Service_Hooks::get_id_or_create(
 			$post_id,
 			Object_Type_Enum::POST
 		);

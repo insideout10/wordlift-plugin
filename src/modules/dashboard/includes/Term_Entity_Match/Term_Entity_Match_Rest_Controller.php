@@ -4,6 +4,7 @@ namespace Wordlift\Modules\Dashboard\Term_Entity_Match;
 
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\Wordpress\Wordpress_Dataset_Content_Service_Hooks;
 use Wordlift\Entity\Entity_Uri_Generator;
 use Wordlift\Modules\Common\Api\Cursor;
 use Wordlift\Modules\Common\Api\Cursor_Page;
@@ -48,13 +49,13 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 				'methods'             => 'GET',
 				'callback'            => array( $this, 'get_term_matches' ),
 				'args'                => array(
-					'cursor'                   => array(
+					'cursor'        => array(
 						'type'              => 'string',
 						'default'           => Cursor::EMPTY_CURSOR_AS_BASE64_STRING,
 						'validate_callback' => 'rest_validate_request_arg',
 						'sanitize_callback' => array( Cursor::class, 'rest_sanitize_request_arg' ),
 					),
-					'limit'                    => array(
+					'limit'         => array(
 						'type'              => 'integer',
 						'validate_callback' => 'rest_validate_request_arg',
 						'default'           => 10,
@@ -62,21 +63,21 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 						'maximum'           => 100,
 						'sanitize_callback' => 'absint',
 					),
-					'taxonomies'               => array(
+					'taxonomies'    => array(
 						'type'              => 'array',
 						'validate_callback' => 'rest_validate_request_arg',
 					),
-					'has_match'                => array(
+					'has_match'     => array(
 						'type'              => 'boolean',
 						'required'          => false,
 						'validate_callback' => 'rest_validate_request_arg',
 					),
-					'ingredient_name_contains' => array(
+					'term_contains' => array(
 						'type'              => 'string',
 						'required'          => false,
 						'validate_callback' => 'rest_validate_request_arg',
 					),
-					'sort'                     => array(
+					'sort'          => array(
 						'type'              => 'string',
 						'required'          => 'false',
 						'enum'              => array(
@@ -165,8 +166,8 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 		if ( $request->has_param( 'has_match' ) ) {
 			$cursor['query']['has_match'] = $request->get_param( 'has_match' );
 		}
-		if ( $request->has_param( 'ingredient_name_contains' ) ) {
-			$cursor['query']['ingredient_name_contains'] = $request->get_param( 'ingredient_name_contains' );
+		if ( $request->has_param( 'term_contains' ) ) {
+			$cursor['query']['term_contains'] = $request->get_param( 'term_contains' );
 		}
 
 		// Query.
@@ -178,22 +179,22 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 			)
 		);
 
-		$has_match                = isset( $cursor['query']['has_match'] ) ? $cursor['query']['has_match'] : null;
-		$ingredient_name_contains = isset( $cursor['query']['ingredient_name_contains'] ) ? $cursor['query']['ingredient_name_contains'] : null;
+		$has_match     = isset( $cursor['query']['has_match'] ) ? $cursor['query']['has_match'] : null;
+		$term_contains = isset( $cursor['query']['term_contains'] ) ? $cursor['query']['term_contains'] : null;
 
 		$items = $this->match_service->list_items(
 			array(
 				// Query
-				'taxonomies'               => $taxonomies,
-				'has_match'                => $has_match,
-				'ingredient_name_contains' => $ingredient_name_contains,
+				'taxonomies'    => $taxonomies,
+				'has_match'     => $has_match,
+				'term_contains' => $term_contains,
 				// Cursor-Pagination
-				'position'                 => $cursor['position'],
-				'element'                  => $cursor['element'],
-				'direction'                => $cursor['direction'],
+				'position'      => $cursor['position'],
+				'element'       => $cursor['element'],
+				'direction'     => $cursor['direction'],
 				// `+1` to check if we have other results.
-				'limit'                    => $cursor['limit'] + 1,
-				'sort'                     => $cursor['sort'],
+				'limit'         => $cursor['limit'] + 1,
+				'sort'          => $cursor['sort'],
 			)
 		);
 
@@ -226,7 +227,7 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 			Wordpress_Content_Service::get_instance()->set_entity_id( $content_id, $uri );
 		}
 
-		$match_id = $this->match_service->get_id(
+		$match_id = Wordpress_Dataset_Content_Service_Hooks::get_id_or_create(
 			$term_id,
 			Object_Type_Enum::TERM
 		);

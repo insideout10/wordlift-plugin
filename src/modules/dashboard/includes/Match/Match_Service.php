@@ -54,6 +54,7 @@ abstract class Match_Service {
 			// `{$wpdb->prefix}` cant be escaped for preparing.
 			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$results = $wpdb->get_row( $wpdb->prepare( $query, $match_id, $content_id, $content_type ), ARRAY_A );
+
 			return Match_Entry::from( $results );
 		}
 
@@ -69,30 +70,6 @@ abstract class Match_Service {
 			return Match_Entry::from( $results );
 		}
 
-	}
-
-	/**
-	 * @param $content_id int
-	 * @param $content_type int
-	 * @throws \Exception Throw Exception if the entry is not found.
-	 * @return int
-	 */
-	public function get_id( $content_id, $content_type ) {
-		global $wpdb;
-		$result = $wpdb->get_var(
-			// `{$wpdb->prefix}` cant be escaped for preparing.
-			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$wpdb->prepare(
-				"SELECT id FROM {$wpdb->prefix}wl_entities WHERE content_id = %d AND content_type = %d",
-				$content_id,
-				$content_type
-			)
-		);
-		if ( null === $result ) {
-			throw new \Exception( "Unable to find match id for {$content_id} and {$content_type}" );
-		}
-
-		return $result;
 	}
 
 }

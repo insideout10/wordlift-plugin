@@ -66,7 +66,7 @@ class Wordpress_Dataset_Content_Service_Hooks {
 				$rel_uri = Entity_Uri_Generator::create_uri( $content_id->get_type(), $content_id->get_id() );
 				$content_service->set_entity_id( $content_id, $rel_uri );
 			}
-		// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 		} catch ( Exception $e ) {
 			// Don't report.
 		}
@@ -75,6 +75,43 @@ class Wordpress_Dataset_Content_Service_Hooks {
 	private static function delete( $content_id ) {
 		$content_service = Wordpress_Content_Service::get_instance();
 		$content_service->delete( $content_id );
+	}
+
+	/**
+	 * @param $content_id
+	 * @param $content_type
+	 *
+	 * @return string|null
+	 */
+	public static function get_id( $content_id, $content_type ) {
+		global $wpdb;
+
+		return $wpdb->get_var(
+		// `{$wpdb->prefix}` cant be escaped for preparing.
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$wpdb->prepare(
+				"SELECT id FROM {$wpdb->prefix}wl_entities WHERE content_id = %d AND content_type = %d",
+				$content_id,
+				$content_type
+			)
+		);
+	}
+
+	public static function get_id_or_create( $content_id, $content_type ) {
+		$try_1 = self::get_id( $content_id, $content_type );
+		if ( isset( $try_1 ) ) {
+			return $try_1;
+		}
+
+		// ID, not found, create it.
+		self::set_entity_id( new Wordpress_Content_Id( $content_id, $content_type ) );
+
+		$try_2 = self::get_id( $content_id, $content_type );
+		if ( isset( $try_2 ) ) {
+			return $try_2;
+		}
+
+		throw new Exception( "Can't get ID for content ID $content_id, content type $content_type." );
 	}
 
 }

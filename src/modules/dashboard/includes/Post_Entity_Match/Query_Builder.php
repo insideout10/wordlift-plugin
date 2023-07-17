@@ -38,10 +38,11 @@ class Query_Builder extends Match_Query_Builder {
 		SELECT p.ID as id,
 		       p.post_title as post_title,
 		       p.post_status as post_status,
+		       p.post_modified_gmt as date_modified_gmt,
 		       parent.post_title as parent_post_title,
 		       parent.ID as parent_post_id,
 		       e.about_jsonld as match_jsonld,
-		       e.id AS match_id 
+		       e.id AS match_id
 			FROM {$wpdb->prefix}posts p
 			LEFT JOIN {$wpdb->prefix}postmeta pm ON p.ID = pm.post_id AND pm.meta_key = 'wprm_parent_post_id' 
 			LEFT JOIN {$wpdb->prefix}posts parent ON pm.meta_value = parent.ID 

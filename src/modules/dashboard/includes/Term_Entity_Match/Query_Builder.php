@@ -35,7 +35,7 @@ class Query_Builder extends Match_Query_Builder {
 		";
 
 		$this->cursor()
-			 ->ingredient_name_contains()
+			 ->term_contains()
 			 ->taxonomy()
 			 ->has_match()
 			 ->order_by()
@@ -67,13 +67,13 @@ class Query_Builder extends Match_Query_Builder {
 	 *
 	 * @return $this
 	 */
-	public function ingredient_name_contains() {
+	public function term_contains() {
 		global $wpdb;
 
-		// If the ingredient_name_contains value is a non-empty string, add the filter
-		if ( is_string( $this->params['ingredient_name_contains'] ) && ! empty( $this->params['ingredient_name_contains'] ) ) {
-			$ingredient_name_contains = $this->params['ingredient_name_contains'];
-			$this->sql               .= $wpdb->prepare( ' AND t.name LIKE %s', '%' . $ingredient_name_contains . '%' );
+		// If the term_contains value is a non-empty string, add the filter
+		if ( is_string( $this->params['term_contains'] ) && ! empty( $this->params['term_contains'] ) ) {
+			$term_contains = $this->params['term_contains'];
+			$this->sql    .= $wpdb->prepare( ' AND t.name LIKE %s', '%' . $term_contains . '%' );
 		}
 
 		return $this;
