@@ -6,6 +6,7 @@
  * @package Wordlift
  */
 
+use Wordlift\Api\Default_Api_Service;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Jsonld\Graph;
 use Wordlift\Jsonld\Jsonld_Context_Enum;
@@ -195,43 +196,6 @@ class Wordlift_Jsonld_Service {
 		'WpHeader',
 		'WpSideBar',
 	);
-
-	/**
-	 * A {@link Wordlift_Entity_Service} instance.
-	 *
-	 * @since  3.8.0
-	 * @access private
-	 * @var Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
-	 */
-	private $entity_service;
-
-	/**
-	 * A {@link Wordlift_Term_JsonLd_Adapter} instance.
-	 *
-	 * @since  3.32.0
-	 * @access private
-	 * @var Wordlift_Term_JsonLd_Adapter $entity_service A {@link Wordlift_Term_JsonLd_Adapter} instance.
-	 */
-	private $term_jsonld_adapter;
-
-	/**
-	 * A {@link Wordlift_Post_Converter} instance.
-	 *
-	 * @since  3.8.0
-	 * @access private
-	 * @var \Wordlift_Post_Converter A {@link Wordlift_Post_Converter} instance.
-	 */
-	private $converter;
-
-	/**
-	 * A {@link Wordlift_Website_Jsonld_Converter} instance.
-	 *
-	 * @since  3.14.0
-	 * @access private
-	 * @var \Wordlift_Website_Jsonld_Converter A {@link Wordlift_Website_Jsonld_Converter} instance.
-	 */
-	private $website_converter;
-
 	/**
 	 * The singleton instance for the JSON-LD service.
 	 *
@@ -240,6 +204,45 @@ class Wordlift_Jsonld_Service {
 	 * @var \Wordlift_Jsonld_Service $instance The singleton instance for the JSON-LD service.
 	 */
 	private static $instance;
+	/**
+	 * A {@link Wordlift_Entity_Service} instance.
+	 *
+	 * @since  3.8.0
+	 * @access private
+	 * @var Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
+	 */
+	private $entity_service;
+	/**
+	 * A {@link Wordlift_Term_JsonLd_Adapter} instance.
+	 *
+	 * @since  3.32.0
+	 * @access private
+	 * @var Wordlift_Term_JsonLd_Adapter $entity_service A {@link Wordlift_Term_JsonLd_Adapter} instance.
+	 */
+	private $term_jsonld_adapter;
+	/**
+	 * A {@link Wordlift_Post_Converter} instance.
+	 *
+	 * @since  3.8.0
+	 * @access private
+	 * @var \Wordlift_Post_Converter A {@link Wordlift_Post_Converter} instance.
+	 */
+	private $converter;
+	/**
+	 * A {@link Wordlift_Website_Jsonld_Converter} instance.
+	 *
+	 * @since  3.14.0
+	 * @access private
+	 * @var \Wordlift_Website_Jsonld_Converter A {@link Wordlift_Website_Jsonld_Converter} instance.
+	 */
+	private $website_converter;
+	/**
+	 * The {@link Api_Service} used to communicate with the remote APIs.
+	 *
+	 * @access private
+	 * @var Default_Api_Service
+	 */
+	private $api_service;
 
 	/**
 	 * Create a JSON-LD service.
@@ -253,6 +256,7 @@ class Wordlift_Jsonld_Service {
 	 */
 	public function __construct( $entity_service, $converter, $website_converter, $term_jsonld_adapter ) {
 
+		$this->api_service         = Default_Api_Service::get_instance();
 		$this->entity_service      = $entity_service;
 		$this->converter           = $converter;
 		$this->website_converter   = $website_converter;
@@ -395,10 +399,12 @@ class Wordlift_Jsonld_Service {
 		 *
 		 * @return array
 		 * @since 3.27.2
-		 * @var $jsonld array The final jsonld before outputting to page.
+		 * @var $jsonld_arr array The final jsonld before outputting to page.
 		 * @var $post_id int The post id for which the jsonld is generated.
 		 */
 		$jsonld_arr = apply_filters( 'wl_after_get_jsonld', $jsonld_arr, $post_id, $context );
+
+		$this->set_events_request( $jsonld_arr, $post_id, $context );
 
 		return $jsonld_arr;
 	}
@@ -480,6 +486,70 @@ class Wordlift_Jsonld_Service {
 		// Check if the labels match any part of the title.
 		return 1 === preg_match( '/\b(' . implode( '|', $labels ) . ')\b/iu', $title );
 
+	}
+
+	/**
+	 * Set events request.
+	 *
+	 * @param $jsonld_arr array The final jsonld before outputting to page.
+	 * @param $post_id int The post id for which the jsonld is generated.
+	 * @param $context int A context for the JSON-LD generation, valid values in Jsonld_Context_Enum
+	 */
+	private function set_events_request( $jsonld_arr, $post_id, $context ) {
+		// If context is not PAGE or the array is empty, return early.
+		if ( Jsonld_Context_Enum::PAGE !== $context || empty( $jsonld_arr[0] ) ) {
+			return;
+		}
+
+		// Flag to indicate if we should make an API request.
+		$change_status = false;
+
+		// Get data from the array.
+		$data = $jsonld_arr[0];
+
+		// Fetch the initial 'about' and 'mentions' counts from post meta.
+		$counts = [
+			'about'    => get_post_meta( $post_id, 'wl_about_count', true ) ? : 0,
+			'mentions' => get_post_meta( $post_id, 'wl_mentions_count', true ) ? : 0,
+		];
+
+		// Iterate over the counts array.
+		foreach ( $counts as $key => $count ) {
+			// Check if data has 'about' or 'mentions' and the count is different from the existing meta value.
+			if ( ! empty( $data[ $key ] ) ) {
+				$new_count = count( $data[ $key ] );
+				if ( $count !== $new_count ) {
+					// Set flag to true if counts have changed.
+					$change_status = true;
+
+					// Update the counts array with new count.
+					$counts[ $key ] = $new_count;
+
+					// Update post meta with new count.
+					update_post_meta( $post_id, 'wl_' . $key . '_count', $new_count );
+				}
+			}
+		}
+
+		// If the count has changed, make the API request.
+		if ( $change_status ) {
+			$this->api_service->request(
+				'POST',
+				'/plugin/events',
+				[ 'Content-Type' => 'application/json' ],
+				wp_json_encode( [
+					'source' => 'jsonld',
+					'args'   => [
+						[ 'about_count' => $counts['about'] ],
+						[ 'mentions_count' => $counts['mentions'] ],
+					],
+					'url'    => get_permalink( $post_id ),
+				] ),
+				0.001,
+				null,
+				[ 'blocking' => false ]
+			);
+		}
 	}
 
 }
