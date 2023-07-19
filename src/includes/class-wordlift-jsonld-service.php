@@ -21,6 +21,11 @@ use Wordlift\Relation\Relations;
  */
 class Wordlift_Jsonld_Service {
 
+	/**
+	 * Creative work types.
+	 *
+	 * @var string[]
+	 */
 	private static $creative_work_types = array(
 		'AmpStory',
 		'ArchiveComponent',
@@ -196,6 +201,7 @@ class Wordlift_Jsonld_Service {
 		'WpHeader',
 		'WpSideBar',
 	);
+
 	/**
 	 * The singleton instance for the JSON-LD service.
 	 *
@@ -204,6 +210,7 @@ class Wordlift_Jsonld_Service {
 	 * @var \Wordlift_Jsonld_Service $instance The singleton instance for the JSON-LD service.
 	 */
 	private static $instance;
+
 	/**
 	 * A {@link Wordlift_Entity_Service} instance.
 	 *
@@ -212,6 +219,7 @@ class Wordlift_Jsonld_Service {
 	 * @var Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
 	 */
 	private $entity_service;
+
 	/**
 	 * A {@link Wordlift_Term_JsonLd_Adapter} instance.
 	 *
@@ -220,6 +228,7 @@ class Wordlift_Jsonld_Service {
 	 * @var Wordlift_Term_JsonLd_Adapter $entity_service A {@link Wordlift_Term_JsonLd_Adapter} instance.
 	 */
 	private $term_jsonld_adapter;
+
 	/**
 	 * A {@link Wordlift_Post_Converter} instance.
 	 *
@@ -228,6 +237,7 @@ class Wordlift_Jsonld_Service {
 	 * @var \Wordlift_Post_Converter A {@link Wordlift_Post_Converter} instance.
 	 */
 	private $converter;
+
 	/**
 	 * A {@link Wordlift_Website_Jsonld_Converter} instance.
 	 *
@@ -236,6 +246,7 @@ class Wordlift_Jsonld_Service {
 	 * @var \Wordlift_Website_Jsonld_Converter A {@link Wordlift_Website_Jsonld_Converter} instance.
 	 */
 	private $website_converter;
+
 	/**
 	 * The {@link Api_Service} used to communicate with the remote APIs.
 	 *
