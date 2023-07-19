@@ -9,6 +9,7 @@ namespace Wordlift\Vocabulary\Jsonld;
 use Wordlift\Api\Default_Api_Service;
 use Wordlift\Jsonld\Jsonld_Context_Enum;
 use Wordlift_Log_Service;
+use Wordlift_Url_Property_Service;
 
 /**
  * Class Term_Jsonld
@@ -88,10 +89,10 @@ class Term_Jsonld {
 		$data = $jsonld_arr[0];
 
 		// Fetch the initial 'about' and 'mentions' counts from term meta.
-		$counts = [
+		$counts = array(
 			'about'    => get_term_meta( $term_id, 'wl_about_count', true ) ? : 0,
 			'mentions' => get_term_meta( $term_id, 'wl_mentions_count', true ) ? : 0,
-		];
+		);
 
 		// Iterate over the counts array.
 		foreach ( $counts as $key => $count ) {
@@ -116,19 +117,40 @@ class Term_Jsonld {
 			$this->api_service->request(
 				'POST',
 				'/plugin/events',
-				[ 'Content-Type' => 'application/json' ],
-				wp_json_encode( [
+				array( 'Content-Type' => 'application/json' ),
+				wp_json_encode( array(
 					'source' => 'jsonld',
-					'args'   => [
-						[ 'about_count' => $counts['about'] ],
-						[ 'mentions_count' => $counts['mentions'] ],
-					],
+					'args'   => array(
+						array( 'about_count' => $counts['about'] ),
+						array( 'mentions_count' => $counts['mentions'] ),
+					),
 					'url'    => $this->get_term_url( $term_id ),
-				] ),
+				) ),
 				0.001,
 				null,
-				[ 'blocking' => false ]
+				array( 'blocking' => false )
 			);
 		}
 	}
+
+	/**
+	 * Get term url.
+	 *
+	 * @param $id
+	 *
+	 * @return array|false|int|mixed|string|\WP_Error|\WP_Term|null
+	 */
+	private function get_term_url( $id ) {
+		if ( null === $id ) {
+			return isset( $_SERVER['REQUEST_URI'] ) ? filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL ) : '';
+		}
+
+		$maybe_url = get_term_meta( $id, Wordlift_Url_Property_Service::META_KEY, true );
+		if ( ! empty( $maybe_url ) ) {
+			return $maybe_url;
+		}
+
+		return get_term_link( $id );
+	}
+
 }

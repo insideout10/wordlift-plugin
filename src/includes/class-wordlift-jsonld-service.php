@@ -6,7 +6,6 @@
  * @package Wordlift
  */
 
-use Wordlift\Api\Default_Api_Service;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Jsonld\Graph;
 use Wordlift\Jsonld\Jsonld_Context_Enum;

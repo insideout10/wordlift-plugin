@@ -94,7 +94,7 @@ class Wordlift_Term_JsonLd_Adapter {
 		// More than 2 items are present, so construct the post_jsonld data
 		$post_jsonld['@context']        = 'https://schema.org';
 		$post_jsonld['@type']           = 'ItemList';
-		$post_jsonld['url']             = $this->get_term_url( $id );
+		$post_jsonld['url']             = self::get_term_url( $id );
 		$post_jsonld['itemListElement'] = array();
 		$position                       = 1;
 

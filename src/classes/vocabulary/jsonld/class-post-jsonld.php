@@ -177,10 +177,10 @@ class Post_Jsonld {
 		$data = $jsonld_arr[0];
 
 		// Fetch the initial 'about' and 'mentions' counts from post meta.
-		$counts = [
+		$counts = array(
 			'about'    => get_post_meta( $post_id, 'wl_about_count', true ) ? : 0,
 			'mentions' => get_post_meta( $post_id, 'wl_mentions_count', true ) ? : 0,
-		];
+		);
 
 		// Iterate over the counts array.
 		foreach ( $counts as $key => $count ) {
@@ -205,18 +205,18 @@ class Post_Jsonld {
 			$this->api_service->request(
 				'POST',
 				'/plugin/events',
-				[ 'Content-Type' => 'application/json' ],
-				wp_json_encode( [
+				array( 'Content-Type' => 'application/json' ),
+				wp_json_encode( array(
 					'source' => 'jsonld',
-					'args'   => [
-						[ 'about_count' => $counts['about'] ],
-						[ 'mentions_count' => $counts['mentions'] ],
-					],
+					'args'   => array(
+						array( 'about_count' => $counts['about'] ),
+						array( 'mentions_count' => $counts['mentions'] ),
+					),
 					'url'    => get_permalink( $post_id ),
-				] ),
+				) ),
 				0.001,
 				null,
-				[ 'blocking' => false ]
+				array( 'blocking' => false )
 			);
 		}
 	}
