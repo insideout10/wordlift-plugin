@@ -9,7 +9,6 @@
  * @subpackage Wordlift/public
  */
 
-use Wordlift\Api\Default_Api_Service;
 use Wordlift\Jsonld\Jsonld_Context_Enum;
 use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Jsonld\Term_Reference;
@@ -44,14 +43,6 @@ class Wordlift_Term_JsonLd_Adapter {
 	private $post_id_to_jsonld_converter;
 
 	/**
-	 * The {@link Api_Service} used to communicate with the remote APIs.
-	 *
-	 * @access private
-	 * @var Default_Api_Service
-	 */
-	private $api_service;
-
-	/**
 	 * Wordlift_Term_JsonLd_Adapter constructor.
 	 *
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
@@ -63,7 +54,6 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		add_action( 'wp_head', array( $this, 'wp_head' ) );
 
-		$this->api_service                 = Default_Api_Service::get_instance();
 		$this->entity_uri_service          = $entity_uri_service;
 		$this->post_id_to_jsonld_converter = $post_id_to_jsonld_converter;
 
@@ -230,8 +220,9 @@ class Wordlift_Term_JsonLd_Adapter {
 		 * Filter: wl_term_jsonld_array
 		 * @var $id int Term id
 		 * @var $jsonld_array array An array containing jsonld for term and entities.
+		 * @var $context int A context for the JSON-LD generation, valid values in Jsonld_Context_Enum
 		 */
-		$arr = apply_filters( 'wl_term_jsonld_array', $result, $id );
+		$arr = apply_filters( 'wl_term_jsonld_array', $result, $id, $context );
 
 		$references = array();
 
@@ -245,8 +236,6 @@ class Wordlift_Term_JsonLd_Adapter {
 		}
 
 		$jsonld_array = array_merge( $arr['jsonld'], $references );
-
-		$this->set_terms_request( $jsonld_array, $id, $context );
 
 		return $jsonld_array;
 	}
@@ -337,67 +326,4 @@ class Wordlift_Term_JsonLd_Adapter {
 		return $references_jsonld;
 	}
 
-	/**
-	 * Set events request.
-	 *
-	 * @param $jsonld_arr array The final jsonld before outputting to page.
-	 * @param $term_id int The term id for which the jsonld is generated.
-	 * @param $context int A context for the JSON-LD generation, valid values in Jsonld_Context_Enum
-	 */
-	private function set_terms_request( $jsonld_arr, $term_id, $context ) {
-		// If context is not PAGE or the array is empty, return early.
-		if ( Jsonld_Context_Enum::PAGE !== $context || empty( $jsonld_arr[0] ) ) {
-			return;
-		}
-
-		// Flag to indicate if we should make an API request.
-		$change_status = false;
-
-		// Get data from the array.
-		$data = $jsonld_arr[0];
-
-		// Fetch the initial 'about' and 'mentions' counts from term meta.
-		$counts = [
-			'about'    => get_term_meta( $term_id, 'wl_about_count', true ) ? : 0,
-			'mentions' => get_term_meta( $term_id, 'wl_mentions_count', true ) ? : 0,
-		];
-
-		// Iterate over the counts array.
-		foreach ( $counts as $key => $count ) {
-			// Check if data has 'about' or 'mentions' and the count is different from the existing meta value.
-			if ( ! empty( $data[ $key ] ) ) {
-				$new_count = count( $data[ $key ] );
-				if ( $count !== $new_count ) {
-					// Set flag to true if counts have changed.
-					$change_status = true;
-
-					// Update the counts array with new count.
-					$counts[ $key ] = $new_count;
-
-					// Update term meta with new count.
-					update_term_meta( $term_id, 'wl_' . $key . '_count', $new_count );
-				}
-			}
-		}
-
-		// If the count has changed, make the API request.
-		if ( $change_status ) {
-			$this->api_service->request(
-				'POST',
-				'/plugin/events',
-				[ 'Content-Type' => 'application/json' ],
-				wp_json_encode( [
-					'source' => 'jsonld',
-					'args'   => [
-						[ 'about_count' => $counts['about'] ],
-						[ 'mentions_count' => $counts['mentions'] ],
-					],
-					'url'    => $this->get_term_url( $term_id ),
-				] ),
-				0.001,
-				null,
-				[ 'blocking' => false ]
-			);
-		}
-	}
 }
