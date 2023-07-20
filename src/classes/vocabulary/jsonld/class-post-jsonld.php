@@ -156,18 +156,19 @@ class Post_Jsonld {
 		return $jsonld;
 	}
 
-
 	/**
 	 * Set events request.
 	 *
 	 * @param $jsonld_arr array The final jsonld before outputting to page.
 	 * @param $post_id int The post id for which the jsonld is generated.
 	 * @param $context int A context for the JSON-LD generation, valid values in Jsonld_Context_Enum
+	 *
+	 * @return array
 	 */
 	public function set_events_request( $jsonld_arr, $post_id, $context ) {
 		// If context is not PAGE or the array is empty, return early.
 		if ( Jsonld_Context_Enum::PAGE !== $context || empty( $jsonld_arr[0] ) ) {
-			return;
+			return $jsonld_arr;
 		}
 
 		// Flag to indicate if we should make an API request.
@@ -178,8 +179,8 @@ class Post_Jsonld {
 
 		// Fetch the initial 'about' and 'mentions' counts from post meta.
 		$counts = array(
-			'about'    => get_post_meta( $post_id, 'wl_about_count', true ) ? : 0,
-			'mentions' => get_post_meta( $post_id, 'wl_mentions_count', true ) ? : 0,
+			'about'    => get_post_meta( $post_id, 'wl_about_count', true ) ? get_post_meta( $post_id, 'wl_about_count', true ) : 0,
+			'mentions' => get_post_meta( $post_id, 'wl_mentions_count', true ) ? get_post_meta( $post_id, 'wl_mentions_count', true ) : 0,
 		);
 
 		// Iterate over the counts array.
@@ -206,18 +207,22 @@ class Post_Jsonld {
 				'POST',
 				'/plugin/events',
 				array( 'Content-Type' => 'application/json' ),
-				wp_json_encode( array(
-					'source' => 'jsonld',
-					'args'   => array(
-						array( 'about_count' => $counts['about'] ),
-						array( 'mentions_count' => $counts['mentions'] ),
-					),
-					'url'    => get_permalink( $post_id ),
-				) ),
+				wp_json_encode(
+					array(
+						'source' => 'jsonld',
+						'args'   => array(
+							array( 'about_count' => $counts['about'] ),
+							array( 'mentions_count' => $counts['mentions'] ),
+						),
+						'url'    => get_permalink( $post_id ),
+					)
+				),
 				0.001,
 				null,
 				array( 'blocking' => false )
 			);
 		}
+
+		return $jsonld_arr;
 	}
 }

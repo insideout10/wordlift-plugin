@@ -75,11 +75,13 @@ class Term_Jsonld {
 	 * @param $jsonld_arr array The final jsonld before outputting to page.
 	 * @param $term_id int The term id for which the jsonld is generated.
 	 * @param $context int A context for the JSON-LD generation, valid values in Jsonld_Context_Enum
+	 *
+	 * @return array
 	 */
 	public function wl_term_jsonld_array_event( $jsonld_arr, $term_id, $context ) {
 		// If context is not PAGE or the array is empty, return early.
 		if ( Jsonld_Context_Enum::PAGE !== $context || empty( $jsonld_arr[0] ) ) {
-			return;
+			return $jsonld_arr;
 		}
 
 		// Flag to indicate if we should make an API request.
@@ -90,8 +92,8 @@ class Term_Jsonld {
 
 		// Fetch the initial 'about' and 'mentions' counts from term meta.
 		$counts = array(
-			'about'    => get_term_meta( $term_id, 'wl_about_count', true ) ? : 0,
-			'mentions' => get_term_meta( $term_id, 'wl_mentions_count', true ) ? : 0,
+			'about'    => get_term_meta( $term_id, 'wl_about_count', true ) ? get_term_meta( $term_id, 'wl_about_count', true ) : 0,
+			'mentions' => get_term_meta( $term_id, 'wl_mentions_count', true ) ? get_term_meta( $term_id, 'wl_mentions_count', true ) : 0,
 		);
 
 		// Iterate over the counts array.
@@ -118,19 +120,23 @@ class Term_Jsonld {
 				'POST',
 				'/plugin/events',
 				array( 'Content-Type' => 'application/json' ),
-				wp_json_encode( array(
-					'source' => 'jsonld',
-					'args'   => array(
-						array( 'about_count' => $counts['about'] ),
-						array( 'mentions_count' => $counts['mentions'] ),
-					),
-					'url'    => $this->get_term_url( $term_id ),
-				) ),
+				wp_json_encode(
+					array(
+						'source' => 'jsonld',
+						'args'   => array(
+							array( 'about_count' => $counts['about'] ),
+							array( 'mentions_count' => $counts['mentions'] ),
+						),
+						'url'    => $this->get_term_url( $term_id ),
+					)
+				),
 				0.001,
 				null,
 				array( 'blocking' => false )
 			);
 		}
+
+		return $jsonld_arr;
 	}
 
 	/**
