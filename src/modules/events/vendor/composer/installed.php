@@ -3,7 +3,7 @@
         'name' => 'wordlift/events',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => '7c2127fb77a6a7581f2f75cd0c42a001ec914102',
+        'reference' => '8ecf5a41e6c7973462fa86644e2e9ef88737d2b7',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'wordlift/events' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => '7c2127fb77a6a7581f2f75cd0c42a001ec914102',
+            'reference' => '8ecf5a41e6c7973462fa86644e2e9ef88737d2b7',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

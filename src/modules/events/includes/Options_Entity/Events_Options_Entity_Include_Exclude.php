@@ -3,7 +3,7 @@
 namespace Wordlift\Modules\Events\Options_Entity;
 
 use Exception;
-use Wordlift\Api\Default_Api_Service;
+use Wordlift\Api\Api_Service;
 
 /**
  * Class Events_Options_Entity_Include_Exclude
@@ -15,14 +15,14 @@ class Events_Options_Entity_Include_Exclude {
 	 * The {@link Api_Service} used to communicate with the remote APIs.
 	 *
 	 * @access private
-	 * @var Default_Api_Service
+	 * @var Api_Service
 	 */
 	private $api_service;
 
 	/**
-	 * @param Default_Api_Service $api_service
+	 * @param Api_Service $api_service
 	 */
-	public function __construct( Default_Api_Service $api_service ) {
+	public function __construct( Api_Service $api_service ) {
 		$this->api_service = $api_service;
 	}
 
