@@ -53,6 +53,46 @@ function __wl_include_exclude_get_payload( $config ) {
 }
 
 /**
+ * Get included and excluded urls.
+ *
+ * @param $config
+ * @param $old_config
+ *
+ * @return array
+ */
+function __wl_get_included_and_excluded_urls($config, $old_config) {
+    // Get the payload for both new and old values:
+    $payload_new = __wl_include_exclude_get_payload( $config );
+    $payload_old = __wl_include_exclude_get_payload( $old_config );
+
+    // Extract URLs from payloads.
+    $urls_new = array_column( $payload_new, 'url' );
+    $urls_old = array_column( $payload_old, 'url' );
+
+    // Find added and removed URLs.
+    $urls_added   = array_diff( $urls_new, $urls_old );
+    $urls_removed = array_diff( $urls_old, $urls_new );
+
+    // Determine included and excluded URLs.
+    $included = ('include' === strtolower($config['include_exclude'])) ? $urls_added : $urls_removed;
+	$excluded = ('include' === strtolower($config['include_exclude'])) ? $urls_removed : $urls_added;
+
+    // Check if filter type has changed.
+    $filter_changed = strtolower( $config['include_exclude'] ) !== strtolower( $old_config['include_exclude'] );
+
+    if ($filter_changed) {
+        // Filter type changed, so we reverse the logic of adding URLs to included and excluded arrays.
+        $included = ('include' === strtolower($config['include_exclude'])) ? $urls_new : $urls_removed;
+        $excluded = ('include' === strtolower($config['include_exclude'])) ? $urls_removed : $urls_new;
+    }
+
+    return [
+        'included' => $included,
+        'excluded' => $excluded,
+    ];
+}
+
+/**
  * Include exclude load service.
  *
  * @return object|null
@@ -77,7 +117,7 @@ function __wl_save_old_config() {
 	$config = get_option( 'wl_exclude_include_urls_settings', array() );
 
 	// Save the current configuration to another option.
-	update_option( 'wl_old_exclude_include_urls_settings', $config );
+	update_option( 'wl_exclude_include_urls_settings_old', $config );
 }
 
 /**
@@ -106,34 +146,17 @@ function __wl_include_exclude_event_update() {
 	$config     = get_option( 'wl_exclude_include_urls_settings', array() );
 	$old_config = get_option( 'wl_exclude_include_urls_settings_old', array() );
 
-	// Get the payload for both new and old values:
-	$payload_new = __wl_include_exclude_get_payload( $config );
-	$payload_old = __wl_include_exclude_get_payload( $old_config );
-
-	// Extract URLs from payloads.
-	$urls_new = array_column( $payload_new, 'url' );
-	$urls_old = array_column( $payload_old, 'url' );
-
-	// Find added and removed URLs.
-	$urls_added   = array_diff( $urls_new, $urls_old );
-	$urls_removed = array_diff( $urls_old, $urls_new );
-
-	$included = $urls_added;
-	$excluded = $urls_removed;
-
-	if ( 'excluded' === strtolower( $config['include_exclude'] ) ) {
-		$included = $urls_removed;
-		$excluded = $urls_added;
-	}
+	// Get included and excluded URLs.
+	$urls = __wl_get_included_and_excluded_urls( $config, $old_config );
 
 	/** @var Include_Exclude_API $api */
 	$api = __wl_include_exclude_load_service();
 
 	// Call API method for each URL.
-	foreach ( $included as $url ) {
+	foreach ( $urls['included'] as $url ) {
 		$api->send_event( $url, 'include' );
 	}
-	foreach ( $excluded as $url ) {
+	foreach ( $urls['excluded'] as $url ) {
 		$api->send_event( $url, 'exclude' );
 	}
 }
@@ -141,9 +164,9 @@ function __wl_include_exclude_event_update() {
 /**
  * Fires after the value of a specific option has been successfully updated.
  */
-add_action( 'update_option_wl_exclude_include_urls_settings', '__wl_save_old_config', 5, 0 );
 add_action( 'update_option_wl_exclude_include_urls_settings', '__wl_include_exclude_push_config', 10, 0 );
 add_action( 'update_option_wl_exclude_include_urls_settings', '__wl_include_exclude_event_update', 15, 0 );
+add_action( 'update_option_wl_exclude_include_urls_settings', '__wl_save_old_config', 99, 0 );
 
 /**
  * Fires daily.
