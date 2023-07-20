@@ -24,149 +24,48 @@ if ( file_exists( __DIR__ . '/includes/vendor/autoload.php' ) ) {
 	require __DIR__ . '/includes/vendor/autoload.php';
 }
 
-/**
- * Include exclude get payload.
- *
- * @param $config
- *
- * @return array|array[]
- */
-function __wl_include_exclude_get_payload( $config ) {
+function __wl_include_exclude_push_config() {
+	// Get the configuration.
+	$config = get_option( 'wl_exclude_include_urls_settings', array() );
+
 	// Set the default data.
 	if ( ! is_array( $config ) || empty( $config ) || ! isset( $config['include_exclude'] ) || ! isset( $config['urls'] ) ) {
-		$config = array(
-			'include_exclude' => 'exclude',
-			'urls'            => '',
+		$config = get_option(
+			'wl_exclude_include_urls_settings',
+			array(
+				'include_exclude' => 'exclude',
+				'urls'            => '',
+			)
 		);
 	}
 
 	// Map the configuration to the payload.
-	return array_map(
+	$payload = array_map(
 		function ( $item ) use ( $config ) {
 			return array(
-				'url'  => ( 1 === preg_match( '@^https?://.*$@', $item ) ? $item : get_home_url( null, $item ) ),
+				'url'  =>
+					( 1 === preg_match( '@^https?://.*$@', $item ) ? $item : get_home_url( null, $item ) ),
 				'flag' => strtoupper( $config['include_exclude'] ),
 			);
 		},
 		array_filter( preg_split( '/[\r\n]+/', $config['urls'] ) )
 	);
-}
 
-/**
- * Get included and excluded urls.
- *
- * @param $config
- * @param $old_config
- *
- * @return array
- */
-function __wl_get_included_and_excluded_urls($config, $old_config) {
-    // Get the payload for both new and old values:
-    $payload_new = __wl_include_exclude_get_payload( $config );
-    $payload_old = __wl_include_exclude_get_payload( $old_config );
-
-    // Extract URLs from payloads.
-    $urls_new = array_column( $payload_new, 'url' );
-    $urls_old = array_column( $payload_old, 'url' );
-
-    // Find added and removed URLs.
-    $urls_added   = array_diff( $urls_new, $urls_old );
-    $urls_removed = array_diff( $urls_old, $urls_new );
-
-    // Determine included and excluded URLs.
-    $included = ('include' === strtolower($config['include_exclude'])) ? $urls_added : $urls_removed;
-	$excluded = ('include' === strtolower($config['include_exclude'])) ? $urls_removed : $urls_added;
-
-    // Check if filter type has changed.
-    $filter_changed = strtolower( $config['include_exclude'] ) !== strtolower( $old_config['include_exclude'] );
-
-    if ($filter_changed) {
-        // Filter type changed, so we reverse the logic of adding URLs to included and excluded arrays.
-        $included = ('include' === strtolower($config['include_exclude'])) ? $urls_new : $urls_removed;
-        $excluded = ('include' === strtolower($config['include_exclude'])) ? $urls_removed : $urls_new;
-    }
-
-    return [
-        'included' => $included,
-        'excluded' => $excluded,
-    ];
-}
-
-/**
- * Include exclude load service.
- *
- * @return object|null
- *
- * @throws Exception If the application fails to load the services configuration file or if the URL cannot be processed.
- */
-function __wl_include_exclude_load_service() {
 	// Load the service.
 	$container_builder = new ContainerBuilder();
 	$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
 	$loader->load( 'services.yml' );
 	$container_builder->compile();
 
-	return $container_builder->get( 'Wordlift\Modules\Include_Exclude_Push_Config\Include_Exclude_API' );
-}
-
-/**
- * Save old config.
- */
-function __wl_save_old_config() {
-	// Get the current configuration.
-	$config = get_option( 'wl_exclude_include_urls_settings', array() );
-
-	// Save the current configuration to another option.
-	update_option( 'wl_exclude_include_urls_settings_old', $config );
-}
-
-/**
- * Include exclude push config.
- *
- * @throws Exception If the application fails to load the services configuration file or if the URL cannot be processed.
- */
-function __wl_include_exclude_push_config() {
-	// Get the configuration.
-	$config = get_option( 'wl_exclude_include_urls_settings', array() );
-
-	$payload = __wl_include_exclude_get_payload( $config );
-
 	/** @var Include_Exclude_API $api */
-	$api = __wl_include_exclude_load_service();
+	$api = $container_builder->get( 'Wordlift\Modules\Include_Exclude_Push_Config\Include_Exclude_API' );
 	$api->update( $payload );
-}
-
-/**
- * Include exclude event update.
- *
- * @throws Exception If the application fails to load the services configuration file or if the URL cannot be processed.
- */
-function __wl_include_exclude_event_update() {
-	// Get the configurations.
-	$config     = get_option( 'wl_exclude_include_urls_settings', array() );
-	$old_config = get_option( 'wl_exclude_include_urls_settings_old', array() );
-
-	// Get included and excluded URLs.
-	$urls = __wl_get_included_and_excluded_urls( $config, $old_config );
-
-	/** @var Include_Exclude_API $api */
-	$api = __wl_include_exclude_load_service();
-
-	// Call API method for each URL.
-	foreach ( $urls['included'] as $url ) {
-		$api->send_event( $url, 'include' );
-	}
-	foreach ( $urls['excluded'] as $url ) {
-		$api->send_event( $url, 'exclude' );
-	}
 }
 
 /**
  * Fires after the value of a specific option has been successfully updated.
  */
 add_action( 'update_option_wl_exclude_include_urls_settings', '__wl_include_exclude_push_config', 10, 0 );
-add_action( 'update_option_wl_exclude_include_urls_settings', '__wl_include_exclude_event_update', 15, 0 );
-add_action( 'update_option_wl_exclude_include_urls_settings', '__wl_save_old_config', 99, 0 );
 
 /**
  * Fires daily.

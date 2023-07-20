@@ -31,31 +31,4 @@ class Include_Exclude_API {
 			wp_json_encode( $payload )
 		);
 	}
-
-	/**
-	 * Send event.
-	 *
-	 * @param $url
-	 * @param $value
-	 */
-	public function send_event( $url, $value ) {
-		$this->api_service->request(
-			'POST',
-			'/plugin/events',
-			array( 'content-type' => 'application/json' ),
-			wp_json_encode(
-				array(
-					'source' => 'include-exclude',
-					'args'   => array(
-						array( 'value' => $value ),
-					),
-					'url'    => $url,
-				)
-			),
-			0.001,
-			null,
-			array( 'blocking' => false )
-		);
-	}
-
 }

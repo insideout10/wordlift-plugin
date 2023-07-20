@@ -317,6 +317,7 @@ require_once __DIR__ . '/modules/include-exclude-push-config/load.php';
 require_once __DIR__ . '/modules/super-resolution/load.php';
 require_once __DIR__ . '/modules/redeem-code/load.php';
 require_once __DIR__ . '/modules/raptive-setup/load.php';
+require_once __DIR__ . '/modules/events/load.php';
 
 function _wl_update_plugins_raptive_domain( $update, $plugin_data, $plugin_file ) {
 	// Bail out if it's not our plugin.
