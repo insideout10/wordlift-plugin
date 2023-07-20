@@ -50,7 +50,7 @@ class Post_Query {
 		$this->set_sort();
 
 		$this->sql = "
-			SELECT p.ID,
+			SELECT p.ID as id,
 				p.post_title,
 				p.post_status,
 				p.post_modified_gmt as date_modified_gmt,
@@ -97,9 +97,15 @@ class Post_Query {
 	}
 
 	public function map_item( $item ) {
-		$item->view_link    = get_permalink( $item->ID );
-		$item->post_link    = get_edit_post_link( $item->ID );
-		$item->preview_link = get_preview_post_link( $item->ID );
+		if ( $item->id ) {
+			$item->post_link    = get_edit_post_link( $item->id, 'ui' );
+			$item->view_link    = get_permalink( $item->id );
+			$item->preview_link = get_preview_post_link( $item->id );
+		}
+
+		if ( $item->parent_post_id ) {
+			$item->parent_post_link = get_edit_post_link( $item->parent_post_id, 'ui' );
+		}
 
 		return $item;
 	}

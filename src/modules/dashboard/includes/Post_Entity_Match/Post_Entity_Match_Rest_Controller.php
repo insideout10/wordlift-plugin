@@ -161,14 +161,13 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 		$results       = $query->get_results();
 		$items         = $cursor->get_direction() === 'ASCENDING'
 			? array_slice( $results, 0, min( count( $results ), $limit ) )
-			: array_slice( $results, 1, min( count( $results ), $limit ) );
+			: array_slice( $results, count( $results ) > $limit ? 1 : 0 );
 		$position      = current( $items )->{$cursor_sort->get_sort_property()};
 		$next_position = end( $items )->{$cursor_sort->get_sort_property()};
 
 		$self  = $cursor;
 		$first = new Cursor( null, 'INCLUDED', 'ASCENDING' );
-
-		$last = new Cursor( null, 'INCLUDED', 'DESCENDING' );
+		$last  = new Cursor( null, 'INCLUDED', 'DESCENDING' );
 
 		return new Page(
 			$items,
