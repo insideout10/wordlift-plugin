@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * initializes services based on the 'services.yml' configuration.
  * It also registers hooks for Post, Term, and Include/Exclude entities.
  *
- * @throws Exception if there are issues during the service initialization
+ * @throws Exception if there are issues during the service initialization.
  */
 function __wl_events__load() {
 	// Autoloader for plugin itself.

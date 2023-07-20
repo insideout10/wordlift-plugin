@@ -34,7 +34,6 @@ class Events_Options_Entity_Include_Exclude {
 		add_action( 'update_option_wl_exclude_include_urls_settings', array( $this, 'save_old_config' ), 99, 0 );
 	}
 
-
 	/**
 	 * Include exclude event update.
 	 *
@@ -68,7 +67,6 @@ class Events_Options_Entity_Include_Exclude {
 		update_option( 'wl_exclude_include_urls_settings_old', $config );
 	}
 
-
 	/**
 	 * Get included and excluded urls.
 	 *
@@ -88,10 +86,10 @@ class Events_Options_Entity_Include_Exclude {
 
 		// If both $urls_new and $urls_old are empty, there is no URL to process.
 		if ( empty( $urls_new ) && empty( $urls_old ) ) {
-			return [
-				'included' => [],
-				'excluded' => [],
-			];
+			return array(
+				'included' => array(),
+				'excluded' => array(),
+			);
 		}
 
 		// Find added and removed URLs.
@@ -111,10 +109,10 @@ class Events_Options_Entity_Include_Exclude {
 			$excluded = ( 'include' === strtolower( $config['include_exclude'] ) ) ? $urls_removed : $urls_new;
 		}
 
-		return [
+		return array(
 			'included' => $included,
 			'excluded' => $excluded,
-		];
+		);
 	}
 
 	/**

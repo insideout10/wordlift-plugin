@@ -53,12 +53,12 @@ class Events_Post_Entity_Jsonld {
 		$change_status = false;
 
 		// Fetch the initial 'about' and 'mentions' counts from post meta.
-		$counts = [
+		$counts = array(
 			'about'    => get_post_meta( $post_id, 'wl_about_count', true ) ? (int) get_post_meta( $post_id, 'wl_about_count', true ) : 0,
 			'mentions' => get_post_meta( $post_id, 'wl_mentions_count', true )
 				? (int) get_post_meta( $post_id, 'wl_mentions_count', true )
 				: 0,
-		];
+		);
 
 		// Check if $jsonld_arr is not empty
 		if ( ! empty( $jsonld_arr[0] ) ) {
@@ -81,15 +81,15 @@ class Events_Post_Entity_Jsonld {
 						// Update post meta with new count.
 						update_post_meta( $post_id, 'wl_' . $type . '_count', $new_count );
 					}
-				} // If the 'about' or 'mentions' has become empty, set it to 0.
-				else if ( $type_count > 0 ) {
+				} elseif ( $type_count > 0 ) {
+					// If the 'about' or 'mentions' has become empty, set it to 0.
 					$change_status   = true;
 					$counts[ $type ] = 0;
 					update_post_meta( $post_id, 'wl_' . $type . '_count', 0 );
 				}
 			}
-		} // If the $jsonld_arr is empty but the counts were previously more than 0.
-		else {
+		} else {
+			// If the $jsonld_arr is empty but the counts were previously more than 0.
 			foreach ( $counts as $type => $type_count ) {
 				if ( $type_count > 0 ) {
 					$change_status   = true;
