@@ -167,7 +167,7 @@ class No_Vocabulary_Terms_Jsonld extends Wordlift_Vocabulary_Terms_Unit_Test_Cas
 
 
 	public function test_when_post_is_annotated_with_term_with_dataset_uri_should_be_added_to_mentions() {
-
+		add_filter( 'wl_feature__enable__sync-blocking', '__return_true', PHP_INT_MAX );
 		$term_data = wp_insert_term( 'vocabulary_term_test_4', 'no_vocabulary_terms' );
 		$term_id   = $term_data['term_id'];
 		// Add it to a post.
@@ -182,7 +182,7 @@ class No_Vocabulary_Terms_Jsonld extends Wordlift_Vocabulary_Terms_Unit_Test_Cas
 		$this->assertTrue( array_key_exists( 'mentions', $post_jsonld ), 'Mentions should have the terms' );
 
 		$this->assertCount( 1, $post_jsonld['mentions'], 'The term mention should be present' );
-
+		remove_filter( 'wl_feature__enable__sync-blocking', '__return_true', PHP_INT_MAX );
 	}
 
 	function test_when_the_post_has_term_which_is_converted_to_entity_should_be_added_to_mentions() {

@@ -101,6 +101,10 @@ class Events_Post_Entity_Jsonld {
 
 		// If the count has changed, make the API request.
 		if ( $change_status ) {
+			// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+			$blocking = apply_filters( 'wl_feature__enable__sync-blocking', false );
+
+			// Apply the filter to the request args
 			$this->api_service->request(
 				'POST',
 				'/plugin/events',
@@ -115,9 +119,9 @@ class Events_Post_Entity_Jsonld {
 						'url'    => get_permalink( $post_id ),
 					)
 				),
-				0.001,
+				$blocking ? 60 : 0.001,
 				null,
-				array( 'blocking' => false )
+				array( 'blocking' => $blocking )
 			);
 		}
 
