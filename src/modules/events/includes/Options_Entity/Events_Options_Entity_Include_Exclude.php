@@ -22,7 +22,7 @@ class Events_Options_Entity_Include_Exclude {
 	/**
 	 * @param Api_Service $api_service
 	 */
-	public function __construct( Api_Service $api_service ) {
+	public function __construct( $api_service ) {
 		$this->api_service = $api_service;
 	}
 
@@ -30,22 +30,20 @@ class Events_Options_Entity_Include_Exclude {
 	 * Register hooks.
 	 */
 	public function register_hooks() {
-		add_action( 'update_option_wl_exclude_include_urls_settings', array( $this, 'event_update' ), 15, 0 );
-		add_action( 'update_option_wl_exclude_include_urls_settings', array( $this, 'save_old_config' ), 99, 0 );
+		add_action( 'update_option_wl_exclude_include_urls_settings', array( $this, 'event_update' ), 15, 2 );
 	}
 
 	/**
 	 * Include exclude event update.
 	 *
+	 * @param mixed $old_value
+	 * @param mixed $new_value
+	 *
 	 * @throws Exception If the application fails to load the services configuration file or if the URL cannot be processed.
 	 */
-	public function event_update() {
+	public function event_update( $old_value, $new_value ) {
 		// Get the configurations.
-		$config     = get_option( 'wl_exclude_include_urls_settings', array() );
-		$old_config = get_option( 'wl_exclude_include_urls_settings_old', array() );
-
-		// Get included and excluded URLs.
-		$urls = $this->get_urls( $config, $old_config );
+		$urls = $this->get_urls( $new_value, $old_value );
 
 		// Call API method for each URL.
 		foreach ( $urls['included'] as $url ) {
@@ -54,17 +52,6 @@ class Events_Options_Entity_Include_Exclude {
 		foreach ( $urls['excluded'] as $url ) {
 			$this->send_event( $url, 'exclude' );
 		}
-	}
-
-	/**
-	 * Save old config.
-	 */
-	public function save_old_config() {
-		// Get the current configuration.
-		$config = get_option( 'wl_exclude_include_urls_settings', array() );
-
-		// Save the current configuration to another option.
-		update_option( 'wl_exclude_include_urls_settings_old', $config );
 	}
 
 	/**
