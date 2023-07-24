@@ -44,87 +44,149 @@ class Events_Post_Entity_Jsonld {
 	 * @return array
 	 */
 	public function set_events_request( $jsonld_arr, $post_id, $context ) {
-		// If context is not PAGE, return early.
-		if ( Jsonld_Context_Enum::PAGE !== $context ) {
+		if ( $this->should_return_early( $context ) ) {
 			return $jsonld_arr;
 		}
 
-		// Flag to indicate if we should make an API request.
-		$change_status = false;
+		$counts = $this->get_initial_counts_post( $post_id );
 
-		// Fetch the initial 'about' and 'mentions' counts from post meta.
-		$counts = array(
+		$change_status = $this->update_counts_if_necessary_post( $jsonld_arr, $counts, $post_id );
+
+		if ( $change_status ) {
+			$this->send_api_request_post( $counts, $post_id );
+		}
+
+		return $jsonld_arr;
+	}
+
+	/**
+	 * If context is not PAGE, return early.
+	 *
+	 * @param $context int A context for the JSON-LD generation, valid values in Jsonld_Context_Enum
+	 *
+	 * @return bool
+	 */
+	private function should_return_early( $context ) {
+		return Jsonld_Context_Enum::PAGE !== $context;
+	}
+
+	/**
+	 * Fetch the initial 'about' and 'mentions' counts from post meta.
+	 *
+	 * @param $post_id int The post id for which the jsonld is generated.
+	 *
+	 * @return int[]
+	 */
+	private function get_initial_counts_post( $post_id ) {
+		return array(
 			'about'    => get_post_meta( $post_id, 'wl_about_count', true ) ? (int) get_post_meta( $post_id, 'wl_about_count', true ) : 0,
 			'mentions' => get_post_meta( $post_id, 'wl_mentions_count', true )
 				? (int) get_post_meta( $post_id, 'wl_mentions_count', true )
 				: 0,
 		);
+	}
 
-		// Check if $jsonld_arr is not empty
-		if ( ! empty( $jsonld_arr[0] ) ) {
-			// Get data from the array.
-			$data = $jsonld_arr[0];
+	/**
+	 * Update counts if necessary post.
+	 *
+	 * @param $jsonld_arr
+	 * @param $counts
+	 * @param $post_id
+	 *
+	 * @return bool
+	 */
+	private function update_counts_if_necessary_post( $jsonld_arr, &$counts, $post_id ) {
+		// Flag to indicate if we should make an API request.
+		$change_status = false;
 
-			// Iterate over the counts array.
-			foreach ( $counts as $type => $type_count ) {
-				// Check if data has 'about' or 'mentions' and the count is different from the existing meta value.
-				if ( isset( $data[ $type ] ) ) {
-					$new_count = count( $data[ $type ] );
+		// If the $jsonld_arr is empty but the counts were previously more than 0.
+		if ( empty( $jsonld_arr[0] ) ) {
+			return $this->reset_counts_if_non_zero_post( $counts, $post_id );
+		}
 
-					if ( $type_count !== $new_count ) {
-						// Set flag to true if counts have changed.
-						$change_status = true;
+		// Get data from the array.
+		$data = $jsonld_arr[0];
 
-						// Update the counts array with new count.
-						$counts[ $type ] = $new_count;
+		// Iterate over the counts array.
+		foreach ( $counts as $type => $type_count ) {
+			// Check if data has 'about' or 'mentions' and the count is different from the existing meta value.
+			if ( isset( $data[ $type ] ) ) {
+				$new_count = count( $data[ $type ] );
+				if ( $type_count !== $new_count ) {
+					// Set flag to true if counts have changed.
+					$change_status = true;
 
-						// Update post meta with new count.
-						update_post_meta( $post_id, 'wl_' . $type . '_count', $new_count );
-					}
-				} elseif ( $type_count > 0 ) {
-					// If the 'about' or 'mentions' has become empty, set it to 0.
-					$change_status   = true;
-					$counts[ $type ] = 0;
-					update_post_meta( $post_id, 'wl_' . $type . '_count', 0 );
+					// Update the counts array with new count.
+					$counts[ $type ] = $new_count;
+
+					// Update post meta with new count.
+					update_post_meta( $post_id, 'wl_' . $type . '_count', $new_count );
+					continue;
 				}
 			}
-		} else {
-			// If the $jsonld_arr is empty but the counts were previously more than 0.
-			foreach ( $counts as $type => $type_count ) {
-				if ( $type_count > 0 ) {
-					$change_status   = true;
-					$counts[ $type ] = 0;
-					update_post_meta( $post_id, 'wl_' . $type . '_count', 0 );
-				}
+
+			if ( $type_count > 0 ) {
+				// If the 'about' or 'mentions' has become empty, set it to 0.
+				$change_status   = true;
+				$counts[ $type ] = 0;
+				update_post_meta( $post_id, 'wl_' . $type . '_count', 0 );
 			}
 		}
 
+		return $change_status;
+	}
+
+	/**
+	 * Reset counts if non zero post.
+	 *
+	 * @param $counts
+	 * @param $post_id
+	 *
+	 * @return bool
+	 */
+	private function reset_counts_if_non_zero_post( &$counts, $post_id ) {
+		$change_status = false;
+
+		foreach ( $counts as $type => $type_count ) {
+			if ( $type_count > 0 ) {
+				$change_status   = true;
+				$counts[ $type ] = 0;
+				update_post_meta( $post_id, 'wl_' . $type . '_count', 0 );
+			}
+		}
+
+		return $change_status;
+	}
+
+	/**
+	 * Send api request post.
+	 *
+	 * @param $counts
+	 * @param $post_id
+	 */
+	private function send_api_request_post( $counts, $post_id ) {
 		// If the count has changed, make the API request.
-		if ( $change_status ) {
-			// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-			$blocking = apply_filters( 'wl_feature__enable__sync-blocking', false );
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+		$blocking = apply_filters( 'wl_feature__enable__sync-blocking', false );
 
-			// Apply the filter to the request args
-			$this->api_service->request(
-				'POST',
-				'/plugin/events',
-				array( 'Content-Type' => 'application/json' ),
-				wp_json_encode(
-					array(
-						'source' => 'jsonld',
-						'args'   => array(
-							array( 'about_count' => $counts['about'] ),
-							array( 'mentions_count' => $counts['mentions'] ),
-						),
-						'url'    => get_permalink( $post_id ),
-					)
-				),
-				$blocking ? 60 : 0.001,
-				null,
-				array( 'blocking' => $blocking )
-			);
-		}
-
-		return $jsonld_arr;
+		// Apply the filter to the request args
+		$this->api_service->request(
+			'POST',
+			'/plugin/events',
+			array( 'Content-Type' => 'application/json' ),
+			wp_json_encode(
+				array(
+					'source' => 'jsonld',
+					'args'   => array(
+						array( 'about_count' => $counts['about'] ),
+						array( 'mentions_count' => $counts['mentions'] ),
+					),
+					'url'    => get_permalink( $post_id ),
+				)
+			),
+			$blocking ? 60 : 0.001,
+			null,
+			array( 'blocking' => $blocking )
+		);
 	}
 }
