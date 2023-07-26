@@ -24,4 +24,40 @@ class Cursor {
 		return json_decode( base64_decode( $value ), true );
 	}
 
+	private $position  = 0;
+	private $element   = 'INCLUDED';
+	private $direction = 'ASCENDING';
+
+	public function get_position() {
+		return $this->position;
+	}
+
+	public function set_position( $value ) {
+		$this->position = $value;
+	}
+
+	public function get_element() {
+		return $this->element;
+	}
+
+	public function set_element( $value ) {
+		if ( ! in_array( $value, array( 'INCLUDED', 'EXCLUDED' ), true ) ) {
+			throw new \Exception( "Invalid value, only 'INCLUDED' or 'EXCLUDED' accepted." );
+		}
+
+		$this->element = $value;
+	}
+
+	public function get_direction() {
+		return $this->direction;
+	}
+
+	public function set_direction( $value ) {
+		if ( ! in_array( $value, array( 'ASCENDING', 'DESCENDING' ), true ) ) {
+			throw new \Exception( "Invalid value, only 'ASCENDING' or 'DESCENDING' accepted." );
+		}
+
+		$this->direction = $value;
+	}
+
 }

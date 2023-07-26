@@ -27,15 +27,15 @@ class Term_Entity_Match_Service extends Match_Service {
 		$params = wp_parse_args(
 			$args,
 			array(
-				'position'                 => null,
-				'element'                  => 'INCLUDED',
-				'direction'                => 'ASCENDING',
-				'limit'                    => 10,
-				'sort'                     => '+id',
+				'position'      => null,
+				'element'       => 'INCLUDED',
+				'direction'     => 'ASCENDING',
+				'limit'         => 10,
+				'sort'          => '+id',
 				// Query.
-				'taxonomy'                 => null,
-				'has_match'                => null,
-				'ingredient_name_contains' => null,
+				'taxonomy'      => null,
+				'has_match'     => null,
+				'term_contains' => null,
 			)
 		);
 

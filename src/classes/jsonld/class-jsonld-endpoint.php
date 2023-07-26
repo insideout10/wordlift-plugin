@@ -220,31 +220,45 @@ class Jsonld_Endpoint {
 		return $this->jsonld_using_post_id( array( 'id' => $post_id ) );
 	}
 
+	/**
+	 * @param WP_REST_Request $request
+	 *
+	 * @return WP_REST_Response
+	 */
 	public function jsonld_using_meta( $request ) {
 
 		global $wpdb;
 
-		$meta_key   = $request['meta_key'];
-		$meta_value = urldecode( current( $request->get_query_params( 'meta_value' ) ) );
+		$meta_key    = $request['meta_key'];
+		$params      = $request->get_query_params();
+		$meta_value  = urldecode( $params['meta_value'] );
+		$meta_values = array( $meta_value );
 		// Merchant Sync stores spaces as plus, so we need to restore them.
-		$meta_value = str_replace( ' ', '+', $meta_value );
+		if ( strpos( $meta_value, ' ' ) > 0 ) {
+			$meta_values[] = str_replace( ' ', '+', $meta_value );
+		} elseif ( strpos( $meta_value, '+' ) > 0 ) {
+			$meta_values[] = str_replace( '+', ' ', $meta_value );
+		}
 
-		$results = $wpdb->get_results(
-			$wpdb->prepare(
-				"
+		$sql = "
 			SELECT pm.post_id AS id, %s AS type
 			 FROM {$wpdb->postmeta} pm
 			 	INNER JOIN {$wpdb->posts} p
 			 		ON p.ID = pm.post_id AND p.post_status = 'publish'
-			 WHERE pm.meta_key = %s AND pm.meta_value = %s
+			 WHERE pm.meta_key = %s AND pm.meta_value IN ( '" . implode( "', '", array_map( 'esc_sql', $meta_values ) ) . "' )
 			 UNION
 			 SELECT term_id AS id, %s AS type
 			 FROM {$wpdb->termmeta}
 			 WHERE meta_key = %s AND meta_value = %s
-			",
+			";
+
+		$results = $wpdb->get_results(
+			$wpdb->prepare(
+			// The query uses an IN clause, we escape the single values.
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				$sql,
 				Object_Type_Enum::POST,
 				$meta_key,
-				$meta_value,
 				Object_Type_Enum::TERM,
 				$meta_key,
 				$meta_value
