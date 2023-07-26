@@ -29,6 +29,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @throws Exception if there are issues during the service initialization.
  */
 function __wl_events__load() {
+
+	// Dashboard is available only for Food Kg and Gardening Kg atm
+	// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
+	if ( ! apply_filters( 'wl_feature__kpi-events', false ) ) {
+		return;
+	}
+
 	// Autoloader for plugin itself.
 	if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 		require __DIR__ . '/vendor/autoload.php';
