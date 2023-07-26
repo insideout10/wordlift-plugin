@@ -7,7 +7,6 @@ use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Content\Wordpress\Wordpress_Dataset_Content_Service_Hooks;
 use Wordlift\Entity\Entity_Uri_Generator;
-use Wordlift\Modules\Common\Api\Cursor_Page;
 use Wordlift\Modules\Dashboard\Match\Match_Entry;
 use Wordlift\Object_Type_Enum;
 
@@ -157,7 +156,13 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 			$request->has_param( 'sort' ) ? $request->get_param( 'sort' ) : '-date_modified_gmt'
 		);
 
-		$query         = new Post_Query( $request, $cursor, $cursor_sort, $limit + 1 );
+		// If we're looking for recipes, we need the Recipe_Query.
+		if ( in_array( 'wprm_recipe', (array) $request->get_param( 'post_types' ), true ) ) {
+			$query = new Recipe_Query( $request, $cursor, $cursor_sort, $limit + 1 );
+		} else {
+			$query = new Post_Query( $request, $cursor, $cursor_sort, $limit + 1 );
+		}
+
 		$results       = $query->get_results();
 		$items         = $cursor->get_direction() === 'ASCENDING'
 			? array_slice( $results, 0, min( count( $results ), $limit ) )
@@ -209,69 +214,6 @@ class Post_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 		}
 
 		return null;
-	}
-
-	/**
-	 * Get the term matches by taxonomy name.
-	 *
-	 * @var $request \WP_REST_Request
-	 */
-	public function get_post_matches_legacy( $request ) {
-
-		$cursor = $request->get_param( 'cursor' );
-		if ( $request->has_param( 'limit' ) ) {
-			$cursor['limit'] = $request->get_param( 'limit' );
-		}
-		if ( $request->has_param( 'sort' ) ) {
-			$cursor['sort'] = $request->get_param( 'sort' );
-		}
-		if ( $request->has_param( 'post_types' ) ) {
-			$cursor['query']['post_types'] = $request->get_param( 'post_types' );
-		}
-		if ( $request->has_param( 'has_match' ) ) {
-			$cursor['query']['has_match'] = $request->get_param( 'has_match' );
-		}
-		if ( $request->has_param( 'post_status' ) ) {
-			$cursor['query']['post_status'] = $request->get_param( 'post_status' );
-		}
-
-		// Query.
-		$post_types = isset( $cursor['query']['post_types'] ) ? $cursor['query']['post_types'] : apply_filters(
-			'wl_dashboard__post_entity_match__post_types',
-			array(
-				'post',
-				'page',
-			)
-		);
-		$has_match  = isset( $cursor['query']['has_match'] ) ? $cursor['query']['has_match'] : null;
-
-		$post_status = isset( $cursor['query']['post_status'] ) ? $cursor['query']['post_status'] : null;
-
-		$items = $this->match_service->list_items(
-			array(
-				// Query
-				'post_types'  => $post_types,
-				'has_match'   => $has_match,
-				'post_status' => $post_status,
-				// Cursor-Pagination
-				'position'    => $cursor['position'],
-				'element'     => $cursor['element'],
-				'direction'   => $cursor['direction'],
-				// `+1` to check if we have other results.
-				'limit'       => $cursor['limit'] + 1,
-				'sort'        => $cursor['sort'],
-			)
-		);
-
-		return new Cursor_Page(
-			$items,
-			$cursor['position'],
-			$cursor['element'],
-			$cursor['direction'],
-			$cursor['sort'],
-			$cursor['limit'],
-			$cursor['query']
-		);
 	}
 
 	/**

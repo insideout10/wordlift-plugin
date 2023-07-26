@@ -2,6 +2,7 @@
 
 namespace Wordlift\Modules\Food_Kg\Main_Entity;
 
+use Wordlift\Modules\Dashboard\Post_Entity_Match\Recipe_Query;
 use Wordlift\Modules\Dashboard\Stats\Stats_Settings;
 use Wordlift\Object_Type_Enum;
 
@@ -13,7 +14,7 @@ class Food_Kg_Recipe_Stats {
 
 	public function dashboard__stats__settings( $arr ) {
 
-		$data = $this->get_data();
+		$data = Recipe_Query::get_data(); // $this->get_data();
 
 		$arr[] = new Stats_Settings(
 			__( 'Boosted Recipes are the ones WordLift matched with KG. Some Explanation how it helps them.', 'wordlift' ),

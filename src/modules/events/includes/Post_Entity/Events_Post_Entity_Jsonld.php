@@ -32,6 +32,7 @@ class Events_Post_Entity_Jsonld {
 	 */
 	public function register_hooks() {
 		add_filter( 'wl_after_get_jsonld', array( $this, 'set_events_request' ), 90, 3 );
+		add_filter( 'wprm_recipe_metadata', array( $this, '__recipe_metadata' ), PHP_INT_MAX - 100, 2 );
 	}
 
 	/**
@@ -57,6 +58,22 @@ class Events_Post_Entity_Jsonld {
 		}
 
 		return $jsonld_arr;
+	}
+
+	/**
+	 * @param $value
+	 * @param \WPRM_Recipe $recipe
+	 *
+	 * @return mixed
+	 */
+	public function __recipe_metadata( $value, $recipe ) {
+		// We only handle the parent post.
+		$parent_post_id = $recipe->parent_post_id();
+		if ( is_numeric( $parent_post_id ) && 0 < $parent_post_id ) {
+			$this->set_events_request( array( $value ), $parent_post_id, Jsonld_Context_Enum::PAGE );
+		}
+
+		return $value;
 	}
 
 	/**

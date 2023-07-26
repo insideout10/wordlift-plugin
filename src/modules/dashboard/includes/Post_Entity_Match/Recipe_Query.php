@@ -2,9 +2,10 @@
 
 namespace Wordlift\Modules\Dashboard\Post_Entity_Match;
 
+use Wordlift\Object_Type_Enum;
 use WP_REST_Request;
 
-class Post_Query {
+class Recipe_Query {
 	/**
 	 * @var WP_REST_Request
 	 */
@@ -55,10 +56,16 @@ class Post_Query {
 				p.post_status,
 				p.post_modified_gmt as date_modified_gmt,
 				e.about_jsonld as match_jsonld,
-				e.id AS match_id
+				e.id AS match_id,
+				IFNULL( parent.post_title, '(no post)' ) as parent_post_title,
+				IFNULL( parent.ID, p.ID ) as parent_post_id
 			FROM {$wpdb->posts} p
 			LEFT JOIN {$wpdb->prefix}wl_entities e 
 			    ON p.ID = e.content_id AND e.content_type = 0
+			INNER JOIN {$wpdb->prefix}postmeta pm
+			    ON p.ID = pm.post_id AND pm.meta_key = 'wprm_parent_post_id' 
+			INNER JOIN {$wpdb->prefix}posts parent
+			    ON pm.meta_value = parent.ID 
 			WHERE 1=1 
 		";
 
@@ -91,9 +98,15 @@ class Post_Query {
 	}
 
 	public function map_item( $item ) {
-		$item->post_link    = get_edit_post_link( $item->id, 'ui' );
-		$item->view_link    = get_permalink( $item->id );
-		$item->preview_link = get_preview_post_link( $item->id );
+		if ( $item->id ) {
+			$item->post_link    = get_edit_post_link( $item->id, 'ui' );
+			$item->view_link    = get_permalink( $item->id );
+			$item->preview_link = get_preview_post_link( $item->id );
+		}
+
+		if ( $item->parent_post_id ) {
+			$item->parent_post_link = get_edit_post_link( $item->parent_post_id, 'ui' );
+		}
 
 		return $item;
 	}
@@ -189,4 +202,45 @@ class Post_Query {
 		$this->sort   = substr( $value, 0, 1 ) === '+' ? 'ASC' : 'DESC';
 	}
 
+	public static function get_data() {
+		global $wpdb;
+
+		return $wpdb->get_row(
+			$wpdb->prepare(
+				"
+				SELECT COUNT(1) AS total, COUNT(e.about_jsonld) as lifted
+				FROM {$wpdb->prefix}posts p
+				LEFT JOIN {$wpdb->prefix}wl_entities e
+					ON e.content_id = p.ID
+						AND e.content_type = %d 
+				INNER JOIN {$wpdb->prefix}postmeta pm
+					ON p.ID = pm.post_id AND pm.meta_key = 'wprm_parent_post_id' 
+				INNER JOIN {$wpdb->prefix}posts parent
+					ON pm.meta_value = parent.ID 
+				WHERE p.post_type = %s
+				",
+				Object_Type_Enum::POST,
+				'wprm_recipe'
+			)
+		);
+	}
+
+	/**
+	 * SELECT p.ID as id,
+	p.post_title,
+	p.post_status,
+	p.post_modified_gmt as date_modified_gmt,
+	e.about_jsonld as match_jsonld,
+	e.id AS match_id,
+	IFNULL( parent.post_title, '(no post)' ) as parent_post_title,
+	IFNULL( parent.ID, p.ID ) as parent_post_id
+	FROM {$wpdb->posts} p
+	LEFT JOIN {$wpdb->prefix}wl_entities e
+	ON p.ID = e.content_id AND e.content_type = 0
+	INNER JOIN {$wpdb->prefix}postmeta pm
+	ON p.ID = pm.post_id AND pm.meta_key = 'wprm_parent_post_id'
+	INNER JOIN {$wpdb->prefix}posts parent
+	ON pm.meta_value = parent.ID
+	WHERE 1=1
+	 */
 }

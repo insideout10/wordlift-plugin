@@ -19,7 +19,7 @@ class Jsonld {
 	}
 
 	public function register_hooks() {
-		add_action( 'wprm_recipe_metadata', array( $this, '__recipe_metadata' ), 10, 2 );
+		add_filter( 'wprm_recipe_metadata', array( $this, '__recipe_metadata' ), 10, 2 );
 	}
 
 	/**
