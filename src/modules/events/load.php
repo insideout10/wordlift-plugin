@@ -32,7 +32,7 @@ function __wl_events__load() {
 
 	// Dashboard is available only for Food Kg and Gardening Kg atm
 	// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-	if ( ! apply_filters( 'wl_feature__kpi-events', false ) ) {
+	if ( ! apply_filters( 'wl_feature__enable__kpi-events', false ) ) {
 		return;
 	}
 
