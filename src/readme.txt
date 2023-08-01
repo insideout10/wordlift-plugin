@@ -143,6 +143,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.48.0 (2023-08-01) =
+We have a great way to track KPIs, if you'd like to opt-in reach us at hello@wordlift.io with the subject "KPI Events".
+
 = 3.47.0 (2023-07-16) =
 A new improved dashboard for our whitelabel customers.
 
