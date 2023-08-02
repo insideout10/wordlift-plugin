@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.48.0
+ * Version:           3.49.0-0
  * Author:            WordLift
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -32,7 +32,7 @@ use Wordlift\Features\Features_Registry;
 use Wordlift\Post\Post_Adapter;
 
 define( 'WORDLIFT_PLUGIN_FILE', __FILE__ );
-define( 'WORDLIFT_VERSION', '3.48.0' );
+define( 'WORDLIFT_VERSION', '3.49.0-0' );
 
 // ## DO NOT REMOVE THIS LINE: WHITELABEL PLACEHOLDER ##
 
