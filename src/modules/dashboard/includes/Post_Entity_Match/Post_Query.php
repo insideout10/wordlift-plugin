@@ -94,8 +94,18 @@ class Post_Query {
 		$item->post_link    = get_edit_post_link( $item->id, 'ui' );
 		$item->view_link    = get_permalink( $item->id );
 		$item->preview_link = get_preview_post_link( $item->id );
+		$item->match_name   = $this->get_match_name( $item->match_jsonld );
 
 		return $item;
+	}
+
+	private function get_match_name( $jsonld ) {
+		$data = json_decode( $jsonld, true );
+		if ( ! $data || ! array_key_exists( 'name', $data ) ) {
+			return null;
+		}
+
+		return $data['name'];
 	}
 
 	private function post_types() {
