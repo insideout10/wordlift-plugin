@@ -143,6 +143,12 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.48.2 (2023-08-05) =
+We fixed some pagination issues in the terms and ingredients screen.
+
+= 3.48.1 (2023-08-04) =
+Some more polishing of the Dashboard.
+
 = 3.48.0 (2023-08-01) =
 We have a great way to track KPIs, if you'd like to opt-in reach us at hello@wordlift.io with the subject "KPI Events".
 
