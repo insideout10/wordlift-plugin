@@ -108,7 +108,18 @@ class Recipe_Query {
 			$item->parent_post_link = get_edit_post_link( $item->parent_post_id, 'ui' );
 		}
 
+		$item->match_name = $this->get_match_name( $item->match_jsonld );
+
 		return $item;
+	}
+
+	private function get_match_name( $jsonld ) {
+		$data = json_decode( $jsonld, true );
+		if ( ! $data || ! array_key_exists( 'name', $data ) ) {
+			return null;
+		}
+
+		return $data['name'];
 	}
 
 	private function post_types() {
