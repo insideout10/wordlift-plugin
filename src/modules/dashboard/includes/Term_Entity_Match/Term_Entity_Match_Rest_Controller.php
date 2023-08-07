@@ -2,12 +2,14 @@
 
 namespace Wordlift\Modules\Dashboard\Term_Entity_Match;
 
+use Exception;
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Content\Wordpress\Wordpress_Content_Service;
 use Wordlift\Content\Wordpress\Wordpress_Dataset_Content_Service_Hooks;
 use Wordlift\Entity\Entity_Uri_Generator;
-use Wordlift\Modules\Common\Api\Cursor;
-use Wordlift\Modules\Common\Api\Cursor_Page;
+use Wordlift\Modules\Dashboard\Common\Cursor;
+use Wordlift\Modules\Dashboard\Common\Cursor_Sort;
+use Wordlift\Modules\Dashboard\Common\Page;
 use Wordlift\Modules\Dashboard\Match\Match_Entry;
 use Wordlift\Modules\Dashboard\Post_Entity_Match\Post_Entity_Match_Service;
 use Wordlift\Object_Type_Enum;
@@ -51,9 +53,9 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 				'args'                => array(
 					'cursor'        => array(
 						'type'              => 'string',
-						'default'           => Cursor::EMPTY_CURSOR_AS_BASE64_STRING,
+						// 'default'           => Cursor::EMPTY_CURSOR_AS_BASE64_STRING,
 						'validate_callback' => 'rest_validate_request_arg',
-						'sanitize_callback' => array( Cursor::class, 'rest_sanitize_request_arg' ),
+						// 'sanitize_callback' => array( Cursor::class, 'rest_sanitize_request_arg' ),
 					),
 					'limit'         => array(
 						'type'              => 'integer',
@@ -85,10 +87,6 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 							'-term_name',
 							'+entity_name',
 							'-entity_name',
-							'+ingredient_term',
-							'-ingredient_term',
-							'+matched_ingredient',
-							'-matched_ingredient',
 							'+occurrences',
 							'-occurrences',
 						),
@@ -144,6 +142,70 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 		);
 	}
 
+	public function get_term_matches( $request ) {
+		$limit       = $request->has_param( 'limit' ) ? $request->get_param( 'limit' ) : 10;
+		$cursor      = $request->has_param( 'cursor' )
+			? Cursor::from_base64_string( $request->get_param( 'cursor' ) )
+			: Cursor::empty_cursor();
+		$cursor_sort = new Cursor_Sort(
+			$request->has_param( 'sort' ) ? $request->get_param( 'sort' ) : '+term_name'
+		);
+
+		$query = new Term_Query( $request, $cursor, $cursor_sort, $limit + 1 );
+
+		$results       = $query->get_results();
+		$items         = $cursor->get_direction() === 'ASCENDING'
+			? array_slice( $results, 0, min( count( $results ), $limit ) )
+			: array_slice( $results, count( $results ) > $limit ? 1 : 0 );
+		$position      = current( $items )->{$cursor_sort->get_sort_property()};
+		$next_position = end( $items )->{$cursor_sort->get_sort_property()};
+
+		$self  = $cursor;
+		$first = new Cursor( null, 'INCLUDED', 'ASCENDING' );
+		$last  = new Cursor( null, 'INCLUDED', 'DESCENDING' );
+
+		return new Page(
+			$items,
+			$self->to_base64_string(),
+			$first->to_base64_string(),
+			$this->get_prev_cursor_as_base64_string( $cursor, $results, $limit, $position ),
+			$this->get_next_cursor_as_base64_string( $cursor, $results, $limit, $next_position ),
+			$last->to_base64_string()
+		);
+	}
+
+	/**
+	 * @param Cursor $cursor
+	 *
+	 * @return string|null
+	 * @throws Exception when one of the called functions throws an exception.
+	 */
+	private function get_prev_cursor_as_base64_string( $cursor, $results, $limit, $position ) {
+		if ( ( $cursor->get_direction() === 'ASCENDING' && $cursor->get_position() !== null ) || ( $cursor->get_direction() === 'DESCENDING' && count( $results ) > $limit ) ) {
+			$cursor = new Cursor( $position, 'EXCLUDED', 'DESCENDING' );
+
+			return $cursor->to_base64_string();
+		}
+
+		return null;
+	}
+
+	/**
+	 * @param Cursor $cursor
+	 *
+	 * @return string|null
+	 * @throws Exception when one of the called functions throws an exception.
+	 */
+	private function get_next_cursor_as_base64_string( $cursor, $results, $limit, $position ) {
+		if ( ( $cursor->get_direction() === 'DESCENDING' && $cursor->get_position() !== null ) || ( $cursor->get_direction() === 'ASCENDING' && count( $results ) > $limit ) ) {
+			$cursor = new Cursor( $position, 'EXCLUDED', 'ASCENDING' );
+
+			return $cursor->to_base64_string();
+		}
+
+		return null;
+	}
+
 	/**
 	 * Get the term matches by taxonomy name.
 	 *
@@ -151,7 +213,7 @@ class Term_Entity_Match_Rest_Controller extends \WP_REST_Controller {
 	 *
 	 * @throws \Exception If there was a problem getting the match.
 	 */
-	public function get_term_matches( $request ) {
+	public function get_term_matches_legacy( $request ) {
 
 		$cursor = $request->get_param( 'cursor' );
 		if ( $request->has_param( 'limit' ) ) {
