@@ -16,7 +16,7 @@ class Food_Kg_Ingredient_Stats {
 		$data = $this->get_data();
 
 		$arr[] = new Stats_Settings(
-			__( 'Boosted Ingredient are the ones WordLift matched with KG. Some Explanation how it helps them.', 'wordlift' ),
+			__( 'Boosted Ingredients are the ones WordLift matched with the Knowledge Graph. This helps Search Engines understand your content better and boost your rankings.', 'wordlift' ),
 			__( 'Lifted Ingredients', 'wordlift' ),
 			__( 'Ingredients', 'wordlift' ),
 			'#0076f6',

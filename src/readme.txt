@@ -143,6 +143,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.48.3 (2023-08-07) =
+Some captions have been fixed.
+
 = 3.48.2 (2023-08-05) =
 We fixed some pagination issues in the terms and ingredients screen.
 
