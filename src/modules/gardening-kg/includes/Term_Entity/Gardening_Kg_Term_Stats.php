@@ -17,7 +17,7 @@ class Gardening_Kg_Term_Stats {
 		$data = $this->get_data();
 
 		$arr[] = new Stats_Settings(
-			__( 'Boosted Terms are the ones WordLift matched with KG. Some Explanation how it helps them.', 'wordlift' ),
+			__( 'Boosted Terms are the ones WordLift matched with the Knowledge Graph. This helps Search Engines understand your content better and boost your rankings.', 'wordlift' ),
 			__( 'Lifted Terms', 'wordlift' ),
 			__( 'Terms', 'wordlift' ),
 			'#0076f6',

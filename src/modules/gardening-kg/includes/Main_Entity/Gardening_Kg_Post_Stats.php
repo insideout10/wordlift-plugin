@@ -17,7 +17,7 @@ class Gardening_Kg_Post_Stats {
 		$data = $this->get_data();
 
 		$arr[] = new Stats_Settings(
-			__( 'Boosted Posts are the ones WordLift matched with KG. Some Explanation how it helps them.', 'wordlift' ),
+			__( 'Boosted Posts are the ones WordLift matched the main topic with the Knowledge Graph. This helps Search Engines understand your content better and boost your rankings.', 'wordlift' ),
 			__( 'Lifted Posts', 'wordlift' ),
 			__( 'Posts', 'wordlift' ),
 			'#00c48c',

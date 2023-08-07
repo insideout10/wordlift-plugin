@@ -17,7 +17,7 @@ class Food_Kg_Recipe_Stats {
 		$data = Recipe_Query::get_data(); // $this->get_data();
 
 		$arr[] = new Stats_Settings(
-			__( 'Boosted Recipes are the ones WordLift matched with KG. Some Explanation how it helps them.', 'wordlift' ),
+			__( 'Boosted Recipes are the ones WordLift matched the main ingredient with the Knowledge Graph. This helps Search Engines understand your content better and boost your rankings.', 'wordlift' ),
 			__( 'Lifted Recipes', 'wordlift' ),
 			__( 'Recipes', 'wordlift' ),
 			'#00c48c',
