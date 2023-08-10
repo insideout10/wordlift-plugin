@@ -191,7 +191,7 @@ class Term_Query {
 
 		global $wpdb;
 		$value      = $this->request->get_param( 'term_contains' );
-		$this->sql .= $wpdb->prepare( ' and t . name LIKE %s', '%' . esc_sql( $value ) . '%' );
+		$this->sql .= $wpdb->prepare( ' and t.name LIKE %s', '%' . esc_sql( $value ) . '%' );
 	}
 
 	private function taxonomies() {
