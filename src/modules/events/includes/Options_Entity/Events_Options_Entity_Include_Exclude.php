@@ -30,7 +30,28 @@ class Events_Options_Entity_Include_Exclude {
 	 * Register hooks.
 	 */
 	public function register_hooks() {
-		add_action( 'update_option_wl_exclude_include_urls_settings', array( $this, 'event_update' ), 15, 2 );
+		add_action( 'init', array( $this, 'handle_init' ), 10, 0 );
+		add_action( 'update_option_wl_exclude_include_urls_settings', array( $this, 'handle_update_option' ), 15, 2 );
+	}
+
+	public function handle_init() {
+		if ( ! get_option( '_wl_events__include_exclude__initial__sent', false ) ) {
+			$empty                = array( 'include_exclude' => '' );
+			$current_option_value = get_option( 'wl_exclude_include_urls_settings', array() );
+			try {
+				$this->event_update( $empty, $current_option_value, '1970-01-01T00:00:00+00:00' );
+				update_option( '_wl_events__include_exclude__initial__sent', true, true );
+			} catch ( Exception $e ) {
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+					error_log( 'Error sending the initial include/exclude configuration ' . $e->getMessage() );
+				}
+			}
+		}
+	}
+
+	public function handle_update_option( $old_value, $new_value ) {
+		$this->event_update( $old_value, $new_value );
 	}
 
 	/**
@@ -41,16 +62,16 @@ class Events_Options_Entity_Include_Exclude {
 	 *
 	 * @throws Exception If the application fails to load the services configuration file or if the URL cannot be processed.
 	 */
-	public function event_update( $old_value, $new_value ) {
+	public function event_update( $old_value, $new_value, $recorded_at = null ) {
 		// Get the configurations.
 		$urls = $this->get_urls( $new_value, $old_value );
 
 		// Call API method for each URL.
 		foreach ( $urls['included'] as $url ) {
-			$this->send_event( $url, 'include' );
+			$this->send_event( $url, 'include', $recorded_at );
 		}
 		foreach ( $urls['excluded'] as $url ) {
-			$this->send_event( $url, 'exclude' );
+			$this->send_event( $url, 'exclude', $recorded_at );
 		}
 	}
 
@@ -136,20 +157,25 @@ class Events_Options_Entity_Include_Exclude {
 	 * @param $url
 	 * @param $value
 	 */
-	private function send_event( $url, $value ) {
+	private function send_event( $url, $value, $recorded_at = null ) {
+		$data = array(
+			'source' => 'include-exclude',
+			'args'   => array(
+				array( 'value' => $value ),
+			),
+			'url'    => $url,
+		);
+
+		// Add the `recorded_at` data.
+		if ( isset( $recorded_at ) ) {
+			$data['recorded_at'] = $recorded_at;
+		}
+
 		$this->api_service->request(
 			'POST',
 			'/plugin/events',
 			array( 'content-type' => 'application/json' ),
-			wp_json_encode(
-				array(
-					'source' => 'include-exclude',
-					'args'   => array(
-						array( 'value' => $value ),
-					),
-					'url'    => $url,
-				)
-			),
+			wp_json_encode( $data ),
 			0.001,
 			null,
 			array( 'blocking' => false )
