@@ -16,4 +16,4 @@ echo "** Set the rewrite structure **"
 wp --skip-plugins --skip-themes rewrite structure '/%postname%/'
 
 echo "** Installing and Activating plugins **"
-wp plugin install wordpress-seo wp-recipe-maker --force --activate
+wp plugin install woocommerce wordpress-seo wp-recipe-maker --force --activate

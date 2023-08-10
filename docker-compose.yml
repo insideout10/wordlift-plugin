@@ -14,7 +14,7 @@ services:
       MYSQL_DATABASE: wordpress
 
   wordpress:
-    image: wordlift/wordpress-nginx:${WORDPRESS_VERSION:-6}
+    image: wordlift/wordpress-nginx:${WORDPRESS_VERSION:-6.2.2}
     user: "root"
     entrypoint: [ "/tmp/docker-entrypoint.sh", "/opt/bitnami/scripts/wordpress/entrypoint.sh", "/opt/bitnami/scripts/nginx-php-fpm/run.sh" ]
     volumes:
