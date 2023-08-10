@@ -1,4 +1,6 @@
 services:
+  _defaults: { public: true }
+
   Wordlift\Modules\Pods\Definition:
     class: \Wordlift\Modules\Pods\Definition
     arguments: ['@Wordlift\Modules\Pods\Schema']

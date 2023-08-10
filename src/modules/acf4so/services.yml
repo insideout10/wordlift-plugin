@@ -1,4 +1,6 @@
 services:
+  _defaults: { public: true }
+
   Wordlift\Modules\Common\Quiet_Skin:
     class: \Wordlift\Modules\Common\Quiet_Skin
   Plugin_Upgrader:

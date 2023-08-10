@@ -1,4 +1,6 @@
 services:
+  _defaults: { public: true }
+
   Wordlift\Modules\Food_Kg\Module:
     class: Wordlift\Modules\Food_Kg\Module
     arguments: [ '@Wordlift\Api\Api_Service_Ext', [ '@Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy', '@Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy' ] ]

@@ -1,4 +1,6 @@
 services:
+  _defaults: { public: true }
+
   Wordlift\Modules\Dashboard\Synchronization\Rest_Controller:
     class: Wordlift\Modules\Dashboard\Synchronization\Rest_Controller
     arguments: [ '@Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service' ]

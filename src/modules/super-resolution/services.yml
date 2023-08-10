@@ -1,4 +1,6 @@
 services:
+  _defaults: { public: true }
+
   Wordlift\Modules\Super_Resolution\Attachment_Field:
     class: Wordlift\Modules\Super_Resolution\Attachment_Field
 

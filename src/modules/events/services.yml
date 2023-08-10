@@ -1,4 +1,6 @@
 services:
+  _defaults: { public: true }
+
   Wordlift\Api\Api_Service:
     factory: [ 'Wordlift\Api\Default_Api_Service', 'get_instance' ]
     class: Wordlift\Api\Default_Api_Service
