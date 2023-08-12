@@ -48,7 +48,7 @@ class Recipe_Maker_Jsonld_Swap {
 		$post_id = get_the_ID();
 
 		/**
-		 * We dont print our jsonld when the page has recipe maker, we enhance the recipe maker jsonld
+		 * We don't print our jsonld when the page has recipe maker, we enhance the recipe maker jsonld
 		 * by adding only the `mentions` property.
 		 */
 		add_filter( 'wl_jsonld_enabled', '__return_false' );

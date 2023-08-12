@@ -4,6 +4,7 @@ namespace Wordlift\Modules\Events\Post_Entity;
 
 use Wordlift\Api\Api_Service;
 use Wordlift\Jsonld\Jsonld_Context_Enum;
+use WPRM_Recipe;
 
 /**
  * Class Events_Post_Entity_Jsonld
@@ -31,42 +32,47 @@ class Events_Post_Entity_Jsonld {
 	 * Register hooks.
 	 */
 	public function register_hooks() {
-		add_filter( 'wl_after_get_jsonld', array( $this, 'set_events_request' ), 90, 3 );
-		add_filter( 'wprm_recipe_metadata', array( $this, '__recipe_metadata' ), PHP_INT_MAX - 100, 2 );
+		add_filter( 'wl_after_get_jsonld', array( $this, 'handle_after_get_jsonld' ), 90, 3 );
+		add_filter( 'wprm_recipe_metadata', array( $this, 'handle_recipe_metadata' ), PHP_INT_MAX - 100, 2 );
 	}
 
-	/**
-	 * Set events request.
-	 *
-	 * @param $jsonld_arr array The final jsonld before outputting to page.
-	 * @param $post_id int The post id for which the jsonld is generated.
-	 * @param $context int A context for the JSON-LD generation, valid values in Jsonld_Context_Enum
-	 *
-	 * @return array
-	 */
-	public function set_events_request( $jsonld_arr, $post_id, $context ) {
-		if ( $this->should_return_early( $context ) ) {
+	public function handle_after_get_jsonld( $jsonld_arr, $post_id, $context ) {
+
+		if (
+			// We're not in a page context.
+			Jsonld_Context_Enum::PAGE !== $context ||
+			// It's a Recipe post.
+			$this->is_a_recipe_post( $post_id )
+		) {
 			return $jsonld_arr;
 		}
 
-		$counts = $this->get_initial_counts_post( $post_id );
+		return $this->set_events_request( $jsonld_arr, $post_id );
+	}
 
-		$change_status = $this->update_counts_if_necessary_post( $jsonld_arr, $counts, $post_id );
+	private function is_a_recipe_post( $post_id ) {
+		global $wpdb;
 
-		if ( $change_status ) {
-			$this->send_api_request_post( $counts, $post_id );
-		}
-
-		return $jsonld_arr;
+		return $wpdb->get_var(
+			$wpdb->prepare(
+				"
+			SELECT COUNT(1) 
+			FROM $wpdb->postmeta 
+			WHERE meta_key = 'wprm_parent_post_id' 
+			AND meta_value = %d
+		",
+				$post_id
+			)
+		);
 	}
 
 	/**
 	 * @param $value
-	 * @param \WPRM_Recipe $recipe
+	 * @param WPRM_Recipe $recipe
 	 *
 	 * @return mixed
 	 */
-	public function __recipe_metadata( $value, $recipe ) {
+	public function handle_recipe_metadata( $value, $recipe ) {
 		// We only handle the parent post.
 		$parent_post_id = $recipe->parent_post_id();
 		if ( is_numeric( $parent_post_id ) && 0 < $parent_post_id ) {
@@ -77,14 +83,24 @@ class Events_Post_Entity_Jsonld {
 	}
 
 	/**
-	 * If context is not PAGE, return early.
+	 * Set events request.
 	 *
-	 * @param $context int A context for the JSON-LD generation, valid values in Jsonld_Context_Enum
+	 * @param $jsonld_arr array The final jsonld before outputting to page.
+	 * @param $post_id int The post id for which the jsonld is generated.
 	 *
-	 * @return bool
+	 * @return array
 	 */
-	private function should_return_early( $context ) {
-		return Jsonld_Context_Enum::PAGE !== $context;
+	private function set_events_request( $jsonld_arr, $post_id ) {
+
+		$counts = $this->get_initial_counts_post( $post_id );
+
+		$change_status = $this->update_counts_if_necessary_post( $jsonld_arr, $counts, $post_id );
+
+		if ( $change_status ) {
+			$this->send_api_request_post( $counts, $post_id );
+		}
+
+		return $jsonld_arr;
 	}
 
 	/**
@@ -142,7 +158,7 @@ class Events_Post_Entity_Jsonld {
 				}
 			}
 
-			if ( $type_count > 0 ) {
+			if ( ! isset( $data[ $type ] ) && $type_count > 0 ) {
 				// If the 'about' or 'mentions' has become empty, set it to 0.
 				$change_status   = true;
 				$counts[ $type ] = 0;

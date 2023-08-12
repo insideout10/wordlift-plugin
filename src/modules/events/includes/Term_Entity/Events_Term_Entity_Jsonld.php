@@ -128,7 +128,7 @@ class Events_Term_Entity_Jsonld {
 				}
 			}
 
-			if ( $type_count > 0 ) {
+			if ( ! isset( $data_arr[ $type ] ) && $type_count > 0 ) {
 				// If the 'about' or 'mentions' has become empty, set it to 0.
 				$change_status   = true;
 				$counts[ $type ] = 0;

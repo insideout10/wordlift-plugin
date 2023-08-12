@@ -19,7 +19,11 @@ class Wordlift_Install_3_40_2 extends Wordlift_Install {
 			wp_schedule_event( time(), 'daily', 'wl_daily_cron' );
 		}
 
-		do_action( 'update_option_wl_exclude_include_urls_settings' );
+		do_action(
+			'update_option_wl_exclude_include_urls_settings',
+			array(),
+			get_option( 'wl_exclude_include_urls_settings', array() )
+		);
 
 		Ttl_Cache::flush_all();
 	}
