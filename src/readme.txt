@@ -143,6 +143,12 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.49.0 (2023-08-13) =
+
+* Increase the words in the structured data description property.
+* Improve the API experience.
+* Fix KPI events reporting.
+
 = 3.48.3 (2023-08-07) =
 Some captions have been fixed.
 
