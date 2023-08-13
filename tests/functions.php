@@ -171,8 +171,8 @@ function wl_parse_response( $json ) {
 
 			// Skip Text Annotations that do not have the selection-prefix, -suffix and selected-text.
 			if ( isset( $item->{WL_ENHANCER_NAMESPACE . ':selection-prefix'}->{'@value'} )
-				 && isset( $item->{WL_ENHANCER_NAMESPACE . ':selection-suffix'}->{'@value'} )
-				 && isset( $item->{WL_ENHANCER_NAMESPACE . ':selected-text'}->{'@value'} )
+			     && isset( $item->{WL_ENHANCER_NAMESPACE . ':selection-suffix'}->{'@value'} )
+			     && isset( $item->{WL_ENHANCER_NAMESPACE . ':selected-text'}->{'@value'} )
 			) {
 
 				$text_annotations[ $item->{'@id'} ] = array(
@@ -303,6 +303,13 @@ function _wl_mock_http_request( $response, $request, $url ) {
 		return $response;
 	}
 
+	if ( preg_match( '@^https?://.+/accounts/wordpress-configuration\?key=&wpAdmin=http%3A%2F%2Fexample.org%2Fwp-admin&wpJson=http%3A%2F%2Fexample.org%2Findex.php%3Frest_route%3D&wp_include_exclude_default=include$@', $url ) ) {
+		return array(
+			'body'     => '',
+			'response' => array( 'code' => 200 ),
+		);
+	}
+
 	remove_filter( 'pre_http_request', '_wl_mock_http_request', PHP_INT_MAX );
 
 	echo "An unknown request to $url has been caught:\n";
@@ -370,7 +377,7 @@ function wl_test_create_user() {
 /**
  * Get relations for a given $subject_id as an associative array.
  *
- * @param int    $post_id
+ * @param int $post_id
  * @param string $predicate
  *
  * @return array in the following format:
@@ -440,9 +447,9 @@ function wl_get_meta_type( $property_name ) {
 /**
  * Remove a given relation instance
  *
- * @param int    $subject_id The post ID | The entity post ID.
+ * @param int $subject_id The post ID | The entity post ID.
  * @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
- * @param int    $object_id The entity post ID.
+ * @param int $object_id The entity post ID.
  *
  * @return boolean False for failure. True for success.
  * @uses   $wpdb->delete() to perform the query
@@ -481,9 +488,9 @@ function wl_core_delete_relation_instance( $subject_id, $predicate, $object_id )
 /**
  * Create multiple relation instances
  *
- * @param int    $subject_id The post ID | The entity post ID.
+ * @param int $subject_id The post ID | The entity post ID.
  * @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
- * @param array  $object_ids The entity post IDs collection.
+ * @param array $object_ids The entity post IDs collection.
  *
  * @return integer|boolean Return the relation instances IDs or false
  * @uses   wl_add_relation_instance() to create each single instance
