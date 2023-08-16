@@ -2,6 +2,7 @@
 
 namespace Wordlift\Content\Wordpress;
 
+use Exception;
 use Wordlift\Assertions;
 use Wordlift\Content\Content_Service;
 use Wordlift\Object_Type_Enum;
@@ -69,13 +70,24 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 
 	/**
 	 * @param Wordpress_Content_Id $content_id
-	 * @param string               $value
+	 * @param string $value
+	 *
+	 * @throws Exception If the 'match_name' column does not exist in the database table.
 	 */
 	public function set_about_jsonld( $content_id, $value ) {
 		global $wpdb;
 
 		// Cleanup value.
-		$value = ( is_string( $value ) && strlen( $value ) > 2 ) ? $value : null;
+		$value      = ( is_string( $value ) && strlen( $value ) > 2 ) ? $value : null;
+		$match_name = "NULL";
+
+		if ( $value ) {
+			// Check if the 'match_name' column exists in the database table
+			$columns = $wpdb->get_col_info( 'name', 0 );
+			if ( in_array( 'match_name', $columns ) ) {
+				$match_name = $this->get_match_name( $value );
+			}
+		}
 
 		// This `hack` is necessary to ensure the entity exists in the entities table, but we
 		// should revise how this works really.
@@ -102,11 +114,10 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 		if ( null === $value ) {
 			return $wpdb->query(
 				$wpdb->prepare(
-					"
-			UPDATE {$wpdb->prefix}wl_entities
-			SET about_jsonld = NULL
-			WHERE content_id = %d AND content_type = %d
-			",
+					"UPDATE {$wpdb->prefix}wl_entities
+					SET about_jsonld = NULL, match_name = %s
+					WHERE content_id = %d AND content_type = %d",
+					$match_name,
 					$content_id->get_id(),
 					$content_id->get_type()
 				)
@@ -115,16 +126,28 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 
 		return $wpdb->query(
 			$wpdb->prepare(
-				"
-			UPDATE {$wpdb->prefix}wl_entities
-			SET about_jsonld = %s
-			WHERE content_id = %d AND content_type = %d
-			",
+				"UPDATE {$wpdb->prefix}wl_entities
+				SET about_jsonld = %s, match_name = %s
+				WHERE content_id = %d AND content_type = %d",
 				$value,
+				$match_name,
 				$content_id->get_id(),
 				$content_id->get_type()
 			)
 		);
 	}
 
+	/**
+	 * @param $jsonld
+	 *
+	 * @return mixed|null
+	 */
+	public function get_match_name( $jsonld ) {
+		$data = json_decode( $jsonld, true );
+		if ( ! $data || ! array_key_exists( 'name', $data ) ) {
+			return "NULL";
+		}
+
+		return $data['name'];
+	}
 }
