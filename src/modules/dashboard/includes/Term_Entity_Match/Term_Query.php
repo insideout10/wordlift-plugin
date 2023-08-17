@@ -37,7 +37,7 @@ class Term_Query {
 
 	/**
 	 * @param WP_REST_Request $request
-	 * @param Cursor          $cursor
+	 * @param Cursor $cursor
 	 */
 	public function __construct( $request, $cursor, $cursor_sort, $limit ) {
 		global $wpdb;
@@ -82,9 +82,26 @@ class Term_Query {
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$items = $wpdb->get_results( $this->sql );
 
-		$sort = ( $this->sort === 'ASC' ? SORT_ASC : SORT_DESC );
-		array_multisort( array_column( $items, $this->cursor_sort->get_sort_property() ), $sort, $items );
+		// Mapping elements to add match_name
 		$items = array_map( array( $this, 'map_item' ), $items );
+
+		$sort = ( $this->sort === 'ASC' ? SORT_ASC : SORT_DESC );
+
+		// Sorting functions for specific fields
+		$sort_functions = array(
+			'match_name' => function ( $a, $b ) use ( $sort ) {
+				return $sort === SORT_ASC ? strcmp( $a->match_name, $b->match_name ) : strcmp( $b->match_name, $a->match_name );
+			},
+			// Add more specific sorting functions for other fields here
+		);
+
+		// Check if a specific sorting function exists for the sortby field, otherwise use the default sorting
+		if ( array_key_exists( $this->sortby, $sort_functions ) ) {
+			usort( $items, $sort_functions[ $this->sortby ] );
+		} else {
+			// Use the original sorting method for other keys
+			array_multisort( array_column( $items, $this->cursor_sort->get_sort_property() ), $sort, $items );
+		}
 
 		return $items;
 	}
@@ -109,11 +126,11 @@ class Term_Query {
 			? (array) $this->request->get_param( 'post_types' )
 			: array( 'post', 'page' );
 		$value      = array_map( 'esc_sql', $post_types );
-		$this->sql .= " AND p.post_type IN ( '" . implode( "', '", $value ) . "' )";
+		$this->sql  .= " AND p.post_type IN ( '" . implode( "', '", $value ) . "' )";
 	}
 
 	private function limit() {
-		$value      = is_numeric( $this->limit ) ? $this->limit : 10;
+		$value     = is_numeric( $this->limit ) ? $this->limit : 10;
 		$this->sql .= ' LIMIT ' . esc_sql( $value );
 	}
 
@@ -172,7 +189,8 @@ class Term_Query {
 	private function set_sort() {
 		$sortby_to_col = array(
 			// sort param  col
-			'term_name' => 'name',
+			'term_name'  => 'name',
+			'match_name' => 'match_name',
 		);
 
 		$value = $this->request->has_param( 'sort' )
@@ -190,7 +208,7 @@ class Term_Query {
 		}
 
 		global $wpdb;
-		$value      = $this->request->get_param( 'term_contains' );
+		$value     = $this->request->get_param( 'term_contains' );
 		$this->sql .= $wpdb->prepare( ' and t.name LIKE %s', '%' . esc_sql( $value ) . '%' );
 	}
 
@@ -199,7 +217,6 @@ class Term_Query {
 			? (array) $this->request->get_param( 'taxonomies' )
 			: array( 'post_tag', 'category' );
 		$value      = array_map( 'esc_sql', $taxonomies );
-		$this->sql .= " AND tt.taxonomy IN ( '" . implode( "', '", $value ) . "' )";
+		$this->sql  .= " AND tt.taxonomy IN ( '" . implode( "', '", $value ) . "' )";
 	}
-
 }
