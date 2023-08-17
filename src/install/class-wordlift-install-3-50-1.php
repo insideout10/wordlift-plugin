@@ -5,12 +5,12 @@ use Wordlift\Cache\Ttl_Cache;
 /**
  * @since 3.49.1
  */
-class Wordlift_Install_3_49_1 extends Wordlift_Install {
+class Wordlift_Install_3_50_1 extends Wordlift_Install {
 
 	/**
 	 * {@inheritdoc}
 	 */
-	protected static $version = '3.49.1';
+	protected static $version = '3.50.1';
 
 	/**
 	 * Is column exists
@@ -24,7 +24,7 @@ class Wordlift_Install_3_49_1 extends Wordlift_Install {
 
 		return $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name ='{$wpdb->prefix}wl_relation_instances' AND column_name = %s",
+				"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name ='{$wpdb->prefix}wl_entities' AND column_name = %s",
 				$column_name
 			)
 		);
@@ -45,13 +45,15 @@ class Wordlift_Install_3_49_1 extends Wordlift_Install {
 
 		// Add new 'match_name' column
 		$wpdb->query(
-			"ALTER TABLE {$wpdb->prefix}wl_relation_instances
+			"ALTER TABLE {$wpdb->prefix}wl_entities
 					ADD match_name VARCHAR(255) AFTER about_jsonld;"
 		);
 
+		var_dump($wpdb->last_error);
+
 		// Get all rows with 'about_jsonld'
 		$results = $wpdb->get_results(
-			"SELECT id, about_jsonld FROM {$wpdb->prefix}wl_relation_instances WHERE about_jsonld IS NOT NULL",
+			"SELECT id, about_jsonld FROM {$wpdb->prefix}wl_entities WHERE about_jsonld IS NOT NULL",
 			ARRAY_A
 		);
 
@@ -64,7 +66,7 @@ class Wordlift_Install_3_49_1 extends Wordlift_Install {
 			}
 
 			$wpdb->update(
-				"{$wpdb->prefix}wl_relation_instances",
+				"{$wpdb->prefix}wl_entities",
 				array( 'match_name' => $match_name ),
 				array( 'id' => $row['id'] )
 			);

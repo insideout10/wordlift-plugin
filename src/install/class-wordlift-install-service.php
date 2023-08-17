@@ -80,6 +80,7 @@ class Wordlift_Install_Service {
 		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-44-4.php';
 		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-45-0.php';
 		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-45-1.php';
+		require_once plugin_dir_path( __DIR__ ) . 'install/class-wordlift-install-3-50-1.php';
 
 		// Get the install services.
 		$this->installs = array(
@@ -127,6 +128,8 @@ class Wordlift_Install_Service {
 
 			new Wordlift_Install_3_45_0(),
 			new Wordlift_Install_3_45_1(),
+
+			new Wordlift_Install_3_50_1(),
 		);
 		self::$instance = $this;
 
@@ -166,7 +169,7 @@ class Wordlift_Install_Service {
 				$version = $install->get_version();
 
 				if ( version_compare( $version, $this->get_current_version(), '>' )
-					 || $install->must_install() ) {
+				     || $install->must_install() ) {
 					$class_name = get_class( $install );
 
 					$this->log->info( "Current version is {$this->get_current_version()}, installing $class_name..." );
@@ -195,7 +198,7 @@ class Wordlift_Install_Service {
 			$version = $install->get_version();
 
 			if ( version_compare( $version, $this->get_current_version(), '>' )
-				 || $install->must_install() ) {
+			     || $install->must_install() ) {
 				return true;
 			}
 		}
