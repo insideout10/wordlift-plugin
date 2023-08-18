@@ -58,12 +58,19 @@ class Term_Query {
 				t.name,
 				t.name as term_name,
 				e.id AS match_id,
-				e.match_name
+				e.match_name,
+		        (
+					SELECT COUNT(*)
+					FROM {$wpdb->prefix}term_relationships tr
+					INNER JOIN {$wpdb->prefix}posts p ON tr.object_id = p.ID
+					WHERE tr.term_taxonomy_id = tt.term_taxonomy_id
+					AND p.post_status = 'publish'
+				) AS occurrences
 			FROM {$wpdb->prefix}terms t
 			INNER JOIN {$wpdb->prefix}term_taxonomy tt
-			    ON t.term_id = tt.term_id
+				ON t.term_id = tt.term_id
 			LEFT JOIN {$wpdb->prefix}wl_entities e
-			    ON t.term_id = e.content_id AND e.content_type = 1
+				ON t.term_id = e.content_id AND e.content_type = 1
 			WHERE 1=1
 		";
 
@@ -159,7 +166,7 @@ class Term_Query {
 			// sort param  col
 			'term_name'   => 'name',
 			'entity_name' => 'match_name',
-			'occurrences' => 'occurrences_count',
+			'occurrences' => 'occurrences',
 		);
 
 		$value = $this->request->has_param( 'sort' )
