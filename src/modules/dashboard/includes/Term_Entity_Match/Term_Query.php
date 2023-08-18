@@ -57,7 +57,8 @@ class Term_Query {
 				e.about_jsonld as match_jsonld,
 				t.name,
 				t.name as term_name,
-				e.id AS match_id
+				e.id AS match_id,
+				e.match_name
 			FROM {$wpdb->prefix}terms t
 			INNER JOIN {$wpdb->prefix}term_taxonomy tt
 			    ON t.term_id = tt.term_id
@@ -82,43 +83,10 @@ class Term_Query {
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$items = $wpdb->get_results( $this->sql );
 
-		// Mapping elements to add match_name
-		$items = array_map( array( $this, 'map_item' ), $items );
-
 		$sort = ( $this->sort === 'ASC' ? SORT_ASC : SORT_DESC );
-
-		// Sorting functions for specific fields
-		$sort_functions = array(
-			'match_name' => function ( $a, $b ) use ( $sort ) {
-				return $sort === SORT_ASC ? strcmp( $a->match_name, $b->match_name ) : strcmp( $b->match_name, $a->match_name );
-			},
-			// Add more specific sorting functions for other fields here
-		);
-
-		// Check if a specific sorting function exists for the sortby field, otherwise use the default sorting
-		if ( array_key_exists( $this->sortby, $sort_functions ) ) {
-			usort( $items, $sort_functions[ $this->sortby ] );
-		} else {
-			// Use the original sorting method for other keys
-			array_multisort( array_column( $items, $this->cursor_sort->get_sort_property() ), $sort, $items );
-		}
+		array_multisort( array_column( $items, $this->cursor_sort->get_sort_property() ), $sort, $items );
 
 		return $items;
-	}
-
-	public function map_item( $item ) {
-		$item->match_name = $this->get_match_name( $item->match_jsonld );
-
-		return $item;
-	}
-
-	private function get_match_name( $jsonld ) {
-		$data = json_decode( $jsonld, true );
-		if ( ! $data || ! array_key_exists( 'name', $data ) ) {
-			return null;
-		}
-
-		return $data['name'];
 	}
 
 	private function post_types() {
@@ -189,8 +157,9 @@ class Term_Query {
 	private function set_sort() {
 		$sortby_to_col = array(
 			// sort param  col
-			'term_name'  => 'name',
-			'match_name' => 'match_name',
+			'term_name'   => 'name',
+			'entity_name' => 'match_name',
+			'occurrences' => 'occurrences_count',
 		);
 
 		$value = $this->request->has_param( 'sort' )
