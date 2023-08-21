@@ -44,12 +44,10 @@ class Wordlift_Install_3_50_1 extends Wordlift_Install {
 		}
 
 		// Add new 'match_name' column
-		$wpdb->query(
+		dbDelta(
 			"ALTER TABLE {$wpdb->prefix}wl_entities
 					ADD match_name VARCHAR(255) AFTER about_jsonld;"
 		);
-
-		var_dump($wpdb->last_error);
 
 		// Get all rows with 'about_jsonld'
 		$results = $wpdb->get_results(
@@ -71,8 +69,6 @@ class Wordlift_Install_3_50_1 extends Wordlift_Install {
 				array( 'id' => $row['id'] )
 			);
 		}
-
-		Ttl_Cache::flush_all();
 	}
 
 	/**

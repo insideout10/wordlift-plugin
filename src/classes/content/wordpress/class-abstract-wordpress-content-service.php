@@ -79,15 +79,7 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 
 		// Cleanup value.
 		$value      = ( is_string( $value ) && strlen( $value ) > 2 ) ? $value : null;
-		$match_name = "NULL";
-
-		if ( $value ) {
-			// Check if the 'match_name' column exists in the database table
-			$columns = $wpdb->get_col_info( 'name', 0 );
-			if ( in_array( 'match_name', $columns ) ) {
-				$match_name = $this->get_match_name( $value );
-			}
-		}
+		$match_name = $this->get_match_name( $value );
 
 		// This `hack` is necessary to ensure the entity exists in the entities table, but we
 		// should revise how this works really.
@@ -111,30 +103,25 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 		 * as `null` if we directly pass it to the prepare function(). So its necessary
 		 * to make the query conditional based on the $value
 		 */
-		if ( null === $value ) {
-			return $wpdb->query(
-				$wpdb->prepare(
-					"UPDATE {$wpdb->prefix}wl_entities
-					SET about_jsonld = NULL, match_name = %s
-					WHERE content_id = %d AND content_type = %d",
-					$match_name,
-					$content_id->get_id(),
-					$content_id->get_type()
-				)
-			);
+		$query = "UPDATE {$wpdb->prefix}wl_entities SET ";
+		$query .= ( is_null( $value ) ) ? "about_jsonld = NULL, " : "about_jsonld = %s, ";
+		$query .= ( is_null( $match_name ) ) ? "match_name = NULL " : "match_name = %s ";
+		$query .= "WHERE content_id = %d AND content_type = %d";
+
+		$params = array();
+
+		if ( ! is_null( $value ) ) {
+			$params[] = $value;
 		}
 
-		return $wpdb->query(
-			$wpdb->prepare(
-				"UPDATE {$wpdb->prefix}wl_entities
-				SET about_jsonld = %s, match_name = %s
-				WHERE content_id = %d AND content_type = %d",
-				$value,
-				$match_name,
-				$content_id->get_id(),
-				$content_id->get_type()
-			)
-		);
+		if ( ! is_null( $match_name ) ) {
+			$params[] = $match_name;
+		}
+
+		$params[] = $content_id->get_id();
+		$params[] = $content_id->get_type();
+
+		return $wpdb->query( $wpdb->prepare( $query, $params ) );
 	}
 
 	/**
@@ -145,7 +132,7 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 	public function get_match_name( $jsonld ) {
 		$data = json_decode( $jsonld, true );
 		if ( ! $data || ! array_key_exists( 'name', $data ) ) {
-			return "NULL";
+			return null;
 		}
 
 		return $data['name'];
