@@ -5,6 +5,7 @@ namespace Wordlift\Content\Wordpress;
 use Exception;
 use Wordlift\Assertions;
 use Wordlift\Content\Content_Service;
+use Wordlift\Jsonld\Jsonld_Utils;
 use Wordlift\Object_Type_Enum;
 use Wordlift_Configuration_Service;
 
@@ -79,7 +80,7 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 
 		// Cleanup value.
 		$value      = ( is_string( $value ) && strlen( $value ) > 2 ) ? $value : null;
-		$match_name = $this->get_match_name( $value );
+		$match_name = Jsonld_Utils::get_about_match_name( $value );
 
 		// This `hack` is necessary to ensure the entity exists in the entities table, but we
 		// should revise how this works really.
@@ -122,19 +123,5 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 		$params[] = $content_id->get_type();
 
 		return $wpdb->query( $wpdb->prepare( $query, $params ) );
-	}
-
-	/**
-	 * @param $jsonld
-	 *
-	 * @return mixed|null
-	 */
-	public function get_match_name( $jsonld ) {
-		$data = json_decode( $jsonld, true );
-		if ( ! $data || ! array_key_exists( 'name', $data ) ) {
-			return null;
-		}
-
-		return $data['name'];
 	}
 }

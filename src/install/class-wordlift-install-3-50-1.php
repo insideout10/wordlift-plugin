@@ -1,6 +1,6 @@
 <?php
 
-use Wordlift\Cache\Ttl_Cache;
+use Wordlift\Jsonld\Jsonld_Utils;
 
 /**
  * @since 3.49.1
@@ -57,7 +57,7 @@ class Wordlift_Install_3_50_1 extends Wordlift_Install {
 
 		// Update 'match_name' for each row
 		foreach ( $results as $row ) {
-			$match_name = $this->get_match_name( $row['about_jsonld'] );
+			$match_name = Jsonld_Utils::get_about_match_name( $row['about_jsonld'] );
 
 			if ( is_null( $match_name ) ) {
 				continue;
@@ -69,21 +69,5 @@ class Wordlift_Install_3_50_1 extends Wordlift_Install {
 				array( 'id' => $row['id'] )
 			);
 		}
-	}
-
-	/**
-	 * Get match name
-	 *
-	 * @param $jsonld
-	 *
-	 * @return mixed|null
-	 */
-	public function get_match_name( $jsonld ) {
-		$data = json_decode( $jsonld, true );
-		if ( ! $data || ! array_key_exists( 'name', $data ) ) {
-			return null;
-		}
-
-		return $data['name'];
 	}
 }

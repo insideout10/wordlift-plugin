@@ -76,10 +76,9 @@ class Term_Query {
 		$this->has_match();
 		$this->term_contains();
 		$this->taxonomies();
+		$this->group_by();
 		$this->sort();
 		$this->limit();
-
-		$this->sql = " GROUP BY t.term_id";
 	}
 
 	public function get_results() {
@@ -120,6 +119,10 @@ class Term_Query {
 		} else {
 			$this->sql .= ' AND e.about_jsonld IS NULL';
 		}
+	}
+
+	private function group_by() {
+		$this->sql .= ' GROUP BY t.term_id';
 	}
 
 	private function sort() {
