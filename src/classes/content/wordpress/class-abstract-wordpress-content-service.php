@@ -104,21 +104,24 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 		 * as `null` if we directly pass it to the prepare function(). So its necessary
 		 * to make the query conditional based on the $value
 		 */
-		$query = "UPDATE {$wpdb->prefix}wl_entities SET ";
-		$query .= ( is_null( $value ) ) ? "about_jsonld = NULL, " : "about_jsonld = %s, ";
-		$query .= ( is_null( $match_name ) ) ? "match_name = NULL " : "match_name = %s ";
-		$query .= "WHERE content_id = %d AND content_type = %d";
-
+		$query  = "UPDATE {$wpdb->prefix}wl_entities SET ";
 		$params = array();
 
-		if ( ! is_null( $value ) ) {
+		if ( is_null( $value ) ) {
+			$query .= "about_jsonld = NULL, ";
+		} else {
+			$query    .= "about_jsonld = %s, ";
 			$params[] = $value;
 		}
 
-		if ( ! is_null( $match_name ) ) {
+		if ( is_null( $match_name ) ) {
+			$query .= "match_name = NULL ";
+		} else {
+			$query    .= "match_name = %s ";
 			$params[] = $match_name;
 		}
 
+		$query    .= "WHERE content_id = %d AND content_type = %d";
 		$params[] = $content_id->get_id();
 		$params[] = $content_id->get_type();
 
