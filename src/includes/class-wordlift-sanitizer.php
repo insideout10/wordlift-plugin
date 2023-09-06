@@ -17,8 +17,13 @@ class Wordlift_Sanitizer {
 		//
 		// see also http://stackoverflow.com/questions/2137080/php-filter-var-filter-validate-url
 
-		if ( $value !== null && '' !== $value ) {
-			return $value;
+		if ( ! is_string( $value ) ) {
+			return null;
+		}
+
+		$trimmed_value = trim( $value );
+		if ( '' !== $trimmed_value ) {
+			return $trimmed_value;
 		}
 
 		return null;

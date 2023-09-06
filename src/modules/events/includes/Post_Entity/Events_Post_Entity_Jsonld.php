@@ -92,6 +92,12 @@ class Events_Post_Entity_Jsonld {
 	 */
 	private function set_events_request( $jsonld_arr, $post_id ) {
 
+		// Bail out if we can't get a permalink.
+		$permalink = get_permalink( $post_id );
+		if ( false === $permalink ) {
+			return $jsonld_arr;
+		}
+
 		$counts = $this->get_initial_counts_post( $post_id );
 
 		$change_status = $this->update_counts_if_necessary_post( $jsonld_arr, $counts, $post_id );
@@ -195,9 +201,9 @@ class Events_Post_Entity_Jsonld {
 	 * Send api request post.
 	 *
 	 * @param $counts
-	 * @param $post_id
+	 * @param $permalink string The web page URL
 	 */
-	private function send_api_request_post( $counts, $post_id ) {
+	private function send_api_request_post( $counts, $permalink ) {
 		// If the count has changed, make the API request.
 		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		$blocking = apply_filters( 'wl_feature__enable__sync-blocking', false );
@@ -214,7 +220,7 @@ class Events_Post_Entity_Jsonld {
 						array( 'about_count' => $counts['about'] ),
 						array( 'mentions_count' => $counts['mentions'] ),
 					),
-					'url'    => get_permalink( $post_id ),
+					'url'    => $permalink,
 				)
 			),
 			$blocking ? 60 : 0.001,

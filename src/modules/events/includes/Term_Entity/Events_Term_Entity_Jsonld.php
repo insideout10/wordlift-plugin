@@ -46,8 +46,13 @@ class Events_Term_Entity_Jsonld {
 	 */
 	public function set_events_request( $data, $term_id, $context ) {
 		$jsonld_arr = $data['jsonld'];
-
 		if ( $this->should_return_early( $context ) ) {
+			return $data;
+		}
+
+		// Bail out if we don't have a term URL.
+		$term_url = $this->get_term_url( $term_id );
+		if ( ! is_string( $term_url ) ) {
 			return $data;
 		}
 
@@ -165,9 +170,9 @@ class Events_Term_Entity_Jsonld {
 	 * Send api request.
 	 *
 	 * @param $counts
-	 * @param $term_id
+	 * @param $term_url string The term URL.
 	 */
-	private function send_api_request( $counts, $term_id ) {
+	private function send_api_request( $counts, $term_url ) {
 		// If the count has changed, make the API request.
 		$this->api_service->request(
 			'POST',
@@ -180,7 +185,7 @@ class Events_Term_Entity_Jsonld {
 						array( 'about_count' => $counts['about'] ),
 						array( 'mentions_count' => $counts['mentions'] ),
 					),
-					'url'    => $this->get_term_url( $term_id ),
+					'url'    => $term_url,
 				)
 			),
 			0.001,

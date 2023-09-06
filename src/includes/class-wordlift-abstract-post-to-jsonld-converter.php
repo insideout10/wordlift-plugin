@@ -127,7 +127,8 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		);
 
 		if ( post_type_supports( $post->post_type, 'excerpt' ) ) {
-			$jsonld['description'] = Wordlift_Post_Excerpt_Helper::get_text_excerpt( $post, 50000 );
+			$text_excerpt_length   = in_array( 'Product', (array) $types, true ) ? 50000 : 55;
+			$jsonld['description'] = Wordlift_Post_Excerpt_Helper::get_text_excerpt( $post, $text_excerpt_length );
 		}
 
 		// Set the `mainEntityOfPage` property if the post has some contents.
