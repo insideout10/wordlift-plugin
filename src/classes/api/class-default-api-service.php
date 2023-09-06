@@ -152,7 +152,7 @@ class Default_Api_Service implements Api_Service, Api_Service_Ext {
 	 * @throws Exception when an error occurs.
 	 */
 	public function me() {
-		return json_decode( $this->get( '/me' )->get_body() );
+		return json_decode( $this->get( '/accounts/me' )->get_body() );
 	}
 
 }
