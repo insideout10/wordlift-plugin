@@ -59,3 +59,6 @@ docker-compose-custom.yml
 
 # Ignore database backups
 .db/
+
+# Ignore local copy of wordlift
+/wordlift/
