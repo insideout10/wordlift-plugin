@@ -61,7 +61,7 @@ class Events_Term_Entity_Jsonld {
 		$change_status = $this->update_counts_if_necessary( $jsonld_arr, $counts, $term_id );
 
 		if ( $change_status ) {
-			$this->send_api_request( $counts, $term_id );
+			$this->send_api_request( $counts, $term_url );
 		}
 
 		return $data;

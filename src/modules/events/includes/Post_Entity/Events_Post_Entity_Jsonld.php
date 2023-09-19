@@ -103,7 +103,7 @@ class Events_Post_Entity_Jsonld {
 		$change_status = $this->update_counts_if_necessary_post( $jsonld_arr, $counts, $post_id );
 
 		if ( $change_status ) {
-			$this->send_api_request_post( $counts, $post_id );
+			$this->send_api_request_post( $counts, $permalink );
 		}
 
 		return $jsonld_arr;

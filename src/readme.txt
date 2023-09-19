@@ -143,6 +143,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.49.2 (2023-09-19) =
+
+* Events are sending IDs instead of URLs, squashed 💪
+* Added WPRM 8.10 compatibility.
+
 = 3.49.1 (2023-08-16) =
 
 * Limit the increase of words in the structured data description property only to Products.
