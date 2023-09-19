@@ -17,3 +17,6 @@ wp --skip-plugins --skip-themes rewrite structure '/%postname%/'
 
 echo "** Installing and Activating plugins **"
 wp plugin install woocommerce wordpress-seo wp-recipe-maker --force --activate
+
+echo "** Creating wladmin user **"
+wp create wladmin wladmin@localhost --role=administrator --user_pass=password
