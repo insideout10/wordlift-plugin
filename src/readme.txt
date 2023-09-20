@@ -143,6 +143,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.50.0 (2023-09-20) =
+
+* New Dashboard improvements.
+
 = 3.49.2 (2023-09-19) =
 
 * Events are sending IDs instead of URLs, squashed 💪
