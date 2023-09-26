@@ -1,0 +1,63 @@
+.wl-error {
+  position: relative;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-direction: row;
+  background-color: lighten(@wl-editorial-color, 10%);
+  margin: 5px 0;
+  width: 260px;
+  padding: 0;
+  border: none;
+
+  .wl-error-wrap-icon {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img.wl-error-icon {
+      width: 35px;
+      margin: 0 15px;
+    }
+
+  }
+  .wl-error-wrap-msg {
+    width: 70%;
+    padding: 10px 0;
+    p.wl-error-msg {
+      font-weight: 200;
+      line-height: 1.4;
+      font-size: 10px;
+      margin-right: 10px;
+      max-width: 175px;
+    }
+  }
+  .wl-error-close-btn {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    margin: 5px;
+    span {
+      position: absolute;
+      bottom: 5px;
+      display: block;
+      height: 1px;
+      width: 10px;
+      background-color: @wl-black-color;
+      opacity: 0.5;
+      transform: rotate(45deg);
+      transform-origin: center;
+      &:last-of-type {
+        transform: rotate(-45deg);
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+services:
+  _defaults: { public: true }
+
+  Wordlift\Modules\App\Plugin_App:
+    class: Wordlift\Modules\App\Plugin_App
+

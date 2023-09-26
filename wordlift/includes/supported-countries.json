@@ -1,0 +1,3590 @@
+{
+  "ae": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2784,
+      "loc_id_parent": null,
+      "loc_name": "United Arab Emirates",
+      "loc_name_canonical": "United Arab Emirates",
+      "loc_type": "Country",
+      "loc_country_iso_code": "AE",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "ar, en"
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 826,
+        "se_name": "google.ae",
+        "se_country_iso_code": "AE",
+        "se_country_name": "United Arab Emirates",
+        "se_language": "English",
+        "se_localization": "en-ae"
+      }
+    }
+  },
+  "ai": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2660,
+      "loc_id_parent": null,
+      "loc_name": "Anguilla",
+      "loc_name_canonical": "Anguilla",
+      "loc_type": "Region",
+      "loc_country_iso_code": "AI",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": ""
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 46,
+        "se_name": "google.com.ai",
+        "se_country_iso_code": "AI",
+        "se_country_name": "Anguilla",
+        "se_language": "English",
+        "se_localization": "en-ai"
+      }
+    }
+  },
+  "am": {
+    "supportedLang": [
+      "hy"
+    ],
+    "defaultLoc": {
+      "loc_id": 2051,
+      "loc_id_parent": null,
+      "loc_name": "Armenia",
+      "loc_name_canonical": "Armenia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "AM",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "hy"
+    },
+    "supportedSearchEngines": {
+      "hy": {
+        "se_id": 49,
+        "se_name": "google.am",
+        "se_country_iso_code": "AM",
+        "se_country_name": "Armenia",
+        "se_language": "Armenian",
+        "se_localization": "hy-am"
+      }
+    }
+  },
+  "ar": {
+    "supportedLang": [
+      "es"
+    ],
+    "defaultLoc": {
+      "loc_id": 2032,
+      "loc_id_parent": null,
+      "loc_name": "Argentina",
+      "loc_name_canonical": "Argentina",
+      "loc_type": "Country",
+      "loc_country_iso_code": "AR",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "es"
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 48,
+        "se_name": "google.com.ar",
+        "se_country_iso_code": "AR",
+        "se_country_name": "Argentina",
+        "se_language": "Espanol (Latinoamerica)",
+        "se_localization": "es-419-ar"
+      }
+    }
+  },
+  "as": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2016,
+      "loc_id_parent": null,
+      "loc_name": "American Samoa",
+      "loc_name_canonical": "American Samoa",
+      "loc_type": "Country",
+      "loc_country_iso_code": "AS",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 42,
+        "se_name": "google.as",
+        "se_country_iso_code": "AS",
+        "se_country_name": "American Samoa",
+        "se_language": "English",
+        "se_localization": "en-as"
+      }
+    }
+  },
+  "at": {
+    "supportedLang": [
+      "de"
+    ],
+    "defaultLoc": {
+      "loc_id": 2040,
+      "loc_id_parent": null,
+      "loc_name": "Austria",
+      "loc_name_canonical": "Austria",
+      "loc_type": "Country",
+      "loc_country_iso_code": "AT",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "de"
+    },
+    "supportedSearchEngines": {
+      "de": {
+        "se_id": 52,
+        "se_name": "google.at",
+        "se_country_iso_code": "AT",
+        "se_country_name": "Austria",
+        "se_language": "German",
+        "se_localization": "de-at"
+      }
+    }
+  },
+  "au": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2036,
+      "loc_id_parent": null,
+      "loc_name": "Australia",
+      "loc_name_canonical": "Australia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "AU",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "en"
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 51,
+        "se_name": "google.com.au",
+        "se_country_iso_code": "AU",
+        "se_country_name": "Australia",
+        "se_language": "English",
+        "se_localization": "en-au"
+      }
+    }
+  },
+  "az": {
+    "supportedLang": [
+      "az"
+    ],
+    "defaultLoc": {
+      "loc_id": 2031,
+      "loc_id_parent": null,
+      "loc_name": "Azerbaijan",
+      "loc_name_canonical": "Azerbaijan",
+      "loc_type": "Country",
+      "loc_country_iso_code": "AZ",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "az": {
+        "se_id": 53,
+        "se_name": "google.az",
+        "se_country_iso_code": "AZ",
+        "se_country_name": "Azerbaijan",
+        "se_language": "Azerbaijani",
+        "se_localization": "az-az"
+      }
+    }
+  },
+  "ba": {
+    "supportedLang": [
+      "bs"
+    ],
+    "defaultLoc": {
+      "loc_id": 2070,
+      "loc_id_parent": null,
+      "loc_name": "Bosnia and Herzegovina",
+      "loc_name_canonical": "Bosnia and Herzegovina",
+      "loc_type": "Country",
+      "loc_country_iso_code": "BA",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "bs"
+    },
+    "supportedSearchEngines": {
+      "bs": {
+        "se_id": 69,
+        "se_name": "google.ba",
+        "se_country_iso_code": "BA",
+        "se_country_name": "Bosnia and Herzegovina",
+        "se_language": "Bosnian",
+        "se_localization": "bs-ba"
+      }
+    }
+  },
+  "bd": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2050,
+      "loc_id_parent": null,
+      "loc_name": "Bangladesh",
+      "loc_name_canonical": "Bangladesh",
+      "loc_type": "Country",
+      "loc_country_iso_code": "BD",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "bn"
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 3403,
+        "se_name": "google.com.bd",
+        "se_country_iso_code": "BD",
+        "se_country_name": "Bangladesh",
+        "se_language": "English",
+        "se_localization": "en-bd"
+      }
+    }
+  },
+  "be": {
+    "supportedLang": [
+      "nl",
+      "fr",
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2056,
+      "loc_id_parent": null,
+      "loc_name": "Belgium",
+      "loc_name_canonical": "Belgium",
+      "loc_type": "Country",
+      "loc_country_iso_code": "BE",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "fr, nl"
+    },
+    "supportedSearchEngines": {
+      "nl": {
+        "se_id": 60,
+        "se_name": "google.be",
+        "se_country_iso_code": "BE",
+        "se_country_name": "Belgium",
+        "se_language": "Dutch",
+        "se_localization": "nl-be"
+      },
+      "fr": {
+        "se_id": 61,
+        "se_name": "google.be",
+        "se_country_iso_code": "BE",
+        "se_country_name": "Belgium",
+        "se_language": "French",
+        "se_localization": "fr-be"
+      },
+      "en": {
+        "se_id": 3387,
+        "se_name": "google.be",
+        "se_country_iso_code": "BE",
+        "se_country_name": "Belgium",
+        "se_language": "English",
+        "se_localization": "en-be"
+      }
+    }
+  },
+  "bg": {
+    "supportedLang": [
+      "bg"
+    ],
+    "defaultLoc": {
+      "loc_id": 2100,
+      "loc_id_parent": null,
+      "loc_name": "Bulgaria",
+      "loc_name_canonical": "Bulgaria",
+      "loc_type": "Country",
+      "loc_country_iso_code": "BG",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "bg"
+    },
+    "supportedSearchEngines": {
+      "bg": {
+        "se_id": 76,
+        "se_name": "google.bg",
+        "se_country_iso_code": "BG",
+        "se_country_name": "Bulgaria",
+        "se_language": "Bulgarian",
+        "se_localization": "bg-bg"
+      }
+    }
+  },
+  "bh": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2048,
+      "loc_id_parent": null,
+      "loc_name": "Bahrain",
+      "loc_name_canonical": "Bahrain",
+      "loc_type": "Country",
+      "loc_country_iso_code": "BH",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 2868,
+        "se_name": "google.com.bh",
+        "se_country_iso_code": "BH",
+        "se_country_name": "Bahrain",
+        "se_language": "English",
+        "se_localization": "en-bh"
+      }
+    }
+  },
+  "bn": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2096,
+      "loc_id_parent": null,
+      "loc_name": "Brunei",
+      "loc_name_canonical": "Brunei",
+      "loc_type": "Country",
+      "loc_country_iso_code": "BN",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 3404,
+        "se_name": "google.com.bn",
+        "se_country_iso_code": "BN",
+        "se_country_name": "Brunei",
+        "se_language": "English",
+        "se_localization": "en-bn"
+      }
+    }
+  },
+  "bo": {
+    "supportedLang": [
+      "es"
+    ],
+    "defaultLoc": {
+      "loc_id": 2068,
+      "loc_id_parent": null,
+      "loc_name": "Bolivia",
+      "loc_name_canonical": "Bolivia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "BO",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "es"
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 67,
+        "se_name": "google.com.bo",
+        "se_country_iso_code": "BO",
+        "se_country_name": "Bolivia",
+        "se_language": "Espanol (Latinoamerica)",
+        "se_localization": "es-419-bo"
+      }
+    }
+  },
+  "br": {
+    "supportedLang": [
+      "pt"
+    ],
+    "defaultLoc": {
+      "loc_id": 2076,
+      "loc_id_parent": null,
+      "loc_name": "Brazil",
+      "loc_name_canonical": "Brazil",
+      "loc_type": "Country",
+      "loc_country_iso_code": "BR",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "pt"
+    },
+    "supportedSearchEngines": {
+      "pt": {
+        "se_id": 73,
+        "se_name": "google.com.br",
+        "se_country_iso_code": "BR",
+        "se_country_name": "Brazil",
+        "se_language": "Portuguese (Brasil)",
+        "se_localization": "pt-br-br"
+      }
+    }
+  },
+  "ca": {
+    "supportedLang": [
+      "en",
+      "fr"
+    ],
+    "defaultLoc": {
+      "loc_id": 2124,
+      "loc_id_parent": null,
+      "loc_name": "Canada",
+      "loc_name_canonical": "Canada",
+      "loc_type": "Country",
+      "loc_country_iso_code": "CA",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "en"
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 23,
+        "se_name": "google.ca",
+        "se_country_iso_code": "CA",
+        "se_country_name": "Canada",
+        "se_language": "English",
+        "se_localization": "en-ca"
+      },
+      "fr": {
+        "se_id": 84,
+        "se_name": "google.ca",
+        "se_country_iso_code": "CA",
+        "se_country_name": "Canada",
+        "se_language": "French",
+        "se_localization": "fr-ca"
+      }
+    }
+  },
+  "cd": {
+    "supportedLang": [
+      "fr"
+    ],
+    "defaultLoc": {
+      "loc_id": 2180,
+      "loc_id_parent": null,
+      "loc_name": "Democratic Republic of the Congo",
+      "loc_name_canonical": "Democratic Republic of the Congo",
+      "loc_type": "Country",
+      "loc_country_iso_code": "CD",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "fr": {
+        "se_id": 96,
+        "se_name": "google.cd",
+        "se_country_iso_code": "CD",
+        "se_country_name": "Democratic Republic of the Congo",
+        "se_language": "French",
+        "se_localization": "fr-cd"
+      }
+    }
+  },
+  "ch": {
+    "supportedLang": [
+      "de",
+      "en",
+      "fr",
+      "it"
+    ],
+    "defaultLoc": {
+      "loc_id": 2756,
+      "loc_id_parent": null,
+      "loc_name": "Switzerland",
+      "loc_name_canonical": "Switzerland",
+      "loc_type": "Country",
+      "loc_country_iso_code": "CH",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "de, fr"
+    },
+    "supportedSearchEngines": {
+      "de": {
+        "se_id": 315,
+        "se_name": "google.ch",
+        "se_country_iso_code": "CH",
+        "se_country_name": "Switzerland",
+        "se_language": "German",
+        "se_localization": "de-ch"
+      },
+      "en": {
+        "se_id": 3389,
+        "se_name": "google.ch",
+        "se_country_iso_code": "CH",
+        "se_country_name": "Switzerland",
+        "se_language": "English",
+        "se_localization": "en-ch"
+      },
+      "fr": {
+        "se_id": 316,
+        "se_name": "google.ch",
+        "se_country_iso_code": "CH",
+        "se_country_name": "Switzerland",
+        "se_language": "French",
+        "se_localization": "fr-ch"
+      },
+      "it": {
+        "se_id": 317,
+        "se_name": "google.ch",
+        "se_country_iso_code": "CH",
+        "se_country_name": "Switzerland",
+        "se_language": "Italian",
+        "se_localization": "it-ch"
+      }
+    }
+  },
+  "ci": {
+    "supportedLang": [
+      "fr"
+    ],
+    "defaultLoc": {
+      "loc_id": 2384,
+      "loc_id_parent": null,
+      "loc_name": "Cote d'Ivoire",
+      "loc_name_canonical": "Cote d'Ivoire",
+      "loc_type": "Country",
+      "loc_country_iso_code": "CI",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "fr": {
+        "se_id": 103,
+        "se_name": "google.ci",
+        "se_country_iso_code": "CI",
+        "se_country_name": "Cote dIvoire",
+        "se_language": "French",
+        "se_localization": "fr-ci"
+      }
+    }
+  },
+  "cl": {
+    "supportedLang": [
+      "es"
+    ],
+    "defaultLoc": {
+      "loc_id": 2152,
+      "loc_id_parent": null,
+      "loc_name": "Chile",
+      "loc_name_canonical": "Chile",
+      "loc_type": "Country",
+      "loc_country_iso_code": "CL",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "es"
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 89,
+        "se_name": "google.cl",
+        "se_country_iso_code": "CL",
+        "se_country_name": "Chile",
+        "se_language": "Espanol (Latinoamerica)",
+        "se_localization": "es-419-cl"
+      }
+    }
+  },
+  "cn": {
+    "supportedLang": [
+      "zh-CN"
+    ],
+    "defaultLoc": {
+      "loc_id": 2156,
+      "loc_id_parent": null,
+      "loc_name": "China",
+      "loc_name_canonical": "China",
+      "loc_type": "Country",
+      "loc_country_iso_code": "CN",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "zh-CN": {
+        "se_id": 90,
+        "se_name": "google.com.hk",
+        "se_country_iso_code": "CN",
+        "se_country_name": "China",
+        "se_language": "Chinese (Simplified Han)",
+        "se_localization": "zh-cn-cn"
+      }
+    }
+  },
+  "co": {
+    "supportedLang": [
+      "es"
+    ],
+    "defaultLoc": {
+      "loc_id": 2170,
+      "loc_id_parent": null,
+      "loc_name": "Colombia",
+      "loc_name_canonical": "Colombia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "CO",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "es"
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 91,
+        "se_name": "google.com.co",
+        "se_country_iso_code": "CO",
+        "se_country_name": "Colombia",
+        "se_language": "Espanol (Latinoamerica)",
+        "se_localization": "es-419-co"
+      }
+    }
+  },
+  "cr": {
+    "supportedLang": [
+      "es"
+    ],
+    "defaultLoc": {
+      "loc_id": 2188,
+      "loc_id_parent": null,
+      "loc_name": "Costa Rica",
+      "loc_name_canonical": "Costa Rica",
+      "loc_type": "Country",
+      "loc_country_iso_code": "CR",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "es"
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 102,
+        "se_name": "google.co.cr",
+        "se_country_iso_code": "CR",
+        "se_country_name": "Costa Rica",
+        "se_language": "Espanol (Latinoamerica)",
+        "se_localization": "es-419-cr"
+      }
+    }
+  },
+  "cy": {
+    "supportedLang": [
+      "el",
+      "en",
+      "tr"
+    ],
+    "defaultLoc": {
+      "loc_id": 2196,
+      "loc_id_parent": null,
+      "loc_name": "Cyprus",
+      "loc_name_canonical": "Cyprus",
+      "loc_type": "Country",
+      "loc_country_iso_code": "CY",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "el": {
+        "se_id": 107,
+        "se_name": "google.com.cy",
+        "se_country_iso_code": "CY",
+        "se_country_name": "Cyprus",
+        "se_language": "Greek",
+        "se_localization": "el-cy"
+      },
+      "en": {
+        "se_id": 106,
+        "se_name": "google.com.cy",
+        "se_country_iso_code": "CY",
+        "se_country_name": "Cyprus",
+        "se_language": "English",
+        "se_localization": "en-cy"
+      },
+      "tr": {
+        "se_id": 108,
+        "se_name": "google.com.cy",
+        "se_country_iso_code": "CY",
+        "se_country_name": "Cyprus",
+        "se_language": "Turkish",
+        "se_localization": "tr-cy"
+      }
+    }
+  },
+  "cz": {
+    "supportedLang": [
+      "cs"
+    ],
+    "defaultLoc": {
+      "loc_id": 2203,
+      "loc_id_parent": null,
+      "loc_name": "Czechia",
+      "loc_name_canonical": "Czechia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "CZ",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "cs"
+    },
+    "supportedSearchEngines": {
+      "cs": {
+        "se_id": 109,
+        "se_name": "google.cz",
+        "se_country_iso_code": "CZ",
+        "se_country_name": "Czechia",
+        "se_language": "Czech",
+        "se_localization": "cs-cz"
+      }
+    }
+  },
+  "de": {
+    "supportedLang": [
+      "de"
+    ],
+    "defaultLoc": {
+      "loc_id": 2276,
+      "loc_id_parent": null,
+      "loc_name": "Germany",
+      "loc_name_canonical": "Germany",
+      "loc_type": "Country",
+      "loc_country_iso_code": "DE",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "de"
+    },
+    "supportedSearchEngines": {
+      "de": {
+        "se_id": 25,
+        "se_name": "google.de",
+        "se_country_iso_code": "DE",
+        "se_country_name": "Germany",
+        "se_language": "German",
+        "se_localization": "de-de"
+      }
+    }
+  },
+  "dj": {
+    "supportedLang": [
+      "fr"
+    ],
+    "defaultLoc": {
+      "loc_id": 2262,
+      "loc_id_parent": null,
+      "loc_name": "Djibouti",
+      "loc_name_canonical": "Djibouti",
+      "loc_type": "Country",
+      "loc_country_iso_code": "DJ",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "fr": {
+        "se_id": 113,
+        "se_name": "google.dj",
+        "se_country_iso_code": "DJ",
+        "se_country_name": "Djibouti",
+        "se_language": "French",
+        "se_localization": "fr-dj"
+      }
+    }
+  },
+  "dk": {
+    "supportedLang": [
+      "da"
+    ],
+    "defaultLoc": {
+      "loc_id": 2208,
+      "loc_id_parent": null,
+      "loc_name": "Denmark",
+      "loc_name_canonical": "Denmark",
+      "loc_type": "Country",
+      "loc_country_iso_code": "DK",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "da"
+    },
+    "supportedSearchEngines": {
+      "da": {
+        "se_id": 110,
+        "se_name": "google.dk",
+        "se_country_iso_code": "DK",
+        "se_country_name": "Denmark",
+        "se_language": "Danish",
+        "se_localization": "da-dk"
+      }
+    }
+  },
+  "do": {
+    "supportedLang": [
+      "es"
+    ],
+    "defaultLoc": {
+      "loc_id": 2214,
+      "loc_id_parent": null,
+      "loc_name": "Dominican Republic",
+      "loc_name_canonical": "Dominican Republic",
+      "loc_type": "Country",
+      "loc_country_iso_code": "DO",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 116,
+        "se_name": "google.com.do",
+        "se_country_iso_code": "DO",
+        "se_country_name": "Dominican Republic",
+        "se_language": "Espanol (Latinoamerica)",
+        "se_localization": "es-419-do"
+      }
+    }
+  },
+  "ec": {
+    "supportedLang": [
+      "es"
+    ],
+    "defaultLoc": {
+      "loc_id": 2218,
+      "loc_id_parent": null,
+      "loc_name": "Ecuador",
+      "loc_name_canonical": "Ecuador",
+      "loc_type": "Country",
+      "loc_country_iso_code": "EC",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "es"
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 117,
+        "se_name": "google.com.ec",
+        "se_country_iso_code": "EC",
+        "se_country_name": "Ecuador",
+        "se_language": "Espanol (Latinoamerica)",
+        "se_localization": "es-419-ec"
+      }
+    }
+  },
+  "ee": {
+    "supportedLang": [
+      "et",
+      "ru"
+    ],
+    "defaultLoc": {
+      "loc_id": 2233,
+      "loc_id_parent": null,
+      "loc_name": "Estonia",
+      "loc_name_canonical": "Estonia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "EE",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "et"
+    },
+    "supportedSearchEngines": {
+      "et": {
+        "se_id": 121,
+        "se_name": "google.ee",
+        "se_country_iso_code": "EE",
+        "se_country_name": "Estonia",
+        "se_language": "Estonian",
+        "se_localization": "et-ee"
+      },
+      "ru": {
+        "se_id": 120,
+        "se_name": "google.ee",
+        "se_country_iso_code": "EE",
+        "se_country_name": "Estonia",
+        "se_language": "Russian",
+        "se_localization": "ru-ee"
+      }
+    }
+  },
+  "eg": {
+    "supportedLang": [
+      "ar",
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2818,
+      "loc_id_parent": null,
+      "loc_name": "Egypt",
+      "loc_name_canonical": "Egypt",
+      "loc_type": "Country",
+      "loc_country_iso_code": "EG",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "ar"
+    },
+    "supportedSearchEngines": {
+      "ar": {
+        "se_id": 118,
+        "se_name": "google.com.eg",
+        "se_country_iso_code": "EG",
+        "se_country_name": "Egypt",
+        "se_language": "Arabic",
+        "se_localization": "ar-eg"
+      },
+      "en": {
+        "se_id": 2873,
+        "se_name": "google.com.eg",
+        "se_country_iso_code": "EG",
+        "se_country_name": "Egypt",
+        "se_language": "English",
+        "se_localization": "en-eg"
+      }
+    }
+  },
+  "es": {
+    "supportedLang": [
+      "es"
+    ],
+    "defaultLoc": {
+      "loc_id": 2724,
+      "loc_id_parent": null,
+      "loc_name": "Spain",
+      "loc_name_canonical": "Spain",
+      "loc_type": "Country",
+      "loc_country_iso_code": "ES",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "es"
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 26,
+        "se_name": "google.es",
+        "se_country_iso_code": "ES",
+        "se_country_name": "Spain",
+        "se_language": "Spanish",
+        "se_localization": "es-es"
+      }
+    }
+  },
+  "et": {
+    "supportedLang": [
+      "en",
+      "am",
+      "om",
+      "so",
+      "ti"
+    ],
+    "defaultLoc": {
+      "loc_id": 2231,
+      "loc_id_parent": null,
+      "loc_name": "Ethiopia",
+      "loc_name_canonical": "Ethiopia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "ET",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 3407,
+        "se_name": "google.com.et",
+        "se_country_iso_code": "ET",
+        "se_country_name": "Ethiopia",
+        "se_language": "English",
+        "se_localization": "en-et"
+      },
+      "am": {
+        "se_id": 122,
+        "se_name": "google.com.et",
+        "se_country_iso_code": "ET",
+        "se_country_name": "Ethiopia",
+        "se_language": "Amharic",
+        "se_localization": "am-et"
+      },
+      "om": {
+        "se_id": 123,
+        "se_name": "google.com.et",
+        "se_country_iso_code": "ET",
+        "se_country_name": "Ethiopia",
+        "se_language": "Oromo",
+        "se_localization": "om-et"
+      },
+      "so": {
+        "se_id": 125,
+        "se_name": "google.com.et",
+        "se_country_iso_code": "ET",
+        "se_country_name": "Ethiopia",
+        "se_language": "Somali",
+        "se_localization": "so-et"
+      },
+      "ti": {
+        "se_id": 124,
+        "se_name": "google.com.et",
+        "se_country_iso_code": "ET",
+        "se_country_name": "Ethiopia",
+        "se_language": "Tigrinya",
+        "se_localization": "ti-et"
+      }
+    }
+  },
+  "fi": {
+    "supportedLang": [
+      "fi"
+    ],
+    "defaultLoc": {
+      "loc_id": 2246,
+      "loc_id_parent": null,
+      "loc_name": "Finland",
+      "loc_name_canonical": "Finland",
+      "loc_type": "Country",
+      "loc_country_iso_code": "FI",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "fi"
+    },
+    "supportedSearchEngines": {
+      "fi": {
+        "se_id": 128,
+        "se_name": "google.fi",
+        "se_country_iso_code": "FI",
+        "se_country_name": "Finland",
+        "se_language": "Finnish",
+        "se_localization": "fi-fi"
+      }
+    }
+  },
+  "fr": {
+    "supportedLang": [
+      "fr"
+    ],
+    "defaultLoc": {
+      "loc_id": 2250,
+      "loc_id_parent": null,
+      "loc_name": "France",
+      "loc_name_canonical": "France",
+      "loc_type": "Country",
+      "loc_country_iso_code": "FR",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "fr"
+    },
+    "supportedSearchEngines": {
+      "fr": {
+        "se_id": 129,
+        "se_name": "google.fr",
+        "se_country_iso_code": "FR",
+        "se_country_name": "France",
+        "se_language": "French",
+        "se_localization": "fr-fr"
+      }
+    }
+  },
+  "ge": {
+    "supportedLang": [
+      "ka",
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2268,
+      "loc_id_parent": null,
+      "loc_name": "Georgia",
+      "loc_name_canonical": "Georgia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "GE",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "ka": {
+        "se_id": 133,
+        "se_name": "google.ge",
+        "se_country_iso_code": "GE",
+        "se_country_name": "Georgia",
+        "se_language": "Georgian",
+        "se_localization": "ka-ge"
+      },
+      "en": {
+        "se_id": 5343,
+        "se_name": "google.ge",
+        "se_country_iso_code": "GE",
+        "se_country_name": "Georgia",
+        "se_language": "English",
+        "se_localization": "en-ge"
+      }
+    }
+  },
+  "gh": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2288,
+      "loc_id_parent": null,
+      "loc_name": "Ghana",
+      "loc_name_canonical": "Ghana",
+      "loc_type": "Country",
+      "loc_country_iso_code": "GH",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": ""
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 138,
+        "se_name": "google.com.gh",
+        "se_country_iso_code": "GH",
+        "se_country_name": "Ghana",
+        "se_language": "English",
+        "se_localization": "en-gh"
+      }
+    }
+  },
+  "gi": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2292,
+      "loc_id_parent": null,
+      "loc_name": "Gibraltar",
+      "loc_name_canonical": "Gibraltar",
+      "loc_type": "Region",
+      "loc_country_iso_code": "GI",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": ""
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 141,
+        "se_name": "google.com.gi",
+        "se_country_iso_code": "GI",
+        "se_country_name": "Gibraltar",
+        "se_language": "English",
+        "se_localization": "en-gi"
+      }
+    }
+  },
+  "gm": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2270,
+      "loc_id_parent": null,
+      "loc_name": "The Gambia",
+      "loc_name_canonical": "The Gambia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "GM",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 131,
+        "se_name": "google.gm",
+        "se_country_iso_code": "GM",
+        "se_country_name": "Gambia",
+        "se_language": "English",
+        "se_localization": "en-gm"
+      }
+    }
+  },
+  "gp": {
+    "supportedLang": [
+      "fr"
+    ],
+    "defaultLoc": {
+      "loc_id": 2312,
+      "loc_id_parent": null,
+      "loc_name": "Guadeloupe",
+      "loc_name_canonical": "Guadeloupe",
+      "loc_type": "Region",
+      "loc_country_iso_code": "GP",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": ""
+    },
+    "supportedSearchEngines": {
+      "fr": {
+        "se_id": 146,
+        "se_name": "google.gp",
+        "se_country_iso_code": "GP",
+        "se_country_name": "Guadeloupe",
+        "se_language": "French",
+        "se_localization": "fr-gp"
+      }
+    }
+  },
+  "gr": {
+    "supportedLang": [
+      "el"
+    ],
+    "defaultLoc": {
+      "loc_id": 2300,
+      "loc_id_parent": null,
+      "loc_name": "Greece",
+      "loc_name_canonical": "Greece",
+      "loc_type": "Country",
+      "loc_country_iso_code": "GR",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "el"
+    },
+    "supportedSearchEngines": {
+      "el": {
+        "se_id": 144,
+        "se_name": "google.gr",
+        "se_country_iso_code": "GR",
+        "se_country_name": "Greece",
+        "se_language": "Greek",
+        "se_localization": "el-gr"
+      }
+    }
+  },
+  "gt": {
+    "supportedLang": [
+      "es"
+    ],
+    "defaultLoc": {
+      "loc_id": 2320,
+      "loc_id_parent": null,
+      "loc_name": "Guatemala",
+      "loc_name_canonical": "Guatemala",
+      "loc_type": "Country",
+      "loc_country_iso_code": "GT",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "es"
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 147,
+        "se_name": "google.com.gt",
+        "se_country_iso_code": "GT",
+        "se_country_name": "Guatemala",
+        "se_language": "Espanol (Latinoamerica)",
+        "se_localization": "es-419-gt"
+      }
+    }
+  },
+  "hk": {
+    "supportedLang": [
+      "en",
+      "zh",
+      "zh_CN",
+      "zh_TW"
+    ],
+    "defaultLoc": {
+      "loc_id": 2344,
+      "loc_id_parent": null,
+      "loc_name": "Hong Kong",
+      "loc_name_canonical": "Hong Kong",
+      "loc_type": "Region",
+      "loc_country_iso_code": "HK",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "zh_tw"
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 2843,
+        "se_name": "google.com.hk",
+        "se_country_iso_code": "HK",
+        "se_country_name": "Hong Kong",
+        "se_language": "English",
+        "se_localization": "en-hk"
+      },
+      "zh": {
+        "se_id": 5733,
+        "se_name": "google.com.hk",
+        "se_country_iso_code": "HK",
+        "se_country_name": "Hong Kong",
+        "se_language": "Chinese",
+        "se_localization": "zh-hk"
+      },
+      "zh_CN": {
+        "se_id": 3611,
+        "se_name": "google.com.hk",
+        "se_country_iso_code": "HK",
+        "se_country_name": "Hong Kong",
+        "se_language": "Chinese (Simplified)",
+        "se_localization": "zh-cn-hk"
+      },
+      "zh_TW": {
+        "se_id": 5735,
+        "se_name": "google.com.hk",
+        "se_country_iso_code": "HK",
+        "se_country_name": "Hong Kong",
+        "se_language": "Chinese (Traditional Han)",
+        "se_localization": "zh-tw-hk"
+      }
+    }
+  },
+  "hn": {
+    "supportedLang": [
+      "es"
+    ],
+    "defaultLoc": {
+      "loc_id": 2340,
+      "loc_id_parent": null,
+      "loc_name": "Honduras",
+      "loc_name_canonical": "Honduras",
+      "loc_type": "Country",
+      "loc_country_iso_code": "HN",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 153,
+        "se_name": "google.hn",
+        "se_country_iso_code": "HN",
+        "se_country_name": "Honduras",
+        "se_language": "Espanol (Latinoamerica)",
+        "se_localization": "es-419-hn"
+      }
+    }
+  },
+  "hr": {
+    "supportedLang": [
+      "hr"
+    ],
+    "defaultLoc": {
+      "loc_id": 2191,
+      "loc_id_parent": null,
+      "loc_name": "Croatia",
+      "loc_name_canonical": "Croatia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "HR",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "hr"
+    },
+    "supportedSearchEngines": {
+      "hr": {
+        "se_id": 104,
+        "se_name": "google.hr",
+        "se_country_iso_code": "HR",
+        "se_country_name": "Croatia",
+        "se_language": "Croatian",
+        "se_localization": "hr-hr"
+      }
+    }
+  },
+  "ht": {
+    "supportedLang": [
+      "fr"
+    ],
+    "defaultLoc": {
+      "loc_id": 2332,
+      "loc_id_parent": null,
+      "loc_name": "Haiti",
+      "loc_name_canonical": "Haiti",
+      "loc_type": "Country",
+      "loc_country_iso_code": "HT",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "fr": {
+        "se_id": 152,
+        "se_name": "google.ht",
+        "se_country_iso_code": "HT",
+        "se_country_name": "Haiti",
+        "se_language": "French",
+        "se_localization": "fr-ht"
+      }
+    }
+  },
+  "hu": {
+    "supportedLang": [
+      "hu"
+    ],
+    "defaultLoc": {
+      "loc_id": 2348,
+      "loc_id_parent": null,
+      "loc_name": "Hungary",
+      "loc_name_canonical": "Hungary",
+      "loc_type": "Country",
+      "loc_country_iso_code": "HU",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "hu"
+    },
+    "supportedSearchEngines": {
+      "hu": {
+        "se_id": 155,
+        "se_name": "google.hu",
+        "se_country_iso_code": "HU",
+        "se_country_name": "Hungary",
+        "se_language": "Hungarian",
+        "se_localization": "hu-hu"
+      }
+    }
+  },
+  "id": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2360,
+      "loc_id_parent": null,
+      "loc_name": "Indonesia",
+      "loc_name_canonical": "Indonesia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "ID",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "id"
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 2901,
+        "se_name": "google.co.id",
+        "se_country_iso_code": "ID",
+        "se_country_name": "Indonesia",
+        "se_language": "English",
+        "se_localization": "en-id"
+      }
+    }
+  },
+  "ie": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2372,
+      "loc_id_parent": null,
+      "loc_name": "Ireland",
+      "loc_name_canonical": "Ireland",
+      "loc_type": "Country",
+      "loc_country_iso_code": "IE",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "en"
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 172,
+        "se_name": "google.ie",
+        "se_country_iso_code": "IE",
+        "se_country_name": "Ireland",
+        "se_language": "English",
+        "se_localization": "en-ie"
+      }
+    }
+  },
+  "il": {
+    "supportedLang": [
+      "iw",
+      "he"
+    ],
+    "defaultLoc": {
+      "loc_id": 2376,
+      "loc_id_parent": null,
+      "loc_name": "Israel",
+      "loc_name_canonical": "Israel",
+      "loc_type": "Country",
+      "loc_country_iso_code": "IL",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "ar, iw"
+    },
+    "supportedSearchEngines": {
+      "iw": {
+        "se_id": 174,
+        "se_name": "google.co.il",
+        "se_country_iso_code": "IL",
+        "se_country_name": "Israel",
+        "se_language": "Hebrew",
+        "se_localization": "iw-il"
+      }
+    }
+  },
+  "in": {
+    "supportedLang": [
+      "en",
+      "hi",
+      "ta",
+      "te"
+    ],
+    "defaultLoc": {
+      "loc_id": 2356,
+      "loc_id_parent": null,
+      "loc_name": "India",
+      "loc_name_canonical": "India",
+      "loc_type": "Country",
+      "loc_country_iso_code": "IN",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "en"
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 163,
+        "se_name": "google.co.in",
+        "se_country_iso_code": "IN",
+        "se_country_name": "India",
+        "se_language": "English",
+        "se_localization": "en-in"
+      },
+      "hi": {
+        "se_id": 166,
+        "se_name": "google.co.in",
+        "se_country_iso_code": "IN",
+        "se_country_name": "India",
+        "se_language": "Hindi",
+        "se_localization": "hi-in"
+      },
+      "ta": {
+        "se_id": 158,
+        "se_name": "google.co.in",
+        "se_country_iso_code": "IN",
+        "se_country_name": "India",
+        "se_language": "Tamil",
+        "se_localization": "ta-in"
+      },
+      "te": {
+        "se_id": 162,
+        "se_name": "google.co.in",
+        "se_country_iso_code": "IN",
+        "se_country_name": "India",
+        "se_language": "Telugu",
+        "se_localization": "te-in"
+      }
+    }
+  },
+  "is": {
+    "supportedLang": [
+      "is",
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2352,
+      "loc_id_parent": null,
+      "loc_name": "Iceland",
+      "loc_name_canonical": "Iceland",
+      "loc_type": "Country",
+      "loc_country_iso_code": "IS",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "is": {
+        "se_id": 156,
+        "se_name": "google.is",
+        "se_country_iso_code": "IS",
+        "se_country_name": "Iceland",
+        "se_language": "Icelandic",
+        "se_localization": "is-is"
+      },
+      "en": {
+        "se_id": 3426,
+        "se_name": "google.is",
+        "se_country_iso_code": "IS",
+        "se_country_name": "Iceland",
+        "se_language": "English",
+        "se_localization": "en-is"
+      }
+    }
+  },
+  "it": {
+    "supportedLang": [
+      "it"
+    ],
+    "defaultLoc": {
+      "loc_id": 2380,
+      "loc_id_parent": null,
+      "loc_name": "Italy",
+      "loc_name_canonical": "Italy",
+      "loc_type": "Country",
+      "loc_country_iso_code": "IT",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "it"
+    },
+    "supportedSearchEngines": {
+      "it": {
+        "se_id": 176,
+        "se_name": "google.it",
+        "se_country_iso_code": "IT",
+        "se_country_name": "Italy",
+        "se_language": "Italian",
+        "se_localization": "it-it"
+      }
+    }
+  },
+  "je": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2832,
+      "loc_id_parent": null,
+      "loc_name": "Jersey",
+      "loc_name_canonical": "Jersey",
+      "loc_type": "Country",
+      "loc_country_iso_code": "JE",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 179,
+        "se_name": "google.je",
+        "se_country_iso_code": "JE",
+        "se_country_name": "Jersey",
+        "se_language": "English",
+        "se_localization": "en-je"
+      }
+    }
+  },
+  "jm": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2388,
+      "loc_id_parent": null,
+      "loc_name": "Jamaica",
+      "loc_name_canonical": "Jamaica",
+      "loc_type": "Country",
+      "loc_country_iso_code": "JM",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 177,
+        "se_name": "google.com.jm",
+        "se_country_iso_code": "JM",
+        "se_country_name": "Jamaica",
+        "se_language": "English",
+        "se_localization": "en-jm"
+      }
+    }
+  },
+  "jo": {
+    "supportedLang": [
+      "en",
+      "ar"
+    ],
+    "defaultLoc": {
+      "loc_id": 2400,
+      "loc_id_parent": null,
+      "loc_name": "Jordan",
+      "loc_name_canonical": "Jordan",
+      "loc_type": "Country",
+      "loc_country_iso_code": "JO",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 2863,
+        "se_name": "google.jo",
+        "se_country_iso_code": "JO",
+        "se_country_name": "Jordan",
+        "se_language": "English",
+        "se_localization": "en-jo"
+      },
+      "ar": {
+        "se_id": 181,
+        "se_name": "google.jo",
+        "se_country_iso_code": "JO",
+        "se_country_name": "Jordan",
+        "se_language": "Arabic",
+        "se_localization": "ar-jo"
+      }
+    }
+  },
+  "jp": {
+    "supportedLang": [
+      "ja",
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2392,
+      "loc_id_parent": null,
+      "loc_name": "Japan",
+      "loc_name_canonical": "Japan",
+      "loc_type": "Country",
+      "loc_country_iso_code": "JP",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "ja"
+    },
+    "supportedSearchEngines": {
+      "ja": {
+        "se_id": 178,
+        "se_name": "google.co.jp",
+        "se_country_iso_code": "JP",
+        "se_country_name": "Japan",
+        "se_language": "Japanese",
+        "se_localization": "ja-jp"
+      },
+      "en": {
+        "se_id": 3394,
+        "se_name": "google.co.jp",
+        "se_country_iso_code": "JP",
+        "se_country_name": "Japan",
+        "se_language": "English",
+        "se_localization": "en-jp"
+      }
+    }
+  },
+  "ke": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2404,
+      "loc_id_parent": null,
+      "loc_name": "Kenya",
+      "loc_name_canonical": "Kenya",
+      "loc_type": "Country",
+      "loc_country_iso_code": "KE",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 3395,
+        "se_name": "google.co.ke",
+        "se_country_iso_code": "KE",
+        "se_country_name": "Kenya",
+        "se_language": "English",
+        "se_localization": "en-ke"
+      }
+    }
+  },
+  "kh": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2116,
+      "loc_id_parent": null,
+      "loc_name": "Cambodia",
+      "loc_name_canonical": "Cambodia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "KH",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 3409,
+        "se_name": "google.com.kh",
+        "se_country_iso_code": "KH",
+        "se_country_name": "Cambodia",
+        "se_language": "English",
+        "se_localization": "en-kh"
+      }
+    }
+  },
+  "kr": {
+    "supportedLang": [
+      "ko",
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2410,
+      "loc_id_parent": null,
+      "loc_name": "South Korea",
+      "loc_name_canonical": "South Korea",
+      "loc_type": "Country",
+      "loc_country_iso_code": "KR",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "ko": {
+        "se_id": 186,
+        "se_name": "google.co.kr",
+        "se_country_iso_code": "KR",
+        "se_country_name": "South Korea",
+        "se_language": "Korean",
+        "se_localization": "ko-kr"
+      },
+      "en": {
+        "se_id": 3396,
+        "se_name": "google.co.kr",
+        "se_country_iso_code": "KR",
+        "se_country_name": "South Korea",
+        "se_language": "English",
+        "se_localization": "en-kr"
+      }
+    }
+  },
+  "kz": {
+    "supportedLang": [
+      "kk",
+      "ru"
+    ],
+    "defaultLoc": {
+      "loc_id": 2398,
+      "loc_id_parent": null,
+      "loc_name": "Kazakhstan",
+      "loc_name_canonical": "Kazakhstan",
+      "loc_type": "Country",
+      "loc_country_iso_code": "KZ",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "kk": {
+        "se_id": 183,
+        "se_name": "google.kz",
+        "se_country_iso_code": "KZ",
+        "se_country_name": "Kazakhstan",
+        "se_language": "Kazakh",
+        "se_localization": "kk-kz"
+      },
+      "ru": {
+        "se_id": 11,
+        "se_name": "google.kz",
+        "se_country_iso_code": "KZ",
+        "se_country_name": "Kazakhstan",
+        "se_language": "Russian",
+        "se_localization": "ru-kz"
+      }
+    }
+  },
+  "li": {
+    "supportedLang": [
+      "de"
+    ],
+    "defaultLoc": {
+      "loc_id": 2438,
+      "loc_id_parent": null,
+      "loc_name": "Liechtenstein",
+      "loc_name_canonical": "Liechtenstein",
+      "loc_type": "Country",
+      "loc_country_iso_code": "LI",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "de": {
+        "se_id": 201,
+        "se_name": "google.li",
+        "se_country_iso_code": "LI",
+        "se_country_name": "Liechtenstein",
+        "se_language": "German",
+        "se_localization": "de-li"
+      }
+    }
+  },
+  "lk": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2144,
+      "loc_id_parent": null,
+      "loc_name": "Sri Lanka",
+      "loc_name_canonical": "Sri Lanka",
+      "loc_type": "Country",
+      "loc_country_iso_code": "LK",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "en"
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 310,
+        "se_name": "google.lk",
+        "se_country_iso_code": "LK",
+        "se_country_name": "Sri Lanka",
+        "se_language": "English",
+        "se_localization": "en-lk"
+      }
+    }
+  },
+  "lt": {
+    "supportedLang": [
+      "lt"
+    ],
+    "defaultLoc": {
+      "loc_id": 2440,
+      "loc_id_parent": null,
+      "loc_name": "Lithuania",
+      "loc_name_canonical": "Lithuania",
+      "loc_type": "Country",
+      "loc_country_iso_code": "LT",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "lt": {
+        "se_id": 202,
+        "se_name": "google.lt",
+        "se_country_iso_code": "LT",
+        "se_country_name": "Lithuania",
+        "se_language": "Lithuanian",
+        "se_localization": "lt-lt"
+      }
+    }
+  },
+  "lu": {
+    "supportedLang": [
+      "de",
+      "fr"
+    ],
+    "defaultLoc": {
+      "loc_id": 2442,
+      "loc_id_parent": null,
+      "loc_name": "Luxembourg",
+      "loc_name_canonical": "Luxembourg",
+      "loc_type": "Country",
+      "loc_country_iso_code": "LU",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "de": {
+        "se_id": 203,
+        "se_name": "google.lu",
+        "se_country_iso_code": "LU",
+        "se_country_name": "Luxembourg",
+        "se_language": "German",
+        "se_localization": "de-lu"
+      },
+      "fr": {
+        "se_id": 204,
+        "se_name": "google.lu",
+        "se_country_iso_code": "LU",
+        "se_country_name": "Luxembourg",
+        "se_language": "French",
+        "se_localization": "fr-lu"
+      }
+    }
+  },
+  "lv": {
+    "supportedLang": [
+      "lv"
+    ],
+    "defaultLoc": {
+      "loc_id": 2428,
+      "loc_id_parent": null,
+      "loc_name": "Latvia",
+      "loc_name_canonical": "Latvia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "LV",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "lv": {
+        "se_id": 193,
+        "se_name": "google.lv",
+        "se_country_iso_code": "LV",
+        "se_country_name": "Latvia",
+        "se_language": "Latvian",
+        "se_localization": "lv-lv"
+      }
+    }
+  },
+  "ly": {
+    "supportedLang": [
+      "ar"
+    ],
+    "defaultLoc": {
+      "loc_id": 2434,
+      "loc_id_parent": null,
+      "loc_name": "Libya",
+      "loc_name_canonical": "Libya",
+      "loc_type": "Country",
+      "loc_country_iso_code": "LY",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "ar": {
+        "se_id": 199,
+        "se_name": "google.com.ly",
+        "se_country_iso_code": "LY",
+        "se_country_name": "Libya",
+        "se_language": "Arabic",
+        "se_localization": "ar-ly"
+      }
+    }
+  },
+  "ma": {
+    "supportedLang": [
+      "fr",
+      "ar"
+    ],
+    "defaultLoc": {
+      "loc_id": 2504,
+      "loc_id_parent": null,
+      "loc_name": "Morocco",
+      "loc_name_canonical": "Morocco",
+      "loc_type": "Country",
+      "loc_country_iso_code": "MA",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "fr": {
+        "se_id": 226,
+        "se_name": "google.co.ma",
+        "se_country_iso_code": "MA",
+        "se_country_name": "Morocco",
+        "se_language": "French",
+        "se_localization": "fr-ma"
+      },
+      "ar": {
+        "se_id": 227,
+        "se_name": "google.co.ma",
+        "se_country_iso_code": "MA",
+        "se_country_name": "Morocco",
+        "se_language": "Arabic",
+        "se_localization": "ar-ma"
+      }
+    }
+  },
+  "md": {
+    "supportedLang": [
+      "mo"
+    ],
+    "defaultLoc": {
+      "loc_id": 2498,
+      "loc_id_parent": null,
+      "loc_name": "Moldova",
+      "loc_name_canonical": "Moldova",
+      "loc_type": "Country",
+      "loc_country_iso_code": "MD",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "mo": {
+        "se_id": 219,
+        "se_name": "google.md",
+        "se_country_iso_code": "MD",
+        "se_country_name": "Moldova",
+        "se_language": "Moldovian",
+        "se_localization": "mo-md"
+      }
+    }
+  },
+  "mn": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2496,
+      "loc_id_parent": null,
+      "loc_name": "Mongolia",
+      "loc_name_canonical": "Mongolia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "MN",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 5367,
+        "se_name": "google.mn",
+        "se_country_iso_code": "MN",
+        "se_country_name": "Mongolia",
+        "se_language": "English",
+        "se_localization": "en-mn"
+      }
+    }
+  },
+  "mt": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2470,
+      "loc_id_parent": null,
+      "loc_name": "Malta",
+      "loc_name_canonical": "Malta",
+      "loc_type": "Country",
+      "loc_country_iso_code": "MT",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "en"
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 3412,
+        "se_name": "google.com.mt",
+        "se_country_iso_code": "MT",
+        "se_country_name": "Malta",
+        "se_language": "English",
+        "se_localization": "en-mt"
+      }
+    }
+  },
+  "mu": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2480,
+      "loc_id_parent": null,
+      "loc_name": "Mauritius",
+      "loc_name_canonical": "Mauritius",
+      "loc_type": "Country",
+      "loc_country_iso_code": "MU",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 214,
+        "se_name": "google.mu",
+        "se_country_iso_code": "MU",
+        "se_country_name": "Mauritius",
+        "se_language": "English",
+        "se_localization": "en-mu"
+      }
+    }
+  },
+  "mx": {
+    "supportedLang": [
+      "es"
+    ],
+    "defaultLoc": {
+      "loc_id": 2484,
+      "loc_id_parent": null,
+      "loc_name": "Mexico",
+      "loc_name_canonical": "Mexico",
+      "loc_type": "Country",
+      "loc_country_iso_code": "MX",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "es"
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 217,
+        "se_name": "google.com.mx",
+        "se_country_iso_code": "MX",
+        "se_country_name": "Mexico",
+        "se_language": "Espanol (Latinoamerica)",
+        "se_localization": "es-419-mx"
+      }
+    }
+  },
+  "my": {
+    "supportedLang": [
+      "en",
+      "ms"
+    ],
+    "defaultLoc": {
+      "loc_id": 2458,
+      "loc_id_parent": null,
+      "loc_name": "Malaysia",
+      "loc_name_canonical": "Malaysia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "MY",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "ms"
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 2896,
+        "se_name": "google.com.my",
+        "se_country_iso_code": "MY",
+        "se_country_name": "Malaysia",
+        "se_language": "English",
+        "se_localization": "en-my"
+      },
+      "ms": {
+        "se_id": 210,
+        "se_name": "google.com.my",
+        "se_country_iso_code": "MY",
+        "se_country_name": "Malaysia",
+        "se_language": "Malay",
+        "se_localization": "ms-my"
+      }
+    }
+  },
+  "na": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2516,
+      "loc_id_parent": null,
+      "loc_name": "Namibia",
+      "loc_name_canonical": "Namibia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "NA",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 233,
+        "se_name": "google.com.na",
+        "se_country_iso_code": "NA",
+        "se_country_name": "Namibia",
+        "se_language": "English",
+        "se_localization": "en-na"
+      }
+    }
+  },
+  "nc": {
+    "supportedLang": [
+      "fr"
+    ],
+    "defaultLoc": {
+      "loc_id": 2540,
+      "loc_id_parent": null,
+      "loc_name": "New Caledonia",
+      "loc_name_canonical": "New Caledonia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "NC",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": ""
+    },
+    "supportedSearchEngines": {
+      "fr": {
+        "se_id": 5814,
+        "se_name": "google.com",
+        "se_country_iso_code": "NC",
+        "se_country_name": "New Caledonia",
+        "se_language": "French",
+        "se_localization": "fr-nc"
+      }
+    }
+  },
+  "ng": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2566,
+      "loc_id_parent": null,
+      "loc_name": "Nigeria",
+      "loc_name_canonical": "Nigeria",
+      "loc_type": "Country",
+      "loc_country_iso_code": "NG",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 248,
+        "se_name": "google.com.ng",
+        "se_country_iso_code": "NG",
+        "se_country_name": "Nigeria",
+        "se_language": "English",
+        "se_localization": "en-ng"
+      }
+    }
+  },
+  "ni": {
+    "supportedLang": [
+      "es"
+    ],
+    "defaultLoc": {
+      "loc_id": 2558,
+      "loc_id_parent": null,
+      "loc_name": "Nicaragua",
+      "loc_name_canonical": "Nicaragua",
+      "loc_type": "Country",
+      "loc_country_iso_code": "NI",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "es"
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 241,
+        "se_name": "google.com.ni",
+        "se_country_iso_code": "NI",
+        "se_country_name": "Nicaragua",
+        "se_language": "Espanol (Latinoamerica)",
+        "se_localization": "es-419-ni"
+      }
+    }
+  },
+  "nl": {
+    "supportedLang": [
+      "nl"
+    ],
+    "defaultLoc": {
+      "loc_id": 2528,
+      "loc_id_parent": null,
+      "loc_name": "Netherlands",
+      "loc_name_canonical": "Netherlands",
+      "loc_type": "Country",
+      "loc_country_iso_code": "NL",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "nl"
+    },
+    "supportedSearchEngines": {
+      "nl": {
+        "se_id": 24,
+        "se_name": "google.nl",
+        "se_country_iso_code": "NL",
+        "se_country_name": "Netherlands",
+        "se_language": "Dutch",
+        "se_localization": "nl-nl"
+      }
+    }
+  },
+  "no": {
+    "supportedLang": [
+      "no"
+    ],
+    "defaultLoc": {
+      "loc_id": 2578,
+      "loc_id_parent": null,
+      "loc_name": "Norway",
+      "loc_name_canonical": "Norway",
+      "loc_type": "Country",
+      "loc_country_iso_code": "NO",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "no"
+    },
+    "supportedSearchEngines": {
+      "no": {
+        "se_id": 251,
+        "se_name": "google.no",
+        "se_country_iso_code": "NO",
+        "se_country_name": "Norway",
+        "se_language": "Norwegian",
+        "se_localization": "no-no"
+      }
+    }
+  },
+  "nu": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2570,
+      "loc_id_parent": null,
+      "loc_name": "Niue",
+      "loc_name_canonical": "Niue",
+      "loc_type": "Country",
+      "loc_country_iso_code": "NU",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 249,
+        "se_name": "google.nu",
+        "se_country_iso_code": "NU",
+        "se_country_name": "Niue",
+        "se_language": "English",
+        "se_localization": "en-nu"
+      }
+    }
+  },
+  "nz": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2554,
+      "loc_id_parent": null,
+      "loc_name": "New Zealand",
+      "loc_name_canonical": "New Zealand",
+      "loc_type": "Country",
+      "loc_country_iso_code": "NZ",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "en"
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 239,
+        "se_name": "google.co.nz",
+        "se_country_iso_code": "NZ",
+        "se_country_name": "New Zealand",
+        "se_language": "English",
+        "se_localization": "en-nz"
+      }
+    }
+  },
+  "om": {
+    "supportedLang": [
+      "ar",
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2512,
+      "loc_id_parent": null,
+      "loc_name": "Oman",
+      "loc_name_canonical": "Oman",
+      "loc_type": "Country",
+      "loc_country_iso_code": "OM",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "ar": {
+        "se_id": 253,
+        "se_name": "google.com.om",
+        "se_country_iso_code": "OM",
+        "se_country_name": "Oman",
+        "se_language": "Arabic",
+        "se_localization": "ar-om"
+      },
+      "en": {
+        "se_id": 2894,
+        "se_name": "google.com.om",
+        "se_country_iso_code": "OM",
+        "se_country_name": "Oman",
+        "se_language": "English",
+        "se_localization": "en-om"
+      }
+    }
+  },
+  "pa": {
+    "supportedLang": [
+      "es"
+    ],
+    "defaultLoc": {
+      "loc_id": 2591,
+      "loc_id_parent": null,
+      "loc_name": "Panama",
+      "loc_name_canonical": "Panama",
+      "loc_type": "Country",
+      "loc_country_iso_code": "PA",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 257,
+        "se_name": "google.com.pa",
+        "se_country_iso_code": "PA",
+        "se_country_name": "Panama",
+        "se_language": "Espanol (Latinoamerica)",
+        "se_localization": "es-419-pa"
+      }
+    }
+  },
+  "pe": {
+    "supportedLang": [
+      "es",
+      "qu"
+    ],
+    "defaultLoc": {
+      "loc_id": 2604,
+      "loc_id_parent": null,
+      "loc_name": "Peru",
+      "loc_name_canonical": "Peru",
+      "loc_type": "Country",
+      "loc_country_iso_code": "PE",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "es"
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 259,
+        "se_name": "google.com.pe",
+        "se_country_iso_code": "PE",
+        "se_country_name": "Peru",
+        "se_language": "Espanol (Latinoamerica)",
+        "se_localization": "es-419-pe"
+      },
+      "qu": {
+        "se_id": 260,
+        "se_name": "google.com.pe",
+        "se_country_iso_code": "PE",
+        "se_country_name": "Peru",
+        "se_language": "Quechua",
+        "se_localization": "qu-pe"
+      }
+    }
+  },
+  "ph": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2608,
+      "loc_id_parent": null,
+      "loc_name": "Philippines",
+      "loc_name_canonical": "Philippines",
+      "loc_type": "Country",
+      "loc_country_iso_code": "PH",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 3417,
+        "se_name": "google.com.ph",
+        "se_country_iso_code": "PH",
+        "se_country_name": "Philippines",
+        "se_language": "English",
+        "se_localization": "en-ph"
+      }
+    }
+  },
+  "pl": {
+    "supportedLang": [
+      "pl"
+    ],
+    "defaultLoc": {
+      "loc_id": 2616,
+      "loc_id_parent": null,
+      "loc_name": "Poland",
+      "loc_name_canonical": "Poland",
+      "loc_type": "Country",
+      "loc_country_iso_code": "PL",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "pl"
+    },
+    "supportedSearchEngines": {
+      "pl": {
+        "se_id": 21,
+        "se_name": "google.pl",
+        "se_country_iso_code": "PL",
+        "se_country_name": "Poland",
+        "se_language": "Polish",
+        "se_localization": "pl-pl"
+      }
+    }
+  },
+  "pr": {
+    "supportedLang": [
+      "es",
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2630,
+      "loc_id_parent": null,
+      "loc_name": "Puerto Rico",
+      "loc_name_canonical": "Puerto Rico",
+      "loc_type": "Region",
+      "loc_country_iso_code": "PR",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": ""
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 265,
+        "se_name": "google.com.pr",
+        "se_country_iso_code": "PR",
+        "se_country_name": "Puerto Rico",
+        "se_language": "Espanol (Latinoamerica)",
+        "se_localization": "es-419-pr"
+      },
+      "en": {
+        "se_id": 5317,
+        "se_name": "google.com.pr",
+        "se_country_iso_code": "PR",
+        "se_country_name": "Puerto Rico",
+        "se_language": "English",
+        "se_localization": "en-pr"
+      }
+    }
+  },
+  "pt": {
+    "supportedLang": [
+      "pt"
+    ],
+    "defaultLoc": {
+      "loc_id": 2620,
+      "loc_id_parent": null,
+      "loc_name": "Portugal",
+      "loc_name_canonical": "Portugal",
+      "loc_type": "Country",
+      "loc_country_iso_code": "PT",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "pt"
+    },
+    "supportedSearchEngines": {
+      "pt": {
+        "se_id": 264,
+        "se_name": "google.pt",
+        "se_country_iso_code": "PT",
+        "se_country_name": "Portugal",
+        "se_language": "Portuguese",
+        "se_localization": "pt-pt-pt"
+      }
+    }
+  },
+  "py": {
+    "supportedLang": [
+      "es"
+    ],
+    "defaultLoc": {
+      "loc_id": 2600,
+      "loc_id_parent": null,
+      "loc_name": "Paraguay",
+      "loc_name_canonical": "Paraguay",
+      "loc_type": "Country",
+      "loc_country_iso_code": "PY",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "es"
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 258,
+        "se_name": "google.com.py",
+        "se_country_iso_code": "PY",
+        "se_country_name": "Paraguay",
+        "se_language": "Espanol (Latinoamerica)",
+        "se_localization": "es-419-py"
+      }
+    }
+  },
+  "qa": {
+    "supportedLang": [
+      "ar",
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2634,
+      "loc_id_parent": null,
+      "loc_name": "Qatar",
+      "loc_name_canonical": "Qatar",
+      "loc_type": "Country",
+      "loc_country_iso_code": "QA",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "ar": {
+        "se_id": 266,
+        "se_name": "google.com.qa",
+        "se_country_iso_code": "QA",
+        "se_country_name": "Qatar",
+        "se_language": "Arabic",
+        "se_localization": "ar-qa"
+      },
+      "en": {
+        "se_id": 2895,
+        "se_name": "google.com.qa",
+        "se_country_iso_code": "QA",
+        "se_country_name": "Qatar",
+        "se_language": "English",
+        "se_localization": "en-qa"
+      }
+    }
+  },
+  "ro": {
+    "supportedLang": [
+      "ro",
+      "hu"
+    ],
+    "defaultLoc": {
+      "loc_id": 2642,
+      "loc_id_parent": null,
+      "loc_name": "Romania",
+      "loc_name_canonical": "Romania",
+      "loc_type": "Country",
+      "loc_country_iso_code": "RO",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "ro"
+    },
+    "supportedSearchEngines": {
+      "ro": {
+        "se_id": 270,
+        "se_name": "google.ro",
+        "se_country_iso_code": "RO",
+        "se_country_name": "Romania",
+        "se_language": "Romanian",
+        "se_localization": "ro-ro"
+      },
+      "hu": {
+        "se_id": 268,
+        "se_name": "google.ro",
+        "se_country_iso_code": "RO",
+        "se_country_name": "Romania",
+        "se_language": "Hungarian",
+        "se_localization": "hu-ro"
+      }
+    }
+  },
+  "rs": {
+    "supportedLang": [
+      "sr"
+    ],
+    "defaultLoc": {
+      "loc_id": 2688,
+      "loc_id_parent": null,
+      "loc_name": "Serbia",
+      "loc_name_canonical": "Serbia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "RS",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "sr"
+    },
+    "supportedSearchEngines": {
+      "sr": {
+        "se_id": 284,
+        "se_name": "google.rs",
+        "se_country_iso_code": "RS",
+        "se_country_name": "Serbia",
+        "se_language": "Serbian",
+        "se_localization": "sr-rs"
+      }
+    }
+  },
+  "ru": {
+    "supportedLang": [
+      "ru"
+    ],
+    "defaultLoc": {
+      "loc_id": 2643,
+      "loc_id_parent": null,
+      "loc_name": "Russia",
+      "loc_name_canonical": "Russia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "RU",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "ru"
+    },
+    "supportedSearchEngines": {
+      "ru": {
+        "se_id": 3,
+        "se_name": "google.ru",
+        "se_country_iso_code": "RU",
+        "se_country_name": "Russia",
+        "se_language": "Russian",
+        "se_localization": "ru-ru"
+      }
+    }
+  },
+  "rw": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2646,
+      "loc_id_parent": null,
+      "loc_name": "Rwanda",
+      "loc_name_canonical": "Rwanda",
+      "loc_type": "Country",
+      "loc_country_iso_code": "RW",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 274,
+        "se_name": "google.rw",
+        "se_country_iso_code": "RW",
+        "se_country_name": "Rwanda",
+        "se_language": "English",
+        "se_localization": "en-rw"
+      }
+    }
+  },
+  "sa": {
+    "supportedLang": [
+      "ar",
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2682,
+      "loc_id_parent": null,
+      "loc_name": "Saudi Arabia",
+      "loc_name_canonical": "Saudi Arabia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "SA",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "ar"
+    },
+    "supportedSearchEngines": {
+      "ar": {
+        "se_id": 281,
+        "se_name": "google.com.sa",
+        "se_country_iso_code": "SA",
+        "se_country_name": "Saudi Arabia",
+        "se_language": "Arabic",
+        "se_localization": "ar-sa"
+      },
+      "en": {
+        "se_id": 2858,
+        "se_name": "google.com.sa",
+        "se_country_iso_code": "SA",
+        "se_country_name": "Saudi Arabia",
+        "se_language": "English",
+        "se_localization": "en-sa"
+      }
+    }
+  },
+  "se": {
+    "supportedLang": [
+      "sv"
+    ],
+    "defaultLoc": {
+      "loc_id": 2752,
+      "loc_id_parent": null,
+      "loc_name": "Sweden",
+      "loc_name_canonical": "Sweden",
+      "loc_type": "Country",
+      "loc_country_iso_code": "SE",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "sv"
+    },
+    "supportedSearchEngines": {
+      "sv": {
+        "se_id": 313,
+        "se_name": "google.se",
+        "se_country_iso_code": "SE",
+        "se_country_name": "Sweden",
+        "se_language": "Swedish",
+        "se_localization": "sv-se"
+      }
+    }
+  },
+  "sg": {
+    "supportedLang": [
+      "en",
+      "ms",
+      "zh-CN"
+    ],
+    "defaultLoc": {
+      "loc_id": 2702,
+      "loc_id_parent": null,
+      "loc_name": "Singapore",
+      "loc_name_canonical": "Singapore",
+      "loc_type": "Country",
+      "loc_country_iso_code": "SG",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "en"
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 293,
+        "se_name": "google.com.sg",
+        "se_country_iso_code": "SG",
+        "se_country_name": "Singapore",
+        "se_language": "English",
+        "se_localization": "en-sg"
+      },
+      "ms": {
+        "se_id": 291,
+        "se_name": "google.com.sg",
+        "se_country_iso_code": "SG",
+        "se_country_name": "Singapore",
+        "se_language": "Malay",
+        "se_localization": "ms-sg"
+      },
+      "zh-CN": {
+        "se_id": 290,
+        "se_name": "google.com.sg",
+        "se_country_iso_code": "SG",
+        "se_country_name": "Singapore",
+        "se_language": "Chinese (Simplified)",
+        "se_localization": "zh-cn-sg"
+      }
+    }
+  },
+  "si": {
+    "supportedLang": [
+      "sl",
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2705,
+      "loc_id_parent": null,
+      "loc_name": "Slovenia",
+      "loc_name_canonical": "Slovenia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "SI",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "sl"
+    },
+    "supportedSearchEngines": {
+      "sl": {
+        "se_id": 295,
+        "se_name": "google.si",
+        "se_country_iso_code": "SI",
+        "se_country_name": "Slovenia",
+        "se_language": "Slovene",
+        "se_localization": "sl-si"
+      },
+      "en": {
+        "se_id": 3438,
+        "se_name": "google.si",
+        "se_country_iso_code": "SI",
+        "se_country_name": "Slovenia",
+        "se_language": "English",
+        "se_localization": "en-si"
+      }
+    }
+  },
+  "sk": {
+    "supportedLang": [
+      "sk"
+    ],
+    "defaultLoc": {
+      "loc_id": 2703,
+      "loc_id_parent": null,
+      "loc_name": "Slovakia",
+      "loc_name_canonical": "Slovakia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "SK",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "sk"
+    },
+    "supportedSearchEngines": {
+      "sk": {
+        "se_id": 294,
+        "se_name": "google.sk",
+        "se_country_iso_code": "SK",
+        "se_country_name": "Slovakia",
+        "se_language": "Slovak",
+        "se_localization": "sk-sk"
+      }
+    }
+  },
+  "sm": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2674,
+      "loc_id_parent": null,
+      "loc_name": "San Marino",
+      "loc_name_canonical": "San Marino",
+      "loc_type": "Country",
+      "loc_country_iso_code": "SM",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 5375,
+        "se_name": "google.sm",
+        "se_country_iso_code": "SM",
+        "se_country_name": "San Marino",
+        "se_language": "English",
+        "se_localization": "en-sm"
+      }
+    }
+  },
+  "sn": {
+    "supportedLang": [
+      "fr"
+    ],
+    "defaultLoc": {
+      "loc_id": 2686,
+      "loc_id_parent": null,
+      "loc_name": "Senegal",
+      "loc_name_canonical": "Senegal",
+      "loc_type": "Country",
+      "loc_country_iso_code": "SN",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "fr": {
+        "se_id": 282,
+        "se_name": "google.sn",
+        "se_country_iso_code": "SN",
+        "se_country_name": "Senegal",
+        "se_language": "French",
+        "se_localization": "fr-sn"
+      }
+    }
+  },
+  "sv": {
+    "supportedLang": [
+      "es"
+    ],
+    "defaultLoc": {
+      "loc_id": 2222,
+      "loc_id_parent": null,
+      "loc_name": "El Salvador",
+      "loc_name_canonical": "El Salvador",
+      "loc_type": "Country",
+      "loc_country_iso_code": "SV",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "es"
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 119,
+        "se_name": "google.com.sv",
+        "se_country_iso_code": "SV",
+        "se_country_name": "El Salvador",
+        "se_language": "Espanol (Latinoamerica)",
+        "se_localization": "es-419-sv"
+      }
+    }
+  },
+  "th": {
+    "supportedLang": [
+      "en",
+      "th"
+    ],
+    "defaultLoc": {
+      "loc_id": 2764,
+      "loc_id_parent": null,
+      "loc_name": "Thailand",
+      "loc_name_canonical": "Thailand",
+      "loc_type": "Country",
+      "loc_country_iso_code": "TH",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "th"
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 3399,
+        "se_name": "google.co.th",
+        "se_country_iso_code": "TH",
+        "se_country_name": "Thailand",
+        "se_language": "English",
+        "se_localization": "en-th"
+      },
+      "th": {
+        "se_id": 322,
+        "se_name": "google.co.th",
+        "se_country_iso_code": "TH",
+        "se_country_name": "Thailand",
+        "se_language": "Thai",
+        "se_localization": "th-th"
+      }
+    }
+  },
+  "to": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2776,
+      "loc_id_parent": null,
+      "loc_name": "Tonga",
+      "loc_name_canonical": "Tonga",
+      "loc_type": "Country",
+      "loc_country_iso_code": "TO",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 327,
+        "se_name": "google.to",
+        "se_country_iso_code": "TO",
+        "se_country_name": "Tonga",
+        "se_language": "English",
+        "se_localization": "en-to"
+      }
+    }
+  },
+  "tr": {
+    "supportedLang": [
+      "tr",
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2792,
+      "loc_id_parent": null,
+      "loc_name": "Turkey",
+      "loc_name_canonical": "Turkey",
+      "loc_type": "Country",
+      "loc_country_iso_code": "TR",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "tr"
+    },
+    "supportedSearchEngines": {
+      "tr": {
+        "se_id": 336,
+        "se_name": "google.com.tr",
+        "se_country_iso_code": "TR",
+        "se_country_name": "Turkey",
+        "se_language": "Turkish",
+        "se_localization": "tr-tr"
+      },
+      "en": {
+        "se_id": 3418,
+        "se_name": "google.com.tr",
+        "se_country_iso_code": "TR",
+        "se_country_name": "Turkey",
+        "se_language": "English",
+        "se_localization": "en-tr"
+      }
+    }
+  },
+  "tt": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2780,
+      "loc_id_parent": null,
+      "loc_name": "Trinidad and Tobago",
+      "loc_name_canonical": "Trinidad and Tobago",
+      "loc_type": "Country",
+      "loc_country_iso_code": "TT",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 333,
+        "se_name": "google.tt",
+        "se_country_iso_code": "TT",
+        "se_country_name": "Trinidad and Tobago",
+        "se_language": "English",
+        "se_localization": "en-tt"
+      }
+    }
+  },
+  "tw": {
+    "supportedLang": [
+      "zh-TW",
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2158,
+      "loc_id_parent": null,
+      "loc_name": "Taiwan",
+      "loc_name_canonical": "Taiwan",
+      "loc_type": "Region",
+      "loc_country_iso_code": "TW",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "zh_tw"
+    },
+    "supportedSearchEngines": {
+      "zh-TW": {
+        "se_id": 5730,
+        "se_name": "google.com.tw",
+        "se_country_iso_code": "TW",
+        "se_country_name": "Taiwan",
+        "se_language": "Chinese (Traditional)",
+        "se_localization": "zh-tw-tw"
+      },
+      "en": {
+        "se_id": 3419,
+        "se_name": "google.com.tw",
+        "se_country_iso_code": "TW",
+        "se_country_name": "Taiwan",
+        "se_language": "English",
+        "se_localization": "en-tw"
+      }
+    }
+  },
+  "ua": {
+    "supportedLang": [
+      "uk",
+      "ru"
+    ],
+    "defaultLoc": {
+      "loc_id": 2804,
+      "loc_id_parent": null,
+      "loc_name": "Ukraine",
+      "loc_name_canonical": "Ukraine",
+      "loc_type": "Country",
+      "loc_country_iso_code": "UA",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "ru, uk"
+    },
+    "supportedSearchEngines": {
+      "uk": {
+        "se_id": 372,
+        "se_name": "google.com.ua",
+        "se_country_iso_code": "UA",
+        "se_country_name": "Ukraine",
+        "se_language": "Ukrainian",
+        "se_localization": "uk-ua"
+      },
+      "ru": {
+        "se_id": 5,
+        "se_name": "google.com.ua",
+        "se_country_iso_code": "UA",
+        "se_country_name": "Ukraine",
+        "se_language": "Russian",
+        "se_localization": "ru-ua"
+      }
+    }
+  },
+  "ug": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2800,
+      "loc_id_parent": null,
+      "loc_name": "Uganda",
+      "loc_name_canonical": "Uganda",
+      "loc_type": "Country",
+      "loc_country_iso_code": "UG",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 3401,
+        "se_name": "google.co.ug",
+        "se_country_iso_code": "UG",
+        "se_country_name": "Uganda",
+        "se_language": "English",
+        "se_localization": "en-ug"
+      }
+    }
+  },
+  "uk": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2826,
+      "loc_id_parent": null,
+      "loc_name": "United Kingdom",
+      "loc_name_canonical": "United Kingdom",
+      "loc_type": "Country",
+      "loc_country_iso_code": "GB",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "en"
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 22,
+        "se_name": "google.co.uk",
+        "se_country_iso_code": "GB",
+        "se_country_name": "United Kingdom",
+        "se_language": "English",
+        "se_localization": "en-gb"
+      }
+    }
+  },
+  "us": {
+    "supportedLang": [
+      "en",
+      "es",
+      "fr",
+      "zh-CN",
+      "zh-TW"
+    ],
+    "defaultLoc": {
+      "loc_id": 2840,
+      "loc_id_parent": null,
+      "loc_name": "United States",
+      "loc_name_canonical": "United States",
+      "loc_type": "Country",
+      "loc_country_iso_code": "US",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "en"
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 14,
+        "se_name": "google.com",
+        "se_country_iso_code": "US",
+        "se_country_name": "United States",
+        "se_language": "English",
+        "se_localization": "en-us"
+      },
+      "es": {
+        "se_id": 2833,
+        "se_name": "google.com",
+        "se_country_iso_code": "US",
+        "se_country_name": "United States",
+        "se_language": "Espanol (Latinoamerica)",
+        "se_localization": "es-419-us"
+      },
+      "fr": {
+        "se_id": 3651,
+        "se_name": "google.com",
+        "se_country_iso_code": "US",
+        "se_country_name": "United States",
+        "se_language": "French",
+        "se_localization": "fr-us"
+      },
+      "zh-CN": {
+        "se_id": 3667,
+        "se_name": "google.com",
+        "se_country_iso_code": "US",
+        "se_country_name": "United States",
+        "se_language": "Chinese (Simplified)",
+        "se_localization": "zh-cn-us"
+      },
+      "zh-TW": {
+        "se_id": 3636,
+        "se_name": "google.com",
+        "se_country_iso_code": "US",
+        "se_country_name": "United States",
+        "se_language": "Chinese (Traditional)",
+        "se_localization": "zh-tw-us"
+      }
+    }
+  },
+  "uy": {
+    "supportedLang": [
+      "es"
+    ],
+    "defaultLoc": {
+      "loc_id": 2858,
+      "loc_id_parent": null,
+      "loc_name": "Uruguay",
+      "loc_name_canonical": "Uruguay",
+      "loc_type": "Country",
+      "loc_country_iso_code": "UY",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "es"
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 351,
+        "se_name": "google.com.uy",
+        "se_country_iso_code": "UY",
+        "se_country_name": "Uruguay",
+        "se_language": "Espanol (Latinoamerica)",
+        "se_localization": "es-419-uy"
+      }
+    }
+  },
+  "uz": {
+    "supportedLang": [
+      "uz",
+      "ru"
+    ],
+    "defaultLoc": {
+      "loc_id": 2860,
+      "loc_id_parent": null,
+      "loc_name": "Uzbekistan",
+      "loc_name_canonical": "Uzbekistan",
+      "loc_type": "Country",
+      "loc_country_iso_code": "UZ",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "uz": {
+        "se_id": 352,
+        "se_name": "google.co.uz",
+        "se_country_iso_code": "UZ",
+        "se_country_name": "Uzbekistan",
+        "se_language": "Uzbek",
+        "se_localization": "uz-uz"
+      },
+      "ru": {
+        "se_id": 353,
+        "se_name": "google.co.uz",
+        "se_country_iso_code": "UZ",
+        "se_country_name": "Uzbekistan",
+        "se_language": "Russian",
+        "se_localization": "ru-uz"
+      }
+    }
+  },
+  "vc": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2670,
+      "loc_id_parent": null,
+      "loc_name": "Saint Vincent and the Grenadines",
+      "loc_name_canonical": "Saint Vincent and the Grenadines",
+      "loc_type": "Country",
+      "loc_country_iso_code": "VC",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 277,
+        "se_name": "google.com.vc",
+        "se_country_iso_code": "VC",
+        "se_country_name": "Saint Vincent and the Grenadines",
+        "se_language": "English",
+        "se_localization": "en-vc"
+      }
+    }
+  },
+  "ve": {
+    "supportedLang": [
+      "es"
+    ],
+    "defaultLoc": {
+      "loc_id": 2862,
+      "loc_id_parent": null,
+      "loc_name": "Venezuela",
+      "loc_name_canonical": "Venezuela",
+      "loc_type": "Country",
+      "loc_country_iso_code": "VE",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "es"
+    },
+    "supportedSearchEngines": {
+      "es": {
+        "se_id": 356,
+        "se_name": "google.co.ve",
+        "se_country_iso_code": "VE",
+        "se_country_name": "Venezuela",
+        "se_language": "Espanol",
+        "se_localization": "es-419-ve"
+      }
+    }
+  },
+  "vn": {
+    "supportedLang": [
+      "vi",
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2704,
+      "loc_id_parent": null,
+      "loc_name": "Vietnam",
+      "loc_name_canonical": "Vietnam",
+      "loc_type": "Country",
+      "loc_country_iso_code": "VN",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "vi"
+    },
+    "supportedSearchEngines": {
+      "vi": {
+        "se_id": 358,
+        "se_name": "google.com.vn",
+        "se_country_iso_code": "VN",
+        "se_country_name": "Vietnam",
+        "se_language": "Vietnamese",
+        "se_localization": "vi-vn"
+      },
+      "en": {
+        "se_id": 2977,
+        "se_name": "google.com.vn",
+        "se_country_iso_code": "VN",
+        "se_country_name": "Vietnam",
+        "se_language": "English",
+        "se_localization": "en-vn"
+      }
+    }
+  },
+  "za": {
+    "supportedLang": [
+      "en",
+      "af"
+    ],
+    "defaultLoc": {
+      "loc_id": 2710,
+      "loc_id_parent": null,
+      "loc_name": "South Africa",
+      "loc_name_canonical": "South Africa",
+      "loc_type": "Country",
+      "loc_country_iso_code": "ZA",
+      "dma_region": false,
+      "kwrd_finder": true,
+      "kwrd_finder_lang": "en"
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 301,
+        "se_name": "google.co.za",
+        "se_country_iso_code": "ZA",
+        "se_country_name": "South Africa",
+        "se_language": "English",
+        "se_localization": "en-za"
+      },
+      "af": {
+        "se_id": 303,
+        "se_name": "google.co.za",
+        "se_country_iso_code": "ZA",
+        "se_country_name": "South Africa",
+        "se_language": "Afrikaans",
+        "se_localization": "af-za"
+      }
+    }
+  },
+  "zm": {
+    "supportedLang": [
+      "en"
+    ],
+    "defaultLoc": {
+      "loc_id": 2894,
+      "loc_id_parent": null,
+      "loc_name": "Zambia",
+      "loc_name_canonical": "Zambia",
+      "loc_type": "Country",
+      "loc_country_iso_code": "ZM",
+      "dma_region": false,
+      "kwrd_finder": false,
+      "kwrd_finder_lang": false
+    },
+    "supportedSearchEngines": {
+      "en": {
+        "se_id": 366,
+        "se_name": "google.co.zm",
+        "se_country_iso_code": "ZM",
+        "se_country_name": "Zambia",
+        "se_language": "English",
+        "se_localization": "en-zm"
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+services:
+  _defaults: { public: true }
+
+  Wordlift\Api\Api_Service:
+    factory: [ 'Wordlift\Api\Default_Api_Service', 'get_instance' ]
+    class: Wordlift\Api\Default_Api_Service
+
+  Wordlift\Modules\Events\Post_Entity\Events_Post_Entity_Jsonld:
+    class: Wordlift\Modules\Events\Post_Entity\Events_Post_Entity_Jsonld
+    arguments: [ '@Wordlift\Api\Api_Service' ]
+
+  Wordlift\Modules\Events\Term_Entity\Events_Term_Entity_Jsonld:
+    class: Wordlift\Modules\Events\Term_Entity\Events_Term_Entity_Jsonld
+    arguments: [ '@Wordlift\Api\Api_Service' ]
+
+  Wordlift\Modules\Events\Options_Entity\Events_Options_Entity_Include_Exclude:
+    class: Wordlift\Modules\Events\Options_Entity\Events_Options_Entity_Include_Exclude
+    arguments: [ '@Wordlift\Api\Api_Service' ]

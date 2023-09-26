@@ -1,0 +1,5 @@
+services:
+  _defaults: { public: true }
+
+  Wordlift\Modules\Redeem_Code\Rest_Controller:
+    class: Wordlift\Modules\Redeem_Code\Rest_Controller

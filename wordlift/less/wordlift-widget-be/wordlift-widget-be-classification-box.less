@@ -1,0 +1,117 @@
+.wl-widget-classification-box{
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+	.wl-widget-classification-box-section{
+		background-color: @wl-white-color;
+		margin: 5px 0;
+		padding: 0 5px;
+	}
+
+	h3.wl-widget-classification-box-lead {
+    color: @wl-brand-color;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 5px 0 !important;
+  }
+
+	.wl-widget-classification-box-entity-tile-wrap {
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+
+		.wl-widget-classification-box-entity-tile {
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			flex-direction: row;
+			justify-content: flex-start;
+			align-items: flex-start;
+			cursor: pointer;
+			width: 244px;
+			min-height: 25px;
+			border: 1px solid @wl-white-color;
+			// background-color: @wl-white-color;
+			margin: 5px 0;
+
+			&.wl-selected {
+				border: 1px solid @wl-brand-color;
+			}
+
+
+		  .wl-widget-classification-box-entity-tile-name {
+				display: -webkit-inline-flex;
+				display: -moz-inline-flex;
+				display: -ms-inline-flex;
+				display: -o-inline-flex;
+				display: inline-flex;
+				align-items: center;
+				flex-grow: 1;
+				padding: 4px 6px;
+				box-sizing: border-box;
+
+
+				h3 {
+					color: @wl-gray-color;
+					font-size: 11px;
+					font-weight: 400;
+				}
+			}
+
+			.wl-widget-classification-box-entity-tile-occurences,
+			.wl-widget-classification-box-entity-tile-storage,
+			.wl-widget-classification-box-entity-tile-type,
+			.wl-widget-classification-box-entity-tile-voc {
+				display: -webkit-inline-flex;
+				display: -moz-inline-flex;
+				display: -ms-inline-flex;
+				display: -o-inline-flex;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				height: 25px;
+				min-width: 25px;
+				max-width: 25px;
+				padding: 0 4px;
+				font-weight: 400;
+				font-size: 11px;
+				box-sizing: border-box;
+			}
+
+		  .wl-widget-classification-box-entity-tile-occurences {
+		    h4 {
+					color: @wl-gray-color;
+					font-size: 11px;
+					font-weight: 400;
+				}
+			}
+		  .wl-widget-classification-box-entity-tile-storage,
+			.wl-widget-classification-box-entity-tile-type{
+		    img {
+					height: 20px;
+					width: 20px;
+				}
+			}
+		  .wl-widget-classification-box-entity-tile-voc {
+				.wl-widget-classification-box-entity-tile-voc-arrow{
+					width: 0;
+					height: 0;
+					border-top: 5px solid transparent;
+					border-bottom: 5px solid transparent;
+					border-left: 5px solid @wl-input-no-active-color;
+				}
+			}
+		}
+  }
+}

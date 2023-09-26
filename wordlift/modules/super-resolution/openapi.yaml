@@ -1,0 +1,110 @@
+openapi: 3.1.0
+info:
+  title: WordLift Plugin - Super Resolution
+  description: The Super Resolution API of the WordLift Plugin
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /attachments/{attachmentId}/image:
+    get:
+      operationId: getAttachmentImage
+      summary: Get the Image
+      description: Get the image of the attachment with the specified ID. The image will be returned as response.
+      parameters:
+        - name: attachmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        "200":
+          description: The image
+          content:
+            "image/*":
+              # The following line is required for ng-openapi-gen compatibility
+              schema:
+                type: string
+                # Makes ng-openapi-gen use arraybuffer
+                format: binary
+        "401":
+          description: Authorization Required
+          content:
+        "403":
+          description: Forbidden
+          content:
+        "404":
+          description: Not Found
+          content:
+      tags:
+        - Super Resolution
+    post:
+      operationId: replaceAttachmentImage
+      summary: Replace the Image
+      description: Replace the image of the attachment with the specified ID
+      parameters:
+        - name: attachmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  contentMediaType: image/*
+      responses:
+        "204":
+          description: The featured image has been replaced
+          content:
+        "401":
+          description: Authorization Required
+          content:
+        "403":
+          description: Forbidden
+          content:
+        "404":
+          description: Not Found
+          content:
+      tags:
+        - Super Resolution
+  /attachments/{attachmentId}/image-upscale:
+    get:
+      operationId: getAttachmentImageUpscale
+      summary: Get the upscaled Image
+      description: Get the upscaled image of the attachment with the specified ID. The image will be returned as response.
+      parameters:
+        - name: attachmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        "200":
+          description: The upscaled image
+          content:
+            image/*:
+              # The following line is required for ng-openapi-gen compatibility
+              schema:
+                type: string
+                # Makes ng-openapi-gen use arraybuffer
+                format: binary
+        "401":
+          description: Authorization Required
+          content:
+        "403":
+          description: Forbidden
+          content:
+        "404":
+          description: Not Found
+          content:
+      tags:
+        - Super Resolution

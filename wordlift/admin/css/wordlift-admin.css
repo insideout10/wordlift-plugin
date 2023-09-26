@@ -1,0 +1,417 @@
+*, ::before, ::after {
+    --tw-border-spacing-x: 0;
+    --tw-border-spacing-y: 0;
+    --tw-translate-x: 0;
+    --tw-translate-y: 0;
+    --tw-rotate: 0;
+    --tw-skew-x: 0;
+    --tw-skew-y: 0;
+    --tw-scale-x: 1;
+    --tw-scale-y: 1;
+    --tw-pan-x:  ;
+    --tw-pan-y:  ;
+    --tw-pinch-zoom:  ;
+    --tw-scroll-snap-strictness: proximity;
+    --tw-ordinal:  ;
+    --tw-slashed-zero:  ;
+    --tw-numeric-figure:  ;
+    --tw-numeric-spacing:  ;
+    --tw-numeric-fraction:  ;
+    --tw-ring-inset:  ;
+    --tw-ring-offset-width: 0px;
+    --tw-ring-offset-color: #fff;
+    --tw-ring-color: rgb(59 130 246 / 0.5);
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-shadow: 0 0 #0000;
+    --tw-shadow-colored: 0 0 #0000;
+    --tw-blur:  ;
+    --tw-brightness:  ;
+    --tw-contrast:  ;
+    --tw-grayscale:  ;
+    --tw-hue-rotate:  ;
+    --tw-invert:  ;
+    --tw-saturate:  ;
+    --tw-sepia:  ;
+    --tw-drop-shadow:  ;
+    --tw-backdrop-blur:  ;
+    --tw-backdrop-brightness:  ;
+    --tw-backdrop-contrast:  ;
+    --tw-backdrop-grayscale:  ;
+    --tw-backdrop-hue-rotate:  ;
+    --tw-backdrop-invert:  ;
+    --tw-backdrop-opacity:  ;
+    --tw-backdrop-saturate:  ;
+    --tw-backdrop-sepia:  ;
+}
+::-webkit-backdrop {
+    --tw-border-spacing-x: 0;
+    --tw-border-spacing-y: 0;
+    --tw-translate-x: 0;
+    --tw-translate-y: 0;
+    --tw-rotate: 0;
+    --tw-skew-x: 0;
+    --tw-skew-y: 0;
+    --tw-scale-x: 1;
+    --tw-scale-y: 1;
+    --tw-pan-x:  ;
+    --tw-pan-y:  ;
+    --tw-pinch-zoom:  ;
+    --tw-scroll-snap-strictness: proximity;
+    --tw-ordinal:  ;
+    --tw-slashed-zero:  ;
+    --tw-numeric-figure:  ;
+    --tw-numeric-spacing:  ;
+    --tw-numeric-fraction:  ;
+    --tw-ring-inset:  ;
+    --tw-ring-offset-width: 0px;
+    --tw-ring-offset-color: #fff;
+    --tw-ring-color: rgb(59 130 246 / 0.5);
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-shadow: 0 0 #0000;
+    --tw-shadow-colored: 0 0 #0000;
+    --tw-blur:  ;
+    --tw-brightness:  ;
+    --tw-contrast:  ;
+    --tw-grayscale:  ;
+    --tw-hue-rotate:  ;
+    --tw-invert:  ;
+    --tw-saturate:  ;
+    --tw-sepia:  ;
+    --tw-drop-shadow:  ;
+    --tw-backdrop-blur:  ;
+    --tw-backdrop-brightness:  ;
+    --tw-backdrop-contrast:  ;
+    --tw-backdrop-grayscale:  ;
+    --tw-backdrop-hue-rotate:  ;
+    --tw-backdrop-invert:  ;
+    --tw-backdrop-opacity:  ;
+    --tw-backdrop-saturate:  ;
+    --tw-backdrop-sepia:  ;
+}
+::backdrop {
+    --tw-border-spacing-x: 0;
+    --tw-border-spacing-y: 0;
+    --tw-translate-x: 0;
+    --tw-translate-y: 0;
+    --tw-rotate: 0;
+    --tw-skew-x: 0;
+    --tw-skew-y: 0;
+    --tw-scale-x: 1;
+    --tw-scale-y: 1;
+    --tw-pan-x:  ;
+    --tw-pan-y:  ;
+    --tw-pinch-zoom:  ;
+    --tw-scroll-snap-strictness: proximity;
+    --tw-ordinal:  ;
+    --tw-slashed-zero:  ;
+    --tw-numeric-figure:  ;
+    --tw-numeric-spacing:  ;
+    --tw-numeric-fraction:  ;
+    --tw-ring-inset:  ;
+    --tw-ring-offset-width: 0px;
+    --tw-ring-offset-color: #fff;
+    --tw-ring-color: rgb(59 130 246 / 0.5);
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-shadow: 0 0 #0000;
+    --tw-shadow-colored: 0 0 #0000;
+    --tw-blur:  ;
+    --tw-brightness:  ;
+    --tw-contrast:  ;
+    --tw-grayscale:  ;
+    --tw-hue-rotate:  ;
+    --tw-invert:  ;
+    --tw-saturate:  ;
+    --tw-sepia:  ;
+    --tw-drop-shadow:  ;
+    --tw-backdrop-blur:  ;
+    --tw-backdrop-brightness:  ;
+    --tw-backdrop-contrast:  ;
+    --tw-backdrop-grayscale:  ;
+    --tw-backdrop-hue-rotate:  ;
+    --tw-backdrop-invert:  ;
+    --tw-backdrop-opacity:  ;
+    --tw-backdrop-saturate:  ;
+    --tw-backdrop-sepia:  ;
+}
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+.wl-alternative-label {
+    position: relative;
+    border: 0;
+    padding: 0;
+}
+.wl-alternative-label label {
+    color: #777;
+    font-size: 1.7em;
+    padding: 11px 10px;
+    cursor: text;
+}
+.wl-alternative-label input {
+    padding: 3px 8px;
+    font-size: 1.7em;
+    line-height: 100%;
+    height: 1.7em;
+    width: 100%;
+    outline: none;
+    margin: 0 0 3px;
+    background-color: #fff;
+}
+.wl-alternative-label .button.wl-delete-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 3px;
+    cursor: pointer;
+    height: auto;
+}
+/* wp-admin/edit.php */
+#wl_column_thumbnail {
+    width: 60px;
+}
+#wl_column_related_posts {
+    width: 100px;
+}
+#wl-dropdown-classification-scope option {
+    text-transform: capitalize;
+}
+#wl_column_rating {
+    width: 100px;
+    text-align: center;
+}
+.wl-traffic-light {
+    display: block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 50%;
+    margin: 5px auto;
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.8em;
+}
+.wl_column_rating {
+    text-align: center;
+}
+.wl-tl-1 {
+    background-color: #f00;
+}
+.wl-tl-2 {
+    background-color: #f90;
+}
+.wl-tl-3 {
+    background-color: #6c0;
+}
+/* The default WP style doesn't work well in responsive with our multi-column list.
+ * See https://github.com/insideout10/wordlift-plugin/issues/353
+ */
+@media screen and (max-width: 782px) {
+    .post-type-entity .wp-list-table tr:not(.inline-edit-row):not(.no-items) .column-wl_column_thumbnail {
+        display: none;
+    }
+}
+/* Hide the virtual page in the admin menu that we create for WL's setup. */
+#adminmenu a[href=wl-setup], #adminmenu a[href='admin.php?page=wl_status_report'] {
+    display: none;
+}
+/*
+ * styles related to the entity type list admin page.
+ * the expand the table on behalf of the blank left space
+ * usually used to "add", and style the title link in a non link styling
+ * to prevent it from confusing.
+ */
+.taxonomy-wl_entity_type #col-right {
+    width: 100% !important;
+}
+.taxonomy-wl_entity_type #col-left {
+    display: none !important;
+}
+.taxonomy-wl_entity_type .row-title, .taxonomy-wl_entity_type .row-title:hover {
+    color: gray;
+    cursor: default;
+}
+.wp-admin.post-type-entity .categorydiv #wl_entity_type-all {
+    max-height: 220px;
+}
+#wl-schemaorg-property.postbox, #wl_entity_typediv.postbox {
+    border-left: 2px solid #007AFF;
+}
+/**
+* Styles related to SameAs Entity types
+ */
+.wl-input-wrapper {
+    display: flex;
+}
+.wl-input-wrapper input {
+    width: 100%;
+    margin-right: 20px;
+}
+.wl-input-wrapper a {
+    width: 28px;
+    align-self: center;
+    flex-shrink: 0;
+}
+.wl-add-input--link {
+    background: none;
+    border: none;
+    color: #0071a1;
+    font-weight: 700;
+    padding: 0;
+    margin-bottom: 0.5em;
+}
+.wl-add-input--sameas {
+    float: right;
+}
+.wl-add-input--sameas.hide {
+    display: none;
+}
+.wl-field {
+    border-bottom: 1px solid #f4f4f4;
+    padding-bottom: 10px;
+}
+.wl-field:last-child {
+    border-bottom: none;
+}
+.wl-field::after {
+    content: "";
+    clear: both;
+    display: table;
+    border: 0;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #fafafa;
+}
+#wl-input-container .wl-input-wrapper {
+    margin-bottom: 0.5em;
+}
+.wl-remove-input--sameas {
+    display: flex;
+    width: 28px;
+    height: 28px;
+    border: 1px solid #b5bcc2;
+    border-radius: 50%;
+    background-color: #fff;
+    position: relative;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.wl-remove-input--sameas::before {
+    content: "";
+    text-transform: none;
+    line-height: 1em;
+    width: 0.7em;
+    height: 2px;
+    background: #555d66;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.wl-remove-input--sameas:hover {
+    background-color: tomato;
+    border-color: tomato;
+}
+.wl-remove-input--sameas:hover::before {
+    background: #ffffff;
+}
+.wl-admin-menu-badge {
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+    margin: 1px 0 -1px 2px;
+    padding: 0 5px;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    background-color: #d63638;
+    color: #fff;
+    font-size: 11px;
+    line-height: 1.6;
+    text-align: center;
+
+}
+.wl-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+
+}
+.wl-tabs__tab {
+    order: 999;
+    width: 100%;
+    display: none;
+    background: #f0f0f1;
+    border-top-width: 5px;
+    padding: 1em;
+  }
+/* The active label is defined within the input:checked rule. */
+.wl-tabs > label {
+    padding: .5em 1em;
+    border: 1px solid #c3c4c7;
+    border-left: 0;
+    background: #dcdcde;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+.wl-tabs > label:first-of-type {
+      border-left: 1px solid #c3c4c7;
+      margin-left: .5em;
+    }
+.wl-tabs > input[type="radio"] {
+    opacity: 0;
+    position: absolute;
+  }
+.wl-tabs > input[type="radio"]:checked + label {
+      /* The selected label. */
+      z-index: 1;
+      background: #f0f0f1;
+      border-bottom: 1px solid #f0f0f1;
+    }
+/* Show the selected tab. */
+.wl-tabs > input[type="radio"]:checked + label + div {
+        display: unset;
+        /* Combined with the label z-index:1px hides the border below the active tab */
+        margin-top: -1px;
+        border-top: 1px solid #c3c4c7;
+      }
+.wl-table {
+  width: 100%;
+}
+.wl-table__th--main-ingredient, .wl-table__th--recipe {
+    width: 10em;
+  }
+.wl-table--main-ingredient__data {
+    text-align: center;
+  }
+/** React Select **/
+.wl-select-main-ingredient .Select-multi-value-wrapper {
+    display: inline-block;
+    width: 100%;
+    min-height: 40px;
+  }
+.wl-select-main-ingredient .Select-clear-zone {
+    display: none;
+  }
+.wl-recipe-ingredient-form__submit {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+/** Meta Box **/
+.wl-recipe-ingredient__field label {
+    font-size: 16px;
+}
+.wl-recipe-ingredient__field input[type="text"] {
+    padding: 2px 7px;
+    border-radius: 5px;
+    border: 2px solid #333;
+    width: 20%;
+}
+.autocomplete-loading {
+    background: url('../../images/loading.gif') no-repeat right center;
+}

@@ -1,0 +1,37 @@
+services:
+  _defaults: { public: true }
+
+  Wordlift\Api\Api_Service:
+    factory: [ 'Wordlift\Api\Default_Api_Service', 'get_instance' ]
+    class: Wordlift\Api\Default_Api_Service
+
+  Wordlift\Modules\Gardening_Kg\Main_Entity\Gardening_Kg_Post_Store:
+    class: Wordlift\Modules\Gardening_Kg\Main_Entity\Gardening_Kg_Post_Store
+
+  Wordlift\Modules\Gardening_Kg\Main_Entity\Gardening_Kg_Main_Entity_Runner:
+    class: Wordlift\Modules\Gardening_Kg\Main_Entity\Gardening_Kg_Main_Entity_Runner
+    arguments: [ '@Wordlift\Modules\Gardening_Kg\Main_Entity\Gardening_Kg_Post_Store', '@Wordlift\Api\Api_Service' ]
+
+  Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Store:
+    class: Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Store
+
+  Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Entity_Runner:
+    class: Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Entity_Runner
+    arguments: [ '@Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Store', '@Wordlift\Api\Api_Service' ]
+
+  Wordlift\Modules\Gardening_Kg\Preconditions:
+    class: Wordlift\Modules\Gardening_Kg\Preconditions
+
+  Wordlift\Modules\Gardening_Kg\Main_Entity\Gardening_Kg_Post_Stats:
+    class: Wordlift\Modules\Gardening_Kg\Main_Entity\Gardening_Kg_Post_Stats
+
+  Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Stats:
+    class: Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Stats
+
+  Wordlift\Modules\Gardening_Kg\Jsonld:
+    class: Wordlift\Modules\Gardening_Kg\Jsonld
+    arguments: [ '@Wordlift\Content\Wordpress\Wordpress_Content_Service' ]
+
+  Wordlift\Content\Wordpress\Wordpress_Content_Service:
+    factory: [ 'Wordlift\Content\Wordpress\Wordpress_Content_Service', 'get_instance' ]
+    class: Wordlift\Content\Wordpress\Wordpress_Content_Service

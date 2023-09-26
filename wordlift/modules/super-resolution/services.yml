@@ -1,0 +1,11 @@
+services:
+  _defaults: { public: true }
+
+  Wordlift\Modules\Super_Resolution\Attachment_Field:
+    class: Wordlift\Modules\Super_Resolution\Attachment_Field
+
+  Wordlift\Modules\Super_Resolution\Super_Resolution_Controller:
+    class: Wordlift\Modules\Super_Resolution\Super_Resolution_Controller
+
+  Wordlift\Modules\Super_Resolution\Yoast_Markup:
+    class: Wordlift\Modules\Super_Resolution\Yoast_Markup

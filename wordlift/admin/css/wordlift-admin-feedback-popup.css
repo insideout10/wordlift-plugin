@@ -1,0 +1,100 @@
+.wl-modal-deactivation-feedback {
+	display: none;
+	position: fixed;
+	overflow: auto;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	z-index: 100000;
+	display: none;
+	background: rgba(0, 0, 0, 0.6);
+}
+
+.wl-modal-deactivation-feedback.visible {
+	display: block;
+}
+
+.wl-modal {
+	background: #fff;
+	position: absolute;
+	left: 50%;
+	margin-left: -298px;
+	top: 10%;
+	z-index: 100001;
+	width: auto;
+}
+
+.wl-modal-body{
+	padding: 50px 50px 20px;
+}
+
+.wl-errors {
+	text-align: center;
+	color: red;
+}
+
+.wl-modal-footer{
+	padding: 20px 50px 30px;
+	border-top: 1px solid #b3b3b3;
+	text-align: right;
+}
+
+.wl-modal-deactivation-feedback {
+	padding: 0 50px 50px;
+}
+
+.wl-modal-deactivation-feedback h2 {
+	font-size: 1.7em;
+	margin: 0;
+}
+
+.wl-modal-deactivation-feedback h4 {
+	font-size: 15px;
+	font-weight: normal;
+}
+
+.wl-modal-deactivation-feedback p {
+	margin: 0;
+}
+
+.wl-modal-deactivation-feedback .description {
+	font-style: normal;
+}
+
+.wl-modal-deactivation-feedback .additional-info {
+	margin-top: 10px;
+	border: 1px solid #b3b3b3;
+	padding: 5px 10px;
+}
+
+.wl-modal-deactivation-feedback .additional-info.has-field {
+	border: none;
+	padding: 0;
+}
+
+.additional-info {
+	display: none;
+}
+
+.wl-modal-deactivation-feedback .wl-reason-item.selected .additional-info {
+	display: block;
+}
+
+
+.notes {
+	color: red;
+	text-align: center;
+}
+
+.wl-modal-deactivation-feedback .additional-info input,
+.wl-modal-deactivation-feedback .additional-info textarea {
+	width: 100%;
+	line-height: 25px;
+	border: 1px solid #b3b3b3;
+}
+
+.wl-modal-deactivation-feedback .additional-info p {
+	font-size: 12px;
+	color: #b3b3b3;
+	padding: 0;
+}

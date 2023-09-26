@@ -1,0 +1,19 @@
+services:
+  _defaults: { public: true }
+
+  Wordlift\Modules\Common\Quiet_Skin:
+    class: \Wordlift\Modules\Common\Quiet_Skin
+  Plugin_Upgrader:
+    class: \Plugin_Upgrader
+    arguments: [ '@Wordlift\Modules\Common\Quiet_Skin' ]
+
+  Wordlift\Modules\Common\Remote_Plugin:
+    class: \Wordlift\Modules\Common\Remote_Plugin
+    arguments: [ 'advanced-custom-fields-for-schema-org/advanced-custom-fields-for-schema-org.php', 'advanced-custom-fields-for-schema-org', 'https://wordlift.io/wp-content/uploads/advanced-custom-fields-for-schema-org/advanced-custom-fields-for-schema-org.zip' ]
+  Wordlift\Modules\Common\Installer:
+    arguments: ['@Plugin_Upgrader', '@Wordlift\Modules\Common\Remote_Plugin']
+    class: \Wordlift\Modules\Common\Installer
+
+  Wordlift\Modules\Acf4so\Notices:
+    arguments: ['@Wordlift\Modules\Common\Remote_Plugin']
+    class: \Wordlift\Modules\Acf4so\Notices

@@ -1,0 +1,35 @@
+services:
+  _defaults: { public: true }
+
+  Wordlift\Modules\Dashboard\Synchronization\Rest_Controller:
+    class: Wordlift\Modules\Dashboard\Synchronization\Rest_Controller
+    arguments: [ '@Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service' ]
+
+  Wordlift\Modules\Dashboard\Synchronization\Runner:
+    class: Wordlift\Modules\Dashboard\Synchronization\Runner
+
+  Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service:
+    class: Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service
+
+  Wordlift\Modules\Dashboard\Stats\Stats:
+    class: Wordlift\Modules\Dashboard\Stats\Stats
+
+  # Term_Entity_Match
+  Wordlift\Modules\Dashboard\Term_Entity_Match\Term_Entity_Match_Service:
+    class: Wordlift\Modules\Dashboard\Term_Entity_Match\Term_Entity_Match_Service
+
+  Wordlift\Modules\Dashboard\Term_Entity_Match\Term_Entity_Match_Rest_Controller:
+    class: Wordlift\Modules\Dashboard\Term_Entity_Match\Term_Entity_Match_Rest_Controller
+    arguments: [ '@Wordlift\Modules\Dashboard\Term_Entity_Match\Term_Entity_Match_Service' ]
+
+  # Post_Entity_Match
+  Wordlift\Modules\Dashboard\Post_Entity_Match\Post_Entity_Match_Service:
+    class: Wordlift\Modules\Dashboard\Post_Entity_Match\Post_Entity_Match_Service
+
+  Wordlift\Modules\Dashboard\Post_Entity_Match\Post_Entity_Match_Rest_Controller:
+    class: Wordlift\Modules\Dashboard\Post_Entity_Match\Post_Entity_Match_Rest_Controller
+    arguments: [ '@Wordlift\Modules\Dashboard\Post_Entity_Match\Post_Entity_Match_Service' ]
+
+  Wordlift\Modules\Dashboard\App_Settings:
+    class: Wordlift\Modules\Dashboard\App_Settings
+    arguments: [ '@Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service' ]

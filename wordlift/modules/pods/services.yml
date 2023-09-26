@@ -1,0 +1,31 @@
+services:
+  _defaults: { public: true }
+
+  Wordlift\Modules\Pods\Definition:
+    class: \Wordlift\Modules\Pods\Definition
+    arguments: ['@Wordlift\Modules\Pods\Schema']
+
+  Wordlift\Modules\Pods\FieldDefinition\FieldDefinitionFactory:
+    class: \Wordlift\Modules\Pods\FieldDefinition\FieldDefinitionFactory
+    arguments: ['@Wordlift\Modules\Pods\Schema']
+  Wordlift\Modules\Pods\Schema:
+    class: \Wordlift\Modules\Pods\Schema
+
+  Wordlift\Modules\Pods\WlEntityField\Filters:
+    class: \Wordlift\Modules\Pods\WlEntityField\Filters
+
+  Wordlift\Modules\Common\Quiet_Skin:
+    class: \Wordlift\Modules\Common\Quiet_Skin
+  Plugin_Upgrader:
+    class: \Plugin_Upgrader
+    arguments: [ '@Wordlift\Modules\Common\Quiet_Skin' ]
+
+  Wordlift\Modules\Common\Remote_Plugin:
+    class: \Wordlift\Modules\Common\Remote_Plugin
+    arguments: [ 'pods/init.php', 'pods', 'https://downloads.wordpress.org/plugin/pods.2.9.3.zip' ]
+  Wordlift\Modules\Common\Installer:
+    arguments: ['@Plugin_Upgrader', '@Wordlift\Modules\Common\Remote_Plugin']
+    class: \Wordlift\Modules\Common\Installer
+  Wordlift\Modules\Pods\Notices:
+    arguments: ['@Wordlift\Modules\Common\Remote_Plugin']
+    class: \Wordlift\Modules\Pods\Notices

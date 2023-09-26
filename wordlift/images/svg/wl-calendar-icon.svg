@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="494 4402 19 21">
+  <defs>
+    <style>
+      .a {
+        clip-path: url("#b");
+      }
+      .b {
+        fill: #fff;
+      }
+      .b,
+      .c {
+        stroke: #007AFF;
+        stroke-width: 1px;
+      }
+      .c,
+      .f {
+        fill: none;
+      }
+      .e {
+        stroke: none;
+      }
+    </style>
+    <clipPath id="b"><rect x="494" y="4402" width="19" height="21"/></clipPath>
+  </defs>
+  <g id="a" class="a">
+    <g transform="translate(0 1)">
+      <g class="b" transform="translate(496 4404.918)"><rect class="e" width="14.691" height="11.937"/><rect class="f" x="0.5" y="0.5" width="13.691" height="10.937"/></g>
+      <g class="b" transform="translate(498.755 4404)"><rect class="e" width="2.755" height="3.673"/><rect class="f" x="0.5" y="0.5" width="1.755" height="2.673"/></g>
+      <g class="b" transform="translate(505.182 4404)"><rect class="e" width="2.755" height="3.673"/><rect class="f" x="0.5" y="0.5" width="1.755" height="2.673"/></g><line class="c" x2="13.773" transform="translate(496.459 4409.05)"/></g>
+  </g>
+</svg>

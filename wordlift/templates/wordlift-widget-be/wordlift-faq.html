@@ -1,0 +1,19 @@
+<div class="wl-tab-lead">
+    <div class="wl-tab-lead-wrap" ng-click="toggleCurrentSection('faq')">
+        <h1 class="wl-tab-lead-text">
+            FAQ
+        </h1>
+        <div class="wl-tab-lead-text wl-tab-lead-btn"
+             ng-class="{ 'wl-open' : isCurrentSection('faq'), 'wl-close' : !isCurrentSection('faq') }">
+            <!-- display a triangle -->
+        </div>
+    </div>
+</div>
+
+<div class="wl-widget-faq wl-tab-wrap"
+     ng-show="isCurrentSection('faq')">
+    <div id="wl-faq-meta-list-box"></div>
+</div>
+
+
+

@@ -1,0 +1,173 @@
+<!-- ENTITY PANEL -->
+<div class="wl-widget-entity-panel">
+	<div class="wl-widget-entity-panel-wrap">
+		<!-- ENTITY LABEL -->
+		<div class="wl-widget-entity-panel-label">
+			<!-- Don't use `h2` here since WP uses `h2` to append autosave data. -->
+			<h3 class="wl-widget-entity-panel-label-text"
+			    ng-model="entity.label">
+				{{entity.label}}
+			</h3>
+			<div
+				class="wl-widget-entity-panel-label-back"
+				ng-click="onResetWrapper($event)">
+				<div class="wl-widget-entity-panel-label-back-arrow">
+					<!-- DISPLAY ARROW -->
+				</div>
+			</div>
+		</div>
+
+
+		<!-- ENTITY TOP BLUEBOX -->
+		<div class="wl-widget-entity-panel-top">
+
+			<!-- LABEL DELLA CATEGORIA -->
+			<div class="wl-widget-entity-panel-top-category">
+				<h2 class="wl-widget-entity-panel-top-category-label">
+          <span
+	          class="wl-widget-entity-panel-top-category-label-main">
+            Category
+          </span>
+					<span
+						class="wl-widget-entity-panel-top-category-label-sub"
+						ng-click="unsetCurrentCategory()"
+						ng-show="currentCategory">
+            {{currentCategory}}
+          </span>
+				</h2>
+				<!-- AFTER FOR THE ">" -->
+
+				<!-- CATEGORIA SELEZIONATA -->
+			</div>
+
+			<!-- LISTA DELLE CATEGORIE -->
+			<div
+				class="wl-widget-entity-panel-top-category-opt"
+				ng-hide="currentCategory">
+        <span
+	        class="wl-widget-entity-panel-top-options"
+	        ng-click="setCurrentCategory(box.id)"
+	        ng-repeat="box in configuration.classificationBoxes">
+          {{box.id}}
+        </span>
+			</div>
+
+			<div
+				class="wl-widget-entity-panel-top-category-opt"
+				ng-show="currentCategory">
+				<!-- TIPI COLLEGATI ALLA CATEGORIA SELEZIONATA -->
+				<span
+					class="wl-widget-entity-panel-top-options"
+					ng-class="{ 'wl-selected': isCurrentType(type), 'wl-unselected': !isCurrentType(type) }"
+					ng-click="setType(type)"
+					ng-repeat="type in getAvailableTypes()">
+          {{type}}
+        </span>
+			</div>
+		</div>
+
+
+		<!-- INPUT CENTRAL SECTION -->
+
+
+		<!-- SAME ENTITY AS -->
+		<div class="wl-widget-entity-panel-input">
+			<h3
+				ng-show="entity.suggestedSameAs.lengths > 0"
+				class="wl-widget-entity-panel-input-label">
+				Entity sameAs
+			</h3>
+
+			<!-- ENTITY CARD WRAP -->
+			<div class="wl-widget-entity-panel-card-wrap">
+
+				<!-- SINGLE CARD -->
+				<div class="wl-widget-entity-panel-card"
+				     ng-click="addSameAs(sameAs)"
+				     ng-repeat="sameAs in entity.suggestedSameAs">
+
+					<div
+						class="wl-widget-entity-panel-card-radio"
+						ng-class="{ 'wl-radio-enabled': isSameAsOf(sameAs)}">
+
+					</div>
+
+					<div class="wl-widget-entity-panel-card-details">
+
+						<!-- ENTITY LABEL -->
+						<h3>
+							{{sameAs.label}}
+						</h3>
+						<div class="wl-widget-entity-panel-card-details-bottom">
+							<!-- DB ID -->
+							<p>
+								{{sameAs.source}}
+							</p>
+							<!-- OUTPUT ICON -->
+							<a ng-href="{{sameAs.id}}">
+								<img
+									ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-output-icon.svg"
+									class="wl-widget-entity-panel-card-detail-icon" />
+							</a>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- ENTITY DESCRIPTION -->
+		<div class="wl-widget-entity-panel-input">
+			<h3 class="wl-widget-entity-panel-input-label">
+				Entity description
+			</h3>
+			<textarea ng-model="entity.description"></textarea>
+		</div>
+
+		<!-- ENTITY IMAGES -->
+		<div class="wl-widget-entity-panel-input"
+		     ng-show="entity.images.length > 0">
+			<h3 class="wl-widget-entity-panel-input-label">
+				Entity images
+			</h3>
+
+			<div class="wl-widget-entity-panel-images-wrap">
+				<div
+					ng-repeat="image in entity.images"
+					class="wl-widget-entity-panel-images-outer">
+					<img
+						ng-src="{{image}}"
+						wl-on-error="removeCurrentImage($index)"
+						class="wl-widget-entity-panel-images" />
+				</div>
+			</div>
+		</div>
+
+		<!-- FOOTER BUTTONS -->
+		<div class="wl-widget-entity-panel-bottom">
+
+			<!-- OPEN DETAILS BTN -->
+			<button
+				ng-show="isInternal()"
+				ng-click="linkToEdit($event)"
+				class="wl-widget-entity-panel-voc-btn">
+				Open in vocabulary
+			</button>
+
+			<!-- POSITIVE BTN -->
+			<button
+				ng-click="onSubmitWrapper($event)"
+				ng-if="!isInternal()"
+				class="wl-widget-entity-panel-positive-btn">
+				Create
+			</button>
+			<button
+				ng-click="onSubmitWrapper($event)"
+				ng-if="isInternal()"
+				class="wl-widget-entity-panel-positive-btn">
+				Update
+			</button>
+		</div>
+
+	</div>
+</div>

@@ -1,0 +1,501 @@
+openapi: 3.1.0
+info:
+  title: WordLift Plugin
+  description: The WordLift Plugin API
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /wordlift/v1/synchronizations:
+    post:
+      operationId: createSynchronization
+      summary: Create a Synchronization
+      description: Creates a new synchronization
+      tags:
+        - Synchronizations
+      responses:
+        "200":
+          description: Synchronization created
+          content:
+            "application/json":
+              schema:
+                $ref: '#/components/schemas/Synchronization'
+        "409":
+          description: Another Synchronization is running
+          content:
+        "401":
+          description: Unauthorized
+          content:
+        "403":
+          description: Forbidden
+          content:
+    get:
+      operationId: listSynchronizations
+      summary: List Synchronizations
+      description: List the synchronizations
+      tags:
+        - Synchronizations
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+        - name: sort
+          in: query
+          schema:
+            type: string
+        - name: is_running
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: The list of synchronizations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageSynchronization'
+        "401":
+          description: Unauthorized
+          content:
+        "403":
+          description: Forbidden
+          content:
+  /wordlift/v1/post-matches:
+    get:
+      operationId: listPostMatches
+      summary: List Post Matches
+      description: List the post matches
+      tags:
+        - Post Matches
+      parameters:
+        - name: cursor
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: post_types
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+          required: false
+          style: form
+          explode: true
+        - name: has_match
+          in: query
+          schema:
+            type: boolean
+          required: false
+        - name: post_status
+          in: query
+          schema:
+            type: string
+            enum:
+              - publish
+              - draft
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum:
+              - +date_modified_gmt
+              - -date_modified_gmt
+      responses:
+        "200":
+          description: The list of post matches
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagePostMatch'
+        "401":
+          description: Unauthorized
+          content:
+        "403":
+          description: Forbidden
+          content:
+  /wordlift/v1/post-matches/{post_id}/matches:
+    post:
+      operationId: createPostMatch
+      description: Creates a post match for the given post ID.
+      tags:
+        - Post Matches
+      parameters:
+        - name: post_id
+          in: path
+          description: The ID of the post to create a match for.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: The JSON-LD of the post match.
+        required: true
+        content:
+          application/ld+json:
+            example:
+              name: "lorem"
+              id: 123
+              match_name: "ipsum"
+              match_id: 456
+              match_jsonld: { }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostMatch"
+                example:
+                  name: "lorem"
+                  id: 123
+                  match_name: "ipsum"
+                  match_id: 456
+                  match_jsonld: { }
+  /wordlift/v1/post-matches/{post_id}/matches/{match_id}:
+    put:
+      operationId: updatePostMatch
+      description: Updates a post match for the given post and match IDs.
+      tags:
+        - Post Matches
+      parameters:
+        - name: post_id
+          in: path
+          description: The ID of the post to update a match for.
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: match_id
+          in: path
+          description: The ID of the match to update.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: The JSON-LD of the post match.
+        required: true
+        content:
+          application/ld+json:
+            example:
+              name: "lorem"
+              id: 123
+              match_name: "ipsum"
+              match_id: 456
+              match_jsonld: { }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostMatch"
+                example:
+                  name: "lorem"
+                  id: 123
+                  match_name: "ipsum"
+                  match_id: 456
+                  match_jsonld: { }
+        "404":
+          description: Not Found
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+  /wordlift/v1/term-matches:
+    get:
+      operationId: listTermMatches
+      description: Returns a list of term matches for a given taxonomy.
+      tags:
+        - Term Matches
+      parameters:
+        - name: taxonomies
+          in: query
+          description: Name of the taxonomy to retrieve term matches for.
+          required: true
+          type: array
+          items:
+            type: string
+          style: form
+          explode: true
+        - name: cursor
+          in: query
+          description: Cursor for pagination.
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Limit
+          schema:
+            type: number
+        - name: has_match
+          in: query
+          description: Has match
+          schema:
+            type: boolean
+        - name: term_contains
+          in: query
+          description: Filter by terms that contain the provided value
+          schema:
+            type: string
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum:
+              - +term_name
+              - -term_name
+              - +entity_name
+              - -entity_name
+              - +ingredient_term
+              - -ingredient_term
+              - +matched_ingredient
+              - -matched_ingredient
+              - +occurrences
+              - -occurrences
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageTermMatch"
+  /wordlift/v1/term-matches/{term_id}/matches:
+    post:
+      operationId: createTermMatch
+      description: Creates a term match for the given term ID.
+      tags:
+        - Term Matches
+      parameters:
+        - name: term_id
+          in: path
+          description: The ID of the term to create a match for.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: The JSON-LD of the term match.
+        required: true
+        content:
+          application/ld+json:
+            example:
+              name: "lorem"
+              id: 123
+              match_name: "ipsum"
+              match_id: 456
+              match_jsonld: { }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TermMatch"
+  /wordlift/v1/term-matches/{term_id}/matches/{match_id}:
+    put:
+      operationId: updateTermMatch
+      description: Updates a term match for the given term and match IDs.
+      tags:
+        - Term Matches
+      parameters:
+        - name: term_id
+          in: path
+          description: The ID of the term to update a match for.
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: match_id
+          in: path
+          description: The ID of the match to update.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: The JSON-LD of the term match.
+        required: true
+        content:
+          application/ld+json:
+            example:
+              name: "lorem"
+              id: 123
+              match_name: "ipsum"
+              match_id: 456
+              match_jsonld: { }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TermMatch"
+
+        "404":
+          description: Not Found
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+components:
+  schemas:
+    Synchronization:
+      type: object
+      required:
+        - created_at
+        - modified_at
+        - total
+        - offset
+        - is_running
+      properties:
+        created_at:
+          type: string
+        modified_at:
+          type: string
+        started_at:
+          type: string
+        stopped_at:
+          type: string
+        is_running:
+          type: boolean
+        total:
+          type: integer
+        offset:
+          type: integer
+    PageSynchronization:
+      type: object
+      required:
+        - items
+      properties:
+        self:
+          type: string
+        first:
+          type: string
+        prev:
+          type: string
+        next:
+          type: string
+        last:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Synchronization'
+    PagePostMatch:
+      type: object
+      properties:
+        first:
+          type: string
+        prev:
+          type: string
+        next:
+          type: string
+        last:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PostMatch'
+    PostMatch:
+      type: object
+      required:
+        - id
+        - post_title
+        - post_status
+        - post_link
+        - view_link
+        - preview_link
+      properties:
+        id:
+          type: integer
+        post_title:
+          type: string
+        post_status:
+          type: string
+        parent_post_title:
+          type: string
+        parent_post_id:
+          type: string
+        parent_post_link:
+          type: string
+        match_jsonld:
+          type: string
+        match_id:
+          type: integer
+        match_name:
+          type: string
+        post_link:
+          type: string
+        view_link:
+          type: string
+        preview_link:
+          type: string
+    PageTermMatch:
+      type: object
+      properties:
+        self:
+          type: string
+          description: The URL of the current page.
+          required: true
+        first:
+          type: string
+          description: The URL of the first page.
+
+        prev:
+          type: string
+          description: The URL of the previous page.
+
+        next:
+          type: string
+          description: The URL of the next page.
+
+        last:
+          type: string
+          description: The URL of the last page.
+
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/TermMatch"
+          required: true
+    TermMatch:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the term
+          required: true
+        id:
+          type: integer
+          format: int64
+          description: The ID of the term.
+          required: true
+        match_name:
+          type: string
+          description: The name of the matched term.
+        match_id:
+          type: integer
+          format: int64
+          description: The ID of the matched term.
+        match_jsonld:
+          type: string
+          description: The JSON-LD of the matched term.
+        occurrences:
+          type: integer
+          description: The number of times the term is used.
+      required:
+        - name
+        - id
+        - match_name
+        - match_id
+        - occurrences

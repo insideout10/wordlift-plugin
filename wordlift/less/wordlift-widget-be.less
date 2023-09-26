@@ -1,0 +1,104 @@
+// global be widget
+#wordlift_entities_box {
+  //background-color: @wl-widget-be-bg-color;
+  h1, h2, h3, h4, h5, h6, p {
+    margin: 0;
+    padding: 0;
+  }
+
+  .wl-widget-message-panel {
+    width: 100%;
+    margin: auto;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 15px;
+    transform: translateX(-4px);
+  }
+
+  h2.hndle.ui-sortable-handle {
+    margin: auto;
+    padding: 8px 12px;
+
+    span {
+      &::after {
+        content: " ";
+        div {
+          height: 5px;
+          width: 5px;
+        }
+      }
+    }
+  }
+}
+
+h1.wl-tab-lead-text {
+  color: @wl-black-color;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0;
+  margin: 0;
+}
+
+.wl-tab-lead {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 8px;
+  z-index: 1;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .wl-tab-lead-wrap {
+    cursor: pointer;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    margin: auto;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    min-width: 260px;
+    height: 35px;
+    box-sizing: border-box;
+    background-color: @wl-white-color;
+    //box-shadow: 0 1px 1px @wl-shadow-color;
+    border: 1px solid #eee;
+    transition: @wl-anime-global-time;
+
+    .wl-tab-lead-text.wl-tab-lead-btn {
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid @wl-brand-color;
+    }
+  }
+}
+
+// importing parts
+@import "wordlift-widget-be/wordlift-widget-be-retro.less";
+@import "wordlift-widget-be/wordlift-widget-be-entity-panel.less";
+@import "wordlift-widget-be/wordlift-widget-be-spinner.less";
+@import "wordlift-widget-be/wordlift-widget-be-error.less";
+@import "wordlift-widget-be/wordlift-widget-be-positive.less";
+@import "wordlift-widget-be/wordlift-widget-be-create-entity-btn.less";
+@import "wordlift-widget-be/wordlift-widget-be-classification-box.less";
+@import "wordlift-widget-be/wordlift-widget-be-article-metadata.less";
+@import "wordlift-widget-be/wordlift-widget-be-suggest-images.less";
+@import "wordlift-widget-be/wordlift-widget-be-related-post.less";

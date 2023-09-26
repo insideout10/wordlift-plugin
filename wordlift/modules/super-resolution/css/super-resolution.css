@@ -1,0 +1,118 @@
+#TB_overlay {
+  z-index: 300050 !important; /* Above DFW. */
+}
+
+#TB_window {
+  z-index: 300050 !important; /* Above DFW. */
+}
+
+.compat-item tr.compat-field-wl_super_resolution {
+  padding: 17px 0;
+  margin-bottom: 17px;
+  border-top: 1px solid #dcdcde;
+  border-bottom: 1px solid #dcdcde;
+  display: block;
+}
+
+
+.compat-item tr.compat-field-wl_super_resolution label {
+  text-align: start;
+  cursor: auto;
+  margin-right: 0;
+}
+
+.compat-item tr.compat-field-wl_super_resolution label span {
+  text-align: start;
+  padding: 0;
+  margin-left: 0;
+  font-weight: 600;
+  color: #646970;
+}
+
+.wl-super-resolution-container {
+  margin-top: 16px;
+  font-style: normal;
+  font-size: 13px;
+  display: flex;
+  gap: 6px;
+  width: 263px;
+  height: 34px;
+}
+
+.wl-super-resolution-container > strong {
+  color: #646970;
+  font-weight: 600;
+}
+
+.compat-field-wl_super_resolution .field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  gap: 16px;
+}
+
+.compat-field-wl_super_resolution button {
+  border: 1px solid #007aff;
+  background: transparent;
+  border-radius: 4px;
+  height: 32px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #007aff;
+  cursor: pointer;
+}
+
+.compat-field-wl_super_resolution button:disabled {
+  cursor: not-allowed;
+  /* colorBgContainerDisabled */
+  background: rgba(0, 0, 0, 0.04);
+  color: rgba(0, 0, 0, 0.25);
+  /* colorBorder */
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.wl-warning-icon::before {
+  content: "\f348";
+  color: #FAAD14;
+  font-family: dashicons;
+  display: inline-block;
+  line-height: 1;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: inherit;
+  text-transform: none;
+  text-rendering: auto;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  vertical-align: top;
+  text-align: center;
+  transition: color 0.1s ease-in;
+
+}
+
+
+.wl-success-icon::before {
+  content: "\f12a";
+  color: #00C48C;
+  font-family: dashicons;
+  display: inline-block;
+  line-height: 1;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: inherit;
+  text-transform: none;
+  text-rendering: auto;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  vertical-align: top;
+  text-align: center;
+  transition: color 0.1s ease-in;
+
+}
+
+
+
