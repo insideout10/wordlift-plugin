@@ -13,6 +13,7 @@ if [ ! -z "$ipaddr" ]; then
   echo "** Found nginx IP address $ipaddr **"
 
   echo "$ipaddr wordlift.localhost" >> /etc/hosts
+  echo "$ipaddr wordlift.www.localhost" >> /etc/hosts
 fi
 
 set -o errexit

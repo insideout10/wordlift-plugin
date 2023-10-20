@@ -2,6 +2,8 @@
 
 namespace Wordlift\Api;
 
+use Exception;
+
 class Api_Headers_Service {
 
 	private static $instance = null;
@@ -19,13 +21,18 @@ class Api_Headers_Service {
 		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		$is_plugin_subscription = apply_filters( 'wl_feature__enable__entity-types-professional', false ) ||
 		                          // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-										   apply_filters( 'wl_feature__enable__entity-types-business', false ) ||
+		                          apply_filters( 'wl_feature__enable__entity-types-business', false ) ||
 		                          // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-										   apply_filters( 'wl_feature__enable__entity-types-starter', false );
-		return $is_plugin_subscription ? array(
-			'X-Wordlift-Plugin-Wp-Admin' => untrailingslashit( get_admin_url() ),
-			'X-Wordlift-Plugin-Wp-Json'  => untrailingslashit( get_rest_url() ),
-		) : array();
+		                          apply_filters( 'wl_feature__enable__entity-types-starter', false );
+
+		try {
+			return $is_plugin_subscription ? array(
+				'X-Wordlift-Plugin-Wp-Admin' => untrailingslashit( get_admin_url() ),
+				'X-Wordlift-Plugin-Wp-Json'  => untrailingslashit( get_rest_url() ),
+			) : array();
+		} catch ( Exception $e ) {
+			return array();
+		}
 	}
 
 	/**
