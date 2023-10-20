@@ -1,0 +1,10 @@
+services:
+  _defaults: { public: true }
+
+  Wordlift\Api\Api_Service:
+    factory: [ 'Wordlift\Api\Default_Api_Service', 'get_instance' ]
+    class: Wordlift\Api\Default_Api_Service
+
+  Wordlift\Modules\Plugin_Diagnostics\Plugin_Diagnostics_API:
+    class: Wordlift\Modules\Plugin_Diagnostics\Plugin_Diagnostics_API
+    arguments: [ '@Wordlift\Api\Api_Service' ]
