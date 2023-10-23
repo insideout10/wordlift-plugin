@@ -143,6 +143,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.51.0 (2023-10-23) =
+
+* 📣 New feature announcement: opt in to provide plugin diagnostics for a better and faster support [#1711](https://github.com/insideout10/wordlift-plugin/issues/1711).
+
 = 3.50.0 (2023-09-20) =
 
 * New Dashboard improvements.
