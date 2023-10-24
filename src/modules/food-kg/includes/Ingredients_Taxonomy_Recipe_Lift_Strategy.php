@@ -94,9 +94,8 @@ class Ingredients_Taxonomy_Recipe_Lift_Strategy implements Recipe_Lift_Strategy 
 			Wordpress_Content_Id::create_term( $term->term_id )
 		);
 
-		return is_null( $about_jsonld );
+		return $about_jsonld === null;
 	}
-
 
 	/**
 	 * @param $term WP_Term

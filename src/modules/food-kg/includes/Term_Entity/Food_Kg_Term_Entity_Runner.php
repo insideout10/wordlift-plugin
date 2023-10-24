@@ -75,7 +75,6 @@ class Food_Kg_Term_Entity_Runner implements Runner {
 		return $this->store->get_total();
 	}
 
-
 	/**
 	 * @param $term WP_Term
 	 *
@@ -86,7 +85,7 @@ class Food_Kg_Term_Entity_Runner implements Runner {
 			Wordpress_Content_Id::create_term( $term->term_id )
 		);
 
-		return ! is_null( $about_jsonld );
+		return $about_jsonld !== null;
 	}
 
 }
