@@ -25,14 +25,17 @@ echo $VERSION
 if [[ -z "$VERSION" ]]; then
 	echo "Version not set, halting."
 else
-	echo "Removing tag $VERSION..."
-	svn rm --force tags/$VERSION > /dev/null
-	echo "Removing trunk..."
-	svn rm --force trunk > /dev/null
+  echo "Removing tag $VERSION..."
+  svn rm --force tags/$VERSION > /dev/null
+	# Test using rsync
+	# echo "Removing trunk..."
+	# svn rm --force trunk > /dev/null
 
 	echo "If you see 'forbidden by the server', you need to authenticate to the server first."
 	svn ci -m "$VERSION: updating trunk (1 of 2)"
-	mv src trunk
+	# Test using rsync
+	# mv src trunk
+	rsync -avP src trunk
 	echo "Setting the stable tag in $README..."
 	sed -i '' "s/Stable tag: .*/Stable tag: $VERSION/g" $README
 	svn add trunk > /dev/null
