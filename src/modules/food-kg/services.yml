@@ -7,7 +7,7 @@ services:
 
   Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy:
     class: Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy
-    arguments: [ '@Wordlift\Modules\Food_Kg\Ingredients_Client', '@Wordlift\Modules\Food_Kg\Notices' ]
+    arguments: [ '@Wordlift\Modules\Food_Kg\Ingredients_Client', '@Wordlift\Modules\Food_Kg\Notices', '@Wordlift\Content\Wordpress\Wordpress_Content_Service' ]
 
   Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy:
     class: Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy

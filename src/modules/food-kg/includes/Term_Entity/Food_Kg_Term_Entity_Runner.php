@@ -6,6 +6,7 @@ use Wordlift\Content\Content_Service;
 use Wordlift\Content\Wordpress\Wordpress_Content_Id;
 use Wordlift\Modules\Common\Synchronization\Runner;
 use Wordlift\Modules\Food_Kg\Ingredients_Client;
+use WP_Term;
 
 class Food_Kg_Term_Entity_Runner implements Runner {
 
@@ -48,7 +49,7 @@ class Food_Kg_Term_Entity_Runner implements Runner {
 
 		foreach ( $ingredients as $key => $value ) {
 			$term = get_term_by( 'name', $key, 'wprm_ingredient' );
-			if ( ! isset( $term ) ) {
+			if ( ! isset( $term ) || $this->term_has_about_jsonld( $term ) ) {
 				continue;
 			}
 
@@ -72,6 +73,20 @@ class Food_Kg_Term_Entity_Runner implements Runner {
 	 */
 	public function get_total() {
 		return $this->store->get_total();
+	}
+
+
+	/**
+	 * @param $term WP_Term
+	 *
+	 * @return bool true if the term has an about_jsonld otherwise false.
+	 */
+	private function term_has_about_jsonld( $term ) {
+		$about_jsonld = $this->content_service->get_about_jsonld(
+			Wordpress_Content_Id::create_term( $term->term_id )
+		);
+
+		return ! is_null( $about_jsonld );
 	}
 
 }
