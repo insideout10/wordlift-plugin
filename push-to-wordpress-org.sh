@@ -38,7 +38,8 @@ else
 	rsync -avP src/* trunk/
 	echo "Setting the stable tag in $README..."
 	sed -i '' "s/Stable tag: .*/Stable tag: $VERSION/g" $README
-	svn add trunk > /dev/null
+	svn status | grep '^?       trunk/' | awk '{print $2}' | xargs svn add
+	# svn add trunk > /dev/null
 	svn cp trunk tags/$VERSION > /dev/null
 
 	echo "If you see 'forbidden by the server', you need to authenticate to the server first."
