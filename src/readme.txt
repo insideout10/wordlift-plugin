@@ -4,7 +4,7 @@ Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave
 Tags: SEO, SERP, FAQ Markup, Schema Markup, structured data, schema.org, schema org, semantic seo, JSON-LD, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map, classicpress
 Requires at least: 5.3
-Tested up to: 6.3
+Tested up to: 6.4
 Requires PHP: 5.6
 Stable tag: 3.50.0
 License: GPLv2 or later
