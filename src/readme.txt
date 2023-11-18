@@ -6,7 +6,7 @@ Tags: SEO, SERP, FAQ Markup, Schema Markup, structured data, schema.org, schema 
 Requires at least: 5.3
 Tested up to: 6.4
 Requires PHP: 5.6
-Stable tag: 3.50.0
+Stable tag: 3.51.2
 License: GPLv2 or later
 
 Search engines are looking for meaning, not keywords. WordLift tells Google how your content relates to your brand, products, and stakeholders.
@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.51.2 (????-??-??) =
+
+* 🍜 Added support for WPRM 9.
 
 = 3.51.1 (2023-10-24) =
 
