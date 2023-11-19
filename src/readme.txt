@@ -143,7 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.51.2 (????-??-??) =
+= 3.51.2 (2023-11-19) =
 
 * 🍜 Added support for WPRM 9.
 
