@@ -218,8 +218,8 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			'id'          => 'wl-key',
 			'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::KEY . ']',
 			'value'       => Wordlift_Configuration_Service::get_instance()->get_key(),
-			'description' => __( 'Insert the <a href="https://www.wordlift.io/blogger">WordLift Key</a> you received via email.', 'wordlift' )
-							 . ' [' . get_option( 'home' ) . ']',
+			'description' => __( 'Insert the <a href="https://wordlift.io">WordLift Key</a> you received via email.', 'wordlift' )
+							 . ' [' . apply_filters( 'wl_production_site_url', untrailingslashit( get_option( 'home' ) ) ) . ']',
 		);
 
 		// Before we were used to validate the key beforehand, but this means
@@ -303,6 +303,22 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 				'id'    => 'wl-alternate-name',
 				'name'  => 'wl_general_settings[' . Wordlift_Configuration_Service::ALTERNATE_NAME . ']',
 				'value' => Wordlift_Configuration_Service::get_instance()->get_alternate_name(),
+			)
+		);
+
+		// Add the override URL.
+		add_settings_field(
+			'wl-override-website-url',
+			__( 'Override Website URL', 'wordlift' ),
+			array( $this->input_element, 'render' ),
+			'wl_general_settings',
+			'wl_general_settings_section',
+			array(
+				'id'          => 'wl-override-website-url',
+				'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::OVERRIDE_WEBSITE_URL . ']',
+				'value'       => Wordlift_Configuration_Service::get_instance()->get_override_website_url(),
+				'pattern'     => '^https?://.+$',
+				'placeholder' => __( 'Optionally type a URL like https://...', 'wordlift' ),
 			)
 		);
 

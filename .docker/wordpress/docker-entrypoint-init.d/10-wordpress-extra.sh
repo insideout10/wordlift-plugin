@@ -16,7 +16,7 @@ echo "** Set the rewrite structure **"
 wp --skip-plugins --skip-themes rewrite structure '/%postname%/'
 
 echo "** Installing and Activating plugins **"
-wp plugin install woocommerce wordpress-seo wp-recipe-maker query-monitor wp-crontrol --force --activate
+wp plugin install woocommerce wordpress-seo wp-recipe-maker query-monitor wp-crontrol --force --activate || true
 
 echo "** Creating wladmin user **"
 # Check if the user exists

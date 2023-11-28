@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.51.2
+ * Version:           3.51.3-0
  * Author:            WordLift
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -32,7 +32,7 @@ use Wordlift\Features\Features_Registry;
 use Wordlift\Post\Post_Adapter;
 
 define( 'WORDLIFT_PLUGIN_FILE', __FILE__ );
-define( 'WORDLIFT_VERSION', '3.51.2' );
+define( 'WORDLIFT_VERSION', '3.51.3-0' );
 
 // ## DO NOT REMOVE THIS LINE: WHITELABEL PLACEHOLDER ##
 
@@ -319,6 +319,7 @@ require_once __DIR__ . '/modules/redeem-code/load.php';
 require_once __DIR__ . '/modules/raptive-setup/load.php';
 require_once __DIR__ . '/modules/events/load.php';
 require_once __DIR__ . '/modules/plugin-diagnostics/load.php';
+require_once __DIR__ . '/modules/override-url/load.php';
 
 function _wl_update_plugins_raptive_domain( $update, $plugin_data, $plugin_file ) {
 	// Bail out if it's not our plugin.

@@ -134,6 +134,8 @@ class Wordlift_Configuration_Service {
 	 */
 	const NETWORK_DATASET_IDS = 'network_dataset_ids';
 
+	const OVERRIDE_WEBSITE_URL = 'wl-override-website-url';
+
 	/**
 	 * The {@link Wordlift_Log_Service} instance.
 	 *
@@ -803,6 +805,19 @@ class Wordlift_Configuration_Service {
 
 		$this->set( 'wl_general_settings', self::SKIP_INSTALLATION_NOTICE, $value );
 
+	}
+
+	public function get_override_website_url() {
+		$value = $this->get( 'wl_general_settings', self::OVERRIDE_WEBSITE_URL, false );
+		if ( false === $value ) {
+			return $value;
+		}
+
+		return untrailingslashit( $value );
+	}
+
+	public function set_override_website_url( $value ) {
+		$this->set( 'wl_general_settings', self::OVERRIDE_WEBSITE_URL, $value );
 	}
 
 }
