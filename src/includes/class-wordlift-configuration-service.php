@@ -223,7 +223,7 @@ class Wordlift_Configuration_Service {
 	 *
 	 * @param string $option Name of option to retrieve. Expected to not be SQL-escaped.
 	 * @param string $key The value key.
-	 * @param mixed  $value The value.
+	 * @param mixed $value The value.
 	 *
 	 * @since 3.9.0
 	 */
@@ -567,10 +567,10 @@ class Wordlift_Configuration_Service {
 
 		// Build the URL.
 		$url = '/accounts'
-			   . '?key=' . rawurlencode( $key )
-			   . '&url=' . rawurlencode( $site_url )
-			   . '&country=' . $this->get_country_code()
-			   . '&language=' . $this->get_language_code();
+		       . '?key=' . rawurlencode( $key )
+		       . '&url=' . rawurlencode( $site_url )
+		       . '&country=' . $this->get_country_code()
+		       . '&language=' . $this->get_language_code();
 
 		$api_service = Default_Api_Service::get_instance();
 		/**
@@ -807,10 +807,15 @@ class Wordlift_Configuration_Service {
 
 	}
 
+	/**
+	 * The override URL or false if not set.
+	 *
+	 * @return false|string
+	 */
 	public function get_override_website_url() {
 		$value = $this->get( 'wl_general_settings', self::OVERRIDE_WEBSITE_URL, false );
-		if ( false === $value ) {
-			return $value;
+		if ( empty( $value ) ) {
+			return false;
 		}
 
 		return untrailingslashit( $value );

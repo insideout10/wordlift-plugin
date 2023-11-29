@@ -67,22 +67,24 @@ class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 		$input_type = ! empty( $params['type'] ) ? $params['type'] : 'text';
 		?>
 
-        <input type="<?php echo esc_attr( $input_type ); ?>"
-               id="<?php echo esc_attr( $params['id'] ); ?>"
-               name="<?php echo esc_attr( $params['name'] ); ?>"
-               value="<?php echo esc_attr( $params['value'] ); ?>"
+		<input type="<?php echo esc_attr( $input_type ); ?>"
+			   id="<?php echo esc_attr( $params['id'] ); ?>"
+			   name="<?php echo esc_attr( $params['name'] ); ?>"
+			   value="<?php echo esc_attr( $params['value'] ); ?>"
 			<?php
 			if ( $params['pattern'] ) {
 				echo ' pattern="';
 				echo esc_attr( $params['pattern'] );
 				echo '"';
-			} ?>
+			}
+			?>
 			<?php
 			if ( $params['placeholder'] ) {
 				echo ' placeholder="';
 				echo esc_attr( $params['placeholder'] );
 				echo '"';
-			} ?>
+			}
+			?>
 			<?php
 			if ( ! empty( $params['data'] ) && is_array( $params['data'] ) ) {
 				foreach ( $params['data'] as $key => $value ) {
@@ -91,16 +93,16 @@ class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 			}
 			if ( ! empty( $params['readonly'] ) ) {
 				?>
-                readonly="readonly" <?php } ?>
+				readonly="readonly" <?php } ?>
 			<?php
 			if ( ! empty( $params['css_class'] ) ) {
 				?>
-                class="<?php echo esc_attr( $params['css_class'] ); ?>" <?php } ?>
-        />
+				class="<?php echo esc_attr( $params['css_class'] ); ?>" <?php } ?>
+		/>
 		<?php
 		if ( ! empty( $params['description'] ) ) {
 			?>
-            <p><?php echo wp_kses( $params['description'], array( 'a' => array( 'href' => array() ) ) ); ?></p><?php } ?>
+			<p><?php echo wp_kses( $params['description'], array( 'a' => array( 'href' => array() ) ) ); ?></p><?php } ?>
 
 		<?php
 
