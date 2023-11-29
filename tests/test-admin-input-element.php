@@ -41,11 +41,11 @@ class Wordlift_Admin_Input_Element_Test extends Wordlift_Unit_Test_Case {
 	 * Helper function to capture the result of "rendering"
 	 * done by the tested object.
 	 *
-	 * @since 3.11.0
-	 *
-	 * @param    array    The parameters to pass to the renderer.
+	 * @param array    The parameters to pass to the renderer.
 	 *
 	 * @return    string    The rendered HTML output
+	 * @since 3.11.0
+	 *
 	 */
 	function get_rendered_output( $args ) {
 
@@ -107,7 +107,7 @@ class Wordlift_Admin_Input_Element_Test extends Wordlift_Unit_Test_Case {
 			'name'     => 'test',
 		) );
 
-		$this->assertTrue( - 1 < strpos( $output, ' readonly="' ) );
+		$this->assertTrue( - 1 < strpos( $output, ' readonly="' ), "`readonly` expected, instead got `$output`" );
 
 	}
 

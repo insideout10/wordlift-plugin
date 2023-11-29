@@ -77,27 +77,29 @@ class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 				echo esc_attr( $params['pattern'] );
 				echo '"';
 			}
-			?>
-			<?php
+
 			if ( $params['placeholder'] ) {
 				echo ' placeholder="';
 				echo esc_attr( $params['placeholder'] );
 				echo '"';
 			}
-			?>
-			<?php
+
 			if ( ! empty( $params['data'] ) && is_array( $params['data'] ) ) {
 				foreach ( $params['data'] as $key => $value ) {
 					echo 'data-' . esc_attr( $key ) . '="' . esc_attr( $value ) . '" ';
 				}
 			}
+
 			if ( ! empty( $params['readonly'] ) ) {
-				?>
-				readonly="readonly" <?php } ?>
-			<?php
+				echo ' readonly="readonly"';
+			}
+
 			if ( ! empty( $params['css_class'] ) ) {
-				?>
-				class="<?php echo esc_attr( $params['css_class'] ); ?>" <?php } ?>
+				echo ' class="';
+				echo esc_attr( $params['css_class'] );
+				echo '"';
+			}
+			?>
 		/>
 		<?php
 		if ( ! empty( $params['description'] ) ) {
