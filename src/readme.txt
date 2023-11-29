@@ -143,6 +143,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.51.3 (2023-11-29) =
+
+* For complicated WordPress installs 😅, like when there's a WordPress backend and a headless frontend, now it is possible to override the production URL.
+
 = 3.51.2 (2023-11-19) =
 
 * 🍜 Added support for WPRM 9.

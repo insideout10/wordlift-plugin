@@ -241,6 +241,13 @@ class Wordlift_Entity_Uri_Service {
 	 * @return int Post ID | bool false
 	 */
 	public function get_post_id_from_url( $url ) {
+		global $wp_rewrite;
+
+		// We need to check that rewrite is available because the `url_to_postid` uses it and can raise an exception
+		// otherwise.
+		if ( $wp_rewrite === null ) {
+			return false;
+		}
 
 		// Try url_to_postid
 		$post_id = url_to_postid( htmlspecialchars_decode( $url ) );

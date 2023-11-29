@@ -14,7 +14,7 @@ services:
       MYSQL_DATABASE: wordpress
 
   wordpress:
-    image: wordlift/wordpress-nginx:${WORDPRESS_VERSION:-6.2.2}
+    image: wordlift/wordpress-nginx:${WORDPRESS_VERSION:-6.4.1}
     user: "root"
     entrypoint: [ "/tmp/docker-entrypoint.sh", "/opt/bitnami/scripts/wordpress/entrypoint.sh", "/opt/bitnami/scripts/nginx-php-fpm/run.sh" ]
     volumes:
@@ -45,14 +45,14 @@ services:
       # WORDPRESS_TABLE_PREFIX: wp_q81ara52nh_
       WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX:-wp_}
       WORDPRESS_SKIP_BOOTSTRAP: yes
-      WORDPRESS_AUTH_KEY: '2+7G8-eAI}15YQro}b.q+nT#3|]=NW@JC t<H#VVoDGX1$/-@1r;aqltLmv^R9ej'
-      WORDPRESS_SECURE_AUTH_KEY: 'R8^w[N_fF+-*1Az:fRWkEY{p ;,1%f PnHN$$WxM^+V3j00=># Ac4cp/x.DF-mcz'
+      WORDPRESS_AUTH_KEY: '2+7G8-eAI}15YQro}b.q+nT#3|]=NW@JC t<H#VVoDGX1S/-@1r;aqltLmv^R9ej'
+      WORDPRESS_SECURE_AUTH_KEY: 'R8^w[N_fF+-*1Az:fRWkEY{p ;,1%f PnHNSWxM^+V3j00=># Ac4cp/x.DF-mcz'
       WORDPRESS_LOGGED_IN_KEY: 'W* ;IF#Z<I%dOWq^K,P0Lg,QYA`?+>gB+=H4<HEN`C>]*|nnKR#NEL>yt&hx(Hef'
       WORDPRESS_NONCE_KEY: 'xEjRy*/_DUL+X`R%i)4S)rCw<yI-Ly@9*y&EK|w_Cb9KY[M?KLdskZt82N+--A|*'
       WORDPRESS_AUTH_SALT: 'q|cc,[E1T,|aS+&aWIq0`n#h)1fM+ Tos @SxQ{`J_9C4&&AV_Pg0-n-~c`K!>VX'
       WORDPRESS_SECURE_AUTH_SALT: '_j|*y&gJ9^@=Re527SsH<<>.D[jb6.XmHo.( k!Vj rXWBI6uIDI@e3`dVk_O|JO'
-      WORDPRESS_LOGGED_IN_SALT: 'gI]GHx0<J+gcToz(|oj$$s6)HB)),N]$$eJj6(|JQ/_:1;PO7_%+js1k8!|[FN*6yo'
-      WORDPRESS_NONCE_SALT: 'M$$xQ1Q<Pg{Cq+[:p4p2>iOm76?{.f6;* p -(1?A2_6:Nort3R1cLxEJu_<j[-Yf'
+      WORDPRESS_LOGGED_IN_SALT: 'gI]GHx0<J+gcToz(|ojSs6)HB)),N]SeJj6(|JQ/_:1;PO7_%+js1k8!|[FN*6yo'
+      WORDPRESS_NONCE_SALT: 'MSxQ1Q<Pg{Cq+[:p4p2>iOm76?{.f6;* p -(1?A2_6:Nort3R1cLxEJu_<j[-Yf'
       PHP_IDE_CONFIG: serverName=wordpress
 
   nginx:
