@@ -25,16 +25,24 @@ class Post_Link extends Default_Link {
 
 	public function get_same_as_uris( $id ) {
 
+		// It appears that some installs are receiving false here. Which means that an invalid $post_id has been
+		// provided. Because we pass $single=false (the default) we're going to ignore return values that are not
+		// arrays.
+		$same_as = get_post_meta( $id, Wordlift_Schema_Service::FIELD_SAME_AS );
+		if ( ! is_array( $same_as ) ) {
+			$same_as = array();
+		}
+
 		return array_merge(
 			array( $this->entity_service->get_uri( $id ) ),
-			get_post_meta( $id, Wordlift_Schema_Service::FIELD_SAME_AS )
+			$same_as
 		);
 
 	}
 
 	public function get_id( $uri ) {
 		$content = Wordpress_Content_Service::get_instance()
-											->get_by_entity_id_or_same_as( $uri );
+		                                    ->get_by_entity_id_or_same_as( $uri );
 
 		if ( ! isset( $content ) || ! is_a( $content->get_bag(), '\WP_Post' ) ) {
 			return false;

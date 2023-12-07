@@ -813,10 +813,7 @@ class Wordlift_Configuration_Service {
 	 * @return false|string
 	 */
 	public function get_override_website_url() {
-		$value = $this->get( 'wl_general_settings', self::OVERRIDE_WEBSITE_URL, false );
-		if ( empty( $value ) ) {
-			return false;
-		}
+		$value = $this->get( 'wl_general_settings', self::OVERRIDE_WEBSITE_URL );
 
 		return untrailingslashit( $value );
 	}
