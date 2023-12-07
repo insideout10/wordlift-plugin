@@ -42,7 +42,7 @@ class Post_Link extends Default_Link {
 
 	public function get_id( $uri ) {
 		$content = Wordpress_Content_Service::get_instance()
-		                                    ->get_by_entity_id_or_same_as( $uri );
+											->get_by_entity_id_or_same_as( $uri );
 
 		if ( ! isset( $content ) || ! is_a( $content->get_bag(), '\WP_Post' ) ) {
 			return false;
