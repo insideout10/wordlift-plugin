@@ -10,11 +10,7 @@ namespace Wordlift\Modules\Google_Organization_Kp;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-<<<<<<< HEAD
-#[\Attribute(\Attribute::TARGET_CLASS)]
-=======
 #[Attribute(Attribute::TARGET_CLASS)]
->>>>>>> See #1717: Initial work on Google Organization KP API
 final class Attribute
 {
     public const TARGET_CLASS = 1;
