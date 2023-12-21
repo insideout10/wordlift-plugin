@@ -1,11 +1,16 @@
 openapi: 3.1.0
 info:
   title: WordLift Plugin Google Organization Knowledge Panel API
+<<<<<<< HEAD
   description: @@todo
+=======
+  description: The Google Organization KP API provides endpoints to prepopulate form fields and handle save on the Wordlift Google Organization Knowledge Panel. 
+>>>>>>> See #1717: Initial work on Google Organization KP API
   version: 1.0.0
 servers:
   - url: 'https'
 paths:
+<<<<<<< HEAD
   /wordlift/v1/synchronizations:
     post:
       operationId: createSynchronization
@@ -333,6 +338,54 @@ paths:
               match_name: "ipsum"
               match_id: 456
               match_jsonld: { }
+=======
+  /wordlift/v1/google-organization-kp/pages
+    get:
+      operationId: listPages
+      summary: List of pages
+      description: Returns a list of pages
+      responses:
+        "200":
+          description: The list of pages
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPagesResponse'
+        "404":
+          description: No pages were found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPagesError'
+  /wordlift/v1/google-organization-kp/countries
+    get:
+      operationId: listCountries
+      summary: List of countries
+      description: Returns a list of countries
+      responses:
+        "200":
+          description: The list of countries
+          content:
+  /wordlift/v1/google-organization-kp/form-data
+    get:
+      operationId: listFormData
+      summary: Retrieve existing form data
+      description: Return array of existing data for the form fields if exists
+      responses:
+        "200":
+          description: Array of field names and data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListFormDataResponse"
+        "404":
+          description: No existing data was found
+          content:
+    put:
+      operationId: saveFormData
+      summary: Save form data
+      description: Return array of existing data for the form fields
+>>>>>>> See #1717: Initial work on Google Organization KP API
       responses:
         "200":
           description: OK
@@ -340,15 +393,23 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TermMatch"
+<<<<<<< HEAD
 
         "404":
           description: Not Found
         "400":
           description: Bad Request
+=======
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+>>>>>>> See #1717: Initial work on Google Organization KP API
         "500":
           description: Internal Server Error
 components:
   schemas:
+<<<<<<< HEAD
     Synchronization:
       type: object
       required:
@@ -499,3 +560,31 @@ components:
         - match_name
         - match_id
         - occurrences
+=======
+    ListPagesResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+    ListPagesError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        status:
+          type: integer
+          format: int32
+    ListCountriesResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        name:
+          type: string
+>>>>>>> See #1717: Initial work on Google Organization KP API

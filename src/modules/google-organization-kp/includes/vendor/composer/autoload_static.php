@@ -7,7 +7,15 @@ namespace Wordlift_Modules_Google_Organization_Kp_Composer\Autoload;
 class ComposerStaticInit546267c9f0ed88cb2edc07161b61968e
 {
     public static $classMap = array (
+<<<<<<< HEAD
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+=======
+        'ComposerAutoloaderInit546267c9f0ed88cb2edc07161b61968e' => __DIR__ . '/..' . '/composer/autoload_real.php',
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Wordlift\\Modules\\Google_Organization_Kp\\Rest_Controller' => __DIR__ . '/../..' . '/Rest_Controller.php',
+        'Wordlift_Modules_Google_Organization_Kp_Composer\\Autoload\\ClassLoader' => __DIR__ . '/..' . '/composer/ClassLoader.php',
+        'Wordlift_Modules_Google_Organization_Kp_Composer\\Autoload\\ComposerStaticInit546267c9f0ed88cb2edc07161b61968e' => __DIR__ . '/..' . '/composer/autoload_static.php',
+>>>>>>> See #1717: Initial work on Google Organization KP API
     );
 
     public static function getInitializer(ClassLoader $loader)

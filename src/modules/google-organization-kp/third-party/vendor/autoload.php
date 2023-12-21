@@ -22,4 +22,8 @@ if (PHP_VERSION_ID < 50600) {
 
 require_once __DIR__ . '/composer/autoload_real.php';
 
+<<<<<<< HEAD
 return ComposerAutoloaderInit5fa769a6fa6622ac2a27547b9093ffd9::getLoader();
+=======
+return ComposerAutoloaderInit51ae230f1e1f117e4a6522f759483847::getLoader();
+>>>>>>> See #1717: Initial work on Google Organization KP API

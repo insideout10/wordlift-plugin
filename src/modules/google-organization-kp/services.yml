@@ -1,2 +1,8 @@
 services:
   _defaults: { public: true }
+<<<<<<< HEAD
+=======
+  
+  Wordlift\Modules\Google_Organization_Kp\Rest_Controller:
+    class: Wordlift\Modules\Google_Organization_Kp\Rest_Controller
+>>>>>>> See #1717: Initial work on Google Organization KP API
