@@ -1,0 +1,5 @@
+services:
+  _defaults: { public: true }
+  
+  Wordlift\Modules\Google_Organization_Kp\Rest_Controller:
+    class: Wordlift\Modules\Google_Organization_Kp\Rest_Controller
