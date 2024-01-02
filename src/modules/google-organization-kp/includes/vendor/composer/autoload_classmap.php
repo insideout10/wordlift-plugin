@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'ComposerAutoloaderInit546267c9f0ed88cb2edc07161b61968e' => $vendorDir . '/composer/autoload_real.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'Wordlift\\Modules\\Google_Organization_Kp\\Organization_Knowledge_Panel_Service' => $baseDir . '/ Organization_Knowledge_Panel_Service.php',
     'Wordlift\\Modules\\Google_Organization_Kp\\Rest_Controller' => $baseDir . '/Rest_Controller.php',
     'Wordlift_Modules_Google_Organization_Kp_Composer\\Autoload\\ClassLoader' => $vendorDir . '/composer/ClassLoader.php',
     'Wordlift_Modules_Google_Organization_Kp_Composer\\Autoload\\ComposerStaticInit546267c9f0ed88cb2edc07161b61968e' => $vendorDir . '/composer/autoload_static.php',

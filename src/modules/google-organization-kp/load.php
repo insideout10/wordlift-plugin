@@ -13,23 +13,29 @@ if ( ! apply_filters( 'wl_feature__enable__google-organization-kp', true ) ) { /
 	return;
 }
 
-// Autoloader for dependencies.
-if ( file_exists( __DIR__ . '/third-party/vendor/scoper-autoload.php' ) ) {
-	require __DIR__ . '/third-party/vendor/scoper-autoload.php';
+function __wl_google_organization_kp_load() {
+
+	// Autoloader for dependencies.
+	if ( file_exists( __DIR__ . '/third-party/vendor/scoper-autoload.php' ) ) {
+		require __DIR__ . '/third-party/vendor/scoper-autoload.php';
+	}
+
+	// Autoloader for plugin itself.
+	if ( file_exists( __DIR__ . '/includes/vendor/autoload.php' ) ) {
+		require __DIR__ . '/includes/vendor/autoload.php';
+	}
+
+	$container_builder = new ContainerBuilder();
+	$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
+	$loader->load( 'services.yml' );
+	$container_builder->compile();
+
+	/**
+	 * @var $rest_controller Rest_Controller
+	 */
+	$rest_controller = $container_builder->get( 'Wordlift\Modules\Google_Organization_Kp\Rest_Controller' );
+	$rest_controller->init();
+
 }
 
-// Autoloader for plugin itself.
-if ( file_exists( __DIR__ . '/includes/vendor/autoload.php' ) ) {
-	require __DIR__ . '/includes/vendor/autoload.php';
-}
-
-$container_builder = new ContainerBuilder();
-$loader            = new YamlFileLoader( $container_builder, new FileLocator( __DIR__ ) );
-$loader->load( 'services.yml' );
-$container_builder->compile();
-
-/**
- * @var $rest_controller Rest_Controller
- */
-$rest_controller = $container_builder->get( 'Wordlift\Modules\Google_Organization_Kp\Rest_Controller' );
-$rest_controller->register_hooks();
+__wl_google_organization_kp_load();
