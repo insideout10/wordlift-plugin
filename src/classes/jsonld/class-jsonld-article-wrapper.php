@@ -109,17 +109,18 @@ class Jsonld_Article_Wrapper {
 
 		$author_jsonld = $this->get_author_linked_entity( $article_jsonld );
 
-		// Get primary author in case co-authors exist.
-		$primary_author = $this->get_primary_author( $article_jsonld['author'] );
+		if ( $author_jsonld ) {
+			// Get primary author in case co-authors exist.
+			$primary_author = $this->get_primary_author( $article_jsonld['author'] );
 
-		/**
-		 * The author entities can be present in graph for some entity types
-		 * for Person and Organization, so check before we add it to graph.
-		 * reference : https://schema.org/author
-		 */
-
-		if ( $author_jsonld && ! $this->is_author_entity_present_in_graph( $jsonld, $primary_author['@id'] ) ) {
-			$jsonld[] = $author_jsonld;
+			/**
+			 * The author entities can be present in graph for some entity types
+			 * for Person and Organization, so check before we add it to graph.
+			 * reference : https://schema.org/author
+			 */
+			if ( $author_jsonld && ! $this->is_author_entity_present_in_graph( $jsonld, $primary_author['@id'] ) ) {
+				$jsonld[] = $author_jsonld;
+			}
 		}
 
 		return $jsonld;
