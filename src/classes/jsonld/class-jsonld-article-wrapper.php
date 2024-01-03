@@ -109,10 +109,9 @@ class Jsonld_Article_Wrapper {
 
 		$author_jsonld = $this->get_author_linked_entity( $article_jsonld );
 
-		
 		// Get primary author in case co-authors exist.
-		$primary_author = $this->get_primary_author($article_jsonld['author']);
-		
+		$primary_author = $this->get_primary_author( $article_jsonld['author'] );
+
 		/**
 		 * The author entities can be present in graph for some entity types
 		 * for Person and Organization, so check before we add it to graph.
@@ -135,17 +134,17 @@ class Jsonld_Article_Wrapper {
 
 	/**
 	 * Get primary author from author array.
-	 * 
+	 *
 	 * A helper function that checks the structure of the author array and returns the primary author.
-	 * 
-	 * @param array|string 	$author The author array.
-	 * 
+	 *
+	 * @param array|string $author The author array.
+	 *
 	 * @return array|string The primary author.
-	 * 
+	 *
 	 * @since 3.51.4
 	 */
 	private function get_primary_author( $author ) {
-		
+
 		// Nested array of co-authors. Return the primary author.
 		if ( is_array( $author ) && ! empty( $author ) && ! isset( $author['@id'] ) ) {
 			return $author[0];

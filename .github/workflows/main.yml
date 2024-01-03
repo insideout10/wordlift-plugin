@@ -97,41 +97,42 @@ jobs:
         run: ./.github/workflows/raptive.sh
         env:
           AZURE_STORAGE_SHARED_KEY_QUERY_PARAM: ${{ secrets.AZURE_STORAGE_SHARED_KEY_QUERY_PARAM }}
-  publish-to-dev:
-    runs-on: ubuntu-latest
-    # Run only for develop branch push
-    if: github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/release/')
-#    needs: [ linter, wordpress ]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Update branch in deployment.yaml
-        run: sed -i'' "s~__BRANCH__~${{ env.BRANCH_NAME }}~" .kubernetes/deployment.yaml
-        env:
-          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-      - name: Update URL in deployment.yaml
-        run: sed -i'' "s~__HOST__~$HOST~" .kubernetes/deployment.yaml
-        env:
-          HOST: ${{ secrets.HOST }}
 
-      - name: Setup kubectl
-        uses: azure/setup-kubectl@v3
-
-      - name: Set K8s context
-        uses: azure/k8s-set-context@v3
-        with:
-          method: service-account
-          k8s-url: https://276B133D9A690B29F820B94F09D6EBAA.gr7.us-east-1.eks.amazonaws.com
-          k8s-secret: ${{ secrets.K8S_DEV_SECRET }}
-
-      - name: Deploy to the Kubernetes cluster
-        uses: azure/k8s-deploy@v4
-        with:
-          # see https://github.com/Azure/k8s-deploy/issues/164
-          pull-images: false
-          namespace: wordlift-plugin-dev
-          manifests: |
-            .kubernetes/deployment.yaml
-          images: |
-            wordlift/wordpress-nginx:6.1.1
-
+#  publish-to-dev:
+#    runs-on: ubuntu-latest
+#    # Run only for develop branch push
+#    if: github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/release/')
+##    needs: [ linter, wordpress ]
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#      - name: Update branch in deployment.yaml
+#        run: sed -i'' "s~__BRANCH__~${{ env.BRANCH_NAME }}~" .kubernetes/deployment.yaml
+#        env:
+#          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+#      - name: Update URL in deployment.yaml
+#        run: sed -i'' "s~__HOST__~$HOST~" .kubernetes/deployment.yaml
+#        env:
+#          HOST: ${{ secrets.HOST }}
+#
+#      - name: Setup kubectl
+#        uses: azure/setup-kubectl@v3
+#
+#      - name: Set K8s context
+#        uses: azure/k8s-set-context@v3
+#        with:
+#          method: service-account
+#          k8s-url: https://276B133D9A690B29F820B94F09D6EBAA.gr7.us-east-1.eks.amazonaws.com
+#          k8s-secret: ${{ secrets.K8S_DEV_SECRET }}
+#
+#      - name: Deploy to the Kubernetes cluster
+#        uses: azure/k8s-deploy@v4
+#        with:
+#          # see https://github.com/Azure/k8s-deploy/issues/164
+#          pull-images: false
+#          namespace: wordlift-plugin-dev
+#          manifests: |
+#            .kubernetes/deployment.yaml
+#          images: |
+#            wordlift/wordpress-nginx:6.1.1
+#
