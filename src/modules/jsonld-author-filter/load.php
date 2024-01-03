@@ -12,7 +12,7 @@
  * }
  * @param int $post_id The post ID.
  *
- * @return string|array A JSON-LD structure.
+ * @return array An array with the updated JSON-LD and references.
  * 
  * @since 3.51.4
  * 
@@ -26,7 +26,7 @@ function _wl_jsonld_author__author_filter( $args_arr, $post_id ) {
     $coauthor_plugin_path = 'co-authors-plus/co-authors-plus.php';
 
     // If the co-authors plugin is active.
-    if ( is_plugin_active( $coauthor_plugin_path ) ) {
+    if ( is_plugin_active( $coauthor_plugin_path ) && function_exists( 'get_coauthors' ) ) {
 
         $coauthors = get_coauthors( $post_id );
 
@@ -43,7 +43,10 @@ function _wl_jsonld_author__author_filter( $args_arr, $post_id ) {
         }
     }
 
-    return $author;
+    return array(
+        'author'     => $author,
+        'references' => $references,
+    );
 }
 
 // Add the filter

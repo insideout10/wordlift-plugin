@@ -185,7 +185,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		 * 
 		 * @see https://www.geeklab.info/2010/04/wordpress-pass-variables-by-reference-with-apply_filter/
 		 */
-		$jsonld['author'] = apply_filters(
+		$ret_val = apply_filters(
 			'wl_jsonld_author',
 			array(
 				'author' 	 => $this->get_author( $post->post_author, $references ),
@@ -193,6 +193,10 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			),
 			$post_id
 		);
+
+		// Set the values returned by the filter.
+		$jsonld['author'] = $ret_val['author'];
+		$references       = $ret_val['references'];
 
 		// Return the JSON-LD if filters are disabled by the client.
 		if ( $this->disable_convert_filters ) {
