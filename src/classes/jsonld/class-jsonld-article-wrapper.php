@@ -109,12 +109,17 @@ class Jsonld_Article_Wrapper {
 
 		$author_jsonld = $this->get_author_linked_entity( $article_jsonld );
 
+		
+		// Get primary author in case co-authors exist.
+		$primary_author = $this->get_primary_author($article_jsonld['author']);
+		
 		/**
 		 * The author entities can be present in graph for some entity types
 		 * for Person and Organization, so check before we add it to graph.
 		 * reference : https://schema.org/author
 		 */
-		if ( $author_jsonld && ! $this->is_author_entity_present_in_graph( $jsonld, $article_jsonld['author']['@id'] ) ) {
+
+		if ( $author_jsonld && ! $this->is_author_entity_present_in_graph( $jsonld, $primary_author['@id'] ) ) {
 			$jsonld[] = $author_jsonld;
 		}
 
@@ -128,12 +133,33 @@ class Jsonld_Article_Wrapper {
 		return ! empty( $array_intersect );
 	}
 
+	/**
+	 * Get primary author from author array.
+	 * 
+	 * A helper function that checks the structure of the author array and returns the primary author.
+	 * 
+	 * @param array|string 	$author The author array.
+	 * 
+	 * @return array|string The primary author.
+	 * 
+	 * @since 3.51.4
+	 */
+	private function get_primary_author( $author ) {
+		
+		// Nested array of co-authors. Return the primary author.
+		if ( is_array( $author ) && ! empty( $author ) && ! isset( $author['@id'] ) ) {
+			return $author[0];
+		}
+
+		return $author;
+	}
+
 	private function get_author_linked_entity( $article_jsonld ) {
 		if ( ! array_key_exists( 'author', $article_jsonld ) ) {
 			return false;
 		}
 
-		$author = $article_jsonld['author'];
+		$author = $this->get_primary_author( $article_jsonld['author'] );
 
 		if ( count( array_keys( $author ) ) !== 1 || ! array_key_exists( '@id', $author ) ) {
 			return false;
