@@ -7,10 +7,12 @@
  * returns a JSON-LD fragment for the author(s).
  *
  * @param array $value {
- *     @type array $author      The author JSON-LD structure.
- *     @type int[] $references  An array of post IDs.
+ *
+ * @type array $author The author JSON-LD structure.
+ * @type int[] $references An array of post IDs.
  * }
- * @param int   $post_id The post ID.
+ *
+ * @param int $post_id The post ID.
  *
  * @return array An array with the updated JSON-LD and references.
  *
@@ -20,27 +22,29 @@
  */
 function _wl_jsonld_author__author_filter( $args_arr, $post_id ) {
 
-	$author     = $args_arr['author'];
 	$references = $args_arr['references'];
 
 	$coauthor_plugin_path = 'co-authors-plus/co-authors-plus.php';
 
 	// If the co-authors plugin is active.
-	if ( is_plugin_active( $coauthor_plugin_path ) && function_exists( 'get_coauthors' ) ) {
+	if ( ! is_plugin_active( $coauthor_plugin_path ) || ! function_exists( 'get_coauthors' ) ) {
+		return $args_arr;
+	}
 
-		$coauthors = get_coauthors( $post_id );
+	$coauthors = get_coauthors( $post_id );
 
-		// And we have multiple authors on a post.
-		if ( count( $coauthors ) > 1 ) {
+	// And we have multiple authors on a post.
+	if ( empty( $coauthors ) ) {
+		return $args_arr;
+	}
 
-			// Clear the existing author.
-			$author = array();
+	// Clear the existing author.
+	$author = array();
 
-			// Build array of authors.
-			foreach ( $coauthors as $coauthor ) {
-				$author[] = Wordlift_Post_To_Jsonld_Converter::get_instance()->get_author( $coauthor->ID, $references );
-			}
-		}
+	// Build array of authors.
+	$wordlift_post_to_jsonld_converter = Wordlift_Post_To_Jsonld_Converter::get_instance();
+	foreach ( $coauthors as $coauthor ) {
+		$author[] = $wordlift_post_to_jsonld_converter->get_author( $coauthor->ID, $references );
 	}
 
 	return array(
