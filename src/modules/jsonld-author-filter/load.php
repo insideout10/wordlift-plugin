@@ -12,7 +12,7 @@
  * @type int[] $references An array of post IDs.
  * }
  *
- * @param int $post_id The post ID.
+ * @param int   $post_id The post ID.
  *
  * @return array An array with the updated JSON-LD and references.
  *
