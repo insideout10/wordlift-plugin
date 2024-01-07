@@ -75,8 +75,8 @@ class Jsonld_Article_Wrapper {
 		}
 
 		if ( Jsonld_Context_Enum::PAGE !== $context
-		     // Returns true for "1", "true", "on" and "yes". Returns false otherwise.
-		     && ! filter_input( INPUT_GET, 'article_wrapper', FILTER_VALIDATE_BOOLEAN ) ) {
+			 // Returns true for "1", "true", "on" and "yes". Returns false otherwise.
+			 && ! filter_input( INPUT_GET, 'article_wrapper', FILTER_VALIDATE_BOOLEAN ) ) {
 			return $jsonld;
 		}
 
@@ -116,7 +116,7 @@ class Jsonld_Article_Wrapper {
 	}
 
 	/**
-	 * @param array $jsonld
+	 * @param array            $jsonld
 	 * @param array|false|null $author Either a keyed or an indexed array.
 	 *
 	 * @return void
