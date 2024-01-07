@@ -130,7 +130,12 @@ class Jsonld_Article_Wrapper {
 				continue;
 			}
 
-			$jsonld[] = $this->get_author_data_by_entity_id( $entity_id );
+			$author_data = $this->get_author_data_by_entity_id( $entity_id );
+
+			if ( ! is_array( $author_data ) || empty( $author_data ) ) {
+				continue;
+			}
+			$jsonld[] = $author_data;
 		}
 
 	}
