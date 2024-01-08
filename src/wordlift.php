@@ -321,6 +321,7 @@ require_once __DIR__ . '/modules/events/load.php';
 require_once __DIR__ . '/modules/plugin-diagnostics/load.php';
 require_once __DIR__ . '/modules/override-url/load.php';
 require_once __DIR__ . '/modules/jsonld-author-filter/load.php';
+require_once __DIR__ . '/modules/google-organization-kp/load.php';
 
 function _wl_update_plugins_raptive_domain( $update, $plugin_data, $plugin_file ) {
 	// Bail out if it's not our plugin.
