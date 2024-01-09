@@ -300,6 +300,8 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * @since 3.10.0
 	 */
 	protected function set_publisher( &$params ) {
+		// @@todo add a &$references argument and push the publisher_id in here
+		// the `publisher` property should only reference the publisher e.g. { "@id": "https://data.example.org/dataset/publisher" }
 
 		// If the publisher id isn't set don't do anything.
 		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
