@@ -108,7 +108,7 @@ Class Organization_Knowledge_Panel_Service {
 		if ( isset($publisher_id) && $publisher_id !== "(none)" ) {
 			// Add the publisher ID.
 			$data['id'] = $publisher_id;
-			
+
 			// Add the publisher name.
 			$publisher_post = get_post( $publisher_id );
 			$data['name'] = $publisher_post->post_title;
@@ -122,7 +122,7 @@ Class Organization_Knowledge_Panel_Service {
 			if ( ! empty( $publisher_post_logo ) ) {
 				$data['logo'] = $publisher_post_logo['url'];
 			}
-			
+
 			// Add the sameAs values associated with the publisher.
 			$storage_factory = Wordlift_Storage_Factory::get_instance();
 			$sameas          = $storage_factory->post_meta( Wordlift_Schema_Service::FIELD_SAME_AS )->get( $publisher_id );
@@ -131,6 +131,7 @@ Class Organization_Knowledge_Panel_Service {
 			}
 		}
 
+		return $publisher_post;
         return $data;
     }
 
