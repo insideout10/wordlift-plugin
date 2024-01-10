@@ -107,18 +107,65 @@ class Jsonld_Article_Wrapper {
 
 		array_unshift( $jsonld, $article_jsonld );
 
-		$author_jsonld = $this->get_author_linked_entity( $article_jsonld );
-
-		/**
-		 * The author entities can be present in graph for some entity types
-		 * for Person and Organization, so check before we add it to graph.
-		 * reference : https://schema.org/author
-		 */
-		if ( $author_jsonld && ! $this->is_author_entity_present_in_graph( $jsonld, $article_jsonld['author']['@id'] ) ) {
-			$jsonld[] = $author_jsonld;
+		// Only add authors if the key is present.
+		if ( isset( $article_jsonld['author'] ) ) {
+			$this->add_author_data_if_missing( $jsonld, $article_jsonld['author'] );
 		}
 
 		return $jsonld;
+	}
+
+	/**
+	 * @param array            $jsonld
+	 * @param array|false|null $author Either a keyed or an indexed array.
+	 *
+	 * @return void
+	 */
+	private function add_author_data_if_missing( &$jsonld, $author ) {
+
+		// For each author when if the `@id` is present and if not, add the author data.
+		$entities_ids = $this->get_list_of_entities_ids( $author );
+		foreach ( $entities_ids as $entity_id ) {
+			if ( $this->is_author_entity_present_in_graph( $jsonld, $entity_id ) ) {
+				continue;
+			}
+
+			$author_data = $this->get_author_data_by_entity_id( $entity_id );
+
+			if ( ! is_array( $author_data ) || empty( $author_data ) ) {
+				continue;
+			}
+			$jsonld[] = $author_data;
+		}
+
+	}
+
+	/**
+	 * This function takes any input parameter and when it's an array, it'll return the @id properties in this array as
+	 * an array of `@id`s.
+	 *
+	 * @param mixed $items Preferably an array, either keyed or indexed.
+	 *
+	 * @return array An array of `@id`s. Empty if not found.
+	 */
+	private function get_list_of_entities_ids( $items ) {
+		// If this is not an array, then what are we doing here? we return an empty array.
+		if ( ! is_array( $items ) || empty( $items ) ) {
+			return array();
+		}
+
+		// If this is a keyed array and the `@id` is set, then we return that single `@id`.
+		if ( isset( $items['@id'] ) ) {
+			return array( $items['@id'] );
+		}
+
+		// Poor way to check whether this is an indexed array.
+		if ( ! isset( $items[0] ) ) {
+			return array();
+		}
+
+		// If this is an indexed array then we return the `@id` for all the items in the array.
+		return array_filter( array_column( $items, '@id' ) );
 	}
 
 	private function is_article( $schema_types ) {
@@ -128,18 +175,7 @@ class Jsonld_Article_Wrapper {
 		return ! empty( $array_intersect );
 	}
 
-	private function get_author_linked_entity( $article_jsonld ) {
-		if ( ! array_key_exists( 'author', $article_jsonld ) ) {
-			return false;
-		}
-
-		$author = $article_jsonld['author'];
-
-		if ( count( array_keys( $author ) ) !== 1 || ! array_key_exists( '@id', $author ) ) {
-			return false;
-		}
-
-		$author_linked_entity_id = $author['@id'];
+	private function get_author_data_by_entity_id( $author_linked_entity_id ) {
 
 		$author_entity_post = $this->entity_uri_service->get_entity( $author_linked_entity_id );
 

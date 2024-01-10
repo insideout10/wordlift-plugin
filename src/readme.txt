@@ -143,6 +143,14 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.52.1 (2024-01-07) =
+
+* Uh oh, sometimes we would send a `false` 🪳 in the Structured Data. Fixed!
+
+= 3.52.0 (2024-01-04) =
+
+* The new year brought 👩‍💻🧑‍💻👨‍💻 [Co-Authors Plus](https://wordpress.org/plugins/co-authors-plus/) support, if you use it, we'll publish the whole list of authors to Structured Data.
+
 = 3.51.4 (2023-12-07) =
 
 * Squashes a little bug 🪳 when reading the sameAs URLs.

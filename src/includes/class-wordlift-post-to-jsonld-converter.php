@@ -157,8 +157,36 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// Set the publisher.
 		$this->set_publisher( $jsonld );
 
-		// Finally set the author.
-		$jsonld['author'] = $this->get_author( $post->post_author, $references );
+		/**
+		 * Call the `wl_post_jsonld_author` filter.
+		 *
+		 * This filter checks if there are co-authors or a single author and
+		 * returns a JSON-LD fragment for the author(s).
+		 *
+		 * @param array $value {
+		 *
+		 * @type array $jsonld The JSON-LD structure.
+		 * @type int[] $references An array of post IDs.
+		 * }
+		 *
+		 * @param int $post_id The {@link WP_Post} `id`.
+		 *
+		 * @since 3.51.4
+		 *
+		 * @see https://www.geeklab.info/2010/04/wordpress-pass-variables-by-reference-with-apply_filter/
+		 */
+		$ret_val = apply_filters(
+			'wl_jsonld_author',
+			array(
+				'author'     => $this->get_author( $post->post_author, $references ),
+				'references' => $references,
+			),
+			$post_id
+		);
+
+		// Set the values returned by the filter.
+		$jsonld['author'] = $ret_val['author'];
+		$references       = $ret_val['references'];
 
 		// Return the JSON-LD if filters are disabled by the client.
 		if ( $this->disable_convert_filters ) {
@@ -262,6 +290,8 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * @since 3.10.0
 	 */
 	protected function set_publisher( &$params ) {
+		// @@todo add a &$references argument and push the publisher_id in here
+		// the `publisher` property should only reference the publisher e.g. { "@id": "https://data.example.org/dataset/publisher" }
 
 		// If the publisher id isn't set don't do anything.
 		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
