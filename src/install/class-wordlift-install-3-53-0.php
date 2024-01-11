@@ -11,7 +11,7 @@ class Wordlift_Install_3_53_0 extends Wordlift_Install {
 	/**
 	 * @inheritdoc
 	 */
-	protected static $version = '3.53.1';
+	protected static $version = '3.53.0';
 
 	/**
 	 * The OnlineBusiness Entity Type term we would like to add.

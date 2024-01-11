@@ -197,22 +197,22 @@ class Rest_Controller {
 		$files = $request->get_file_params();
 
 		// Break out if there is no attached image.
-		if ( ! array_key_exists( 'image', $files ) ) {
-			return new WP_Error( '404', 'Image missing.', array( 'status' => 404 ) );
-		}
+//		if ( ! array_key_exists( 'image', $files ) ) {
+//			return new WP_Error( '404', 'Image missing.', array( 'status' => 404 ) );
+//		}
 
 		$request_file = $files['image'];
 
 		// Return error if MIME type not set.
-		if ( ! isset( $request_file['type'] ) ) {
-			return new WP_Error( '400', 'File mime type is not supported', array( 'status' => 400 ) );
-		}
+//		if ( ! isset( $request_file['type'] ) ) {
+//			return new WP_Error( '400', 'File mime type is not supported', array( 'status' => 400 ) );
+//		}
 
 		// Return error if file type is not image
-		if ( strpos( $request_file['type'], 'image' ) === false ) {
-			return new WP_Error( '400', 'Only image files are supported', array( 'status' => 400 ) );
-		}
+//		if ( strpos( $request_file['type'], 'image' ) === false ) {
+//			return new WP_Error( '400', 'Only image files are supported', array( 'status' => 400 ) );
+//		}
 
-		return rest_ensure_response();
+		return rest_ensure_response( $params );
 	}
 }

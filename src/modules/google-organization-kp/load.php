@@ -31,11 +31,16 @@ function __wl_google_organization_kp_load() {
 	$container_builder->compile();
 
 	/**
-	 * @var $rest_controller Rest_Controller
+	 * @var $rest_controller \Wordlift\Modules\Google_Organization_Kp\Rest_Controller
 	 */
 	$rest_controller = $container_builder->get( 'Wordlift\Modules\Google_Organization_Kp\Rest_Controller' );
 	$rest_controller->init();
 
+	/**
+	 * @var $about_page_organization_filter \Wordlift\Modules\Google_Organization_Kp\About_Page_Organization_Filter
+	 */
+	$about_page_organization_filter = $container_builder->get('Wordlift\Modules\Google_Organization_Kp\About_Page_Organization_Filter');
+	$about_page_organization_filter->init();
 }
 
 __wl_google_organization_kp_load();

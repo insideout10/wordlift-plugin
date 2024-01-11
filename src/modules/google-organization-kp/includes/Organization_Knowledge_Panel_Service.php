@@ -22,6 +22,12 @@ use Wordlift_Schema_Service;
 Class Organization_Knowledge_Panel_Service {
 
     const PAGINATION_NUM_OF_PAGES = 100;
+
+	private $extra_fields_service;
+
+	public function __construct( Publisher_Extra_Organization_Fields $extra_fields_service ) {
+		$this->extra_fields_service = $extra_fields_service;
+	}
 	
 	/**
 	 * Get a list of pages
@@ -35,10 +41,12 @@ Class Organization_Knowledge_Panel_Service {
 	 */
     public function get_pages( $pagination, $title_starts_with ) {
         // Get a number of pages starting at a given offset.
+	    $pagination_no_of_pages = self::PAGINATION_NUM_OF_PAGES;
+
 		$pages = get_pages(
 			array(
-				'number' => self::PAGINATION_NUM_OF_PAGES,
-				'offset' => (int) $pagination * self::PAGINATION_NUM_OF_PAGES
+				'number' => $pagination_no_of_pages,
+				'offset' => (int) $pagination * $pagination_no_of_pages
 			)
 		);
         
@@ -99,44 +107,47 @@ Class Organization_Knowledge_Panel_Service {
 	 * @since
 	 */
     public function get_form_data() {
-		// Get the publisher ID.
-		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
 
 		$data = array();
 
+	    $publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+
 		// If a publisher exists set the data.
-		if ( isset($publisher_id) && $publisher_id !== "(none)" ) {
-			// Add the publisher ID.
-			$data['id'] = $publisher_id;
+		if ( isset( $publisher_id ) && $publisher_id !== "(none)" ) {
 
-			// Add the publisher name.
-			$publisher_post = get_post( $publisher_id );
-			$data['name'] = $publisher_post->post_title;
+			$publisher_post      = get_post( $publisher_id );
+			$publisher_entity    = Wordlift_Entity_Type_Service::get_instance()->get( $publisher_id );
+			$publisher_logo      = Wordlift_Publisher_Service::get_instance()->get_publisher_logo( $publisher_id );
+			$storage_factory     = Wordlift_Storage_Factory::get_instance();
 
-			// Add the publisher type.
-			$publisher_post_entity = Wordlift_Entity_Type_Service::get_instance()->get( $publisher_id );
-			$data['type'] = $publisher_post_entity['label'];
+			$data['id']          = $publisher_id;                    // ID.
+			$data['name']        = $publisher_post->post_title;      // Name
+			$data['type']        = $publisher_entity['label'];       // Type
+			$data['description'] = $publisher_entity['description']; // Description
 
-			// Add the publisher logo.
-			$publisher_post_logo = Wordlift_Publisher_Service::get_instance()->get_publisher_logo( $publisher_id );
-			if ( ! empty( $publisher_post_logo ) ) {
-				$data['logo'] = $publisher_post_logo['url'];
+			if ( ! empty( $publisher_logo ) ) {
+				$data['logo'] = $publisher_logo['url'];
 			}
 
-			// Add the sameAs values associated with the publisher.
-			$storage_factory = Wordlift_Storage_Factory::get_instance();
-			$sameas          = $storage_factory->post_meta( Wordlift_Schema_Service::FIELD_SAME_AS )->get( $publisher_id );
+			$sameas = $storage_factory
+				->post_meta( Wordlift_Schema_Service::FIELD_SAME_AS )
+				->get( $publisher_id );
+
 			if ( ! empty( $sameas ) ) {
 				$data['publisher']['sameAs'] = $sameas;
 			}
+
+			// Add extra organization fields
+			$data = array_merge( $data, $this->extra_fields_service->get_all_field_data() );
 		}
 
-		return $publisher_post;
+		// Test
+//		$this->extra_fields_service->set_field_data( $this->extra_fields_service::FIELD_NO_OF_EMPLOYEES, '100' );
+
         return $data;
     }
 
-    public function set_form_data(  ) {
-		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+    public function set_form_data( $params ) {
 
         return;
     }
