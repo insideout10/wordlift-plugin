@@ -52,7 +52,7 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 		 *
 		 * @api
 		 */
-		return apply_filters( 'wl_website_jsonld', $jsonld );
+		return apply_filters( 'wl_website_jsonld', $jsonld, get_the_ID() );
 	}
 
 	private function set_publisher_jsonld( &$jsonld ) {
