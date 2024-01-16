@@ -107,48 +107,62 @@ Class Organization_Knowledge_Panel_Service {
 	 * @since
 	 */
     public function get_form_data() {
-
-		$data = array();
-
 	    $publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
 
-		// If a publisher exists set the data.
-		if ( isset( $publisher_id ) && $publisher_id !== "(none)" ) {
-
-			$publisher_post      = get_post( $publisher_id );
-			$publisher_entity    = Wordlift_Entity_Type_Service::get_instance()->get( $publisher_id );
-			$publisher_logo      = Wordlift_Publisher_Service::get_instance()->get_publisher_logo( $publisher_id );
-			$storage_factory     = Wordlift_Storage_Factory::get_instance();
-
-			$data['id']          = $publisher_id;                    // ID.
-			$data['name']        = $publisher_post->post_title;      // Name
-			$data['type']        = $publisher_entity['label'];       // Type
-			$data['description'] = $publisher_entity['description']; // Description
-
-			if ( ! empty( $publisher_logo ) ) {
-				$data['logo'] = $publisher_logo['url'];
-			}
-
-			$sameas = $storage_factory
-				->post_meta( Wordlift_Schema_Service::FIELD_SAME_AS )
-				->get( $publisher_id );
-
-			if ( ! empty( $sameas ) ) {
-				$data['publisher']['sameAs'] = $sameas;
-			}
-
-			// Add extra organization fields
-			$data = array_merge( $data, $this->extra_fields_service->get_all_field_data() );
+		if ( ! isset( $publisher_id ) || $publisher_id === "(none)" ) {
+			return array();
 		}
 
-		// Test
-//		$this->extra_fields_service->set_field_data( $this->extra_fields_service::FIELD_NO_OF_EMPLOYEES, '100' );
+        $data = array();
+
+		$publisher_post      = get_post( $publisher_id );
+		$publisher_entity    = Wordlift_Entity_Type_Service::get_instance()->get( $publisher_id );
+		$publisher_logo      = Wordlift_Publisher_Service::get_instance()->get_publisher_logo( $publisher_id );
+		$storage_factory     = Wordlift_Storage_Factory::get_instance();
+
+		// Add base Publisher fields
+		$data['id']          = $publisher_id;                    // ID.
+		$data['name']        = $publisher_post->post_title;      // Name
+		$data['type']        = $publisher_entity['label'];       // Type
+		$data['description'] = $publisher_entity['description']; // Description
+
+		// Add the logo
+		if ( ! empty( $publisher_logo ) ) {
+			$data['logo'] = $publisher_logo['url'];
+		}
+
+		// Add custom fields
+	    $custom_fields = array(
+			Wordlift_Schema_Service::FIELD_SAME_AS,
+		    Wordlift_Schema_Service::FIELD_ADDRESS,
+		    Wordlift_Schema_Service::FIELD_ADDRESS_LOCALITY,
+		    Wordlift_Schema_Service::FIELD_ADDRESS_REGION,
+		    Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY,
+		    Wordlift_Schema_Service::FIELD_ADDRESS_POSTAL_CODE,
+		    Wordlift_Schema_Service::FIELD_TELEPHONE,
+		    Wordlift_Schema_Service::FIELD_EMAIL
+	    );
+
+		foreach ( $custom_fields as $field_slug ) {
+//			$field_data = $storage_factory
+//				->post_meta( $field_key )
+//				->get( $publisher_id )[0];
+
+			$field_data = get_post_meta( $publisher_id, $field_slug, true );
+
+			if ( ! empty( $field_data ) ) {
+				$data[$field_slug] = $field_data;
+			}
+		}
+
+		// Add extra organization fields
+		$data = array_merge( $data, $this->extra_fields_service->get_all_field_data() );
 
         return $data;
     }
 
     public function set_form_data( $params ) {
-
+		// $this->extra_fields_service->set_field_data( $this->extra_fields_service::FIELD_NO_OF_EMPLOYEES, '100' );
         return;
     }
 }
