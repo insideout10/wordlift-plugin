@@ -356,4 +356,29 @@ class Wordlift_Publisher_Service {
 			'height' => $size['height'],
 		);
 	}
+
+	/**
+	 * Utility function to check if the Publisher is set.
+	 *
+	 * @return true|false
+	 *
+	 * @since 3.53.0
+	 */
+	public function is_publisher_set() {
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+
+		// Check that the ID is set.
+		if ( empty( $publisher_id ) ) {
+			return false;
+		}
+
+		// Check that the ID points to a valid Post.
+		$post = get_post( $publisher_id );
+		if ( ! is_a( $post, '\WP_Post' ) ) {
+			// Publisher not found.
+			return false;
+		}
+
+		return true;
+	}
 }
