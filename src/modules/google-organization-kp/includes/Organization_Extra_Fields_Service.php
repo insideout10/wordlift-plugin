@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Module: 	Google Organization Knowledge Panel
+ * Class: 	Organization_Extra_Fields_Service
+ *
+ * @package Wordlift/modules/google-organization-kp
+ *
+ * @since 3.53.0
+ */
+
 namespace Wordlift\Modules\Google_Organization_Kp;
 
 use Wordlift_Configuration_Service;
@@ -7,6 +16,11 @@ use Wordlift_Publisher_Service;
 
 class Organization_Extra_Fields_Service {
 
+	/**
+	 * Define slugs for custom fields
+	 *
+	 * @since 3.53.0
+	 */
 	const FIELD_NO_OF_EMPLOYEES = "_wl_no_of_employees";
 	const FIELD_FOUNDING_DATE = "_wl_founding_date";
 	const FIELD_ISO_6523_CODE = "_wl_iso_6523_code";
@@ -15,6 +29,11 @@ class Organization_Extra_Fields_Service {
 	const FIELD_VAT_ID = "_wl_vat_id";
 	const FIELD_TAX_ID = "_wl_tax_id";
 
+	/**
+	 * Map custom fields slugs to Schema property labels
+	 *
+	 * @since 3.53.0
+	 */
 	const FIELD_LABEL_MAP = array(
 		self::FIELD_NO_OF_EMPLOYEES    => 'numberOfEmployees',
 		self::FIELD_FOUNDING_DATE      => 'foundingDate',
@@ -25,10 +44,25 @@ class Organization_Extra_Fields_Service {
 		self::FIELD_TAX_ID             => 'taxID'
 	);
 
+	/**
+	 * An instance of Wordlift_Configuration_Service class.
+	 *
+	 * @since 3.53.0
+	 */
 	private $configuration_service;
 
+	/**
+	 * An instance of Wordlift_Publisher_Service class.
+	 *
+	 * @since 3.53.0
+	 */
 	private $publisher_service;
 
+	/**
+	 * Reference to self.
+	 *
+	 * @since 3.53.0
+	 */
 	private static $instance;
 
 	public function __construct() {
@@ -37,10 +71,22 @@ class Organization_Extra_Fields_Service {
 		self::$instance              = $this;
 	}
 
+	/**
+	 * Get an instance of this class.
+	 *
+	 * @since 3.53.0
+	 */
 	public static function get_instance() {
 		return self::$instance;
 	}
 
+	/**
+	 * Get an array with all the custom field slugs.
+	 *
+	 * @return string[]
+	 *
+	 * @since 3.53.0
+	 */
 	public function get_all_field_slugs() {
 		return array(
 			self::FIELD_NO_OF_EMPLOYEES,
@@ -53,10 +99,28 @@ class Organization_Extra_Fields_Service {
 		);
 	}
 
-	public function get_field_label( $slug ) {
-		return self::FIELD_LABEL_MAP[ $slug ];
+	/**
+	 * Get the Schema property label for a given slug.
+	 *
+	 * @param $field_slug string The slug for which we should get the label.
+	 *
+	 * @return string
+	 *
+	 * @since 3.53.0
+	 */
+	public function get_field_label( $field_slug ) {
+		return self::FIELD_LABEL_MAP[ $field_slug ];
 	}
 
+	/**
+	 * Gets the stored field data for a given custom field slug.
+	 *
+	 * @param $field_slug string The slug for which we should get the data.
+	 *
+	 * @return array|null
+	 *
+	 * @since 3.53.0
+	 */
 	public function get_field_data( $field_slug ) {
 		// If a Publisher isn't set or isn't valid, return null
 		if ( ! $this->publisher_service->is_publisher_set() ) {
@@ -71,6 +135,13 @@ class Organization_Extra_Fields_Service {
 		);
 	}
 
+	/**
+	 * Gets the field data for all the custom fields.
+	 *
+	 * @return array
+	 *
+	 * @since 3.53.0
+	 */
 	public function get_all_field_data() {
 		// If a Publisher isn't set or isn't valid, return empty array
 		if ( ! $this->publisher_service->is_publisher_set() ) {
@@ -93,6 +164,14 @@ class Organization_Extra_Fields_Service {
 		return $data;
 	}
 
+	/**
+	 * Set the data for a custom field.
+	 *
+	 * @param $field_slug
+	 * @param $field_data
+	 *
+	 * @since 3.53.0
+	 */
 	public function set_field_data( $field_slug, $field_data ) {
 		// If a Publisher isn't set or isn't valid, do nothing
 		if ( ! $this->publisher_service->is_publisher_set() ) {

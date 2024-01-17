@@ -6,8 +6,9 @@
  *
  * A class that sets and sets the data for the Google Organization Panel API endpoints.
  *
- * @since      
  * @package Wordlift/modules/google-organization-kp
+ *
+ * @since 3.53.0
  */
 
 namespace Wordlift\Modules\Google_Organization_Kp;
@@ -24,14 +25,29 @@ use Wordlift_Schema_Service;
 
 Class Organization_Knowledge_Panel_Service {
 
+	/**
+	 * Constant for the number of pages that should be returned in the paginated /page GET request.
+	 */
     const PAGINATION_NUM_OF_PAGES = 100;
 
+	/**
+	 * @var Organization_Extra_Fields_Service
+	 */
 	private $extra_fields_service;
 
+	/**
+	 * @var Wordlift_Publisher_Service|null
+	 */
 	private $publisher_service;
 
+	/**
+	 * @var Wordlift_Entity_Type_Service|null
+	 */
 	private $entity_service;
 
+	/**
+	 * @var Wordlift_Configuration_Service|null
+	 */
 	private $configuration_service;
 
 	public function __construct( Organization_Extra_Fields_Service $extra_fields_service ) {
@@ -42,10 +58,10 @@ Class Organization_Knowledge_Panel_Service {
 	}
 	
 	/**
-	 * Get a list of pages
+	 * Get a list of pages.
 	 * 
-	 * @param int    $pagination 		The pagination offset.
-	 * @param string $title_starts_with Case instensitive filter for page titles.
+	 * @param int    $pagination 		Pagination offset.
+	 * @param string $title_starts_with Case-insensitive filter for page titles.
 	 *
 	 * @return array Array of page IDs and titles.
 	 * 

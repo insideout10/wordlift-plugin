@@ -4,8 +4,9 @@
  * Module: 	Google Organization Knowledge Panel
  * Class: 	About_Page_Organization_Filter
  *
- * @since
  * @package Wordlift/modules/google-organization-kp
+ *
+ * @since 3.53.0
  */
 
 namespace Wordlift\Modules\Google_Organization_Kp;
@@ -21,23 +22,63 @@ use Wordlift_Schema_Service;
 
 class About_Page_Organization_Filter {
 	/**
-	 * Hook into wl_post_jsonld
+	 * Initialize hooks.
 	 *
-	 * @since
+	 * `wl_after_get_jsonld` is the main  filter hook and gets called on almost all JSON-LD conversions.
+	 * However, on `WebSite` conversion this hook gets bypassed, so we also hook into `wl_website_jsonld`.
+	 *
+	 * @since 3.53.0
 	 */
 	public function init() {
 		add_filter( 'wl_website_jsonld', array( $this, '_wl_website_jsonld__add_organization_jsonld' ), 10, 3 );
 		add_filter( 'wl_after_get_jsonld', array( $this, '_wl_after_get_jsonld__add_organization_jsonld' ), 10, 3 );
 	}
 
+
+	/**
+	 * Callback function for the `wl_website_jsonld` filter hook.
+	 *
+	 * Forwards to $this->add_organization_jsonld.
+	 *
+	 * @param $jsonld  array JSON-LD structure.
+	 * @param $post_id int   Post ID.
+	 *
+	 * @return array
+	 *
+	 * @since 3.53.0
+	 */
 	public function _wl_website_jsonld__add_organization_jsonld( $jsonld, $post_id ) {
 		return $this->add_organization_jsonld( $jsonld, $post_id );
 	}
 
+	/**
+	 * Callback function for the `wl_after_get_jsonld` filter hook.
+	 *
+	 * Used so that the extra parameter can be dropped before forwarding to main callback for both hooks.
+	 *
+	 * Forwards to $this->add_organization_jsonld.
+	 *
+	 * @param $jsonld  array  JSON-LD structure.
+	 * @param $post_id int    Post ID.
+	 * @param $context string Schema.org context.
+	 *
+	 * @return array
+	 *
+	 * @since 3.53.0
+	 */
 	public function _wl_after_get_jsonld__add_organization_jsonld( $jsonld, $post_id, $context ) {
 		return $this->add_organization_jsonld( $jsonld, $post_id );
 	}
 
+	/**
+	 * Utility function to check if the provided $post_id is the `About Us` page specific in the options.
+	 *
+	 * @param $post_id int The post ID.
+	 *
+	 * @return bool
+	 *
+	 * @since 3.53.0
+	 */
 	public function is_about_page( $post_id ) {
 		$about_page_id = get_option('wl_about_page_id');
 
@@ -48,6 +89,16 @@ class About_Page_Organization_Filter {
 		return $about_page_id === $post_id;
 	}
 
+	/**
+	 * Utility function to check if the Publisher exists in the JSON-LD structure already.
+	 *
+	 * @param $jsonld       array JSON-LD structure.
+	 * @param $publisher_id int   Publisher Post ID.
+	 *
+	 * @return bool
+	 *
+	 * @since 3.53.0
+	 */
 	public function is_publisher_entity_in_graph( $jsonld, $publisher_id ) {
 		$publisher_uri = Wordlift_Entity_Service::get_instance()->get_uri( $publisher_id );
 
@@ -60,6 +111,14 @@ class About_Page_Organization_Filter {
 		return false;
 	}
 
+	/**
+	 * Add the extra fields to the Publisher JSON-LD structure.
+	 *
+	 * @param &$publisher_jsonld array Reference to the Publisher JSON-LD array within the main JSON-LD array.
+	 * @param $publisher_id      int   The Publisher Post ID.
+	 *
+	 * @since 3.53.0
+	 */
 	public function expand_publisher_jsonld( &$publisher_jsonld, $publisher_id ) {
 		$schema_service                   = Wordlift_Schema_Service::get_instance();
 		$storage_factory                  = Wordlift_Storage_Factory::get_instance();
@@ -97,10 +156,12 @@ class About_Page_Organization_Filter {
 			);
 		}
 
+		// Add telephone if set.
 		if ( ! empty( $telephone ) ) {
 			$publisher_jsonld['telephone'] = $telephone;
 		}
 
+		// Add email if set.
 		if ( ! empty( $email ) ) {
 			$publisher_jsonld['email'] = $email;
 		}
@@ -115,6 +176,19 @@ class About_Page_Organization_Filter {
 		}
 	}
 
+	/**
+	 * Main callback for the filter hooks.
+	 *
+	 * Conditionally add the Organization data if we are on the `About Us` page, or if
+	 * no `About Us` page is set and we are on the home page.
+	 *
+	 * @param $jsonld  array JSON-LD structure.
+	 * @param $post_id int   Post ID.
+	 *
+	 * @return mixed
+	 *
+	 * @since 3.53.0
+	 */
 	public function add_organization_jsonld( $jsonld, $post_id ) {
 		// Exit if the Publisher is not set or correctly configured.
 		if ( ! Wordlift_Publisher_Service::get_instance()->is_publisher_set() ) {
@@ -154,7 +228,6 @@ class About_Page_Organization_Filter {
 		}
 
 		// Check all items in the JSON-LD array expand Publisher when found.
-
 		$publisher_types = array(
 			'Person',
 			'Organization',
