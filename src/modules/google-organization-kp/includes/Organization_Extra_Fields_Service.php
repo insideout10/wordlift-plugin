@@ -27,11 +27,14 @@ class Organization_Extra_Fields_Service {
 
 	private $configuration_service;
 
+	private $publisher_service;
+
 	private static $instance;
 
 	public function __construct() {
 		$this->configuration_service = Wordlift_Configuration_Service::get_instance();
-		self::$instance = $this;
+		$this->publisher_service     = Wordlift_Publisher_Service::get_instance();
+		self::$instance              = $this;
 	}
 
 	public static function get_instance() {
@@ -55,10 +58,12 @@ class Organization_Extra_Fields_Service {
 	}
 
 	public function get_field_data( $field_slug ) {
-		$publisher_id = $this->configuration_service->get_publisher_id();
-		if ( ! isset( $publisher_id ) || $publisher_id === "(none)" ) {
+		// If a Publisher isn't set or isn't valid, return null
+		if ( ! $this->publisher_service->is_publisher_set() ) {
 			return null;
 		}
+
+		$publisher_id = $this->configuration_service->get_publisher_id();
 
 		return array(
 			"label" => $this->get_field_label( $field_slug ),
@@ -68,7 +73,7 @@ class Organization_Extra_Fields_Service {
 
 	public function get_all_field_data() {
 		// If a Publisher isn't set or isn't valid, return empty array
-		if ( ! Wordlift_Publisher_Service::get_instance()->is_publisher_set(  ) ) {
+		if ( ! $this->publisher_service->is_publisher_set() ) {
 			return array();
 		}
 
@@ -82,19 +87,19 @@ class Organization_Extra_Fields_Service {
 				continue;
 			}
 
-			$data[$field_data["label"]] = $field_data["value"];
+			$data[$field_slug] = $field_data["value"];
 		}
 
 		return $data;
 	}
 
 	public function set_field_data( $field_slug, $field_data ) {
-		// If a Publisher isn't set or isn't valid, do nothing/
-		if ( ! Wordlift_Publisher_Service::get_instance()->is_publisher_set(  ) ) {
+		// If a Publisher isn't set or isn't valid, do nothing
+		if ( ! $this->publisher_service->is_publisher_set() ) {
 			return;
 		}
 
-		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+		$publisher_id = $this->configuration_service->get_publisher_id();
 
 		// Set the field value.
 		if ( $this->get_field_data( $field_slug ) ) {

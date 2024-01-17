@@ -109,8 +109,9 @@ class About_Page_Organization_Filter {
 
 		// Set extra fields.
 		$extra_fields = $organization_extra_field_service->get_all_field_data();
-		foreach( $extra_fields as $label => $value ) {
-			$organization_jsonld[$label] = $value;
+		foreach( $extra_fields as $field_slug => $field_value ) {
+			$field_label = $organization_extra_field_service->get_field_label( $field_slug );
+			$organization_jsonld[$field_label] = $field_value;
 		}
 
 		return $jsonld;

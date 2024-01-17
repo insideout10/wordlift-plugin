@@ -37,7 +37,7 @@ Class Organization_Knowledge_Panel_Service {
 	 *
 	 * @return 	array	Array of page IDs and titles.
 	 * 
-	 * @since 
+	 * @since 3.53.0
 	 */
     public function get_pages( $pagination, $title_starts_with ) {
         // Get a number of pages starting at a given offset.
@@ -80,7 +80,7 @@ Class Organization_Knowledge_Panel_Service {
 	 * 
 	 * @return 	array 	Country codes and names.
 	 *
-	 * @since	
+	 * @since 3.53.0
 	 */
     public function get_countries() {
 		// Get the list of countries in the current site language.
@@ -104,21 +104,21 @@ Class Organization_Knowledge_Panel_Service {
 	 * 
 	 * @return 	array 	Publisher data.
 	 * 
-	 * @since
+	 * @since 3.53.0
 	 */
     public function get_form_data() {
-	    $publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
-
-		if ( ! isset( $publisher_id ) || $publisher_id === "(none)" ) {
+		if ( ! Wordlift_Publisher_Service::get_instance()->is_publisher_set() ) {
 			return array();
 		}
+
+	    $publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
 
         $data = array();
 
 		$publisher_post      = get_post( $publisher_id );
 		$publisher_entity    = Wordlift_Entity_Type_Service::get_instance()->get( $publisher_id );
 		$publisher_logo      = Wordlift_Publisher_Service::get_instance()->get_publisher_logo( $publisher_id );
-		$storage_factory     = Wordlift_Storage_Factory::get_instance();
+//		$storage_factory     = Wordlift_Storage_Factory::get_instance();
 
 		// Add base Publisher fields
 		$data['id']          = $publisher_id;                    // ID.
@@ -144,6 +144,7 @@ Class Organization_Knowledge_Panel_Service {
 	    );
 
 		foreach ( $custom_fields as $field_slug ) {
+			// @todo: Is there a downside to using get_post_meta as opposed to Wordlift_Storage_Factory?
 //			$field_data = $storage_factory
 //				->post_meta( $field_key )
 //				->get( $publisher_id )[0];
@@ -161,6 +162,13 @@ Class Organization_Knowledge_Panel_Service {
         return $data;
     }
 
+	/**
+	 * Set the Organization data.
+	 *
+	 * @return 	array 	Publisher data.
+	 *
+	 * @since 3.53.0
+	 */
     public function set_form_data( $params ) {
 		// $this->extra_fields_service->set_field_data( $this->extra_fields_service::FIELD_NO_OF_EMPLOYEES, '100' );
         return;
