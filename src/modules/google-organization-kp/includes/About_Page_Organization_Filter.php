@@ -235,9 +235,14 @@ class About_Page_Organization_Filter {
 		}
 
 		// Add the Organization data to the Publisher JSON-LD.
-		// @todo: Maybe a better way to do this.
+		$publisher_uri = Wordlift_Entity_Service::get_instance()->get_uri( $publisher_id );
+
 		foreach( $jsonld as &$jsonld_item ) {
-			if ( $this->is_publisher_entity_in_graph( $jsonld_item, $publisher_id ) ) {
+			if (
+				$jsonld_item
+				&& array_key_exists( '@id', $jsonld_item )
+				&& $jsonld_item['@id'] === $publisher_uri
+			) {
 				$this->expand_publisher_jsonld( $jsonld_item, $publisher_id );
 			}
 		}
