@@ -3,10 +3,10 @@ services:
 
   Wordlift\Modules\Google_Organization_Kp\Organization_Knowledge_Panel_Service:
     class: Wordlift\Modules\Google_Organization_Kp\Organization_Knowledge_Panel_Service
-    arguments: [ '@Wordlift\Modules\Google_Organization_Kp\Publisher_Extra_Organization_Fields' ]
+    arguments: [ '@Wordlift\Modules\Google_Organization_Kp\Organization_Extra_Fields_Service' ]
 
-  Wordlift\Modules\Google_Organization_Kp\Publisher_Extra_Organization_Fields:
-    class: Wordlift\Modules\Google_Organization_Kp\Publisher_Extra_Organization_Fields
+  Wordlift\Modules\Google_Organization_Kp\Organization_Extra_Fields_Service:
+    class: Wordlift\Modules\Google_Organization_Kp\Organization_Extra_Fields_Service
 
   Wordlift\Modules\Google_Organization_Kp\Rest_Controller:
     class: Wordlift\Modules\Google_Organization_Kp\Rest_Controller

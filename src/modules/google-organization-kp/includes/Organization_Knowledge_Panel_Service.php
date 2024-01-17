@@ -25,7 +25,7 @@ Class Organization_Knowledge_Panel_Service {
 
 	private $extra_fields_service;
 
-	public function __construct( _Organization_ExtraFieldService $extra_fields_service ) {
+	public function __construct( Organization_Extra_Fields_Service $extra_fields_service ) {
 		$this->extra_fields_service = $extra_fields_service;
 	}
 	
