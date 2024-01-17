@@ -29,7 +29,7 @@ class Rest_Controller {
 	/**
 	 * Save a reference to the Organization Knowledge Panel Service class.
 	 * 
-	 * @since
+	 * @since 3.53.0
 	 * 
 	 * @param Organization_Knowledge_Panel_Service $organization_kp_service
 	 */
@@ -40,7 +40,7 @@ class Rest_Controller {
 	/**
 	 * Register the rest routes on the WP rest_api_init hook.
 	 * 
-	 * @since
+	 * @since 3.53.0
 	 */
     public function init() {
 		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
@@ -49,7 +49,7 @@ class Rest_Controller {
 	/**
 	 * Define the rest routes and the permission, sanitization, and final callbacks.
 	 * 
-	 * @since
+	 * @since 3.53.0
 	 */
 	public function register_routes() {
         register_rest_route(
@@ -128,12 +128,13 @@ class Rest_Controller {
 	 * The expected request parameters are:
 	 * - <int> pagination 			: The pagination step
 	 * - <string> title_starts_with : A filter to narrow down pages by the starting characters of the title.
-	 *
-	 * @since
 	 * 
 	 * @param 	WP_REST_Request $request The Wordpress request object.
 	 *
 	 * @return 	WP_REST_Response|WP_Error Returns a Wordpress response object, or a Wordpress error object if something went wrong.
+	 *
+	 * @since 3.53.0
+	 *
 	 */
     public function pages_get_callback( WP_REST_Request $request ) {
 		// Get the pages data from the service and return.
@@ -145,28 +146,12 @@ class Rest_Controller {
 
 	/**
 	 * Handle a request to the countries GET endpoint.
-	 * 
+	 *
 	 * Gets an array of countries from the service and return.
 	 *
-	 * @since	
-	 * 
 	 * @return 	WP_REST_Response|WP_Error Returns a Wordpress response object, or a Wordpress error object if something went wrong.
-	 */
-	public function countries_get_callback() {
-		// Get the countries data from the service and return
-		$data = $this->organization_kp_service->get_countries();
-
-		return rest_ensure_response( $data );
-	}
-
-	/**
-	 * Handle a request to the countries GET endpoint.
-	 * 
-	 * Gets an array of countries from the service and return.
 	 *
-	 * @since	
-	 * 
-	 * @return 	WP_REST_Response|WP_Error Returns a Wordpress response object, or a Wordpress error object if something went wrong.
+	 * @since 3.53.0
 	 */
 	public function form_data_get_callback() {
 		// Get the publisher data from the service and return.
@@ -181,27 +166,49 @@ class Rest_Controller {
 	}
 
 	/**
+	 * Handle a request to the countries GET endpoint.
+	 *
+	 * Gets an array of countries from the service and return.
+	 *
+	 * @return 	WP_REST_Response|WP_Error Returns a Wordpress response object, or a Wordpress error object if something went wrong.
+	 *
+	 * @since 3.53.0
+	 */
+	public function countries_get_callback() {
+		// Get the countries data from the service and return
+		$data = $this->organization_kp_service->get_countries();
+
+		return rest_ensure_response( $data );
+	}
+
+	/**
 	 * Handle a request to the data POST endpoint.
-	 * 
+	 *
 	 * Passes the parameters to the service to save the publisher data
-	 * 
-	 * @since
-	 * 
+	 *
 	 * @param 	WP_REST_Request $request The Wordpress request object.
 	 *
 	 * @return 	WP_REST_Response|WP_Error Returns a Wordpress response object, or a Wordpress error object if something went wrong.
+	 *
+	 * @since 3.53.0
 	 */
 	public function form_data_post_callback( WP_REST_Request $request ) {
-		// Retrieve the relevant form data from the request and save it with the service.
+		/**
+		 * Required params:
+		 * - id
+		 * - name
+		 * - type
+		 * - logo / image
+		 */
+
+		// Retrieve the relevant form data from the request and send it to the service.
+
 		$params = $request->get_params();
-		$files = $request->get_file_params();
+		$files  = $request->get_file_params();
 
-		// Break out if there is no attached image.
-//		if ( ! array_key_exists( 'image', $files ) ) {
-//			return new WP_Error( '404', 'Image missing.', array( 'status' => 404 ) );
-//		}
-
-		$request_file = $files['image'];
+		if ( ! empty( $files['image'] ) ) {
+			$params['image'] = $files['image'];
+		}
 
 		// Return error if MIME type not set.
 //		if ( ! isset( $request_file['type'] ) ) {
@@ -213,6 +220,6 @@ class Rest_Controller {
 //			return new WP_Error( '400', 'Only image files are supported', array( 'status' => 400 ) );
 //		}
 
-		return rest_ensure_response( $params );
+		return rest_ensure_response( $this->organization_kp_service->set_form_data( $params ) );
 	}
 }
