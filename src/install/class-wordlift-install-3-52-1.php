@@ -10,7 +10,7 @@ class Wordlift_Install_3_52_1 extends Wordlift_Install {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected static $version = '3.52.2';
+	protected static $version = '3.52.3';
 
 	public function install() {
 		// Since we're fixing JSON-LDs better flush them all.
