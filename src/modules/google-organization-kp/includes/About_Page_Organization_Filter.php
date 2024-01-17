@@ -38,6 +38,16 @@ class About_Page_Organization_Filter {
 		return $this->add_organization_jsonld( $jsonld, $post_id );
 	}
 
+	public function is_about_page( $post_id ) {
+		$about_page_id = get_option('wl_about_page_id');
+
+		if ( ! $about_page_id || empty( $about_page_id ) ) {
+			return false;
+		}
+
+		return $about_page_id === $post_id;
+	}
+
 	public function is_publisher_entity_in_graph( $jsonld, $publisher_id ) {
 		$publisher_uri = Wordlift_Entity_Service::get_instance()->get_uri( $publisher_id );
 
@@ -56,6 +66,8 @@ class About_Page_Organization_Filter {
 		$organization_extra_field_service = Organization_Extra_Fields_Service::get_instance();
 
 		// Get custom fields.
+
+		// @todo: Some missing here.
 
 		$street_address = $storage_factory->post_meta( $schema_service::FIELD_ADDRESS )->get( $publisher_id )[0];
 		$locality       = $storage_factory->post_meta( $schema_service::FIELD_ADDRESS_LOCALITY )->get( $publisher_id )[0];
@@ -109,7 +121,7 @@ class About_Page_Organization_Filter {
 			return $jsonld;
 		}
 
-		$is_about_us = false; // @todo: Check if this is the about us page.
+		$is_about_us = $this->is_about_page( $post_id );
 		$is_homepage = is_home() || is_front_page();
 
 		// Return when we are not looking at `About Us` page, or the `Home Page` when `About Us` is not set.
@@ -133,7 +145,8 @@ class About_Page_Organization_Filter {
 				$relations
 			);
 
-			$jsonld['publisher'] = array(
+			// Add a reference to the publisher in the main Entity of the JSON-LD.
+			$jsonld[0]['publisher'] = array(
 				'@id' => $publisher_jsonld['@id']
 			);
 
