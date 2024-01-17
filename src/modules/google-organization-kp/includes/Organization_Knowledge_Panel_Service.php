@@ -20,13 +20,14 @@ use Wordlift_Countries;
 use Wordlift_Entity_Type_Service;
 use Wordlift_Configuration_Service;
 use Wordlift_Publisher_Service;
-use Wordlift_Storage_Factory;
 use Wordlift_Schema_Service;
 
 Class Organization_Knowledge_Panel_Service {
 
 	/**
 	 * Constant for the number of pages that should be returned in the paginated /page GET request.
+	 *
+	 * @var PAGINATION_NUM_OF_PAGES
 	 */
     const PAGINATION_NUM_OF_PAGES = 100;
 
@@ -146,7 +147,6 @@ Class Organization_Knowledge_Panel_Service {
 		$publisher_post      = get_post( $publisher_id );
 		$publisher_entity    = $this->entity_service->get( $publisher_id );
 		$publisher_logo      = $this->publisher_service->get_publisher_logo( $publisher_id );
-//		$storage_factory     = Wordlift_Storage_Factory::get_instance();
 
 		// Add base Publisher fields
 		$data['id']          = $publisher_id;                    // ID.
@@ -160,6 +160,7 @@ Class Organization_Knowledge_Panel_Service {
 		}
 
 		// Add custom fields.
+	    // @todo: Add missing fields here.
 	    $custom_fields = array(
 			Wordlift_Schema_Service::FIELD_SAME_AS,
 		    Wordlift_Schema_Service::FIELD_ADDRESS,
@@ -173,9 +174,6 @@ Class Organization_Knowledge_Panel_Service {
 
 		foreach ( $custom_fields as $field_slug ) {
 			// @todo: Is there a downside to using get_post_meta as opposed to Wordlift_Storage_Factory?
-//			$field_data = $storage_factory
-//				->post_meta( $field_key )
-//				->get( $publisher_id )[0];
 			$field_data = get_post_meta( $publisher_id, $field_slug, true );
 
 			if ( ! empty( $field_data ) ) {
@@ -193,18 +191,31 @@ Class Organization_Knowledge_Panel_Service {
 	/**
 	 * Set the Organization data.
 	 *
+	 * @param array $params The parameters sent via POST.
+	 *
 	 * @return WP_Error|WP_REST_Response Response with status code and message.
 	 *
 	 * @since 3.53.0
 	 */
     public function set_form_data( $params ) {
+		// Break out if no parameters were provided.
+		if ( empty( $params ) ) {
+			return new WP_Error(
+				'400',
+				'No parameters provided.',
+				array( 'status' => 400 )
+			);
+		}
 
 		// Publisher doesn't exist, create one.
-		if ( ! $this->publisher_service->is_publisher_set() && ! empty( $params['id'] ) ) {
-
+		if ( ! $this->publisher_service->is_publisher_set() ) {
 			// Parameters required to create a new publisher are missing, so return an error.
-			if ( empty( $params['type'] ) || empty( $params['name'] ) || empty( $params['image'] ) ) {
-				return new WP_Error( '400', 'Required paramaters not provided.', array( 'status' => 400 ) );
+			if ( empty( $params['id'] ) || empty( $params['type'] ) || empty( $params['name'] ) || empty( $params['image'] ) ) {
+				return new WP_Error(
+					'400',
+					'Required parameters not provided.',
+					array( 'status' => 400 )
+				);
 			}
 
 			// Set the type URI, http://schema.org/ + Person, Organization, localBusiness or Organization.
@@ -216,15 +227,54 @@ Class Organization_Knowledge_Panel_Service {
 			// Store the publisher entity post id in the configuration.
 			$this->configuration_service->set_publisher_id( $publisher_post_id );
 
-			flush_rewrite_rules(); // Needed because of possible change to the entity base path.
+			// Needed because of possible change to the entity base path.
+			flush_rewrite_rules();
 		}
 
 		// @todo: Does this make sense?
 		if ( ! $this->publisher_service->is_publisher_set() ) {
-			return new WP_Error( '400', 'Unable to set publisher.', array( 'status' => 400 ) );
+			return new WP_Error(
+				'400',
+				'Unable to set publisher.',
+				array( 'status' => 400 )
+			);
 		}
 
-		// Success, return 200 with the Publisher ID in Data.
+	    // Get the Publisher ID.
+	    $publisher_id = $this->configuration_service->get_publisher_id();
+
+		// @todo: Set individual fields if they exist.
+
+	    // Update the Publisher title.
+	    if ( isset( $params['title'] ) ) {
+		    $title = sanitize_text_field( ['title'] );
+		    update_post_meta( $publisher_id, 'title', $title );
+	    }
+
+	    // Valid Publisher types.
+	    $publisher_types = array(
+		    'Person',
+		    'Organization',
+		    'localBusiness',
+		    'onlineBusiness'
+	    );
+
+		// Update the Publisher Entity Type.
+		if ( isset( $params['type'] ) && in_array( $params['type'], $publisher_types ) ) {
+			// Set the type URI, http://schema.org/ + Person, Organization, localBusiness or Organization.
+			$type_uri = sprintf( 'http://schema.org/%s', $params['type'] );
+
+			Wordlift_Entity_Type_Service::get_instance()->set(
+				$publisher_id,
+				$type_uri,
+				true
+			);
+		}
+
+
+
+		// Return success
+	    // @todo: Does it make sense to return Publisher ID here?
 		return new WP_REST_Response;
     }
 }

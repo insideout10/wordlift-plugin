@@ -19,6 +19,8 @@ class Organization_Extra_Fields_Service {
 	/**
 	 * Define slugs for custom fields
 	 *
+	 * @var string
+	 *
 	 * @since 3.53.0
 	 */
 	const FIELD_NO_OF_EMPLOYEES = "_wl_no_of_employees";
@@ -31,6 +33,8 @@ class Organization_Extra_Fields_Service {
 
 	/**
 	 * Map custom fields slugs to Schema property labels
+	 *
+	 * @var array
 	 *
 	 * @since 3.53.0
 	 */
@@ -47,6 +51,8 @@ class Organization_Extra_Fields_Service {
 	/**
 	 * An instance of Wordlift_Configuration_Service class.
 	 *
+	 * @var Wordlift_Configuration_Service
+	 *
 	 * @since 3.53.0
 	 */
 	private $configuration_service;
@@ -54,12 +60,16 @@ class Organization_Extra_Fields_Service {
 	/**
 	 * An instance of Wordlift_Publisher_Service class.
 	 *
+	 * @var Wordlift_Publisher_Service
+	 *
 	 * @since 3.53.0
 	 */
 	private $publisher_service;
 
 	/**
 	 * Reference to self.
+	 *
+	 * @var Organization_Extra_Fields_Service
 	 *
 	 * @since 3.53.0
 	 */

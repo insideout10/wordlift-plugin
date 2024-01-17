@@ -16,9 +16,9 @@ class Wordlift_Install_3_53_0 extends Wordlift_Install {
 	/**
 	 * The OnlineBusiness Entity Type term we would like to add.
 	 *
-	 * @since  3.53.0
-	 * @access private
 	 * @var array $term The entity type term.
+	 *
+	 * @since 3.53.0
 	 */
 	private static $term = array(
 		'slug'        => 'onlinebusiness',
@@ -36,10 +36,10 @@ class Wordlift_Install_3_53_0 extends Wordlift_Install {
 		$term = self::$term;
 		$slug = $term['slug'];
 
-		// Check whether the term exists and create it if it doesn't.
+		// Check whether the term exists and create it if not.
 		$term_id = $this->get_term_or_create_if_not_exists( $slug );
 
-		// Bail if the term doesn't exists or it's not created.
+		// Bail if the term doesn't exist or wasn't created.
 		if ( empty( $term_id ) ) {
 			$this->log->debug( 'Entity Type terms update failed.' );
 			return;
@@ -63,11 +63,11 @@ class Wordlift_Install_3_53_0 extends Wordlift_Install {
 	/**
 	 * Checks whether the term exists and create it if it doesn't.
 	 *
-	 * @since 3.53.0
-	 *
 	 * @param string $slug Term slug.
 	 *
 	 * @return mixed Term id if the term exists or if it's created. False on failure
+	 *
+	 * @since 3.53.0
 	 */
 	private function get_term_or_create_if_not_exists( $slug ) {
 		// Create the term if it does not exist, then get its ID.

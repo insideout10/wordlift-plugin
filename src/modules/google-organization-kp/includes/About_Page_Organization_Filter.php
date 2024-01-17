@@ -33,7 +33,6 @@ class About_Page_Organization_Filter {
 		add_filter( 'wl_after_get_jsonld', array( $this, '_wl_after_get_jsonld__add_organization_jsonld' ), 10, 3 );
 	}
 
-
 	/**
 	 * Callback function for the `wl_website_jsonld` filter hook.
 	 *
@@ -124,7 +123,6 @@ class About_Page_Organization_Filter {
 		$organization_extra_field_service = Organization_Extra_Fields_Service::get_instance();
 
 		// Get custom fields.
-
 		$alternative_name = get_post_meta( $publisher_id, $entity_service::ALTERNATIVE_LABEL_META_KEY, true );
 		$legal_name       = get_post_meta( $publisher_id, $schema_service::FIELD_LEGAL_NAME, true );
 		$street_address   = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS, true);
@@ -236,17 +234,10 @@ class About_Page_Organization_Filter {
 			$jsonld[] = $publisher_jsonld;
 		}
 
-		// Check all items in the JSON-LD array expand Publisher when found.
-		$publisher_types = array(
-			'Person',
-			'Organization',
-			'localBusiness',
-			'onlineBusiness'
-		);
-
 		// Add the Organization data to the Publisher JSON-LD.
+		// @todo: Maybe a better way to do this.
 		foreach( $jsonld as &$jsonld_item ) {
-			if ( $jsonld_item && array_key_exists( '@type', $jsonld_item ) && in_array( $jsonld_item['@type'], $publisher_types ) ) {
+			if ( $this->is_publisher_entity_in_graph( $jsonld_item, $publisher_id ) ) {
 				$this->expand_publisher_jsonld( $jsonld_item, $publisher_id );
 			}
 		}
