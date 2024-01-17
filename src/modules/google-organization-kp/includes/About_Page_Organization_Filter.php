@@ -80,12 +80,12 @@ class About_Page_Organization_Filter {
 			&& isset( $postal_code ) && ! empty( $postal_code )
 		) {
 			$organization_jsonld['address'] = array(
-				$organization_jsonld['address']['@type']           => 'PostalAddress',
-				$organization_jsonld['address']['streetAddress']   => $street_address,
-				$organization_jsonld['address']['addressLocality'] => $locality,
-				$organization_jsonld['address']['addressCountry']  => $region,
-				$organization_jsonld['address']['addressRegion']   => $country,
-				$organization_jsonld['address']['postalCode']      => $postal_code
+				'@type'           => 'PostalAddress',
+				'streetAddress'   => $street_address,
+				'addressLocality' => $locality,
+				'addressCountry'  => $region,
+				'addressRegion'   => $country,
+				'postalCode'      => $postal_code
 			);
 		}
 
