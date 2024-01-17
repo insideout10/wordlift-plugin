@@ -17,7 +17,6 @@ use Wordlift_Configuration_Service;
 use Wordlift_Entity_Service;
 use Wordlift_Post_To_Jsonld_Converter;
 use Wordlift_Publisher_Service;
-use Wordlift_Storage_Factory;
 use Wordlift_Schema_Service;
 
 class About_Page_Organization_Filter {
@@ -120,23 +119,33 @@ class About_Page_Organization_Filter {
 	 * @since 3.53.0
 	 */
 	public function expand_publisher_jsonld( &$publisher_jsonld, $publisher_id ) {
+		$entity_service                   = Wordlift_Entity_Service::get_instance();
 		$schema_service                   = Wordlift_Schema_Service::get_instance();
-		$storage_factory                  = Wordlift_Storage_Factory::get_instance();
 		$organization_extra_field_service = Organization_Extra_Fields_Service::get_instance();
 
 		// Get custom fields.
 
-		// @todo: Some missing here.
-
-		$street_address = $storage_factory->post_meta( $schema_service::FIELD_ADDRESS )->get( $publisher_id )[0];
-		$locality       = $storage_factory->post_meta( $schema_service::FIELD_ADDRESS_LOCALITY )->get( $publisher_id )[0];
-		$region         = $storage_factory->post_meta( $schema_service::FIELD_ADDRESS_REGION )->get( $publisher_id )[0];
-		$country        = $storage_factory->post_meta( $schema_service::FIELD_ADDRESS_COUNTRY )->get( $publisher_id )[0];
-		$postal_code    = $storage_factory->post_meta( $schema_service::FIELD_ADDRESS_POSTAL_CODE )->get( $publisher_id )[0];
-		$telephone      = $storage_factory->post_meta( $schema_service::FIELD_TELEPHONE )->get( $publisher_id )[0];
-		$email          = $storage_factory->post_meta( $schema_service::FIELD_EMAIL )->get( $publisher_id )[0];
+		$alternative_name = get_post_meta( $publisher_id, $entity_service::ALTERNATIVE_LABEL_META_KEY, true );
+		$legal_name       = get_post_meta( $publisher_id, $schema_service::FIELD_LEGAL_NAME, true );
+		$street_address   = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS, true);
+		$locality         = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS_LOCALITY, true );
+		$region           = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS_REGION, true );
+		$country          = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS_COUNTRY, true );
+		$postal_code      = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS_POSTAL_CODE, true );
+		$telephone        = get_post_meta( $publisher_id, $schema_service::FIELD_TELEPHONE, true );
+		$email            = get_post_meta( $publisher_id, $schema_service::FIELD_EMAIL, true );
 
 		// Set custom fields.
+
+		// Add alternativeName if set.
+		if ( ! empty( $alternative_name ) ) {
+			$publisher_jsonld['alternateName'] = $alternative_name;
+		}
+
+		// Add legalName if set.
+		if ( ! empty( $legal_name ) ) {
+			$publisher_jsonld['legalName'] = $legal_name;
+		}
 
 		// If all address fields are available, build the `address` property with its sub properties.
 		if (
@@ -235,6 +244,7 @@ class About_Page_Organization_Filter {
 			'onlineBusiness'
 		);
 
+		// Add the Organization data to the Publisher JSON-LD.
 		foreach( $jsonld as &$jsonld_item ) {
 			if ( $jsonld_item && array_key_exists( '@type', $jsonld_item ) && in_array( $jsonld_item['@type'], $publisher_types ) ) {
 				$this->expand_publisher_jsonld( $jsonld_item, $publisher_id );
