@@ -327,11 +327,18 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 */
 	protected function expand_publisher_post( &$jsonld ) {
 		/**
-		 * Set the logo, only for http://schema.org/Organization as Person doesn't support the logo property.
+		 * Set the logo, only for http://schema.org/ + Organization, localBusiness, or onlineBusiness
+		 * as Person doesn't support the logo property.
 		 *
 		 * @see http://schema.org/logo.
 		 */
-		if ( 1 !== preg_match( '~Organization$~', $jsonld['@type'] ) ) {
+		$organization_types = array(
+			'Organization',
+			'localBusiness',
+			'onlineBusiness'
+		);
+
+		if ( ! in_array( $jsonld['@type'], $organization_types ) ) {
 			return;
 		}
 
