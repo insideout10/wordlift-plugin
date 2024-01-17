@@ -11,6 +11,7 @@
 namespace Wordlift\Modules\Google_Organization_Kp;
 
 use Wordlift\Modules\Google_Organization_Kp\Organization_Extra_Fields_Service;
+use Wordlift\Relation\Relations;
 use Wordlift_Storage_Factory;
 use Wordlift_Schema_Service;
 
@@ -53,21 +54,30 @@ class About_Page_Organization_Filter {
 		}
 
 		// Build the base JSON-LD
-		$publisher_id        = \Wordlift_Configuration_Service::get_instance()->get_publisher_id();
-		$organization_jsonld = \Wordlift_Post_To_Jsonld_Converter::get_instance()->convert( $publisher_id );
+		$publisher_id   = \Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+		$references     = array();
+		$reference_info = array();
+		$relations      = new Relations();
+
+		$organization_jsonld = \Wordlift_Post_To_Jsonld_Converter::get_instance()->convert(
+			$publisher_id,
+			$references,
+			$reference_info,
+			$relations
+		);
 
 		$schema_service                   = Wordlift_Schema_Service::get_instance();
 		$storage_factory                  = Wordlift_Storage_Factory::get_instance();
 		$organization_extra_field_service = Organization_Extra_Fields_Service::get_instance();
 
 		// Get custom fields.
-		$street_address = $storage_factory->post_meta( $schema_service::FIELD_ADDRESS )->get( $publisher_id );
-		$locality       = $storage_factory->post_meta( $schema_service::FIELD_ADDRESS_LOCALITY )->get( $publisher_id );
-		$region         = $storage_factory->post_meta( $schema_service::FIELD_ADDRESS_REGION )->get( $publisher_id );
-		$country        = $storage_factory->post_meta( $schema_service::FIELD_ADDRESS_COUNTRY )->get( $publisher_id );
-		$postal_code    = $storage_factory->post_meta( $schema_service::FIELD_ADDRESS_POSTAL_CODE )->get( $publisher_id );
-		$telephone      = $storage_factory->post_meta( $schema_service::FIELD_TELEPHONE )->get( $publisher_id );
-		$email          = $storage_factory->post_meta( $schema_service::FIELD_EMAIL )->get( $publisher_id );
+		$street_address = $storage_factory->post_meta( $schema_service::FIELD_ADDRESS )->get( $publisher_id )[0];
+		$locality       = $storage_factory->post_meta( $schema_service::FIELD_ADDRESS_LOCALITY )->get( $publisher_id )[0];
+		$region         = $storage_factory->post_meta( $schema_service::FIELD_ADDRESS_REGION )->get( $publisher_id )[0];
+		$country        = $storage_factory->post_meta( $schema_service::FIELD_ADDRESS_COUNTRY )->get( $publisher_id )[0];
+		$postal_code    = $storage_factory->post_meta( $schema_service::FIELD_ADDRESS_POSTAL_CODE )->get( $publisher_id )[0];
+		$telephone      = $storage_factory->post_meta( $schema_service::FIELD_TELEPHONE )->get( $publisher_id )[0];
+		$email          = $storage_factory->post_meta( $schema_service::FIELD_EMAIL )->get( $publisher_id )[0];
 
 		// Set custom fields.
 
