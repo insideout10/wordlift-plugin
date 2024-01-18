@@ -17,8 +17,6 @@ abstract class Wordlift_Property_Service {
 	protected static $instance;
 
 	public function __construct() {
-
-		static::$instance = $this;
 	}
 
 	/**
@@ -27,7 +25,11 @@ abstract class Wordlift_Property_Service {
 	 * @since 3.6.0
 	 * @return \Wordlift_Schema_Url_Property_Service The singleton instance.
 	 */
+
 	public static function get_instance() {
+		if ( ! isset( static::$instance ) ) {
+			static::$instance = new static();
+		}
 
 		return static::$instance;
 	}

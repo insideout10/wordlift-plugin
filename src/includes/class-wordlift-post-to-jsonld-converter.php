@@ -10,6 +10,7 @@
 
 use Wordlift\Jsonld\Reference;
 use Wordlift\Relation\Relations;
+use Wordlift_Publisher_Service;
 
 /**
  * Define the {@link Wordlift_Post_To_Jsonld_Converter} class.
@@ -22,15 +23,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * @var Wordlift_Post_To_Jsonld_Converter
 	 */
 	private static $instance;
-
-	/**
-	 * A {@link Wordlift_Log_Service} instance.
-	 *
-	 * @since  3.10.0
-	 * @access private
-	 * @var Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
-	 */
-	private $log;
 
 	/**
 	 * @var false
@@ -49,8 +41,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	public function __construct( $entity_type_service, $user_service, $attachment_service, $disable_convert_filters = false ) {
 		parent::__construct( $entity_type_service, $user_service, $attachment_service, Wordlift_Property_Getter_Factory::create() );
 		$this->disable_convert_filters = $disable_convert_filters;
-		// Set a reference to the logger.
-		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Post_To_Jsonld_Converter' );
 
 		self::$instance = $this;
 
@@ -93,9 +83,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			$jsonld['@type'] = 'WebPage';
 		}
 
-		// Get the entity name.
-		$jsonld['headline'] = $post->post_title;
-
 		$custom_fields = $this->entity_type_service->get_custom_fields_for_post( $post_id );
 
 		if ( isset( $custom_fields ) ) {
@@ -103,6 +90,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		}
 
 		// Set the published and modified dates.
+		// @todo: Should this be happening on all post types?
 		/*
 		 * Set the `datePublished` and `dateModified` using the local timezone.
 		 *
@@ -127,28 +115,33 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			$jsonld['dateModified']  = get_post_modified_time( 'Y-m-d\TH:i', true, $post, false );
 		}
 
-		// Get the word count for the post.
-		/*
-		 * Do not display the `wordCount` on a `WebPage`.
-		 *
-		 * @see https://github.com/insideout10/wordlift-plugin/issues/888
-		 *
-		 * @since 3.20.0
-		 */
-		if ( ! empty( $jsonld['@type'] ) && 'WebPage' !== $jsonld['@type'] ) {
+		$is_article = ! empty( $jsonld['@type'] ) && preg_match( '/(\bArticle\b|Article$)/', $jsonld['@type'] ) === 1;
+
+		// If we are converting any `Article`.
+		if ( $is_article ) {
+			// Get the entity name.
+			// @todo: Should this only be on articles as well?
+			$jsonld['headline'] = $post->post_title;
+
+			/*
+			 * Get the `wordCount` for Articles.
+			 *
+			 * Do not display the `wordCount` on a `WebPage`.
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/888
+			 *
+			 * @since 3.20.0
+			 */
 			$post_adapter        = new Wordlift_Post_Adapter( $post_id );
 			$jsonld['wordCount'] = $post_adapter->word_count();
-		}
 
-		/*
-		 * Add keywords, articleSection, commentCount and inLanguage properties to `Article` JSON-LD
-		 *
-		 * @see https://github.com/insideout10/wordlift-plugin/issues/1140
-		 *
-		 * @since 3.27.2
-		 */
-		if ( ! empty( $jsonld['@type'] ) && 'WebPage' !== $jsonld['@type'] ) {
-			$post_adapter    = new Wordlift_Post_Adapter( $post_id );
+			/*
+			 * Add keywords, articleSection, commentCount and inLanguage properties to Article JSON-LD.
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/1140
+			 *
+			 * @since 3.27.2
+			 */
 			$keywords        = $post_adapter->keywords();
 			$article_section = $post_adapter->article_section();
 			$comment_count   = $post_adapter->comment_count();
@@ -162,13 +155,23 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			}
 			$jsonld['commentCount'] = $comment_count;
 			$jsonld['inLanguage']   = $locale;
+
+			// Set the publisher.
+			$this->set_publisher_by_reference( $jsonld, $references );
 		}
 
-		// Set the publisher.
-		$this->set_publisher( $jsonld );
+		// If we are converting a Publisher (i.e `Person`, `Organization`, `localBusiness`, `onlineBusiness`).
+		if ( $this->is_publisher( $post_id ) ) {
+			$this->expand_publisher_post( $jsonld, $references );
+		}
+
+		// Return the JSON-LD if filters are disabled by the client.
+		if ( $this->disable_convert_filters ) {
+			return $jsonld;
+		}
 
 		/**
-		 * Call the `wl_post_jsonld_author` filter.
+		 * Call the `wl_post_jsonld_author` filter if Post type is WebPage or any Article.
 		 *
 		 * This filter checks if there are co-authors or a single author and
 		 * returns a JSON-LD fragment for the author(s).
@@ -185,32 +188,31 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		 *
 		 * @see https://www.geeklab.info/2010/04/wordpress-pass-variables-by-reference-with-apply_filter/
 		 */
-		$ret_val = apply_filters(
-			'wl_jsonld_author',
-			array(
-				'author'     => $this->get_author( $post->post_author, $references ),
-				'references' => $references,
-			),
-			$post_id
-		);
+		if ( $is_article ) {
+			$ret_val = apply_filters(
+				'wl_jsonld_author',
+				array(
+					'author'     => $this->get_author( $post->post_author, $references ),
+					'references' => $references,
+				),
+				$post_id
+			);
 
-		// Set the values returned by the filter.
-		$jsonld['author'] = $ret_val['author'];
-		$references       = $ret_val['references'];
-
-		// Return the JSON-LD if filters are disabled by the client.
-		if ( $this->disable_convert_filters ) {
-			return $jsonld;
+			// Set the values returned by the filter.
+			$jsonld['author'] = $ret_val['author'];
+			$references       = $ret_val['references'];
 		}
+
+		// @todo: Does it makes sense to add a publisher_jsonld filter that works similar to the author filter?
 
 		/**
 		 * Call the `wl_post_jsonld_array` filter. This filter allows 3rd parties to also modify the references.
 		 *
 		 * @param array $value {
 		 *
-		 * @type array $jsonld The JSON-LD structure.
-		 * @type int[] $references An array of post IDs.
-		 * @type Relations $relations A set of `Relation`s.
+		 * @type array     $jsonld      The JSON-LD structure.
+		 * @type int[]     $references  An array of post IDs.
+		 * @type Relations $relations   A set of `Relation`s.
 		 * }
 		 * @since 3.25.0
 		 * @since 3.43.0 The filter provides a `Relations` instance.
@@ -236,8 +238,8 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		/**
 		 * Call the `wl_post_jsonld` filter.
 		 *
-		 * @param array $jsonld The JSON-LD structure.
-		 * @param int $post_id The {@link WP_Post} `id`.
+		 * @param array $jsonld     The JSON-LD structure.
+		 * @param int   $post_id    The {@link WP_Post} `id`.
 		 * @param array $references The array of referenced entities.
 		 *
 		 * @since 3.14.0
@@ -253,7 +255,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * The JSON-LD fragment is generated using the {@link WP_User}'s data or
 	 * the referenced entity if configured for the {@link WP_User}.
 	 *
-	 * @param int   $author_id The author {@link WP_User}'s `id`.
+	 * @param int   $author_id  The author {@link WP_User}'s `id`.
 	 * @param array $references An array of referenced entities.
 	 *
 	 * @return string|array A JSON-LD structure.
@@ -293,179 +295,96 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	}
 
 	/**
-	 * Enrich the provided params array with publisher data, if available.
+	 * Set the publisher in the jsonld array by reference.
 	 *
-	 * @param array $params The parameters array.
+	 * @param array $jsonld     A reference to the jsonld array.
+	 * @param array $references A reference to the references array.
+	 *
+	 * @since 3.53.0
+	 */
+	protected function set_publisher_by_reference( &$jsonld, &$references ) {
+		// If the publisher isn't set don't do anything.
+		if ( ! Wordlift_Publisher_Service::get_instance()->is_publisher_set() ) {
+			return;
+		}
+
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+		$publisher_uri = Wordlift_Entity_Service::get_instance()->get_uri( $publisher_id );
+
+		$jsonld['publisher'] = array(
+			'@id' => $publisher_uri
+		);
+
+		$references[] = $publisher_id;
+	}
+
+	/**
+	 * Enrich the provided jsonld array with extra publisher data, if available.
+	 *
+	 * @param array $jsonld     A reference to the jsonld array.
 	 *
 	 * @since 3.10.0
 	 */
-	protected function set_publisher( &$params ) {
-		// @@todo add a &$references argument and push the publisher_id in here
-		// the `publisher` property should only reference the publisher e.g. { "@id": "https://data.example.org/dataset/publisher" }
-
-		// If the publisher id isn't set don't do anything.
-		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
-		if ( empty( $publisher_id ) ) {
-			return;
-		}
-
-		// Get the post instance.
-		$post = get_post( $publisher_id );
-		if ( ! is_a( $post, '\WP_Post' ) ) {
-			// Publisher not found.
-			return;
-		}
-
-		// Get the item id.
-		$id = Wordlift_Entity_Service::get_instance()->get_uri( $publisher_id );
-
-		// Get the type.
-		$type = $this->entity_type_service->get( $publisher_id );
-
-		// Get the name.
-		$name = $post->post_title;
-
-		// Set the publisher data.
-		$params['publisher'] = array(
-			'@type' => $this->relative_to_context( $type['uri'] ),
-			'@id'   => $id,
-			'name'  => $name,
+	protected function expand_publisher_post( &$jsonld ) {
+		/**
+		 * Set the logo, only for http://schema.org/ + Organization, localBusiness, or onlineBusiness
+		 * as Person doesn't support the logo property.
+		 *
+		 * @see http://schema.org/logo.
+		 */
+		$organization_types = array(
+			'Organization',
+			'localBusiness',
+			'onlineBusiness'
 		);
 
-		// Add the sameAs values associated with the publisher.
-		$storage_factory = Wordlift_Storage_Factory::get_instance();
-		$sameas          = $storage_factory->post_meta( Wordlift_Schema_Service::FIELD_SAME_AS )->get( $publisher_id );
-		if ( ! empty( $sameas ) ) {
-			$params['publisher']['sameAs'] = $sameas;
-		}
-
-		// Set the logo, only for http://schema.org/Organization as Person doesn't
-		// support the logo property.
-		//
-		// See http://schema.org/logo.
-		if ( 1 !== preg_match( '~Organization$~', $type['uri'] ) ) {
+		if ( ! in_array( $jsonld['@type'], $organization_types ) ) {
 			return;
 		}
 
 		// Get the publisher logo.
-		$publisher_logo = $this->get_publisher_logo( $post->ID );
+		$publisher_id   = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+		$publisher_logo = Wordlift_Publisher_Service::get_instance()->get_publisher_logo( $publisher_id);
 
 		// Bail out if the publisher logo isn't set.
 		if ( false === $publisher_logo ) {
 			return;
 		}
 
-		// Copy over some useful properties.
-		//
-		// See https://developers.google.com/search/docs/data-types/articles.
-		$params['publisher']['logo']['@type'] = 'ImageObject';
-		$params['publisher']['logo']['url']   = $publisher_logo['url'];
+		/**
+		 * Copy over some useful properties.
+		 *
+		 * @see https://developers.google.com/search/docs/data-types/articles.
+		 */
+		$jsonld['logo']['@type'] = 'ImageObject';
+		$jsonld['logo']['url']   = $publisher_logo['url'];
 
-		// If you specify a "width" or "height" value you should leave out
-		// 'px'. For example: "width":"4608px" should be "width":"4608".
-		//
-		// See https://github.com/insideout10/wordlift-plugin/issues/451.
-		$params['publisher']['logo']['width']  = $publisher_logo['width'];
-		$params['publisher']['logo']['height'] = $publisher_logo['height'];
-
+		/**
+		 * If you specify a "width" or "height" value you should leave out 'px'.
+		 * For example: "width":"4608px" should be "width":"4608".
+		 *
+		 * @see: https://github.com/insideout10/wordlift-plugin/issues/451.
+		 */
+		$jsonld['logo']['width']  = $publisher_logo['width'];
+		$jsonld['logo']['height'] = $publisher_logo['height'];
 	}
 
 	/**
-	 * Get the publisher logo structure.
+	 * A utility function to check if a provided Post ID matches the Publisher ID if a Publisher is set.
 	 *
-	 * The function returns false when the publisher logo cannot be determined, i.e.:
-	 *  - the post has no featured image.
-	 *  - the featured image has no file.
-	 *  - a wp_image_editor instance cannot be instantiated on the original file or on the publisher logo file.
+	 * @param $post_id int The post ID.
 	 *
-	 * @param int $post_id The post id.
+	 * @return true|false
 	 *
-	 * @return array|false Returns an array with the `url`, `width` and `height` for the publisher logo or false in case
-	 *  of errors.
-	 * @since 3.19.2
-	 * @see https://github.com/insideout10/wordlift-plugin/issues/823 related issue.
+	 * @since 3.53.0
 	 */
-	private function get_publisher_logo( $post_id ) {
-
-		// Get the featured image for the post.
-		$thumbnail_id = get_post_thumbnail_id( $post_id );
-
-		// Bail out if thumbnail not available.
-		if ( empty( $thumbnail_id ) || 0 === $thumbnail_id ) {
-			$this->log->info( "Featured image not set for post $post_id." );
-
+	protected function is_publisher( $post_id ) {
+		// If the Publisher ID isn't set we can't know that we're looking at a Publisher Post.
+		if ( ! Wordlift_Publisher_Service::get_instance()->is_publisher_set() ) {
 			return false;
 		}
 
-		// Get the uploads base URL.
-		$uploads_dir = wp_upload_dir();
-
-		// Get the attachment metadata.
-		$metadata = wp_get_attachment_metadata( $thumbnail_id );
-
-		// Bail out if the file isn't set.
-		if ( ! isset( $metadata['file'] ) ) {
-			$this->log->warn( "Featured image file not found for post $post_id." );
-
-			return false;
-		}
-
-		// Retrieve the relative filename, e.g. "2018/05/logo_publisher.png"
-		$path = $uploads_dir['basedir'] . DIRECTORY_SEPARATOR . $metadata['file'];
-
-		// Use image src, if local file does not exist. @see https://github.com/insideout10/wordlift-plugin/issues/1149
-		if ( ! file_exists( $path ) ) {
-			$this->log->warn( "Featured image file $path doesn't exist for post $post_id." );
-
-			$attachment_image_src = wp_get_attachment_image_src( $thumbnail_id, '' );
-			if ( $attachment_image_src ) {
-				return array(
-					'url'    => $attachment_image_src[0],
-					'width'  => $attachment_image_src[1],
-					'height' => $attachment_image_src[2],
-				);
-			}
-
-			// Bail out if we cant fetch wp_get_attachment_image_src
-			return false;
-
-		}
-
-		// Try to get the image editor and bail out if the editor cannot be instantiated.
-		$original_file_editor = wp_get_image_editor( $path );
-		if ( is_wp_error( $original_file_editor ) ) {
-			$this->log->warn( "Cannot instantiate WP Image Editor on file $path for post $post_id." );
-
-			return false;
-		}
-
-		// Generate the publisher logo filename, we cannot use the `width` and `height` because we're scaling
-		// and we don't actually know the end values.
-		$publisher_logo_path = $original_file_editor->generate_filename( '-publisher-logo' );
-
-		// If the file doesn't exist yet, create it.
-		if ( ! file_exists( $publisher_logo_path ) ) {
-			$original_file_editor->resize( 600, 60 );
-			$original_file_editor->save( $publisher_logo_path );
-		}
-
-		// Try to get the image editor and bail out if the editor cannot be instantiated.
-		$publisher_logo_editor = wp_get_image_editor( $publisher_logo_path );
-		if ( is_wp_error( $publisher_logo_editor ) ) {
-			$this->log->warn( "Cannot instantiate WP Image Editor on file $publisher_logo_path for post $post_id." );
-
-			return false;
-		}
-
-		// Get the actual size.
-		$size = $publisher_logo_editor->get_size();
-
-		// Finally return the array with data.
-		return array(
-			'url'    => $uploads_dir['baseurl'] . substr( $publisher_logo_path, strlen( $uploads_dir['basedir'] ) ),
-			'width'  => $size['width'],
-			'height' => $size['height'],
-		);
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+		return $publisher_id === $post_id;
 	}
-
 }

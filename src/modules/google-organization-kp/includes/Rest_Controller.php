@@ -1,23 +1,82 @@
 <?php
 
+/**
+ * Module: 	Google Organization Knowledge Panel
+ * Class: 	Rest_Controller
+ *
+ * A controller class that registers the endpoints for the API and handles sending requests and responses.
+ *
+ * @since
+ * 
+ * @package Wordlift/modules/google-organization-kp
+ */
+
 namespace Wordlift\Modules\Google_Organization_Kp;
 
-use Wordlift_Configuration_Service;
+use WP_Error;
+use WP_REST_Request;
+use WP_REST_Response;
 
 class Rest_Controller {
 
-	public function register_hooks() {
+	/**
+	 * @var Organization_Knowledge_Panel_Service
+	 * 
+	 * @since
+	 */
+	private $organization_kp_service;
+
+	/**
+	 * Save a reference to the Organization Knowledge Panel Service class.
+	 * 
+	 * @since 3.53.0
+	 * 
+	 * @param Organization_Knowledge_Panel_Service $organization_kp_service
+	 */
+	public function __construct( Organization_Knowledge_Panel_Service $organization_kp_service ) {
+		$this->organization_kp_service = $organization_kp_service;
+	}
+
+	/**
+	 * Register the rest routes on the WP rest_api_init hook.
+	 * 
+	 * @since 3.53.0
+	 */
+    public function init() {
 		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
 	}
 
+	/**
+	 * Define the rest routes and the permission, sanitization, and final callbacks.
+	 * 
+	 * @since 3.53.0
+	 */
 	public function register_routes() {
-		register_rest_route(
+        register_rest_route(
 			WL_REST_ROUTE_DEFAULT_NAMESPACE,
 			'/wl-google-organization-kp/pages',
 			array(
 				'methods'             => 'GET',
-				'callback'            => array( $this, 'list_pages' ),
-				'permission_callback' => '__return_true',
+				'callback'            => array( $this, 'pages_get_callback' ),
+				'args'                => array(
+					'pagination' => array(
+						'default' 			=> 0,
+						'required'          => true,
+						'validate_callback' => function( $param ) {
+							return is_numeric( $param );
+						}
+					),
+					'title_starts_with' => array(
+						'required'          => false,
+						'validate_callback' => function( $param ) {
+							return is_string( $param );
+						}
+					),
+				),
+				'permission_callback' => '__return_true' // Testing
+				// 'permission_callback' => function () {
+				// 	return current_user_can( 'manage_options' );
+				// },
 			)
 		);
 
@@ -26,327 +85,141 @@ class Rest_Controller {
 			'/wl-google-organization-kp/countries',
 			array(
 				'methods'             => 'GET',
-				'callback'            => array( $this, 'list_countries' ),
-				'permission_callback' => '__return_true',
+				'callback'            => array( $this, 'countries_get_callback' ),
+				'permission_callback' => '__return_true' // Testing
+				// 'permission_callback' => function () {
+				// 	return current_user_can( 'manage_options' );
+				// },
 			)
 		);
 
 		register_rest_route(
 			WL_REST_ROUTE_DEFAULT_NAMESPACE,
-			'/wl-google-organization-kp/field-data',
+			'/wl-google-organization-kp/data',
 			array(
 				'methods'             => 'GET',
-				'callback'            => array( $this, 'existing_data' ),
-				'permission_callback' => '__return_true',
+				'callback'            => array( $this, 'form_data_get_callback' ),
+				'permission_callback' => '__return_true' // Testing
+				// 'permission_callback' => function () {
+				// 	return current_user_can( 'manage_options' );
+				// },
 			)
 		);
-	}
 
-	public function list_pages() {
-		$pages = get_pages();
-
-		// Send back a 404 if no pages exist.
-		if ( empty( $pages ) ) {
-			return new \WP_Error(
-				'wl_google_organization_kp_data_not_found',
-				__( 'No data was found.', 'wordlift' ),
-				array(
-					'status' => 404,
-				)
-			);
-		}
-
-		// Return an array of pages with ID and title
-		$data = array();
-
-		foreach ( $pages as $page ) {
-			$data[] = array(
-				'id'    => $page->ID,
-				'title' => $page->post_title,
-			);
-		}
-
-		return rest_ensure_response( $data );
-	}
-
-	public function list_countries() {
-		// @todo: Perhaps this should be moved elsewhere?
-		$countries = array(
-			'AF' => 'Afghanistan',
-			'AL' => 'Albania',
-			'DZ' => 'Algeria',
-			'AS' => 'American Samoa',
-			'AD' => 'Andorra',
-			'AO' => 'Angola',
-			'AI' => 'Anguilla',
-			'AQ' => 'Antarctica',
-			'AG' => 'Antigua and Barbuda',
-			'AR' => 'Argentina',
-			'AM' => 'Armenia',
-			'AW' => 'Aruba',
-			'AU' => 'Australia',
-			'AT' => 'Austria',
-			'AZ' => 'Azerbaijan',
-			'BS' => 'Bahamas',
-			'BH' => 'Bahrain',
-			'BD' => 'Bangladesh',
-			'BB' => 'Barbados',
-			'BY' => 'Belarus',
-			'BE' => 'Belgium',
-			'BZ' => 'Belize',
-			'BJ' => 'Benin',
-			'BM' => 'Bermuda',
-			'BT' => 'Bhutan',
-			'BO' => 'Bolivia',
-			'BA' => 'Bosnia and Herzegovina',
-			'BW' => 'Botswana',
-			'BV' => 'Bouvet Island',
-			'BR' => 'Brazil',
-			'IO' => 'British Indian Ocean Territory',
-			'BN' => 'Brunei Darussalam',
-			'BG' => 'Bulgaria',
-			'BF' => 'Burkina Faso',
-			'BI' => 'Burundi',
-			'KH' => 'Cambodia',
-			'CM' => 'Cameroon',
-			'CA' => 'Canada',
-			'CV' => 'Cape Verde',
-			'KY' => 'Cayman Islands',
-			'CF' => 'Central African Republic',
-			'TD' => 'Chad',
-			'CL' => 'Chile',
-			'CN' => 'China',
-			'CX' => 'Christmas Island',
-			'CC' => 'Cocos (Keeling) Islands',
-			'CO' => 'Colombia',
-			'KM' => 'Comoros',
-			'CG' => 'Congo',
-			'CD' => 'Congo, the Democratic Republic of the',
-			'CK' => 'Cook Islands',
-			'CR' => 'Costa Rica',
-			'CI' => "Cote D'Ivoire",
-			'HR' => 'Croatia',
-			'CU' => 'Cuba',
-			'CY' => 'Cyprus',
-			'CZ' => 'Czech Republic',
-			'DK' => 'Denmark',
-			'DJ' => 'Djibouti',
-			'DM' => 'Dominica',
-			'DO' => 'Dominican Republic',
-			'EC' => 'Ecuador',
-			'EG' => 'Egypt',
-			'SV' => 'El Salvador',
-			'GQ' => 'Equatorial Guinea',
-			'ER' => 'Eritrea',
-			'EE' => 'Estonia',
-			'ET' => 'Ethiopia',
-			'FK' => 'Falkland Islands (Malvinas)',
-			'FO' => 'Faroe Islands',
-			'FJ' => 'Fiji',
-			'FI' => 'Finland',
-			'FR' => 'France',
-			'GF' => 'French Guiana',
-			'PF' => 'French Polynesia',
-			'TF' => 'French Southern Territories',
-			'GA' => 'Gabon',
-			'GM' => 'Gambia',
-			'GE' => 'Georgia',
-			'DE' => 'Germany',
-			'GH' => 'Ghana',
-			'GI' => 'Gibraltar',
-			'GR' => 'Greece',
-			'GL' => 'Greenland',
-			'GD' => 'Grenada',
-			'GP' => 'Guadeloupe',
-			'GU' => 'Guam',
-			'GT' => 'Guatemala',
-			'GN' => 'Guinea',
-			'GW' => 'Guinea-Bissau',
-			'GY' => 'Guyana',
-			'HT' => 'Haiti',
-			'HM' => 'Heard Island and Mcdonald Islands',
-			'VA' => 'Holy See (Vatican City State)',
-			'HN' => 'Honduras',
-			'HK' => 'Hong Kong',
-			'HU' => 'Hungary',
-			'IS' => 'Iceland',
-			'IN' => 'India',
-			'ID' => 'Indonesia',
-			'IR' => 'Iran, Islamic Republic of',
-			'IQ' => 'Iraq',
-			'IE' => 'Ireland',
-			'IL' => 'Israel',
-			'IT' => 'Italy',
-			'JM' => 'Jamaica',
-			'JP' => 'Japan',
-			'JO' => 'Jordan',
-			'KZ' => 'Kazakhstan',
-			'KE' => 'Kenya',
-			'KI' => 'Kiribati',
-			'KP' => "Korea, Democratic People's Republic of",
-			'KR' => 'Korea, Republic of',
-			'KW' => 'Kuwait',
-			'KG' => 'Kyrgyzstan',
-			'LA' => "Lao People's Democratic Republic",
-			'LV' => 'Latvia',
-			'LB' => 'Lebanon',
-			'LS' => 'Lesotho',
-			'LR' => 'Liberia',
-			'LY' => 'Libyan Arab Jamahiriya',
-			'LI' => 'Liechtenstein',
-			'LT' => 'Lithuania',
-			'LU' => 'Luxembourg',
-			'MO' => 'Macao',
-			'MK' => 'Macedonia, the Former Yugoslav Republic of',
-			'MG' => 'Madagascar',
-			'MW' => 'Malawi',
-			'MY' => 'Malaysia',
-			'MV' => 'Maldives',
-			'ML' => 'Mali',
-			'MT' => 'Malta',
-			'MH' => 'Marshall Islands',
-			'MQ' => 'Martinique',
-			'MR' => 'Mauritania',
-			'MU' => 'Mauritius',
-			'YT' => 'Mayotte',
-			'MX' => 'Mexico',
-			'FM' => 'Micronesia, Federated States of',
-			'MD' => 'Moldova, Republic of',
-			'MC' => 'Monaco',
-			'MN' => 'Mongolia',
-			'MS' => 'Montserrat',
-			'MA' => 'Morocco',
-			'MZ' => 'Mozambique',
-			'MM' => 'Myanmar',
-			'NA' => 'Namibia',
-			'NR' => 'Nauru',
-			'NP' => 'Nepal',
-			'NL' => 'Netherlands',
-			'AN' => 'Netherlands Antilles',
-			'NC' => 'New Caledonia',
-			'NZ' => 'New Zealand',
-			'NI' => 'Nicaragua',
-			'NE' => 'Niger',
-			'NG' => 'Nigeria',
-			'NU' => 'Niue',
-			'NF' => 'Norfolk Island',
-			'MP' => 'Northern Mariana Islands',
-			'NO' => 'Norway',
-			'OM' => 'Oman',
-			'PK' => 'Pakistan',
-			'PW' => 'Palau',
-			'PS' => 'Palestinian Territory, Occupied',
-			'PA' => 'Panama',
-			'PG' => 'Papua New Guinea',
-			'PY' => 'Paraguay',
-			'PE' => 'Peru',
-			'PH' => 'Philippines',
-			'PN' => 'Pitcairn',
-			'PL' => 'Poland',
-			'PT' => 'Portugal',
-			'PR' => 'Puerto Rico',
-			'QA' => 'Qatar',
-			'RE' => 'Reunion',
-			'RO' => 'Romania',
-			'RU' => 'Russian Federation',
-			'RW' => 'Rwanda',
-			'SH' => 'Saint Helena',
-			'KN' => 'Saint Kitts and Nevis',
-			'LC' => 'Saint Lucia',
-			'PM' => 'Saint Pierre and Miquelon',
-			'VC' => 'Saint Vincent and the Grenadines',
-			'WS' => 'Samoa',
-			'SM' => 'San Marino',
-			'ST' => 'Sao Tome and Principe',
-			'SA' => 'Saudi Arabia',
-			'SN' => 'Senegal',
-			'CS' => 'Serbia and Montenegro',
-			'SC' => 'Seychelles',
-			'SL' => 'Sierra Leone',
-			'SG' => 'Singapore',
-			'SK' => 'Slovakia',
-			'SI' => 'Slovenia',
-			'SB' => 'Solomon Islands',
-			'SO' => 'Somalia',
-			'ZA' => 'South Africa',
-			'GS' => 'South Georgia and the South Sandwich Islands',
-			'ES' => 'Spain',
-			'LK' => 'Sri Lanka',
-			'SD' => 'Sudan',
-			'SR' => 'Suriname',
-			'SJ' => 'Svalbard and Jan Mayen',
-			'SZ' => 'Swaziland',
-			'SE' => 'Sweden',
-			'CH' => 'Switzerland',
-			'SY' => 'Syrian Arab Republic',
-			'TW' => 'Taiwan, Province of China',
-			'TJ' => 'Tajikistan',
-			'TZ' => 'Tanzania, United Republic of',
-			'TH' => 'Thailand',
-			'TL' => 'Timor-Leste',
-			'TG' => 'Togo',
-			'TK' => 'Tokelau',
-			'TO' => 'Tonga',
-			'TT' => 'Trinidad and Tobago',
-			'TN' => 'Tunisia',
-			'TR' => 'Turkey',
-			'TM' => 'Turkmenistan',
-			'TC' => 'Turks and Caicos Islands',
-			'TV' => 'Tuvalu',
-			'UG' => 'Uganda',
-			'UA' => 'Ukraine',
-			'AE' => 'United Arab Emirates',
-			'GB' => 'United Kingdom',
-			'US' => 'United States',
-			'UM' => 'United States Minor Outlying Islands',
-			'UY' => 'Uruguay',
-			'UZ' => 'Uzbekistan',
-			'VU' => 'Vanuatu',
-			'VE' => 'Venezuela',
-			'VN' => 'Viet Nam',
-			'VG' => 'Virgin Islands, British',
-			'VI' => 'Virgin Islands, U.s.',
-			'WF' => 'Wallis and Futuna',
-			'EH' => 'Western Sahara',
-			'YE' => 'Yemen',
-			'ZM' => 'Zambia',
-			'ZW' => 'Zimbabwe',
+		register_rest_route(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
+			'wl-google-organization-kp/data',
+			array(
+				'methods'			  => 'POST',
+				'callback'			  => array( $this, 'form_data_post_callback' ),
+				'permission_callback' => '__return_true' // Testing
+				// 'permission_callback' => function () {
+				// 	return current_user_can( 'manage_options' );
+				// },
+			)
 		);
+    }
 
-		$data = array();
-		foreach ( $countries as $country_code => $country_name ) {
-			$data[] = array(
-				'code' => $country_code,
-				'name' => $country_name,
-			);
+	/**
+	 * Handle a request to the pages GET endpoint.
+	 * 
+	 * Gets a list of pages from the service and returns.
+	 * 
+	 * The expected request parameters are:
+	 * - <int> pagination 			: The pagination step
+	 * - <string> title_starts_with : A filter to narrow down pages by the starting characters of the title.
+	 * 
+	 * @param 	WP_REST_Request $request The Wordpress request object.
+	 *
+	 * @return 	WP_REST_Response|WP_Error Returns a Wordpress response object, or a Wordpress error object if something went wrong.
+	 *
+	 * @since 3.53.0
+	 *
+	 */
+    public function pages_get_callback( WP_REST_Request $request ) {
+		// Get the pages data from the service and return.
+		$params = $request->get_params();
+		$data = $this->organization_kp_service->get_pages( $params['pagination'], $params['title_starts_with'] );
+
+        return rest_ensure_response( $data );
+    }
+
+	/**
+	 * Handle a request to the countries GET endpoint.
+	 *
+	 * Gets an array of countries from the service and return.
+	 *
+	 * @return 	WP_REST_Response|WP_Error Returns a Wordpress response object, or a Wordpress error object if something went wrong.
+	 *
+	 * @since 3.53.0
+	 */
+	public function form_data_get_callback() {
+		// Get the publisher data from the service and return.
+		$data = $this->organization_kp_service->get_form_data();
+
+		// @todo: Should we include this or simply return a blank array?
+		if ( empty( $data ) ) {
+			return new WP_Error( '404', 'No existing form data.', array( 'status' => 404 ) );
 		}
 
 		return rest_ensure_response( $data );
 	}
 
-	public function existing_data() {
-		$configuration_service = Wordlift_Configuration_Service::get_instance();
-		$publisher_id          = $configuration_service->get_publisher_id();
+	/**
+	 * Handle a request to the countries GET endpoint.
+	 *
+	 * Gets an array of countries from the service and return.
+	 *
+	 * @return 	WP_REST_Response|WP_Error Returns a Wordpress response object, or a Wordpress error object if something went wrong.
+	 *
+	 * @since 3.53.0
+	 */
+	public function countries_get_callback() {
+		// Get the countries data from the service and return
+		$data = $this->organization_kp_service->get_countries();
 
-		if ( empty( $publisher_id ) || $publisher_id === '(none)' ) {
-			return new \WP_Error(
-				'wl_google_organization_kp_data_not_found',
-				__( 'No data was found.', 'wordlift' ),
-				array(
-					'status' => 404,
-				)
-			);
-		}
-
-		// @todo: Use publisher_id to retrieve data and return it.
-
-		return rest_ensure_response( $publisher_id );
+		return rest_ensure_response( $data );
 	}
 
-	public function save_data() {
-		// @todo: Save the data from the form submission.
+	/**
+	 * Handle a request to the data POST endpoint.
+	 *
+	 * Passes the parameters to the service to save the publisher data
+	 *
+	 * @param 	WP_REST_Request $request The Wordpress request object.
+	 *
+	 * @return 	WP_REST_Response|WP_Error Returns a Wordpress response object, or a Wordpress error object if something went wrong.
+	 *
+	 * @since 3.53.0
+	 */
+	public function form_data_post_callback( WP_REST_Request $request ) {
+		/**
+		 * Required params:
+		 * - id
+		 * - name
+		 * - type
+		 * - logo / image
+		 */
 
-		// phpcs:ignore Squiz.PHP.NonExecutableCode.ReturnNotRequired
-		return;
+		// Retrieve the relevant form data from the request and send it to the service.
+
+		$params = $request->get_params();
+		$files  = $request->get_file_params();
+
+		if ( ! empty( $files['image'] ) ) {
+			$params['image'] = $files['image'];
+		}
+
+		// Return error if MIME type not set.
+//		if ( ! isset( $request_file['type'] ) ) {
+//			return new WP_Error( '400', 'File mime type is not supported', array( 'status' => 400 ) );
+//		}
+
+		// Return error if file type is not image
+//		if ( strpos( $request_file['type'], 'image' ) === false ) {
+//			return new WP_Error( '400', 'Only image files are supported', array( 'status' => 400 ) );
+//		}
+
+		return rest_ensure_response( $this->organization_kp_service->set_form_data( $params ) );
 	}
 }

@@ -8,6 +8,8 @@
  * @package Wordlift
  */
 
+use Wordlift\Relation\Relations;
+
 /**
  * Define the {@link Wordlift_Website_Jsonld_Converter} class.
  *
@@ -35,11 +37,11 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 			'url'           => $home_url,
 		);
 
-		// Add publisher information.
-		$this->set_publisher( $jsonld );
-
 		// Add search action.
 		$this->set_search_action( $jsonld );
+
+		// Add publisher information.
+		$this->set_publisher_jsonld( $jsonld );
 
 		/**
 		 * Call the `wl_website_jsonld` filter.
@@ -50,7 +52,42 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 		 *
 		 * @api
 		 */
-		return apply_filters( 'wl_website_jsonld', $jsonld );
+		return apply_filters( 'wl_website_jsonld', $jsonld, get_the_ID() );
+	}
+
+	private function set_publisher_jsonld( &$jsonld ) {
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+
+		// If the publisher id isn't set don't do anything.
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+		if ( empty( $publisher_id ) ) {
+			return;
+		}
+
+		// Get the post instance.
+		$post = get_post( $publisher_id );
+		if ( ! is_a( $post, '\WP_Post' ) ) {
+			// Publisher not found.
+			return;
+		}
+
+		// Get the Publisher data
+		$references     = array();
+		$reference_info = array();
+		$relations      = new Relations();
+
+		$publisher_jsonld = $this->convert(
+			$publisher_id,
+			$references,
+			$reference_info,
+			$relations
+		);
+
+		$jsonld['publisher'] = array(
+			'@id' => $publisher_jsonld['@id']
+		);
+
+		$jsonld = [ $jsonld, $publisher_jsonld ];
 	}
 
 	/**

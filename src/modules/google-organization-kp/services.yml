@@ -1,5 +1,16 @@
 services:
   _defaults: { public: true }
-  
+
+  Wordlift\Modules\Google_Organization_Kp\Organization_Knowledge_Panel_Service:
+    class: Wordlift\Modules\Google_Organization_Kp\Organization_Knowledge_Panel_Service
+    arguments: [ '@Wordlift\Modules\Google_Organization_Kp\Organization_Extra_Fields_Service' ]
+
+  Wordlift\Modules\Google_Organization_Kp\Organization_Extra_Fields_Service:
+    class: Wordlift\Modules\Google_Organization_Kp\Organization_Extra_Fields_Service
+
   Wordlift\Modules\Google_Organization_Kp\Rest_Controller:
     class: Wordlift\Modules\Google_Organization_Kp\Rest_Controller
+    arguments: [ '@Wordlift\Modules\Google_Organization_Kp\Organization_Knowledge_Panel_Service' ]
+
+  Wordlift\Modules\Google_Organization_Kp\About_Page_Organization_Filter:
+    class: Wordlift\Modules\Google_Organization_Kp\About_Page_Organization_Filter

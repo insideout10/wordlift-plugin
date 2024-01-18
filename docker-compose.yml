@@ -17,6 +17,11 @@ services:
     image: wordlift/wordpress-nginx:${WORDPRESS_VERSION:-6.4.1}
     user: "root"
     entrypoint: [ "/tmp/docker-entrypoint.sh", "/opt/bitnami/scripts/wordpress/entrypoint.sh", "/opt/bitnami/scripts/nginx-php-fpm/run.sh" ]
+    # This extra_host entry below adds host.docker.internal to the /etc/hosts file so that the bridge network
+    # to localhost is available. This is useful for XDebug.
+    # @see: https://stackoverflow.com/questions/48546124/what-is-the-linux-equivalent-of-host-docker-internal
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./.docker/wordpress/docker-entrypoint.sh:/tmp/docker-entrypoint.sh:ro
       - ./.docker/wordpress/docker-entrypoint-init.d:/docker-entrypoint-init.d:ro
