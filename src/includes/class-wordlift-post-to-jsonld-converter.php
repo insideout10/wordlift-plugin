@@ -10,7 +10,6 @@
 
 use Wordlift\Jsonld\Reference;
 use Wordlift\Relation\Relations;
-use Wordlift_Publisher_Service;
 
 /**
  * Define the {@link Wordlift_Post_To_Jsonld_Converter} class.
@@ -83,6 +82,9 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			$jsonld['@type'] = 'WebPage';
 		}
 
+		// Get the entity name.
+		$jsonld['headline'] = $post->post_title;
+
 		$custom_fields = $this->entity_type_service->get_custom_fields_for_post( $post_id );
 
 		if ( isset( $custom_fields ) ) {
@@ -115,33 +117,28 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			$jsonld['dateModified']  = get_post_modified_time( 'Y-m-d\TH:i', true, $post, false );
 		}
 
-		$is_article = ! empty( $jsonld['@type'] ) && preg_match( '/(\bArticle\b|Article$)/', $jsonld['@type'] ) === 1;
-
-		// If we are converting any `Article`.
-		if ( $is_article ) {
-			// Get the entity name.
-			// @todo: Should this only be on articles as well?
-			$jsonld['headline'] = $post->post_title;
-
+		// Get the word count for the post.
 			/*
-			 * Get the `wordCount` for Articles.
-			 *
 			 * Do not display the `wordCount` on a `WebPage`.
 			 *
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/888
 			 *
 			 * @since 3.20.0
 			 */
+		if ( ! empty( $jsonld['@type'] ) && 'WebPage' !== $jsonld['@type'] ) {
 			$post_adapter        = new Wordlift_Post_Adapter( $post_id );
 			$jsonld['wordCount'] = $post_adapter->word_count();
+		}
 
 			/*
-			 * Add keywords, articleSection, commentCount and inLanguage properties to Article JSON-LD.
+		 * Add keywords, articleSection, commentCount and inLanguage properties to `Article` JSON-LD
 			 *
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/1140
 			 *
 			 * @since 3.27.2
 			 */
+		if ( ! empty( $jsonld['@type'] ) && 'WebPage' !== $jsonld['@type'] ) {
+			$post_adapter    = new Wordlift_Post_Adapter( $post_id );
 			$keywords        = $post_adapter->keywords();
 			$article_section = $post_adapter->article_section();
 			$comment_count   = $post_adapter->comment_count();
@@ -155,10 +152,10 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			}
 			$jsonld['commentCount'] = $comment_count;
 			$jsonld['inLanguage']   = $locale;
+		}
 
 			// Set the publisher.
 			$this->set_publisher_by_reference( $jsonld, $references );
-		}
 
 		// If we are converting a Publisher (i.e `Person`, `Organization`, `localBusiness`, `onlineBusiness`).
 		if ( $this->is_publisher( $post_id ) ) {
@@ -188,7 +185,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		 *
 		 * @see https://www.geeklab.info/2010/04/wordpress-pass-variables-by-reference-with-apply_filter/
 		 */
-		if ( $is_article ) {
 			$ret_val = apply_filters(
 				'wl_jsonld_author',
 				array(
@@ -201,6 +197,10 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			// Set the values returned by the filter.
 			$jsonld['author'] = $ret_val['author'];
 			$references       = $ret_val['references'];
+
+		// Return the JSON-LD if filters are disabled by the client.
+		if ( $this->disable_convert_filters ) {
+			return $jsonld;
 		}
 
 		// @todo: Does it makes sense to add a publisher_jsonld filter that works similar to the author filter?
@@ -308,11 +308,11 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			return;
 		}
 
-		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+		$publisher_id  = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
 		$publisher_uri = Wordlift_Entity_Service::get_instance()->get_uri( $publisher_id );
 
 		$jsonld['publisher'] = array(
-			'@id' => $publisher_uri
+			'@id' => $publisher_uri,
 		);
 
 		$references[] = $publisher_id;
@@ -335,16 +335,16 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		$organization_types = array(
 			'Organization',
 			'localBusiness',
-			'onlineBusiness'
+			'onlineBusiness',
 		);
 
-		if ( ! in_array( $jsonld['@type'], $organization_types ) ) {
+		if ( ! in_array( $jsonld['@type'], $organization_types, true ) ) {
 			return;
 		}
 
 		// Get the publisher logo.
 		$publisher_id   = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
-		$publisher_logo = Wordlift_Publisher_Service::get_instance()->get_publisher_logo( $publisher_id);
+		$publisher_logo = Wordlift_Publisher_Service::get_instance()->get_publisher_logo( $publisher_id );
 
 		// Bail out if the publisher logo isn't set.
 		if ( false === $publisher_logo ) {
