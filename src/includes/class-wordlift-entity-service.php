@@ -144,11 +144,12 @@ class Wordlift_Entity_Service {
 		 * We don't consider an `article` to be an entity.
 		 *
 		 * @since 3.20.0 At least one associated mustn't be an `article`.
+		 * @since 3.53.0 We also include WebPage as supported entity type.
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 		 */
 		foreach ( $terms as $term ) {
-			if ( 1 !== preg_match( '~(^|-)article$~', $term->slug ) ) {
+			if ( 1 !== preg_match( '~((^|-)article|web-page)$~', $term->slug ) ) {
 				return true;
 			}
 		}
