@@ -11,9 +11,6 @@
 
 namespace Wordlift\Modules\Google_Organization_Kp;
 
-use Wordlift_Configuration_Service;
-use Wordlift_Publisher_Service;
-
 class Organization_Extra_Fields_Service {
 
 	/**
@@ -75,9 +72,9 @@ class Organization_Extra_Fields_Service {
 	 */
 	private static $instance;
 
-	public function __construct() {
-		$this->configuration_service = Wordlift_Configuration_Service::get_instance();
-		$this->publisher_service     = Wordlift_Publisher_Service::get_instance();
+	public function __construct( $configuration_service, $publisher_service ) {
+		$this->configuration_service = $configuration_service;
+		$this->publisher_service     = $publisher_service;
 		self::$instance              = $this;
 	}
 

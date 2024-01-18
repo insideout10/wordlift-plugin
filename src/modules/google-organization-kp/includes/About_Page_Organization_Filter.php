@@ -11,15 +11,70 @@
 
 namespace Wordlift\Modules\Google_Organization_Kp;
 
-use Wordlift\Modules\Google_Organization_Kp\Organization_Extra_Fields_Service;
-use Wordlift\Relation\Relations;
-use Wordlift_Configuration_Service;
-use Wordlift_Entity_Service;
-use Wordlift_Post_To_Jsonld_Converter;
-use Wordlift_Publisher_Service;
-use Wordlift_Schema_Service;
-
 class About_Page_Organization_Filter {
+
+	/**
+	 * @var Organization_Extra_Fields_Service
+	 */
+	private $extra_fields_service;
+
+	/**
+	 * @var Wordlift_Publisher_Service
+	 */
+	private $publisher_service;
+
+	/**
+	 * @var Wordlift_Configuration_Service
+	 */
+	private $configuration_service;
+
+	/**
+	 * @var Wordlift_Entity_Service
+	 */
+	private $entity_service;
+
+	/**
+	 * @var Wordlift_Post_To_Jsonld_Converter
+	 */
+	private $post_jsonld_service;
+
+	/**
+	 * @var Wordlift_Schema_Service
+	 */
+	private $schema_service;
+
+	/**
+	 * @var Relations
+	 */
+	private $relations;
+
+	/**
+	 * @param Organization_Extra_Fields_Service $extra_fields_service
+	 * @param Wordlift_Publisher_Service        $publisher_service
+	 * @param Wordlift_Configuration_Service    $configuration_service
+	 * @param Wordlift_Entity_Service           $entity_service
+	 * @param Wordlift_Post_To_Jsonld_Converter $post_jsonld_service
+	 * @param Wordlift_Schema_Service           $schema_service
+	 * @param Relations                         $relations
+	 */
+	public function __construct(
+		$extra_fields_service,
+		$publisher_service,
+		$configuration_service,
+		$entity_service,
+		$post_jsonld_service,
+		$schema_service,
+		$relations
+	) {
+		$this->extra_fields_service  = $extra_fields_service;
+		$this->publisher_service     = $publisher_service;
+		$this->configuration_service = $configuration_service;
+		$this->entity_service        = $entity_service;
+		$this->post_jsonld_service   = $post_jsonld_service;
+		$this->schema_service        = $schema_service;
+		$this->relations             = $relations;
+	}
+
 	/**
 	 * Initialize hooks.
 	 *
@@ -98,7 +153,7 @@ class About_Page_Organization_Filter {
 	 * @since 3.53.0
 	 */
 	public function is_publisher_entity_in_graph( $jsonld, $publisher_id ) {
-		$publisher_uri = Wordlift_Entity_Service::get_instance()->get_uri( $publisher_id );
+		$publisher_uri = $this->entity_service->get_uri( $publisher_id );
 
 		foreach ( $jsonld as $item ) {
 			if ( $item && array_key_exists( '@id', $item ) && $item['@id'] === $publisher_uri ) {
@@ -118,11 +173,10 @@ class About_Page_Organization_Filter {
 	 * @since 3.53.0
 	 */
 	public function expand_publisher_jsonld( &$publisher_jsonld, $publisher_id ) {
-		$entity_service                   = Wordlift_Entity_Service::get_instance();
-		$schema_service                   = Wordlift_Schema_Service::get_instance();
-		$organization_extra_field_service = Organization_Extra_Fields_Service::get_instance();
 
 		// Get custom fields.
+		$entity_service = $this->entity_service;
+		$schema_service = $this->schema_service;
 		$alternative_name = get_post_meta( $publisher_id, $entity_service::ALTERNATIVE_LABEL_META_KEY, true );
 		$legal_name       = get_post_meta( $publisher_id, $schema_service::FIELD_LEGAL_NAME, true );
 		$street_address   = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS, true);
@@ -175,19 +229,61 @@ class About_Page_Organization_Filter {
 
 		// Set extra fields.
 
-		$extra_fields = $organization_extra_field_service->get_all_field_data();
+		$extra_fields = $this->extra_fields_service->get_all_field_data();
 
 		foreach( $extra_fields as $field_slug => $field_value ) {
-			$field_label = $organization_extra_field_service->get_field_label( $field_slug );
+			$field_label = $this->extra_fields_service->get_field_label( $field_slug );
 			$publisher_jsonld[$field_label] = $field_value;
 		}
+
+		/**
+		 * Set the logo, only for http://schema.org/ + Organization, localBusiness, or onlineBusiness
+		 * as Person doesn't support the logo property.
+		 *
+		 * @see http://schema.org/logo.
+		 */
+		$organization_types = array(
+			'Organization',
+			'localBusiness',
+			'onlineBusiness',
+		);
+
+		if ( ! in_array( $publisher_jsonld['@type'], $organization_types, true ) ) {
+			return;
+		}
+
+		// Get the publisher logo.
+		$publisher_id   = $this->configuration_service->get_publisher_id();
+		$publisher_logo = $this->publisher_service->get_publisher_logo( $publisher_id );
+
+		// Bail out if the publisher logo isn't set.
+		if ( false === $publisher_logo ) {
+			return;
+		}
+
+		/**
+		 * Copy over some useful properties.
+		 *
+		 * @see https://developers.google.com/search/docs/data-types/articles.
+		 */
+		$jsonld['logo']['@type'] = 'ImageObject';
+		$jsonld['logo']['url']   = $publisher_logo['url'];
+
+		/**
+		 * If you specify a "width" or "height" value you should leave out 'px'.
+		 * For example: "width":"4608px" should be "width":"4608".
+		 *
+		 * @see: https://github.com/insideout10/wordlift-plugin/issues/451.
+		 */
+		$jsonld['logo']['width']  = $publisher_logo['width'];
+		$jsonld['logo']['height'] = $publisher_logo['height'];
 	}
 
 	/**
 	 * Main callback for the filter hooks.
 	 *
 	 * Conditionally add the Organization data if we are on the `About Us` page, or if
-	 * no `About Us` page is set and we are on the home page.
+	 * no `About Us` page is set, and we are on the home page.
 	 *
 	 * @param $jsonld  array JSON-LD structure.
 	 * @param $post_id int   Post ID.
@@ -198,7 +294,7 @@ class About_Page_Organization_Filter {
 	 */
 	public function add_organization_jsonld( $jsonld, $post_id ) {
 		// Exit if the Publisher is not set or correctly configured.
-		if ( ! Wordlift_Publisher_Service::get_instance()->is_publisher_set() ) {
+		if ( ! $this->publisher_service->is_publisher_set() ) {
 			return $jsonld;
 		}
 
@@ -210,20 +306,19 @@ class About_Page_Organization_Filter {
 			return $jsonld;
 		}
 
-		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+		$publisher_id = $this->configuration_service->get_publisher_id();
 
 		// Add publisher to the JSON-LD if it doesn't exist in the graph.
 		if ( ! $this->is_publisher_entity_in_graph( $jsonld, $publisher_id ) ) {
 			// Get the Publisher data
 			$references     = array();
 			$reference_info = array();
-			$relations      = new Relations();
 
-			$publisher_jsonld = Wordlift_Post_To_Jsonld_Converter::get_instance()->convert(
+			$publisher_jsonld = $this->post_jsonld_service->convert(
 				$publisher_id,
 				$references,
 				$reference_info,
-				$relations
+				new $this->relations()
 			);
 
 			// Add a reference to the publisher in the main Entity of the JSON-LD.
@@ -235,7 +330,7 @@ class About_Page_Organization_Filter {
 		}
 
 		// Add the Organization data to the Publisher JSON-LD.
-		$publisher_uri = Wordlift_Entity_Service::get_instance()->get_uri( $publisher_id );
+		$publisher_uri = $this->entity_service->get_uri( $publisher_id );
 
 		foreach( $jsonld as &$jsonld_item ) {
 			if (
