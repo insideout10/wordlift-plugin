@@ -93,7 +93,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 		// Set the published and modified dates.
 		// @todo: Should this be happening on all post types?
-		/*
+		/**
 		 * Set the `datePublished` and `dateModified` using the local timezone.
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/887
@@ -118,25 +118,25 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		}
 
 		// Get the word count for the post.
-			/*
-			 * Do not display the `wordCount` on a `WebPage`.
-			 *
-			 * @see https://github.com/insideout10/wordlift-plugin/issues/888
-			 *
-			 * @since 3.20.0
-			 */
+		/**
+		 * Do not display the `wordCount` on a `WebPage`.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/888
+		 *
+		 * @since 3.20.0
+		 */
 		if ( ! empty( $jsonld['@type'] ) && 'WebPage' !== $jsonld['@type'] ) {
 			$post_adapter        = new Wordlift_Post_Adapter( $post_id );
 			$jsonld['wordCount'] = $post_adapter->word_count();
 		}
 
-			/*
+		/**
 		 * Add keywords, articleSection, commentCount and inLanguage properties to `Article` JSON-LD
-			 *
-			 * @see https://github.com/insideout10/wordlift-plugin/issues/1140
-			 *
-			 * @since 3.27.2
-			 */
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/1140
+		 *
+		 * @since 3.27.2
+		 */
 		if ( ! empty( $jsonld['@type'] ) && 'WebPage' !== $jsonld['@type'] ) {
 			$post_adapter    = new Wordlift_Post_Adapter( $post_id );
 			$keywords        = $post_adapter->keywords();
@@ -154,13 +154,8 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			$jsonld['inLanguage']   = $locale;
 		}
 
-			// Set the publisher.
-			$this->set_publisher_by_reference( $jsonld, $references );
-
-		// If we are converting a Publisher (i.e `Person`, `Organization`, `localBusiness`, `onlineBusiness`).
-		if ( $this->is_publisher( $post_id ) ) {
-			$this->expand_publisher_post( $jsonld, $references );
-		}
+		// Set the publisher.
+		$this->set_publisher_by_reference( $jsonld, $references );
 
 		// Return the JSON-LD if filters are disabled by the client.
 		if ( $this->disable_convert_filters ) {
@@ -316,57 +311,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		);
 
 		$references[] = $publisher_id;
-	}
-
-	/**
-	 * Enrich the provided jsonld array with extra publisher data, if available.
-	 *
-	 * @param array $jsonld     A reference to the jsonld array.
-	 *
-	 * @since 3.10.0
-	 */
-	protected function expand_publisher_post( &$jsonld ) {
-		/**
-		 * Set the logo, only for http://schema.org/ + Organization, localBusiness, or onlineBusiness
-		 * as Person doesn't support the logo property.
-		 *
-		 * @see http://schema.org/logo.
-		 */
-		$organization_types = array(
-			'Organization',
-			'localBusiness',
-			'onlineBusiness',
-		);
-
-		if ( ! in_array( $jsonld['@type'], $organization_types, true ) ) {
-			return;
-		}
-
-		// Get the publisher logo.
-		$publisher_id   = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
-		$publisher_logo = Wordlift_Publisher_Service::get_instance()->get_publisher_logo( $publisher_id );
-
-		// Bail out if the publisher logo isn't set.
-		if ( false === $publisher_logo ) {
-			return;
-		}
-
-		/**
-		 * Copy over some useful properties.
-		 *
-		 * @see https://developers.google.com/search/docs/data-types/articles.
-		 */
-		$jsonld['logo']['@type'] = 'ImageObject';
-		$jsonld['logo']['url']   = $publisher_logo['url'];
-
-		/**
-		 * If you specify a "width" or "height" value you should leave out 'px'.
-		 * For example: "width":"4608px" should be "width":"4608".
-		 *
-		 * @see: https://github.com/insideout10/wordlift-plugin/issues/451.
-		 */
-		$jsonld['logo']['width']  = $publisher_logo['width'];
-		$jsonld['logo']['height'] = $publisher_logo['height'];
 	}
 
 	/**
