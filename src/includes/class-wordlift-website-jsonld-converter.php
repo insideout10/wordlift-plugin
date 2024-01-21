@@ -8,14 +8,21 @@
  * @package Wordlift
  */
 
-use Wordlift\Relation\Relations;
-
 /**
  * Define the {@link Wordlift_Website_Jsonld_Converter} class.
  *
  * @since 3.14.0
  */
-class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converter {
+class Wordlift_Website_Jsonld_Converter {
+
+	/**
+	 * @var Wordlift_Postid_To_Jsonld_Converter $postid_to_jsonld_converter
+	 */
+	private $postid_to_jsonld_converter;
+
+	public function __construct( $postid_to_jsonld_converter ) {
+		$this->postid_to_jsonld_converter = $postid_to_jsonld_converter;
+	}
 
 	/**
 	 * Convert the home/blog page to a JSON-LD array.
@@ -28,6 +35,7 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 		// Create new jsonld.
 		$home_url = home_url( '/' );
 
+		// @@todo turn it into an indexed array.
 		$jsonld = array(
 			'@context'      => 'http://schema.org',
 			'@type'         => 'WebSite',
@@ -56,7 +64,6 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 	}
 
 	private function set_publisher_jsonld( &$jsonld ) {
-		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
 
 		// If the publisher id isn't set don't do anything.
 		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
@@ -64,30 +71,15 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 			return;
 		}
 
-		// Get the post instance.
-		$post = get_post( $publisher_id );
-		if ( ! is_a( $post, '\WP_Post' ) ) {
-			// Publisher not found.
-			return;
-		}
-
-		// Get the Publisher data
-		$references     = array();
-		$reference_info = array();
-		$relations      = new Relations();
-
-		$publisher_jsonld = $this->convert(
-			$publisher_id,
-			$references,
-			$reference_info,
-			$relations
-		);
-
+		// @@todo get the publisher URI and add it as `@id`
+		$publisher_jsonld    = null; // @@todo
 		$jsonld['publisher'] = array(
-			'@id' => $publisher_jsonld['@id']
+			'@id' => $publisher_jsonld['@id'],
 		);
 
-		$jsonld = [ $jsonld, $publisher_jsonld ];
+		// @@todo append to the array the JSON-LD data:
+		$jsonld[] = $this->postid_to_jsonld_converter->convert( $publisher_id );
+
 	}
 
 	/**

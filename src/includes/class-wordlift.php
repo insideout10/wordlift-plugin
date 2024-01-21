@@ -1120,10 +1120,12 @@ class Wordlift {
 				$that->post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( Wordlift_Entity_Type_Service::get_instance(), $that->user_service, $attachment_service );
 				$that->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( Wordlift_Entity_Type_Service::get_instance(), $that->user_service, $attachment_service, $property_getter, $schemaorg_property_service, $that->post_to_jsonld_converter );
 				$that->postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $that->entity_post_to_jsonld_converter, $that->post_to_jsonld_converter );
-				$that->jsonld_website_converter        = new Wordlift_Website_Jsonld_Converter( Wordlift_Entity_Type_Service::get_instance(), $that->user_service, $attachment_service );
 
 				$jsonld_cache                            = new Ttl_Cache( 'jsonld', 86400 );
 				$that->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter( $that->postid_to_jsonld_converter, $jsonld_cache );
+
+				// @@todo refactor to use the $that->postid_to_jsonld_converter to create the JSON-LD for the publisher.
+				$that->jsonld_website_converter = new Wordlift_Website_Jsonld_Converter( $that->cached_postid_to_jsonld_converter );
 				/*
 				* Load the `Wordlift_Term_JsonLd_Adapter`.
 				*

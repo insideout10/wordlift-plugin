@@ -26,7 +26,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	/**
 	 * @var false
 	 */
-	private $disable_convert_filters;
+	private $disable_post_jsonld_array_filter;
 
 	/**
 	 * Wordlift_Post_To_Jsonld_Converter constructor.
@@ -39,7 +39,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 */
 	public function __construct( $entity_type_service, $user_service, $attachment_service, $disable_convert_filters = false ) {
 		parent::__construct( $entity_type_service, $user_service, $attachment_service, Wordlift_Property_Getter_Factory::create() );
-		$this->disable_convert_filters = $disable_convert_filters;
+		$this->disable_post_jsonld_array_filter = $disable_convert_filters;
 
 		self::$instance = $this;
 
@@ -92,8 +92,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		}
 
 		// Set the published and modified dates.
-		// @todo: Should this be happening on all post types?
-		/**
+		/*
 		 * Set the `datePublished` and `dateModified` using the local timezone.
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/887
@@ -118,7 +117,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		}
 
 		// Get the word count for the post.
-		/**
+		/*
 		 * Do not display the `wordCount` on a `WebPage`.
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/888
@@ -130,7 +129,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			$jsonld['wordCount'] = $post_adapter->word_count();
 		}
 
-		/**
+		/*
 		 * Add keywords, articleSection, commentCount and inLanguage properties to `Article` JSON-LD
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/1140
@@ -157,11 +156,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// Set the publisher.
 		$this->set_publisher_by_reference( $jsonld, $references );
 
-		// Return the JSON-LD if filters are disabled by the client.
-		if ( $this->disable_convert_filters ) {
-			return $jsonld;
-		}
-
 		/**
 		 * Call the `wl_post_jsonld_author` filter if Post type is WebPage or any Article.
 		 *
@@ -180,34 +174,32 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		 *
 		 * @see https://www.geeklab.info/2010/04/wordpress-pass-variables-by-reference-with-apply_filter/
 		 */
-			$ret_val = apply_filters(
-				'wl_jsonld_author',
-				array(
-					'author'     => $this->get_author( $post->post_author, $references ),
-					'references' => $references,
-				),
-				$post_id
-			);
+		$ret_val = apply_filters(
+			'wl_jsonld_author',
+			array(
+				'author'     => $this->get_author( $post->post_author, $references ),
+				'references' => $references,
+			),
+			$post_id
+		);
 
-			// Set the values returned by the filter.
-			$jsonld['author'] = $ret_val['author'];
-			$references       = $ret_val['references'];
+		// Set the values returned by the filter.
+		$jsonld['author'] = $ret_val['author'];
+		$references       = $ret_val['references'];
 
 		// Return the JSON-LD if filters are disabled by the client.
-		if ( $this->disable_convert_filters ) {
+		if ( $this->disable_post_jsonld_array_filter ) {
 			return $jsonld;
 		}
-
-		// @todo: Does it makes sense to add a publisher_jsonld filter that works similar to the author filter?
 
 		/**
 		 * Call the `wl_post_jsonld_array` filter. This filter allows 3rd parties to also modify the references.
 		 *
 		 * @param array $value {
 		 *
-		 * @type array     $jsonld      The JSON-LD structure.
-		 * @type int[]     $references  An array of post IDs.
-		 * @type Relations $relations   A set of `Relation`s.
+		 * @type array $jsonld The JSON-LD structure.
+		 * @type int[] $references An array of post IDs.
+		 * @type Relations $relations A set of `Relation`s.
 		 * }
 		 * @since 3.25.0
 		 * @since 3.43.0 The filter provides a `Relations` instance.
@@ -233,8 +225,8 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		/**
 		 * Call the `wl_post_jsonld` filter.
 		 *
-		 * @param array $jsonld     The JSON-LD structure.
-		 * @param int   $post_id    The {@link WP_Post} `id`.
+		 * @param array $jsonld The JSON-LD structure.
+		 * @param int $post_id The {@link WP_Post} `id`.
 		 * @param array $references The array of referenced entities.
 		 *
 		 * @since 3.14.0
@@ -250,7 +242,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * The JSON-LD fragment is generated using the {@link WP_User}'s data or
 	 * the referenced entity if configured for the {@link WP_User}.
 	 *
-	 * @param int   $author_id  The author {@link WP_User}'s `id`.
+	 * @param int   $author_id The author {@link WP_User}'s `id`.
 	 * @param array $references An array of referenced entities.
 	 *
 	 * @return string|array A JSON-LD structure.
@@ -292,19 +284,17 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	/**
 	 * Set the publisher in the jsonld array by reference.
 	 *
-	 * @param array $jsonld     A reference to the jsonld array.
+	 * @param array $jsonld A reference to the jsonld array.
 	 * @param array $references A reference to the references array.
 	 *
 	 * @since 3.53.0
 	 */
 	protected function set_publisher_by_reference( &$jsonld, &$references ) {
-		// If the publisher isn't set don't do anything.
-		if ( ! Wordlift_Publisher_Service::get_instance()->is_publisher_set() ) {
-			return;
-		}
-
 		$publisher_id  = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
 		$publisher_uri = Wordlift_Entity_Service::get_instance()->get_uri( $publisher_id );
+		if ( ! isset( $publisher_uri ) ) {
+			return;
+		}
 
 		$jsonld['publisher'] = array(
 			'@id' => $publisher_uri,
@@ -313,22 +303,4 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		$references[] = $publisher_id;
 	}
 
-	/**
-	 * A utility function to check if a provided Post ID matches the Publisher ID if a Publisher is set.
-	 *
-	 * @param $post_id int The post ID.
-	 *
-	 * @return true|false
-	 *
-	 * @since 3.53.0
-	 */
-	protected function is_publisher( $post_id ) {
-		// If the Publisher ID isn't set we can't know that we're looking at a Publisher Post.
-		if ( ! Wordlift_Publisher_Service::get_instance()->is_publisher_set() ) {
-			return false;
-		}
-
-		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
-		return $publisher_id === $post_id;
-	}
 }

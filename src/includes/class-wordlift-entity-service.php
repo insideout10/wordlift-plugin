@@ -428,6 +428,12 @@ class Wordlift_Entity_Service {
 
 	}
 
+	/**
+	 * @param $object_id
+	 * @param $type
+	 *
+	 * @return string|null The entity URI or null in case of error.
+	 */
 	public function get_uri( $object_id, $type = Object_Type_Enum::POST ) {
 		$content_service = Wordpress_Content_Service::get_instance();
 		$entity_id       = $content_service->get_entity_id( new Wordpress_Content_Id( $object_id, $type ) );
