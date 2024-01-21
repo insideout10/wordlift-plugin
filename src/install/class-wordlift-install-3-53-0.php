@@ -21,9 +21,10 @@ class Wordlift_Install_3_53_0 extends Wordlift_Install {
 	 * @since 3.53.0
 	 */
 	private static $term = array(
-		'slug'        => 'onlinebusiness',
+		'slug'        => 'online-business',
 		'label'       => 'OnlineBusiness',
-		'description' => 'An online business.'
+		// @@todo update description
+		'description' => 'An online business.',
 	);
 
 	/**

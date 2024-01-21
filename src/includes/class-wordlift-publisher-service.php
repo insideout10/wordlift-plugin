@@ -21,7 +21,7 @@ class Wordlift_Publisher_Service {
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
-	 * @since  
+	 * @since
 	 * @access private
 	 * @var Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
 	 */
@@ -274,6 +274,7 @@ class Wordlift_Publisher_Service {
 	 * @since 3.19.2
 	 * @see https://github.com/insideout10/wordlift-plugin/issues/823 related issue.
 	 */
+	// @@todo move to the module
 	public function get_publisher_logo( $post_id ) {
 
 		// Get the featured image for the post.

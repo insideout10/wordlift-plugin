@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Module: 	Google Organization Knowledge Panel
- * Class: 	About_Page_Organization_Filter
+ * Module:  Google Organization Knowledge Panel
+ * Class:   About_Page_Organization_Filter
  *
  * @package Wordlift/modules/google-organization-kp
  *
@@ -84,43 +84,8 @@ class About_Page_Organization_Filter {
 	 * @since 3.53.0
 	 */
 	public function init() {
-		add_filter( 'wl_website_jsonld', array( $this, '_wl_website_jsonld__add_organization_jsonld' ), 10, 3 );
-		add_filter( 'wl_after_get_jsonld', array( $this, '_wl_after_get_jsonld__add_organization_jsonld' ), 10, 3 );
-	}
-
-	/**
-	 * Callback function for the `wl_website_jsonld` filter hook.
-	 *
-	 * Forwards to $this->add_organization_jsonld.
-	 *
-	 * @param $jsonld  array JSON-LD structure.
-	 * @param $post_id int   Post ID.
-	 *
-	 * @return array
-	 *
-	 * @since 3.53.0
-	 */
-	public function _wl_website_jsonld__add_organization_jsonld( $jsonld, $post_id ) {
-		return $this->add_organization_jsonld( $jsonld, $post_id );
-	}
-
-	/**
-	 * Callback function for the `wl_after_get_jsonld` filter hook.
-	 *
-	 * Used so that the extra parameter can be dropped before forwarding to main callback for both hooks.
-	 *
-	 * Forwards to $this->add_organization_jsonld.
-	 *
-	 * @param $jsonld  array  JSON-LD structure.
-	 * @param $post_id int    Post ID.
-	 * @param $context string Schema.org context.
-	 *
-	 * @return array
-	 *
-	 * @since 3.53.0
-	 */
-	public function _wl_after_get_jsonld__add_organization_jsonld( $jsonld, $post_id, $context ) {
-		return $this->add_organization_jsonld( $jsonld, $post_id );
+		add_filter( 'wl_website_jsonld', array( $this, 'add_organization_jsonld' ), 10, 2 );
+		add_filter( 'wl_after_get_jsonld', array( $this, 'add_organization_jsonld' ), 10, 2 );
 	}
 
 	/**
@@ -133,7 +98,7 @@ class About_Page_Organization_Filter {
 	 * @since 3.53.0
 	 */
 	public function is_about_page( $post_id ) {
-		$about_page_id = get_option('wl_about_page_id');
+		$about_page_id = get_option( 'wl_about_page_id' );
 
 		if ( ! $about_page_id || empty( $about_page_id ) ) {
 			return false;
@@ -175,11 +140,11 @@ class About_Page_Organization_Filter {
 	public function expand_publisher_jsonld( &$publisher_jsonld, $publisher_id ) {
 
 		// Get custom fields.
-		$entity_service = $this->entity_service;
-		$schema_service = $this->schema_service;
+		$entity_service   = $this->entity_service;
+		$schema_service   = $this->schema_service;
 		$alternative_name = get_post_meta( $publisher_id, $entity_service::ALTERNATIVE_LABEL_META_KEY, true );
 		$legal_name       = get_post_meta( $publisher_id, $schema_service::FIELD_LEGAL_NAME, true );
-		$street_address   = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS, true);
+		$street_address   = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS, true );
 		$locality         = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS_LOCALITY, true );
 		$region           = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS_REGION, true );
 		$country          = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS_COUNTRY, true );
@@ -213,7 +178,7 @@ class About_Page_Organization_Filter {
 				'addressLocality' => $locality,
 				'addressCountry'  => $region,
 				'addressRegion'   => $country,
-				'postalCode'      => $postal_code
+				'postalCode'      => $postal_code,
 			);
 		}
 
@@ -231,17 +196,18 @@ class About_Page_Organization_Filter {
 
 		$extra_fields = $this->extra_fields_service->get_all_field_data();
 
-		foreach( $extra_fields as $field_slug => $field_value ) {
-			$field_label = $this->extra_fields_service->get_field_label( $field_slug );
-			$publisher_jsonld[$field_label] = $field_value;
+		foreach ( $extra_fields as $field_slug => $field_value ) {
+			$field_label                      = $this->extra_fields_service->get_field_label( $field_slug );
+			$publisher_jsonld[ $field_label ] = $field_value;
 		}
 
 		/**
-		 * Set the logo, only for http://schema.org/ + Organization, localBusiness, or onlineBusiness
+		 * Set the logo, only for http://schema.org/ + Organization, LocalBusiness, or OnlineBusiness
 		 * as Person doesn't support the logo property.
 		 *
 		 * @see http://schema.org/logo.
 		 */
+		// @@todo fix the letter case.
 		$organization_types = array(
 			'Organization',
 			'localBusiness',
@@ -292,11 +258,14 @@ class About_Page_Organization_Filter {
 	 *
 	 * @since 3.53.0
 	 */
+	// @@todo rename it with an underscore.
 	public function add_organization_jsonld( $jsonld, $post_id ) {
 		// Exit if the Publisher is not set or correctly configured.
 		if ( ! $this->publisher_service->is_publisher_set() ) {
 			return $jsonld;
 		}
+
+		// @@todo what if $post_id is false? i.e. Latest posts as Home Page.
 
 		$is_about_us = $this->is_about_page( $post_id );
 		$is_homepage = is_home() || is_front_page();
@@ -323,7 +292,7 @@ class About_Page_Organization_Filter {
 
 			// Add a reference to the publisher in the main Entity of the JSON-LD.
 			$jsonld[0]['publisher'] = array(
-				'@id' => $publisher_jsonld['@id']
+				'@id' => $publisher_jsonld['@id'],
 			);
 
 			$jsonld[] = $publisher_jsonld;
@@ -332,7 +301,7 @@ class About_Page_Organization_Filter {
 		// Add the Organization data to the Publisher JSON-LD.
 		$publisher_uri = $this->entity_service->get_uri( $publisher_id );
 
-		foreach( $jsonld as &$jsonld_item ) {
+		foreach ( $jsonld as &$jsonld_item ) {
 			if (
 				$jsonld_item
 				&& array_key_exists( '@id', $jsonld_item )
