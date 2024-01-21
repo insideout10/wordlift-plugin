@@ -64,7 +64,7 @@ class Wordlift_Publisher_Service {
 					array(
 						'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 						'field'    => 'slug',
-						'terms'    => array( 'organization', 'person' ),
+						'terms'    => array( 'organization', 'person', 'local-business', 'online-business' ),
 					),
 				),
 				'fields'         => 'ids',
@@ -148,7 +148,7 @@ class Wordlift_Publisher_Service {
 					array(
 						'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 						'field'    => 'slug',
-						'terms'    => array( 'organization', 'person' ),
+						'terms'    => array( 'organization', 'person', 'local-business', 'online-business' ),
 					),
 				),
 				's'              => $filter,
@@ -257,105 +257,6 @@ class Wordlift_Publisher_Service {
 
 		// Finally return the content.
 		return $content;
-	}
-
-	/**
-	 * Get the publisher logo structure.
-	 *
-	 * The function returns false when the publisher logo cannot be determined, i.e.:
-	 *  - the post has no featured image.
-	 *  - the featured image has no file.
-	 *  - a wp_image_editor instance cannot be instantiated on the original file or on the publisher logo file.
-	 *
-	 * @param int $post_id The post id.
-	 *
-	 * @return array|false Returns an array with the `url`, `width` and `height` for the publisher logo or false in case
-	 *  of errors.
-	 * @since 3.19.2
-	 * @see https://github.com/insideout10/wordlift-plugin/issues/823 related issue.
-	 */
-	// @@todo move to the module
-	public function get_publisher_logo( $post_id ) {
-
-		// Get the featured image for the post.
-		$thumbnail_id = get_post_thumbnail_id( $post_id );
-
-		// Bail out if thumbnail not available.
-		if ( empty( $thumbnail_id ) || 0 === $thumbnail_id ) {
-			$this->log->info( "Featured image not set for post $post_id." );
-
-			return false;
-		}
-
-		// Get the uploads base URL.
-		$uploads_dir = wp_upload_dir();
-
-		// Get the attachment metadata.
-		$metadata = wp_get_attachment_metadata( $thumbnail_id );
-
-		// Bail out if the file isn't set.
-		if ( ! isset( $metadata['file'] ) ) {
-			$this->log->warn( "Featured image file not found for post $post_id." );
-
-			return false;
-		}
-
-		// Retrieve the relative filename, e.g. "2018/05/logo_publisher.png"
-		$path = $uploads_dir['basedir'] . DIRECTORY_SEPARATOR . $metadata['file'];
-
-		// Use image src, if local file does not exist. @see https://github.com/insideout10/wordlift-plugin/issues/1149
-		if ( ! file_exists( $path ) ) {
-			$this->log->warn( "Featured image file $path doesn't exist for post $post_id." );
-
-			$attachment_image_src = wp_get_attachment_image_src( $thumbnail_id, '' );
-			if ( $attachment_image_src ) {
-				return array(
-					'url'    => $attachment_image_src[0],
-					'width'  => $attachment_image_src[1],
-					'height' => $attachment_image_src[2],
-				);
-			}
-
-			// Bail out if we cant fetch wp_get_attachment_image_src
-			return false;
-
-		}
-
-		// Try to get the image editor and bail out if the editor cannot be instantiated.
-		$original_file_editor = wp_get_image_editor( $path );
-		if ( is_wp_error( $original_file_editor ) ) {
-			$this->log->warn( "Cannot instantiate WP Image Editor on file $path for post $post_id." );
-
-			return false;
-		}
-
-		// Generate the publisher logo filename, we cannot use the `width` and `height` because we're scaling
-		// and we don't actually know the end values.
-		$publisher_logo_path = $original_file_editor->generate_filename( '-publisher-logo' );
-
-		// If the file doesn't exist yet, create it.
-		if ( ! file_exists( $publisher_logo_path ) ) {
-			$original_file_editor->resize( 600, 60 );
-			$original_file_editor->save( $publisher_logo_path );
-		}
-
-		// Try to get the image editor and bail out if the editor cannot be instantiated.
-		$publisher_logo_editor = wp_get_image_editor( $publisher_logo_path );
-		if ( is_wp_error( $publisher_logo_editor ) ) {
-			$this->log->warn( "Cannot instantiate WP Image Editor on file $publisher_logo_path for post $post_id." );
-
-			return false;
-		}
-
-		// Get the actual size.
-		$size = $publisher_logo_editor->get_size();
-
-		// Finally return the array with data.
-		return array(
-			'url'    => $uploads_dir['baseurl'] . substr( $publisher_logo_path, strlen( $uploads_dir['basedir'] ) ),
-			'width'  => $size['width'],
-			'height' => $size['height'],
-		);
 	}
 
 	/**

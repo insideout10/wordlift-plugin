@@ -23,8 +23,7 @@ class Wordlift_Install_3_53_0 extends Wordlift_Install {
 	private static $term = array(
 		'slug'        => 'online-business',
 		'label'       => 'OnlineBusiness',
-		// @@todo update description
-		'description' => 'An online business.',
+		'description' => 'A particular online business, either standalone or the online part of a broader organization. Examples include an eCommerce site, an online travel booking site, an online learning site, an online logistics and shipping provider, an online (virtual) doctor, etc.',
 	);
 
 	/**
