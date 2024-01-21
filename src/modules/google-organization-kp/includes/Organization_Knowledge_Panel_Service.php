@@ -13,14 +13,10 @@
 
 namespace Wordlift\Modules\Google_Organization_Kp;
 
+use Wordlift_Schema_Service;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
-use Wordlift_Countries;
-use Wordlift_Entity_Type_Service;
-use Wordlift_Configuration_Service;
-use Wordlift_Publisher_Service;
-use Wordlift_Schema_Service;
 
 Class Organization_Knowledge_Panel_Service {
 
@@ -32,30 +28,57 @@ Class Organization_Knowledge_Panel_Service {
     const PAGINATION_NUM_OF_PAGES = 100;
 
 	/**
+	 * @var Wordlift_Countries
+	 */
+	private $countries;
+
+	/**
 	 * @var Organization_Extra_Fields_Service
 	 */
 	private $extra_fields_service;
 
 	/**
-	 * @var Wordlift_Publisher_Service|null
+	 * @var Wordlift_Publisher_Service
 	 */
 	private $publisher_service;
 
 	/**
-	 * @var Wordlift_Entity_Type_Service|null
+	 * @var Wordlift_Entity_Type_Service
 	 */
 	private $entity_service;
 
 	/**
-	 * @var Wordlift_Configuration_Service|null
+	 * @var Wordlift_Configuration_Service
 	 */
 	private $configuration_service;
 
-	public function __construct( Organization_Extra_Fields_Service $extra_fields_service ) {
+	/**
+	 * @var Wordlift_Schema_Service
+	 */
+	private $schema_service;
+
+	/**
+	 * @param Wordlift_Countries                $countries
+	 * @param Organization_Extra_Fields_Service $extra_fields_service
+	 * @param Wordlift_Publisher_Service        $publisher_service
+	 * @param Wordlift_Entity_Type_Service      $entity_service
+	 * @param Wordlift_Configuration_Service    $configuration_service
+	 * @param Wordlift_Schema_Service           $schema_service
+	 */
+	public function __construct(
+		$countries,
+		$extra_fields_service,
+		$publisher_service,
+		$entity_service,
+		$configuration_service,
+		$schema_service
+	) {
+		$this->countries             = $countries;
 		$this->extra_fields_service  = $extra_fields_service;
-		$this->publisher_service     = Wordlift_Publisher_Service::get_instance();
-		$this->entity_service        = Wordlift_Entity_Type_Service::get_instance();
-		$this->configuration_service = Wordlift_Configuration_Service::get_instance();
+		$this->publisher_service     = $publisher_service;
+		$this->entity_service        = $entity_service;
+		$this->configuration_service = $configuration_service;
+		$this->schema_service        = $schema_service;
 	}
 	
 	/**
@@ -113,7 +136,7 @@ Class Organization_Knowledge_Panel_Service {
 	 */
     public function get_countries() {
 		// Get the list of countries in the current site language.
-        $countries = Wordlift_Countries::get_countries();
+        $countries = $this->countries->get_countries();
 
 		$data = array();
 
@@ -160,7 +183,7 @@ Class Organization_Knowledge_Panel_Service {
 		}
 
 		// Add custom fields.
-	    // @todo: Add missing fields here.
+//	    $schema_service = $this->schema_service;
 	    $custom_fields = array(
 			Wordlift_Schema_Service::FIELD_SAME_AS,
 		    Wordlift_Schema_Service::FIELD_ADDRESS,
@@ -264,14 +287,12 @@ Class Organization_Knowledge_Panel_Service {
 			// Set the type URI, http://schema.org/ + Person, Organization, localBusiness or Organization.
 			$type_uri = sprintf( 'http://schema.org/%s', $params['type'] );
 
-			Wordlift_Entity_Type_Service::get_instance()->set(
+			$this->entity_service->set(
 				$publisher_id,
 				$type_uri,
 				true
 			);
 		}
-
-
 
 		// Return success
 	    // @todo: Does it make sense to return Publisher ID here?
