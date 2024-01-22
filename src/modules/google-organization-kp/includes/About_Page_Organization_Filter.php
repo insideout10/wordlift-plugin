@@ -64,9 +64,9 @@ class About_Page_Organization_Filter {
 	 *
 	 * @since 3.53.0
 	 */
-	public function init() {
-		add_filter( 'wl_website_jsonld', array( $this, '_add_organization_jsonld' ), 10, 2 );
-		add_filter( 'wl_after_get_jsonld', array( $this, '_add_organization_jsonld' ), 10, 2 );
+	public function register_hooks() {
+		add_filter( 'wl_website_jsonld', array( $this, 'add_organization_jsonld' ), 10, 2 );
+		add_filter( 'wl_after_get_jsonld', array( $this, 'add_organization_jsonld' ), 10, 2 );
 	}
 
 	/**
@@ -156,8 +156,8 @@ class About_Page_Organization_Filter {
 		 *
 		 * @see https://developers.google.com/search/docs/data-types/articles.
 		 */
-		$jsonld['logo']['@type'] = 'ImageObject';
-		$jsonld['logo']['url']   = $publisher_logo['url'];
+		$publisher_jsonld['logo']['@type'] = 'ImageObject';
+		$publisher_jsonld['logo']['url']   = $publisher_logo['url'];
 
 		/*
 		 * If you specify a "width" or "height" value you should leave out 'px'.
@@ -165,8 +165,8 @@ class About_Page_Organization_Filter {
 		 *
 		 * @see: https://github.com/insideout10/wordlift-plugin/issues/451.
 		 */
-		$jsonld['logo']['width']  = $publisher_logo['width'];
-		$jsonld['logo']['height'] = $publisher_logo['height'];
+		$publisher_jsonld['logo']['width']  = $publisher_logo['width'];
+		$publisher_jsonld['logo']['height'] = $publisher_logo['height'];
 	}
 
 	/**
@@ -182,7 +182,7 @@ class About_Page_Organization_Filter {
 	 *
 	 * @since 3.53.0
 	 */
-	public function _add_organization_jsonld( $jsonld, $post_id ) {
+	public function add_organization_jsonld( $jsonld, $post_id ) {
 		// Exit if the Publisher is not set or correctly configured.
 		if ( ! $this->publisher_service->is_publisher_set() ) {
 			return $jsonld;
