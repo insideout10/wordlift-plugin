@@ -37,7 +37,7 @@ services:
 
   Wordlift\Modules\Google_Organization_Kp\Organization_Knowledge_Panel_Service:
     class: Wordlift\Modules\Google_Organization_Kp\Organization_Knowledge_Panel_Service
-    arguments: [ '@Wordlift_Countries', '@Wordlift\Modules\Google_Organization_Kp\Organization_Extra_Fields_Service', '@Wordlift_Publisher_Service', '@Wordlift_Entity_Type_Service', '@Wordlift_Configuration_Service', '@Wordlift_Schema_Service' ]
+    arguments: [ '@Wordlift_Countries', '@Wordlift_Publisher_Service', '@Wordlift_Entity_Type_Service', '@Wordlift_Configuration_Service' ]
 
   Wordlift\Modules\Google_Organization_Kp\Rest_Controller:
     class: Wordlift\Modules\Google_Organization_Kp\Rest_Controller
@@ -45,4 +45,4 @@ services:
 
   Wordlift\Modules\Google_Organization_Kp\About_Page_Organization_Filter:
     class: Wordlift\Modules\Google_Organization_Kp\About_Page_Organization_Filter
-    arguments: [ '@Wordlift\Modules\Google_Organization_Kp\Organization_Extra_Fields_Service', '@Wordlift_Publisher_Service', '@Wordlift_Configuration_Service', '@Wordlift_Entity_Service', '@Wordlift_Post_To_Jsonld_Converter' ]
+    arguments: [ '@Wordlift_Publisher_Service', '@Wordlift_Configuration_Service', '@Wordlift_Entity_Service', '@Wordlift_Post_To_Jsonld_Converter' ]
