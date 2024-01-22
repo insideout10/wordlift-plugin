@@ -230,8 +230,6 @@ Class Organization_Knowledge_Panel_Service {
 	    // Get the Publisher ID.
 	    $publisher_id = $this->configuration_service->get_publisher_id();
 
-		// @todo: Set individual fields if they exist.
-
 	    // Update the Publisher title.
 	    if ( isset( $params['title'] ) ) {
 		    $title = sanitize_text_field( ['title'] );
