@@ -242,8 +242,8 @@ Class Organization_Knowledge_Panel_Service {
 	    $publisher_types = array(
 		    'Person',
 		    'Organization',
-		    'localBusiness',
-		    'onlineBusiness'
+		    'LocalBusiness',
+		    'OnlineBusiness'
 	    );
 
 		// Update the Publisher Entity Type.
@@ -258,8 +258,25 @@ Class Organization_Knowledge_Panel_Service {
 			);
 		}
 
-		// Return success
-	    // @todo: Does it make sense to return Publisher ID here?
+	    // Update the Publisher description.
+	    if ( isset( $params['description'] ) ) {
+		    $title = sanitize_text_field( ['description'] );
+		    update_post_meta( $publisher_id, 'description', $title );
+	    }
+
+		// @todo: Update the logo.
+
+	    // Update the custom fields.
+	    if ( isset( $params['custom_fields'] ) ) {
+		    foreach( $params['custom_fields'] as $field_slug => $field_value ) {
+			    if ( isset( $field_value ) ) {
+				    update_post_meta( $publisher_id, $field_slug, sanitize_text_field( $field_value ) );
+			    }
+		    }
+	    }
+
+	    // Return success
+	    // @todo: Should we return Publisher ID if a new one was created?
 		return new WP_REST_Response;
     }
 }
