@@ -119,17 +119,15 @@ class About_Page_Organization_Filter {
 	 * @since 3.53.0
 	 */
 	public function expand_publisher_jsonld( &$publisher_jsonld, $publisher_id ) {
-		// Get custom fields.
-//		$entity_service   = $this->entity_service;
-//
-//		$alternative_name = get_post_meta( $publisher_id, $entity_service::ALTERNATIVE_LABEL_META_KEY, true );
-//
-//		// Add alternativeName if set.
-//		if ( ! empty( $alternative_name ) ) {
-//			$publisher_jsonld['alternateName'] = $alternative_name;
-//		}
 
-		/**
+		// Add alternativeName if set.
+		$alternative_name = $this->configuration_service->get_alternate_name();
+
+		if ( ! empty( $alternative_name ) ) {
+			$publisher_jsonld['alternateName'] = $alternative_name;
+		}
+
+		/*
 		 * Set the logo, only for http://schema.org/ + Organization, LocalBusiness, or OnlineBusiness
 		 * as Person doesn't support the logo property.
 		 *
@@ -146,7 +144,6 @@ class About_Page_Organization_Filter {
 		}
 
 		// Get the publisher logo.
-		$publisher_id   = $this->configuration_service->get_publisher_id();
 		$publisher_logo = $this->publisher_service->get_publisher_logo( $publisher_id );
 
 		// Bail out if the publisher logo isn't set.
@@ -154,7 +151,7 @@ class About_Page_Organization_Filter {
 			return;
 		}
 
-		/**
+		/*
 		 * Copy over some useful properties.
 		 *
 		 * @see https://developers.google.com/search/docs/data-types/articles.
@@ -162,7 +159,7 @@ class About_Page_Organization_Filter {
 		$jsonld['logo']['@type'] = 'ImageObject';
 		$jsonld['logo']['url']   = $publisher_logo['url'];
 
-		/**
+		/*
 		 * If you specify a "width" or "height" value you should leave out 'px'.
 		 * For example: "width":"4608px" should be "width":"4608".
 		 *
