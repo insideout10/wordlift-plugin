@@ -45,4 +45,4 @@ services:
 
   Wordlift\Modules\Google_Organization_Kp\About_Page_Organization_Filter:
     class: Wordlift\Modules\Google_Organization_Kp\About_Page_Organization_Filter
-    arguments: [ '@Wordlift\Modules\Google_Organization_Kp\Organization_Extra_Fields_Service', '@Wordlift_Publisher_Service', '@Wordlift_Configuration_Service', '@Wordlift_Entity_Service', '@Wordlift_Post_To_Jsonld_Converter', '@Wordlift_Schema_Service', '@Wordlift\Relation\Relations' ]
+    arguments: [ '@Wordlift\Modules\Google_Organization_Kp\Organization_Extra_Fields_Service', '@Wordlift_Publisher_Service', '@Wordlift_Configuration_Service', '@Wordlift_Entity_Service', '@Wordlift_Post_To_Jsonld_Converter' ]

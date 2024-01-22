@@ -44,35 +44,24 @@ class About_Page_Organization_Filter {
 	private $schema_service;
 
 	/**
-	 * @var Relations
-	 */
-	private $relations;
-
-	/**
 	 * @param Organization_Extra_Fields_Service $extra_fields_service
 	 * @param Wordlift_Publisher_Service        $publisher_service
 	 * @param Wordlift_Configuration_Service    $configuration_service
 	 * @param Wordlift_Entity_Service           $entity_service
 	 * @param Wordlift_Post_To_Jsonld_Converter $post_jsonld_service
-	 * @param Wordlift_Schema_Service           $schema_service
-	 * @param Relations                         $relations
 	 */
 	public function __construct(
 		$extra_fields_service,
 		$publisher_service,
 		$configuration_service,
 		$entity_service,
-		$post_jsonld_service,
-		$schema_service,
-		$relations
+		$post_jsonld_service
 	) {
 		$this->extra_fields_service  = $extra_fields_service;
 		$this->publisher_service     = $publisher_service;
 		$this->configuration_service = $configuration_service;
 		$this->entity_service        = $entity_service;
 		$this->post_jsonld_service   = $post_jsonld_service;
-		$this->schema_service        = $schema_service;
-		$this->relations             = $relations;
 	}
 
 	/**
@@ -144,7 +133,7 @@ class About_Page_Organization_Filter {
 	 * @since 3.19.2
 	 * @see https://github.com/insideout10/wordlift-plugin/issues/823 related issue.
 	 */
-	public function get_publisher_logo( $post_id ) {
+	private function get_publisher_logo( $post_id ) {
 
 		// Get the featured image for the post.
 		$thumbnail_id = get_post_thumbnail_id( $post_id );
@@ -239,55 +228,12 @@ class About_Page_Organization_Filter {
 
 		// Get custom fields.
 		$entity_service   = $this->entity_service;
-		$schema_service   = $this->schema_service;
-		$alternative_name = get_post_meta( $publisher_id, $entity_service::ALTERNATIVE_LABEL_META_KEY, true );
-		$legal_name       = get_post_meta( $publisher_id, $schema_service::FIELD_LEGAL_NAME, true );
-		$street_address   = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS, true );
-		$locality         = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS_LOCALITY, true );
-		$region           = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS_REGION, true );
-		$country          = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS_COUNTRY, true );
-		$postal_code      = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS_POSTAL_CODE, true );
-		$telephone        = get_post_meta( $publisher_id, $schema_service::FIELD_TELEPHONE, true );
-		$email            = get_post_meta( $publisher_id, $schema_service::FIELD_EMAIL, true );
 
-		// Set custom fields.
+		$alternative_name = get_post_meta( $publisher_id, $entity_service::ALTERNATIVE_LABEL_META_KEY, true );
 
 		// Add alternativeName if set.
 		if ( ! empty( $alternative_name ) ) {
 			$publisher_jsonld['alternateName'] = $alternative_name;
-		}
-
-		// Add legalName if set.
-		if ( ! empty( $legal_name ) ) {
-			$publisher_jsonld['legalName'] = $legal_name;
-		}
-
-		// If all address fields are available, build the `address` property with its sub properties.
-		if (
-			! empty( $street_address )
-			&& ! empty( $locality )
-			&& ! empty( $region )
-			&& ! empty( $country )
-			&& ! empty( $postal_code )
-		) {
-			$publisher_jsonld['address'] = array(
-				'@type'           => 'PostalAddress',
-				'streetAddress'   => $street_address,
-				'addressLocality' => $locality,
-				'addressCountry'  => $region,
-				'addressRegion'   => $country,
-				'postalCode'      => $postal_code,
-			);
-		}
-
-		// Add telephone if set.
-		if ( ! empty( $telephone ) ) {
-			$publisher_jsonld['telephone'] = $telephone;
-		}
-
-		// Add email if set.
-		if ( ! empty( $email ) ) {
-			$publisher_jsonld['email'] = $email;
 		}
 
 		// Set extra fields.

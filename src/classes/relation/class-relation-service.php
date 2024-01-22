@@ -47,6 +47,11 @@ class Relation_Service extends Abstract_Relation_Service {
 	}
 
 	public function add_relations( $content_id, $relations ) {
+		// Exit if no $relations provided
+		if ( empty( $relations ) ) {
+			return;
+		}
+
 		Assertions::is_set( $relations, '`$relations` should be set to a `Relations` instance.' );
 
 		foreach ( $this->delegates as $delegate ) {

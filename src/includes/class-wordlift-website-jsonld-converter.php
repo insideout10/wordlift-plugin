@@ -8,8 +8,6 @@
  * @package Wordlift
  */
 
-use Wordlift\Relation\Relations;
-
 /**
  * Define the {@link Wordlift_Website_Jsonld_Converter} class.
  *
@@ -37,19 +35,19 @@ class Wordlift_Website_Jsonld_Converter {
 		// Create new jsonld.
 		$home_url = home_url( '/' );
 
-		$jsonld = array();
-
-		$jsonld[] = array(
-			'@context'      => 'http://schema.org',
-			'@type'         => 'WebSite',
-			'@id'           => "$home_url#website",
-			'name'          => html_entity_decode( get_bloginfo( 'name' ), ENT_QUOTES ),
-			'alternateName' => Wordlift_Configuration_Service::get_instance()->get_alternate_name(),
-			'url'           => $home_url,
+		$jsonld = array(
+			array(
+				'@context'      => 'http://schema.org',
+				'@type'         => 'WebSite',
+				'@id'           => "$home_url#website",
+				'name'          => html_entity_decode( get_bloginfo( 'name' ), ENT_QUOTES ),
+				'alternateName' => Wordlift_Configuration_Service::get_instance()->get_alternate_name(),
+				'url'           => $home_url,
+			)
 		);
 
 		// Add search action.
-		$this->set_search_action( $jsonld );
+		$this->set_search_action( $jsonld[0] );
 
 		// Add publisher information.
 		$this->set_publisher_jsonld( $jsonld );
@@ -74,22 +72,17 @@ class Wordlift_Website_Jsonld_Converter {
 			return;
 		}
 
+		// If the publisher URI isn't set don't do anything.
 		$publisher_uri = Wordlift_Entity_Service::get_instance()->get_uri( $publisher_id );
+		if ( empty( $publisher_uri ) ) {
+			return;
+		}
 
 		$jsonld[0]['publisher'] = array(
 			'@id' => $publisher_uri,
 		);
 
-		// Get the Publisher data
-		$references     = array();
-		$reference_info = array();
-		$relations      = new Relations();
-
-		$jsonld[] = $this->postid_to_jsonld_converter->convert(
-			$publisher_id,
-			$references,
-			$reference_info,
-			$relations );
+		$jsonld[] = $this->postid_to_jsonld_converter->convert( $publisher_id );
 	}
 
 	/**
@@ -99,7 +92,7 @@ class Wordlift_Website_Jsonld_Converter {
 	 *
 	 * @since 3.14.0
 	 */
-	private function set_search_action( &$jsonld ) {
+	private function set_search_action( &$main_entity_jsonld ) {
 		/**
 		 * Filter: 'wl_jsonld_search_url' - Allows filtering of the search URL.
 		 *
@@ -109,7 +102,7 @@ class Wordlift_Website_Jsonld_Converter {
 		$search_url = apply_filters( 'wl_jsonld_search_url', home_url( '/' ) . '?s={search_term_string}' );
 
 		// Add search action to main item in JSON-LD.
-		$jsonld[0]['potentialAction'] = array(
+		$main_entity_jsonld['potentialAction'] = array(
 			'@type'       => 'SearchAction',
 			'target'      => $search_url,
 			'query-input' => 'required name=search_term_string',
