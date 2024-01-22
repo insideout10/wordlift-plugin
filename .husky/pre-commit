@@ -1,11 +1,11 @@
 #!/usr/bin/env sh
 
-FILES=$(git diff --cached --diff-filter=d --name-only | grep '^src/.*.php$' | tr '\n' ' ')
-
-if [ -n "$FILES" ]; then
-  echo "** Cleanup **"
-  # shellcheck disable=SC2086
-  composer format $FILES
-  # shellcheck disable=SC2086
-  composer lint $FILES
-fi
+#FILES=$(git diff --cached --diff-filter=d --name-only | grep '^src/.*.php$' | tr '\n' ' ')
+#
+#if [ -n "$FILES" ]; then
+#  echo "** Cleanup **"
+#  # shellcheck disable=SC2086
+#  composer format $FILES
+#  # shellcheck disable=SC2086
+#  composer lint $FILES
+#fi

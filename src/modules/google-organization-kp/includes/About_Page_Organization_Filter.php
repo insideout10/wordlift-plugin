@@ -64,7 +64,7 @@ class About_Page_Organization_Filter {
 	 *
 	 * @since 3.53.0
 	 */
-	public function init() {
+	public function register_hooks() {
 		add_filter( 'wl_website_jsonld', array( $this, '_add_organization_jsonld' ), 10, 2 );
 		add_filter( 'wl_after_get_jsonld', array( $this, '_add_organization_jsonld' ), 10, 2 );
 	}

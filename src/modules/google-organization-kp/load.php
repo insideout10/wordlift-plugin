@@ -1,16 +1,21 @@
 <?php
 
+/**
+ * Module Name: Google Organization Kp
+ * Description: This module handles the admin screen and API and publishing methods to manage the publisher/organization KP.
+ *
+ * @since   3.53.0
+ * @package wordlift
+ */
+
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Wordlift\Modules\Google_Organization_Kp\About_Page_Organization_Filter;
+use Wordlift\Modules\Google_Organization_Kp\Rest_Controller;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-}
-
-// Bail out if the feature isn't enabled.
-if ( ! apply_filters( 'wl_feature__enable__google-organization-kp', true ) ) { // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-	return;
 }
 
 function __wl_google_organization_kp_load() {
@@ -31,16 +36,16 @@ function __wl_google_organization_kp_load() {
 	$container_builder->compile();
 
 	/**
-	 * @var $rest_controller \Wordlift\Modules\Google_Organization_Kp\Rest_Controller
+	 * @var $rest_controller Rest_Controller
 	 */
 	$rest_controller = $container_builder->get( 'Wordlift\Modules\Google_Organization_Kp\Rest_Controller' );
-	$rest_controller->init();
+	$rest_controller->register_hooks();
 
 	/**
-	 * @var $about_page_organization_filter \Wordlift\Modules\Google_Organization_Kp\About_Page_Organization_Filter
+	 * @var $about_page_organization_filter About_Page_Organization_Filter
 	 */
-	$about_page_organization_filter = $container_builder->get('Wordlift\Modules\Google_Organization_Kp\About_Page_Organization_Filter');
-	$about_page_organization_filter->init();
+	$about_page_organization_filter = $container_builder->get( 'Wordlift\Modules\Google_Organization_Kp\About_Page_Organization_Filter' );
+	$about_page_organization_filter->register_hooks();
 }
 
 __wl_google_organization_kp_load();
