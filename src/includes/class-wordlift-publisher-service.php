@@ -18,6 +18,13 @@
  */
 class Wordlift_Publisher_Service {
 
+	const VALID_PUBLISHER_TYPES = array(
+		'person'          => 'Person',
+		'organization'    => 'Organization',
+		'local-business'  => 'LocalBusiness',
+		'online-business' => 'OnlineBusiness',
+	);
+
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
@@ -64,7 +71,7 @@ class Wordlift_Publisher_Service {
 					array(
 						'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 						'field'    => 'slug',
-						'terms'    => array( 'organization', 'person', 'local-business', 'online-business' ),
+						'terms'    => array_keys( self::VALID_PUBLISHER_TYPES ),
 					),
 				),
 				'fields'         => 'ids',
@@ -148,7 +155,7 @@ class Wordlift_Publisher_Service {
 					array(
 						'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 						'field'    => 'slug',
-						'terms'    => array( 'organization', 'person', 'local-business', 'online-business' ),
+						'terms'    => array_keys( self::VALID_PUBLISHER_TYPES ),
 					),
 				),
 				's'              => $filter,
@@ -357,28 +364,15 @@ class Wordlift_Publisher_Service {
 		);
 	}
 
-	/**
-	 * Utility function to check if the Publisher is set.
-	 *
-	 * @return true|false
-	 *
-	 * @since 3.53.0
-	 */
-	public function is_publisher_set() {
-		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+	public function save( $params ) {
+		// Set the type URI, http://schema.org/ + Person, Organization, LocalBusiness or OnlineBusiness.
+		$type_uri = sprintf( 'http://schema.org/%s', $params['type'] );
 
-		// Check that the ID is set.
-		if ( empty( $publisher_id ) ) {
-			return false;
-		}
+		// Create an entity for the publisher.
+		$publisher_post_id = Wordlift_Entity_Service::get_instance()
+													->create( $params['name'], $type_uri, $params['image'], 'publish' );
 
-		// Check that the ID points to a valid Post.
-		$post = get_post( $publisher_id );
-		if ( ! is_a( $post, '\WP_Post' ) ) {
-			// Publisher not found.
-			return false;
-		}
-
-		return true;
+		// Store the publisher entity post id in the configuration.
+		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher_post_id );
 	}
 }

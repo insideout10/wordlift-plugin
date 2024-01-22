@@ -159,7 +159,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 			$contents = $arr['jsonld'];
 
 			// Add the cached relations if any.
-			if ( is_a( $arr['relations'], 'Wordlift\Relation\Relations' ) ) {
+			if ( is_a( $arr['relations'], 'Wordlift\Relation\Relations' ) && ! empty( $arr['relations']->toArray() ) ) {
 				$relations->add( ...$arr['relations']->toArray() );
 			}
 

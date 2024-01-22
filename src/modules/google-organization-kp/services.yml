@@ -28,20 +28,16 @@ services:
   Wordlift_Countries:
     class: Wordlift_Countries
 
-  Wordlift\Relation\Relations:
-    class: Wordlift\Relation\Relations
+  Wordlift\Modules\Google_Organization_Kp\Page_Service:
+    class: Wordlift\Modules\Google_Organization_Kp\Page_Service
 
-  Wordlift\Modules\Google_Organization_Kp\Organization_Extra_Fields_Service:
-    class: Wordlift\Modules\Google_Organization_Kp\Organization_Extra_Fields_Service
-    arguments: [ '@Wordlift_Configuration_Service', '@Wordlift_Publisher_Service' ]
-
-  Wordlift\Modules\Google_Organization_Kp\Organization_Knowledge_Panel_Service:
-    class: Wordlift\Modules\Google_Organization_Kp\Organization_Knowledge_Panel_Service
-    arguments: [ '@Wordlift_Countries', '@Wordlift_Publisher_Service', '@Wordlift_Entity_Type_Service', '@Wordlift_Configuration_Service' ]
+  Wordlift\Modules\Google_Organization_Kp\Publisher_Service:
+    class: Wordlift\Modules\Google_Organization_Kp\Publisher_Service
+    arguments: [ '@Wordlift_Publisher_Service', '@Wordlift_Entity_Type_Service', '@Wordlift_Configuration_Service', '@Wordlift_Schema_Service' ]
 
   Wordlift\Modules\Google_Organization_Kp\Rest_Controller:
     class: Wordlift\Modules\Google_Organization_Kp\Rest_Controller
-    arguments: [ '@Wordlift\Modules\Google_Organization_Kp\Organization_Knowledge_Panel_Service' ]
+    arguments: [ '@Wordlift_Countries', '@Wordlift\Modules\Google_Organization_Kp\Publisher_Service', '@Wordlift\Modules\Google_Organization_Kp\Page_Service' ]
 
   Wordlift\Modules\Google_Organization_Kp\About_Page_Organization_Filter:
     class: Wordlift\Modules\Google_Organization_Kp\About_Page_Organization_Filter

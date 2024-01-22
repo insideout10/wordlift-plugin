@@ -2,29 +2,48 @@
 
 namespace Wordlift\Modules\Google_Organization_Kp;
 
+use Wordlift\Modules\Google_Organization_Kp\Symfony\Component\Config\Definition\Exception\Exception;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
-// @@TODO rename to Organization_Knowledge_Panel_Rest_Controller
 class Rest_Controller {
+	/**
+	 * @var \Wordlift_Countries
+	 */
+	private $wl_countries;
 
 	/**
-	 * @var Organization_Knowledge_Panel_Service
+	 * @var Publisher_Service
 	 *
 	 * @since
 	 */
-	private $organization_kp_service;
+	private $publisher_service;
+
+	/**
+	 * @var Page_Service
+	 *
+	 * @since
+	 */
+	private $page_service;
 
 	/**
 	 * Save a reference to the Organization Knowledge Panel Service class.
 	 *
 	 * @since 3.53.0
 	 *
-	 * @param Organization_Knowledge_Panel_Service $organization_kp_service
+	 * @param \Wordlift_Countries $wl_countries
+	 * @param Publisher_Service   $publisher_service
+	 * @param Page_Service        $page_service
 	 */
-	public function __construct( Organization_Knowledge_Panel_Service $organization_kp_service ) {
-		$this->organization_kp_service = $organization_kp_service;
+	public function __construct(
+		$wl_countries,
+		$publisher_service,
+		$page_service
+	) {
+		$this->wl_countries      = $wl_countries;
+		$this->publisher_service = $publisher_service;
+		$this->page_service      = $page_service;
 	}
 
 	/**
@@ -67,11 +86,9 @@ class Rest_Controller {
 						},
 					),
 				),
-				// @@TODO fix
-				'permission_callback' => '__return_true', // Testing
-				// 'permission_callback' => function () {
-				// return current_user_can( 'manage_options' );
-				// },
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
 			)
 		);
 
@@ -81,11 +98,9 @@ class Rest_Controller {
 			array(
 				'methods'             => 'GET',
 				'callback'            => array( $this, 'countries_get_callback' ),
-				// @@TODO fix permissions
-				'permission_callback' => '__return_true', // Testing
-				// 'permission_callback' => function () {
-				// return current_user_can( 'manage_options' );
-				// },
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
 			)
 		);
 
@@ -95,11 +110,9 @@ class Rest_Controller {
 			array(
 				'methods'             => 'GET',
 				'callback'            => array( $this, 'form_data_get_callback' ),
-				// @@TODO fix permissions
-				'permission_callback' => '__return_true', // Testing
-				// 'permission_callback' => function () {
-				// return current_user_can( 'manage_options' );
-				// },
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
 			)
 		);
 
@@ -109,11 +122,9 @@ class Rest_Controller {
 			array(
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'form_data_post_callback' ),
-				// @@TODO fix permissions
-				'permission_callback' => '__return_true', // Testing
-				// 'permission_callback' => function () {
-				// return current_user_can( 'manage_options' );
-				// },
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
 			)
 		);
 	}
@@ -136,7 +147,23 @@ class Rest_Controller {
 	public function pages_get_callback( WP_REST_Request $request ) {
 		// Get the pages data from the service and return.
 		$params = $request->get_params();
-		$data   = $this->organization_kp_service->get_pages( $params['pagination'], $params['title_starts_with'] );
+		$data   = $this->page_service->get( $params['pagination'], $params['title_starts_with'] );
+
+		return rest_ensure_response( $data );
+	}
+
+	/**
+	 * Handle a request to the countries GET endpoint.
+	 *
+	 * Gets an array of countries from the service and return.
+	 *
+	 * @return  WP_REST_Response|WP_Error Returns a WordPress response object, or a WordPress error object if something went wrong.
+	 *
+	 * @since 3.53.0
+	 */
+	public function countries_get_callback() {
+		// Get the countries data from the service and return.
+		$data = $this->wl_countries->get_countries();
 
 		return rest_ensure_response( $data );
 	}
@@ -152,28 +179,11 @@ class Rest_Controller {
 	 */
 	public function form_data_get_callback() {
 		// Get the publisher data from the service and return.
-		$data = $this->organization_kp_service->get_form_data();
+		$data = $this->publisher_service->get();
 
-		// @todo: Should we include this or simply return a blank array?
 		if ( empty( $data ) ) {
 			return new WP_Error( '404', 'No existing form data.', array( 'status' => 404 ) );
 		}
-
-		return rest_ensure_response( $data );
-	}
-
-	/**
-	 * Handle a request to the countries GET endpoint.
-	 *
-	 * Gets an array of countries from the service and return.
-	 *
-	 * @return  WP_REST_Response|WP_Error Returns a WordPress response object, or a WordPress error object if something went wrong.
-	 *
-	 * @since 3.53.0
-	 */
-	public function countries_get_callback() {
-		// Get the countries data from the service and return
-		$data = $this->organization_kp_service->get_countries();
 
 		return rest_ensure_response( $data );
 	}
@@ -190,16 +200,7 @@ class Rest_Controller {
 	 * @since 3.53.0
 	 */
 	public function form_data_post_callback( WP_REST_Request $request ) {
-		/**
-		 * Required params:
-		 * - id
-		 * - name
-		 * - type
-		 * - logo / image
-		 */
-
 		// Retrieve the relevant form data from the request and send it to the service.
-
 		$params = $request->get_params();
 		$files  = $request->get_file_params();
 
@@ -208,15 +209,34 @@ class Rest_Controller {
 		}
 
 		// Return error if MIME type not set.
-		// if ( ! isset( $request_file['type'] ) ) {
-		// return new WP_Error( '400', 'File mime type is not supported', array( 'status' => 400 ) );
-		// }
+		if ( ! isset( $files['type'] ) ) {
+			return new WP_Error(
+				'400',
+				'File mime type is not supported',
+				array( 'status' => 400 )
+			);
+		}
 
 		// Return error if file type is not image
-		// if ( strpos( $request_file['type'], 'image' ) === false ) {
-		// return new WP_Error( '400', 'Only image files are supported', array( 'status' => 400 ) );
-		// }
+		if ( strpos( $files['type'], 'image' ) === false ) {
+			return new WP_Error(
+				'400',
+				'Only image files are supported',
+				array( 'status' => 400 )
+			);
+		}
 
-		return rest_ensure_response( $this->organization_kp_service->set_form_data( $params ) );
+		try {
+			// Successfully return the form data.
+			$data = $this->publisher_service->save( $params );
+			rest_ensure_response( $data );
+		} catch ( Exception $e ) {
+			// Send back error.
+			return new WP_Error(
+				'400',
+				$e->getMessage(),
+				array( 'status' => 400 )
+			);
+		}
 	}
 }
