@@ -13,7 +13,6 @@
 
 namespace Wordlift\Modules\Google_Organization_Kp;
 
-use Wordlift_Schema_Service;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -33,11 +32,6 @@ Class Organization_Knowledge_Panel_Service {
 	private $countries;
 
 	/**
-	 * @var Organization_Extra_Fields_Service
-	 */
-	private $extra_fields_service;
-
-	/**
 	 * @var Wordlift_Publisher_Service
 	 */
 	private $publisher_service;
@@ -51,34 +45,22 @@ Class Organization_Knowledge_Panel_Service {
 	 * @var Wordlift_Configuration_Service
 	 */
 	private $configuration_service;
-
-	/**
-	 * @var Wordlift_Schema_Service
-	 */
-	private $schema_service;
-
 	/**
 	 * @param Wordlift_Countries                $countries
-	 * @param Organization_Extra_Fields_Service $extra_fields_service
 	 * @param Wordlift_Publisher_Service        $publisher_service
 	 * @param Wordlift_Entity_Type_Service      $entity_service
 	 * @param Wordlift_Configuration_Service    $configuration_service
-	 * @param Wordlift_Schema_Service           $schema_service
 	 */
 	public function __construct(
 		$countries,
-		$extra_fields_service,
 		$publisher_service,
 		$entity_service,
-		$configuration_service,
-		$schema_service
+		$configuration_service
 	) {
 		$this->countries             = $countries;
-		$this->extra_fields_service  = $extra_fields_service;
 		$this->publisher_service     = $publisher_service;
 		$this->entity_service        = $entity_service;
 		$this->configuration_service = $configuration_service;
-		$this->schema_service        = $schema_service;
 	}
 	
 	/**
@@ -176,39 +158,22 @@ Class Organization_Knowledge_Panel_Service {
 		$data['name']        = $publisher_post->post_title;      // Name
 		$data['type']        = $publisher_entity['label'];       // Type
 		$data['description'] = $publisher_entity['description']; // Description
+	    $data['alt_name']    = $this->configuration_service->get_alternate_name();
 
 		// Add the logo
 		if ( ! empty( $publisher_logo ) ) {
 			$data['logo'] = $publisher_logo['url'];
 		}
 
-		// Add custom fields.
-//	    $schema_service = $this->schema_service;
-	    $custom_fields = array(
-			Wordlift_Schema_Service::FIELD_SAME_AS,
-		    Wordlift_Schema_Service::FIELD_ADDRESS,
-		    Wordlift_Schema_Service::FIELD_ADDRESS_LOCALITY,
-		    Wordlift_Schema_Service::FIELD_ADDRESS_REGION,
-		    Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY,
-		    Wordlift_Schema_Service::FIELD_ADDRESS_POSTAL_CODE,
-		    Wordlift_Schema_Service::FIELD_TELEPHONE,
-		    Wordlift_Schema_Service::FIELD_EMAIL
-	    );
-
-		foreach ( $custom_fields as $field_slug ) {
-			// @todo: Is there a downside to using get_post_meta as opposed to Wordlift_Storage_Factory?
-			$field_data = get_post_meta( $publisher_id, $field_slug, true );
+		foreach ( array_keys( $publisher_entity['custom_fields'] ) as $field_slug ) {
+			$field_data = get_post_meta( $publisher_id, $field_slug );
 
 			if ( ! empty( $field_data ) ) {
-				$data[$field_slug] = $field_data;
+				$data['custom_fields'][$field_slug] = $field_data;
 			}
 		}
 
-		// Get extra organization fields.
-	    $organization_extra_field_data = $this->extra_fields_service->get_all_field_data();
-
-		// Return all field data.
-		return array_merge( $data, $organization_extra_field_data );
+		return $data;
     }
 
 	/**
@@ -266,20 +231,17 @@ Class Organization_Knowledge_Panel_Service {
 	    // Get the Publisher ID.
 	    $publisher_id = $this->configuration_service->get_publisher_id();
 
-		// @todo: Set individual fields if they exist.
-
 	    // Update the Publisher title.
 	    if ( isset( $params['title'] ) ) {
-		    $title = sanitize_text_field( ['title'] );
-		    update_post_meta( $publisher_id, 'title', $title );
+		    update_post_meta( $publisher_id, 'title', sanitize_text_field( ['title'] ) );
 	    }
 
 	    // Valid Publisher types.
 	    $publisher_types = array(
 		    'Person',
 		    'Organization',
-		    'localBusiness',
-		    'onlineBusiness'
+		    'LocalBusiness',
+		    'OnlineBusiness'
 	    );
 
 		// Update the Publisher Entity Type.
@@ -294,8 +256,32 @@ Class Organization_Knowledge_Panel_Service {
 			);
 		}
 
-		// Return success
-	    // @todo: Does it make sense to return Publisher ID here?
+	    // Update the Publisher description.
+	    if ( isset( $params['description'] ) ) {
+		    update_post_meta( $publisher_id, 'description',sanitize_text_field( ['description'] ) );
+	    }
+
+		// Update Alternate Name.
+	    if ( isset( $params['alt_name'] ) ) {
+			$this->configuration_service->set_alternate_name( sanitize_text_field( $params['alt_name'] ) );
+	    }
+
+	    // Set the entity logo.
+	    if ( isset( $params['logo'] ) && is_numeric( $params['logo'] ) ) {
+		    set_post_thumbnail( $publisher_id, $params['logo'] );
+	    }
+
+	    // Update the custom fields.
+	    if ( isset( $params['custom_fields'] ) ) {
+		    foreach( $params['custom_fields'] as $field_slug => $field_value ) {
+			    if ( isset( $field_value ) ) {
+				    update_post_meta( $publisher_id, $field_slug, sanitize_text_field( $field_value ) );
+			    }
+		    }
+	    }
+
+	    // Return success
+	    // @todo: Should we return Publisher ID if a new one was created?
 		return new WP_REST_Response;
     }
 }

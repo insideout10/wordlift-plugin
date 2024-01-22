@@ -14,9 +14,9 @@
     "issues": "https://github.com/insideout10/wordlift-plugin/issues"
   },
   "require-dev": {
-    "wp-phpunit/wp-phpunit": "^5.9",
-    "automattic/jetpack-codesniffer": "^2.6",
-    "yoast/phpunit-polyfills": "^1.0"
+    "wp-phpunit/wp-phpunit": "~5.9.0",
+    "automattic/jetpack-codesniffer": "~2.6.0",
+    "yoast/phpunit-polyfills": "~1.0.0"
   },
   "require": {
     "composer/installers": "~1.12",

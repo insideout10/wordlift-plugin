@@ -64,7 +64,7 @@ class Wordlift_Publisher_Service {
 					array(
 						'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 						'field'    => 'slug',
-						'terms'    => array( 'organization', 'person' ),
+						'terms'    => array( 'organization', 'person', 'local-business', 'online-business' ),
 					),
 				),
 				'fields'         => 'ids',
@@ -148,7 +148,7 @@ class Wordlift_Publisher_Service {
 					array(
 						'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 						'field'    => 'slug',
-						'terms'    => array( 'organization', 'person' ),
+						'terms'    => array( 'organization', 'person', 'local-business', 'online-business' ),
 					),
 				),
 				's'              => $filter,
@@ -274,7 +274,6 @@ class Wordlift_Publisher_Service {
 	 * @since 3.19.2
 	 * @see https://github.com/insideout10/wordlift-plugin/issues/823 related issue.
 	 */
-	// @@todo move to the module
 	public function get_publisher_logo( $post_id ) {
 
 		// Get the featured image for the post.

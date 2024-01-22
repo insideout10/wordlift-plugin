@@ -412,7 +412,6 @@ class Wordlift_Configuration_Service {
 	public function set_alternate_name( $value ) {
 
 		$this->set( 'wl_general_settings', self::ALTERNATE_NAME, wp_strip_all_tags( $value ) );
-
 	}
 
 	/**

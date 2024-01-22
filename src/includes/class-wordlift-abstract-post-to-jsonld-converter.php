@@ -257,6 +257,11 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * @param Relations $relations
 	 */
 	private function add_relations_to_references( $relations, &$references ) {
+		// Exit if no $relations provided
+		if ( empty( $relations ) ) {
+			return;
+		}
+
 		/** @var Relation $relation */
 		foreach ( $relations->toArray() as $relation ) {
 			$object    = $relation->get_object();

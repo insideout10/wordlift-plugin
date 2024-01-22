@@ -186,6 +186,55 @@ class Wordlift_Schema_Service {
 	const FIELD_LEGAL_NAME = 'wl_schema_legal_name';
 
 	/**
+	 * The 'numberOfEmployees' field name.
+	 *
+	 * @since 3.53.0
+	 */
+	const FIELD_NO_OF_EMPLOYEES = 'wl_no_of_employees';
+
+	/**
+	 * The 'foundingDate' field name.
+	 *
+	 * @since 3.53.0
+	 */
+	const FIELD_FOUNDING_DATE = 'wl_founding_date';
+
+	/**
+	 * The 'iso6523Code' field name.
+	 *
+	 * @since 3.53.0
+	 */
+	const FIELD_ISO_6523_CODE = 'wl_iso_6523_code';
+
+	/**
+	 * The 'naics' field name.
+	 *
+	 * @since 3.53.0
+	 */
+	const FIELD_NAICS = 'wl_naics';
+
+	/**
+	 * The 'globalLocationNumber' field name.
+	 *
+	 * @since 3.53.0
+	 */
+	const FIELD_GLOBAL_LOCATION_NO = 'wl_global_location_no';
+
+	/**
+	 * The 'vatID' field name.
+	 *
+	 * @since 3.53.0
+	 */
+	const FIELD_VAT_ID = 'wl_vat_id';
+
+	/**
+	 * The 'taxID' field name.
+	 *
+	 * @since 3.53.0
+	 */
+	const FIELD_TAX_ID = 'wl_tax_id';
+
+	/**
 	 * The 'recipeCuisine' field name.
 	 *
 	 * @since 3.14.0
@@ -413,17 +462,18 @@ class Wordlift_Schema_Service {
 		$this->schema = apply_filters(
 			'wl_schemas',
 			array(
-				'article'        => $this->get_article_schema(),
-				'thing'          => $this->get_thing_schema(),
-				'creative-work'  => $this->get_creative_work_schema(),
-				'event'          => $this->get_event_schema(),
-				'organization'   => $this->get_organization_schema(),
-				'person'         => $this->get_person_schema(),
-				'place'          => $this->get_place_schema(),
-				'local-business' => $this->get_local_business_schema(),
-				'recipe'         => $this->get_recipe_schema(),
-				'web-page'       => $this->get_web_page_schema(),
-				'offer'          => $this->get_offer_schema(),
+				'article'         => $this->get_article_schema(),
+				'thing'           => $this->get_thing_schema(),
+				'creative-work'   => $this->get_creative_work_schema(),
+				'event'           => $this->get_event_schema(),
+				'organization'    => $this->get_organization_schema(),
+				'person'          => $this->get_person_schema(),
+				'place'           => $this->get_place_schema(),
+				'local-business'  => $this->get_local_business_schema(),
+				'online-business' => $this->get_online_business_schema(),
+				'recipe'          => $this->get_recipe_schema(),
+				'web-page'        => $this->get_web_page_schema(),
+				'offer'           => $this->get_offer_schema(),
 			)
 		);
 
@@ -791,6 +841,51 @@ class Wordlift_Schema_Service {
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 				),
+				self::FIELD_NO_OF_EMPLOYEES      => array(
+					'predicate'   => 'http://schema.org/numberOfEmployees',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:integer',
+					'constraints' => '',
+					'metabox'     => array(
+						'class' => 'Wordlift_Metabox_Field_Integer',
+					),
+				),
+				self::FIELD_FOUNDING_DATE        => array(
+					'predicate'   => 'http://schema.org/foundingDate',
+					'type'        => self::DATA_TYPE_DATE,
+					'export_type' => 'xsd:date',
+					'constraints' => '',
+				),
+				self::FIELD_ISO_6523_CODE         => array(
+					'predicate'   => 'http://schema.org/iso6523Code',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+				),
+				self::FIELD_NAICS                  => array(
+					'predicate'   => 'http://schema.org/naics',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+				),
+				self::FIELD_GLOBAL_LOCATION_NO     => array(
+					'predicate'   => 'http://schema.org/globalLocationNumber',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+				),
+				self::FIELD_VAT_ID                  => array(
+					'predicate'   => 'http://schema.org/vatID',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+				),
+				self::FIELD_TAX_ID                  => array(
+					'predicate'   => 'http://schema.org/taxID',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+				),
 			),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
@@ -994,6 +1089,38 @@ class Wordlift_Schema_Service {
 			'parents'       => array( 'place', 'organization' ),
 			'css_class'     => 'wl-local-business',
 			'uri'           => 'http://schema.org/LocalBusiness',
+			'same_as'       => array(
+				'http://rdf.freebase.com/ns/business/business_location',
+				'https://schema.org/Store',
+			),
+			'custom_fields' => array(),
+			'templates'     => array(
+				'subtitle' => '{{id}}',
+			),
+		);
+
+		// Merge the custom fields with those provided by the place and organization schema.
+		$place_schema            = $this->get_place_schema();
+		$organization_schema     = $this->get_organization_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $place_schema['custom_fields'], $organization_schema['custom_fields'] );
+
+		return $schema;
+	}
+
+	/**
+	 * Get the 'online business' schema.
+	 *
+	 * @return array An array with the schema configuration.
+	 *
+	 * @since 3.53.0
+	 */
+	private function get_online_business_schema() {
+		$schema = array(
+			'label'         => 'OnlineBusiness',
+			'description'   => 'A particular online business, either standalone or the online part of a broader organization. Examples include an eCommerce site, an online travel booking site, an online learning site, an online logistics and shipping provider, an online (virtual) doctor, etc.',
+			'parents'       => array( 'place', 'organization' ),
+			'css_class'     => 'wl-online-business',
+			'uri'           => 'http://schema.org/OnlineBusiness',
 			'same_as'       => array(
 				'http://rdf.freebase.com/ns/business/business_location',
 				'https://schema.org/Store',

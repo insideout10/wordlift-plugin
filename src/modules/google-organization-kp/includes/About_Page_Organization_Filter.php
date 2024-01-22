@@ -14,11 +14,6 @@ namespace Wordlift\Modules\Google_Organization_Kp;
 class About_Page_Organization_Filter {
 
 	/**
-	 * @var Organization_Extra_Fields_Service
-	 */
-	private $extra_fields_service;
-
-	/**
 	 * @var Wordlift_Publisher_Service
 	 */
 	private $publisher_service;
@@ -44,35 +39,21 @@ class About_Page_Organization_Filter {
 	private $schema_service;
 
 	/**
-	 * @var Relations
-	 */
-	private $relations;
-
-	/**
-	 * @param Organization_Extra_Fields_Service $extra_fields_service
 	 * @param Wordlift_Publisher_Service        $publisher_service
 	 * @param Wordlift_Configuration_Service    $configuration_service
 	 * @param Wordlift_Entity_Service           $entity_service
 	 * @param Wordlift_Post_To_Jsonld_Converter $post_jsonld_service
-	 * @param Wordlift_Schema_Service           $schema_service
-	 * @param Relations                         $relations
 	 */
 	public function __construct(
-		$extra_fields_service,
 		$publisher_service,
 		$configuration_service,
 		$entity_service,
-		$post_jsonld_service,
-		$schema_service,
-		$relations
+		$post_jsonld_service
 	) {
-		$this->extra_fields_service  = $extra_fields_service;
 		$this->publisher_service     = $publisher_service;
 		$this->configuration_service = $configuration_service;
 		$this->entity_service        = $entity_service;
 		$this->post_jsonld_service   = $post_jsonld_service;
-		$this->schema_service        = $schema_service;
-		$this->relations             = $relations;
 	}
 
 	/**
@@ -84,8 +65,8 @@ class About_Page_Organization_Filter {
 	 * @since 3.53.0
 	 */
 	public function init() {
-		add_filter( 'wl_website_jsonld', array( $this, 'add_organization_jsonld' ), 10, 2 );
-		add_filter( 'wl_after_get_jsonld', array( $this, 'add_organization_jsonld' ), 10, 2 );
+		add_filter( 'wl_website_jsonld', array( $this, '_add_organization_jsonld' ), 10, 2 );
+		add_filter( 'wl_after_get_jsonld', array( $this, '_add_organization_jsonld' ), 10, 2 );
 	}
 
 	/**
@@ -139,79 +120,23 @@ class About_Page_Organization_Filter {
 	 */
 	public function expand_publisher_jsonld( &$publisher_jsonld, $publisher_id ) {
 
-		// Get custom fields.
-		$entity_service   = $this->entity_service;
-		$schema_service   = $this->schema_service;
-		$alternative_name = get_post_meta( $publisher_id, $entity_service::ALTERNATIVE_LABEL_META_KEY, true );
-		$legal_name       = get_post_meta( $publisher_id, $schema_service::FIELD_LEGAL_NAME, true );
-		$street_address   = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS, true );
-		$locality         = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS_LOCALITY, true );
-		$region           = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS_REGION, true );
-		$country          = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS_COUNTRY, true );
-		$postal_code      = get_post_meta( $publisher_id, $schema_service::FIELD_ADDRESS_POSTAL_CODE, true );
-		$telephone        = get_post_meta( $publisher_id, $schema_service::FIELD_TELEPHONE, true );
-		$email            = get_post_meta( $publisher_id, $schema_service::FIELD_EMAIL, true );
-
-		// Set custom fields.
-
 		// Add alternativeName if set.
+		$alternative_name = $this->configuration_service->get_alternate_name();
+
 		if ( ! empty( $alternative_name ) ) {
 			$publisher_jsonld['alternateName'] = $alternative_name;
 		}
 
-		// Add legalName if set.
-		if ( ! empty( $legal_name ) ) {
-			$publisher_jsonld['legalName'] = $legal_name;
-		}
-
-		// If all address fields are available, build the `address` property with its sub properties.
-		if (
-			! empty( $street_address )
-			&& ! empty( $locality )
-			&& ! empty( $region )
-			&& ! empty( $country )
-			&& ! empty( $postal_code )
-		) {
-			$publisher_jsonld['address'] = array(
-				'@type'           => 'PostalAddress',
-				'streetAddress'   => $street_address,
-				'addressLocality' => $locality,
-				'addressCountry'  => $region,
-				'addressRegion'   => $country,
-				'postalCode'      => $postal_code,
-			);
-		}
-
-		// Add telephone if set.
-		if ( ! empty( $telephone ) ) {
-			$publisher_jsonld['telephone'] = $telephone;
-		}
-
-		// Add email if set.
-		if ( ! empty( $email ) ) {
-			$publisher_jsonld['email'] = $email;
-		}
-
-		// Set extra fields.
-
-		$extra_fields = $this->extra_fields_service->get_all_field_data();
-
-		foreach ( $extra_fields as $field_slug => $field_value ) {
-			$field_label                      = $this->extra_fields_service->get_field_label( $field_slug );
-			$publisher_jsonld[ $field_label ] = $field_value;
-		}
-
-		/**
+		/*
 		 * Set the logo, only for http://schema.org/ + Organization, LocalBusiness, or OnlineBusiness
 		 * as Person doesn't support the logo property.
 		 *
 		 * @see http://schema.org/logo.
 		 */
-		// @@todo fix the letter case.
 		$organization_types = array(
 			'Organization',
-			'localBusiness',
-			'onlineBusiness',
+			'LocalBusiness',
+			'OnlineBusiness',
 		);
 
 		if ( ! in_array( $publisher_jsonld['@type'], $organization_types, true ) ) {
@@ -219,7 +144,6 @@ class About_Page_Organization_Filter {
 		}
 
 		// Get the publisher logo.
-		$publisher_id   = $this->configuration_service->get_publisher_id();
 		$publisher_logo = $this->publisher_service->get_publisher_logo( $publisher_id );
 
 		// Bail out if the publisher logo isn't set.
@@ -227,7 +151,7 @@ class About_Page_Organization_Filter {
 			return;
 		}
 
-		/**
+		/*
 		 * Copy over some useful properties.
 		 *
 		 * @see https://developers.google.com/search/docs/data-types/articles.
@@ -235,7 +159,7 @@ class About_Page_Organization_Filter {
 		$jsonld['logo']['@type'] = 'ImageObject';
 		$jsonld['logo']['url']   = $publisher_logo['url'];
 
-		/**
+		/*
 		 * If you specify a "width" or "height" value you should leave out 'px'.
 		 * For example: "width":"4608px" should be "width":"4608".
 		 *
@@ -258,14 +182,14 @@ class About_Page_Organization_Filter {
 	 *
 	 * @since 3.53.0
 	 */
-	// @@todo rename it with an underscore.
-	public function add_organization_jsonld( $jsonld, $post_id ) {
+	public function _add_organization_jsonld( $jsonld, $post_id ) {
 		// Exit if the Publisher is not set or correctly configured.
 		if ( ! $this->publisher_service->is_publisher_set() ) {
 			return $jsonld;
 		}
 
 		// @@todo what if $post_id is false? i.e. Latest posts as Home Page.
+		// I think it's safe. $this->is_about_page() does a comparison, and if $post_id is null then it would return false.
 
 		$is_about_us = $this->is_about_page( $post_id );
 		$is_homepage = is_home() || is_front_page();
@@ -279,16 +203,7 @@ class About_Page_Organization_Filter {
 
 		// Add publisher to the JSON-LD if it doesn't exist in the graph.
 		if ( ! $this->is_publisher_entity_in_graph( $jsonld, $publisher_id ) ) {
-			// Get the Publisher data
-			$references     = array();
-			$reference_info = array();
-
-			$publisher_jsonld = $this->post_jsonld_service->convert(
-				$publisher_id,
-				$references,
-				$reference_info,
-				new $this->relations()
-			);
+			$publisher_jsonld = $this->post_jsonld_service->convert( $publisher_id );
 
 			// Add a reference to the publisher in the main Entity of the JSON-LD.
 			$jsonld[0]['publisher'] = array(
