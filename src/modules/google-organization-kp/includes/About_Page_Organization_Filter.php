@@ -119,7 +119,6 @@ class About_Page_Organization_Filter {
 	 * @since 3.53.0
 	 */
 	public function expand_publisher_jsonld( &$publisher_jsonld, $publisher_id ) {
-
 		// Get custom fields.
 //		$entity_service   = $this->entity_service;
 //
@@ -207,16 +206,7 @@ class About_Page_Organization_Filter {
 
 		// Add publisher to the JSON-LD if it doesn't exist in the graph.
 		if ( ! $this->is_publisher_entity_in_graph( $jsonld, $publisher_id ) ) {
-			// Get the Publisher data
-			$references     = array();
-			$reference_info = array();
-
-			$publisher_jsonld = $this->post_jsonld_service->convert(
-				$publisher_id,
-				$references,
-				$reference_info,
-				new $this->relations()
-			);
+			$publisher_jsonld = $this->post_jsonld_service->convert( $publisher_id );
 
 			// Add a reference to the publisher in the main Entity of the JSON-LD.
 			$jsonld[0]['publisher'] = array(
