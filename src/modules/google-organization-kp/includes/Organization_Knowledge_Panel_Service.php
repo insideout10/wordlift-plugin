@@ -158,6 +158,7 @@ Class Organization_Knowledge_Panel_Service {
 		$data['name']        = $publisher_post->post_title;      // Name
 		$data['type']        = $publisher_entity['label'];       // Type
 		$data['description'] = $publisher_entity['description']; // Description
+	    $data['alt_name']    = $this->configuration_service->get_alternate_name();
 
 		// Add the logo
 		if ( ! empty( $publisher_logo ) ) {
@@ -232,8 +233,7 @@ Class Organization_Knowledge_Panel_Service {
 
 	    // Update the Publisher title.
 	    if ( isset( $params['title'] ) ) {
-		    $title = sanitize_text_field( ['title'] );
-		    update_post_meta( $publisher_id, 'title', $title );
+		    update_post_meta( $publisher_id, 'title', sanitize_text_field( ['title'] ) );
 	    }
 
 	    // Valid Publisher types.
@@ -258,8 +258,12 @@ Class Organization_Knowledge_Panel_Service {
 
 	    // Update the Publisher description.
 	    if ( isset( $params['description'] ) ) {
-		    $title = sanitize_text_field( ['description'] );
-		    update_post_meta( $publisher_id, 'description', $title );
+		    update_post_meta( $publisher_id, 'description',sanitize_text_field( ['description'] ) );
+	    }
+
+		// Update Alternate Name.
+	    if ( isset( $params['alt_name'] ) ) {
+			$this->configuration_service->set_alternate_name( sanitize_text_field( $params['alt_name'] ) );
 	    }
 
 		// @todo: Update the logo.
