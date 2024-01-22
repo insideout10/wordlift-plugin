@@ -266,7 +266,10 @@ Class Organization_Knowledge_Panel_Service {
 			$this->configuration_service->set_alternate_name( sanitize_text_field( $params['alt_name'] ) );
 	    }
 
-		// @todo: Update the logo.
+	    // Set the entity logo.
+	    if ( isset( $params['logo'] ) && is_numeric( $params['logo'] ) ) {
+		    set_post_thumbnail( $publisher_id, $params['logo'] );
+	    }
 
 	    // Update the custom fields.
 	    if ( isset( $params['custom_fields'] ) ) {
