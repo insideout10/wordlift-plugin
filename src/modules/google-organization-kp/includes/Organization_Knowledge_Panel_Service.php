@@ -13,7 +13,6 @@
 
 namespace Wordlift\Modules\Google_Organization_Kp;
 
-use Wordlift_Schema_Service;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -33,11 +32,6 @@ Class Organization_Knowledge_Panel_Service {
 	private $countries;
 
 	/**
-	 * @var Organization_Extra_Fields_Service
-	 */
-	private $extra_fields_service;
-
-	/**
 	 * @var Wordlift_Publisher_Service
 	 */
 	private $publisher_service;
@@ -51,19 +45,11 @@ Class Organization_Knowledge_Panel_Service {
 	 * @var Wordlift_Configuration_Service
 	 */
 	private $configuration_service;
-
-	/**
-	 * @var Wordlift_Schema_Service
-	 */
-	private $schema_service;
-
 	/**
 	 * @param Wordlift_Countries                $countries
-	 * @param Organization_Extra_Fields_Service $extra_fields_service
 	 * @param Wordlift_Publisher_Service        $publisher_service
 	 * @param Wordlift_Entity_Type_Service      $entity_service
 	 * @param Wordlift_Configuration_Service    $configuration_service
-	 * @param Wordlift_Schema_Service           $schema_service
 	 */
 	public function __construct(
 		$countries,
@@ -182,33 +168,15 @@ Class Organization_Knowledge_Panel_Service {
 			$data['logo'] = $publisher_logo['url'];
 		}
 
-		// Add custom fields.
-//	    $schema_service = $this->schema_service;
-	    $custom_fields = array(
-			Wordlift_Schema_Service::FIELD_SAME_AS,
-		    Wordlift_Schema_Service::FIELD_ADDRESS,
-		    Wordlift_Schema_Service::FIELD_ADDRESS_LOCALITY,
-		    Wordlift_Schema_Service::FIELD_ADDRESS_REGION,
-		    Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY,
-		    Wordlift_Schema_Service::FIELD_ADDRESS_POSTAL_CODE,
-		    Wordlift_Schema_Service::FIELD_TELEPHONE,
-		    Wordlift_Schema_Service::FIELD_EMAIL
-	    );
-
-		foreach ( $custom_fields as $field_slug ) {
-			// @todo: Is there a downside to using get_post_meta as opposed to Wordlift_Storage_Factory?
+		foreach ( array_keys( $publisher_entity['custom_fields'] ) as $field_slug ) {
 			$field_data = get_post_meta( $publisher_id, $field_slug, true );
 
 			if ( ! empty( $field_data ) ) {
-				$data[$field_slug] = $field_data;
+				$data['custom_fields'][$field_slug] = $field_data;
 			}
 		}
 
-		// Get extra organization fields.
-	    $organization_extra_field_data = $this->extra_fields_service->get_all_field_data();
-
-		// Return all field data.
-		return array_merge( $data, $organization_extra_field_data );
+		return $data;
     }
 
 	/**
