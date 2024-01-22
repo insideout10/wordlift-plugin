@@ -53,18 +53,14 @@ Class Organization_Knowledge_Panel_Service {
 	 */
 	public function __construct(
 		$countries,
-		$extra_fields_service,
 		$publisher_service,
 		$entity_service,
-		$configuration_service,
-		$schema_service
+		$configuration_service
 	) {
 		$this->countries             = $countries;
-		$this->extra_fields_service  = $extra_fields_service;
 		$this->publisher_service     = $publisher_service;
 		$this->entity_service        = $entity_service;
 		$this->configuration_service = $configuration_service;
-		$this->schema_service        = $schema_service;
 	}
 	
 	/**
@@ -169,7 +165,7 @@ Class Organization_Knowledge_Panel_Service {
 		}
 
 		foreach ( array_keys( $publisher_entity['custom_fields'] ) as $field_slug ) {
-			$field_data = get_post_meta( $publisher_id, $field_slug, true );
+			$field_data = get_post_meta( $publisher_id, $field_slug );
 
 			if ( ! empty( $field_data ) ) {
 				$data['custom_fields'][$field_slug] = $field_data;
