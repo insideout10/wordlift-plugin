@@ -14,11 +14,6 @@ namespace Wordlift\Modules\Google_Organization_Kp;
 class About_Page_Organization_Filter {
 
 	/**
-	 * @var Organization_Extra_Fields_Service
-	 */
-	private $extra_fields_service;
-
-	/**
 	 * @var Wordlift_Publisher_Service
 	 */
 	private $publisher_service;
@@ -44,20 +39,17 @@ class About_Page_Organization_Filter {
 	private $schema_service;
 
 	/**
-	 * @param Organization_Extra_Fields_Service $extra_fields_service
 	 * @param Wordlift_Publisher_Service        $publisher_service
 	 * @param Wordlift_Configuration_Service    $configuration_service
 	 * @param Wordlift_Entity_Service           $entity_service
 	 * @param Wordlift_Post_To_Jsonld_Converter $post_jsonld_service
 	 */
 	public function __construct(
-		$extra_fields_service,
 		$publisher_service,
 		$configuration_service,
 		$entity_service,
 		$post_jsonld_service
 	) {
-		$this->extra_fields_service  = $extra_fields_service;
 		$this->publisher_service     = $publisher_service;
 		$this->configuration_service = $configuration_service;
 		$this->entity_service        = $entity_service;
@@ -119,104 +111,6 @@ class About_Page_Organization_Filter {
 	}
 
 	/**
-	 * Get the publisher logo structure.
-	 *
-	 * The function returns false when the publisher logo cannot be determined, i.e.:
-	 *  - the post has no featured image.
-	 *  - the featured image has no file.
-	 *  - a wp_image_editor instance cannot be instantiated on the original file or on the publisher logo file.
-	 *
-	 * @param int $post_id The post id.
-	 *
-	 * @return array|false Returns an array with the `url`, `width` and `height` for the publisher logo or false in case
-	 *  of errors.
-	 * @since 3.19.2
-	 * @see https://github.com/insideout10/wordlift-plugin/issues/823 related issue.
-	 */
-	private function get_publisher_logo( $post_id ) {
-
-		// Get the featured image for the post.
-		$thumbnail_id = get_post_thumbnail_id( $post_id );
-
-		// Bail out if thumbnail not available.
-		if ( empty( $thumbnail_id ) || 0 === $thumbnail_id ) {
-			$this->log->info( "Featured image not set for post $post_id." );
-
-			return false;
-		}
-
-		// Get the uploads base URL.
-		$uploads_dir = wp_upload_dir();
-
-		// Get the attachment metadata.
-		$metadata = wp_get_attachment_metadata( $thumbnail_id );
-
-		// Bail out if the file isn't set.
-		if ( ! isset( $metadata['file'] ) ) {
-			$this->log->warn( "Featured image file not found for post $post_id." );
-
-			return false;
-		}
-
-		// Retrieve the relative filename, e.g. "2018/05/logo_publisher.png"
-		$path = $uploads_dir['basedir'] . DIRECTORY_SEPARATOR . $metadata['file'];
-
-		// Use image src, if local file does not exist. @see https://github.com/insideout10/wordlift-plugin/issues/1149
-		if ( ! file_exists( $path ) ) {
-			$this->log->warn( "Featured image file $path doesn't exist for post $post_id." );
-
-			$attachment_image_src = wp_get_attachment_image_src( $thumbnail_id, '' );
-			if ( $attachment_image_src ) {
-				return array(
-					'url'    => $attachment_image_src[0],
-					'width'  => $attachment_image_src[1],
-					'height' => $attachment_image_src[2],
-				);
-			}
-
-			// Bail out if we cant fetch wp_get_attachment_image_src
-			return false;
-
-		}
-
-		// Try to get the image editor and bail out if the editor cannot be instantiated.
-		$original_file_editor = wp_get_image_editor( $path );
-		if ( is_wp_error( $original_file_editor ) ) {
-			$this->log->warn( "Cannot instantiate WP Image Editor on file $path for post $post_id." );
-
-			return false;
-		}
-
-		// Generate the publisher logo filename, we cannot use the `width` and `height` because we're scaling
-		// and we don't actually know the end values.
-		$publisher_logo_path = $original_file_editor->generate_filename( '-publisher-logo' );
-
-		// If the file doesn't exist yet, create it.
-		if ( ! file_exists( $publisher_logo_path ) ) {
-			$original_file_editor->resize( 600, 60 );
-			$original_file_editor->save( $publisher_logo_path );
-		}
-
-		// Try to get the image editor and bail out if the editor cannot be instantiated.
-		$publisher_logo_editor = wp_get_image_editor( $publisher_logo_path );
-		if ( is_wp_error( $publisher_logo_editor ) ) {
-			$this->log->warn( "Cannot instantiate WP Image Editor on file $publisher_logo_path for post $post_id." );
-
-			return false;
-		}
-
-		// Get the actual size.
-		$size = $publisher_logo_editor->get_size();
-
-		// Finally return the array with data.
-		return array(
-			'url'    => $uploads_dir['baseurl'] . substr( $publisher_logo_path, strlen( $uploads_dir['basedir'] ) ),
-			'width'  => $size['width'],
-			'height' => $size['height'],
-		);
-	}
-
-	/**
 	 * Add the extra fields to the Publisher JSON-LD structure.
 	 *
 	 * @param &$publisher_jsonld array Reference to the Publisher JSON-LD array within the main JSON-LD array.
@@ -227,23 +121,14 @@ class About_Page_Organization_Filter {
 	public function expand_publisher_jsonld( &$publisher_jsonld, $publisher_id ) {
 
 		// Get custom fields.
-		$entity_service   = $this->entity_service;
-
-		$alternative_name = get_post_meta( $publisher_id, $entity_service::ALTERNATIVE_LABEL_META_KEY, true );
-
-		// Add alternativeName if set.
-		if ( ! empty( $alternative_name ) ) {
-			$publisher_jsonld['alternateName'] = $alternative_name;
-		}
-
-		// Set extra fields.
-
-		$extra_fields = $this->extra_fields_service->get_all_field_data();
-
-		foreach ( $extra_fields as $field_slug => $field_value ) {
-			$field_label                      = $this->extra_fields_service->get_field_label( $field_slug );
-			$publisher_jsonld[ $field_label ] = $field_value;
-		}
+//		$entity_service   = $this->entity_service;
+//
+//		$alternative_name = get_post_meta( $publisher_id, $entity_service::ALTERNATIVE_LABEL_META_KEY, true );
+//
+//		// Add alternativeName if set.
+//		if ( ! empty( $alternative_name ) ) {
+//			$publisher_jsonld['alternateName'] = $alternative_name;
+//		}
 
 		/**
 		 * Set the logo, only for http://schema.org/ + Organization, LocalBusiness, or OnlineBusiness
@@ -263,7 +148,7 @@ class About_Page_Organization_Filter {
 
 		// Get the publisher logo.
 		$publisher_id   = $this->configuration_service->get_publisher_id();
-		$publisher_logo = $this->get_publisher_logo( $publisher_id );
+		$publisher_logo = $this->publisher_service->get_publisher_logo( $publisher_id );
 
 		// Bail out if the publisher logo isn't set.
 		if ( false === $publisher_logo ) {
