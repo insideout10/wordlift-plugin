@@ -41,7 +41,7 @@ class Rest_Controller {
 		$publisher_service,
 		$page_service
 	) {
-		$this->countries      = $countries;
+		$this->countries         = $countries;
 		$this->publisher_service = $publisher_service;
 		$this->page_service      = $page_service;
 	}

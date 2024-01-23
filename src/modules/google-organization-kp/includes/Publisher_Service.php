@@ -129,7 +129,7 @@ class Publisher_Service {
 
 		// Valid Publisher types.
 		$publisher_service = $this->publisher_service;
-		$publisher_types      = array_values( $publisher_service::VALID_PUBLISHER_TYPES );
+		$publisher_types   = array_values( $publisher_service::VALID_PUBLISHER_TYPES );
 
 		// Try to get the Publisher
 		$publisher_id = $this->configuration_service->get_publisher_id();
