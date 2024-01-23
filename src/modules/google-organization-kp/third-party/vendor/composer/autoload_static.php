@@ -4,7 +4,7 @@
 
 namespace Wordlift_Modules_Google_Organization_Kp_Composer\Autoload;
 
-class ComposerStaticInitac70d476bb853fbcff0ce451bf7601a1
+class ComposerStaticInit807c93ea97a2013a926637cdfb9bfe0c
 {
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
@@ -277,7 +277,7 @@ class ComposerStaticInitac70d476bb853fbcff0ce451bf7601a1
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInitac70d476bb853fbcff0ce451bf7601a1::$classMap;
+            $loader->classMap = ComposerStaticInit807c93ea97a2013a926637cdfb9bfe0c::$classMap;
 
         }, null, ClassLoader::class);
     }

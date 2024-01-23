@@ -13,17 +13,19 @@ services:
     factory: [ 'Wordlift_Entity_Type_Service', 'get_instance' ]
     class: Wordlift_Entity_Type_Service
 
-  Wordlift_Post_To_Jsonld_Converter:
-    factory: [ 'Wordlift_Post_To_Jsonld_Converter', 'get_instance' ]
-    class: Wordlift_Post_To_Jsonld_Converter
-
   Wordlift_Configuration_Service:
     factory: [ 'Wordlift_Configuration_Service', 'get_instance' ]
     class: Wordlift_Configuration_Service
 
-  Wordlift_Schema_Service:
-    factory: [ 'Wordlift_Schema_Service', 'get_instance' ]
-    class: Wordlift_Schema_Service
+  Wordlift_Postid_To_Jsonld_Converter:
+    factory: [ 'Wordlift_Postid_To_Jsonld_Converter', 'get_instance' ]
+    class: Wordlift_Postid_To_Jsonld_Converter
+
+  Wordlift_Entity_Post_To_Jsonld_Converter:
+    class: Wordlift_Entity_Post_To_Jsonld_Converter
+
+  Wordlift_Post_To_Jsonld_Converter:
+    class: Wordlift_Post_To_Jsonld_Converter
 
   Wordlift_Countries:
     class: Wordlift_Countries
@@ -33,7 +35,7 @@ services:
 
   Wordlift\Modules\Google_Organization_Kp\Publisher_Service:
     class: Wordlift\Modules\Google_Organization_Kp\Publisher_Service
-    arguments: [ '@Wordlift_Publisher_Service', '@Wordlift_Entity_Type_Service', '@Wordlift_Configuration_Service', '@Wordlift_Schema_Service' ]
+    arguments: [ '@Wordlift_Publisher_Service', '@Wordlift_Entity_Type_Service', '@Wordlift_Configuration_Service' ]
 
   Wordlift\Modules\Google_Organization_Kp\Rest_Controller:
     class: Wordlift\Modules\Google_Organization_Kp\Rest_Controller
@@ -41,4 +43,4 @@ services:
 
   Wordlift\Modules\Google_Organization_Kp\About_Page_Organization_Filter:
     class: Wordlift\Modules\Google_Organization_Kp\About_Page_Organization_Filter
-    arguments: [ '@Wordlift_Publisher_Service', '@Wordlift_Configuration_Service', '@Wordlift_Entity_Service', '@Wordlift_Post_To_Jsonld_Converter' ]
+    arguments: [ '@Wordlift_Publisher_Service', '@Wordlift_Configuration_Service', '@Wordlift_Entity_Service', '@Wordlift_Postid_To_Jsonld_Converter' ]

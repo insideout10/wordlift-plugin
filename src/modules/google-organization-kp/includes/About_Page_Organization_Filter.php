@@ -29,26 +29,26 @@ class About_Page_Organization_Filter {
 	private $entity_service;
 
 	/**
-	 * @var \Wordlift_Post_To_Jsonld_Converter
+	 * @var \Wordlift_Postid_To_Jsonld_Converter
 	 */
 	private $post_jsonld_service;
 
 	/**
-	 * @param \Wordlift_Publisher_Service        $publisher_service
-	 * @param \Wordlift_Configuration_Service    $configuration_service
-	 * @param \Wordlift_Entity_Service           $entity_service
-	 * @param \Wordlift_Post_To_Jsonld_Converter $post_jsonld_service
+	 * @param \Wordlift_Publisher_Service          $publisher_service
+	 * @param \Wordlift_Configuration_Service      $configuration_service
+	 * @param \Wordlift_Entity_Service             $entity_service
+	 * @param \Wordlift_Postid_To_Jsonld_Converter $postid_to_jsonld_converter
 	 */
 	public function __construct(
 		$publisher_service,
 		$configuration_service,
 		$entity_service,
-		$post_jsonld_service
+		$postid_to_jsonld_converter
 	) {
-		$this->publisher_service     = $publisher_service;
-		$this->configuration_service = $configuration_service;
-		$this->entity_service        = $entity_service;
-		$this->post_jsonld_service   = $post_jsonld_service;
+		$this->publisher_service          = $publisher_service;
+		$this->configuration_service      = $configuration_service;
+		$this->entity_service             = $entity_service;
+		$this->postid_to_jsonld_converter = $postid_to_jsonld_converter;
 	}
 
 	/**
@@ -121,8 +121,8 @@ class About_Page_Organization_Filter {
 	public function add_organization_jsonld( $jsonld, $post_id ) {
 		$publisher_id = $this->configuration_service->get_publisher_id();
 
-		// Exit if the Publisher is not set or correctly configured.
-		if ( ! isset( $publisher_id ) || ! is_numeric( $publisher_id ) ) {
+		// Exit if the Publisher is not set.
+		if ( ! is_numeric( $publisher_id ) ) {
 			return $jsonld;
 		}
 
@@ -139,7 +139,7 @@ class About_Page_Organization_Filter {
 
 		// Add publisher to the JSON-LD if it doesn't exist in the graph.
 		if ( ! $this->is_publisher_entity_in_graph( $jsonld, $publisher_id ) ) {
-			$publisher_jsonld = $this->post_jsonld_service->convert( $publisher_id );
+			$publisher_jsonld = $this->postid_to_jsonld_converter->convert( $publisher_id );
 
 			$jsonld[] = $publisher_jsonld;
 		}
