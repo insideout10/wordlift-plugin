@@ -65,6 +65,7 @@ class Rest_Controller {
 		// https://ng.ant.design/components/auto-complete/en
 		// @@TODO did we really need this API or could we have used this?
 		// https://developer.wordpress.org/rest-api/reference/pages/
+		//
 		// The suggested WordPress endpoint should work fine. E.g.
 		// https://wordlift.www.localhost/wp-json/wp/v2/pages?search=sam&search_columns=post_title
 		register_rest_route(
