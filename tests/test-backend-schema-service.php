@@ -61,6 +61,7 @@ class Wordlift_Schema_Service_Test extends Wordlift_Unit_Test_Case {
 			'person',
 			'place',
 			'local-business',
+			'online-business',
 			'recipe',
 		);
 
