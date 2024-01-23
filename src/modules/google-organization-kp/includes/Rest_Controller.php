@@ -206,26 +206,27 @@ class Rest_Controller {
 		$params = $request->get_params();
 		$files  = $request->get_file_params();
 
+		// Check image.
 		if ( ! empty( $files['image'] ) ) {
 			$params['image'] = $files['image'];
-		}
 
-		// Return error if MIME type not set.
-		if ( ! isset( $files['type'] ) ) {
-			return new WP_Error(
-				'400',
-				'File mime type is not supported',
-				array( 'status' => 400 )
-			);
-		}
+			// Return error if MIME type not set.
+			if ( ! isset( $files['type'] ) ) {
+				return new WP_Error(
+					'400',
+					'File mime type is not supported',
+					array( 'status' => 400 )
+				);
+			}
 
-		// Return error if file type is not image
-		if ( strpos( $files['type'], 'image' ) === false ) {
-			return new WP_Error(
-				'400',
-				'Only image files are supported',
-				array( 'status' => 400 )
-			);
+			// Return error if file type is not image
+			if ( strpos( $files['type'], 'image' ) === false ) {
+				return new WP_Error(
+					'400',
+					'Only image files are supported',
+					array( 'status' => 400 )
+				);
+			}
 		}
 
 		try {

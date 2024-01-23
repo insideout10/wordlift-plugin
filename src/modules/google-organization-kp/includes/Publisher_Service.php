@@ -142,16 +142,16 @@ class Publisher_Service {
 			}
 
 			$this->publisher_service->save( $params['name'], $params['type'], $params['image'] );
+
+			// Get the new Publisher ID.
+			$publisher_id = $this->configuration_service->get_publisher_id();
 		}
 
-		// Get the Publisher ID.
-		$publisher_id = $this->configuration_service->get_publisher_id();
-
 		// Update the Publisher title.
-		if ( isset( $params['title'] ) ) {
+		if ( isset( $params['name'] ) ) {
 			$post_array = array(
 				'ID'         => $publisher_id,
-				'post_title' => sanitize_text_field( $params['title'] ),
+				'post_title' => sanitize_text_field( $params['name'] ),
 			);
 
 			wp_update_post( $post_array );
