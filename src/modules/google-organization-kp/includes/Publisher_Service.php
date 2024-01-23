@@ -128,7 +128,8 @@ class Publisher_Service {
 		}
 
 		// Valid Publisher types.
-		$publisher_types = array_values( $this->wl_publisher_service->VALID_PUBLISHER_TYPES );
+		$wl_publisher_service = $this->wl_publisher_service;
+		$publisher_types = array_values( $wl_publisher_service::VALID_PUBLISHER_TYPES );
 
 		// Try to get the Publisher
 		$publisher_id = $this->wl_configuration_service->get_publisher_id();
