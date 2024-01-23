@@ -11,7 +11,7 @@ class Rest_Controller {
 	/**
 	 * @var \Wordlift_Countries
 	 */
-	private $wl_countries;
+	private $countries;
 
 	/**
 	 * @var Publisher_Service
@@ -37,11 +37,11 @@ class Rest_Controller {
 	 * @param Page_Service        $page_service
 	 */
 	public function __construct(
-		$wl_countries,
+		$countries,
 		$publisher_service,
 		$page_service
 	) {
-		$this->wl_countries      = $wl_countries;
+		$this->countries      = $countries;
 		$this->publisher_service = $publisher_service;
 		$this->page_service      = $page_service;
 	}
@@ -65,6 +65,8 @@ class Rest_Controller {
 		// https://ng.ant.design/components/auto-complete/en
 		// @@TODO did we really need this API or could we have used this?
 		// https://developer.wordpress.org/rest-api/reference/pages/
+		// The suggested WordPress endpoint should work fine. E.g.
+		// https://wordlift.www.localhost/wp-json/wp/v2/pages?search=sam&search_columns=post_title
 		register_rest_route(
 			WL_REST_ROUTE_DEFAULT_NAMESPACE,
 			'/wl-google-organization-kp/pages',
@@ -163,7 +165,7 @@ class Rest_Controller {
 	 */
 	public function countries_get_callback() {
 		// Get the countries data from the service and return.
-		$data = $this->wl_countries->get_countries();
+		$data = $this->countries->get_countries();
 
 		return rest_ensure_response( $data );
 	}

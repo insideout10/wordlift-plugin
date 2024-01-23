@@ -19,39 +19,39 @@ class Publisher_Service {
 	/**
 	 * @var \Wordlift_Publisher_Service
 	 */
-	private $wl_publisher_service;
+	private $publisher_service;
 
 	/**
 	 * @var \Wordlift_Entity_Type_Service
 	 */
-	private $wl_entity_service;
+	private $entity_service;
 
 	/**
 	 * @var Wordlift_Configuration_Service
 	 */
-	private $wl_configuration_service;
+	private $configuration_service;
 
 	/**
 	 * @var \Wordlift_Schema_Service
 	 */
-	private $wl_schema_service;
+	private $schema_service;
 
 	/**
-	 * @param \Wordlift_Publisher_Service     $wl_publisher_service
-	 * @param \Wordlift_Entity_Type_Service   $wl_entity_service
-	 * @param \Wordlift_Configuration_Service $wl_configuration_service
-	 * @param \Wordlift_Schema_Service        $wl_schema_service
+	 * @param \Wordlift_Publisher_Service     $publisher_service
+	 * @param \Wordlift_Entity_Type_Service   $entity_service
+	 * @param \Wordlift_Configuration_Service $configuration_service
+	 * @param \Wordlift_Schema_Service        $schema_service
 	 */
 	public function __construct(
-		$wl_publisher_service,
-		$wl_entity_service,
-		$wl_configuration_service,
-		$wl_schema_service
+		$publisher_service,
+		$entity_service,
+		$configuration_service,
+		$schema_service
 	) {
-		$this->wl_publisher_service     = $wl_publisher_service;
-		$this->wl_entity_service        = $wl_entity_service;
-		$this->wl_configuration_service = $wl_configuration_service;
-		$this->wl_schema_service        = $wl_schema_service;
+		$this->publisher_service     = $publisher_service;
+		$this->entity_service        = $entity_service;
+		$this->configuration_service = $configuration_service;
+		$this->schema_service        = $schema_service;
 	}
 
 	/**
@@ -62,8 +62,8 @@ class Publisher_Service {
 	 * @since 3.53.0
 	 */
 	public function get() {
-		$publisher_id = $this->wl_configuration_service->get_publisher_id();
-		if ( ! isset( $publisher_id ) || $publisher_id === '(none)' ) {
+		$publisher_id = $this->configuration_service->get_publisher_id();
+		if ( ! isset( $publisher_id ) || ! is_numeric( $publisher_id ) ) {
 			return array();
 		}
 
@@ -76,15 +76,15 @@ class Publisher_Service {
 
 		$data = array();
 
-		$schema_service   = $this->wl_schema_service;
-		$publisher_entity = $this->wl_entity_service->get( $publisher_id );
-		$publisher_logo   = $this->wl_publisher_service->get_publisher_logo( $publisher_id );
+		$schema_service   = $this->schema_service;
+		$publisher_entity = $this->entity_service->get( $publisher_id );
+		$publisher_logo   = $this->publisher_service->get_publisher_logo( $publisher_id );
 
 		$data['id']          = $publisher_id;
 		$data['name']        = $publisher_post->post_title;
 		$data['type']        = $publisher_entity['label'];
 		$data['description'] = $publisher_entity['description'];
-		$data['alt_name']    = $this->wl_configuration_service->get_alternate_name();
+		$data['alt_name']    = $this->configuration_service->get_alternate_name();
 		$data['legal_name']  = get_post_meta( $publisher_id, $schema_service::FIELD_LEGAL_NAME, true );
 
 		if ( ! empty( $publisher_logo ) ) {
@@ -128,11 +128,11 @@ class Publisher_Service {
 		}
 
 		// Valid Publisher types.
-		$wl_publisher_service = $this->wl_publisher_service;
-		$publisher_types = array_values( $wl_publisher_service::VALID_PUBLISHER_TYPES );
+		$publisher_service = $this->publisher_service;
+		$publisher_types      = array_values( $publisher_service::VALID_PUBLISHER_TYPES );
 
 		// Try to get the Publisher
-		$publisher_id = $this->wl_configuration_service->get_publisher_id();
+		$publisher_id = $this->configuration_service->get_publisher_id();
 
 		// Publisher doesn't exist, create one.
 		if ( ! isset( $publisher_id ) || $publisher_id === '(none)' ) {
@@ -141,11 +141,11 @@ class Publisher_Service {
 				throw new Exception( 'Required parameters not provided.' );
 			}
 
-			$this->wl_publisher_service->save( $params['name'], $params['type'], $params['image'] );
+			$this->publisher_service->save( $params['name'], $params['type'], $params['image'] );
 		}
 
 		// Get the Publisher ID.
-		$publisher_id = $this->wl_configuration_service->get_publisher_id();
+		$publisher_id = $this->configuration_service->get_publisher_id();
 
 		// Update the Publisher title.
 		if ( isset( $params['title'] ) ) {
@@ -172,7 +172,7 @@ class Publisher_Service {
 			// Set the type URI, http://schema.org/ + Person, Organization, localBusiness or Organization.
 			$type_uri = sprintf( 'http://schema.org/%s', $params['type'] );
 
-			$this->wl_entity_service->set(
+			$this->entity_service->set(
 				$publisher_id,
 				$type_uri,
 				true
@@ -181,7 +181,7 @@ class Publisher_Service {
 
 		// Update Alternate Name.
 		if ( isset( $params['alt_name'] ) ) {
-			$this->wl_configuration_service->set_alternate_name( sanitize_text_field( $params['alt_name'] ) );
+			$this->configuration_service->set_alternate_name( sanitize_text_field( $params['alt_name'] ) );
 		}
 
 		// Set the entity logo.
@@ -191,7 +191,7 @@ class Publisher_Service {
 
 		// Update fields.
 
-		$schema_service = $this->wl_schema_service;
+		$schema_service = $this->schema_service;
 
 		if ( isset( $params['same_as'] ) ) {
 			update_post_meta( $publisher_id, $schema_service::FIELD_SAME_AS, $params['same_as'] );

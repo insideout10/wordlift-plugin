@@ -16,39 +16,39 @@ class About_Page_Organization_Filter {
 	/**
 	 * @var \Wordlift_Publisher_Service
 	 */
-	private $wl_publisher_service;
+	private $publisher_service;
 
 	/**
 	 * @var \Wordlift_Configuration_Service
 	 */
-	private $wl_configuration_service;
+	private $configuration_service;
 
 	/**
 	 * @var \Wordlift_Entity_Service
 	 */
-	private $wl_entity_service;
+	private $entity_service;
 
 	/**
 	 * @var \Wordlift_Post_To_Jsonld_Converter
 	 */
-	private $wl_post_jsonld_service;
+	private $post_jsonld_service;
 
 	/**
-	 * @param \Wordlift_Publisher_Service        $wl_publisher_service
-	 * @param \Wordlift_Configuration_Service    $wl_configuration_service
-	 * @param \Wordlift_Entity_Service           $wl_entity_service
-	 * @param \Wordlift_Post_To_Jsonld_Converter $wl_post_jsonld_service
+	 * @param \Wordlift_Publisher_Service        $publisher_service
+	 * @param \Wordlift_Configuration_Service    $configuration_service
+	 * @param \Wordlift_Entity_Service           $entity_service
+	 * @param \Wordlift_Post_To_Jsonld_Converter $post_jsonld_service
 	 */
 	public function __construct(
-		$wl_publisher_service,
-		$wl_configuration_service,
-		$wl_entity_service,
-		$wl_post_jsonld_service
+		$publisher_service,
+		$configuration_service,
+		$entity_service,
+		$post_jsonld_service
 	) {
-		$this->wl_publisher_service     = $wl_publisher_service;
-		$this->wl_configuration_service = $wl_configuration_service;
-		$this->wl_entity_service        = $wl_entity_service;
-		$this->wl_post_jsonld_service   = $wl_post_jsonld_service;
+		$this->publisher_service     = $publisher_service;
+		$this->configuration_service = $configuration_service;
+		$this->entity_service        = $entity_service;
+		$this->post_jsonld_service   = $post_jsonld_service;
 	}
 
 	/**
@@ -94,7 +94,7 @@ class About_Page_Organization_Filter {
 	 * @since 3.53.0
 	 */
 	public function is_publisher_entity_in_graph( $jsonld, $publisher_id ) {
-		$publisher_uri = $this->wl_entity_service->get_uri( $publisher_id );
+		$publisher_uri = $this->entity_service->get_uri( $publisher_id );
 
 		foreach ( $jsonld as $item ) {
 			if ( $item && array_key_exists( '@id', $item ) && $item['@id'] === $publisher_uri ) {
@@ -116,7 +116,7 @@ class About_Page_Organization_Filter {
 	public function expand_publisher_jsonld( &$publisher_jsonld, $publisher_id ) {
 
 		// Add alternativeName if set.
-		$alternative_name = $this->wl_configuration_service->get_alternate_name();
+		$alternative_name = $this->configuration_service->get_alternate_name();
 
 		if ( ! empty( $alternative_name ) ) {
 			$publisher_jsonld['alternateName'] = $alternative_name;
@@ -139,7 +139,7 @@ class About_Page_Organization_Filter {
 		}
 
 		// Get the publisher logo.
-		$publisher_logo = $this->wl_publisher_service->get_publisher_logo( $publisher_id );
+		$publisher_logo = $this->publisher_service->get_publisher_logo( $publisher_id );
 
 		// Bail out if the publisher logo isn't set.
 		if ( false === $publisher_logo ) {
@@ -178,10 +178,10 @@ class About_Page_Organization_Filter {
 	 * @since 3.53.0
 	 */
 	public function add_organization_jsonld( $jsonld, $post_id ) {
-		$publisher_id = $this->wl_configuration_service->get_publisher_id();
+		$publisher_id = $this->configuration_service->get_publisher_id();
 
 		// Exit if the Publisher is not set or correctly configured.
-		if ( ! isset( $publisher_id ) || $publisher_id === 'none' ) {
+		if ( ! isset( $publisher_id ) || ! is_numeric( $publisher_id ) ) {
 			return $jsonld;
 		}
 
@@ -198,7 +198,7 @@ class About_Page_Organization_Filter {
 
 		// Add publisher to the JSON-LD if it doesn't exist in the graph.
 		if ( ! $this->is_publisher_entity_in_graph( $jsonld, $publisher_id ) ) {
-			$publisher_jsonld = $this->wl_post_jsonld_service->convert( $publisher_id );
+			$publisher_jsonld = $this->post_jsonld_service->convert( $publisher_id );
 
 			// Add a reference to the publisher in the main Entity of the JSON-LD.
 			$jsonld[0]['publisher'] = array(
@@ -209,7 +209,7 @@ class About_Page_Organization_Filter {
 		}
 
 		// Add the Organization data to the Publisher JSON-LD.
-		$publisher_uri = $this->wl_entity_service->get_uri( $publisher_id );
+		$publisher_uri = $this->entity_service->get_uri( $publisher_id );
 
 		foreach ( $jsonld as &$jsonld_item ) {
 			if (
