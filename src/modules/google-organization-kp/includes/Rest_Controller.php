@@ -208,10 +208,8 @@ class Rest_Controller {
 
 		// Check image.
 		if ( ! empty( $files['image'] ) ) {
-			$params['image'] = $files['image'];
-
 			// Return error if MIME type not set.
-			if ( ! isset( $files['type'] ) ) {
+			if ( ! isset( $files['image']['type'] ) ) {
 				return new WP_Error(
 					'400',
 					'File mime type is not supported',
@@ -220,13 +218,16 @@ class Rest_Controller {
 			}
 
 			// Return error if file type is not image
-			if ( strpos( $files['type'], 'image' ) === false ) {
+			if ( strpos( $files['image']['type'], 'image' ) === false ) {
 				return new WP_Error(
 					'400',
 					'Only image files are supported',
 					array( 'status' => 400 )
 				);
 			}
+
+			// Add the image the the $params array.
+			$params['image'] = $files['image'];
 		}
 
 		try {

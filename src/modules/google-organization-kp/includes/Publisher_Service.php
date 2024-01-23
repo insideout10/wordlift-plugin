@@ -128,18 +128,25 @@ class Publisher_Service {
 		}
 
 		// Valid Publisher types.
-		$publisher_service = $this->publisher_service;
-		$publisher_types   = array_values( $publisher_service::VALID_PUBLISHER_TYPES );
+		$publisher_service     = $this->publisher_service;
+		$valid_publisher_types = array_values( $publisher_service::VALID_PUBLISHER_TYPES );
 
 		// Try to get the Publisher
 		$publisher_id = $this->configuration_service->get_publisher_id();
 
 		// Publisher doesn't exist, create one.
-		if ( ! isset( $publisher_id ) || $publisher_id === '(none)' ) {
-			// Parameters required to create a new publisher are missing, so return an error.
+		if ( ! isset( $publisher_id ) || ! is_numeric( $publisher_id ) ) {
+			// Parameters required to create a new publisher are missing.
 			if ( empty( $params['type'] ) || empty( $params['name'] ) || empty( $params['image'] ) ) {
 				throw new Exception( 'Required parameters not provided.' );
 			}
+
+			// Incorrect publisher type provided.
+			if ( ! in_array( $params['type'], $valid_publisher_types, true ) ) {
+				throw new Exception( 'Publisher type not valid.' );
+			}
+
+			// @todo: Prepare image to be saved.
 
 			$this->publisher_service->save( $params['name'], $params['type'], $params['image'] );
 
@@ -168,7 +175,7 @@ class Publisher_Service {
 		}
 
 		// Update the Publisher Entity Type.
-		if ( isset( $params['type'] ) && in_array( $params['type'], $publisher_types, true ) ) {
+		if ( isset( $params['type'] ) && in_array( $params['type'], $valid_publisher_types, true ) ) {
 			// Set the type URI, http://schema.org/ + Person, Organization, localBusiness or Organization.
 			$type_uri = sprintf( 'http://schema.org/%s', $params['type'] );
 
@@ -185,8 +192,25 @@ class Publisher_Service {
 		}
 
 		// Set the entity logo.
-		if ( isset( $params['image'] ) && is_numeric( $params['image'] ) ) {
-			set_post_thumbnail( $publisher_id, $params['image'] );
+		if ( isset( $params['image'] ) ) {
+			$image_file  = $params['image'];
+			$upload_dir  = wp_upload_dir();
+			$target_dir  = $upload_dir['path'];
+			$target_file = $target_dir . '/' . basename( $image_file['name'] );
+
+			if ( move_uploaded_file( $image_file['tmp_name'], $target_file ) ) {
+				$attachment = array(
+					'post_title'     => basename( $target_file ),
+					'post_mime_type' => wp_check_filetype( $target_file )['type'],
+					'post_status'    => 'inherit',
+					'post_parent'    => $publisher_id,
+				);
+
+				$attachment_id = wp_insert_attachment( $attachment, $target_file, $publisher_id );
+				set_post_thumbnail( $publisher_id, $attachment_id );
+			} else {
+				throw new Exception( 'Unable to update the image' );
+			}
 		}
 
 		// Update fields.
