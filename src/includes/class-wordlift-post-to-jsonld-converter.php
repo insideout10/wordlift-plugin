@@ -91,6 +91,8 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			$this->process_type_custom_fields( $jsonld, $custom_fields, $post, $references, $references_infos );
 		}
 
+		$publisher_types = Wordlift_Publisher_Service::VALID_PUBLISHER_TYPES;
+
 		// Set the published and modified dates.
 		/*
 		 * Set the `datePublished` and `dateModified` using the local timezone.
@@ -124,7 +126,11 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		 *
 		 * @since 3.20.0
 		 */
-		if ( ! empty( $jsonld['@type'] ) && 'WebPage' !== $jsonld['@type'] ) {
+		if (
+			! empty( $jsonld['@type'] )
+			&& 'WebPage' !== $jsonld['@type']
+			&& ! in_array( $jsonld['@type'], $publisher_types, true )
+		) {
 			$post_adapter        = new Wordlift_Post_Adapter( $post_id );
 			$jsonld['wordCount'] = $post_adapter->word_count();
 		}
@@ -136,7 +142,12 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		 *
 		 * @since 3.27.2
 		 */
-		if ( ! empty( $jsonld['@type'] ) && 'WebPage' !== $jsonld['@type'] ) {
+		// @todo: Should this be changed to a check for article subtype and joined with above?
+		if (
+			! empty( $jsonld['@type'] )
+			&& 'WebPage' !== $jsonld['@type']
+			&& ! in_array( $jsonld['@type'], $publisher_types, true )
+		) {
 			$post_adapter    = new Wordlift_Post_Adapter( $post_id );
 			$keywords        = $post_adapter->keywords();
 			$article_section = $post_adapter->article_section();
@@ -155,6 +166,9 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 		// Set the publisher.
 		$this->set_publisher_by_reference( $jsonld, $references );
+
+		// Expand publisher on publisher posts.
+		$this->expand_publisher_jsonld( $jsonld, $post_id );
 
 		/**
 		 * Call the `wl_post_jsonld_author` filter if Post type is WebPage or any Article.
@@ -301,6 +315,76 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		);
 
 		$references[] = $publisher_id;
+	}
+
+	/**
+	 * Add the extra fields to the Publisher JSON-LD structure.
+	 *
+	 * @param &$publisher_jsonld array Reference to the Publisher JSON-LD array within the main JSON-LD array.
+	 * @param $post_id           int   The current Post ID.
+	 *
+	 * @since 3.53.0
+	 */
+	public function expand_publisher_jsonld( &$publisher_jsonld, $post_id ) {
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+
+		// No publisher set. Exit.
+		if ( ! isset( $publisher_id ) || ! is_numeric( $publisher_id ) ) {
+			return;
+		}
+
+		// Exit if current Post is not Publisher post
+		if ( $post_id !== $publisher_id ) {
+			return;
+		}
+
+		// Add alternativeName if set.
+		$alternative_name = $this->configuration_service->get_alternate_name();
+
+		if ( ! empty( $alternative_name ) ) {
+			$publisher_jsonld['alternateName'] = $alternative_name;
+		}
+
+		/*
+		 * Set the logo, only for http://schema.org/ + Organization, LocalBusiness, or OnlineBusiness
+		 * as Person doesn't support the logo property.
+		 *
+		 * @see http://schema.org/logo.
+		 */
+		$organization_types = array(
+			'Organization',
+			'LocalBusiness',
+			'OnlineBusiness',
+		);
+
+		if ( ! in_array( $publisher_jsonld['@type'], $organization_types, true ) ) {
+			return;
+		}
+
+		// Get the publisher logo.
+		$publisher_logo = $this->publisher_service->get_publisher_logo( $publisher_id );
+
+		// Bail out if the publisher logo isn't set.
+		if ( false === $publisher_logo ) {
+			return;
+		}
+
+		/*
+		 * Copy over some useful properties.
+		 *
+		 * @see https://developers.google.com/search/docs/data-types/articles.
+		 */
+		$publisher_jsonld['logo']['@type'] = 'ImageObject';
+		$publisher_jsonld['logo']['url']   = $publisher_logo['url'];
+
+		/*
+		 * If you specify a "width" or "height" value you should leave out 'px'.
+		 * For example: "width":"4608px" should be "width":"4608".
+		 *
+		 * @see: https://github.com/insideout10/wordlift-plugin/issues/451.
+		 */
+		$publisher_jsonld['logo']['width']  = $publisher_logo['width'];
+		$publisher_jsonld['logo']['height'] = $publisher_logo['height'];
 	}
 
 }

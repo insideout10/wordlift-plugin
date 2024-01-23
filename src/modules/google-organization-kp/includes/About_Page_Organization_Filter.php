@@ -106,65 +106,6 @@ class About_Page_Organization_Filter {
 	}
 
 	/**
-	 * Add the extra fields to the Publisher JSON-LD structure.
-	 *
-	 * @param &$publisher_jsonld array Reference to the Publisher JSON-LD array within the main JSON-LD array.
-	 * @param $publisher_id      int   The Publisher Post ID.
-	 *
-	 * @since 3.53.0
-	 */
-	public function expand_publisher_jsonld( &$publisher_jsonld, $publisher_id ) {
-
-		// Add alternativeName if set.
-		$alternative_name = $this->configuration_service->get_alternate_name();
-
-		if ( ! empty( $alternative_name ) ) {
-			$publisher_jsonld['alternateName'] = $alternative_name;
-		}
-
-		/*
-		 * Set the logo, only for http://schema.org/ + Organization, LocalBusiness, or OnlineBusiness
-		 * as Person doesn't support the logo property.
-		 *
-		 * @see http://schema.org/logo.
-		 */
-		$organization_types = array(
-			'Organization',
-			'LocalBusiness',
-			'OnlineBusiness',
-		);
-
-		if ( ! in_array( $publisher_jsonld['@type'], $organization_types, true ) ) {
-			return;
-		}
-
-		// Get the publisher logo.
-		$publisher_logo = $this->publisher_service->get_publisher_logo( $publisher_id );
-
-		// Bail out if the publisher logo isn't set.
-		if ( false === $publisher_logo ) {
-			return;
-		}
-
-		/*
-		 * Copy over some useful properties.
-		 *
-		 * @see https://developers.google.com/search/docs/data-types/articles.
-		 */
-		$publisher_jsonld['logo']['@type'] = 'ImageObject';
-		$publisher_jsonld['logo']['url']   = $publisher_logo['url'];
-
-		/*
-		 * If you specify a "width" or "height" value you should leave out 'px'.
-		 * For example: "width":"4608px" should be "width":"4608".
-		 *
-		 * @see: https://github.com/insideout10/wordlift-plugin/issues/451.
-		 */
-		$publisher_jsonld['logo']['width']  = $publisher_logo['width'];
-		$publisher_jsonld['logo']['height'] = $publisher_logo['height'];
-	}
-
-	/**
 	 * Main callback for the filter hooks.
 	 *
 	 * Conditionally add the Organization data if we are on the `About Us` page, or if
@@ -200,25 +141,7 @@ class About_Page_Organization_Filter {
 		if ( ! $this->is_publisher_entity_in_graph( $jsonld, $publisher_id ) ) {
 			$publisher_jsonld = $this->post_jsonld_service->convert( $publisher_id );
 
-			// Add a reference to the publisher in the main Entity of the JSON-LD.
-			$jsonld[0]['publisher'] = array(
-				'@id' => $publisher_jsonld['@id'],
-			);
-
 			$jsonld[] = $publisher_jsonld;
-		}
-
-		// Add the Organization data to the Publisher JSON-LD.
-		$publisher_uri = $this->entity_service->get_uri( $publisher_id );
-
-		foreach ( $jsonld as &$jsonld_item ) {
-			if (
-				$jsonld_item
-				&& array_key_exists( '@id', $jsonld_item )
-				&& $jsonld_item['@id'] === $publisher_uri
-			) {
-				$this->expand_publisher_jsonld( $jsonld_item, $publisher_id );
-			}
 		}
 
 		return $jsonld;
