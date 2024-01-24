@@ -14,7 +14,7 @@ paths:
         - name: pagination
           in: query
           required: false
-          description: The pagination page
+          description: Pagination page number
           schema:
             type: integer
         - name: title_starts_with
@@ -37,6 +37,10 @@ paths:
                       type: integer
                     title:
                       type: string
+        "400":
+          description: Error
+        "401":
+          description: Forbidden
   /wordlift/v1/wl-google-organization-kp/countries:
     get:
       operationId: listCountries
@@ -53,6 +57,8 @@ paths:
                 example:
                   eg: Egypt
                   it: Italy
+        "401":
+          description: Forbidden
   /wordlift/v1/wl-google-organization-kp/data:
     get:
       operationId: listFormData
@@ -63,71 +69,131 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  name:
-                    type: string
-                  type:
-                    type: string
-                  description:
-                    type: string
-                  alt_name:
-                    type: string
-                  legal_name:
-                    type: string
-                  image:
-                    type: string
-                  same_as:
-                    type: array
-                    items:
-                      type: string
-                  address:
-                    type: string
-                  locality:
-                    type: string
-                  region:
-                    type: string
-                  country:
-                    type: string
-                  postal_code:
-                    type: string
-                  telephone:
-                    type: string
-                  email:
-                    type: string
-                    format: email
-                  no_employees:
-                    type: integer
-                  founding_date:
-                    type: string
-                    format: date
-                  iso_6523:
-                    type: string
-                  naics:
-                    type: string
-                  global_loc_no:
-                    type: string
-                  vat_id:
-                    type: string
-                  tax_id:
-                    type: string
+                $ref: '#/components/schemas/formData'
         "400":
           description: Error
+        "401":
+          description: Forbidden
+        "404":
+          description: Data not found
     post:
       operationId: saveFormData
       summary: Save form data
       description: Return array of existing data for the form fields
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                type:
+                  type: string
+                description:
+                  type: string
+                alt_name:
+                  type: string
+                legal_name:
+                  type: string
+                image:
+                  type: string
+                  format: binary
+                same_as:
+                  type: array
+                  items:
+                    type: string
+                address:
+                  type: string
+                locality:
+                  type: string
+                region:
+                  type: string
+                country:
+                  type: string
+                postal_code:
+                  type: string
+                telephone:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                no_employees:
+                  type: integer
+                founding_date:
+                  type: string
+                  format: date
+                iso_6523:
+                  type: string
+                naics:
+                  type: string
+                global_loc_no:
+                  type: string
+                vat_id:
+                  type: string
+                tax_id:
+                  type: string
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/formData'
         "400":
-          description: Bad Request
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
+          description: Error
+        "401":
+          description: Forbidden
+components:
+  schemas:
+    formData:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        alt_name:
+          type: string
+        legal_name:
+          type: string
+        image:
+          type: string
+        same_as:
+          type: array
+          items:
+            type: string
+        address:
+          type: string
+        locality:
+          type: string
+        region:
+          type: string
+        country:
+          type: string
+        postal_code:
+          type: string
+        telephone:
+          type: string
+        email:
+          type: string
+          format: email
+        no_employees:
+          type: integer
+        founding_date:
+          type: string
+          format: date
+        iso_6523:
+          type: string
+        naics:
+          type: string
+        global_loc_no:
+          type: string
+        vat_id:
+          type: string
+        tax_id:
+          type: string
