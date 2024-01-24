@@ -86,19 +86,22 @@ paths:
             schema:
               type: object
               properties:
-                name:
-                  type: string
                 type:
                   type: string
-                description:
+                name:
                   type: string
                 alt_name:
                   type: string
                 legal_name:
                   type: string
+                description:
+                  type: string
                 image:
                   type: string
                   format: binary
+                url:
+                  type: string
+                  format: url
                 same_as:
                   type: array
                   items:
@@ -151,18 +154,21 @@ components:
       properties:
         id:
           type: integer
-        name:
-          type: string
         type:
           type: string
-        description:
+        name:
           type: string
         alt_name:
           type: string
         legal_name:
           type: string
+        description:
+          type: string
         image:
           type: string
+        url:
+          type: string
+          format: url
         same_as:
           type: array
           items:
