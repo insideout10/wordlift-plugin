@@ -90,7 +90,7 @@ class Rest_Controller {
 					),
 				),
 				'permission_callback' => function () {
-//					return true;
+					// return true;
 					return current_user_can( 'manage_options' );
 				},
 			)
@@ -103,7 +103,7 @@ class Rest_Controller {
 				'methods'             => 'GET',
 				'callback'            => array( $this, 'countries_get_callback' ),
 				'permission_callback' => function () {
-//					return true;
+					// return true;
 					return current_user_can( 'manage_options' );
 				},
 			)
@@ -116,7 +116,7 @@ class Rest_Controller {
 				'methods'             => 'GET',
 				'callback'            => array( $this, 'form_data_get_callback' ),
 				'permission_callback' => function () {
-//					return true;
+					// return true;
 					return current_user_can( 'manage_options' );
 				},
 			)
@@ -129,7 +129,7 @@ class Rest_Controller {
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'form_data_post_callback' ),
 				'permission_callback' => function () {
-//					return true;
+					// return true;
 					return current_user_can( 'manage_options' );
 				},
 			)
