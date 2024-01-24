@@ -134,31 +134,11 @@ class Publisher_Service {
 			}
 
 			// @todo: Prepare image to be saved.
-
+			// @todo: This method should receive an attachment_id for the image.
 			$this->publisher_service->save( $params['name'], $params['type'], $params['image'] );
 
 			// Get the new Publisher ID.
 			$publisher_id = $this->configuration_service->get_publisher_id();
-		}
-
-		// Update the Publisher title.
-		if ( ! empty( $params['name'] ) ) {
-			$post_array = array(
-				'ID'         => $publisher_id,
-				'post_title' => sanitize_text_field( $params['name'] ),
-			);
-
-			wp_update_post( $post_array );
-		}
-
-		// Update the Publisher description.
-		if ( ! empty( $params['description'] ) ) {
-			$post_array = array(
-				'ID'           => $publisher_id,
-				'post_content' => sanitize_text_field( $params['description'] ),
-			);
-
-			wp_update_post( $post_array );
 		}
 
 		// Update the Publisher Entity Type.
@@ -173,12 +153,43 @@ class Publisher_Service {
 			);
 		}
 
+		// Update the Publisher title.
+		if ( ! empty( $params['name'] ) ) {
+			$post_array = array(
+				'ID'         => $publisher_id,
+				'post_title' => sanitize_text_field( $params['name'] ),
+			);
+
+			wp_update_post( $post_array );
+		}
+
 		// Update Alternate Name.
 		if ( ! empty( $params['alt_name'] ) ) {
 			$this->configuration_service->set_alternate_name( sanitize_text_field( $params['alt_name'] ) );
 		}
 
+		// Update Legal name
+		if ( ! empty( $params['legal_name'] ) ) {
+			update_post_meta(
+				$publisher_id,
+				\Wordlift_Schema_Service::FIELD_LEGAL_NAME,
+				sanitize_text_field( $params['legal_name'] )
+			);
+		}
+
+		// Update the Publisher description.
+		if ( ! empty( $params['description'] ) ) {
+			$post_array = array(
+				'ID'           => $publisher_id,
+				'post_content' => sanitize_text_field( $params['description'] ),
+			);
+
+			wp_update_post( $post_array );
+		}
+
 		// Set the entity logo.
+		// @todo: Should be moved to a separate function as it needs to be reused.
+		// @todo: There is a bug here. Image is saved, but subsequently publisher_service->get_publisher_logo() doesn't retrieve it.
 		if ( ! empty( $params['image'] ) ) {
 			$image_file  = $params['image'];
 			$upload_dir  = wp_upload_dir();
@@ -200,66 +211,144 @@ class Publisher_Service {
 			}
 		}
 
-		// Update fields.
+		// Update URL
+		if ( ! empty( $params['url'] ) ) {
+			$this->configuration_service->set_override_website_url( sanitize_text_field( $params['url'] ) );
+		}
 
+		// Update Same As
 		if ( ! empty( $params['same_as'] ) ) {
-			update_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_SAME_AS, $params['same_as'] );
+			update_post_meta(
+				$publisher_id,
+				\Wordlift_Schema_Service::FIELD_SAME_AS,
+				sanitize_text_field( $params['same_as'] )
+			);
 		}
 
+		// Update Address
 		if ( ! empty( $params['address'] ) ) {
-			update_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ADDRESS, $params['address'] );
+			update_post_meta(
+				$publisher_id,
+				\Wordlift_Schema_Service::FIELD_ADDRESS,
+				sanitize_text_field( $params['address'] )
+			);
 		}
 
+		// Update Locality
 		if ( ! empty( $params['locality'] ) ) {
-			update_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ADDRESS_LOCALITY, $params['locality'] );
+			update_post_meta(
+				$publisher_id,
+				\Wordlift_Schema_Service::FIELD_ADDRESS_LOCALITY,
+				sanitize_text_field( $params['locality'] )
+			);
 		}
 
+		// Update Region
 		if ( ! empty( $params['region'] ) ) {
-			update_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ADDRESS_REGION, $params['region'] );
+			update_post_meta(
+				$publisher_id,
+				\Wordlift_Schema_Service::FIELD_ADDRESS_REGION,
+				sanitize_text_field( $params['region'] )
+			);
 		}
 
+		// Update Country
 		if ( ! empty( $params['country'] ) ) {
-			update_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY, $params['country'] );
+			update_post_meta(
+				$publisher_id,
+				\Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY,
+				sanitize_text_field( $params['country'] )
+			);
 		}
 
+		// Update Postal Code
 		if ( ! empty( $params['postal_code'] ) ) {
-			update_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ADDRESS_POSTAL_CODE, $params['postal_code'] );
+			update_post_meta(
+				$publisher_id,
+				\Wordlift_Schema_Service::FIELD_ADDRESS_POSTAL_CODE,
+				sanitize_text_field( $params['postal_code'] )
+			);
 		}
 
+		// Update Telephone
 		if ( ! empty( $params['telephone'] ) ) {
-			update_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_TELEPHONE, $params['telephone'] );
+			update_post_meta(
+				$publisher_id,
+				\Wordlift_Schema_Service::FIELD_TELEPHONE,
+				sanitize_text_field( $params['telephone'] )
+			);
 		}
 
+		// Update email
 		if ( ! empty( $params['email'] ) ) {
-			update_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_EMAIL, $params['email'] );
+			update_post_meta(
+				$publisher_id,
+				\Wordlift_Schema_Service::FIELD_EMAIL,
+				sanitize_text_field( $params['email'] )
+			);
 		}
 
+		// Update Number of Employees
 		if ( ! empty( $params['no_employees'] ) ) {
-			update_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_NO_OF_EMPLOYEES, $params['no_employees'] );
+			update_post_meta(
+				$publisher_id,
+				\Wordlift_Schema_Service::FIELD_NO_OF_EMPLOYEES,
+				sanitize_text_field( $params['no_employees'] )
+			);
 		}
 
+		// Update Founding Date
 		if ( ! empty( $params['founding_date'] ) ) {
-			update_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_FOUNDING_DATE, $params['founding_date'] );
+			update_post_meta(
+				$publisher_id,
+				\Wordlift_Schema_Service::FIELD_FOUNDING_DATE,
+				sanitize_text_field( $params['founding_date'] )
+			);
 		}
 
+		// Update ISO 6523
 		if ( ! empty( $params['iso_6523'] ) ) {
-			update_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ISO_6523_CODE, $params['iso_6523'] );
+			update_post_meta(
+				$publisher_id,
+				\Wordlift_Schema_Service::FIELD_ISO_6523_CODE,
+				sanitize_text_field( $params['iso_6523'] )
+			);
 		}
 
+		// Update naics
 		if ( ! empty( $params['naics'] ) ) {
-			update_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ISO_6523_CODE, $params['naics'] );
+			update_post_meta(
+				$publisher_id,
+				\Wordlift_Schema_Service::FIELD_ISO_6523_CODE,
+				sanitize_text_field( $params['naics'] )
+			);
 		}
 
+		// Update Global Location Number
 		if ( ! empty( $params['global_loc_no'] ) ) {
-			update_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_GLOBAL_LOCATION_NO, $params['global_loc_no'] );
+			update_post_meta(
+				$publisher_id,
+				\Wordlift_Schema_Service::FIELD_GLOBAL_LOCATION_NO,
+				sanitize_text_field( $params['global_loc_no'] )
+			);
 		}
 
+		// Update VAT ID
 		if ( ! empty( $params['vat_id'] ) ) {
-			update_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_VAT_ID, $params['vat_id'] );
+			update_post_meta(
+				$publisher_id,
+				\Wordlift_Schema_Service::FIELD_VAT_ID,
+				sanitize_text_field( $params['vat_id'] )
+			);
 		}
 
+		// Update Tax ID
 		if ( ! empty( $params['tax_id'] ) ) {
-			update_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_TAX_ID, $params['tax_id'] );
+			update_post_meta(
+				$publisher_id,
+				\Wordlift_Schema_Service::FIELD_TAX_ID,
+				sanitize_text_field( $params['tax_id'] )
+			);
 		}
 
 		// Return updated data.
