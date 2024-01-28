@@ -69,7 +69,10 @@ class Publisher_Service {
 		$data = array();
 
 		$publisher_entity = $this->entity_service->get( $publisher_id );
-		$publisher_logo   = $this->publisher_service->get_publisher_logo( $publisher_id );
+
+		// Fix any spaces in img path.
+		$publisher_logo_url = get_the_post_thumbnail_url( $publisher_id );
+		$publisher_logo_url = str_replace( ' ', '%20', $publisher_logo_url );
 
 		$data['id']            = $publisher_id;
 		$data['type']          = $publisher_entity['label'];
@@ -77,7 +80,7 @@ class Publisher_Service {
 		$data['alt_name']      = $this->configuration_service->get_alternate_name();
 		$data['legal_name']    = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_LEGAL_NAME, true );
 		$data['description']   = $publisher_entity['description'];
-		$data['image']         = $publisher_logo['url'];
+		$data['image']         = $publisher_logo_url;
 		$data['url']           = $this->configuration_service->get_override_website_url();
 		$data['same_as']       = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_SAME_AS, false );
 		$data['address']       = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ADDRESS, true );
