@@ -166,7 +166,7 @@ class Rest_Controller {
 	 */
 	public function countries_get_callback() {
 		// Get the countries data from the service and return.
-		$data = $this->countries->get_countries();
+		$data = $this->countries->get_all_countries();
 
 		return rest_ensure_response( $data );
 	}

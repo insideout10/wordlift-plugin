@@ -29,14 +29,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    title:
-                      type: string
+                $ref: '#/components/schemas/pages'
         "400":
           description: Error
         "401":
@@ -51,12 +44,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                additionalProperties:
-                  type: string
-                example:
-                  eg: Egypt
-                  it: Italy
+                $ref: '#/components/schemas/countries'
         "401":
           description: Forbidden
   /wordlift/v1/wl-google-organization-kp/data:
@@ -149,6 +137,24 @@ paths:
           description: Forbidden
 components:
   schemas:
+    pages:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          title:
+            type: string
+    countries:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          code:
+            type: string
     formData:
       type: object
       properties:
