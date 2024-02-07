@@ -55,7 +55,7 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_status' => 'publish',
 		) );
 
-		Wordlift_Entity_Type_Service::get_instance()->set( $pid, 'http://schema.org/LocalBusiness' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $pid, 'http://schema.org/EducationalOrganization' );
 
 		$this->assertEquals( 0, $publishers_service->count() );
 		$this->assertEquals( 0, count( $publishers_service->query() ) );
@@ -78,7 +78,7 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_status' => 'publish',
 		) );
 
-		Wordlift_Entity_Type_Service::get_instance()->set( $busines, 'http://schema.org/LocalBusiness' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $busines, 'http://schema.org/EducationalOrganization' );
 
 		// create a person
 		$person = $this->factory()->post->create( array(
