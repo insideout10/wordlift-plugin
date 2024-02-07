@@ -963,6 +963,30 @@ class Wordlift_Schema_Service {
 						'cardinality' => INF,
 					),
 				),
+				self::FIELD_NAICS                  => array(
+					'predicate'   => 'http://schema.org/naics',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+				),
+				self::FIELD_GLOBAL_LOCATION_NO     => array(
+					'predicate'   => 'http://schema.org/globalLocationNumber',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+				),
+				self::FIELD_VAT_ID                  => array(
+					'predicate'   => 'http://schema.org/vatID',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+				),
+				self::FIELD_TAX_ID                  => array(
+					'predicate'   => 'http://schema.org/taxID',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+				),
 			),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
