@@ -78,7 +78,10 @@ class Publisher_Service {
 		}
 
 		// About page ID if set, or empty.
-		$about_page = ! empty( $page ) ? array( 'id' => (string) $page->ID, 'title' => $page->post_title ) : '';
+		$about_page = ! empty( $page ) ? array(
+			'id'    => (string) $page->ID,
+			'title' => $page->post_title,
+		) : '';
 
 		// Load Publisher Entity.
 		$publisher_entity = $this->entity_service->get( $publisher_id );
@@ -107,7 +110,7 @@ class Publisher_Service {
 			'naics'         => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_NAICS, true ),
 			'global_loc_no' => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_GLOBAL_LOCATION_NO, true ),
 			'vat_id'        => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_VAT_ID, true ),
-			'tax_id'        => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_TAX_ID, true )
+			'tax_id'        => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_TAX_ID, true ),
 		);
 	}
 
@@ -206,8 +209,8 @@ class Publisher_Service {
 
 		// Update entity logo.
 		if ( ! empty( $params['image'] ) ) {
-			$image_file  = $params['image'];
-			$image_name  = basename( $image_file['name'] );
+			$image_file = $params['image'];
+			$image_name = basename( $image_file['name'] );
 
 			$upload_dir = wp_upload_dir();
 			$image_url  = esc_url( $upload_dir['url'] . '/' . $image_name );
@@ -245,7 +248,7 @@ class Publisher_Service {
 
 		// Update Same As
 		if ( ! empty( $params['same_as'] && is_array( $params['same_as'] ) ) ) {
-			$meta_key = \Wordlift_Schema_Service::FIELD_SAME_AS;
+			$meta_key     = \Wordlift_Schema_Service::FIELD_SAME_AS;
 			$same_as_urls = array_map( 'sanitize_url', array_filter( $params['same_as'] ) );
 
 			// Clear old values.
