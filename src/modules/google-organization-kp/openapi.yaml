@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
   title: WordLift Plugin Google Organization Knowledge Panel API
   description: The Google Organization KP API provides various endpoints useful for the Organization page on the Wordlift Dashboard.
@@ -57,7 +57,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/formData'
+                $ref: '#/components/schemas/formDataGet'
         "400":
           description: Error
         "401":
@@ -72,65 +72,14 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                type:
-                  type: string
-                name:
-                  type: string
-                alt_name:
-                  type: string
-                legal_name:
-                  type: string
-                description:
-                  type: string
-                image:
-                  type: string
-                  format: binary
-                url:
-                  type: string
-                  format: url
-                same_as:
-                  type: array
-                  items:
-                    type: string
-                address:
-                  type: string
-                locality:
-                  type: string
-                region:
-                  type: string
-                country:
-                  type: string
-                postal_code:
-                  type: string
-                telephone:
-                  type: string
-                email:
-                  type: string
-                  format: email
-                no_employees:
-                  type: integer
-                founding_date:
-                  type: string
-                  format: date
-                iso_6523:
-                  type: string
-                naics:
-                  type: string
-                global_loc_no:
-                  type: string
-                vat_id:
-                  type: string
-                tax_id:
-                  type: string
+              $ref: '#/components/schemas/formDataPost'
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/formData'
+                $ref: '#/components/schemas/formDataGet'
         "400":
           description: Error
         "401":
@@ -143,7 +92,7 @@ components:
         type: object
         properties:
           id:
-            type: integer
+            type: string
           title:
             type: string
     countries:
@@ -155,11 +104,16 @@ components:
             type: string
           code:
             type: string
-    formData:
+    formDataAbstract:
       type: object
       properties:
-        id:
-          type: integer
+        page:
+          type: object
+          properties:
+            id:
+              type: string
+            title:
+              type: string
         type:
           type: string
         name:
@@ -175,10 +129,6 @@ components:
         url:
           type: string
           format: url
-        same_as:
-          type: array
-          items:
-            type: string
         address:
           type: string
         locality:
@@ -209,3 +159,23 @@ components:
           type: string
         tax_id:
           type: string
+    formDataGet:
+      allOf:
+        - $ref: '#/components/schemas/formDataAbstract'
+        - type: object
+          properties:
+            same_as:
+              type: array
+              items:
+                type: string
+                format: url
+    formDataPost:
+      allOf:
+        - $ref: '#/components/schemas/formDataAbstract'
+        - type: object
+          properties:
+            'same_as[]':
+              type: array
+              items:
+                type: string
+                format: url
