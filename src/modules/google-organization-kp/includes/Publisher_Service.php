@@ -55,50 +55,60 @@ class Publisher_Service {
 	 */
 	public function get() {
 		$publisher_id = $this->configuration_service->get_publisher_id();
+
+		// Incorrectly set Publisher
 		if ( ! is_numeric( $publisher_id ) ) {
 			return array();
 		}
 
 		$publisher_post = get_post( $publisher_id );
+
+		// No Publisher Post exists
 		if ( ! $publisher_post ) {
 			return array();
 		}
 
-		// Add the publisher fields.
+		// Fix any spaces in img path.
+		$publisher_img_url = esc_url( get_the_post_thumbnail_url( $publisher_id ) );
 
-		$data = array();
+		// Load the about page if set and get the title
+		$about_page_id = $this->configuration_service->get_about_page_id();
+		if ( $about_page_id ) {
+			$page = get_page( $about_page_id );
+		}
 
+		// About page ID if set, or empty.
+		$about_page = ! empty( $page ) ? array( 'id' => (string) $page->ID, 'title' => $page->post_title ) : '';
+
+		// Load Publisher Entity.
 		$publisher_entity = $this->entity_service->get( $publisher_id );
 
-		// Fix any spaces in img path.
-		$publisher_logo_url = get_the_post_thumbnail_url( $publisher_id );
-		$publisher_logo_url = str_replace( ' ', '%20', $publisher_logo_url );
-
-		$data['id']            = $publisher_id;
-		$data['type']          = $publisher_entity['label'];
-		$data['name']          = $publisher_post->post_title;
-		$data['alt_name']      = $this->configuration_service->get_alternate_name();
-		$data['legal_name']    = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_LEGAL_NAME, true );
-		$data['description']   = $publisher_entity['description'];
-		$data['image']         = $publisher_logo_url;
-		$data['url']           = $this->configuration_service->get_override_website_url();
-		$data['same_as']       = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_SAME_AS, false );
-		$data['address']       = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ADDRESS, true );
-		$data['locality']      = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ADDRESS_LOCALITY, true );
-		$data['region']        = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ADDRESS_REGION, true );
-		$data['country']       = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY, true );
-		$data['postal_code']   = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ADDRESS_POSTAL_CODE, true );
-		$data['telephone']     = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_TELEPHONE, true );
-		$data['email']         = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_EMAIL, true );
-		$data['no_employees']  = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_NO_OF_EMPLOYEES, true );
-		$data['founding_date'] = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_FOUNDING_DATE, true );
-		$data['iso_6523']      = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ISO_6523_CODE, true );
-		$data['naics']         = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_NAICS, true );
-		$data['global_loc_no'] = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_GLOBAL_LOCATION_NO, true );
-		$data['vat_id']        = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_VAT_ID, true );
-		$data['tax_id']        = get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_TAX_ID, true );
-
-		return $data;
+		// Return Publisher data.
+		return array(
+			'page'          => $about_page,
+			'type'          => $publisher_entity['label'],
+			'name'          => $publisher_post->post_title,
+			'alt_name'      => $this->configuration_service->get_alternate_name(),
+			'legal_name'    => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_LEGAL_NAME, true ),
+			'description'   => $publisher_post->post_content,
+			'image'         => $publisher_img_url,
+			'url'           => $this->configuration_service->get_override_website_url(),
+			'same_as'       => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_SAME_AS, false ),
+			'address'       => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ADDRESS, true ),
+			'locality'      => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ADDRESS_LOCALITY, true ),
+			'region'        => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ADDRESS_REGION, true ),
+			'country'       => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY, true ),
+			'postal_code'   => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ADDRESS_POSTAL_CODE, true ),
+			'telephone'     => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_TELEPHONE, true ),
+			'email'         => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_EMAIL, true ),
+			'no_employees'  => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_NO_OF_EMPLOYEES, true ),
+			'founding_date' => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_FOUNDING_DATE, true ),
+			'iso_6523'      => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_ISO_6523_CODE, true ),
+			'naics'         => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_NAICS, true ),
+			'global_loc_no' => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_GLOBAL_LOCATION_NO, true ),
+			'vat_id'        => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_VAT_ID, true ),
+			'tax_id'        => get_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_TAX_ID, true )
+		);
 	}
 
 	/**
@@ -127,7 +137,7 @@ class Publisher_Service {
 		// Publisher doesn't exist, create one.
 		if ( ! is_numeric( $publisher_id ) ) {
 			// Parameters required to create a new publisher are missing.
-			if ( empty( $params['type'] ) || empty( $params['name'] ) || empty( $params['image'] ) ) {
+			if ( empty( $params['type'] ) || empty( $params['name'] ) ) {
 				throw new Exception( 'Required parameters not provided.' );
 			}
 
@@ -136,12 +146,16 @@ class Publisher_Service {
 				throw new Exception( 'Publisher type not valid.' );
 			}
 
-			// @todo: Prepare image to be saved.
-			// @todo: This method should receive an attachment_id for the image.
-			$this->publisher_service->save( $params['name'], $params['type'], $params['image'] );
+			// Create the publisher
+			$this->publisher_service->save( $params['name'], $params['type'] );
 
 			// Get the new Publisher ID.
 			$publisher_id = $this->configuration_service->get_publisher_id();
+		}
+
+		// Update the About Page ID.
+		if ( ! empty( $params['page'] && isset( $params['page']['id'] ) ) ) {
+			$this->configuration_service->set_about_page_id( $params['page']['id'] );
 		}
 
 		// Update the Publisher Entity Type.
@@ -190,27 +204,37 @@ class Publisher_Service {
 			wp_update_post( $post_array );
 		}
 
-		// Set the entity logo.
-		// @todo: Should be moved to a separate function as it needs to be reused.
-		// @todo: There is a bug here. Image is saved, but subsequently publisher_service->get_publisher_logo() doesn't retrieve it.
+		// Update entity logo.
 		if ( ! empty( $params['image'] ) ) {
 			$image_file  = $params['image'];
-			$upload_dir  = wp_upload_dir();
-			$target_dir  = $upload_dir['path'];
-			$target_file = $target_dir . '/' . basename( $image_file['name'] );
+			$image_name  = basename( $image_file['name'] );
 
-			if ( move_uploaded_file( $image_file['tmp_name'], $target_file ) ) {
+			$upload_dir = wp_upload_dir();
+			$image_url  = esc_url( $upload_dir['url'] . '/' . $image_name );
+			$image_path = $upload_dir['path'] . '/' . $image_name;
+
+			// Check if the attachment already exists
+			$attachment_id = attachment_url_to_postid( $image_url );
+
+			if ( ! $attachment_id ) {
+				// Attachment doesn't exist, create it and set as thumbnail
+				move_uploaded_file( $image_file['tmp_name'], $image_path );
+
 				$attachment = array(
-					'post_title'     => basename( $target_file ),
-					'post_mime_type' => wp_check_filetype( $target_file )['type'],
+					'post_title'     => $image_name,
+					'post_mime_type' => $image_file['type'],
 					'post_status'    => 'inherit',
 					'post_parent'    => $publisher_id,
 				);
 
-				$attachment_id = wp_insert_attachment( $attachment, $target_file, $publisher_id );
-				set_post_thumbnail( $publisher_id, $attachment_id );
+				$attachment_id = wp_insert_attachment( $attachment, $image_path, $publisher_id );
+
+				if ( ! is_wp_error( $attachment_id ) ) {
+					set_post_thumbnail( $publisher_id, $attachment_id );
+				}
 			} else {
-				throw new Exception( 'Unable to update the image' );
+				// Attachment for provided image already exists, set it as thumbnail
+				set_post_thumbnail( $publisher_id, $attachment_id );
 			}
 		}
 
@@ -220,12 +244,18 @@ class Publisher_Service {
 		}
 
 		// Update Same As
-		if ( ! empty( $params['same_as'] ) ) {
-			update_post_meta(
-				$publisher_id,
-				\Wordlift_Schema_Service::FIELD_SAME_AS,
-				sanitize_text_field( $params['same_as'] )
-			);
+		if ( ! empty( $params['same_as'] && is_array( $params['same_as'] ) ) ) {
+			$meta_key = \Wordlift_Schema_Service::FIELD_SAME_AS;
+			$same_as_urls = array_map( 'sanitize_url', array_filter( $params['same_as'] ) );
+
+			// Clear old values.
+			delete_post_meta( $publisher_id, \Wordlift_Schema_Service::FIELD_SAME_AS );
+
+			foreach ( $same_as_urls as $url ) {
+				// Avoid duplicates
+				delete_post_meta( $publisher_id, $meta_key, $url );
+				add_post_meta( $publisher_id, $meta_key, $url );
+			}
 		}
 
 		// Update Address
@@ -322,7 +352,7 @@ class Publisher_Service {
 		if ( ! empty( $params['naics'] ) ) {
 			update_post_meta(
 				$publisher_id,
-				\Wordlift_Schema_Service::FIELD_ISO_6523_CODE,
+				\Wordlift_Schema_Service::FIELD_NAICS,
 				sanitize_text_field( $params['naics'] )
 			);
 		}
