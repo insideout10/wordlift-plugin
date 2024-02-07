@@ -364,13 +364,12 @@ class Wordlift_Publisher_Service {
 		);
 	}
 
-	public function save( $params ) {
+	public function save( $name, $type ) {
 		// Set the type URI, http://schema.org/ + Person, Organization, LocalBusiness or OnlineBusiness.
-		$type_uri = sprintf( 'http://schema.org/%s', $params['type'] );
+		$type_uri = sprintf( 'http://schema.org/%s', $type );
 
 		// Create an entity for the publisher.
-		$publisher_post_id = Wordlift_Entity_Service::get_instance()
-													->create( $params['name'], $type_uri, $params['image'], 'publish' );
+		$publisher_post_id = Wordlift_Entity_Service::get_instance()->create( $name, $type_uri );
 
 		// Store the publisher entity post id in the configuration.
 		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher_post_id );
