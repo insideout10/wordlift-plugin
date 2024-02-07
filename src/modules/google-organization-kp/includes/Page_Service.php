@@ -22,30 +22,25 @@ class Page_Service {
 	/**
 	 * Get a list of pages.
 	 *
-	 * @param int    $pagination        Pagination offset.
+	 * @param int    $pagination_offset        Pagination offset.
 	 * @param string $title_starts_with Case-insensitive filter for page titles.
 	 *
 	 * @return array Array of page IDs and titles.
 	 *
 	 * @since 3.53.0
 	 */
-	public function get( $pagination, $title_starts_with ) {
+	public function get( $pagination_offset, $title_starts_with ) {
 		// Get a number of pages starting at a given offset.
 		$pagination_no_of_pages = self::PAGINATION_NUM_OF_PAGES;
 
-		$pages = get_pages(
-			array(
-				'number' => $pagination_no_of_pages,
-				'offset' => (int) $pagination * $pagination_no_of_pages,
-			)
-		);
-
-		$data = array();
+		// Get the pages
+		$pages = get_pages();
 
 		// Arrange the data.
+		$data = array();
 		foreach ( $pages as $page ) {
 			$data[] = array(
-				'id'    => $page->ID,
+				'id'    => (string) $page->ID,
 				'title' => $page->post_title,
 			);
 		}
@@ -62,6 +57,6 @@ class Page_Service {
 			);
 		}
 
-		return $data;
+		return array_slice( $data, $pagination_offset * $pagination_no_of_pages, $pagination_no_of_pages );
 	}
 }
