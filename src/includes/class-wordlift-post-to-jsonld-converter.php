@@ -194,9 +194,18 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			$post_id
 		);
 
-		// Set the values returned by the filter.
-		$jsonld['author'] = $ret_val['author'];
-		$references       = $ret_val['references'];
+		// Set the values returned by the author filter.
+		/*
+		 * Do not add the author JSON-LD if an invalid author was referenced in a post.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/1728
+		 *
+		 * @since 3.53.2
+		 */
+		if ( false !== $ret_val['author']['@id'] ) {
+			$jsonld['author'] = $ret_val['author'];
+			$references       = $ret_val['references'];
+		}
 
 		// Return the JSON-LD if filters are disabled by the client.
 		if ( $this->disable_convert_filters ) {
