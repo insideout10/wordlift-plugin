@@ -202,7 +202,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		 *
 		 * @since 3.53.2
 		 */
-		if ( false !== $ret_val['author']['@id'] ) {
+		if ( ! empty ( $ret_val['author'] ) ) {
 			$jsonld['author'] = $ret_val['author'];
 			$references       = $ret_val['references'];
 		}
@@ -273,9 +273,19 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// Get the entity bound to this user.
 		$entity_id = $this->user_service->get_entity( $author_id );
 
-		// If there's no entity bound return a simple author structure.
-		if ( empty( $entity_id ) || 'publish' !== get_post_status( $entity_id ) ) {
+		if ( ! empty( $entity_id ) && 'publish' === get_post_status( $entity_id ) ) {
+			// Add the author to the references.
+			$author_uri   = Wordlift_Entity_Service::get_instance()->get_uri( $entity_id );
+			$references[] = $entity_id;
 
+			// Return the JSON-LD for the referenced entity.
+			return array(
+				'@id' => $author_uri,
+			);
+		}
+
+		// If there's no entity bound return a simple author structure.
+		if ( false !== get_userdata( $author_id ) ) {
 			$author            = get_the_author_meta( 'display_name', $author_id );
 			$author_first_name = get_the_author_meta( 'first_name', $author_id );
 			$author_last_name  = get_the_author_meta( 'last_name', $author_id );
@@ -291,14 +301,8 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			);
 		}
 
-		// Add the author to the references.
-		$author_uri   = Wordlift_Entity_Service::get_instance()->get_uri( $entity_id );
-		$references[] = $entity_id;
-
-		// Return the JSON-LD for the referenced entity.
-		return array(
-			'@id' => $author_uri,
-		);
+		// No valid entity or author so return empty array
+		return array();
 	}
 
 	/**
