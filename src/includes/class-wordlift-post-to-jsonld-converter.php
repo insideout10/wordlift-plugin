@@ -202,7 +202,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		 *
 		 * @since 3.53.2
 		 */
-		if ( ! empty ( $ret_val['author'] ) ) {
+		if ( ! empty( $ret_val['author'] ) ) {
 			$jsonld['author'] = $ret_val['author'];
 			$references       = $ret_val['references'];
 		}
