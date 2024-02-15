@@ -146,7 +146,7 @@ class Rest_Controller {
 
 		$title_starts_with = isset( $params['title_starts_with'] ) ? $params['title_starts_with'] : null;
 
-		$data = $this->page_service->get( $params['pagination'], $title_starts_with);
+		$data = $this->page_service->get( $params['pagination'], $title_starts_with );
 
 		return rest_ensure_response( $data );
 	}
