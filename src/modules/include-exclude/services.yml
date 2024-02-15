@@ -1,9 +1,21 @@
 services:
   _defaults: { public: true }
 
+  Wordlift\Modules\Include_Exclude\Configuration:
+    factory: [ 'Wordlift\Modules\Include_Exclude\Configuration', 'get_instance' ]
+    class: Wordlift\Modules\Include_Exclude\Configuration
+
   Wordlift\Modules\Include_Exclude\Plugin_Enabled:
     class: Wordlift\Modules\Include_Exclude\Plugin_Enabled
+    arguments: [ '@Wordlift\Modules\Include_Exclude\Configuration' ]
+
+  Wordlift\Modules\Include_Exclude\Jsonld_Interceptor:
+    class: Wordlift\Modules\Include_Exclude\Jsonld_Interceptor
+    arguments: [ '@Wordlift\Modules\Include_Exclude\Plugin_Enabled' ]
+
   Wordlift\Modules\Include_Exclude\Admin\Settings:
     class: Wordlift\Modules\Include_Exclude\Admin\Settings
+
   Wordlift\Modules\Include_Exclude\API:
     class: Wordlift\Modules\Include_Exclude\API
+

@@ -11,16 +11,18 @@ class Configuration {
 
 	protected function __construct() {
 		$include_exclude_data = get_option( 'wl_exclude_include_urls_settings', array() );
-		$this->type           = in_array(
-			$include_exclude_data['include_exclude'],
+		$include_exclude      = isset( $include_exclude_data['include_exclude'] ) ? (array) $include_exclude_data['include_exclude'] : array();
+
+		$this->type = in_array(
+			$include_exclude,
 			array(
 				'include',
 				'exclude',
 			),
 			true
 		)
-			? $include_exclude_data['include_exclude'] : 'exclude';
-		$this->urls           = $include_exclude_data['urls'];
+			? $include_exclude : 'exclude';
+		$this->urls = $include_exclude_data['urls'];
 	}
 
 	public static function get_instance() {

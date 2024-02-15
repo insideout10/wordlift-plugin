@@ -51,7 +51,11 @@ function __wl_include_exclude__load() {
 
 		$api = $container_builder->get( 'Wordlift\Modules\Include_Exclude\API' );
 		$api->register_hooks();
+
+		$jsonld_interceptor = $container_builder->get( 'Wordlift\Modules\Include_Exclude\Jsonld_Interceptor' );
+		$jsonld_interceptor->register_hooks();
 	}
+
 }
 
 __wl_include_exclude__load();

@@ -143,6 +143,18 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.52.4 (2024-02-15) =
+
+* Ensure we don't publish an empty author.
+
+= 3.52.3 (2024-01-17) =
+
+* Remove some warnings ⚠️ when trying to access an array key that doesn't exist.
+
+= 3.52.2 (2024-01-09) =
+
+* Include/Exclude now applies to REST API as well ⚙️
+
 = 3.52.1 (2024-01-07) =
 
 * Uh oh, sometimes we would send a `false` 🪳 in the Structured Data. Fixed!

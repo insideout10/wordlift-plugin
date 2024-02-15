@@ -17,6 +17,15 @@ namespace Wordlift\Modules\Include_Exclude;
 class Plugin_Enabled {
 
 	/**
+	 * @var Configuration $configuration
+	 */
+	private $configuration;
+
+	public function __construct( $configuration ) {
+		$this->configuration = $configuration;
+	}
+
+	/**
 	 * Register hooks.
 	 */
 	public function register_hooks() {
@@ -37,20 +46,28 @@ class Plugin_Enabled {
 			return $enabled;
 		}
 
-		$path        = strtok( (string) $_SERVER['REQUEST_URI'], '?' ); // phpcs:ignore
-		$options     = get_option( 'wl_exclude_include_urls_settings' );
-		$current_url = trailingslashit( home_url( $path ) );
+		$path    = strtok( (string) $_SERVER['REQUEST_URI'], '?' ); // phpcs:ignore
+		$options = get_option( 'wl_exclude_include_urls_settings' );
 
 		// Bail out if URLs are not set.
 		if ( empty( $options['urls'] ) ) {
 			return $enabled;
 		}
 
+		$current_url = trailingslashit( home_url( $path ) );
+
+		return $this->are_urls_included( $current_url );
+	}
+
+	public function are_urls_included( $urls ) {
+		// Ensure we deal with an array. We `trailingslashit` all URLs to avoid issues with missing slashes.
+		$urls = array_map( 'trailingslashit', (array) $urls );
+
 		// Set a default state.
-		$default_state = ( $options['include_exclude'] === 'exclude' );
+		$include_by_default = ( $this->configuration->get_default() === 'include' );
 
 		// Get URLs into an array from settings, trim them and make absolute if needed.
-		$urls = array_map(
+		$configured_urls = array_map(
 			function ( $url ) {
 				$url = trim( $url );
 				if ( substr( $url, 0, 4 ) !== 'http' ) {
@@ -60,17 +77,16 @@ class Plugin_Enabled {
 				// Add a trailing slash and return the url
 				return trailingslashit( $url );
 			},
-			explode( PHP_EOL, $options['urls'] )
+			explode( PHP_EOL, $this->configuration->get_urls() )
 		);
 
-		foreach ( $urls as $url ) {
-			if ( $url === $current_url ) {
-				return ! $default_state;
-			}
+		// Check if any of the provided URLs is in the configured URLs.
+		$intersection = array_intersect( $urls, $configured_urls );
+		if ( ! empty( $intersection ) ) {
+			return ! $include_by_default;
 		}
 
-		return $default_state;
-
+		return $include_by_default;
 	}
 
 	/**
