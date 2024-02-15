@@ -61,13 +61,6 @@ class Rest_Controller {
 	 * @since 3.53.0
 	 */
 	public function register_routes() {
-		// @@TODO check that this works fine with the autocomplete component:
-		// https://ng.ant.design/components/auto-complete/en
-		// @@TODO did we really need this API or could we have used this?
-		// https://developer.wordpress.org/rest-api/reference/pages/
-		//
-		// The suggested WordPress endpoint should work fine. E.g.
-		// https://wordlift.www.localhost/wp-json/wp/v2/pages?search=sam&search_columns=post_title
 		register_rest_route(
 			WL_REST_ROUTE_DEFAULT_NAMESPACE,
 			'/wl-google-organization-kp/pages',
@@ -150,7 +143,10 @@ class Rest_Controller {
 	public function pages_get_callback( WP_REST_Request $request ) {
 		// Get the pages data from the service and return.
 		$params = $request->get_params();
-		$data   = $this->page_service->get( $params['pagination'], $params['title_starts_with'] );
+
+		$title_starts_with = isset( $params['title_starts_with'] ) ? $params['title_starts_with'] : null;
+
+		$data = $this->page_service->get( $params['pagination'], $title_starts_with);
 
 		return rest_ensure_response( $data );
 	}
@@ -213,7 +209,7 @@ class Rest_Controller {
 			if ( ! isset( $files['image']['type'] ) ) {
 				return new WP_Error(
 					'400',
-					'File mime type is not supported',
+					'File mime type is not set.',
 					array( 'status' => 400 )
 				);
 			}
@@ -222,12 +218,12 @@ class Rest_Controller {
 			if ( strpos( $files['image']['type'], 'image' ) === false ) {
 				return new WP_Error(
 					'400',
-					'Only image files are supported',
+					'Only image files are supported.',
 					array( 'status' => 400 )
 				);
 			}
 
-			// Add the image the the $params array.
+			// Add the image to the $params array.
 			$params['image'] = $files['image'];
 		}
 
