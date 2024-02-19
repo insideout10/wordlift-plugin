@@ -72,6 +72,7 @@ class Google_Organization_KG_Rest_Controller_Test extends Wordlift_Unit_Test_Cas
 	 * Test get countries route exists.
 	 */
 	public function test_get_countries_route_exists() {
+//		fwrite(STDERR, print_r($routes, TRUE));
 		$routes = $this->server->get_routes();
 		$this->assertArrayHasKey( $this->routes['get_countries'], $routes );
 	}
