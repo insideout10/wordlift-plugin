@@ -26,11 +26,11 @@ class Google_Organization_KG_Rest_Controller_Test extends Wordlift_Unit_Test_Cas
 	private $rest_controller_instance;
 
 	/**
-	 * A {@link Wordlift_Entity_Service} instance.
+	 * A {@link Wordlift_Entity_Type_Service} instance.
 	 *
-	 * @var \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
+	 * @var \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
 	 */
-	private $entity_service;
+	private $entity_type_service;
 
 	/**
 	 * Set Up.
@@ -48,7 +48,7 @@ class Google_Organization_KG_Rest_Controller_Test extends Wordlift_Unit_Test_Cas
 			new Page_Service
 		);
 
-		$this->entity_service = Wordlift_Entity_Service::get_instance();
+		$this->entity_type_service = Wordlift_Entity_Type_Service::get_instance();
 
 		global $wp_rest_server, $wpdb;
 
@@ -65,7 +65,7 @@ class Google_Organization_KG_Rest_Controller_Test extends Wordlift_Unit_Test_Cas
 	 */
 	public function test_instance_not_null() {
 		$this->assertNotNull( $this->rest_controller_instance );
-		$this->assertNotNull( $this->entity_service );
+		$this->assertNotNull( $this->entity_type_service );
 	}
 
 	/**
@@ -444,34 +444,57 @@ class Google_Organization_KG_Rest_Controller_Test extends Wordlift_Unit_Test_Cas
 	/**
 	 * Test rest route for post form data with required parameters
 	 */
-	public function test_rest_route_for_post_form_data_image_required_params() {
+	public function test_rest_route_for_post_form_data_required_params() {
 		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );
+
+		/*
+		 * Set initial Publisher values and check correctly set
+		 */
+
+		$publisher = $this->entity_factory->create_and_get( array(
+			'post_title' => 'ACME Inc.',
+		) );
+
+		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Organization' );
+
+		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher->ID );
+
+		$publisher_post = get_post( $publisher->ID );
+		$publisher_entity = $this->entity_type_service->get( $publisher->ID );
+
+		$this->assertEquals( 'ACME Inc.', $publisher_post->post_title );
+		$this->assertEquals( 'Organization', $publisher_entity['label'] );
+
+		/*
+		 * Update the Publisher
+		 */
 
 		$request = new WP_REST_Request(
 			'POST',
 			$this->routes['post_form_data']
 		);
 
-		$new_publisher = array(
-			'name' => 'Osvaldo',
+		$request->set_query_params( array(
+			'name' => 'Nicholas Cage',
 			'type' => 'Person'
-		);
+		) );
 
-		$request->set_query_params( $new_publisher );
+		$response = $this->server->dispatch( $request );
 
-		// Load publisher.
+		$this->assertEquals( 200, $response->get_status() );
+
+		/*
+		 * Check updated Publisher values
+		 */
+
 		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
 
-		fwrite(STDERR, print_r($publisher_id, TRUE));
-
 		$publisher_post = get_post( $publisher_id );
-		$publisher_entity = $this->entity_service->get( $publisher_id );
+		$publisher_entity = $this->entity_type_service->get( $publisher_id );
 
-//		$old_publisher = array(
-//			'name' => $publisher_post->post_title,
-//			'type' => $publisher_entity['label']
-//		);
+		$this->assertEquals( 'Nicholas Cage', $publisher_post->post_title );
+		$this->assertEquals( 'Person', $publisher_entity['label'] );
 	}
 
 	/**
