@@ -180,10 +180,6 @@ class Rest_Controller {
 		// Get the publisher data from the service and return.
 		$data = $this->publisher_service->get();
 
-		if ( empty( $data ) ) {
-			return new WP_Error( '404', 'No existing form data.', array( 'status' => 404 ) );
-		}
-
 		return rest_ensure_response( $data );
 	}
 
@@ -230,7 +226,8 @@ class Rest_Controller {
 		try {
 			// Successfully return the form data.
 			$data = $this->publisher_service->save( $params );
-			rest_ensure_response( $data );
+
+			return new WP_REST_Response( $data );
 		} catch ( Exception $e ) {
 			// Send back error.
 			return new WP_Error(
