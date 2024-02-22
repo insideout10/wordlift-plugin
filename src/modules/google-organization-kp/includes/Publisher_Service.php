@@ -373,7 +373,6 @@ class Publisher_Service {
 	 * @param $value mixed the value we want to write to the meta field.
 	 *
 	 * @since 3.53.0
-	 *
 	 **/
 	private function update_or_clear_post_meta( $post_id, $slug, $value ) {
 		if ( ! isset( $value ) ) {
