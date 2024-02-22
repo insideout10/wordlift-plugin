@@ -38,6 +38,10 @@ class Google_Organization_KG_Rest_Controller_Test extends Wordlift_Unit_Test_Cas
 	public function setUp() {
 		parent::setUp();
 
+//		if ( ! apply_filters( 'wl_feature__enable__', false ) ) {
+//			$this->markTestSkipped( 'Include/Exclude is not enabled.' );
+//		}
+
 		$this->rest_controller_instance = new Rest_Controller(
 			new Wordlift_Countries,
 			new Publisher_Service(
