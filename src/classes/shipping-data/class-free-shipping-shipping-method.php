@@ -6,6 +6,10 @@ class Free_Shipping_Shipping_Method extends Shipping_Method {
 
 	public function add_available_delivery_method( &$jsonld ) {
 
+		if ( ! is_array( $jsonld ) ) {
+			return;
+		}
+
 		if ( ! isset( $jsonld['availableDeliveryMethod'] ) ) {
 			$jsonld['availableDeliveryMethod'] = array();
 		}
