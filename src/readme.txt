@@ -143,6 +143,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.52.5 (2024-03-13) =
+
+* Remove unneeded warnings when trying to process a var which is not an array in Free Shipping Method
+* Check if `urls` exists before trying to access its data in Include Exclude URL
+
 = 3.52.4 (2024-02-15) =
 
 * Ensure we don't publish an empty author.

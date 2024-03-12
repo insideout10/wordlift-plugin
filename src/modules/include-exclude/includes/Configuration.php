@@ -22,7 +22,7 @@ class Configuration {
 			true
 		)
 			? $include_exclude : 'exclude';
-		$this->urls = $include_exclude_data['urls'];
+		$this->urls = isset( $include_exclude_data['urls'] ) ? $include_exclude_data['urls'] : '';
 	}
 
 	public static function get_instance() {
