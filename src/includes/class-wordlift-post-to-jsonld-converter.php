@@ -96,12 +96,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// Get the entity name.
 		$jsonld['headline'] = $post->post_title;
 
-		$custom_fields = $this->entity_type_service->get_custom_fields_for_post( $post_id );
-
-		if ( isset( $custom_fields ) ) {
-			$this->process_type_custom_fields( $jsonld, $custom_fields, $post, $references, $references_infos );
-		}
-
 		// Set the published and modified dates.
 		/*
 		 * Set the `datePublished` and `dateModified` using the local timezone.
