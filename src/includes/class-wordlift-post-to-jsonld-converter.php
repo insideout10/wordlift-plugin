@@ -41,8 +41,8 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * Wordlift_Post_To_Jsonld_Converter constructor.
 	 *
 	 * @param Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param Wordlift_User_Service        $user_service A {@link Wordlift_User_Service} instance.
-	 * @param Wordlift_Attachment_Service  $attachment_service A {@link Wordlift_Attachment_Service} instance.
+	 * @param Wordlift_User_Service $user_service A {@link Wordlift_User_Service} instance.
+	 * @param Wordlift_Attachment_Service $attachment_service A {@link Wordlift_Attachment_Service} instance.
 	 *
 	 * @since 3.10.0
 	 */
@@ -69,9 +69,9 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * Convert the provided {@link WP_Post} to a JSON-LD array. Any entity reference
 	 * found while processing the post is set in the $references array.
 	 *
-	 * @param int              $post_id The post id.
+	 * @param int $post_id The post id.
 	 * @param array<Reference> $references An array of entity references.
-	 * @param array            $references_infos
+	 * @param array $references_infos
 	 *
 	 * @return array A JSON-LD array.
 	 * @since 3.10.0
@@ -95,6 +95,12 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 		// Get the entity name.
 		$jsonld['headline'] = $post->post_title;
+
+		$custom_fields = $this->entity_type_service->get_custom_fields_for_post( $post_id );
+
+		if ( isset( $custom_fields ) ) {
+			$this->process_type_custom_fields( $jsonld, $custom_fields, $post, $references, $references_infos );
+		}
 
 		// Set the published and modified dates.
 		/*
@@ -256,7 +262,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * The JSON-LD fragment is generated using the {@link WP_User}'s data or
 	 * the referenced entity if configured for the {@link WP_User}.
 	 *
-	 * @param int   $author_id The author {@link WP_User}'s `id`.
+	 * @param int $author_id The author {@link WP_User}'s `id`.
 	 * @param array $references An array of referenced entities.
 	 *
 	 * @return string|array A JSON-LD structure.

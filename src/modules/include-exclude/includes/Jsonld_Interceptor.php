@@ -28,7 +28,7 @@ class Jsonld_Interceptor {
 		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@header( 'X-Wordlift-IncludeExclude-Stage-1: Condition Matched for ' . $jsonld_arr[0]['url'] );
 		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-		@header( 'X-Wordlift-IncludeExclude-Note: To bypass the Include/Exclude filter add a `X-Wordlift-Bypass-Include-Exclude` HTTP request header with any value.' );
+		@header( 'X-Wordlift-IncludeExclude-Note: To bypass the Include/Exclude filter add a `x-wordlift-bypass-include-exclude` HTTP request header with any value.' );
 
 		// If the URLs are included then publish them.
 		if ( $this->plugin_enabled->are_urls_included( $jsonld_arr[0]['url'] ) ) {
