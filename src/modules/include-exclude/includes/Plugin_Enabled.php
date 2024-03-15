@@ -89,6 +89,10 @@ class Plugin_Enabled {
 		return $include_by_default;
 	}
 
+	public function get_configuration() {
+		return $this->configuration;
+	}
+
 	/**
 	 * We cant rely on WP_REST_REQUEST constant here since it is loaded after init hook
 	 *

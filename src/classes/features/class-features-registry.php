@@ -45,7 +45,7 @@ class Features_Registry {
 			 * @var $feature Feature
 			 */
 			$feature_slug = $feature->feature_slug;
-			if ( apply_filters( "wl_feature__enable__${feature_slug}", $feature->default_value ) ) {
+			if ( apply_filters( "wl_feature__enable__{$feature_slug}", $feature->default_value ) ) {
 				call_user_func( $feature->callback );
 			}
 		}

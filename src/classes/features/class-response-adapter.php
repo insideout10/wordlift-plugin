@@ -77,11 +77,11 @@ class Response_Adapter {
 
 		foreach ( (array) get_option( self::WL_FEATURES, array() ) as $name => $enabled ) {
 			// Remove previous filters.
-			remove_filter( "wl_feature__enable__${name}", '__return_true' );
-			remove_filter( "wl_feature__enable__${name}", '__return_false' );
+			remove_filter( "wl_feature__enable__{$name}", '__return_true' );
+			remove_filter( "wl_feature__enable__{$name}", '__return_false' );
 
 			$callback = ( $enabled ? '__return_true' : '__return_false' );
-			add_filter( "wl_feature__enable__${name}", $callback );
+			add_filter( "wl_feature__enable__{$name}", $callback );
 		}
 
 	}
