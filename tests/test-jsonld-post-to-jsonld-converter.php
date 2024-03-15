@@ -126,7 +126,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		// Check that we have ... properties, not one more than that.
 		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 15, $jsonld, "The failing JSON-LD\n$jsonld" );
+		$this->assertCount( 15, $jsonld, "The failing JSON-LD\n" . var_export( $jsonld, true ) );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
