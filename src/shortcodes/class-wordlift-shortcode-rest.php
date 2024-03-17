@@ -15,6 +15,16 @@ abstract class Wordlift_Shortcode_REST {
 	 */
 	const CACHE_TTL = 86400; // 24 hours
 
+	/**
+	 * @var $endpoint string The endpoint.
+	 */
+	private $endpoint;
+
+	/**
+	 * @var $args array The args.
+	 */
+	private $args;
+
 	public function __construct( $endpoint, $args ) {
 
 		$scope          = $this;
