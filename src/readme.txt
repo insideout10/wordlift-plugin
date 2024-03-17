@@ -143,11 +143,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.52.6 (2024-03-15) =
+= 3.52.6 (2024-03-17) =
 
 * Remove deprecation warnings
 * Fix an issue with reading the include/exclude default setting
-* Fix an issue with the Article Wrapper publishing entity properties
 
 = 3.52.5 (2024-03-13) =
 
