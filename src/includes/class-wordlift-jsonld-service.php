@@ -249,10 +249,10 @@ class Wordlift_Jsonld_Service {
 	/**
 	 * Create a JSON-LD service.
 	 *
-	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Post_Converter $converter A {@link Wordlift_Uri_To_Jsonld_Converter} instance.
+	 * @param \Wordlift_Entity_Service           $entity_service A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Post_Converter           $converter A {@link Wordlift_Uri_To_Jsonld_Converter} instance.
 	 * @param \Wordlift_Website_Jsonld_Converter $website_converter A {@link Wordlift_Website_Jsonld_Converter} instance.
-	 * @param \Wordlift_Term_JsonLd_Adapter $term_jsonld_adapter
+	 * @param \Wordlift_Term_JsonLd_Adapter      $term_jsonld_adapter
 	 *
 	 * @since 3.8.0
 	 */
@@ -319,9 +319,9 @@ class Wordlift_Jsonld_Service {
 	/**
 	 * Get the JSON-LD.
 	 *
-	 * @param bool $is_homepage Whether the JSON-LD for the homepage is being requested.
+	 * @param bool     $is_homepage Whether the JSON-LD for the homepage is being requested.
 	 * @param int|null $post_id The JSON-LD for the specified {@link WP_Post} id.
-	 * @param int $context A context for the JSON-LD generation, valid values in Jsonld_Context_Enum.
+	 * @param int      $context A context for the JSON-LD generation, valid values in Jsonld_Context_Enum.
 	 *
 	 * @return array A JSON-LD structure.
 	 * @since 3.15.1
@@ -401,9 +401,9 @@ class Wordlift_Jsonld_Service {
 		}
 
 		$jsonld_arr = $graph->add_references( $references )
-		                    ->add_relations( $relations )
-		                    ->add_required_reference_infos( $references_infos )
-		                    ->render( $context );
+							->add_relations( $relations )
+							->add_required_reference_infos( $references_infos )
+							->render( $context );
 
 		/**
 		 * Filter name: wl_after_get_jsonld
@@ -434,12 +434,12 @@ class Wordlift_Jsonld_Service {
 
 		$jsonld = wp_json_encode( $this->get_jsonld( $is_homepage, $post_id, Jsonld_Context_Enum::PAGE ) );
 		?>
-        <script type="application/ld+json"><?php echo esc_html( $jsonld ); ?></script>
+		<script type="application/ld+json"><?php echo esc_html( $jsonld ); ?></script>
 		<?php
 	}
 
 	/**
-	 * @param array $jsonld
+	 * @param array    $jsonld
 	 * @param Relation $relation
 	 *
 	 * @return void
