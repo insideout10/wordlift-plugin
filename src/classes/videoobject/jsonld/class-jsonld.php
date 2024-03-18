@@ -23,7 +23,7 @@ class Jsonld {
 	 */
 	public function __construct( $video_storage ) {
 		add_action( 'wl_post_jsonld', array( $this, 'wl_post_jsonld' ), 10, 2 );
-		add_action( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 10, 2 );
+		add_filter( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 10, 2 );
 		$this->video_storage = $video_storage;
 	}
 
