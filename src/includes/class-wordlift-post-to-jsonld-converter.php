@@ -96,12 +96,12 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// Get the entity name.
 		$jsonld['headline'] = $post->post_title;
 
-        // Convert entities as `Article`.
-        //
-        // @see https://github.com/insideout10/wordlift-plugin/issues/1731
-        $custom_fields = Wordlift_Entity_Service::get_instance()->is_entity( $post_id )
-            ? $this->entity_type_service->get_custom_fields_for_term( $this->entity_type_service->get_term_by_slug( 'article' ) )
-            : $this->entity_type_service->get_custom_fields_for_post( $post_id );
+		// Convert entities as `Article`.
+		//
+		// @see https://github.com/insideout10/wordlift-plugin/issues/1731
+		$custom_fields = Wordlift_Entity_Service::get_instance()->is_entity( $post_id )
+			? $this->entity_type_service->get_custom_fields_for_term( $this->entity_type_service->get_term_by_slug( 'article' ) )
+			: $this->entity_type_service->get_custom_fields_for_post( $post_id );
 
 		if ( isset( $custom_fields ) ) {
 			$this->process_type_custom_fields( $jsonld, $custom_fields, $post, $references, $references_infos );
