@@ -294,7 +294,7 @@ class Wordlift_Entity_Type_Service {
 	 *                             or `$term` was not found.
 	 * @since 3.20.0
 	 */
-	private function get_term_by_slug( $slug ) {
+	public function get_term_by_slug( $slug ) {
 
 		return get_term_by( 'slug', $slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 	}
