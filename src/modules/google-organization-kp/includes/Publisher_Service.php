@@ -191,13 +191,11 @@ class Publisher_Service {
 		}
 
 		// Update Legal name
-		if ( isset( $params['legal_name'] ) ) {
-			update_post_meta(
-				$publisher_id,
-				\Wordlift_Schema_Service::FIELD_LEGAL_NAME,
-				sanitize_text_field( $params['legal_name'] )
-			);
-		}
+		$this->update_or_clear_post_meta(
+			$publisher_id,
+			\Wordlift_Schema_Service::FIELD_LEGAL_NAME,
+			$params['legal_name']
+		);
 
 		// Update the Publisher description.
 		if ( isset( $params['description'] ) ) {
@@ -369,18 +367,18 @@ class Publisher_Service {
 	 * Updates the post meta or deletes the meta if the provided value was empty.
 	 *
 	 * @param $post_id int the post ID.
-	 * @param $slug string the slug of the meta field.
+	 * @param $key string the slug of the meta field.
 	 * @param $value mixed the value we want to write to the meta field.
 	 *
 	 * @since 3.53.0
 	 **/
-	private function update_or_clear_post_meta( $post_id, $slug, $value ) {
+	private function update_or_clear_post_meta( $post_id, $key, $value ) {
 		if ( ! isset( $value ) ) {
 			return;
 		}
 
 		empty( $value )
-			? delete_post_meta( $post_id, $slug )
-			: update_post_meta( $post_id, $slug, sanitize_text_field( $value ) );
+			? delete_post_meta( $post_id, $key )
+			: update_post_meta( $post_id, $key, sanitize_text_field( $value ) );
 	}
 }

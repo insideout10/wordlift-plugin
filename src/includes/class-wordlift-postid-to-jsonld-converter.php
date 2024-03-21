@@ -49,7 +49,6 @@ class Wordlift_Postid_To_Jsonld_Converter implements Wordlift_Post_Converter {
 	 * @since 3.8.0
 	 */
 	public function __construct( $entity_post_to_jsonld_converter, $post_to_jsonld_converter ) {
-
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
 		$this->entity_post_to_jsonld_converter = $entity_post_to_jsonld_converter;

@@ -14,6 +14,11 @@
 class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld_Converter {
 
 	/**
+	 * @var Wordlift_Entity_Post_To_Jsonld_Converter
+	 */
+	private static $instance;
+
+	/**
 	 * The {@link Wordlift_Schemaorg_Property_Service} or null if not provided.
 	 *
 	 * @since 3.20.0
@@ -46,6 +51,11 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 		parent::__construct( $entity_type_service, $user_service, $attachment_service, $property_getter );
 		$this->schemaorg_property_service = $schemaorg_property_service;
 		$this->post_to_jsonld_converter   = $post_to_jsonld_converter;
+	}
+
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**
@@ -108,7 +118,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 
 		// Add logo to Publisher Organization subtypes
 		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
-		if ( is_numeric( $publisher_id ) && (string) $post_id === $publisher_id ) {
+		if ( is_numeric( $publisher_id ) && (string) $post_id === (string) $publisher_id ) {
 			$this->add_logo_to_organization( $jsonld, $publisher_id );
 		}
 

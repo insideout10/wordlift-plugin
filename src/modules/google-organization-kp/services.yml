@@ -17,21 +17,15 @@ services:
     factory: [ 'Wordlift_Configuration_Service', 'get_instance' ]
     class: Wordlift_Configuration_Service
 
-  Wordlift_Postid_To_Jsonld_Converter:
-    factory: [ 'Wordlift_Postid_To_Jsonld_Converter', 'get_instance' ]
-    class: Wordlift_Postid_To_Jsonld_Converter
-
-  Wordlift_Entity_Post_To_Jsonld_Converter:
-    class: Wordlift_Entity_Post_To_Jsonld_Converter
-
-  Wordlift_Post_To_Jsonld_Converter:
-    class: Wordlift_Post_To_Jsonld_Converter
-
   Wordlift_Countries:
     class: Wordlift_Countries
 
   Wordlift\Modules\Google_Organization_Kp\Page_Service:
     class: Wordlift\Modules\Google_Organization_Kp\Page_Service
+
+  Wordlift_Postid_To_Jsonld_Converter:
+    factory: [ 'Wordlift_Postid_To_Jsonld_Converter', 'get_instance' ]
+    class: Wordlift_Postid_To_Jsonld_Converter
 
   Wordlift\Modules\Google_Organization_Kp\Publisher_Service:
     class: Wordlift\Modules\Google_Organization_Kp\Publisher_Service

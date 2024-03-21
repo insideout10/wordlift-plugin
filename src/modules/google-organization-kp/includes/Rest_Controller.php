@@ -2,7 +2,7 @@
 
 namespace Wordlift\Modules\Google_Organization_Kp;
 
-use Wordlift\Modules\Google_Organization_Kp\Symfony\Component\Config\Definition\Exception\Exception;
+use Exception;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -68,14 +68,14 @@ class Rest_Controller {
 				'methods'             => 'GET',
 				'callback'            => array( $this, 'pages_get_callback' ),
 				'args'                => array(
-					'pagination'        => array(
-						'default'           => 0,
+					'pagination'     => array(
+						'default'           => 1,
 						'required'          => true,
 						'validate_callback' => function ( $param ) {
 							return is_numeric( $param );
 						},
 					),
-					'title_starts_with' => array(
+					'title_contains' => array(
 						'required'          => false,
 						'validate_callback' => function ( $param ) {
 							return is_string( $param );
@@ -132,7 +132,7 @@ class Rest_Controller {
 	 *
 	 * The expected request parameters are:
 	 * - <int> pagination           : The pagination step
-	 * - <string> title_starts_with : A filter to narrow down pages by the starting characters of the title.
+	 * - <string> title_contains    : A filter to narrow down pages by pattern matching characters of the title.
 	 *
 	 * @param   WP_REST_Request $request The WordPress request object.
 	 *
@@ -144,9 +144,9 @@ class Rest_Controller {
 		// Get the pages data from the service and return.
 		$params = $request->get_params();
 
-		$title_starts_with = isset( $params['title_starts_with'] ) ? $params['title_starts_with'] : null;
+		$title_contains = isset( $params['title_contains'] ) ? $params['title_contains'] : null;
 
-		$data = $this->page_service->get( $params['pagination'], $title_starts_with );
+		$data = $this->page_service->get( $params['pagination'], $title_contains );
 
 		return rest_ensure_response( $data );
 	}

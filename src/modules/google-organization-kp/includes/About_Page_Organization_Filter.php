@@ -74,13 +74,13 @@ class About_Page_Organization_Filter {
 	 * @since 3.53.0
 	 */
 	public function is_about_page( $post_id ) {
-		$about_page_id = get_option( 'wl_about_page_id' );
+		$about_page_id = $this->configuration_service->get_about_page_id();
 
 		if ( ! $about_page_id || empty( $about_page_id ) ) {
 			return false;
 		}
 
-		return $about_page_id === $post_id;
+		return (string) $about_page_id === (string) $post_id;
 	}
 
 	/**

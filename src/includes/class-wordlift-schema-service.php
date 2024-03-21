@@ -920,7 +920,7 @@ class Wordlift_Schema_Service {
 				'http://dbpedia.org/class/yago/LivingPeople',
 			),
 			'custom_fields' => array(
-				self::FIELD_KNOWS              => array(
+				self::FIELD_KNOWS               => array(
 					'predicate'   => 'http://schema.org/knows',
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/Person',
@@ -929,13 +929,13 @@ class Wordlift_Schema_Service {
 						'cardinality' => INF,
 					),
 				),
-				self::FIELD_BIRTH_DATE         => array(
+				self::FIELD_BIRTH_DATE          => array(
 					'predicate'   => 'http://schema.org/birthDate',
 					'type'        => self::DATA_TYPE_DATE,
 					'export_type' => 'xsd:date',
 					'constraints' => '',
 				),
-				self::FIELD_BIRTH_PLACE        => array(
+				self::FIELD_BIRTH_PLACE         => array(
 					'predicate'   => 'http://schema.org/birthPlace',
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/Place',
@@ -943,7 +943,7 @@ class Wordlift_Schema_Service {
 						'uri_type' => 'Place',
 					),
 				),
-				self::FIELD_AFFILIATION        => array(
+				self::FIELD_AFFILIATION         => array(
 					'predicate'   => 'http://schema.org/affiliation',
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/Organization',
@@ -955,7 +955,7 @@ class Wordlift_Schema_Service {
 						'cardinality' => INF,
 					),
 				),
-				self::FIELD_EMAIL              => array(
+				self::FIELD_EMAIL               => array(
 					'predicate'   => 'http://schema.org/email',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
@@ -963,25 +963,79 @@ class Wordlift_Schema_Service {
 						'cardinality' => INF,
 					),
 				),
-				self::FIELD_NAICS              => array(
+				self::FIELD_TELEPHONE           => array(
+					'predicate'   => 'http://schema.org/telephone',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+				),
+				self::FIELD_ADDRESS             => array(
+					'predicate'   => 'http://schema.org/streetAddress',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					// To build custom metabox.
+					'input_field' => 'address',
+				),
+				self::FIELD_ADDRESS_PO_BOX      => array(
+					'predicate'   => 'http://schema.org/postOfficeBoxNumber',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					// To build custom metabox.
+					'input_field' => 'address',
+				),
+				self::FIELD_ADDRESS_POSTAL_CODE => array(
+					'predicate'   => 'http://schema.org/postalCode',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					// To build custom metabox.
+					'input_field' => 'address',
+				),
+				self::FIELD_ADDRESS_LOCALITY    => array(
+					'predicate'   => 'http://schema.org/addressLocality',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					// To build custom metabox.
+					'input_field' => 'address',
+				),
+				self::FIELD_ADDRESS_REGION      => array(
+					'predicate'   => 'http://schema.org/addressRegion',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					// To build custom metabox.
+					'input_field' => 'address',
+				),
+				self::FIELD_ADDRESS_COUNTRY     => array(
+					'predicate'   => 'http://schema.org/addressCountry',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					// To build custom metabox.
+					'input_field' => 'address',
+				),
+				self::FIELD_NAICS               => array(
 					'predicate'   => 'http://schema.org/naics',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 				),
-				self::FIELD_GLOBAL_LOCATION_NO => array(
+				self::FIELD_GLOBAL_LOCATION_NO  => array(
 					'predicate'   => 'http://schema.org/globalLocationNumber',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 				),
-				self::FIELD_VAT_ID             => array(
+				self::FIELD_VAT_ID              => array(
 					'predicate'   => 'http://schema.org/vatID',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 				),
-				self::FIELD_TAX_ID             => array(
+				self::FIELD_TAX_ID              => array(
 					'predicate'   => 'http://schema.org/taxID',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
