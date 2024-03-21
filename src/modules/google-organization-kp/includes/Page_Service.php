@@ -19,7 +19,7 @@ class Page_Service {
 	 *
 	 * @var int
 	 */
-	const PAGINATION_NUM_OF_PAGES = 2;
+	const PAGINATION_NUM_OF_PAGES = 100;
 
 	/**
 	 * Get a list of pages.
@@ -44,7 +44,7 @@ class Page_Service {
 			'posts_per_page' => $pagination_no_of_pages,  // Number of posts per page
 			'paged'          => $pagination_offset,       // Pagination page
 			'orderby'        => 'title',                  // Sort by title
-			'order'          => 'ASC',                     // Ascending
+			'order'          => 'ASC',                    // Ascending
 		);
 
 		// If a title_contains filter was provided, search for pages accordingly
