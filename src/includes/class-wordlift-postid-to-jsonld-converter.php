@@ -16,8 +16,20 @@
  */
 class Wordlift_Postid_To_Jsonld_Converter implements Wordlift_Post_Converter {
 
+	/**
+	 * @var Wordlift_Entity_Post_To_Jsonld_Converter
+	 */
 	private $entity_post_to_jsonld_converter;
+
+	/**
+	 * @var Wordlift_Post_To_Jsonld_Converter
+	 */
 	private $post_to_jsonld_converter;
+
+	/**
+	 * @var Wordlift_Postid_To_Jsonld_Converter
+	 */
+	private static $instance;
 
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
@@ -37,12 +49,17 @@ class Wordlift_Postid_To_Jsonld_Converter implements Wordlift_Post_Converter {
 	 * @since 3.8.0
 	 */
 	public function __construct( $entity_post_to_jsonld_converter, $post_to_jsonld_converter ) {
-
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
 		$this->entity_post_to_jsonld_converter = $entity_post_to_jsonld_converter;
 		$this->post_to_jsonld_converter        = $post_to_jsonld_converter;
 
+		self::$instance = $this;
+	}
+
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**

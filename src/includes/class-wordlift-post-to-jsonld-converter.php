@@ -302,5 +302,4 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 		$references[] = $publisher_id;
 	}
-
 }

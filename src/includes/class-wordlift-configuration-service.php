@@ -137,6 +137,13 @@ class Wordlift_Configuration_Service {
 	const OVERRIDE_WEBSITE_URL = 'wl-override-website-url';
 
 	/**
+	 * The about page Post ID.
+	 *
+	 * @since 3.53.0
+	 */
+	const ABOUT_PAGE_ID = 'wl_about_page_id';
+
+	/**
 	 * The {@link Wordlift_Log_Service} instance.
 	 *
 	 * @since 3.16.0
@@ -821,4 +828,16 @@ class Wordlift_Configuration_Service {
 		$this->set( 'wl_general_settings', self::OVERRIDE_WEBSITE_URL, $value );
 	}
 
+	/**
+	 * The about page Post ID or false if not set.
+	 *
+	 * @return false|string
+	 */
+	public function get_about_page_id() {
+		return $this->get( 'wl_general_settings', self::ABOUT_PAGE_ID );
+	}
+
+	public function set_about_page_id( $value ) {
+		$this->set( 'wl_general_settings', self::ABOUT_PAGE_ID, $value );
+	}
 }

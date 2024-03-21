@@ -537,4 +537,17 @@ class Wordlift_Countries {
 		return self::$country_codes[ $country_code ];
 	}
 
+	/**
+	 * Returns an array of countries and country codes, for all possible countries.
+	 *
+	 * @return array
+	 *
+	 * @ since 3.53.0
+	 */
+	public static function get_all_countries() {
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		$json_file_contents = file_get_contents( __DIR__ . '/all-countries.json' );
+
+		return json_decode( $json_file_contents, true );
+	}
 }

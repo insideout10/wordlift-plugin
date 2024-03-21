@@ -121,8 +121,11 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$references = array();
 		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
-		// Check that we don't have reference.
-		$this->assertCount( 0, $references );
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+
+		// Check that we have exactly one reference (Publisher is now expanded via reference).
+		$this->assertCount( 1, $references );
+		$this->assertContains( $publisher_id, $references, 'References must contain the set publisher post id.' );
 
 		// Check that we have ... properties, not one more than that.
 		// Since 3.16.0 we also have the publisher among the properties.
@@ -166,9 +169,11 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$references = array();
 		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
 
-		// Check that we don't have reference.
-		$this->assertCount( 0, $references );
+		// Check that we have exactly one reference (Publisher is now expanded via reference).
+		$this->assertCount( 1, $references );
+		$this->assertContains( $publisher_id, $references, 'References must contain the set publisher post id.' );
 
 		// Check that we have ... properties, not one more than that.
 		// Since 3.16.0 we also have the publisher among the properties.
@@ -226,8 +231,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$references = array();
 		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
-		// Check that we don't have reference.
-		$this->assertCount( 0, $references );
+		// Check that we have exactly one reference (Publisher is now expanded via reference).
+		$this->assertCount( 1, $references );
+		$this->assertContains( $publisher->ID, $references, 'References must contain the set publisher post id.' );
 
 		// Check that we have ... properties, not one more than that.
 		$this->assertCount( 15, $jsonld );
@@ -247,12 +253,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( mysql2date( 'Y-m-d\TH:i', $post->post_modified_gmt, false ), $jsonld['dateModified'] );
 		$this->assertEquals( self::word_count( $post->ID ), $jsonld['wordCount'] );
 
-		// Check the publisher.
-		$this->assertCount( 3, $jsonld['publisher'] );
-		$this->assertEquals( 'Person', $jsonld['publisher']['@type'] );
-		$this->assertEquals( $publisher_uri, $jsonld['publisher']['@id'] );
-		$this->assertEquals( $publisher->post_title, $jsonld['publisher']['name'] );
 
+
+		// Check the publisher.
+		$this->assertCount( 1, $jsonld['publisher'] );
+		$this->assertEquals( $publisher_uri, $jsonld['publisher']['@id'] );
+
+//		fwrite(STDERR, print_r($jsonld, TRUE));
 	}
 
 	/**
@@ -279,8 +286,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$references = array();
 		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
-		// Check that we don't have reference.
-		$this->assertCount( 0, $references );
+		// Check that we have exactly one reference (Publisher is now expanded via reference).
+		$this->assertCount( 1, $references );
+		$this->assertContains( $publisher->ID, $references, 'References must contain the set publisher post id.' );
 
 		// Check that we have ... properties, not one more than that.
 		$this->assertCount( 15, $jsonld );
@@ -301,10 +309,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( self::word_count( $post->ID ), $jsonld['wordCount'] );
 
 		// Check the publisher.
-		$this->assertCount( 3, $jsonld['publisher'] );
-		$this->assertEquals( 'Organization', $jsonld['publisher']['@type'] );
+		$this->assertCount( 1, $jsonld['publisher'] );
 		$this->assertEquals( $publisher_uri, $jsonld['publisher']['@id'] );
-		$this->assertEquals( $publisher->post_title, $jsonld['publisher']['name'] );
 
 	}
 
@@ -380,8 +386,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$references = array();
 		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
-		// Check that we don't have reference.
-		$this->assertCount( 0, $references );
+		// Check that we have exactly one reference (Publisher is now expanded via reference).
+		$this->assertCount( 1, $references );
+		$this->assertContains( $publisher->ID, $references, 'References must contain the set publisher post id.' );
 
 		// Check that we have ... properties, not one more than that.
 		$this->assertCount( 15, $jsonld );
@@ -402,23 +409,21 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( self::word_count( $post->ID ), $jsonld['wordCount'] );
 
 		// Check the publisher.
-		$publisher_count = ( extension_loaded( 'imagick' ) && class_exists( "Imagick" ) && version_compare( PHP_VERSION, '8.0.0', '<' ) ) ? 4 : 3;
-		$this->assertCount( $publisher_count, $jsonld['publisher'] );
-		$this->assertEquals( 'Organization', $jsonld['publisher']['@type'] );
+		$this->assertCount( 1, $jsonld['publisher'] );
 		$this->assertEquals( $publisher_uri, $jsonld['publisher']['@id'] );
-		$this->assertEquals( $publisher->post_title, $jsonld['publisher']['name'] );
 
-		// Check the logo.
-		$expected_attachment_url = substr( $attachment_url, 0, strrpos( $attachment_url, '.' ) )
-		                           . '--publisher-logo'
-		                           . substr( $attachment_url, strrpos( $attachment_url, '.' ) );
-		if ( extension_loaded( 'imagick' ) && class_exists( "Imagick" ) && version_compare( PHP_VERSION, '8.0.0', '<' ) ) {
-			$this->assertCount( 4, $jsonld['publisher']['logo'] );
-			$this->assertEquals( 'ImageObject', $jsonld['publisher']['logo']['@type'] );
-			$this->assertEquals( $expected_attachment_url, $jsonld['publisher']['logo']['url'] );
-			$this->assertEquals( 86, $jsonld['publisher']['logo']['width'], "Width doesn't match for $attachment_url." );
-			$this->assertEquals( 60, $jsonld['publisher']['logo']['height'] );
-		}
+		// Disabled since the publisher is now expanded via reference @since 3.53.0
+//		// Check the logo.
+//		$expected_attachment_url = substr( $attachment_url, 0, strrpos( $attachment_url, '.' ) )
+//		                           . '--publisher-logo'
+//		                           . substr( $attachment_url, strrpos( $attachment_url, '.' ) );
+//		if ( extension_loaded( 'imagick' ) && class_exists( "Imagick" ) && version_compare( PHP_VERSION, '8.0.0', '<' ) ) {
+//			$this->assertCount( 4, $jsonld['publisher']['logo'] );
+//			$this->assertEquals( 'ImageObject', $jsonld['publisher']['logo']['@type'] );
+//			$this->assertEquals( $expected_attachment_url, $jsonld['publisher']['logo']['url'] );
+//			$this->assertEquals( 86, $jsonld['publisher']['logo']['width'], "Width doesn't match for $attachment_url." );
+//			$this->assertEquals( 60, $jsonld['publisher']['logo']['height'] );
+//		}
 
 	}
 
@@ -459,8 +464,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$references = array();
 		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
-		// Check that we have 2 references.
-		$this->assertCount( 2, $references );
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+
+		// Check that we have exactly 3 references.
+		$this->assertCount( 3, $references );
+
+		// Check that the Publisher is in the references.
+		$this->assertContains( $publisher_id, $references, 'References must contain the set publisher post id.' );
 
 		// Check that we have ... properties, not one more than that.
 		//
@@ -531,8 +541,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$references = array();
 		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
-		// Check that we have 2 references.
-		$this->assertCount( 2, $references );
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+
+		// Check that we have exactly 3 references.
+		$this->assertCount( 3, $references );
+
+		// Check that the Publisher is in the references.
+		$this->assertContains( $publisher_id, $references, 'References must contain the set publisher post id.' );
 
 		// Check that we have ... properties, not one more than that.
 		//
@@ -636,8 +651,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$references = array();
 		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
-		// Check that we have 2 references.
-		$this->assertCount( 2, $references );
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+
+		// Check that we have exactly 3 references.
+		$this->assertCount( 3, $references );
+
+		// Check that the Publisher is in the references.
+		$this->assertContains( $publisher_id, $references, 'References must contain the set publisher post id.' );
 
 		// Check that we have ... properties, not one more than that.
 		//
@@ -726,8 +746,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$references = array();
 		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
-		// Check that we have 2 references.
-		$this->assertCount( 2, $references );
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+
+		// Check that we have exactly 3 references.
+		$this->assertCount( 3, $references );
+
+		// Check that the Publisher is in the references.
+		$this->assertContains( $publisher_id, $references, 'References must contain the set publisher post id.' );
 
 		// Check that we have ... properties, not one more than that.
 		//
@@ -820,8 +845,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$references = array();
 		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
-		// Check that we have 2 references.
-		$this->assertCount( 2, $references );
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+
+		// Check that we have exactly 3 references.
+		$this->assertCount( 3, $references );
+
+		// Check that the Publisher is in the references.
+		$this->assertContains( $publisher_id, $references, 'References must contain the set publisher post id.' );
 
 
 		// Check that we have ... properties, not one more than that.
@@ -928,8 +958,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$references = array();
 		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
-		// Check that we have 2 references.
-		$this->assertCount( 2, $references );
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+
+		// Check that we have exactly 3 references.
+		$this->assertCount( 3, $references );
+
+		// Check that the Publisher is in the references.
+		$this->assertContains( $publisher_id, $references, 'References must contain the set publisher post id.' );
 
 		// Check that we have ... properties, not one more than that.
 		//
@@ -1036,8 +1071,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$references = array();
 		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
-		// Check that we have 2 references.
-		$this->assertCount( 2, $references );
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+
+		// Check that we have exactly 3 references.
+		$this->assertCount( 3, $references );
+
+		// Check that the Publisher is in the references.
+		$this->assertContains( $publisher_id, $references, 'References must contain the set publisher post id.' );
 
 		// Check that we have ... properties, not one more than that.
 		//
@@ -1151,7 +1191,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		$this->assertEquals( $entity_uri, $jsonld['author']['@id'] );
 
-		$this->assertArraySubset( array( $entity_id ), $references );
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+		$this->assertArraySubset( array( $publisher_id, $entity_id ), $references );
 
 		// Since 3.16.0 the author is printed on its own.
 		//		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
@@ -1197,7 +1238,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		$this->assertEquals( $entity_uri, $jsonld['author']['@id'] );
 
-		$this->assertArraySubset( array( $entity_id ), $references );
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+		$this->assertArraySubset( array( $publisher_id, $entity_id ), $references );
 
 		// Since 3.16.0 the author is printed on its own.
 		//		$this->assertEquals( 'Organization', $jsonld['author']['@type'] );
@@ -1252,11 +1294,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 			)
 		);
 
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+
 		$references = array();
 		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references, $references, new Relations() );
 
 		$this->assertEquals( $entity_uri, $jsonld['author']['@id'] );
-		$this->assertArraySubset( array( $entity_id ), $references );
+		$this->assertArraySubset( array( $publisher_id, $entity_id ), $references );
 
 		// Change the user author and test again that is has changed in jsonld.
 		$this->assertGreaterThan( 0, $this->user_service->set_entity( $author_id, $entity_id_2 ) );
@@ -1265,7 +1309,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$jsonld_2     = $this->post_to_jsonld_converter->convert( $post->ID, $references_2, $references_2, new Relations() );
 
 		$this->assertEquals( $entity_uri_2, $jsonld_2['author']['@id'] );
-		$this->assertArraySubset( array( $entity_id_2 ), $references_2 );
+		$this->assertArraySubset( array( $publisher_id, $entity_id_2 ), $references_2 );
 
 		// Delete the author entity and check that the author triple is properly generated.
 		delete_user_meta( $author_id, Wordlift_User_Service::ENTITY_META_KEY );
@@ -1371,11 +1415,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		$this->post_to_jsonld_converter->convert( $post_id, $references, $reference_infos, new Relations() );
 
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
 
-		// Check that the references contain both the event and the place.
+		// Check that the references contain the event, place, and publisher.
 		$this->assertContains( $event_post_id, $references, 'References must contain the event post id.' );
 		$this->assertContains( $place_post_id, $references, 'References must contain the place post id: ' . var_export( $references, true ) );
-		$this->assertCount( 2, $references, 'References must be 2.' );
+		$this->assertContains( $publisher_id, $references, 'References must contain the publisher post id.' );
+		$this->assertCount( 3, $references, 'References must be 2.' );
 
 	}
 

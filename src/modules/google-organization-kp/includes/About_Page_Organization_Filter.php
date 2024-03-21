@@ -14,46 +14,41 @@ namespace Wordlift\Modules\Google_Organization_Kp;
 class About_Page_Organization_Filter {
 
 	/**
-	 * @var Wordlift_Publisher_Service
+	 * @var \Wordlift_Publisher_Service
 	 */
 	private $publisher_service;
 
 	/**
-	 * @var Wordlift_Configuration_Service
+	 * @var \Wordlift_Configuration_Service
 	 */
 	private $configuration_service;
 
 	/**
-	 * @var Wordlift_Entity_Service
+	 * @var \Wordlift_Entity_Service
 	 */
 	private $entity_service;
 
 	/**
-	 * @var Wordlift_Post_To_Jsonld_Converter
+	 * @var \Wordlift_Postid_To_Jsonld_Converter
 	 */
 	private $post_jsonld_service;
 
 	/**
-	 * @var Wordlift_Schema_Service
-	 */
-	private $schema_service;
-
-	/**
-	 * @param Wordlift_Publisher_Service        $publisher_service
-	 * @param Wordlift_Configuration_Service    $configuration_service
-	 * @param Wordlift_Entity_Service           $entity_service
-	 * @param Wordlift_Post_To_Jsonld_Converter $post_jsonld_service
+	 * @param \Wordlift_Publisher_Service          $publisher_service
+	 * @param \Wordlift_Configuration_Service      $configuration_service
+	 * @param \Wordlift_Entity_Service             $entity_service
+	 * @param \Wordlift_Postid_To_Jsonld_Converter $postid_to_jsonld_converter
 	 */
 	public function __construct(
 		$publisher_service,
 		$configuration_service,
 		$entity_service,
-		$post_jsonld_service
+		$postid_to_jsonld_converter
 	) {
-		$this->publisher_service     = $publisher_service;
-		$this->configuration_service = $configuration_service;
-		$this->entity_service        = $entity_service;
-		$this->post_jsonld_service   = $post_jsonld_service;
+		$this->publisher_service          = $publisher_service;
+		$this->configuration_service      = $configuration_service;
+		$this->entity_service             = $entity_service;
+		$this->postid_to_jsonld_converter = $postid_to_jsonld_converter;
 	}
 
 	/**
@@ -65,8 +60,8 @@ class About_Page_Organization_Filter {
 	 * @since 3.53.0
 	 */
 	public function register_hooks() {
-		add_filter( 'wl_website_jsonld', array( $this, '_add_organization_jsonld' ), 10, 2 );
-		add_filter( 'wl_after_get_jsonld', array( $this, '_add_organization_jsonld' ), 10, 2 );
+		add_filter( 'wl_website_jsonld', array( $this, 'add_organization_jsonld' ), 10, 2 );
+		add_filter( 'wl_after_get_jsonld', array( $this, 'add_organization_jsonld' ), 10, 2 );
 	}
 
 	/**
@@ -79,13 +74,13 @@ class About_Page_Organization_Filter {
 	 * @since 3.53.0
 	 */
 	public function is_about_page( $post_id ) {
-		$about_page_id = get_option( 'wl_about_page_id' );
+		$about_page_id = $this->configuration_service->get_about_page_id();
 
 		if ( ! $about_page_id || empty( $about_page_id ) ) {
 			return false;
 		}
 
-		return $about_page_id === $post_id;
+		return (string) $about_page_id === (string) $post_id;
 	}
 
 	/**
@@ -111,65 +106,6 @@ class About_Page_Organization_Filter {
 	}
 
 	/**
-	 * Add the extra fields to the Publisher JSON-LD structure.
-	 *
-	 * @param &$publisher_jsonld array Reference to the Publisher JSON-LD array within the main JSON-LD array.
-	 * @param $publisher_id      int   The Publisher Post ID.
-	 *
-	 * @since 3.53.0
-	 */
-	public function expand_publisher_jsonld( &$publisher_jsonld, $publisher_id ) {
-
-		// Add alternativeName if set.
-		$alternative_name = $this->configuration_service->get_alternate_name();
-
-		if ( ! empty( $alternative_name ) ) {
-			$publisher_jsonld['alternateName'] = $alternative_name;
-		}
-
-		/*
-		 * Set the logo, only for http://schema.org/ + Organization, LocalBusiness, or OnlineBusiness
-		 * as Person doesn't support the logo property.
-		 *
-		 * @see http://schema.org/logo.
-		 */
-		$organization_types = array(
-			'Organization',
-			'LocalBusiness',
-			'OnlineBusiness',
-		);
-
-		if ( ! in_array( $publisher_jsonld['@type'], $organization_types, true ) ) {
-			return;
-		}
-
-		// Get the publisher logo.
-		$publisher_logo = $this->publisher_service->get_publisher_logo( $publisher_id );
-
-		// Bail out if the publisher logo isn't set.
-		if ( false === $publisher_logo ) {
-			return;
-		}
-
-		/*
-		 * Copy over some useful properties.
-		 *
-		 * @see https://developers.google.com/search/docs/data-types/articles.
-		 */
-		$jsonld['logo']['@type'] = 'ImageObject';
-		$jsonld['logo']['url']   = $publisher_logo['url'];
-
-		/*
-		 * If you specify a "width" or "height" value you should leave out 'px'.
-		 * For example: "width":"4608px" should be "width":"4608".
-		 *
-		 * @see: https://github.com/insideout10/wordlift-plugin/issues/451.
-		 */
-		$jsonld['logo']['width']  = $publisher_logo['width'];
-		$jsonld['logo']['height'] = $publisher_logo['height'];
-	}
-
-	/**
 	 * Main callback for the filter hooks.
 	 *
 	 * Conditionally add the Organization data if we are on the `About Us` page, or if
@@ -182,9 +118,11 @@ class About_Page_Organization_Filter {
 	 *
 	 * @since 3.53.0
 	 */
-	public function _add_organization_jsonld( $jsonld, $post_id ) {
-		// Exit if the Publisher is not set or correctly configured.
-		if ( ! $this->publisher_service->is_publisher_set() ) {
+	public function add_organization_jsonld( $jsonld, $post_id ) {
+		$publisher_id = $this->configuration_service->get_publisher_id();
+
+		// Exit if the Publisher is not set.
+		if ( ! is_numeric( $publisher_id ) ) {
 			return $jsonld;
 		}
 
@@ -199,31 +137,11 @@ class About_Page_Organization_Filter {
 			return $jsonld;
 		}
 
-		$publisher_id = $this->configuration_service->get_publisher_id();
-
 		// Add publisher to the JSON-LD if it doesn't exist in the graph.
 		if ( ! $this->is_publisher_entity_in_graph( $jsonld, $publisher_id ) ) {
-			$publisher_jsonld = $this->post_jsonld_service->convert( $publisher_id );
-
-			// Add a reference to the publisher in the main Entity of the JSON-LD.
-			$jsonld[0]['publisher'] = array(
-				'@id' => $publisher_jsonld['@id'],
-			);
+			$publisher_jsonld = $this->postid_to_jsonld_converter->convert( $publisher_id );
 
 			$jsonld[] = $publisher_jsonld;
-		}
-
-		// Add the Organization data to the Publisher JSON-LD.
-		$publisher_uri = $this->entity_service->get_uri( $publisher_id );
-
-		foreach ( $jsonld as &$jsonld_item ) {
-			if (
-				$jsonld_item
-				&& array_key_exists( '@id', $jsonld_item )
-				&& $jsonld_item['@id'] === $publisher_uri
-			) {
-				$this->expand_publisher_jsonld( $jsonld_item, $publisher_id );
-			}
 		}
 
 		return $jsonld;

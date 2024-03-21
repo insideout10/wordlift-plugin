@@ -43,7 +43,7 @@ class Wordlift_Website_Jsonld_Converter {
 				'name'          => html_entity_decode( get_bloginfo( 'name' ), ENT_QUOTES ),
 				'alternateName' => Wordlift_Configuration_Service::get_instance()->get_alternate_name(),
 				'url'           => $home_url,
-			)
+			),
 		);
 
 		// Add search action.

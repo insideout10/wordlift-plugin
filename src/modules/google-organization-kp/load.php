@@ -46,6 +46,59 @@ function __wl_google_organization_kp_load() {
 	 */
 	$about_page_organization_filter = $container_builder->get( 'Wordlift\Modules\Google_Organization_Kp\About_Page_Organization_Filter' );
 	$about_page_organization_filter->register_hooks();
+
+	/** Admin Menu */
+	add_action(
+		'admin_menu',
+		function () {
+			add_submenu_page(
+				'wl_admin_menu',
+				__( 'About Page', 'wordlift' ),
+				__( 'About Page', 'wordlift' ),
+				'manage_options',
+				'wl_about_page',
+				'__wl_google_organization_kp_dashboard'
+			);
+		},
+		11
+	);
 }
 
-__wl_google_organization_kp_load();
+function __wl_google_organization_kp_dashboard() {
+	wp_print_scripts( WL_ANGULAR_APP_SCRIPT_HANDLE );
+
+	wp_enqueue_script(
+		'iframe-resizer',
+		'/wp-content/plugins/wordlift/js-client/iframe-resizer/iframeResizer.min.js',
+		array(),
+		wp_get_theme()->get( 'Version' ),
+		array( 'in_footer' => true )
+	);
+
+	$iframe_src = WL_ANGULAR_APP_URL . '/#/admin/about-page';
+
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo "
+			<style>
+			    #wlx-plugin-app {
+				    margin-left: -20px;
+					width: calc(100% + 20px);
+					min-width: 100%;
+			    }
+		    </style>
+			<iframe id='wlx-plugin-app' src='$iframe_src'></iframe>
+			<script>
+				window.addEventListener( 'load', function() {
+					iFrameResize(
+                        {
+                        	resizeFrom: 'parent',
+                        	heightCalculationMethod: 'documentElementOffset',
+                        },
+                        '#wlx-plugin-app'
+                    );
+				} );
+			</script>
+            ";
+}
+
+add_action( 'plugins_loaded', '__wl_google_organization_kp_load', 10, 0 );

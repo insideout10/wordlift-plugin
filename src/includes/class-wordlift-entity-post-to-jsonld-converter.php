@@ -14,6 +14,11 @@
 class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld_Converter {
 
 	/**
+	 * @var Wordlift_Entity_Post_To_Jsonld_Converter
+	 */
+	private static $instance;
+
+	/**
 	 * The {@link Wordlift_Schemaorg_Property_Service} or null if not provided.
 	 *
 	 * @since 3.20.0
@@ -46,6 +51,11 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 		parent::__construct( $entity_type_service, $user_service, $attachment_service, $property_getter );
 		$this->schemaorg_property_service = $schemaorg_property_service;
 		$this->post_to_jsonld_converter   = $post_to_jsonld_converter;
+	}
+
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**
@@ -106,6 +116,12 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 			$this->process_post_properties( $jsonld, $post_id );
 		}
 
+		// Add logo to Publisher Organization subtypes
+		$publisher_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+		if ( is_numeric( $publisher_id ) && (string) $post_id === (string) $publisher_id ) {
+			$this->add_logo_to_organization( $jsonld, $publisher_id );
+		}
+
 		/**
 		 * Call the `wl_post_jsonld_array` filter. This filter allows 3rd parties to also modify the references.
 		 *
@@ -143,6 +159,56 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 		 * @api
 		 */
 		return apply_filters( 'wl_entity_jsonld', $this->post_process( $jsonld ), $post_id, $references );
+	}
+
+	/**
+	 * Add logo to Publisher entities that are an Organization subtype.
+	 *
+	 * @param array $jsonld The JSON-LD array.
+	 *
+	 * @since 3.53.0
+	 */
+	private function add_logo_to_organization( &$jsonld, $publisher_id ) {
+		/*
+		 * Set the logo, only for http://schema.org/ + Organization, LocalBusiness, or OnlineBusiness
+		 * as Person doesn't support the logo property.
+		 *
+		 * @see http://schema.org/logo.
+		 */
+		$organization_types = array(
+			'Organization',
+			'LocalBusiness',
+			'OnlineBusiness',
+		);
+
+		if ( ! in_array( $jsonld['@type'], $organization_types, true ) ) {
+			return;
+		}
+
+		// Get the publisher logo.
+		$publisher_logo = Wordlift_Publisher_Service::get_instance()->get_publisher_logo( $publisher_id );
+
+		// Bail out if the publisher logo isn't set.
+		if ( false === $publisher_logo ) {
+			return;
+		}
+
+		/*
+		 * Copy over some useful properties.
+		 *
+		 * @see https://developers.google.com/search/docs/data-types/articles.
+		 */
+		$jsonld['logo']['@type'] = 'ImageObject';
+		$jsonld['logo']['url']   = $publisher_logo['url'];
+
+		/*
+		 * If you specify a "width" or "height" value you should leave out 'px'.
+		 * For example: "width":"4608px" should be "width":"4608".
+		 *
+		 * @see: https://github.com/insideout10/wordlift-plugin/issues/451.
+		 */
+		$jsonld['logo']['width']  = $publisher_logo['width'];
+		$jsonld['logo']['height'] = $publisher_logo['height'];
 	}
 
 	/**

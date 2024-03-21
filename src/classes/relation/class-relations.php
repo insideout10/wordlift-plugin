@@ -82,7 +82,7 @@ class Relations implements Relations_Interface, JsonSerializable {
 	}
 
 	public function toArray() {
-		if ( ! isset( $this->container ) ) {
+		if ( empty( $this->container ) ) {
 			return array();
 		}
 

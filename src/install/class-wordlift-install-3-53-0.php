@@ -57,6 +57,9 @@ class Wordlift_Install_3_53_0 extends Wordlift_Install {
 			)
 		);
 
+		update_term_meta( $term_id, '_wl_name', $term['label'] );
+		update_term_meta( $term_id, '_wl_uri', 'http://schema.org/' . $term['label'] );
+
 		$this->log->debug( 'Entity Type terms updated.' );
 	}
 
