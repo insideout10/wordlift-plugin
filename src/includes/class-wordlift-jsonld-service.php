@@ -327,6 +327,18 @@ class Wordlift_Jsonld_Service {
 	 * @since 3.15.1
 	 */
 	public function get_jsonld( $is_homepage = false, $post_id = null, $context = Jsonld_Context_Enum::UNKNOWN ) {
+
+		/**
+		 * Filter name: wl_before_get_jsonld
+		 *
+		 * @var bool $is_homepage Whether the JSON-LD for the homepage is being requested.
+		 * @var int|null $post_id The JSON-LD for the specified {@link WP_Post} id.
+		 * @var int $context A context for the JSON-LD generation, valid values in Jsonld_Context_Enum.
+		 *
+		 * @since 3.52.7
+		 */
+		do_action( 'wl_before_get_jsonld', $is_homepage, $post_id, $context );
+
 		// Tell NewRelic to ignore us, otherwise NewRelic customers might receive
 		// e-mails with a low apdex score.
 		//
@@ -389,9 +401,9 @@ class Wordlift_Jsonld_Service {
 		}
 
 		$jsonld_arr = $graph->add_references( $references )
-			->add_relations( $relations )
-			->add_required_reference_infos( $references_infos )
-			->render( $context );
+							->add_relations( $relations )
+							->add_required_reference_infos( $references_infos )
+							->render( $context );
 
 		/**
 		 * Filter name: wl_after_get_jsonld

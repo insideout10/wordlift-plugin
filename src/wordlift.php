@@ -33,6 +33,7 @@ use Wordlift\Post\Post_Adapter;
 
 define( 'WORDLIFT_PLUGIN_FILE', __FILE__ );
 define( 'WORDLIFT_VERSION', '3.53.0-0' );
+define( 'WORDLIFT_VERSION', '3.52.7' );
 
 // ## DO NOT REMOVE THIS LINE: WHITELABEL PLACEHOLDER ##
 

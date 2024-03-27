@@ -12,7 +12,14 @@ class Jsonld_Interceptor {
 	}
 
 	public function register_hooks() {
+		add_action( 'wl_before_get_jsonld', array( $this, 'before_get_jsonld' ), 10, 2 );
 		add_filter( 'wl_after_get_jsonld', array( $this, 'after_get_jsonld' ) );
+	}
+
+	public function before_get_jsonld( $is_homepage = false, $post_id = null ) {
+		if ( null !== filter_input( INPUT_SERVER, 'HTTP_X_WORDLIFT_BYPASS_INCLUDE_EXCLUDE' ) ) {
+			clean_post_cache( $post_id );
+		}
 	}
 
 	public function after_get_jsonld( $jsonld_arr ) {

@@ -62,3 +62,12 @@ docker-compose-custom.yml
 
 # Ignore local copy of wordlift
 /wordlift/
+
+# Ignore unneeded repo files from wp-background-processing
+src/vendor/deliciousbrains/wp-background-processing/.circleci/
+src/vendor/deliciousbrains/wp-background-processing/.github/
+src/vendor/deliciousbrains/wp-background-processing/.phpcs.xml
+src/vendor/deliciousbrains/wp-background-processing/Makefile
+src/vendor/deliciousbrains/wp-background-processing/bin/
+src/vendor/deliciousbrains/wp-background-processing/phpunit.xml
+src/vendor/deliciousbrains/wp-background-processing/tests/
