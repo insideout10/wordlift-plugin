@@ -6,6 +6,8 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+echo "** Running [.docker/wordpress/docker-entrypoint-init.d/10-wordpress-extra.sh] **"
+
 # Enable DEBUG.
 sed -i "s/'WP_DEBUG', false/'WP_DEBUG', true/g" /opt/bitnami/wordpress/wp-config.php
 
@@ -24,6 +26,6 @@ if $(wp user get wladmin >/dev/null 2>&1); then
     echo "** User wladmin already exists **"
 else
     # Create the user
-    wp user create wladmin wladmin@localhost --role=administrator --user_pass=password
+    wp user create wladmin wladmin@localdomain.localhost --role=administrator --user_pass=password
     echo "** User wladmin created **"
 fi

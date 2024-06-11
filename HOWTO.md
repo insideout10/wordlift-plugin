@@ -24,8 +24,14 @@ WORDPRESS_TABLE_PREFIX=custom_prefix docker compose up
 gzcat database-backup.gz | npm run wordpress:db-import
 ```
 
-## Reset the admin pasword
+## Reset the admin password
 
 ```sh
 npm run wordpress:reset-admin-password
+```
+
+## Use a specific WordPress version:
+
+```sh
+WORDPRESS_VERSION=6.5.4 docker compose up
 ```

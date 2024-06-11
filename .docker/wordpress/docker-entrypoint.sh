@@ -2,7 +2,7 @@
 
 # shellcheck disable=SC1091
 
-echo "** Booting up **"
+echo "** Booting up [.docker/wordpress/docker-entrypoint.sh] **"
 
 while [ -z "$ipaddr" ]; do
   sleep 1
@@ -22,8 +22,8 @@ set -o pipefail
 
 if [ "$(stat -c "%U" /bitnami/wordpress/wp-content)" != "daemon" ]; then
   echo "** Resetting permissions **"
-  chown -R daemon:root /bitnami/wordpress
-  find /bitnami/wordpress -type d -print0 | xargs -0 chmod 755
+  chown -R daemon:root /bitnami
+  find /bitnami -type d -print0 | xargs -0 chmod 755
 fi
 
 chmod 777 /dev/stderr
