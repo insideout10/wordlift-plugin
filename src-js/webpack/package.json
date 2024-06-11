@@ -3,7 +3,7 @@
   "engines": {
     "node": "12"
   },
-  "version": "3.46.1",
+  "version": "3.52.8",
   "description": "WordLift Plugin application for the web site public front-end.",
   "main": "index.js",
   "repository": "https://github.com/insideout10/wordlift-plugin",

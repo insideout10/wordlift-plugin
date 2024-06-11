@@ -45,7 +45,7 @@ export class Blocks {
         const start = cursor;
         const blockObj = BlockFactory.getBlock(block, dispatch, start);
         const content = blockObj.content;
-        cursor += content.length + this._blockSeparatorLength;
+        cursor += content.toString().length + this._blockSeparatorLength;
         blockObj.end = cursor;
         this._blocks.push(blockObj);
         return content;

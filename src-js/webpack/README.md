@@ -4,6 +4,12 @@ Node 12 (other versions, even more recent, won't work).
 
 Run `npm i` to install and `npm run build` to build.
 
+```shell
+nvm use
+npm i
+npm run build
+```
+
 # WordPress libraries
 
 Versions in package.json match those release with Gutenberg 4.7.0 released with WordPress 5.0.0:

@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   db:
     image: mariadb:10.7
@@ -14,7 +12,7 @@ services:
       MYSQL_DATABASE: wordpress
 
   wordpress:
-    image: wordlift/wordpress-nginx:${WORDPRESS_VERSION:-6.4.1}
+    image: wordlift/wordpress-nginx:${WORDPRESS_VERSION:-6}
     user: "root"
     entrypoint: [ "/tmp/docker-entrypoint.sh", "/opt/bitnami/scripts/wordpress/entrypoint.sh", "/opt/bitnami/scripts/nginx-php-fpm/run.sh" ]
     volumes:
@@ -44,7 +42,7 @@ services:
       # When using an existing DB, set `WORDPRESS_SKIP_BOOTSTRAP` to `yes`.
       # WORDPRESS_TABLE_PREFIX: wp_q81ara52nh_
       WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX:-wp_}
-      WORDPRESS_SKIP_BOOTSTRAP: yes
+#      WORDPRESS_SKIP_BOOTSTRAP: yes
       WORDPRESS_AUTH_KEY: '2+7G8-eAI}15YQro}b.q+nT#3|]=NW@JC t<H#VVoDGX1S/-@1r;aqltLmv^R9ej'
       WORDPRESS_SECURE_AUTH_KEY: 'R8^w[N_fF+-*1Az:fRWkEY{p ;,1%f PnHNSWxM^+V3j00=># Ac4cp/x.DF-mcz'
       WORDPRESS_LOGGED_IN_KEY: 'W* ;IF#Z<I%dOWq^K,P0Lg,QYA`?+>gB+=H4<HEN`C>]*|nnKR#NEL>yt&hx(Hef'
