@@ -4,7 +4,7 @@ Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave
 Tags: SEO, structured data, ai, linked data, semantic web
 Requires at least: 5.3
-Tested up to: 6.5
+Tested up to: 6.6
 Requires PHP: 5.6
 Stable tag: 3.52.8
 License: GPLv2 or later
