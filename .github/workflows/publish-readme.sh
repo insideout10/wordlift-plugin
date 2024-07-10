@@ -10,6 +10,9 @@ if [[ 'src/readme.txt' == "$(git diff HEAD^ HEAD --name-only)" ]]; then
   version="$(get_version)"
   sed -i "s|^Stable tag: .*$|Stable tag: $version|g" src/readme.txt
 
+  echo "** readme.txt new contents: "
+  cat src/readme.txt
+
   # Update readme.txt in trunk and stable version tag.
   # shellcheck disable=SC2086
   svnmucc -u $SVN_USERNAME -p $SVN_PASSWORD --non-interactive --trust-server-cert \
