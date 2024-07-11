@@ -53,7 +53,10 @@ class Jsonld_Generator {
 
 		$term_jsonld = $term_jsonld_data['jsonld'];
 
-		$references = array_merge( $references, $term_jsonld_data['references'] );
+		// Get the array or an empty array if it's not an array.
+		$term_jsonld_data_references = is_array( $term_jsonld_data['references'] ) ? $term_jsonld_data['references'] : array();
+
+		$references = array_merge( $references, $term_jsonld_data_references );
 
 		array_unshift( $jsonld, $term_jsonld );
 
@@ -96,8 +99,8 @@ class Jsonld_Generator {
 			$value = $this->property_getter->get( $term_id, $key, Object_Type_Enum::TERM );
 			$value = $this->process_value( $value, $references );
 			if ( ! isset( $value ) ||
-				 is_array( $value ) && empty( $value ) ||
-				 is_string( $value ) && empty( $value ) ) {
+			     is_array( $value ) && empty( $value ) ||
+			     is_string( $value ) && empty( $value ) ) {
 				continue;
 			}
 			$jsonld[ $name ] = $value;
@@ -128,8 +131,8 @@ class Jsonld_Generator {
 	private function process_value( $value, &$references ) {
 
 		if ( is_array( $value )
-			 && count( $value ) > 0
-			 && $value[0] instanceof \Wordlift_Property_Entity_Reference ) {
+		     && count( $value ) > 0
+		     && $value[0] instanceof \Wordlift_Property_Entity_Reference ) {
 
 			// All of the references from the custom fields are post references.
 			$references = array_merge(
@@ -165,11 +168,11 @@ class Jsonld_Generator {
 	 * because WordPress' own `strip_shortcodes` only takes into consideration
 	 * shortcodes for installed plugins/themes.
 	 *
-	 * @since 3.12.0
-	 *
 	 * @param string $content The content with shortcodes.
 	 *
 	 * @return string The content without shortcodes.
+	 * @since 3.12.0
+	 *
 	 */
 	private static function strip_all_shortcodes( $content ) {
 		return preg_replace( '/\[[^]]+\]/', '', $content );
