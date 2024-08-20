@@ -46,7 +46,7 @@ class Wordlift_Term_JsonLd_Adapter {
 	 * Wordlift_Term_JsonLd_Adapter constructor.
 	 *
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
-	 * @param \Wordlift_Post_Converter     $post_id_to_jsonld_converter The {@link Wordlift_Post_Converter} instance.
+	 * @param \Wordlift_Post_Converter $post_id_to_jsonld_converter The {@link Wordlift_Post_Converter} instance.
 	 *
 	 * @since 3.20.0
 	 */
@@ -126,7 +126,7 @@ class Wordlift_Term_JsonLd_Adapter {
 	private function get_posts( $id ) {
 		global $wp_query;
 
-		if ( $wp_query->posts !== null ) {
+		if ( is_array( $wp_query->posts ) ) {
 			return array_map(
 				function ( $post ) {
 					return $post->ID;
