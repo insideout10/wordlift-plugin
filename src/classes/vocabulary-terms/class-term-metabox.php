@@ -54,8 +54,8 @@ class Term_Metabox extends Wl_Abstract_Metabox {
 	public function init_all_custom_fields() {
 		$taxonomies = Terms_Compat::get_public_taxonomies();
 		foreach ( $taxonomies as $taxonomy ) {
-			add_action( "${taxonomy}_edit_form", array( $this, 'render_ui' ), 1 );
-			add_action( "edited_${taxonomy}", array( $this, 'save_field' ) );
+			add_action( "{$taxonomy}_edit_form", array( $this, 'render_ui' ), 1 );
+			add_action( "edited_{$taxonomy}", array( $this, 'save_field' ) );
 		}
 	}
 
