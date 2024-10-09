@@ -5,7 +5,7 @@ Contributors: wordlift, insideout10, ziodave
 Tags: SEO, structured data, ai, linked data, semantic web
 Requires at least: 5.3
 Tested up to: 6.6
-Requires PHP: 5.6
+Requires PHP: 7.4
 Stable tag: 3.52.9
 License: GPLv2 or later
 
