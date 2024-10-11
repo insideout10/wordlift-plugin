@@ -23,7 +23,7 @@ class Post_Jsonld {
 
 	public function wl_post_jsonld_array( $data, $post_id ) {
 
-		$relations = $data['relations'];
+		$relations = $data['relations'] ?? null;
 
 		if ( ! is_a( $relations, 'Wordlift\Relation\Relations' ) ) {
 			return $data;
