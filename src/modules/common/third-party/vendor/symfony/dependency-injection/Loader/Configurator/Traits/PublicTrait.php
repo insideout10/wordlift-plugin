@@ -10,16 +10,12 @@
  */
 namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\Configurator\Traits;
 
-/**
- * @method $this public()
- * @method $this private()
- */
 trait PublicTrait
 {
     /**
      * @return $this
      */
-    protected final function setPublic()
+    final public function public(): self
     {
         $this->definition->setPublic(\true);
         return $this;
@@ -27,7 +23,7 @@ trait PublicTrait
     /**
      * @return $this
      */
-    protected final function setPrivate()
+    final public function private(): self
     {
         $this->definition->setPublic(\false);
         return $this;

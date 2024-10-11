@@ -28,12 +28,19 @@ class FloatNode extends NumericNode
             $value = (float) $value;
         }
         if (!\is_float($value)) {
-            $ex = new InvalidTypeException(\sprintf('Invalid type for path "%s". Expected float, but got %s.', $this->getPath(), \gettype($value)));
+            $ex = new InvalidTypeException(sprintf('Invalid type for path "%s". Expected "float", but got "%s".', $this->getPath(), get_debug_type($value)));
             if ($hint = $this->getInfo()) {
                 $ex->addHint($hint);
             }
             $ex->setPath($this->getPath());
             throw $ex;
         }
+    }
+    /**
+     * {@inheritdoc}
+     */
+    protected function getValidPlaceholderTypes(): array
+    {
+        return ['float'];
     }
 }

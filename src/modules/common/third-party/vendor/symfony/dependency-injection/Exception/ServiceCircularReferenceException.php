@@ -19,9 +19,9 @@ class ServiceCircularReferenceException extends RuntimeException
 {
     private $serviceId;
     private $path;
-    public function __construct($serviceId, array $path, \Exception $previous = null)
+    public function __construct(string $serviceId, array $path, ?\Throwable $previous = null)
     {
-        parent::__construct(\sprintf('Circular reference detected for service "%s", path: "%s".', $serviceId, \implode(' -> ', $path)), 0, $previous);
+        parent::__construct(sprintf('Circular reference detected for service "%s", path: "%s".', $serviceId, implode(' -> ', $path)), 0, $previous);
         $this->serviceId = $serviceId;
         $this->path = $path;
     }

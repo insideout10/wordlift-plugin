@@ -31,47 +31,23 @@ return array(
 	// For more see: https://github.com/humbug/php-scoper/blob/master/docs/configuration.md#finders-and-paths
 	'finders'            => array(
 		Finder::create()
-		      ->files()
-		      ->ignoreVCS( true )
-		      ->notName( '/LICENSE|.*\\.md|.*\\.dist|Makefile|composer\\.json|composer\\.lock/' )
-		      ->exclude(
-			      array(
-				      'doc',
-				      'test',
-				      'test_old',
-				      'tests',
-				      'Tests',
-				      'vendor-bin',
-			      )
-		      )
-		      ->in(
-			      array(
-				      'vendor/cweagans/composer-patches',
-				      'vendor/mcaskill/composer-exclude-files',
-				      'vendor/psr/container',
-				      'vendor/symfony/config',
-				      'vendor/symfony/dependency-injection',
-				      'vendor/symfony/filesystem',
-				      'vendor/symfony/polyfill-ctype',
-				      'vendor/symfony/polyfill-php73',
-				      'vendor/symfony/polyfill-php80',
-				      'vendor/symfony/yaml',
-			      )
-		      ),
-
-		// Symfony mbstring polyfill.
-		Finder::create()
-		      ->files()
-		      ->ignoreVCS( true )
-		      ->ignoreDotFiles( true )
-		      ->name( '/\.*.php8?/' )
-		      ->in( 'vendor/symfony/polyfill-mbstring/Resources' )
-		      ->append(
-			      array(
-				      'vendor/symfony/polyfill-mbstring/Mbstring.php',
-				      'vendor/symfony/polyfill-mbstring/composer.json',
-			      )
-		      ),
+		    ->files()
+		    ->ignoreVCS( true )
+			->notName( '/LICENSE|.*\\.md|.*\\.dist|Makefile/' )
+			->exclude(
+				array(
+					'doc',
+					'test',
+					'test_old',
+					'tests',
+					'Tests',
+					'vendor-bin',
+				)
+			)
+			->path( '#^mcaskill/#' )
+			->path( '#^psr/#' )
+			->path( '#^symfony/#' )
+			->in( 'vendor' ),
 
 		Finder::create()->append(
 			array(
@@ -92,7 +68,22 @@ return array(
 	// heart contents.
 	//
 	// For more see: https://github.com/humbug/php-scoper/blob/master/docs/configuration.md#patchers
-	'patchers'           => array(),
+	'patchers'                   => array(
+		function ( $file_path, $prefix, $contents ) {
+			// Prefix the Stringable interface preventing get default one, because of scoper-autoload.php might not load the alias yet.
+			if ( preg_match( '#vendor/symfony/polyfill-php80/PhpToken\.php$#', $file_path ) ) {
+				$contents = strtr(
+					$contents,
+					array(
+						"namespace $prefix\\Symfony\\Polyfill\\Php80;" => "namespace $prefix\\Symfony\\Polyfill\\Php80;\n\nuse $prefix\\Stringable;",
+						"class PhpToken implements \\Stringable" => "class PhpToken implements Stringable",
+					)
+				);
+			}
+
+			return $contents;
+		}
+	),
 
 	// List of symbols to consider internal i.e. to leave untouched.
 	//
@@ -108,5 +99,9 @@ return array(
 	'exclude-functions' => $wp_functions,
 
 	'exclude-constants' => $wp_constants,
+
+	'expose-global-constants' => true,
+	'expose-global-classes' => true,
+	'expose-global-functions' => true,
 
 );

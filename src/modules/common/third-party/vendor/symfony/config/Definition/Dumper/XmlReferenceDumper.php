@@ -11,23 +11,24 @@
 namespace Wordlift\Modules\Common\Symfony\Component\Config\Definition\Dumper;
 
 use Wordlift\Modules\Common\Symfony\Component\Config\Definition\ArrayNode;
+use Wordlift\Modules\Common\Symfony\Component\Config\Definition\BaseNode;
 use Wordlift\Modules\Common\Symfony\Component\Config\Definition\ConfigurationInterface;
 use Wordlift\Modules\Common\Symfony\Component\Config\Definition\EnumNode;
 use Wordlift\Modules\Common\Symfony\Component\Config\Definition\NodeInterface;
 use Wordlift\Modules\Common\Symfony\Component\Config\Definition\PrototypedArrayNode;
 /**
- * Dumps a XML reference configuration for the given configuration/node instance.
+ * Dumps an XML reference configuration for the given configuration/node instance.
  *
  * @author Wouter J <waldio.webdesign@gmail.com>
  */
 class XmlReferenceDumper
 {
     private $reference;
-    public function dump(ConfigurationInterface $configuration, $namespace = null)
+    public function dump(ConfigurationInterface $configuration, ?string $namespace = null)
     {
         return $this->dumpNode($configuration->getConfigTreeBuilder()->buildTree(), $namespace);
     }
-    public function dumpNode(NodeInterface $node, $namespace = null)
+    public function dumpNode(NodeInterface $node, ?string $namespace = null)
     {
         $this->reference = '';
         $this->writeNode($node, 0, \true, $namespace);
@@ -35,26 +36,21 @@ class XmlReferenceDumper
         $this->reference = null;
         return $ref;
     }
-    /**
-     * @param int    $depth
-     * @param bool   $root      If the node is the root node
-     * @param string $namespace The namespace of the node
-     */
-    private function writeNode(NodeInterface $node, $depth = 0, $root = \false, $namespace = null)
+    private function writeNode(NodeInterface $node, int $depth = 0, bool $root = \false, ?string $namespace = null)
     {
         $rootName = $root ? 'config' : $node->getName();
         $rootNamespace = $namespace ?: ($root ? 'http://example.org/schema/dic/' . $node->getName() : null);
         // xml remapping
         if ($node->getParent()) {
-            $remapping = \array_filter($node->getParent()->getXmlRemappings(), function ($mapping) use($rootName) {
+            $remapping = array_filter($node->getParent()->getXmlRemappings(), function (array $mapping) use ($rootName) {
                 return $rootName === $mapping[1];
             });
             if (\count($remapping)) {
-                list($singular) = \current($remapping);
+                [$singular] = current($remapping);
                 $rootName = $singular;
             }
         }
-        $rootName = \str_replace('_', '-', $rootName);
+        $rootName = str_replace('_', '-', $rootName);
         $rootAttributes = [];
         $rootAttributeComments = [];
         $rootChildren = [];
@@ -75,77 +71,76 @@ class XmlReferenceDumper
                 if (null !== $prototype->getInfo()) {
                     $info .= ': ' . $prototype->getInfo();
                 }
-                \array_unshift($rootComments, $info);
+                array_unshift($rootComments, $info);
                 if ($key = $node->getKeyAttribute()) {
-                    $rootAttributes[$key] = \str_replace('-', ' ', $rootName) . ' ' . $key;
+                    $rootAttributes[$key] = str_replace('-', ' ', $rootName) . ' ' . $key;
                 }
                 if ($prototype instanceof PrototypedArrayNode) {
-                    $prototype->setName($key);
+                    $prototype->setName($key ?? '');
                     $children = [$key => $prototype];
                 } elseif ($prototype instanceof ArrayNode) {
                     $children = $prototype->getChildren();
+                } else if ($prototype->hasDefaultValue()) {
+                    $prototypeValue = $prototype->getDefaultValue();
                 } else {
-                    if ($prototype->hasDefaultValue()) {
-                        $prototypeValue = $prototype->getDefaultValue();
-                    } else {
-                        switch (\get_class($prototype)) {
-                            case 'Symfony\\Component\\Config\\Definition\\ScalarNode':
-                                $prototypeValue = 'scalar value';
-                                break;
-                            case 'Symfony\\Component\\Config\\Definition\\FloatNode':
-                            case 'Symfony\\Component\\Config\\Definition\\IntegerNode':
-                                $prototypeValue = 'numeric value';
-                                break;
-                            case 'Symfony\\Component\\Config\\Definition\\BooleanNode':
-                                $prototypeValue = 'true|false';
-                                break;
-                            case 'Symfony\\Component\\Config\\Definition\\EnumNode':
-                                $prototypeValue = \implode('|', \array_map('json_encode', $prototype->getValues()));
-                                break;
-                            default:
-                                $prototypeValue = 'value';
-                        }
+                    switch (\get_class($prototype)) {
+                        case 'Symfony\Component\Config\Definition\ScalarNode':
+                            $prototypeValue = 'scalar value';
+                            break;
+                        case 'Symfony\Component\Config\Definition\FloatNode':
+                        case 'Symfony\Component\Config\Definition\IntegerNode':
+                            $prototypeValue = 'numeric value';
+                            break;
+                        case 'Symfony\Component\Config\Definition\BooleanNode':
+                            $prototypeValue = 'true|false';
+                            break;
+                        case 'Symfony\Component\Config\Definition\EnumNode':
+                            $prototypeValue = implode('|', array_map('json_encode', $prototype->getValues()));
+                            break;
+                        default:
+                            $prototypeValue = 'value';
                     }
                 }
             }
             // get attributes and elements
             foreach ($children as $child) {
-                if (!$child instanceof ArrayNode) {
-                    // get attributes
-                    // metadata
-                    $name = \str_replace('_', '-', $child->getName());
-                    $value = '%%%%not_defined%%%%';
-                    // use a string which isn't used in the normal world
-                    // comments
-                    $comments = [];
-                    if ($info = $child->getInfo()) {
-                        $comments[] = $info;
-                    }
-                    if ($example = $child->getExample()) {
-                        $comments[] = 'Example: ' . $example;
-                    }
-                    if ($child->isRequired()) {
-                        $comments[] = 'Required';
-                    }
-                    if ($child->isDeprecated()) {
-                        $comments[] = \sprintf('Deprecated (%s)', $child->getDeprecationMessage($child->getName(), $node->getPath()));
-                    }
-                    if ($child instanceof EnumNode) {
-                        $comments[] = 'One of ' . \implode('; ', \array_map('json_encode', $child->getValues()));
-                    }
-                    if (\count($comments)) {
-                        $rootAttributeComments[$name] = \implode(";\n", $comments);
-                    }
-                    // default values
-                    if ($child->hasDefaultValue()) {
-                        $value = $child->getDefaultValue();
-                    }
-                    // append attribute
-                    $rootAttributes[$name] = $value;
-                } else {
+                if ($child instanceof ArrayNode) {
                     // get elements
                     $rootChildren[] = $child;
+                    continue;
                 }
+                // get attributes
+                // metadata
+                $name = str_replace('_', '-', $child->getName());
+                $value = '%%%%not_defined%%%%';
+                // use a string which isn't used in the normal world
+                // comments
+                $comments = [];
+                if ($child instanceof BaseNode && $info = $child->getInfo()) {
+                    $comments[] = $info;
+                }
+                if ($child instanceof BaseNode && $example = $child->getExample()) {
+                    $comments[] = 'Example: ' . (\is_array($example) ? implode(', ', $example) : $example);
+                }
+                if ($child->isRequired()) {
+                    $comments[] = 'Required';
+                }
+                if ($child instanceof BaseNode && $child->isDeprecated()) {
+                    $deprecation = $child->getDeprecation($child->getName(), $node->getPath());
+                    $comments[] = sprintf('Deprecated (%s)', (($deprecation['package'] || $deprecation['version']) ? "Since {$deprecation['package']} {$deprecation['version']}: " : '') . $deprecation['message']);
+                }
+                if ($child instanceof EnumNode) {
+                    $comments[] = 'One of ' . implode('; ', array_map('json_encode', $child->getValues()));
+                }
+                if (\count($comments)) {
+                    $rootAttributeComments[$name] = implode(";\n", $comments);
+                }
+                // default values
+                if ($child->hasDefaultValue()) {
+                    $value = $child->getDefaultValue();
+                }
+                // append attribute
+                $rootAttributes[$name] = $value;
             }
         }
         // render comments
@@ -159,9 +154,9 @@ class XmlReferenceDumper
         if (\count($rootAttributeComments)) {
             foreach ($rootAttributeComments as $attrName => $comment) {
                 $commentDepth = $depth + 4 + \strlen($attrName) + 2;
-                $commentLines = \explode("\n", $comment);
+                $commentLines = explode("\n", $comment);
                 $multiline = \count($commentLines) > 1;
-                $comment = \implode(\PHP_EOL . \str_repeat(' ', $commentDepth), $commentLines);
+                $comment = implode(\PHP_EOL . str_repeat(' ', $commentDepth), $commentLines);
                 if ($multiline) {
                     $this->writeLine('<!--', $depth);
                     $this->writeLine($attrName . ': ' . $comment, $depth + 4);
@@ -175,9 +170,9 @@ class XmlReferenceDumper
         $rootIsVariablePrototype = isset($prototypeValue);
         $rootIsEmptyTag = 0 === \count($rootChildren) && !$rootIsVariablePrototype;
         $rootOpenTag = '<' . $rootName;
-        if (1 >= ($attributesCount = \count($rootAttributes))) {
+        if (1 >= $attributesCount = \count($rootAttributes)) {
             if (1 === $attributesCount) {
-                $rootOpenTag .= \sprintf(' %s="%s"', \current(\array_keys($rootAttributes)), $this->writeValue(\current($rootAttributes)));
+                $rootOpenTag .= sprintf(' %s="%s"', current(array_keys($rootAttributes)), $this->writeValue(current($rootAttributes)));
             }
             $rootOpenTag .= $rootIsEmptyTag ? ' />' : '>';
             if ($rootIsVariablePrototype) {
@@ -188,7 +183,7 @@ class XmlReferenceDumper
             $this->writeLine($rootOpenTag, $depth);
             $i = 1;
             foreach ($rootAttributes as $attrName => $attrValue) {
-                $attr = \sprintf('%s="%s"', $attrName, $this->writeValue($attrValue));
+                $attr = sprintf('%s="%s"', $attrName, $this->writeValue($attrValue));
                 $this->writeLine($attr, $depth + 4);
                 if ($attributesCount === $i++) {
                     $this->writeLine($rootIsEmptyTag ? '/>' : '>', $depth);
@@ -212,29 +207,24 @@ class XmlReferenceDumper
     }
     /**
      * Outputs a single config reference line.
-     *
-     * @param string $text
-     * @param int    $indent
      */
-    private function writeLine($text, $indent = 0)
+    private function writeLine(string $text, int $indent = 0)
     {
         $indent = \strlen($text) + $indent;
         $format = '%' . $indent . 's';
-        $this->reference .= \sprintf($format, $text) . \PHP_EOL;
+        $this->reference .= sprintf($format, $text) . \PHP_EOL;
     }
     /**
      * Renders the string conversion of the value.
      *
      * @param mixed $value
-     *
-     * @return string
      */
-    private function writeValue($value)
+    private function writeValue($value): string
     {
         if ('%%%%not_defined%%%%' === $value) {
             return '';
         }
-        if (\is_string($value) || \is_numeric($value)) {
+        if (\is_string($value) || is_numeric($value)) {
             return $value;
         }
         if (\false === $value) {
@@ -250,7 +240,7 @@ class XmlReferenceDumper
             return '';
         }
         if (\is_array($value)) {
-            return \implode(',', $value);
+            return implode(',', $value);
         }
         return '';
     }

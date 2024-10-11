@@ -19,11 +19,11 @@ namespace Wordlift\Modules\Common\Symfony\Polyfill\Php80;
  */
 final class Php80
 {
-    public static function fdiv(float $dividend, float $divisor) : float
+    public static function fdiv(float $dividend, float $divisor): float
     {
         return @($dividend / $divisor);
     }
-    public static function get_debug_type($value) : string
+    public static function get_debug_type($value): string
     {
         switch (\true) {
             case null === $value:
@@ -43,7 +43,7 @@ final class Php80
             case $value instanceof \__PHP_Incomplete_Class:
                 return '__PHP_Incomplete_Class';
             default:
-                if (null === ($type = @\get_resource_type($value))) {
+                if (null === $type = @get_resource_type($value)) {
                     return 'unknown';
                 }
                 if ('Unknown' === $type) {
@@ -52,21 +52,21 @@ final class Php80
                 return "resource ({$type})";
         }
         $class = \get_class($value);
-        if (\false === \strpos($class, '@')) {
+        if (\false === strpos($class, '@')) {
             return $class;
         }
-        return ((\get_parent_class($class) ?: \key(\class_implements($class))) ?: 'class') . '@anonymous';
+        return ((get_parent_class($class) ?: key(class_implements($class))) ?: 'class') . '@anonymous';
     }
-    public static function get_resource_id($res) : int
+    public static function get_resource_id($res): int
     {
-        if (!\is_resource($res) && null === @\get_resource_type($res)) {
-            throw new \TypeError(\sprintf('Argument 1 passed to get_resource_id() must be of the type resource, %s given', \get_debug_type($res)));
+        if (!\is_resource($res) && null === @get_resource_type($res)) {
+            throw new \TypeError(sprintf('Argument 1 passed to get_resource_id() must be of the type resource, %s given', get_debug_type($res)));
         }
         return (int) $res;
     }
-    public static function preg_last_error_msg() : string
+    public static function preg_last_error_msg(): string
     {
-        switch (\preg_last_error()) {
+        switch (preg_last_error()) {
             case \PREG_INTERNAL_ERROR:
                 return 'Internal error';
             case \PREG_BAD_UTF8_ERROR:
@@ -85,15 +85,15 @@ final class Php80
                 return 'Unknown error';
         }
     }
-    public static function str_contains(string $haystack, string $needle) : bool
+    public static function str_contains(string $haystack, string $needle): bool
     {
-        return '' === $needle || \false !== \strpos($haystack, $needle);
+        return '' === $needle || \false !== strpos($haystack, $needle);
     }
-    public static function str_starts_with(string $haystack, string $needle) : bool
+    public static function str_starts_with(string $haystack, string $needle): bool
     {
-        return 0 === \strncmp($haystack, $needle, \strlen($needle));
+        return 0 === strncmp($haystack, $needle, \strlen($needle));
     }
-    public static function str_ends_with(string $haystack, string $needle) : bool
+    public static function str_ends_with(string $haystack, string $needle): bool
     {
         if ('' === $needle || $needle === $haystack) {
             return \true;
@@ -102,6 +102,6 @@ final class Php80
             return \false;
         }
         $needleLength = \strlen($needle);
-        return $needleLength <= \strlen($haystack) && 0 === \substr_compare($haystack, $needle, -$needleLength);
+        return $needleLength <= \strlen($haystack) && 0 === substr_compare($haystack, $needle, -$needleLength);
     }
 }

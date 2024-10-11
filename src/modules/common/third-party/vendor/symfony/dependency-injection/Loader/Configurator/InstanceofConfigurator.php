@@ -10,15 +10,14 @@
  */
 namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Definition;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
- *
- * @method InstanceofConfigurator instanceof(string $fqcn)
  */
 class InstanceofConfigurator extends AbstractServiceConfigurator
 {
-    const FACTORY = 'instanceof';
     use Traits\AutowireTrait;
+    use Traits\BindTrait;
     use Traits\CallTrait;
     use Traits\ConfiguratorTrait;
     use Traits\LazyTrait;
@@ -26,14 +25,17 @@ class InstanceofConfigurator extends AbstractServiceConfigurator
     use Traits\PublicTrait;
     use Traits\ShareTrait;
     use Traits\TagTrait;
+    public const FACTORY = 'instanceof';
+    private $path;
+    public function __construct(ServicesConfigurator $parent, Definition $definition, string $id, ?string $path = null)
+    {
+        parent::__construct($parent, $definition, $id, []);
+        $this->path = $path;
+    }
     /**
      * Defines an instanceof-conditional to be applied to following service definitions.
-     *
-     * @param string $fqcn
-     *
-     * @return self
      */
-    protected final function setInstanceof($fqcn)
+    final public function instanceof(string $fqcn): self
     {
         return $this->parent->instanceof($fqcn);
     }

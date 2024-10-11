@@ -11,8 +11,8 @@
 namespace Wordlift\Modules\Common\Symfony\Component\Config\Loader;
 
 use Wordlift\Modules\Common\Symfony\Component\Config\Exception\FileLoaderImportCircularReferenceException;
-use Wordlift\Modules\Common\Symfony\Component\Config\Exception\FileLoaderLoadException;
 use Wordlift\Modules\Common\Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
+use Wordlift\Modules\Common\Symfony\Component\Config\Exception\LoaderLoadException;
 use Wordlift\Modules\Common\Symfony\Component\Config\FileLocatorInterface;
 use Wordlift\Modules\Common\Symfony\Component\Config\Resource\FileExistenceResource;
 use Wordlift\Modules\Common\Symfony\Component\Config\Resource\GlobResource;
@@ -26,16 +26,15 @@ abstract class FileLoader extends Loader
     protected static $loading = [];
     protected $locator;
     private $currentDir;
-    public function __construct(FileLocatorInterface $locator)
+    public function __construct(FileLocatorInterface $locator, ?string $env = null)
     {
         $this->locator = $locator;
+        parent::__construct($env);
     }
     /**
      * Sets the current directory.
-     *
-     * @param string $dir
      */
-    public function setCurrentDir($dir)
+    public function setCurrentDir(string $dir)
     {
         $this->currentDir = $dir;
     }
@@ -51,30 +50,38 @@ abstract class FileLoader extends Loader
     /**
      * Imports a resource.
      *
-     * @param mixed       $resource       A Resource
-     * @param string|null $type           The resource type or null if unknown
-     * @param bool        $ignoreErrors   Whether to ignore import errors or not
-     * @param string|null $sourceResource The original resource importing the new resource
+     * @param mixed                $resource       A Resource
+     * @param string|null          $type           The resource type or null if unknown
+     * @param bool                 $ignoreErrors   Whether to ignore import errors or not
+     * @param string|null          $sourceResource The original resource importing the new resource
+     * @param string|string[]|null $exclude        Glob patterns to exclude from the import
      *
      * @return mixed
      *
-     * @throws FileLoaderLoadException
+     * @throws LoaderLoadException
      * @throws FileLoaderImportCircularReferenceException
      * @throws FileLocatorFileNotFoundException
      */
-    public function import($resource, $type = null, $ignoreErrors = \false, $sourceResource = null)
+    public function import($resource, ?string $type = null, bool $ignoreErrors = \false, ?string $sourceResource = null, $exclude = null)
     {
-        if (\is_string($resource) && \strlen($resource) !== ($i = \strcspn($resource, '*?{['))) {
+        if (\is_string($resource) && \strlen($resource) !== ($i = strcspn($resource, '*?{[')) && !str_contains($resource, "\n")) {
+            $excluded = [];
+            foreach ((array) $exclude as $pattern) {
+                foreach ($this->glob($pattern, \true, $_, \false, \true) as $path => $info) {
+                    // normalize Windows slashes and remove trailing slashes
+                    $excluded[rtrim(str_replace('\\', '/', $path), '/')] = \true;
+                }
+            }
             $ret = [];
-            $isSubpath = 0 !== $i && \false !== \strpos(\substr($resource, 0, $i), '/');
-            foreach ($this->glob($resource, \false, $_, $ignoreErrors || !$isSubpath) as $path => $info) {
-                if (null !== ($res = $this->doImport($path, 'glob' === $type ? null : $type, $ignoreErrors, $sourceResource))) {
+            $isSubpath = 0 !== $i && str_contains(substr($resource, 0, $i), '/');
+            foreach ($this->glob($resource, \false, $_, $ignoreErrors || !$isSubpath, \false, $excluded) as $path => $info) {
+                if (null !== $res = $this->doImport($path, ('glob' === $type) ? null : $type, $ignoreErrors, $sourceResource)) {
                     $ret[] = $res;
                 }
                 $isSubpath = \true;
             }
             if ($isSubpath) {
-                return isset($ret[1]) ? $ret : (isset($ret[0]) ? $ret[0] : null);
+                return isset($ret[1]) ? $ret : ($ret[0] ?? null);
             }
         }
         return $this->doImport($resource, $type, $ignoreErrors, $sourceResource);
@@ -82,17 +89,17 @@ abstract class FileLoader extends Loader
     /**
      * @internal
      */
-    protected function glob($pattern, $recursive, &$resource = null, $ignoreErrors = \false)
+    protected function glob(string $pattern, bool $recursive, &$resource = null, bool $ignoreErrors = \false, bool $forExclusion = \false, array $excluded = [])
     {
-        if (\strlen($pattern) === ($i = \strcspn($pattern, '*?{['))) {
+        if (\strlen($pattern) === $i = strcspn($pattern, '*?{[')) {
             $prefix = $pattern;
             $pattern = '';
-        } elseif (0 === $i || \false === \strpos(\substr($pattern, 0, $i), '/')) {
+        } elseif (0 === $i || !str_contains(substr($pattern, 0, $i), '/')) {
             $prefix = '.';
             $pattern = '/' . $pattern;
         } else {
-            $prefix = \dirname(\substr($pattern, 0, 1 + $i));
-            $pattern = \substr($pattern, \strlen($prefix));
+            $prefix = \dirname(substr($pattern, 0, 1 + $i));
+            $pattern = substr($pattern, \strlen($prefix));
         }
         try {
             $prefix = $this->locator->locate($prefix, $this->currentDir, \true);
@@ -106,12 +113,10 @@ abstract class FileLoader extends Loader
             }
             return;
         }
-        $resource = new GlobResource($prefix, $pattern, $recursive);
-        foreach ($resource as $path => $info) {
-            (yield $path => $info);
-        }
+        $resource = new GlobResource($prefix, $pattern, $recursive, $forExclusion, $excluded);
+        yield from $resource;
     }
-    private function doImport($resource, $type = null, $ignoreErrors = \false, $sourceResource = null)
+    private function doImport($resource, ?string $type = null, bool $ignoreErrors = \false, ?string $sourceResource = null)
     {
         try {
             $loader = $this->resolve($resource, $type);
@@ -119,10 +124,10 @@ abstract class FileLoader extends Loader
                 $resource = $loader->getLocator()->locate($resource, $this->currentDir, \false);
             }
             $resources = \is_array($resource) ? $resource : [$resource];
-            for ($i = 0; $i < ($resourcesCount = \count($resources)); ++$i) {
+            for ($i = 0; $i < $resourcesCount = \count($resources); ++$i) {
                 if (isset(self::$loading[$resources[$i]])) {
                     if ($i == $resourcesCount - 1) {
-                        throw new FileLoaderImportCircularReferenceException(\array_keys(self::$loading));
+                        throw new FileLoaderImportCircularReferenceException(array_keys(self::$loading));
                     }
                 } else {
                     $resource = $resources[$i];
@@ -141,10 +146,10 @@ abstract class FileLoader extends Loader
         } catch (\Exception $e) {
             if (!$ignoreErrors) {
                 // prevent embedded imports from nesting multiple exceptions
-                if ($e instanceof FileLoaderLoadException) {
+                if ($e instanceof LoaderLoadException) {
                     throw $e;
                 }
-                throw new FileLoaderLoadException($resource, $sourceResource, null, $e, $type);
+                throw new LoaderLoadException($resource, $sourceResource, 0, $e, $type);
             }
         }
         return null;

@@ -29,7 +29,7 @@ class ServiceReferenceGraphNode
      * @param string $id    The node identifier
      * @param mixed  $value The node value
      */
-    public function __construct($id, $value)
+    public function __construct(string $id, $value)
     {
         $this->id = $id;
         $this->value = $value;
@@ -45,7 +45,7 @@ class ServiceReferenceGraphNode
     /**
      * Checks if the value of this node is an Alias.
      *
-     * @return bool True if the value is an Alias instance
+     * @return bool
      */
     public function isAlias()
     {
@@ -54,7 +54,7 @@ class ServiceReferenceGraphNode
     /**
      * Checks if the value of this node is a Definition.
      *
-     * @return bool True if the value is a Definition instance
+     * @return bool
      */
     public function isDefinition()
     {
@@ -90,7 +90,7 @@ class ServiceReferenceGraphNode
     /**
      * Returns the value of this Node.
      *
-     * @return mixed The value
+     * @return mixed
      */
     public function getValue()
     {

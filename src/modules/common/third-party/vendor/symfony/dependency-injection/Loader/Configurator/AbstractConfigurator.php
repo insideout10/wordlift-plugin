@@ -10,7 +10,10 @@
  */
 namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Wordlift\Modules\Common\Symfony\Component\Config\Loader\ParamConfigurator;
+use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Argument\AbstractArgument;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Argument\ArgumentInterface;
+use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Definition;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Parameter;
@@ -18,15 +21,30 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Reference;
 use Wordlift\Modules\Common\Symfony\Component\ExpressionLanguage\Expression;
 abstract class AbstractConfigurator
 {
-    const FACTORY = 'unknown';
+    public const FACTORY = 'unknown';
+    /**
+     * @var callable(mixed, bool)|null
+     */
+    public static $valuePreProcessor;
     /** @internal */
     protected $definition;
-    public function __call($method, $args)
+    public function __call(string $method, array $args)
     {
-        if (\method_exists($this, 'set' . $method)) {
-            return \call_user_func_array([$this, 'set' . $method], $args);
+        if (method_exists($this, 'set' . $method)) {
+            return $this->{'set' . $method}(...$args);
         }
-        throw new \BadMethodCallException(\sprintf('Call to undefined method "%s::%s()".', static::class, $method));
+        throw new \BadMethodCallException(sprintf('Call to undefined method "%s::%s()".', static::class, $method));
+    }
+    /**
+     * @return array
+     */
+    public function __sleep()
+    {
+        throw new \BadMethodCallException('Cannot serialize ' . __CLASS__);
+    }
+    public function __wakeup()
+    {
+        throw new \BadMethodCallException('Cannot unserialize ' . __CLASS__);
     }
     /**
      * Checks that a value is valid, optionally replacing Definition and Reference configurators by their configure value.
@@ -42,18 +60,25 @@ abstract class AbstractConfigurator
             foreach ($value as $k => $v) {
                 $value[$k] = static::processValue($v, $allowServices);
             }
-            return $value;
+            return self::$valuePreProcessor ? (self::$valuePreProcessor)($value, $allowServices) : $value;
+        }
+        if (self::$valuePreProcessor) {
+            $value = (self::$valuePreProcessor)($value, $allowServices);
         }
         if ($value instanceof ReferenceConfigurator) {
-            return new Reference($value->id, $value->invalidBehavior);
+            $reference = new Reference($value->id, $value->invalidBehavior);
+            return ($value instanceof ClosureReferenceConfigurator) ? new ServiceClosureArgument($reference) : $reference;
         }
         if ($value instanceof InlineServiceConfigurator) {
             $def = $value->definition;
             $value->definition = null;
             return $def;
         }
+        if ($value instanceof ParamConfigurator) {
+            return (string) $value;
+        }
         if ($value instanceof self) {
-            throw new InvalidArgumentException(\sprintf('"%s()" can be used only at the root of service configuration files.', $value::FACTORY));
+            throw new InvalidArgumentException(sprintf('"%s()" can be used only at the root of service configuration files.', $value::FACTORY));
         }
         switch (\true) {
             case null === $value:
@@ -63,11 +88,12 @@ abstract class AbstractConfigurator
             case $value instanceof Definition:
             case $value instanceof Expression:
             case $value instanceof Parameter:
+            case $value instanceof AbstractArgument:
             case $value instanceof Reference:
                 if ($allowServices) {
                     return $value;
                 }
         }
-        throw new InvalidArgumentException(\sprintf('Cannot use values of type "%s" in service configuration files.', \is_object($value) ? \get_class($value) : \gettype($value)));
+        throw new InvalidArgumentException(sprintf('Cannot use values of type "%s" in service configuration files.', get_debug_type($value)));
     }
 }

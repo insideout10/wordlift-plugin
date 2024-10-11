@@ -51,7 +51,7 @@ class ResolveParameterPlaceHoldersPass extends AbstractRecursivePass
         $this->bag->resolve();
         $this->bag = null;
     }
-    protected function processValue($value, $isRoot = \false)
+    protected function processValue($value, bool $isRoot = \false)
     {
         if (\is_string($value)) {
             try {
@@ -63,7 +63,7 @@ class ResolveParameterPlaceHoldersPass extends AbstractRecursivePass
                 $v = null;
                 $this->container->getDefinition($this->currentId)->addError($e->getMessage());
             }
-            return $this->resolveArrays || !$v || !\is_array($v) ? $v : $value;
+            return ($this->resolveArrays || !$v || !\is_array($v)) ? $v : $value;
         }
         if ($value instanceof Definition) {
             $value->setBindings($this->processValue($value->getBindings()));
@@ -74,10 +74,15 @@ class ResolveParameterPlaceHoldersPass extends AbstractRecursivePass
             if (isset($changes['file'])) {
                 $value->setFile($this->bag->resolveValue($value->getFile()));
             }
+            $tags = $value->getTags();
+            if (isset($tags['proxy'])) {
+                $tags['proxy'] = $this->bag->resolveValue($tags['proxy']);
+                $value->setTags($tags);
+            }
         }
         $value = parent::processValue($value, $isRoot);
         if ($value && \is_array($value)) {
-            $value = \array_combine($this->bag->resolveValue(\array_keys($value)), $value);
+            $value = array_combine($this->bag->resolveValue(array_keys($value)), $value);
         }
         return $value;
     }

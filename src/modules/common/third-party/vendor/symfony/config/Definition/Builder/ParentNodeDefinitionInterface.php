@@ -15,7 +15,7 @@ namespace Wordlift\Modules\Common\Symfony\Component\Config\Definition\Builder;
  *
  * @author Victor Berchet <victor@suumit.com>
  */
-interface ParentNodeDefinitionInterface
+interface ParentNodeDefinitionInterface extends BuilderAwareInterface
 {
     /**
      * Returns a builder to add children nodes.
@@ -40,7 +40,9 @@ interface ParentNodeDefinitionInterface
      */
     public function append(NodeDefinition $node);
     /**
-     * Sets a custom children builder.
+     * Gets the child node definitions.
+     *
+     * @return NodeDefinition[]
      */
-    public function setBuilder(NodeBuilder $builder);
+    public function getChildNodeDefinitions();
 }

@@ -17,8 +17,8 @@ namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Exceptio
  */
 class EnvParameterException extends InvalidArgumentException
 {
-    public function __construct(array $envs, \Exception $previous = null, $message = 'Incompatible use of dynamic environment variables "%s" found in parameters.')
+    public function __construct(array $envs, ?\Throwable $previous = null, string $message = 'Incompatible use of dynamic environment variables "%s" found in parameters.')
     {
-        parent::__construct(\sprintf($message, \implode('", "', $envs)), 0, $previous);
+        parent::__construct(sprintf($message, implode('", "', $envs)), 0, $previous);
     }
 }

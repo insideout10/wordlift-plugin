@@ -10,7 +10,7 @@
  */
 namespace Wordlift\Modules\Common\Symfony\Component\Config\Loader;
 
-use Wordlift\Modules\Common\Symfony\Component\Config\Exception\FileLoaderLoadException;
+use Wordlift\Modules\Common\Symfony\Component\Config\Exception\LoaderLoadException;
 /**
  * DelegatingLoader delegates loading to other loaders using a loader resolver.
  *
@@ -28,17 +28,17 @@ class DelegatingLoader extends Loader
     /**
      * {@inheritdoc}
      */
-    public function load($resource, $type = null)
+    public function load($resource, ?string $type = null)
     {
-        if (\false === ($loader = $this->resolver->resolve($resource, $type))) {
-            throw new FileLoaderLoadException($resource, null, null, null, $type);
+        if (\false === $loader = $this->resolver->resolve($resource, $type)) {
+            throw new LoaderLoadException($resource, null, 0, null, $type);
         }
         return $loader->load($resource, $type);
     }
     /**
      * {@inheritdoc}
      */
-    public function supports($resource, $type = null)
+    public function supports($resource, ?string $type = null)
     {
         return \false !== $this->resolver->resolve($resource, $type);
     }

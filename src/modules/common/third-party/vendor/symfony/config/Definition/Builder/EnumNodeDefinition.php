@@ -24,7 +24,7 @@ class EnumNodeDefinition extends ScalarNodeDefinition
      */
     public function values(array $values)
     {
-        $values = \array_unique($values);
+        $values = array_unique($values);
         if (empty($values)) {
             throw new \InvalidArgumentException('->values() must be called with at least one value.');
         }
@@ -34,7 +34,7 @@ class EnumNodeDefinition extends ScalarNodeDefinition
     /**
      * Instantiate a Node.
      *
-     * @return EnumNode The node
+     * @return EnumNode
      *
      * @throws \RuntimeException
      */
@@ -43,6 +43,6 @@ class EnumNodeDefinition extends ScalarNodeDefinition
         if (null === $this->values) {
             throw new \RuntimeException('You must call ->values() on enum nodes.');
         }
-        return new EnumNode($this->name, $this->parent, $this->values);
+        return new EnumNode($this->name, $this->parent, $this->values, $this->pathSeparator);
     }
 }

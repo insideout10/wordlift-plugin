@@ -13,6 +13,7 @@ namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Compiler
 use Wordlift\Modules\Common\Psr\Container\ContainerInterface;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Definition;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Reference;
+use Wordlift\Modules\Common\Symfony\Contracts\Service\ServiceProviderInterface;
 /**
  * Compiler pass to inject their service locator to service subscribers.
  *
@@ -21,9 +22,9 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Reference;
 class ResolveServiceSubscribersPass extends AbstractRecursivePass
 {
     private $serviceLocator;
-    protected function processValue($value, $isRoot = \false)
+    protected function processValue($value, bool $isRoot = \false)
     {
-        if ($value instanceof Reference && $this->serviceLocator && ContainerInterface::class === $this->container->normalizeId($value)) {
+        if ($value instanceof Reference && $this->serviceLocator && \in_array((string) $value, [ContainerInterface::class, ServiceProviderInterface::class], \true)) {
             return new Reference($this->serviceLocator);
         }
         if (!$value instanceof Definition) {

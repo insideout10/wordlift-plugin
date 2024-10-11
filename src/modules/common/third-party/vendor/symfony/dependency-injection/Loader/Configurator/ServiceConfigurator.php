@@ -10,7 +10,6 @@
  */
 namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ChildDefinition;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Definition;
 /**
@@ -18,7 +17,6 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Definition;
  */
 class ServiceConfigurator extends AbstractServiceConfigurator
 {
-    const FACTORY = 'services';
     use Traits\AbstractTrait;
     use Traits\ArgumentTrait;
     use Traits\AutoconfigureTrait;
@@ -38,24 +36,28 @@ class ServiceConfigurator extends AbstractServiceConfigurator
     use Traits\ShareTrait;
     use Traits\SyntheticTrait;
     use Traits\TagTrait;
+    public const FACTORY = 'services';
     private $container;
     private $instanceof;
     private $allowParent;
-    public function __construct(ContainerBuilder $container, array $instanceof, $allowParent, ServicesConfigurator $parent, Definition $definition, $id, array $defaultTags)
+    private $path;
+    private $destructed = \false;
+    public function __construct(ContainerBuilder $container, array $instanceof, bool $allowParent, ServicesConfigurator $parent, Definition $definition, ?string $id, array $defaultTags, ?string $path = null)
     {
         $this->container = $container;
         $this->instanceof = $instanceof;
         $this->allowParent = $allowParent;
+        $this->path = $path;
         parent::__construct($parent, $definition, $id, $defaultTags);
     }
     public function __destruct()
     {
+        if ($this->destructed) {
+            return;
+        }
+        $this->destructed = \true;
         parent::__destruct();
         $this->container->removeBindings($this->id);
-        if (!$this->definition instanceof ChildDefinition) {
-            $this->container->setDefinition($this->id, $this->definition->setInstanceofConditionals($this->instanceof));
-        } else {
-            $this->container->setDefinition($this->id, $this->definition);
-        }
+        $this->container->setDefinition($this->id, $this->definition->setInstanceofConditionals($this->instanceof));
     }
 }

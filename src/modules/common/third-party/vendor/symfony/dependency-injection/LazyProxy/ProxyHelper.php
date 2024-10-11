@@ -20,36 +20,51 @@ class ProxyHelper
     /**
      * @return string|null The FQCN or builtin name of the type hint, or null when the type hint references an invalid self|parent context
      */
-    public static function getTypeHint(\ReflectionFunctionAbstract $r, \ReflectionParameter $p = null, $noBuiltin = \false)
+    public static function getTypeHint(\ReflectionFunctionAbstract $r, ?\ReflectionParameter $p = null, bool $noBuiltin = \false): ?string
     {
         if ($p instanceof \ReflectionParameter) {
-            if (\method_exists($p, 'getType')) {
-                $type = $p->getType();
-            } elseif (\preg_match('/^(?:[^ ]++ ){4}([a-zA-Z_\\x7F-\\xFF][^ ]++)/', $p, $type)) {
-                $name = $type = $type[1];
-                if ('callable' === $name || 'array' === $name) {
-                    return $noBuiltin ? null : $name;
-                }
-            }
+            $type = $p->getType();
         } else {
-            $type = \method_exists($r, 'getReturnType') ? $r->getReturnType() : null;
+            $type = $r->getReturnType();
         }
         if (!$type) {
             return null;
         }
+        return self::getTypeHintForType($type, $r, $noBuiltin);
+    }
+    private static function getTypeHintForType(\ReflectionType $type, \ReflectionFunctionAbstract $r, bool $noBuiltin): ?string
+    {
         $types = [];
-        foreach ($type instanceof \ReflectionUnionType ? $type->getTypes() : [$type] as $type) {
-            $name = $type instanceof \ReflectionNamedType ? $type->getName() : (string) $type;
-            if (!\is_string($type) && $type->isBuiltin()) {
+        $glue = '|';
+        if ($type instanceof \ReflectionUnionType) {
+            $reflectionTypes = $type->getTypes();
+        } elseif ($type instanceof \ReflectionIntersectionType) {
+            $reflectionTypes = $type->getTypes();
+            $glue = '&';
+        } elseif ($type instanceof \ReflectionNamedType) {
+            $reflectionTypes = [$type];
+        } else {
+            return null;
+        }
+        foreach ($reflectionTypes as $type) {
+            if ($type instanceof \ReflectionIntersectionType) {
+                $typeHint = self::getTypeHintForType($type, $r, $noBuiltin);
+                if (null === $typeHint) {
+                    return null;
+                }
+                $types[] = sprintf('(%s)', $typeHint);
+                continue;
+            }
+            if ($type->isBuiltin()) {
                 if (!$noBuiltin) {
-                    $types[] = $name;
+                    $types[] = $type->getName();
                 }
                 continue;
             }
-            $lcName = \strtolower($name);
+            $lcName = strtolower($type->getName());
             $prefix = $noBuiltin ? '' : '\\';
             if ('self' !== $lcName && 'parent' !== $lcName) {
-                $types[] = '' !== $prefix ? $prefix . $name : $name;
+                $types[] = $prefix . $type->getName();
                 continue;
             }
             if (!$r instanceof \ReflectionMethod) {
@@ -61,6 +76,7 @@ class ProxyHelper
                 $types[] = ($parent = $r->getDeclaringClass()->getParentClass()) ? $prefix . $parent->name : null;
             }
         }
-        return $types ? \implode('|', $types) : null;
+        sort($types);
+        return $types ? implode($glue, $types) : null;
     }
 }

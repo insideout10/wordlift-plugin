@@ -11,12 +11,14 @@
 namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
+use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Wordlift\Modules\Common\Symfony\Component\ExpressionLanguage\Expression;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
  */
 class ParametersConfigurator extends AbstractConfigurator
 {
-    const FACTORY = 'parameters';
+    public const FACTORY = 'parameters';
     private $container;
     public function __construct(ContainerBuilder $container)
     {
@@ -25,25 +27,22 @@ class ParametersConfigurator extends AbstractConfigurator
     /**
      * Creates a parameter.
      *
-     * @param string $name
-     * @param mixed  $value
-     *
      * @return $this
      */
-    public final function set($name, $value)
+    final public function set(string $name, $value): self
     {
+        if ($value instanceof Expression) {
+            throw new InvalidArgumentException(sprintf('Using an expression in parameter "%s" is not allowed.', $name));
+        }
         $this->container->setParameter($name, static::processValue($value, \true));
         return $this;
     }
     /**
      * Creates a parameter.
      *
-     * @param string $name
-     * @param mixed  $value
-     *
      * @return $this
      */
-    public final function __invoke($name, $value)
+    final public function __invoke(string $name, $value): self
     {
         return $this->set($name, $value);
     }

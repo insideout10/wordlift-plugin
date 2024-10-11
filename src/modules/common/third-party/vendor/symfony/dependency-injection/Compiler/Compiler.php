@@ -21,7 +21,6 @@ class Compiler
 {
     private $passConfig;
     private $log = [];
-    private $loggingFormatter;
     private $serviceReferenceGraph;
     public function __construct()
     {
@@ -29,85 +28,35 @@ class Compiler
         $this->serviceReferenceGraph = new ServiceReferenceGraph();
     }
     /**
-     * Returns the PassConfig.
-     *
-     * @return PassConfig The PassConfig instance
+     * @return PassConfig
      */
     public function getPassConfig()
     {
         return $this->passConfig;
     }
     /**
-     * Returns the ServiceReferenceGraph.
-     *
-     * @return ServiceReferenceGraph The ServiceReferenceGraph instance
+     * @return ServiceReferenceGraph
      */
     public function getServiceReferenceGraph()
     {
         return $this->serviceReferenceGraph;
     }
-    /**
-     * Returns the logging formatter which can be used by compilation passes.
-     *
-     * @return LoggingFormatter
-     *
-     * @deprecated since version 3.3, to be removed in 4.0. Use the ContainerBuilder::log() method instead.
-     */
-    public function getLoggingFormatter()
+    public function addPass(CompilerPassInterface $pass, string $type = PassConfig::TYPE_BEFORE_OPTIMIZATION, int $priority = 0)
     {
-        if (null === $this->loggingFormatter) {
-            @\trigger_error(\sprintf('The %s() method is deprecated since Symfony 3.3 and will be removed in 4.0. Use the ContainerBuilder::log() method instead.', __METHOD__), \E_USER_DEPRECATED);
-            $this->loggingFormatter = new LoggingFormatter();
-        }
-        return $this->loggingFormatter;
-    }
-    /**
-     * Adds a pass to the PassConfig.
-     *
-     * @param CompilerPassInterface $pass A compiler pass
-     * @param string                $type The type of the pass
-     */
-    public function addPass(CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION)
-    {
-        if (\func_num_args() >= 3) {
-            $priority = \func_get_arg(2);
-        } else {
-            if (__CLASS__ !== static::class) {
-                $r = new \ReflectionMethod($this, __FUNCTION__);
-                if (__CLASS__ !== $r->getDeclaringClass()->getName()) {
-                    @\trigger_error(\sprintf('Method %s() will have a third `int $priority = 0` argument in version 4.0. Not defining it is deprecated since Symfony 3.2.', __METHOD__), \E_USER_DEPRECATED);
-                }
-            }
-            $priority = 0;
-        }
         $this->passConfig->addPass($pass, $type, $priority);
-    }
-    /**
-     * Adds a log message.
-     *
-     * @param string $string The log message
-     *
-     * @deprecated since version 3.3, to be removed in 4.0. Use the ContainerBuilder::log() method instead.
-     */
-    public function addLogMessage($string)
-    {
-        @\trigger_error(\sprintf('The %s() method is deprecated since Symfony 3.3 and will be removed in 4.0. Use the ContainerBuilder::log() method instead.', __METHOD__), \E_USER_DEPRECATED);
-        $this->log[] = $string;
     }
     /**
      * @final
      */
-    public function log(CompilerPassInterface $pass, $message)
+    public function log(CompilerPassInterface $pass, string $message)
     {
-        if (\false !== \strpos($message, "\n")) {
-            $message = \str_replace("\n", "\n" . \get_class($pass) . ': ', \trim($message));
+        if (str_contains($message, "\n")) {
+            $message = str_replace("\n", "\n" . \get_class($pass) . ': ', trim($message));
         }
         $this->log[] = \get_class($pass) . ': ' . $message;
     }
     /**
-     * Returns the log.
-     *
-     * @return array Log array
+     * @return array
      */
     public function getLog()
     {
@@ -127,7 +76,7 @@ class Compiler
             $prev = $e;
             do {
                 $msg = $prev->getMessage();
-                if ($msg !== ($resolvedMsg = $container->resolveEnvPlaceholders($msg, null, $usedEnvs))) {
+                if ($msg !== $resolvedMsg = $container->resolveEnvPlaceholders($msg, null, $usedEnvs)) {
                     $r = new \ReflectionProperty($prev, 'message');
                     $r->setAccessible(\true);
                     $r->setValue($prev, $resolvedMsg);
