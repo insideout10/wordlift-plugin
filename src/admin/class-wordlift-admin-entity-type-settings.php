@@ -95,7 +95,7 @@ class Wordlift_Admin_Entity_Type_Settings {
 		 */
 		// @todo: use the new {@link Wordlift_Admin_Page}.
 		add_submenu_page(
-			null,
+			'wl_entity_type_settings',
 			__( 'Edit Entity term', 'wordlift' ),
 			__( 'Edit Entity term', 'wordlift' ),
 			'manage_options',

@@ -60,6 +60,7 @@ class Wordpress_Content_Id implements Content_Id, JsonSerializable {
 		return $this->type;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function jsonSerialize() {
 		return array(
 			'id'   => $this->id,
