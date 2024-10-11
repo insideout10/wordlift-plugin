@@ -300,7 +300,13 @@ function wl_enqueue_leaflet( $in_footer = false ) {
 	wp_enqueue_script( 'wl-leaflet', plugin_dir_url( __FILE__ ) . 'js/leaflet/leaflet.js', array(), '1.6.0', $in_footer );
 }
 
-add_filter( 'block_categories', 'wl_block_categories', 10 );
+add_filter(
+	version_compare( get_bloginfo( 'version' ), '5.8', '>=' )
+		? 'block_categories_all'
+		: 'block_categories',
+	'wl_block_categories',
+	10
+);
 
 // Temporary fix for a typo in WooCommerce Extension.
 add_filter(
