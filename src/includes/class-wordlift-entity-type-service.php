@@ -456,11 +456,15 @@ class Wordlift_Entity_Type_Service {
 	 *
 	 * @param int $term_id The term ID.
 	 *
-	 * @return array An array of custom fields (see `custom_fields` in Wordlift_Schema_Service).
+	 * @return array|null An array of custom fields (see `custom_fields` in Wordlift_Schema_Service).
 	 * @since 3.32.0
 	 */
 	public function get_custom_fields_for_term( $term_id ) {
 		$selected_entity_types   = get_term_meta( $term_id, 'wl_entity_type' );
+		if ( ! is_array( $selected_entity_types )) {
+			return null;
+		}
+
 		$selected_entity_types[] = 'thing';
 		$selected_entity_types   = array_unique( $selected_entity_types );
 
