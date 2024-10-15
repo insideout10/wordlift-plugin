@@ -1,5 +1,0 @@
-phpunit.xml
-vendor
-.idea
-node_modules
-action-scheduler.zip

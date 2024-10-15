@@ -7,11 +7,13 @@ class ActionScheduler_CanceledSchedule extends ActionScheduler_SimpleSchedule {
 
 	/**
 	 * Deprecated property @see $this->__wakeup() for details.
-	 **/
-	private $timestamp = null;
+	 *
+	 * @var null
+	 */
+	private $timestamp = NULL;
 
 	/**
-	 * @param DateTime $after
+	 * @param DateTime $after Timestamp.
 	 *
 	 * @return DateTime|null
 	 */
@@ -23,7 +25,7 @@ class ActionScheduler_CanceledSchedule extends ActionScheduler_SimpleSchedule {
 	 * Cancelled actions should never have a next schedule, even if get_next()
 	 * is called with $after < $this->scheduled_date.
 	 *
-	 * @param DateTime $after
+	 * @param DateTime $after Timestamp.
 	 * @return DateTime|null
 	 */
 	public function get_next( DateTime $after ) {
@@ -48,7 +50,7 @@ class ActionScheduler_CanceledSchedule extends ActionScheduler_SimpleSchedule {
 	 * map the old property names with matching visibility.
 	 */
 	public function __wakeup() {
-		if ( $this->timestamp !== null ) {
+		if ( ! is_null( $this->timestamp ) ) {
 			$this->scheduled_timestamp = $this->timestamp;
 			unset( $this->timestamp );
 		}

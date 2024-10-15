@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Action_Scheduler\Migration;
 
 /**
@@ -13,10 +14,10 @@ namespace Action_Scheduler\Migration;
  */
 class Scheduler {
 	/** Migration action hook. */
-	const HOOK = 'action_scheduler/migration_hook';
+	const HOOK            = 'action_scheduler/migration_hook';
 
 	/** Migration action group. */
-	const GROUP = 'action-scheduler-migration';
+	const GROUP           = 'action-scheduler-migration';
 
 	/**
 	 * Set up the callback for the scheduled job.

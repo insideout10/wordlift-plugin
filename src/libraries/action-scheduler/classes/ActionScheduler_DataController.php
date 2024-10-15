@@ -18,10 +18,10 @@ class ActionScheduler_DataController {
 	const DATASTORE_CLASS = 'ActionScheduler_DBStore';
 
 	/** Logger data store class name. */
-	const LOGGER_CLASS = 'ActionScheduler_DBLogger';
+	const LOGGER_CLASS    = 'ActionScheduler_DBLogger';
 
 	/** Migration status option name. */
-	const STATUS_FLAG = 'action_scheduler_migration_status';
+	const STATUS_FLAG     = 'action_scheduler_migration_status';
 
 	/** Migration status option value. */
 	const STATUS_COMPLETE = 'complete';
@@ -154,7 +154,7 @@ class ActionScheduler_DataController {
 		$wp_object_cache->cache          = array();
 
 		if ( is_callable( array( $wp_object_cache, '__remoteset' ) ) ) {
-			call_user_func( array( $wp_object_cache, '__remoteset' ) ); // important
+			call_user_func( array( $wp_object_cache, '__remoteset' ) ); // important!
 		}
 	}
 

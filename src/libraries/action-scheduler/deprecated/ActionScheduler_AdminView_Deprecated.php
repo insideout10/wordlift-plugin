@@ -68,7 +68,7 @@ class ActionScheduler_AdminView_Deprecated {
 	 * Print the content for our custom columns.
 	 *
 	 * @param string $column_name The key for the column for which we should output our content.
-	 * @param int    $post_id The ID of the 'scheduled-action' post for which this row relates.
+	 * @param int $post_id The ID of the 'scheduled-action' post for which this row relates.
 	 */
 	public static function list_table_column_content( $column_name, $post_id ) {
 		_deprecated_function( __METHOD__, '2.0.0' );
@@ -100,7 +100,7 @@ class ActionScheduler_AdminView_Deprecated {
 	 * Convert an interval of seconds into a two part human friendly string.
 	 *
 	 * The WordPress human_time_diff() function only calculates the time difference to one degree, meaning
-	 * even if an action is 1 day and 11 hours away, it will display "1 day". This funciton goes one step
+	 * even if an action is 1 day and 11 hours away, it will display "1 day". This function goes one step
 	 * further to display two degrees of accuracy.
 	 *
 	 * Based on Crontrol::interval() function by Edward Dale: https://wordpress.org/plugins/wp-crontrol/
@@ -115,18 +115,18 @@ class ActionScheduler_AdminView_Deprecated {
 	/**
 	 * Filter search queries to allow searching by Claim ID (i.e. post_password).
 	 *
-	 * @param string   $orderby MySQL orderby string.
+	 * @param string $orderby MySQL orderby string.
 	 * @param WP_Query $query Instance of a WP_Query object
 	 * @return string MySQL orderby string.
 	 */
-	public function custom_orderby( $orderby, $query ) {
+	public function custom_orderby( $orderby, $query ){
 		_deprecated_function( __METHOD__, '2.0.0' );
 	}
 
 	/**
 	 * Filter search queries to allow searching by Claim ID (i.e. post_password).
 	 *
-	 * @param string   $search MySQL search string.
+	 * @param string $search MySQL search string.
 	 * @param WP_Query $query Instance of a WP_Query object
 	 * @return string MySQL search string.
 	 */

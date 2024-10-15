@@ -1,9 +1,9 @@
 <?php
 
+use ActionScheduler_Store as Store;
+use Action_Scheduler\Migration\Runner;
 use Action_Scheduler\Migration\Config;
 use Action_Scheduler\Migration\Controller;
-use Action_Scheduler\Migration\Runner;
-use ActionScheduler_Store as Store;
 
 /**
  * Class ActionScheduler_HybridStore
@@ -15,8 +15,11 @@ use ActionScheduler_Store as Store;
 class ActionScheduler_HybridStore extends Store {
 	const DEMARKATION_OPTION = 'action_scheduler_hybrid_store_demarkation';
 
+	/** @var ActionScheduler_Store */
 	private $primary_store;
+	/** @var ActionScheduler_Store */
 	private $secondary_store;
+	/** @var Action_Scheduler\Migration\Runner */
 	private $migration_runner;
 
 	/**
@@ -53,10 +56,10 @@ class ActionScheduler_HybridStore extends Store {
 	 * @codeCoverageIgnore
 	 */
 	public function init() {
-		add_action( 'action_scheduler/created_table', array( $this, 'set_autoincrement' ), 10, 2 );
+		add_action( 'action_scheduler/created_table', [ $this, 'set_autoincrement' ], 10, 2 );
 		$this->primary_store->init();
 		$this->secondary_store->init();
-		remove_action( 'action_scheduler/created_table', array( $this, 'set_autoincrement' ), 10 );
+		remove_action( 'action_scheduler/created_table', [ $this, 'set_autoincrement' ], 10 );
 	}
 
 	/**
@@ -64,8 +67,8 @@ class ActionScheduler_HybridStore extends Store {
 	 * value to be one higher than the posts table to ensure that
 	 * there are no ID collisions.
 	 *
-	 * @param string $table_name
-	 * @param string $table_suffix
+	 * @param string $table_name Table name.
+	 * @param string $table_suffix Suffix of table name.
 	 *
 	 * @return void
 	 * @codeCoverageIgnore
@@ -88,7 +91,7 @@ class ActionScheduler_HybridStore extends Store {
 
 			$row_count = $wpdb->insert(
 				$wpdb->{ActionScheduler_StoreSchema::ACTIONS_TABLE},
-				array(
+				[
 					'action_id'            => $this->demarkation_id,
 					'hook'                 => '',
 					'status'               => '',
@@ -96,12 +99,12 @@ class ActionScheduler_HybridStore extends Store {
 					'scheduled_date_local' => $date_local,
 					'last_attempt_gmt'     => $date_gmt,
 					'last_attempt_local'   => $date_local,
-				)
+				]
 			);
 			if ( $row_count > 0 ) {
 				$wpdb->delete(
 					$wpdb->{ActionScheduler_StoreSchema::ACTIONS_TABLE},
-					array( 'action_id' => $this->demarkation_id )
+					[ 'action_id' => $this->demarkation_id ]
 				);
 			}
 		}
@@ -135,15 +138,15 @@ class ActionScheduler_HybridStore extends Store {
 	 * After it migrates, the secondary store will logically contain
 	 * the next matching action, so return the result thence.
 	 *
-	 * @param string $hook
-	 * @param array  $params
+	 * @param string $hook Action's hook.
+	 * @param array  $params Action's arguments.
 	 *
 	 * @return string
 	 */
-	public function find_action( $hook, $params = array() ) {
+	public function find_action( $hook, $params = [] ) {
 		$found_unmigrated_action = $this->secondary_store->find_action( $hook, $params );
 		if ( ! empty( $found_unmigrated_action ) ) {
-			$this->migrate( array( $found_unmigrated_action ) );
+			$this->migrate( [ $found_unmigrated_action ] );
 		}
 
 		return $this->primary_store->find_action( $hook, $params );
@@ -154,12 +157,12 @@ class ActionScheduler_HybridStore extends Store {
 	 * If any are found, migrate them immediately. Then the secondary
 	 * store will contain the canonical results.
 	 *
-	 * @param array  $query
+	 * @param array  $query Query arguments.
 	 * @param string $query_type Whether to select or count the results. Default, select.
 	 *
 	 * @return int[]
 	 */
-	public function query_actions( $query = array(), $query_type = 'select' ) {
+	public function query_actions( $query = [], $query_type = 'select' ) {
 		$found_unmigrated_actions = $this->secondary_store->query_actions( $query, 'select' );
 		if ( ! empty( $found_unmigrated_actions ) ) {
 			$this->migrate( $found_unmigrated_actions );
@@ -203,8 +206,10 @@ class ActionScheduler_HybridStore extends Store {
 	 * migrate them immediately, then ask the primary store for the
 	 * canonical claim.
 	 *
-	 * @param int           $max_actions
-	 * @param DateTime|null $before_date
+	 * @param int           $max_actions Maximum number of actions to claim.
+	 * @param null|DateTime $before_date Latest timestamp of actions to claim.
+	 * @param string[]      $hooks Hook of actions to claim.
+	 * @param string        $group Group of actions to claim.
 	 *
 	 * @return ActionScheduler_ActionClaim
 	 */
@@ -352,19 +357,19 @@ class ActionScheduler_HybridStore extends Store {
 	 */
 	protected function get_store_from_action_id( $action_id, $primary_first = false ) {
 		if ( $primary_first ) {
-			$stores = array(
+			$stores = [
 				$this->primary_store,
 				$this->secondary_store,
-			);
+			];
 		} elseif ( $action_id < $this->demarkation_id ) {
-			$stores = array(
+			$stores = [
 				$this->secondary_store,
 				$this->primary_store,
-			);
+			];
 		} else {
-			$stores = array(
+			$stores = [
 				$this->primary_store,
-			);
+			];
 		}
 
 		foreach ( $stores as $store ) {
@@ -376,11 +381,12 @@ class ActionScheduler_HybridStore extends Store {
 		return null;
 	}
 
-	/*
-	 * * * * * * * * * * * * * * * * * * * * * * * * * *
+	/**
+	 * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * All claim-related functions should operate solely
 	 * on the primary store.
-	 * * * * * * * * * * * * * * * * * * * * * * * * * * */
+	 * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 */
 
 	/**
 	 * Get the claim count from the table data store.

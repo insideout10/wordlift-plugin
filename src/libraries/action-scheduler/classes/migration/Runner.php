@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Action_Scheduler\Migration;
 
 /**
@@ -69,7 +70,7 @@ class Runner {
 	 * @return int Size of batch processed.
 	 */
 	public function run( $batch_size = 10 ) {
-		$batch      = $this->batch_fetcher->fetch( $batch_size );
+		$batch = $this->batch_fetcher->fetch( $batch_size );
 		$batch_size = count( $batch );
 
 		if ( ! $batch_size ) {
@@ -78,7 +79,7 @@ class Runner {
 
 		if ( $this->progress_bar ) {
 			/* translators: %d: amount of actions */
-			$this->progress_bar->set_message( sprintf( _n( 'Migrating %d action', 'Migrating %d actions', $batch_size, 'action-scheduler' ), number_format_i18n( $batch_size ) ) );
+			$this->progress_bar->set_message( sprintf( _n( 'Migrating %d action', 'Migrating %d actions', $batch_size, 'action-scheduler' ), $batch_size ) );
 			$this->progress_bar->set_count( $batch_size );
 		}
 
@@ -101,17 +102,14 @@ class Runner {
 		foreach ( $action_ids as $source_action_id ) {
 			$destination_action_id = $this->action_migrator->migrate( $source_action_id );
 			if ( $destination_action_id ) {
-				$this->destination_logger->log(
-					$destination_action_id,
-					sprintf(
+				$this->destination_logger->log( $destination_action_id, sprintf(
 					/* translators: 1: source action ID 2: source store class 3: destination action ID 4: destination store class */
-						__( 'Migrated action with ID %1$d in %2$s to ID %3$d in %4$s', 'action-scheduler' ),
-						$source_action_id,
-						get_class( $this->source_store ),
-						$destination_action_id,
-						get_class( $this->destination_store )
-					)
-				);
+					__( 'Migrated action with ID %1$d in %2$s to ID %3$d in %4$s', 'action-scheduler' ),
+					$source_action_id,
+					get_class( $this->source_store ),
+					$destination_action_id,
+					get_class( $this->destination_store )
+				) );
 			}
 
 			if ( $this->progress_bar ) {

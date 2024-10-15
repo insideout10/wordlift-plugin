@@ -7,13 +7,17 @@ class ActionScheduler_CronSchedule extends ActionScheduler_Abstract_RecurringSch
 
 	/**
 	 * Deprecated property @see $this->__wakeup() for details.
-	 **/
-	private $start_timestamp = null;
+	 *
+	 * @var null
+	 */
+	private $start_timestamp = NULL;
 
 	/**
 	 * Deprecated property @see $this->__wakeup() for details.
-	 **/
-	private $cron = null;
+	 *
+	 * @var null
+	 */
+	private $cron = NULL;
 
 	/**
 	 * Wrapper for parent constructor to accept a cron expression string and map it to a CronExpression for this
@@ -41,7 +45,7 @@ class ActionScheduler_CronSchedule extends ActionScheduler_Abstract_RecurringSch
 	 * Calculate when an instance of this schedule would start based on a given
 	 * date & time using its the CronExpression.
 	 *
-	 * @param DateTime $after
+	 * @param DateTime $after Timestamp.
 	 * @return DateTime
 	 */
 	protected function calculate_next( DateTime $after ) {
@@ -58,7 +62,7 @@ class ActionScheduler_CronSchedule extends ActionScheduler_Abstract_RecurringSch
 	/**
 	 * Serialize cron schedules with data required prior to AS 3.0.0
 	 *
-	 * Prior to Action Scheduler 3.0.0, reccuring schedules used different property names to
+	 * Prior to Action Scheduler 3.0.0, recurring schedules used different property names to
 	 * refer to equivalent data. For example, ActionScheduler_IntervalSchedule::start_timestamp
 	 * was the same as ActionScheduler_SimpleSchedule::timestamp. Action Scheduler 3.0.0
 	 * aligned properties and property names for better inheritance. To guard against the
@@ -75,13 +79,10 @@ class ActionScheduler_CronSchedule extends ActionScheduler_Abstract_RecurringSch
 		$this->start_timestamp = $this->scheduled_timestamp;
 		$this->cron            = $this->recurrence;
 
-		return array_merge(
-			$sleep_params,
-			array(
-				'start_timestamp',
-				'cron',
-			)
-		);
+		return array_merge( $sleep_params, array(
+			'start_timestamp',
+			'cron'
+		) );
 	}
 
 	/**
@@ -90,12 +91,12 @@ class ActionScheduler_CronSchedule extends ActionScheduler_Abstract_RecurringSch
 	 * For more background, @see ActionScheduler_Abstract_RecurringSchedule::__wakeup().
 	 */
 	public function __wakeup() {
-		if ( $this->scheduled_timestamp === null && $this->start_timestamp !== null ) {
+		if ( is_null( $this->scheduled_timestamp ) && ! is_null( $this->start_timestamp ) ) {
 			$this->scheduled_timestamp = $this->start_timestamp;
 			unset( $this->start_timestamp );
 		}
 
-		if ( $this->recurrence === null && $this->cron !== null ) {
+		if ( is_null( $this->recurrence ) && ! is_null( $this->cron ) ) {
 			$this->recurrence = $this->cron;
 			unset( $this->cron );
 		}

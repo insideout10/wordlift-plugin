@@ -2,13 +2,14 @@
 
 /**
  * Class ActionScheduler_AdminView
- *
  * @codeCoverageIgnore
  */
 class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 
-	private static $admin_view = null;
+	/** @var null|self */
+	private static $admin_view = NULL;
 
+	/** @var string */
 	private static $screen_id = 'tools_page_action-scheduler';
 
 	/** @var ActionScheduler_ListTable */
@@ -21,7 +22,7 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 	public static function instance() {
 
 		if ( empty( self::$admin_view ) ) {
-			$class            = apply_filters( 'action_scheduler_admin_view_class', 'ActionScheduler_AdminView' );
+			$class = apply_filters('action_scheduler_admin_view_class', 'ActionScheduler_AdminView');
 			self::$admin_view = new $class();
 		}
 
@@ -29,6 +30,8 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 	}
 
 	/**
+	 * Initialize.
+	 *
 	 * @codeCoverageIgnore
 	 */
 	public function init() {
@@ -46,6 +49,9 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 		}
 	}
 
+	/**
+	 * Print system status report.
+	 */
 	public function system_status_report() {
 		$table = new ActionScheduler_wcSystemStatus( ActionScheduler::store() );
 		$table->render();
@@ -79,7 +85,7 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 			'action-scheduler',
 			array( $this, 'render_admin_ui' )
 		);
-		add_action( 'load-' . $hook_suffix, array( $this, 'process_admin_ui' ) );
+		add_action( 'load-' . $hook_suffix , array( $this, 'process_admin_ui' ) );
 	}
 
 	/**
@@ -146,26 +152,34 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 
 		// Set thresholds.
 		$threshold_seconds = (int) apply_filters( 'action_scheduler_pastdue_actions_seconds', DAY_IN_SECONDS );
-		$threshhold_min    = (int) apply_filters( 'action_scheduler_pastdue_actions_min', 1 );
+		$threshold_min     = (int) apply_filters( 'action_scheduler_pastdue_actions_min', 1 );
+
+		// Set fallback value for past-due actions count.
+		$num_pastdue_actions = 0;
 
 		// Allow third-parties to preempt the default check logic.
 		$check = apply_filters( 'action_scheduler_pastdue_actions_check_pre', null );
+
+		// If no third-party preempted and there are no past-due actions, return early.
+		if ( ! is_null( $check ) ) {
+			return;
+		}
 
 		// Scheduled actions query arguments.
 		$query_args = array(
 			'date'     => as_get_datetime_object( time() - $threshold_seconds ),
 			'status'   => ActionScheduler_Store::STATUS_PENDING,
-			'per_page' => $threshhold_min,
+			'per_page' => $threshold_min,
 		);
 
 		// If no third-party preempted, run default check.
-		if ( $check === null ) {
-			$store               = ActionScheduler_Store::instance();
+		if ( is_null( $check ) ) {
+			$store = ActionScheduler_Store::instance();
 			$num_pastdue_actions = (int) $store->query_actions( $query_args, 'count' );
 
 			// Check if past-due actions count is greater than or equal to threshold.
-			$check = ( $num_pastdue_actions >= $threshhold_min );
-			$check = (bool) apply_filters( 'action_scheduler_pastdue_actions_check', $check, $num_pastdue_actions, $threshold_seconds, $threshhold_min );
+			$check = ( $num_pastdue_actions >= $threshold_min );
+			$check = (bool) apply_filters( 'action_scheduler_pastdue_actions_check', $check, $num_pastdue_actions, $threshold_seconds, $threshold_min );
 		}
 
 		// If check failed, set transient and abort.
@@ -176,20 +190,17 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 			return;
 		}
 
-		$actions_url = add_query_arg(
-			array(
-				'page'   => 'action-scheduler',
-				'status' => 'past-due',
-				'order'  => 'asc',
-			),
-			admin_url( 'tools.php' )
-		);
+		$actions_url = add_query_arg( array(
+			'page'   => 'action-scheduler',
+			'status' => 'past-due',
+			'order'  => 'asc',
+		), admin_url( 'tools.php' ) );
 
 		// Print notice.
 		echo '<div class="notice notice-warning"><p>';
 		printf(
+			// translators: 1) is the number of affected actions, 2) is a link to an admin screen.
 			_n(
-				// translators: 1) is the number of affected actions, 2) is a link to an admin screen.
 				'<strong>Action Scheduler:</strong> %1$d <a href="%2$s">past-due action</a> found; something may be wrong. <a href="https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do" target="_blank">Read documentation &raquo;</a>',
 				'<strong>Action Scheduler:</strong> %1$d <a href="%2$s">past-due actions</a> found; something may be wrong. <a href="https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do" target="_blank">Read documentation &raquo;</a>',
 				$num_pastdue_actions,
@@ -220,6 +231,7 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 				'id'      => 'action_scheduler_about',
 				'title'   => __( 'About', 'action-scheduler' ),
 				'content' =>
+					// translators: %s is the Action Scheduler version.
 					'<h2>' . sprintf( __( 'About Action Scheduler %s', 'action-scheduler' ), $as_version ) . '</h2>' .
 					'<p>' .
 						__( 'Action Scheduler is a scalable, traceable job queue for background processing large sets of actions. Action Scheduler works by triggering an action hook to run at some time in the future. Scheduled actions can also be scheduled to run on a recurring schedule.', 'action-scheduler' ) .
