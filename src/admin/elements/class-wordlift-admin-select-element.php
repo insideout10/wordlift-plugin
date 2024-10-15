@@ -56,7 +56,7 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 		$this->print_notice( $params['notice'] );
 
 		// Print the field description.
-		echo wp_kses( $this->get_description( $params['description'] ), array( 'p' => array() ) );
+		echo wp_kses( $this->get_description( $params['description'] ) ?? '', array( 'p' => array() ) );
 
 		return $this;
 	}
