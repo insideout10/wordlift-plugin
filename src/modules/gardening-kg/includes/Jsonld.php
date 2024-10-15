@@ -65,6 +65,10 @@ class Jsonld {
 		$about_jsonld   = $this->content_service->get_about_jsonld(
 			$content_id
 		);
+		if ( empty( $about_jsonld ) ) {
+			return;
+		}
+
 		$decoded_jsonld = json_decode( $about_jsonld, true );
 
 		if ( null === $decoded_jsonld ) {
