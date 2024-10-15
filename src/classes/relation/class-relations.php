@@ -61,7 +61,7 @@ class Relations implements Relations_Interface, JsonSerializable {
 		return true;
 	}
 
-	public function offsetSet( $offset, $value ) {
+	public function offsetSet( $offset, $value ): void {
 		if ( $offset === null ) {
 			$this->container[] = $value;
 		} else {
@@ -69,14 +69,15 @@ class Relations implements Relations_Interface, JsonSerializable {
 		}
 	}
 
-	public function offsetExists( $offset ) {
+	public function offsetExists( $offset ): bool {
 		return isset( $this->container[ $offset ] );
 	}
 
-	public function offsetUnset( $offset ) {
+	public function offsetUnset( $offset ): void {
 		unset( $this->container[ $offset ] );
 	}
 
+	#[\ReturnTypeWillChange]
 	public function offsetGet( $offset ) {
 		return isset( $this->container[ $offset ] ) ? $this->container[ $offset ] : null;
 	}
