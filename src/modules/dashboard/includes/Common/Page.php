@@ -59,6 +59,7 @@ class Page implements \Serializable, \JsonSerializable {
 		$this->items = $data['items'];
 	}
 
+	#[\ReturnTypeWillChange]
 	public function jsonSerialize() {
 		return array(
 			'self'  => $this->self,

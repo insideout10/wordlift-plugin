@@ -228,6 +228,7 @@ class Synchronization implements Serializable, JsonSerializable {
 		$this->__unserialize( unserialize( $data ) );
 	}
 
+	#[\ReturnTypeWillChange]
 	public function jsonSerialize() {
 		return array(
 			'created_at'  => is_a( $this->created_at, 'DateTimeInterface' )

@@ -85,6 +85,7 @@ class Relations implements Relations_Interface, JsonSerializable {
 		return $this->container;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function jsonSerialize() {
 		return $this->container;
 	}

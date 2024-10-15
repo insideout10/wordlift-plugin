@@ -33,6 +33,7 @@ class Stats_Settings implements JsonSerializable {
 		$this->lifted        = $lifted;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function jsonSerialize() {
 		return array(
 			'description'   => $this->description,
