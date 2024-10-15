@@ -96,7 +96,6 @@
       "@composer dump-autoload --working-dir ./includes --no-dev --classmap-authoritative",
       "sed -i'.bak' -e 's/Composer\\\\Autoload/Wordlift_Modules_Common_Composer\\\\Autoload/' includes/vendor/composer/*.php && rm -rf includes/vendor/composer/*.php.bak",
       "mv vendor/composer/autoload_files.php third-party/vendor/composer",
-      "@composer dump-autoload --working-dir ./includes --no-dev --classmap-authoritative",
       "rm -rf vendor"
     ]
   }

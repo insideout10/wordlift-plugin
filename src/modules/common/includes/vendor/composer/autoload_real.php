@@ -8,13 +8,13 @@ class ComposerAutoloaderInit8bd2b6d4ccd6b50e0809e5ba62169420
 
     public static function loadClassLoader($class)
     {
-        if ('Composer\Autoload\ClassLoader' === $class) {
+        if ('Wordlift_Modules_Common_Composer\Autoload\ClassLoader' === $class) {
             require __DIR__ . '/ClassLoader.php';
         }
     }
 
     /**
-     * @return \Composer\Autoload\ClassLoader
+     * @return \Wordlift_Modules_Common_Composer\Autoload\ClassLoader
      */
     public static function getLoader()
     {
@@ -23,11 +23,11 @@ class ComposerAutoloaderInit8bd2b6d4ccd6b50e0809e5ba62169420
         }
 
         spl_autoload_register(array('ComposerAutoloaderInit8bd2b6d4ccd6b50e0809e5ba62169420', 'loadClassLoader'), true, true);
-        self::$loader = $loader = new \Composer\Autoload\ClassLoader(\dirname(__DIR__));
+        self::$loader = $loader = new \Wordlift_Modules_Common_Composer\Autoload\ClassLoader(\dirname(__DIR__));
         spl_autoload_unregister(array('ComposerAutoloaderInit8bd2b6d4ccd6b50e0809e5ba62169420', 'loadClassLoader'));
 
         require __DIR__ . '/autoload_static.php';
-        call_user_func(\Composer\Autoload\ComposerStaticInit8bd2b6d4ccd6b50e0809e5ba62169420::getInitializer($loader));
+        call_user_func(\Wordlift_Modules_Common_Composer\Autoload\ComposerStaticInit8bd2b6d4ccd6b50e0809e5ba62169420::getInitializer($loader));
 
         $loader->setClassMapAuthoritative(true);
         $loader->register(true);
