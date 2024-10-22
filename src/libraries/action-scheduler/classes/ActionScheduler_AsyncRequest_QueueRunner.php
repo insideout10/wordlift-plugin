@@ -1,4 +1,7 @@
 <?php
+/**
+ * ActionScheduler_AsyncRequest_QueueRunner
+ */
 
 defined( 'ABSPATH' ) || exit;
 
@@ -32,9 +35,7 @@ class ActionScheduler_AsyncRequest_QueueRunner extends WP_Async_Request {
 	protected $action = 'async_request_queue_runner';
 
 	/**
-	 * Initiate new async request.
-	 *
-	 * @param ActionScheduler_Store $store Store object.
+	 * Initiate new async request
 	 */
 	public function __construct( ActionScheduler_Store $store ) {
 		parent::__construct();
@@ -48,7 +49,7 @@ class ActionScheduler_AsyncRequest_QueueRunner extends WP_Async_Request {
 	 * if there are still pending actions after completing a queue in this request.
 	 */
 	protected function handle() {
-		do_action( 'action_scheduler_run_queue', 'Async Request' ); // run a queue in the same way as WP Cron, but declare the Async Request context.
+		do_action( 'action_scheduler_run_queue', 'Async Request' ); // run a queue in the same way as WP Cron, but declare the Async Request context
 
 		$sleep_seconds = $this->get_sleep_seconds();
 

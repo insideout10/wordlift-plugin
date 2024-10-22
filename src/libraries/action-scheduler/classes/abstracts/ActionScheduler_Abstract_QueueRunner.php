@@ -27,9 +27,9 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	/**
 	 * ActionScheduler_Abstract_QueueRunner constructor.
 	 *
-	 * @param ActionScheduler_Store             $store Store object.
-	 * @param ActionScheduler_FatalErrorMonitor $monitor Monitor object.
-	 * @param ActionScheduler_QueueCleaner      $cleaner Cleaner object.
+	 * @param ActionScheduler_Store             $store
+	 * @param ActionScheduler_FatalErrorMonitor $monitor
+	 * @param ActionScheduler_QueueCleaner      $cleaner
 	 */
 	public function __construct( ActionScheduler_Store $store = null, ActionScheduler_FatalErrorMonitor $monitor = null, ActionScheduler_QueueCleaner $cleaner = null ) {
 
@@ -43,62 +43,35 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	/**
 	 * Process an individual action.
 	 *
-	 * @param int    $action_id The action ID to process.
-	 * @param string $context Optional identifier for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
-	 *                        Generally, this should be capitalised and not localised as it's a proper noun.
-	 * @throws \Exception When error running action.
+	 * @param int $action_id The action ID to process.
+	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
+	 *        Generally, this should be capitalised and not localised as it's a proper noun.
 	 */
 	public function process_action( $action_id, $context = '' ) {
-		// Temporarily override the error handler while we process the current action.
-		set_error_handler(
-			/**
-			 * Temporary error handler which can catch errors and convert them into exceptions. This facilitates more
-			 * robust error handling across all supported PHP versions.
-			 *
-			 * @throws Exception
-			 *
-			 * @param int    $type    Error level expressed as an integer.
-			 * @param string $message Error message.
-			 */
-			function ( $type, $message ) {
-				throw new Exception( $message );
-			},
-			E_USER_ERROR | E_RECOVERABLE_ERROR
-		);
-
-		/*
-		 * The nested try/catch structure is required because we potentially need to convert thrown errors into
-		 * exceptions (and an exception thrown from a catch block cannot be caught by a later catch block in the *same*
-		 * structure).
-		 */
 		try {
-			try {
-				$valid_action = false;
-				do_action( 'action_scheduler_before_execute', $action_id, $context );
+			$valid_action = false;
+			do_action( 'action_scheduler_before_execute', $action_id, $context );
 
-				if ( ActionScheduler_Store::STATUS_PENDING !== $this->store->get_status( $action_id ) ) {
-					do_action( 'action_scheduler_execution_ignored', $action_id, $context );
-					return;
-				}
-
-				$valid_action = true;
-				do_action( 'action_scheduler_begin_execute', $action_id, $context );
-
-				$action = $this->store->fetch_action( $action_id );
-				$this->store->log_execution( $action_id );
-				$action->execute();
-				do_action( 'action_scheduler_after_execute', $action_id, $action, $context );
-				$this->store->mark_complete( $action_id );
-			} catch ( Throwable $e ) {
-				// Throwable is defined when executing under PHP 7.0 and up. We convert it to an exception, for
-				// compatibility with ActionScheduler_Logger.
-				throw new Exception( $e->getMessage(), $e->getCode(), $e );
+			if ( ActionScheduler_Store::STATUS_PENDING !== $this->store->get_status( $action_id ) ) {
+				do_action( 'action_scheduler_execution_ignored', $action_id, $context );
+				return;
 			}
+
+			$valid_action = true;
+			do_action( 'action_scheduler_begin_execute', $action_id, $context );
+
+			$action = $this->store->fetch_action( $action_id );
+			$this->store->log_execution( $action_id );
+			$action->execute();
+			do_action( 'action_scheduler_after_execute', $action_id, $action, $context );
+			$this->store->mark_complete( $action_id );
 		} catch ( Exception $e ) {
-			// This catch block exists for compatibility with PHP 5.6.
-			$this->handle_action_error( $action_id, $e, $context, $valid_action );
-		} finally {
-			restore_error_handler();
+			if ( $valid_action ) {
+				$this->store->mark_failure( $action_id );
+				do_action( 'action_scheduler_failed_execution', $action_id, $e, $context );
+			} else {
+				do_action( 'action_scheduler_failed_validation', $action_id, $e, $context );
+			}
 		}
 
 		if ( isset( $action ) && is_a( $action, 'ActionScheduler_Action' ) && $action->get_schedule()->is_recurring() ) {
@@ -107,43 +80,10 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	}
 
 	/**
-	 * Marks actions as either having failed execution or failed validation, as appropriate.
-	 *
-	 * @param int       $action_id    Action ID.
-	 * @param Exception $e            Exception instance.
-	 * @param string    $context      Execution context.
-	 * @param bool      $valid_action If the action is valid.
-	 *
-	 * @return void
-	 */
-	private function handle_action_error( $action_id, $e, $context, $valid_action ) {
-		if ( $valid_action ) {
-			$this->store->mark_failure( $action_id );
-			/**
-			 * Runs when action execution fails.
-			 *
-			 * @param int       $action_id Action ID.
-			 * @param Exception $e         Exception instance.
-			 * @param string    $context   Execution context.
-			 */
-			do_action( 'action_scheduler_failed_execution', $action_id, $e, $context );
-		} else {
-			/**
-			 * Runs when action validation fails.
-			 *
-			 * @param int       $action_id Action ID.
-			 * @param Exception $e         Exception instance.
-			 * @param string    $context   Execution context.
-			 */
-			do_action( 'action_scheduler_failed_validation', $action_id, $e, $context );
-		}
-	}
-
-	/**
 	 * Schedule the next instance of the action if necessary.
 	 *
-	 * @param ActionScheduler_Action $action Action.
-	 * @param int                    $action_id Action ID.
+	 * @param ActionScheduler_Action $action
+	 * @param int $action_id
 	 */
 	protected function schedule_next_instance( ActionScheduler_Action $action, $action_id ) {
 		// If a recurring action has been consistently failing, we may wish to stop rescheduling it.
@@ -203,22 +143,12 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 			return false;
 		}
 
-		// Now let's fetch the first action (having the same hook) of *any status* within the same window.
+		// Now let's fetch the first action (having the same hook) of *any status*ithin the same window.
 		unset( $query_args['status'] );
 		$first_action_id_with_the_same_hook = $this->store->query_actions( $query_args );
 
-		/**
-		 * If a recurring action is assessed as consistently failing, it will not be rescheduled. This hook provides a
-		 * way to observe and optionally override that assessment.
-		 *
-		 * @param bool                   $is_consistently_failing If the action is considered to be consistently failing.
-		 * @param ActionScheduler_Action $action                  The action being assessed.
-		 */
-		return (bool) apply_filters(
-			'action_scheduler_recurring_action_is_consistently_failing',
-			$first_action_id_with_the_same_hook === $first_failing_action_id,
-			$action
-		);
+		// If the IDs match, then actions for this hook must be consistently failing.
+		return $first_action_id_with_the_same_hook === $first_failing_action_id;
 	}
 
 	/**
@@ -257,7 +187,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 
 		$time_limit = 30;
 
-		// Apply deprecated filter from deprecated get_maximum_execution_time() method.
+		// Apply deprecated filter from deprecated get_maximum_execution_time() method
 		if ( has_filter( 'action_scheduler_maximum_execution_time' ) ) {
 			_deprecated_function( 'action_scheduler_maximum_execution_time', '2.1.1', 'action_scheduler_queue_runner_time_limit' );
 			$time_limit = apply_filters( 'action_scheduler_maximum_execution_time', $time_limit );
@@ -289,7 +219,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	/**
 	 * Check if the host's max execution time is (likely) to be exceeded if processing more actions.
 	 *
-	 * @param int $processed_actions The number of actions processed so far - used to determine the likelihood of exceeding the time limit if processing another action.
+	 * @param int $processed_actions The number of actions processed so far - used to determine the likelihood of exceeding the time limit if processing another action
 	 * @return bool
 	 */
 	protected function time_likely_to_be_exceeded( $processed_actions ) {
@@ -319,7 +249,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 		if ( function_exists( 'ini_get' ) ) {
 			$memory_limit = ini_get( 'memory_limit' );
 		} else {
-			$memory_limit = '128M'; // Sensible default, and minimum required by WooCommerce.
+			$memory_limit = '128M'; // Sensible default, and minimum required by WooCommerce
 		}
 
 		if ( ! $memory_limit || -1 === $memory_limit || '-1' === $memory_limit ) {
@@ -354,7 +284,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	 *
 	 * Based on WC_Background_Process::batch_limits_exceeded()
 	 *
-	 * @param int $processed_actions The number of actions processed so far - used to determine the likelihood of exceeding the time limit if processing another action.
+	 * @param int $processed_actions The number of actions processed so far - used to determine the likelihood of exceeding the time limit if processing another action
 	 * @return bool
 	 */
 	protected function batch_limits_exceeded( $processed_actions ) {
@@ -365,7 +295,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	 * Process actions in the queue.
 	 *
 	 * @author Jeremy Pry
-	 * @param string $context Optional identifier for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
+	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
 	 *        Generally, this should be capitalised and not localised as it's a proper noun.
 	 * @return int The number of actions processed.
 	 */

@@ -5,7 +5,7 @@
  */
 interface ActionScheduler_Schedule {
 	/**
-	 * @param null|DateTime $after Timestamp.
+	 * @param DateTime $after
 	 * @return DateTime|null
 	 */
 	public function next( DateTime $after = NULL );
@@ -15,3 +15,4 @@ interface ActionScheduler_Schedule {
 	 */
 	public function is_recurring();
 }
+ 

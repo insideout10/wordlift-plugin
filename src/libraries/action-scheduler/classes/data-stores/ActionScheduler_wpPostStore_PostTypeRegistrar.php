@@ -5,9 +5,6 @@
  * @codeCoverageIgnore
  */
 class ActionScheduler_wpPostStore_PostTypeRegistrar {
-	/**
-	 * Registrar.
-	 */
 	public function register() {
 		register_post_type( ActionScheduler_wpPostStore::POST_TYPE, $this->post_type_args() );
 	}
@@ -20,7 +17,7 @@ class ActionScheduler_wpPostStore_PostTypeRegistrar {
 	protected function post_type_args() {
 		$args = array(
 			'label' => __( 'Scheduled Actions', 'action-scheduler' ),
-			'description' => __( 'Scheduled actions are hooks triggered on a certain date and time.', 'action-scheduler' ),
+			'description' => __( 'Scheduled actions are hooks triggered on a cetain date and time.', 'action-scheduler' ),
 			'public' => false,
 			'map_meta_cap' => true,
 			'hierarchical' => false,
@@ -50,3 +47,4 @@ class ActionScheduler_wpPostStore_PostTypeRegistrar {
 		return $args;
 	}
 }
+ 

@@ -46,7 +46,6 @@ class Config {
 	 * Get the configured source store.
 	 *
 	 * @return ActionScheduler_Store
-	 * @throws \RuntimeException When source store is not configured.
 	 */
 	public function get_source_store() {
 		if ( empty( $this->source_store ) ) {
@@ -66,10 +65,9 @@ class Config {
 	}
 
 	/**
-	 * Get the configured source logger.
+	 * Get the configured source loger.
 	 *
 	 * @return ActionScheduler_Logger
-	 * @throws \RuntimeException When source logger is not configured.
 	 */
 	public function get_source_logger() {
 		if ( empty( $this->source_logger ) ) {
@@ -82,7 +80,7 @@ class Config {
 	/**
 	 * Set the configured source logger.
 	 *
-	 * @param ActionScheduler_Logger $logger Logger object.
+	 * @param ActionScheduler_Logger $logger
 	 */
 	public function set_source_logger( Logger $logger ) {
 		$this->source_logger = $logger;
@@ -92,7 +90,6 @@ class Config {
 	 * Get the configured destination store.
 	 *
 	 * @return ActionScheduler_Store
-	 * @throws \RuntimeException When destination store is not configured.
 	 */
 	public function get_destination_store() {
 		if ( empty( $this->destination_store ) ) {
@@ -105,7 +102,7 @@ class Config {
 	/**
 	 * Set the configured destination store.
 	 *
-	 * @param ActionScheduler_Store $store Action store object.
+	 * @param ActionScheduler_Store $store
 	 */
 	public function set_destination_store( Store $store ) {
 		$this->destination_store = $store;
@@ -115,7 +112,6 @@ class Config {
 	 * Get the configured destination logger.
 	 *
 	 * @return ActionScheduler_Logger
-	 * @throws \RuntimeException When destination logger is not configured.
 	 */
 	public function get_destination_logger() {
 		if ( empty( $this->destination_logger ) ) {
@@ -128,7 +124,7 @@ class Config {
 	/**
 	 * Set the configured destination logger.
 	 *
-	 * @param ActionScheduler_Logger $logger Logger object.
+	 * @param ActionScheduler_Logger $logger
 	 */
 	public function set_destination_logger( Logger $logger ) {
 		$this->destination_logger = $logger;
@@ -146,7 +142,7 @@ class Config {
 	/**
 	 * Set flag indicating whether it's a dry run.
 	 *
-	 * @param bool $dry_run Dry run toggle.
+	 * @param bool $dry_run
 	 */
 	public function set_dry_run( $dry_run ) {
 		$this->dry_run = (bool) $dry_run;
@@ -164,7 +160,7 @@ class Config {
 	/**
 	 * Set progress bar object.
 	 *
-	 * @param ActionScheduler\WPCLI\ProgressBar $progress_bar Progress bar object.
+	 * @param ActionScheduler\WPCLI\ProgressBar $progress_bar
 	 */
 	public function set_progress_bar( ProgressBar $progress_bar ) {
 		$this->progress_bar = $progress_bar;

@@ -32,10 +32,9 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	/**
 	 * ActionScheduler_QueueRunner constructor.
 	 *
-	 * @param ActionScheduler_Store                    $store Store object.
-	 * @param ActionScheduler_FatalErrorMonitor        $monitor Monitor object.
-	 * @param ActionScheduler_QueueCleaner             $cleaner Cleaner object.
-	 * @param ActionScheduler_AsyncRequest_QueueRunner $async_request Async request runner object.
+	 * @param ActionScheduler_Store             $store
+	 * @param ActionScheduler_FatalErrorMonitor $monitor
+	 * @param ActionScheduler_QueueCleaner      $cleaner
 	 */
 	public function __construct( ActionScheduler_Store $store = null, ActionScheduler_FatalErrorMonitor $monitor = null, ActionScheduler_QueueCleaner $cleaner = null, ActionScheduler_AsyncRequest_QueueRunner $async_request = null ) {
 		parent::__construct( $store, $monitor, $cleaner );
@@ -54,7 +53,7 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 
 		add_filter( 'cron_schedules', array( self::instance(), 'add_wp_cron_schedule' ) );
 
-		// Check for and remove any WP Cron hook scheduled by Action Scheduler < 3.0.0, which didn't include the $context param.
+		// Check for and remove any WP Cron hook scheduled by Action Scheduler < 3.0.0, which didn't include the $context param
 		$next_timestamp = wp_next_scheduled( self::WP_CRON_HOOK );
 		if ( $next_timestamp ) {
 			wp_unschedule_event( $next_timestamp, self::WP_CRON_HOOK );
@@ -104,12 +103,9 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * should dispatch a request to process pending actions.
 	 */
 	public function maybe_dispatch_async_request() {
-		// Only start an async queue at most once every 60 seconds.
-		if (
-			is_admin()
-			&& ! ActionScheduler::lock()->is_locked( 'async-request-runner' )
-			&& ActionScheduler::lock()->set( 'async-request-runner' )
-		) {
+		if ( is_admin() && ! ActionScheduler::lock()->is_locked( 'async-request-runner' ) ) {
+			// Only start an async queue at most once every 60 seconds
+			ActionScheduler::lock()->set( 'async-request-runner' );
 			$this->async_request->maybe_dispatch();
 		}
 	}
@@ -123,7 +119,7 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * should set a context as the first parameter. For an example of this, refer to the code seen in
 	 * @see ActionScheduler_AsyncRequest_QueueRunner::handle()
 	 *
-	 * @param string $context Optional identifier for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
+	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
 	 *        Generally, this should be capitalised and not localised as it's a proper noun.
 	 * @return int The number of actions processed.
 	 */
@@ -135,11 +131,11 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 
 		$this->processed_actions_count = 0;
 		if ( false === $this->has_maximum_concurrent_batches() ) {
+			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 25 );
 			do {
-				$batch_size                     = apply_filters( 'action_scheduler_queue_runner_batch_size', 25 );
 				$processed_actions_in_batch     = $this->do_batch( $batch_size, $context );
 				$this->processed_actions_count += $processed_actions_in_batch;
-			} while ( $processed_actions_in_batch > 0 && ! $this->batch_limits_exceeded( $this->processed_actions_count ) ); // keep going until we run out of actions, time, or memory.
+			} while ( $processed_actions_in_batch > 0 && ! $this->batch_limits_exceeded( $this->processed_actions_count ) ); // keep going until we run out of actions, time, or memory
 		}
 
 		do_action( 'action_scheduler_after_process_queue' );
@@ -152,9 +148,9 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * Actions are processed by claiming a set of pending actions then processing each one until either the batch
 	 * size is completed, or memory or time limits are reached, defined by @see $this->batch_limits_exceeded().
 	 *
-	 * @param int    $size The maximum number of actions to process in the batch.
-	 * @param string $context Optional identifier for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
-	 *                        Generally, this should be capitalised and not localised as it's a proper noun.
+	 * @param int $size The maximum number of actions to process in the batch.
+	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
+	 *        Generally, this should be capitalised and not localised as it's a proper noun.
 	 * @return int The number of actions processed.
 	 */
 	protected function do_batch( $size = 100, $context = '' ) {
@@ -163,7 +159,7 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		$processed_actions = 0;
 
 		foreach ( $claim->get_actions() as $action_id ) {
-			// bail if we lost the claim.
+			// bail if we lost the claim
 			if ( ! in_array( $action_id, $this->store->find_actions_by_claim_id( $claim->get_id() ) ) ) {
 				break;
 			}
@@ -189,15 +185,9 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	protected function clear_caches() {
 		/*
 		 * Calling wp_cache_flush_runtime() lets us clear the runtime cache without invalidating the external object
-		 * cache, so we will always prefer this method (as compared to calling wp_cache_flush()) when it is available.
-		 *
-		 * However, this function was only introduced in WordPress 6.0. Additionally, the preferred way of detecting if
-		 * it is supported changed in WordPress 6.1 so we use two different methods to decide if we should utilize it.
+		 * cache, so we will always prefer this when it is available (but it was only introduced in WordPress 6.0).
 		 */
-		$flushing_runtime_cache_explicitly_supported = function_exists( 'wp_cache_supports' ) && wp_cache_supports( 'flush_runtime' );
-		$flushing_runtime_cache_implicitly_supported = ! function_exists( 'wp_cache_supports' ) && function_exists( 'wp_cache_flush_runtime' );
-
-		if ( $flushing_runtime_cache_explicitly_supported || $flushing_runtime_cache_implicitly_supported ) {
+		if ( function_exists( 'wp_cache_flush_runtime' ) ) {
 			wp_cache_flush_runtime();
 		} elseif (
 			! wp_using_ext_object_cache()
@@ -219,15 +209,9 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		}
 	}
 
-	/**
-	 * Add schedule to WP cron.
-	 *
-	 * @param array<string, array<string, int|string>> $schedules Schedules.
-	 * @return array<string, array<string, int|string>>
-	 */
 	public function add_wp_cron_schedule( $schedules ) {
 		$schedules['every_minute'] = array(
-			'interval' => 60, // in seconds.
+			'interval' => 60, // in seconds
 			'display'  => __( 'Every minute', 'action-scheduler' ),
 		);
 
