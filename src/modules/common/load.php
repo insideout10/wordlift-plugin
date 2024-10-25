@@ -6,8 +6,8 @@
 // Autoload package files manually because composer dump-autoload can't generate the autoload_files after scoper add-prefix. More info: https://github.com/humbug/php-scoper/issues/1036.
 if ( file_exists( __DIR__ . '/third-party/vendor/composer/autoload_files.php' ) ) {
 	$files = require __DIR__ . '/third-party/vendor/composer/autoload_files.php';
-	foreach ( $files as $file_identifier => $file ) {
-		if (file_exists( $file )) {
+	foreach ( $files as $file ) {
+		if ( file_exists( $file ) ) {
 			require_once $file;
 		}
 	}

@@ -460,8 +460,8 @@ class Wordlift_Entity_Type_Service {
 	 * @since 3.32.0
 	 */
 	public function get_custom_fields_for_term( $term_id ) {
-		$selected_entity_types   = get_term_meta( $term_id, 'wl_entity_type' );
-		if ( ! is_array( $selected_entity_types )) {
+		$selected_entity_types = get_term_meta( $term_id, 'wl_entity_type' );
+		if ( ! is_array( $selected_entity_types ) ) {
 			return null;
 		}
 
