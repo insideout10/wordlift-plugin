@@ -126,7 +126,7 @@ class Wordlift_Term_JsonLd_Adapter {
 	private function get_posts( $id ) {
 		global $wp_query;
 
-		if ( $wp_query->posts !== null ) {
+		if ( is_array( $wp_query->posts ) ) {
 			return array_map(
 				function ( $post ) {
 					return $post->ID;
