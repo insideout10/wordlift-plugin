@@ -143,6 +143,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.53.0 (2024-10-29) =
+
+* Fix deprecation warnings
+* Drop PHP <7.4 versions support
+
 = 3.52.9 (2024-08-20) =
 
 * Some plugins appear to hijack the ``$wp_query->posts` so we do more sanity checks to prevent fatal errors 💪
