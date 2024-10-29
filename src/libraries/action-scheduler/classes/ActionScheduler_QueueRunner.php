@@ -14,13 +14,16 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	/** @var ActionScheduler_QueueRunner  */
 	private static $runner = null;
 
+	/** @var int  */
+	private $processed_actions_count = 0;
+
 	/**
 	 * @return ActionScheduler_QueueRunner
 	 * @codeCoverageIgnore
 	 */
 	public static function instance() {
-		if ( empty( self::$runner ) ) {
-			$class        = apply_filters( 'action_scheduler_queue_runner_class', 'ActionScheduler_QueueRunner' );
+		if ( empty(self::$runner) ) {
+			$class = apply_filters('action_scheduler_queue_runner_class', 'ActionScheduler_QueueRunner');
 			self::$runner = new $class();
 		}
 		return self::$runner;
@@ -36,7 +39,7 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	public function __construct( ActionScheduler_Store $store = null, ActionScheduler_FatalErrorMonitor $monitor = null, ActionScheduler_QueueCleaner $cleaner = null, ActionScheduler_AsyncRequest_QueueRunner $async_request = null ) {
 		parent::__construct( $store, $monitor, $cleaner );
 
-		if ( $async_request === null ) {
+		if ( is_null( $async_request ) ) {
 			$async_request = new ActionScheduler_AsyncRequest_QueueRunner( $this->store );
 		}
 
@@ -114,7 +117,6 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * that was the only context in which this method was run, and the self::WP_CRON_HOOK hook had no context
 	 * passed along with it. New code calling this method directly, or by triggering the self::WP_CRON_HOOK,
 	 * should set a context as the first parameter. For an example of this, refer to the code seen in
-	 *
 	 * @see ActionScheduler_AsyncRequest_QueueRunner::handle()
 	 *
 	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
@@ -126,17 +128,18 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		ActionScheduler_Compatibility::raise_time_limit( $this->get_time_limit() );
 		do_action( 'action_scheduler_before_process_queue' );
 		$this->run_cleanup();
-		$processed_actions = 0;
+
+		$this->processed_actions_count = 0;
 		if ( false === $this->has_maximum_concurrent_batches() ) {
 			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 25 );
 			do {
-				$processed_actions_in_batch = $this->do_batch( $batch_size, $context );
-				$processed_actions         += $processed_actions_in_batch;
-			} while ( $processed_actions_in_batch > 0 && ! $this->batch_limits_exceeded( $processed_actions ) ); // keep going until we run out of actions, time, or memory
+				$processed_actions_in_batch     = $this->do_batch( $batch_size, $context );
+				$this->processed_actions_count += $processed_actions_in_batch;
+			} while ( $processed_actions_in_batch > 0 && ! $this->batch_limits_exceeded( $this->processed_actions_count ) ); // keep going until we run out of actions, time, or memory
 		}
 
 		do_action( 'action_scheduler_after_process_queue' );
-		return $processed_actions;
+		return $this->processed_actions_count;
 	}
 
 	/**
@@ -145,14 +148,14 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * Actions are processed by claiming a set of pending actions then processing each one until either the batch
 	 * size is completed, or memory or time limits are reached, defined by @see $this->batch_limits_exceeded().
 	 *
-	 * @param int    $size The maximum number of actions to process in the batch.
+	 * @param int $size The maximum number of actions to process in the batch.
 	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
 	 *        Generally, this should be capitalised and not localised as it's a proper noun.
 	 * @return int The number of actions processed.
 	 */
 	protected function do_batch( $size = 100, $context = '' ) {
-		$claim = $this->store->stake_claim( $size );
-		$this->monitor->attach( $claim );
+		$claim = $this->store->stake_claim($size);
+		$this->monitor->attach($claim);
 		$processed_actions = 0;
 
 		foreach ( $claim->get_actions() as $action_id ) {
@@ -163,11 +166,11 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 			$this->process_action( $action_id, $context );
 			$processed_actions++;
 
-			if ( $this->batch_limits_exceeded( $processed_actions ) ) {
+			if ( $this->batch_limits_exceeded( $processed_actions + $this->processed_actions_count ) ) {
 				break;
 			}
 		}
-		$this->store->release_claim( $claim );
+		$this->store->release_claim($claim);
 		$this->monitor->detach();
 		$this->clear_caches();
 		return $processed_actions;

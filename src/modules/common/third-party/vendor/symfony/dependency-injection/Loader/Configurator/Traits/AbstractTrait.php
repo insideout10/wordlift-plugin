@@ -10,20 +10,15 @@
  */
 namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\Configurator\Traits;
 
-/**
- * @method $this abstract(bool $abstract = true)
- */
 trait AbstractTrait
 {
     /**
      * Whether this definition is abstract, that means it merely serves as a
      * template for other definitions.
      *
-     * @param bool $abstract
-     *
      * @return $this
      */
-    protected final function setAbstract($abstract = \true)
+    final public function abstract(bool $abstract = \true): self
     {
         $this->definition->setAbstract($abstract);
         return $this;

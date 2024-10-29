@@ -16,6 +16,7 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Container;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Exception\BadMethodCallException;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Exception\LogicException;
 /**
  * Provides useful features shared by many extensions.
  *
@@ -54,17 +55,17 @@ abstract class Extension implements ExtensionInterface, ConfigurationExtensionIn
      *
      * This can be overridden in a sub-class to specify the alias manually.
      *
-     * @return string The alias
+     * @return string
      *
      * @throws BadMethodCallException When the extension name does not follow conventions
      */
     public function getAlias()
     {
         $className = static::class;
-        if ('Extension' != \substr($className, -9)) {
+        if (!str_ends_with($className, 'Extension')) {
             throw new BadMethodCallException('This extension does not follow the naming convention; you must overwrite the getAlias() method.');
         }
-        $classBaseName = \substr(\strrchr($className, '\\'), 1, -9);
+        $classBaseName = substr(strrchr($className, '\\'), 1, -9);
         return Container::underscore($classBaseName);
     }
     /**
@@ -73,19 +74,24 @@ abstract class Extension implements ExtensionInterface, ConfigurationExtensionIn
     public function getConfiguration(array $config, ContainerBuilder $container)
     {
         $class = static::class;
-        if (\false !== \strpos($class, "\x00")) {
+        if (str_contains($class, "\x00")) {
             return null;
             // ignore anonymous classes
         }
-        $class = \substr_replace($class, '\\Configuration', \strrpos($class, '\\'));
+        $class = substr_replace($class, '\Configuration', strrpos($class, '\\'));
         $class = $container->getReflectionClass($class);
-        $constructor = $class ? $class->getConstructor() : null;
-        return $class && (!$constructor || !$constructor->getNumberOfRequiredParameters()) ? $class->newInstance() : null;
+        if (!$class) {
+            return null;
+        }
+        if (!$class->implementsInterface(ConfigurationInterface::class)) {
+            throw new LogicException(sprintf('The extension configuration class "%s" must implement "%s".', $class->getName(), ConfigurationInterface::class));
+        }
+        if (!($constructor = $class->getConstructor()) || !$constructor->getNumberOfRequiredParameters()) {
+            return $class->newInstance();
+        }
+        return null;
     }
-    /**
-     * @return array
-     */
-    protected final function processConfiguration(ConfigurationInterface $configuration, array $configs)
+    final protected function processConfiguration(ConfigurationInterface $configuration, array $configs): array
     {
         $processor = new Processor();
         return $this->processedConfigs[] = $processor->processConfiguration($configuration, $configs);
@@ -93,7 +99,7 @@ abstract class Extension implements ExtensionInterface, ConfigurationExtensionIn
     /**
      * @internal
      */
-    public final function getProcessedConfigs()
+    final public function getProcessedConfigs(): array
     {
         try {
             return $this->processedConfigs;
@@ -102,7 +108,7 @@ abstract class Extension implements ExtensionInterface, ConfigurationExtensionIn
         }
     }
     /**
-     * @return bool Whether the configuration is enabled
+     * @return bool
      *
      * @throws InvalidArgumentException When the config is not enableable
      */

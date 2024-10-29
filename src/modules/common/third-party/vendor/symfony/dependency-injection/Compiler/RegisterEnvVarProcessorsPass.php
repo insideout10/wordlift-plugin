@@ -10,14 +10,12 @@
  */
 namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Compiler;
 
-use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\EnvVarProcessor;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\EnvVarProcessorInterface;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ParameterBag\EnvPlaceholderParameterBag;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Reference;
-use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ServiceLocator;
 /**
  * Creates the container.env_var_processors_locator service.
  *
@@ -25,20 +23,20 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ServiceLocator
  */
 class RegisterEnvVarProcessorsPass implements CompilerPassInterface
 {
-    private static $allowedTypes = ['array', 'bool', 'float', 'int', 'string'];
+    private const ALLOWED_TYPES = ['array', 'bool', 'float', 'int', 'string'];
     public function process(ContainerBuilder $container)
     {
         $bag = $container->getParameterBag();
         $types = [];
         $processors = [];
         foreach ($container->findTaggedServiceIds('container.env_var_processor') as $id => $tags) {
-            if (!($r = $container->getReflectionClass($class = $container->getDefinition($id)->getClass()))) {
-                throw new InvalidArgumentException(\sprintf('Class "%s" used for service "%s" cannot be found.', $class, $id));
+            if (!$r = $container->getReflectionClass($class = $container->getDefinition($id)->getClass())) {
+                throw new InvalidArgumentException(sprintf('Class "%s" used for service "%s" cannot be found.', $class, $id));
             } elseif (!$r->isSubclassOf(EnvVarProcessorInterface::class)) {
-                throw new InvalidArgumentException(\sprintf('Service "%s" must implement interface "%s".', $id, EnvVarProcessorInterface::class));
+                throw new InvalidArgumentException(sprintf('Service "%s" must implement interface "%s".', $id, EnvVarProcessorInterface::class));
             }
             foreach ($class::getProvidedTypes() as $prefix => $type) {
-                $processors[$prefix] = new ServiceClosureArgument(new Reference($id));
+                $processors[$prefix] = new Reference($id);
                 $types[$prefix] = self::validateProvidedTypes($type, $class);
             }
         }
@@ -51,15 +49,15 @@ class RegisterEnvVarProcessorsPass implements CompilerPassInterface
             $bag->setProvidedTypes($types);
         }
         if ($processors) {
-            $container->register('container.env_var_processors_locator', ServiceLocator::class)->setPublic(\true)->setArguments([$processors]);
+            $container->setAlias('container.env_var_processors_locator', (string) ServiceLocatorTagPass::register($container, $processors))->setPublic(\true);
         }
     }
-    private static function validateProvidedTypes($types, $class)
+    private static function validateProvidedTypes(string $types, string $class): array
     {
-        $types = \explode('|', $types);
+        $types = explode('|', $types);
         foreach ($types as $type) {
-            if (!\in_array($type, self::$allowedTypes)) {
-                throw new InvalidArgumentException(\sprintf('Invalid type "%s" returned by "%s::getProvidedTypes()", expected one of "%s".', $type, $class, \implode('", "', self::$allowedTypes)));
+            if (!\in_array($type, self::ALLOWED_TYPES)) {
+                throw new InvalidArgumentException(sprintf('Invalid type "%s" returned by "%s::getProvidedTypes()", expected one of "%s".', $type, $class, implode('", "', self::ALLOWED_TYPES)));
             }
         }
         return $types;

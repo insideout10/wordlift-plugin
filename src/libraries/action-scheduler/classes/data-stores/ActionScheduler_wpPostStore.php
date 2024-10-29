@@ -364,7 +364,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			$sql         .= ' AND p.post_title=%s';
 			$sql_params[] = $query['hook'];
 		}
-		if ( $query['args'] !== null ) {
+		if ( ! is_null( $query['args'] ) ) {
 			$sql         .= ' AND p.post_content=%s';
 			$sql_params[] = wp_json_encode( $query['args'] );
 		}
@@ -398,7 +398,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			$sql .= " AND p.post_password != ''";
 		} elseif ( false === $query['claimed'] ) {
 			$sql .= " AND p.post_password = ''";
-		} elseif ( $query['claimed'] !== null ) {
+		} elseif ( ! is_null( $query['claimed'] ) ) {
 			$sql         .= ' AND p.post_password = %s';
 			$sql_params[] = $query['claimed'];
 		}

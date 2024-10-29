@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * Class ActionScheduler_Abstract_Schema
  *
@@ -24,7 +25,7 @@ abstract class ActionScheduler_Abstract_Schema {
 	/**
 	 * @var array Names of tables that will be registered by this class.
 	 */
-	protected $tables = array();
+	protected $tables = [];
 
 	/**
 	 * Can optionally be used by concrete classes to carry out additional initialization work
@@ -89,10 +90,10 @@ abstract class ActionScheduler_Abstract_Schema {
 			$plugin_option_name = 'schema-';
 
 			switch ( static::class ) {
-				case 'ActionScheduler_StoreSchema':
+				case 'ActionScheduler_StoreSchema' :
 					$plugin_option_name .= 'Action_Scheduler\Custom_Tables\DB_Store_Table_Maker';
 					break;
-				case 'ActionScheduler_LoggerSchema':
+				case 'ActionScheduler_LoggerSchema' :
 					$plugin_option_name .= 'Action_Scheduler\Custom_Tables\DB_Logger_Table_Maker';
 					break;
 			}
@@ -128,7 +129,7 @@ abstract class ActionScheduler_Abstract_Schema {
 	 * @return void
 	 */
 	private function update_table( $table ) {
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		$definition = $this->get_table_definition( $table );
 		if ( $definition ) {
 			$updated = dbDelta( $definition );
@@ -147,7 +148,7 @@ abstract class ActionScheduler_Abstract_Schema {
 	 *                table prefix for the current blog
 	 */
 	protected function get_full_table_name( $table ) {
-		return $GLOBALS['wpdb']->prefix . $table;
+		return $GLOBALS[ 'wpdb' ]->prefix . $table;
 	}
 
 	/**

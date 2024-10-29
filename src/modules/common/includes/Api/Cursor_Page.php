@@ -195,6 +195,7 @@ class Cursor_Page implements \Serializable, \JsonSerializable {
 		$this->__unserialize( unserialize( $data ) );
 	}
 
+	#[\ReturnTypeWillChange]
 	public function jsonSerialize() {
 		return array(
 			'self'  => $this->get_self(),

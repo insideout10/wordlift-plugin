@@ -67,7 +67,7 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 	 */
 	public function start() {
 		$action = $this->get_action_key();
-		$this->log->debug( "Trying to start  ${action}..." );
+		$this->log->debug( sprintf( 'Trying to start  %s...', $action ) );
 		// Create a new Sync_Model state of `started`.
 		if ( ! $this->is_started( self::get_state() ) ) {
 			$this->log->debug( 'Starting...' );
@@ -96,7 +96,7 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 	public function cancel() {
 
 		$action = $this->action;
-		$this->log->debug( "Cancelling ${action}..." );
+		$this->log->debug( sprintf( 'Cancelling %s...', $action ) );
 
 		// Cleanup the process data.
 		$this->cancel_process();

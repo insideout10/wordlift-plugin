@@ -104,8 +104,8 @@ class Entity_Type {
 	public function init_ui_and_save_handlers() {
 		$taxonomies = Terms_Compat::get_public_taxonomies();
 		foreach ( $taxonomies as $taxonomy ) {
-			add_action( "${taxonomy}_edit_form_fields", array( $this, 'render_ui' ), 1 );
-			add_action( "edited_${taxonomy}", array( $this, 'save_field' ) );
+			add_action( "{$taxonomy}_edit_form_fields", array( $this, 'render_ui' ), 1 );
+			add_action( "edited_{$taxonomy}", array( $this, 'save_field' ) );
 		}
 	}
 

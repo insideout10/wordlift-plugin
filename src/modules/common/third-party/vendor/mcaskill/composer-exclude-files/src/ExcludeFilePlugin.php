@@ -106,7 +106,7 @@ class ExcludeFilePlugin implements PluginInterface, EventSubscriberInterface
      */
     private function filterAutoloads(array $packageMap, PackageInterface $mainPackage, array $excludedFiles)
     {
-        $excludedFiles = \array_flip($excludedFiles);
+        $excludedFiles = array_flip($excludedFiles);
         $type = self::INCLUDE_FILES_PROPERTY;
         foreach ($packageMap as $item) {
             list($package, $installPath) = $item;
@@ -116,19 +116,19 @@ class ExcludeFilePlugin implements PluginInterface, EventSubscriberInterface
             }
             $autoload = $package->getAutoload();
             // Skip misconfigured packages
-            if (!isset($autoload[$type]) || !\is_array($autoload[$type])) {
+            if (!isset($autoload[$type]) || !is_array($autoload[$type])) {
                 continue;
             }
             if (null !== $package->getTargetDir()) {
-                $installPath = \substr($installPath, 0, -\strlen('/' . $package->getTargetDir()));
+                $installPath = substr($installPath, 0, -strlen('/' . $package->getTargetDir()));
             }
             foreach ($autoload[$type] as $key => $path) {
-                if ($package->getTargetDir() && !\is_readable($installPath . '/' . $path)) {
+                if ($package->getTargetDir() && !is_readable($installPath . '/' . $path)) {
                     // add target-dir from file paths that don't have it
                     $path = $package->getTargetDir() . '/' . $path;
                 }
                 $resolvedPath = $installPath . '/' . $path;
-                $resolvedPath = \strtr($resolvedPath, '\\', '/');
+                $resolvedPath = strtr($resolvedPath, '\\', '/');
                 if (isset($excludedFiles[$resolvedPath])) {
                     unset($autoload[$type][$key]);
                 }
@@ -146,7 +146,7 @@ class ExcludeFilePlugin implements PluginInterface, EventSubscriberInterface
     {
         $type = self::EXCLUDE_FILES_PROPERTY;
         $extra = $package->getExtra();
-        if (isset($extra[$type]) && \is_array($extra[$type])) {
+        if (isset($extra[$type]) && is_array($extra[$type])) {
             return $extra[$type];
         }
         return array();
@@ -164,9 +164,9 @@ class ExcludeFilePlugin implements PluginInterface, EventSubscriberInterface
         }
         $filesystem = new Filesystem();
         $config = $this->composer->getConfig();
-        $vendorPath = $filesystem->normalizePath(\realpath(\realpath($config->get('vendor-dir'))));
+        $vendorPath = $filesystem->normalizePath(realpath(realpath($config->get('vendor-dir'))));
         foreach ($paths as &$path) {
-            $path = \preg_replace('{/+}', '/', \trim(\strtr($path, '\\', '/'), '/'));
+            $path = preg_replace('{/+}', '/', trim(strtr($path, '\\', '/'), '/'));
             $path = $vendorPath . '/' . $path;
         }
         return $paths;

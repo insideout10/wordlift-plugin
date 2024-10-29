@@ -68,7 +68,7 @@ class ActionScheduler_AdminView_Deprecated {
 	 * Print the content for our custom columns.
 	 *
 	 * @param string $column_name The key for the column for which we should output our content.
-	 * @param int    $post_id The ID of the 'scheduled-action' post for which this row relates.
+	 * @param int $post_id The ID of the 'scheduled-action' post for which this row relates.
 	 */
 	public static function list_table_column_content( $column_name, $post_id ) {
 		_deprecated_function( __METHOD__, '2.0.0' );
@@ -115,18 +115,18 @@ class ActionScheduler_AdminView_Deprecated {
 	/**
 	 * Filter search queries to allow searching by Claim ID (i.e. post_password).
 	 *
-	 * @param string   $orderby MySQL orderby string.
+	 * @param string $orderby MySQL orderby string.
 	 * @param WP_Query $query Instance of a WP_Query object
 	 * @return string MySQL orderby string.
 	 */
-	public function custom_orderby( $orderby, $query ) {
+	public function custom_orderby( $orderby, $query ){
 		_deprecated_function( __METHOD__, '2.0.0' );
 	}
 
 	/**
 	 * Filter search queries to allow searching by Claim ID (i.e. post_password).
 	 *
-	 * @param string   $search MySQL search string.
+	 * @param string $search MySQL search string.
 	 * @param WP_Query $query Instance of a WP_Query object
 	 * @return string MySQL search string.
 	 */

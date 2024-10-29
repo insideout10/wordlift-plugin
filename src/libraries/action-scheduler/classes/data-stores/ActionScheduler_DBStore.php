@@ -139,7 +139,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		$placeholder_sql = implode( ', ', $placeholders );
 		$where_clause    = $this->build_where_clause_for_insert( $data, $table_name, $unique );
 		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $column_sql and $where_clause are already prepared. $placeholder_sql is hardcoded.
-		$insert_query = $wpdb->prepare(
+		$insert_query    = $wpdb->prepare(
 			"
 INSERT INTO $table_name ( $column_sql )
 SELECT $placeholder_sql FROM DUAL
@@ -310,7 +310,7 @@ AND `group_id` = %d
 			'last_attempt_gmt',
 		);
 		foreach ( $date_fields as $date_field ) {
-			if ( $data->$date_field === null ) {
+			if ( is_null( $data->$date_field ) ) {
 				$data->$date_field = ActionScheduler_StoreSchema::DEFAULT_DATE;
 			}
 		}
@@ -375,25 +375,22 @@ AND `group_id` = %d
 			throw new InvalidArgumentException( __( 'Invalid value for select or count parameter. Cannot query actions.', 'action-scheduler' ) );
 		}
 
-		$query = wp_parse_args(
-			$query,
-			array(
-				'hook'                  => '',
-				'args'                  => null,
-				'partial_args_matching' => 'off', // can be 'like' or 'json'
-				'date'                  => null,
-				'date_compare'          => '<=',
-				'modified'              => null,
-				'modified_compare'      => '<=',
-				'group'                 => '',
-				'status'                => '',
-				'claimed'               => null,
-				'per_page'              => 5,
-				'offset'                => 0,
-				'orderby'               => 'date',
-				'order'                 => 'ASC',
-			)
-		);
+		$query = wp_parse_args( $query, array(
+			'hook'                  => '',
+			'args'                  => null,
+			'partial_args_matching' => 'off', // can be 'like' or 'json'
+			'date'                  => null,
+			'date_compare'          => '<=',
+			'modified'              => null,
+			'modified_compare'      => '<=',
+			'group'                 => '',
+			'status'                => '',
+			'claimed'               => null,
+			'per_page'              => 5,
+			'offset'                => 0,
+			'orderby'               => 'date',
+			'order'                 => 'ASC',
+		 ) );
 
 		/** @var \wpdb $wpdb */
 		global $wpdb;
@@ -410,26 +407,26 @@ AND `group_id` = %d
 		}
 
 		$sql        = ( 'count' === $select_or_count ) ? 'SELECT count(a.action_id)' : 'SELECT a.action_id';
-		$sql       .= " FROM {$wpdb->actionscheduler_actions} a";
+		$sql        .= " FROM {$wpdb->actionscheduler_actions} a";
 		$sql_params = array();
 
 		if ( ! empty( $query['group'] ) || 'group' === $query['orderby'] ) {
 			$sql .= " LEFT JOIN {$wpdb->actionscheduler_groups} g ON g.group_id=a.group_id";
 		}
 
-		$sql .= ' WHERE 1=1';
+		$sql .= " WHERE 1=1";
 
 		if ( ! empty( $query['group'] ) ) {
-			$sql         .= ' AND g.slug=%s';
+			$sql          .= " AND g.slug=%s";
 			$sql_params[] = $query['group'];
 		}
 
 		if ( ! empty( $query['hook'] ) ) {
-			$sql         .= ' AND a.hook=%s';
+			$sql          .= " AND a.hook=%s";
 			$sql_params[] = $query['hook'];
 		}
 
-		if ( $query['args'] !== null ) {
+		if ( ! is_null( $query['args'] ) ) {
 			switch ( $query['partial_args_matching'] ) {
 				case 'json':
 					if ( ! $supports_json ) {
@@ -448,28 +445,26 @@ AND `group_id` = %d
 						}
 						$placeholder = isset( $supported_types[ $value_type ] ) ? $supported_types[ $value_type ] : false;
 						if ( ! $placeholder ) {
-							throw new \RuntimeException(
-								sprintf(
+							throw new \RuntimeException( sprintf(
 								/* translators: %s: provided value type */
-									__( 'The value type for the JSON partial matching is not supported. Must be either integer, boolean, double or string. %s type provided.', 'action-scheduler' ),
-									$value_type
-								)
-							);
+								__( 'The value type for the JSON partial matching is not supported. Must be either integer, boolean, double or string. %s type provided.', 'action-scheduler' ),
+								$value_type
+							) );
 						}
-						$sql         .= ' AND JSON_EXTRACT(a.args, %s)=' . $placeholder;
-						$sql_params[] = '$.' . $key;
+						$sql          .= ' AND JSON_EXTRACT(a.args, %s)='.$placeholder;
+						$sql_params[] = '$.'.$key;
 						$sql_params[] = $value;
 					}
 					break;
 				case 'like':
 					foreach ( $query['args'] as $key => $value ) {
-						$sql         .= ' AND a.args LIKE %s';
+						$sql          .= ' AND a.args LIKE %s';
 						$json_partial = $wpdb->esc_like( trim( json_encode( array( $key => $value ) ), '{}' ) );
 						$sql_params[] = "%{$json_partial}%";
 					}
 					break;
 				case 'off':
-					$sql         .= ' AND a.args=%s';
+					$sql          .= " AND a.args=%s";
 					$sql_params[] = $this->get_args_for_query( $query['args'] );
 					break;
 				default:
@@ -506,7 +501,7 @@ AND `group_id` = %d
 			$sql .= ' AND a.claim_id != 0';
 		} elseif ( false === $query['claimed'] ) {
 			$sql .= ' AND a.claim_id = 0';
-		} elseif ( $query['claimed'] !== null ) {
+		} elseif ( ! is_null( $query['claimed'] ) ) {
 			$sql         .= ' AND a.claim_id = %d';
 			$sql_params[] = $query['claimed'];
 		}
@@ -819,7 +814,7 @@ AND `group_id` = %d
 		global $wpdb;
 
 		$now  = as_get_datetime_object();
-		$date = $before_date === null ? $now : clone $before_date;
+		$date = is_null( $before_date ) ? $now : clone $before_date;
 
 		// can't use $wpdb->update() because of the <= condition.
 		$update = "UPDATE {$wpdb->actionscheduler_actions} SET claim_id=%d, last_attempt_gmt=%s, last_attempt_local=%s";
@@ -835,7 +830,7 @@ AND `group_id` = %d
 
 		if ( ! empty( $hooks ) ) {
 			$placeholders = array_fill( 0, count( $hooks ), '%s' );
-			$where       .= ' AND hook IN (' . join( ', ', $placeholders ) . ')';
+			$where        .= ' AND hook IN (' . join( ', ', $placeholders ) . ')';
 			$params       = array_merge( $params, array_values( $hooks ) );
 		}
 
@@ -849,7 +844,7 @@ AND `group_id` = %d
 				throw new InvalidArgumentException( sprintf( __( 'The group "%s" does not exist.', 'action-scheduler' ), $group ) );
 			}
 
-			$where   .= ' AND group_id = %d';
+			$where    .= ' AND group_id = %d';
 			$params[] = $group_id;
 		}
 
@@ -940,8 +935,31 @@ AND `group_id` = %d
 	public function release_claim( ActionScheduler_ActionClaim $claim ) {
 		/** @var \wpdb $wpdb */
 		global $wpdb;
-		$wpdb->update( $wpdb->actionscheduler_actions, array( 'claim_id' => 0 ), array( 'claim_id' => $claim->get_id() ), array( '%d' ), array( '%d' ) );
+		/**
+		 * Deadlock warning: This function modifies actions to release them from claims that have been processed. Earlier, we used to it in a atomic query, i.e. we would update all actions belonging to a particular claim_id with claim_id = 0.
+		 * While this was functionally correct, it would cause deadlock, since this update query will hold a lock on the claim_id_.. index on the action table.
+		 * This allowed the possibility of a race condition, where the claimer query is also running at the same time, then the claimer query will also try to acquire a lock on the claim_id_.. index, and in this case if claim release query has already progressed to the point of acquiring the lock, but have not updated yet, it would cause a deadlock.
+		 *
+		 * We resolve this by getting all the actions_id that we want to release claim from in a separate query, and then releasing the claim on each of them. This way, our lock is acquired on the action_id index instead of the claim_id index. Note that the lock on claim_id will still be acquired, but it will only when we actually make the update, rather than when we select the actions.
+		 */
+		$action_ids = $wpdb->get_col( $wpdb->prepare( "SELECT action_id FROM {$wpdb->actionscheduler_actions} WHERE claim_id = %d", $claim->get_id() ) );
+
+		$row_updates = 0;
+		if ( count( $action_ids ) > 0 ) {
+			$action_id_string = implode( ',', array_map( 'absint', $action_ids ) );
+			$row_updates = $wpdb->query( "UPDATE {$wpdb->actionscheduler_actions} SET claim_id = 0 WHERE action_id IN ({$action_id_string})" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
+
 		$wpdb->delete( $wpdb->actionscheduler_claims, array( 'claim_id' => $claim->get_id() ), array( '%d' ) );
+
+		if ( $row_updates < count( $action_ids ) ) {
+			throw new RuntimeException(
+				sprintf(
+					__( 'Unable to release actions from claim id %d.', 'woocommerce' ),
+					$claim->get_id()
+				)
+			);
+		}
 	}
 
 	/**

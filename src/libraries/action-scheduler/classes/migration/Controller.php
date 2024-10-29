@@ -2,10 +2,10 @@
 
 namespace Action_Scheduler\Migration;
 
-use Action_Scheduler\WP_CLI\ProgressBar;
 use ActionScheduler_DataController;
 use ActionScheduler_LoggerSchema;
 use ActionScheduler_StoreSchema;
+use Action_Scheduler\WP_CLI\ProgressBar;
 
 /**
  * Class Controller

@@ -18,7 +18,7 @@ namespace Wordlift\Modules\Common\Symfony\Component\Config\Exception;
 class FileLocatorFileNotFoundException extends \InvalidArgumentException
 {
     private $paths;
-    public function __construct($message = '', $code = 0, $previous = null, array $paths = [])
+    public function __construct(string $message = '', int $code = 0, ?\Throwable $previous = null, array $paths = [])
     {
         parent::__construct($message, $code, $previous);
         $this->paths = $paths;

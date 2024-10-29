@@ -15,8 +15,10 @@ use Wordlift\Modules\Common\Symfony\Component\Config\Resource\ResourceInterface;
  * Tracks container parameters.
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
+ *
+ * @final
  */
-class ContainerParametersResource implements ResourceInterface, \Serializable
+class ContainerParametersResource implements ResourceInterface
 {
     private $parameters;
     /**
@@ -26,31 +28,11 @@ class ContainerParametersResource implements ResourceInterface, \Serializable
     {
         $this->parameters = $parameters;
     }
-    /**
-     * {@inheritdoc}
-     */
-    public function __toString()
+    public function __toString(): string
     {
-        return 'container_parameters_' . \md5(\serialize($this->parameters));
+        return 'container_parameters_' . md5(serialize($this->parameters));
     }
-    /**
-     * @internal
-     */
-    public function serialize()
-    {
-        return \serialize($this->parameters);
-    }
-    /**
-     * @internal
-     */
-    public function unserialize($serialized)
-    {
-        $this->parameters = \unserialize($serialized);
-    }
-    /**
-     * @return array Tracked parameters
-     */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }

@@ -16,7 +16,7 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Definition;
  */
 class ResolveEnvPlaceholdersPass extends AbstractRecursivePass
 {
-    protected function processValue($value, $isRoot = \false)
+    protected function processValue($value, bool $isRoot = \false)
     {
         if (\is_string($value)) {
             return $this->container->resolveEnvPlaceholders($value, \true);
@@ -32,7 +32,7 @@ class ResolveEnvPlaceholdersPass extends AbstractRecursivePass
         }
         $value = parent::processValue($value, $isRoot);
         if ($value && \is_array($value) && !$isRoot) {
-            $value = \array_combine($this->container->resolveEnvPlaceholders(\array_keys($value), \true), $value);
+            $value = array_combine($this->container->resolveEnvPlaceholders(array_keys($value), \true), $value);
         }
         return $value;
     }

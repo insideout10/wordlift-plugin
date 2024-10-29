@@ -14,8 +14,10 @@ namespace Wordlift\Modules\Common\Symfony\Component\Config\Resource;
  * DirectoryResource represents a resources stored in a subdirectory tree.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @final
  */
-class DirectoryResource implements SelfCheckingResourceInterface, \Serializable
+class DirectoryResource implements SelfCheckingResourceInterface
 {
     private $resource;
     private $pattern;
@@ -25,56 +27,45 @@ class DirectoryResource implements SelfCheckingResourceInterface, \Serializable
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct($resource, $pattern = null)
+    public function __construct(string $resource, ?string $pattern = null)
     {
-        $this->resource = \realpath($resource) ?: (\file_exists($resource) ? $resource : \false);
+        $this->resource = realpath($resource) ?: (file_exists($resource) ? $resource : \false);
         $this->pattern = $pattern;
-        if (\false === $this->resource || !\is_dir($this->resource)) {
-            throw new \InvalidArgumentException(\sprintf('The directory "%s" does not exist.', $resource));
+        if (\false === $this->resource || !is_dir($this->resource)) {
+            throw new \InvalidArgumentException(sprintf('The directory "%s" does not exist.', $resource));
         }
     }
-    /**
-     * {@inheritdoc}
-     */
-    public function __toString()
+    public function __toString(): string
     {
-        return \md5(\serialize([$this->resource, $this->pattern]));
+        return md5(serialize([$this->resource, $this->pattern]));
     }
-    /**
-     * @return string The file path to the resource
-     */
-    public function getResource()
+    public function getResource(): string
     {
         return $this->resource;
     }
-    /**
-     * Returns the pattern to restrict monitored files.
-     *
-     * @return string|null
-     */
-    public function getPattern()
+    public function getPattern(): ?string
     {
         return $this->pattern;
     }
     /**
      * {@inheritdoc}
      */
-    public function isFresh($timestamp)
+    public function isFresh(int $timestamp): bool
     {
-        if (!\is_dir($this->resource)) {
+        if (!is_dir($this->resource)) {
             return \false;
         }
-        if ($timestamp < \filemtime($this->resource)) {
+        if ($timestamp < filemtime($this->resource)) {
             return \false;
         }
         foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->resource), \RecursiveIteratorIterator::SELF_FIRST) as $file) {
             // if regex filtering is enabled only check matching files
-            if ($this->pattern && $file->isFile() && !\preg_match($this->pattern, $file->getBasename())) {
+            if ($this->pattern && $file->isFile() && !preg_match($this->pattern, $file->getBasename())) {
                 continue;
             }
             // always monitor directories for changes, except the .. entries
             // (otherwise deleted files wouldn't get detected)
-            if ($file->isDir() && '/..' === \substr($file, -3)) {
+            if ($file->isDir() && str_ends_with($file, '/..')) {
                 continue;
             }
             // for broken links
@@ -89,19 +80,5 @@ class DirectoryResource implements SelfCheckingResourceInterface, \Serializable
             }
         }
         return \true;
-    }
-    /**
-     * @internal
-     */
-    public function serialize()
-    {
-        return \serialize([$this->resource, $this->pattern]);
-    }
-    /**
-     * @internal
-     */
-    public function unserialize($serialized)
-    {
-        list($this->resource, $this->pattern) = \unserialize($serialized);
     }
 }

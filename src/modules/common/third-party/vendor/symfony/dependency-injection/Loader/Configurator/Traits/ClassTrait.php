@@ -10,19 +10,14 @@
  */
 namespace Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\Configurator\Traits;
 
-/**
- * @method $this class(string $class)
- */
 trait ClassTrait
 {
     /**
      * Sets the service class.
      *
-     * @param string $class The service class
-     *
      * @return $this
      */
-    protected final function setClass($class)
+    final public function class(?string $class): self
     {
         $this->definition->setClass($class);
         return $this;

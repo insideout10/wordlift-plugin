@@ -147,6 +147,7 @@ class Relation implements Hashable_Interface, JsonSerializable {
 		);
 	}
 
+	#[\ReturnTypeWillChange]
 	public function jsonSerialize() {
 		return array(
 			'subject'   => $this->get_subject(),

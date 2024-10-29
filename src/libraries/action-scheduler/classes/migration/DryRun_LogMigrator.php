@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Action_Scheduler\Migration;
 
 /**

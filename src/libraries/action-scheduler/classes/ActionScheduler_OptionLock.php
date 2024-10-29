@@ -5,7 +5,6 @@
  * for up-to a given duration.
  *
  * Class ActionScheduler_OptionLock
- *
  * @since 3.0.0
  */
 class ActionScheduler_OptionLock extends ActionScheduler_Lock {

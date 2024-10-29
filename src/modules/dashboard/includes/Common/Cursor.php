@@ -126,6 +126,7 @@ class Cursor implements \Serializable, \JsonSerializable {
 		$this->set_direction( $data['direction'] );
 	}
 
+	#[\ReturnTypeWillChange]
 	public function jsonSerialize() {
 		return array(
 			'position'  => $this->position,

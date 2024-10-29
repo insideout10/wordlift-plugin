@@ -143,7 +143,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 *
 	 * @author Jeremy Pry
 	 *
-	 * @param int                         $action_id
+	 * @param int $action_id
 	 * @param null|ActionScheduler_Action $action The instance of the action. Default to null for backward compatibility.
 	 */
 	public function after_execute( $action_id, $action = null ) {

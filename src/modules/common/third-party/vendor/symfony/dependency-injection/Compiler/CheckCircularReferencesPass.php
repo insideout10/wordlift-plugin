@@ -53,7 +53,7 @@ class CheckCircularReferencesPass implements CompilerPassInterface
             if (empty($this->checkedNodes[$id])) {
                 // Don't check circular references for lazy edges
                 if (!$node->getValue() || !$edge->isLazy() && !$edge->isWeak()) {
-                    $searchKey = \array_search($id, $this->currentPath);
+                    $searchKey = array_search($id, $this->currentPath);
                     $this->currentPath[] = $id;
                     if (\false !== $searchKey) {
                         throw new ServiceCircularReferenceException($id, \array_slice($this->currentPath, $searchKey));
@@ -61,7 +61,7 @@ class CheckCircularReferencesPass implements CompilerPassInterface
                     $this->checkOutEdges($node->getOutEdges());
                 }
                 $this->checkedNodes[$id] = \true;
-                \array_pop($this->currentPath);
+                array_pop($this->currentPath);
             }
         }
     }

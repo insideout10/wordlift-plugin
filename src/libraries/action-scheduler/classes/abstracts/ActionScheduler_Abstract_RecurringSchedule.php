@@ -15,14 +15,14 @@ abstract class ActionScheduler_Abstract_RecurringSchedule extends ActionSchedule
 	 *
 	 * @var DateTime
 	 */
-	private $first_date = null;
+	private $first_date = NULL;
 
 	/**
 	 * Timestamp equivalent of @see $this->first_date
 	 *
 	 * @var int
 	 */
-	protected $first_timestamp = null;
+	protected $first_timestamp = NULL;
 
 	/**
 	 * The recurrance between each time an action is run using this schedule.
@@ -35,8 +35,8 @@ abstract class ActionScheduler_Abstract_RecurringSchedule extends ActionSchedule
 	protected $recurrence;
 
 	/**
-	 * @param DateTime      $date The date & time to run the action.
-	 * @param mixed         $recurrence The data used to determine the schedule's recurrance.
+	 * @param DateTime $date The date & time to run the action.
+	 * @param mixed $recurrence The data used to determine the schedule's recurrance.
 	 * @param DateTime|null $first (Optional) The date & time the first instance of this interval schedule ran. Default null, meaning this is the first instance.
 	 */
 	public function __construct( DateTime $date, $recurrence, DateTime $first = null ) {
@@ -70,19 +70,15 @@ abstract class ActionScheduler_Abstract_RecurringSchedule extends ActionSchedule
 
 	/**
 	 * For PHP 5.2 compat, since DateTime objects can't be serialized
-	 *
 	 * @return array
 	 */
 	public function __sleep() {
-		$sleep_params          = parent::__sleep();
+		$sleep_params = parent::__sleep();
 		$this->first_timestamp = $this->first_date->getTimestamp();
-		return array_merge(
-			$sleep_params,
-			array(
-				'first_timestamp',
-				'recurrence',
-			)
-		);
+		return array_merge( $sleep_params, array(
+			'first_timestamp',
+			'recurrence'
+		) );
 	}
 
 	/**

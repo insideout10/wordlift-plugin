@@ -97,6 +97,7 @@ class Match_Entry implements Serializable, JsonSerializable {
 		return $data['name'];
 	}
 
+	#[\ReturnTypeWillChange]
 	public function jsonSerialize() {
 		return array(
 			'id'           => $this->id,

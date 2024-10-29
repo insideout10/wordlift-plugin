@@ -8,12 +8,12 @@ class ActionScheduler_LogEntry {
 	/**
 	 * @var int $action_id
 	 */
-	protected $action_id = '';
+	protected $action_id =  '';
 
 	/**
 	 * @var string $message
 	 */
-	protected $message = '';
+	protected $message =  '';
 
 	/**
 	 * @var Datetime $date
@@ -23,8 +23,8 @@ class ActionScheduler_LogEntry {
 	/**
 	 * Constructor
 	 *
-	 * @param mixed    $action_id Action ID
-	 * @param string   $message   Message
+	 * @param mixed  $action_id Action ID
+	 * @param string $message   Message
 	 * @param Datetime $date    Datetime object with the time when this log entry was created. If this parameter is
 	 *                          not provided a new Datetime object (with current time) will be created.
 	 */
@@ -44,7 +44,7 @@ class ActionScheduler_LogEntry {
 
 		$this->action_id = $action_id;
 		$this->message   = $message;
-		$this->date      = $date ? $date : new Datetime();
+		$this->date      = $date ? $date : new Datetime;
 	}
 
 	/**

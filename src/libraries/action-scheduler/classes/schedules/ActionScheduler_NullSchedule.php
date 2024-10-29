@@ -5,6 +5,9 @@
  */
 class ActionScheduler_NullSchedule extends ActionScheduler_SimpleSchedule {
 
+	/** @var DateTime|null */
+	protected $scheduled_date;
+
 	/**
 	 * Make the $date param optional and default to null.
 	 *
@@ -16,7 +19,6 @@ class ActionScheduler_NullSchedule extends ActionScheduler_SimpleSchedule {
 
 	/**
 	 * This schedule has no scheduled DateTime, so we need to override the parent __sleep()
-	 *
 	 * @return array
 	 */
 	public function __sleep() {

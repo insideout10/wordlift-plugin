@@ -20,11 +20,11 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Exception\Inva
  */
 class PassConfig
 {
-    const TYPE_AFTER_REMOVING = 'afterRemoving';
-    const TYPE_BEFORE_OPTIMIZATION = 'beforeOptimization';
-    const TYPE_BEFORE_REMOVING = 'beforeRemoving';
-    const TYPE_OPTIMIZE = 'optimization';
-    const TYPE_REMOVE = 'removing';
+    public const TYPE_AFTER_REMOVING = 'afterRemoving';
+    public const TYPE_BEFORE_OPTIMIZATION = 'beforeOptimization';
+    public const TYPE_BEFORE_REMOVING = 'beforeRemoving';
+    public const TYPE_OPTIMIZE = 'optimization';
+    public const TYPE_REMOVE = 'removing';
     private $mergePass;
     private $afterRemovingPasses = [];
     private $beforeOptimizationPasses = [];
@@ -34,10 +34,10 @@ class PassConfig
     public function __construct()
     {
         $this->mergePass = new MergeExtensionConfigurationPass();
-        $this->beforeOptimizationPasses = [100 => [$resolveClassPass = new ResolveClassPass(), new ResolveInstanceofConditionalsPass(), new RegisterEnvVarProcessorsPass()], -1000 => [new ExtensionCompilerPass()]];
-        $this->optimizationPasses = [[new ResolveChildDefinitionsPass(), new ServiceLocatorTagPass(), new RegisterServiceSubscribersPass(), new DecoratorServicePass(), new ResolveParameterPlaceHoldersPass(\false, \false), new ResolveFactoryClassPass(), new FactoryReturnTypePass($resolveClassPass), new CheckDefinitionValidityPass(), new ResolveNamedArgumentsPass(), new AutowireRequiredMethodsPass(), new ResolveBindingsPass(), new AutowirePass(\false), new ResolveTaggedIteratorArgumentPass(), new ResolveServiceSubscribersPass(), new ResolveReferencesToAliasesPass(), new ResolveInvalidReferencesPass(), new AnalyzeServiceReferencesPass(\true), new CheckCircularReferencesPass(), new CheckReferenceValidityPass(), new CheckArgumentsValidityPass(\false)]];
-        $this->beforeRemovingPasses = [-100 => [new ResolvePrivatesPass()]];
-        $this->removingPasses = [[new RemovePrivateAliasesPass(), new ReplaceAliasByActualDefinitionPass(), new RemoveAbstractDefinitionsPass(), new RepeatedPass([new AnalyzeServiceReferencesPass(), new InlineServiceDefinitionsPass(), new AnalyzeServiceReferencesPass(), new RemoveUnusedDefinitionsPass()]), new DefinitionErrorExceptionPass(), new CheckExceptionOnInvalidReferenceBehaviorPass(), new ResolveHotPathPass()]];
+        $this->beforeOptimizationPasses = [100 => [new ResolveClassPass(), new RegisterAutoconfigureAttributesPass(), new AttributeAutoconfigurationPass(), new ResolveInstanceofConditionalsPass(), new RegisterEnvVarProcessorsPass()], -1000 => [new ExtensionCompilerPass()]];
+        $this->optimizationPasses = [[$autoAliasServicePass = new AutoAliasServicePass(), new ValidateEnvPlaceholdersPass(), new ResolveDecoratorStackPass(), new ResolveChildDefinitionsPass(), new RegisterServiceSubscribersPass(), new ResolveParameterPlaceHoldersPass(\false, \false), new ResolveFactoryClassPass(), new ResolveNamedArgumentsPass(), new AutowireRequiredMethodsPass(), new AutowireRequiredPropertiesPass(), new ResolveBindingsPass(), new ServiceLocatorTagPass(), new DecoratorServicePass(), new CheckDefinitionValidityPass(), new AutowirePass(\false), new ServiceLocatorTagPass(), new ResolveTaggedIteratorArgumentPass(), new ResolveServiceSubscribersPass(), new ResolveReferencesToAliasesPass(), new ResolveInvalidReferencesPass(), new AnalyzeServiceReferencesPass(\true), new CheckCircularReferencesPass(), new CheckReferenceValidityPass(), new CheckArgumentsValidityPass(\false)]];
+        $this->removingPasses = [[new RemovePrivateAliasesPass(), (new ReplaceAliasByActualDefinitionPass())->setAutoAliasServicePass($autoAliasServicePass), new RemoveAbstractDefinitionsPass(), new RemoveUnusedDefinitionsPass(), new AnalyzeServiceReferencesPass(), new CheckExceptionOnInvalidReferenceBehaviorPass(), new InlineServiceDefinitionsPass(new AnalyzeServiceReferencesPass()), new AnalyzeServiceReferencesPass(), new DefinitionErrorExceptionPass()]];
+        $this->afterRemovingPasses = [[new ResolveHotPathPass(), new ResolveNoPreloadPass(), new AliasDeprecatedPublicServicesPass()]];
     }
     /**
      * Returns all passes in order to be processed.
@@ -46,32 +46,18 @@ class PassConfig
      */
     public function getPasses()
     {
-        return \array_merge([$this->mergePass], $this->getBeforeOptimizationPasses(), $this->getOptimizationPasses(), $this->getBeforeRemovingPasses(), $this->getRemovingPasses(), $this->getAfterRemovingPasses());
+        return array_merge([$this->mergePass], $this->getBeforeOptimizationPasses(), $this->getOptimizationPasses(), $this->getBeforeRemovingPasses(), $this->getRemovingPasses(), $this->getAfterRemovingPasses());
     }
     /**
      * Adds a pass.
      *
-     * @param CompilerPassInterface $pass A Compiler pass
-     * @param string                $type The pass type
-     *
      * @throws InvalidArgumentException when a pass type doesn't exist
      */
-    public function addPass(CompilerPassInterface $pass, $type = self::TYPE_BEFORE_OPTIMIZATION)
+    public function addPass(CompilerPassInterface $pass, string $type = self::TYPE_BEFORE_OPTIMIZATION, int $priority = 0)
     {
-        if (\func_num_args() >= 3) {
-            $priority = \func_get_arg(2);
-        } else {
-            if (__CLASS__ !== static::class) {
-                $r = new \ReflectionMethod($this, __FUNCTION__);
-                if (__CLASS__ !== $r->getDeclaringClass()->getName()) {
-                    @\trigger_error(\sprintf('Method %s() will have a third `int $priority = 0` argument in version 4.0. Not defining it is deprecated since Symfony 3.2.', __METHOD__), \E_USER_DEPRECATED);
-                }
-            }
-            $priority = 0;
-        }
         $property = $type . 'Passes';
         if (!isset($this->{$property})) {
-            throw new InvalidArgumentException(\sprintf('Invalid type "%s".', $type));
+            throw new InvalidArgumentException(sprintf('Invalid type "%s".', $type));
         }
         $passes =& $this->{$property};
         if (!isset($passes[$priority])) {
@@ -189,13 +175,13 @@ class PassConfig
      *
      * @return CompilerPassInterface[]
      */
-    private function sortPasses(array $passes)
+    private function sortPasses(array $passes): array
     {
         if (0 === \count($passes)) {
             return [];
         }
-        \krsort($passes);
+        krsort($passes);
         // Flatten the array
-        return \call_user_func_array('array_merge', $passes);
+        return array_merge(...$passes);
     }
 }

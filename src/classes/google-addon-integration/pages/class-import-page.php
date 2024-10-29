@@ -23,7 +23,7 @@ class Import_Page extends Wordlift_Admin_Page {
 	}
 
 	protected function get_parent_slug() {
-		return null;
+		return 'wl_google_addon_import';
 	}
 
 	public function render() {

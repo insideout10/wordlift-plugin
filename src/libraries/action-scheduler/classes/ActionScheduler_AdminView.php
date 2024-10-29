@@ -2,12 +2,11 @@
 
 /**
  * Class ActionScheduler_AdminView
- *
  * @codeCoverageIgnore
  */
 class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 
-	private static $admin_view = null;
+	private static $admin_view = NULL;
 
 	private static $screen_id = 'tools_page_action-scheduler';
 
@@ -21,7 +20,7 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 	public static function instance() {
 
 		if ( empty( self::$admin_view ) ) {
-			$class            = apply_filters( 'action_scheduler_admin_view_class', 'ActionScheduler_AdminView' );
+			$class = apply_filters('action_scheduler_admin_view_class', 'ActionScheduler_AdminView');
 			self::$admin_view = new $class();
 		}
 
@@ -79,7 +78,7 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 			'action-scheduler',
 			array( $this, 'render_admin_ui' )
 		);
-		add_action( 'load-' . $hook_suffix, array( $this, 'process_admin_ui' ) );
+		add_action( 'load-' . $hook_suffix , array( $this, 'process_admin_ui' ) );
 	}
 
 	/**
@@ -120,20 +119,20 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 	 */
 	public function maybe_check_pastdue_actions() {
 
-		// Filter to prevent checking actions (ex: inappropriate user).
+		# Filter to prevent checking actions (ex: inappropriate user).
 		if ( ! apply_filters( 'action_scheduler_check_pastdue_actions', current_user_can( 'manage_options' ) ) ) {
 			return;
 		}
 
-		// Get last check transient.
+		# Get last check transient.
 		$last_check = get_transient( 'action_scheduler_last_pastdue_actions_check' );
 
-		// If transient exists, we're within interval, so bail.
+		# If transient exists, we're within interval, so bail.
 		if ( ! empty( $last_check ) ) {
 			return;
 		}
 
-		// Perform the check.
+		# Perform the check.
 		$this->check_pastdue_actions();
 	}
 
@@ -144,31 +143,39 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 	 */
 	protected function check_pastdue_actions() {
 
-		// Set thresholds.
-		$threshold_seconds = (int) apply_filters( 'action_scheduler_pastdue_actions_seconds', DAY_IN_SECONDS );
-		$threshhold_min    = (int) apply_filters( 'action_scheduler_pastdue_actions_min', 1 );
+		# Set thresholds.
+		$threshold_seconds = ( int ) apply_filters( 'action_scheduler_pastdue_actions_seconds', DAY_IN_SECONDS );
+		$threshhold_min    = ( int ) apply_filters( 'action_scheduler_pastdue_actions_min', 1 );
+
+		// Set fallback value for past-due actions count.
+		$num_pastdue_actions = 0;
 
 		// Allow third-parties to preempt the default check logic.
 		$check = apply_filters( 'action_scheduler_pastdue_actions_check_pre', null );
 
-		// Scheduled actions query arguments.
+		// If no third-party preempted and there are no past-due actions, return early.
+		if ( ! is_null( $check ) ) {
+			return;
+		}
+
+		# Scheduled actions query arguments.
 		$query_args = array(
 			'date'     => as_get_datetime_object( time() - $threshold_seconds ),
 			'status'   => ActionScheduler_Store::STATUS_PENDING,
 			'per_page' => $threshhold_min,
 		);
 
-		// If no third-party preempted, run default check.
-		if ( $check === null ) {
-			$store               = ActionScheduler_Store::instance();
-			$num_pastdue_actions = (int) $store->query_actions( $query_args, 'count' );
+		# If no third-party preempted, run default check.
+		if ( is_null( $check ) ) {
+			$store = ActionScheduler_Store::instance();
+			$num_pastdue_actions = ( int ) $store->query_actions( $query_args, 'count' );
 
-			// Check if past-due actions count is greater than or equal to threshold.
+			# Check if past-due actions count is greater than or equal to threshold.
 			$check = ( $num_pastdue_actions >= $threshhold_min );
-			$check = (bool) apply_filters( 'action_scheduler_pastdue_actions_check', $check, $num_pastdue_actions, $threshold_seconds, $threshhold_min );
+			$check = ( bool ) apply_filters( 'action_scheduler_pastdue_actions_check', $check, $num_pastdue_actions, $threshold_seconds, $threshhold_min );
 		}
 
-		// If check failed, set transient and abort.
+		# If check failed, set transient and abort.
 		if ( ! boolval( $check ) ) {
 			$interval = apply_filters( 'action_scheduler_pastdue_actions_check_interval', round( $threshold_seconds / 4 ), $threshold_seconds );
 			set_transient( 'action_scheduler_last_pastdue_actions_check', time(), $interval );
@@ -176,16 +183,13 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 			return;
 		}
 
-		$actions_url = add_query_arg(
-			array(
-				'page'   => 'action-scheduler',
-				'status' => 'past-due',
-				'order'  => 'asc',
-			),
-			admin_url( 'tools.php' )
-		);
+		$actions_url = add_query_arg( array(
+			'page'   => 'action-scheduler',
+			'status' => 'past-due',
+			'order'  => 'asc',
+		), admin_url( 'tools.php' ) );
 
-		// Print notice.
+		# Print notice.
 		echo '<div class="notice notice-warning"><p>';
 		printf(
 			_n(
@@ -200,7 +204,7 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 		);
 		echo '</p></div>';
 
-		// Facilitate third-parties to evaluate and print notices.
+		# Facilitate third-parties to evaluate and print notices.
 		do_action( 'action_scheduler_pastdue_actions_extra_notices', $query_args );
 	}
 

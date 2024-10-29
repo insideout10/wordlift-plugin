@@ -2,7 +2,6 @@
 
 /**
  * Class ActionScheduler_wpPostStore_PostStatusRegistrar
- *
  * @codeCoverageIgnore
  */
 class ActionScheduler_wpPostStore_PostStatusRegistrar {

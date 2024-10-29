@@ -27,42 +27,45 @@ class ResolveReferencesToAliasesPass extends AbstractRecursivePass
     {
         parent::process($container);
         foreach ($container->getAliases() as $id => $alias) {
-            $aliasId = $container->normalizeId($alias);
-            if ($aliasId !== ($defId = $this->getDefinitionId($aliasId, $container))) {
-                $container->setAlias($id, $defId)->setPublic($alias->isPublic())->setPrivate($alias->isPrivate());
+            $aliasId = (string) $alias;
+            $this->currentId = $id;
+            if ($aliasId !== $defId = $this->getDefinitionId($aliasId, $container)) {
+                $container->setAlias($id, $defId)->setPublic($alias->isPublic());
             }
         }
     }
     /**
      * {@inheritdoc}
      */
-    protected function processValue($value, $isRoot = \false)
+    protected function processValue($value, bool $isRoot = \false)
     {
-        if ($value instanceof Reference) {
-            $defId = $this->getDefinitionId($id = $this->container->normalizeId($value), $this->container);
-            if ($defId !== $id) {
-                return new Reference($defId, $value->getInvalidBehavior());
+        if (!$value instanceof Reference) {
+            return parent::processValue($value, $isRoot);
+        }
+        $defId = $this->getDefinitionId($id = (string) $value, $this->container);
+        return ($defId !== $id) ? new Reference($defId, $value->getInvalidBehavior()) : $value;
+    }
+    private function getDefinitionId(string $id, ContainerBuilder $container): string
+    {
+        if (!$container->hasAlias($id)) {
+            return $id;
+        }
+        $alias = $container->getAlias($id);
+        if ($alias->isDeprecated()) {
+            $referencingDefinition = $container->hasDefinition($this->currentId) ? $container->getDefinition($this->currentId) : $container->getAlias($this->currentId);
+            if (!$referencingDefinition->isDeprecated()) {
+                $deprecation = $alias->getDeprecation($id);
+                trigger_deprecation($deprecation['package'], $deprecation['version'], rtrim($deprecation['message'], '. ') . '. It is being referenced by the "%s" ' . ($container->hasDefinition($this->currentId) ? 'service.' : 'alias.'), $this->currentId);
             }
         }
-        return parent::processValue($value);
-    }
-    /**
-     * Resolves an alias into a definition id.
-     *
-     * @param string $id The definition or alias id to resolve
-     *
-     * @return string The definition id with aliases resolved
-     */
-    private function getDefinitionId($id, ContainerBuilder $container)
-    {
         $seen = [];
-        while ($container->hasAlias($id)) {
+        do {
             if (isset($seen[$id])) {
-                throw new ServiceCircularReferenceException($id, \array_merge(\array_keys($seen), [$id]));
+                throw new ServiceCircularReferenceException($id, array_merge(array_keys($seen), [$id]));
             }
             $seen[$id] = \true;
-            $id = $container->normalizeId($container->getAlias($id));
-        }
+            $id = (string) $container->getAlias($id);
+        } while ($container->hasAlias($id));
         return $id;
     }
 }

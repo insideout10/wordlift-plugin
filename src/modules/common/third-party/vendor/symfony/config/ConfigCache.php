@@ -28,9 +28,9 @@ class ConfigCache extends ResourceCheckerConfigCache
      * @param string $file  The absolute cache path
      * @param bool   $debug Whether debugging is enabled or not
      */
-    public function __construct($file, $debug)
+    public function __construct(string $file, bool $debug)
     {
-        $this->debug = (bool) $debug;
+        $this->debug = $debug;
         $checkers = [];
         if (\true === $this->debug) {
             $checkers = [new SelfCheckingResourceChecker()];
@@ -43,11 +43,11 @@ class ConfigCache extends ResourceCheckerConfigCache
      * This implementation always returns true when debug is off and the
      * cache file exists.
      *
-     * @return bool true if the cache is fresh, false otherwise
+     * @return bool
      */
     public function isFresh()
     {
-        if (!$this->debug && \is_file($this->getPath())) {
+        if (!$this->debug && is_file($this->getPath())) {
             return \true;
         }
         return parent::isFresh();

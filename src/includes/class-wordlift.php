@@ -1698,7 +1698,9 @@ class Wordlift {
 		 * @since 3.23.0
 		 */
 		add_filter(
-			'allowed_block_types',
+			version_compare( get_bloginfo( 'version' ), '5.8', '>=' )
+				? 'allowed_block_types_all'
+				: 'allowed_block_types',
 			function ( $value ) {
 
 				if ( true === $value ) {

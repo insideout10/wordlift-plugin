@@ -16,6 +16,8 @@
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
  * Version:           3.54.0-0
+ * Requires PHP:      7.4
+ * Requires at least: 5.3
  * Author:            WordLift
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -298,7 +300,13 @@ function wl_enqueue_leaflet( $in_footer = false ) {
 	wp_enqueue_script( 'wl-leaflet', plugin_dir_url( __FILE__ ) . 'js/leaflet/leaflet.js', array(), '1.6.0', $in_footer );
 }
 
-add_filter( 'block_categories', 'wl_block_categories', 10 );
+add_filter(
+	version_compare( get_bloginfo( 'version' ), '5.8', '>=' )
+		? 'block_categories_all'
+		: 'block_categories',
+	'wl_block_categories',
+	10
+);
 
 // Temporary fix for a typo in WooCommerce Extension.
 add_filter(

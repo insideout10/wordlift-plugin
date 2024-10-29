@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Action_Scheduler\Migration;
 
 /**
@@ -50,7 +51,7 @@ class ActionMigrator {
 			$status = '';
 		}
 
-		if ( $action === null || empty( $status ) || ! $action->get_schedule()->get_date() ) {
+		if ( is_null( $action ) || empty( $status ) || ! $action->get_schedule()->get_date() ) {
 			// null action or empty status means the fetch operation failed or the action didn't exist
 			// null schedule means it's missing vital data
 			// delete it and move on
@@ -78,10 +79,10 @@ class ActionMigrator {
 
 		try {
 			switch ( $status ) {
-				case \ActionScheduler_Store::STATUS_FAILED:
+				case \ActionScheduler_Store::STATUS_FAILED :
 					$this->destination->mark_failure( $destination_action_id );
 					break;
-				case \ActionScheduler_Store::STATUS_CANCELED:
+				case \ActionScheduler_Store::STATUS_CANCELED :
 					$this->destination->cancel_action( $destination_action_id );
 					break;
 			}

@@ -2,31 +2,30 @@
 
 /**
  * Class ActionScheduler_Logger
- *
  * @codeCoverageIgnore
  */
 abstract class ActionScheduler_Logger {
-	private static $logger = null;
+	private static $logger = NULL;
 
 	/**
 	 * @return ActionScheduler_Logger
 	 */
 	public static function instance() {
-		if ( empty( self::$logger ) ) {
-			$class        = apply_filters( 'action_scheduler_logger_class', 'ActionScheduler_wpCommentLogger' );
+		if ( empty(self::$logger) ) {
+			$class = apply_filters('action_scheduler_logger_class', 'ActionScheduler_wpCommentLogger');
 			self::$logger = new $class();
 		}
 		return self::$logger;
 	}
 
 	/**
-	 * @param string   $action_id
-	 * @param string   $message
+	 * @param string $action_id
+	 * @param string $message
 	 * @param DateTime $date
 	 *
 	 * @return string The log entry ID
 	 */
-	abstract public function log( $action_id, $message, DateTime $date = null );
+	abstract public function log( $action_id, $message, DateTime $date = NULL );
 
 	/**
 	 * @param string $entry_id
@@ -41,6 +40,7 @@ abstract class ActionScheduler_Logger {
 	 * @return ActionScheduler_LogEntry[]
 	 */
 	abstract public function get_logs( $action_id );
+
 
 	/**
 	 * @codeCoverageIgnore
@@ -86,7 +86,7 @@ abstract class ActionScheduler_Logger {
 		$this->log( $action_id, $message );
 	}
 
-	public function log_completed_action( $action_id, $action = null, $context = '' ) {
+	public function log_completed_action( $action_id, $action = NULL, $context = '' ) {
 		if ( ! empty( $context ) ) {
 			/* translators: %s: context */
 			$message = sprintf( __( 'action complete via %s', 'action-scheduler' ), $context );
@@ -134,14 +134,14 @@ abstract class ActionScheduler_Logger {
 	}
 
 	/**
-	 * @param string         $action_id
+	 * @param string $action_id
 	 * @param Exception|NULL $exception The exception which occured when fetching the action. NULL by default for backward compatibility.
 	 *
 	 * @return ActionScheduler_LogEntry[]
 	 */
-	public function log_failed_fetch_action( $action_id, Exception $exception = null ) {
+	public function log_failed_fetch_action( $action_id, Exception $exception = NULL ) {
 
-		if ( $exception !== null ) {
+		if ( ! is_null( $exception ) ) {
 			/* translators: %s: exception message */
 			$log_message = sprintf( __( 'There was a failure fetching this action: %s', 'action-scheduler' ), $exception->getMessage() );
 		} else {

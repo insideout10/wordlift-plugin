@@ -76,7 +76,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 	 * @return null return null to avoid this page to be displayed in WordLift's menu.
 	 */
 	protected function get_parent_slug() {
-		return null;
+		return 'wl_edit_mappings';
 	}
 
 	/**

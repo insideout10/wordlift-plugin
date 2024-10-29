@@ -72,7 +72,7 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 			return new ActionScheduler_NullLogEntry();
 		}
 
-		if ( $record->log_date_gmt === null ) {
+		if ( is_null( $record->log_date_gmt ) ) {
 			$date = as_get_datetime_object( ActionScheduler_StoreSchema::DEFAULT_DATE );
 		} else {
 			$date = as_get_datetime_object( $record->log_date_gmt );

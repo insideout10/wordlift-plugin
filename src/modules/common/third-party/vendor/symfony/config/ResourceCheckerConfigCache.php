@@ -26,14 +26,14 @@ class ResourceCheckerConfigCache implements ConfigCacheInterface
      */
     private $file;
     /**
-     * @var iterable|ResourceCheckerInterface[]
+     * @var iterable<mixed, ResourceCheckerInterface>
      */
     private $resourceCheckers;
     /**
-     * @param string                              $file             The absolute cache path
-     * @param iterable|ResourceCheckerInterface[] $resourceCheckers The ResourceCheckers to use for the freshness check
+     * @param string                                    $file             The absolute cache path
+     * @param iterable<mixed, ResourceCheckerInterface> $resourceCheckers The ResourceCheckers to use for the freshness check
      */
-    public function __construct($file, $resourceCheckers = [])
+    public function __construct(string $file, iterable $resourceCheckers = [])
     {
         $this->file = $file;
         $this->resourceCheckers = $resourceCheckers;
@@ -54,31 +54,30 @@ class ResourceCheckerConfigCache implements ConfigCacheInterface
      * The first ResourceChecker that supports a given resource is considered authoritative.
      * Resources with no matching ResourceChecker will silently be ignored and considered fresh.
      *
-     * @return bool true if the cache is fresh, false otherwise
+     * @return bool
      */
     public function isFresh()
     {
-        if (!\is_file($this->file)) {
+        if (!is_file($this->file)) {
             return \false;
         }
         if ($this->resourceCheckers instanceof \Traversable && !$this->resourceCheckers instanceof \Countable) {
-            $this->resourceCheckers = \iterator_to_array($this->resourceCheckers);
+            $this->resourceCheckers = iterator_to_array($this->resourceCheckers);
         }
         if (!\count($this->resourceCheckers)) {
             return \true;
             // shortcut - if we don't have any checkers we don't need to bother with the meta file at all
         }
         $metadata = $this->getMetaFile();
-        if (!\is_file($metadata)) {
+        if (!is_file($metadata)) {
             return \false;
         }
         $meta = $this->safelyUnserialize($metadata);
         if (\false === $meta) {
             return \false;
         }
-        $time = \filemtime($this->file);
+        $time = filemtime($this->file);
         foreach ($meta as $resource) {
-            /* @var ResourceInterface $resource */
             foreach ($this->resourceCheckers as $checker) {
                 if (!$checker->supports($resource)) {
                     continue;
@@ -103,10 +102,10 @@ class ResourceCheckerConfigCache implements ConfigCacheInterface
      *
      * @throws \RuntimeException When cache file can't be written
      */
-    public function write($content, array $metadata = null)
+    public function write(string $content, ?array $metadata = null)
     {
         $mode = 0666;
-        $umask = \umask();
+        $umask = umask();
         $filesystem = new Filesystem();
         $filesystem->dumpFile($this->file, $content);
         try {
@@ -115,49 +114,53 @@ class ResourceCheckerConfigCache implements ConfigCacheInterface
             // discard chmod failure (some filesystem may not support it)
         }
         if (null !== $metadata) {
-            $filesystem->dumpFile($this->getMetaFile(), \serialize($metadata));
+            $filesystem->dumpFile($this->getMetaFile(), serialize($metadata));
             try {
                 $filesystem->chmod($this->getMetaFile(), $mode, $umask);
             } catch (IOException $e) {
                 // discard chmod failure (some filesystem may not support it)
             }
         }
-        if (\function_exists('opcache_invalidate') && \filter_var(\ini_get('opcache.enable'), \FILTER_VALIDATE_BOOLEAN)) {
-            @\opcache_invalidate($this->file, \true);
+        if (\function_exists('opcache_invalidate') && filter_var(\ini_get('opcache.enable'), \FILTER_VALIDATE_BOOLEAN)) {
+            @opcache_invalidate($this->file, \true);
         }
     }
     /**
      * Gets the meta file path.
-     *
-     * @return string The meta file path
      */
-    private function getMetaFile()
+    private function getMetaFile(): string
     {
         return $this->file . '.meta';
     }
-    private function safelyUnserialize($file)
+    private function safelyUnserialize(string $file)
     {
-        $e = null;
         $meta = \false;
-        $content = \file_get_contents($file);
+        $content = file_get_contents($file);
         $signalingException = new \UnexpectedValueException();
-        $prevUnserializeHandler = \ini_set('unserialize_callback_func', '');
-        $prevErrorHandler = \set_error_handler(function ($type, $msg, $file, $line, $context = []) use(&$prevErrorHandler, $signalingException) {
-            if (__FILE__ === $file) {
+        $prevUnserializeHandler = ini_set('unserialize_callback_func', self::class . '::handleUnserializeCallback');
+        $prevErrorHandler = set_error_handler(function ($type, $msg, $file, $line, $context = []) use (&$prevErrorHandler, $signalingException) {
+            if (__FILE__ === $file && !\in_array($type, [\E_DEPRECATED, \E_USER_DEPRECATED], \true)) {
                 throw $signalingException;
             }
             return $prevErrorHandler ? $prevErrorHandler($type, $msg, $file, $line, $context) : \false;
         });
         try {
-            $meta = \unserialize($content);
-        } catch (\Error $e) {
-        } catch (\Exception $e) {
-        }
-        \restore_error_handler();
-        \ini_set('unserialize_callback_func', $prevUnserializeHandler);
-        if (null !== $e && $e !== $signalingException) {
-            throw $e;
+            $meta = unserialize($content);
+        } catch (\Throwable $e) {
+            if ($e !== $signalingException) {
+                throw $e;
+            }
+        } finally {
+            restore_error_handler();
+            ini_set('unserialize_callback_func', $prevUnserializeHandler);
         }
         return $meta;
+    }
+    /**
+     * @internal
+     */
+    public static function handleUnserializeCallback(string $class)
+    {
+        trigger_error('Class not found: ' . $class);
     }
 }

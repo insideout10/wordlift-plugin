@@ -16,9 +16,9 @@ class ActionScheduler_LoggerSchema extends ActionScheduler_Abstract_Schema {
 	protected $schema_version = 3;
 
 	public function __construct() {
-		$this->tables = array(
+		$this->tables = [
 			self::LOG_TABLE,
-		);
+		];
 	}
 
 	/**
@@ -30,11 +30,12 @@ class ActionScheduler_LoggerSchema extends ActionScheduler_Abstract_Schema {
 
 	protected function get_table_definition( $table ) {
 		global $wpdb;
-		$table_name      = $wpdb->$table;
-		$charset_collate = $wpdb->get_charset_collate();
+		$table_name       = $wpdb->$table;
+		$charset_collate  = $wpdb->get_charset_collate();
 		switch ( $table ) {
 
 			case self::LOG_TABLE:
+
 				$default_date = ActionScheduler_StoreSchema::DEFAULT_DATE;
 				return "CREATE TABLE $table_name (
 				        log_id bigint(20) unsigned NOT NULL auto_increment,
