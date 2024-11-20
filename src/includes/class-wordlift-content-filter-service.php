@@ -82,7 +82,7 @@ class Wordlift_Content_Filter_Service {
 	 */
 	protected function __construct( $entity_service, $entity_uri_service ) {
 
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		$this->entity_service       = $entity_service;
 		$this->entity_uri_service   = $entity_uri_service;

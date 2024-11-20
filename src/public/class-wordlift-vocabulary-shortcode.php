@@ -51,7 +51,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	public function __construct() {
 		parent::__construct();
 
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		$this->register_block_type();
 

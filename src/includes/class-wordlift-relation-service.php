@@ -44,7 +44,7 @@ class Wordlift_Relation_Service {
 	protected function __construct() {
 		global $wpdb;
 
-		self::$log = Wordlift_Log_Service::get_logger( get_class() );
+		self::$log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		// The relations table.
 		$this->relation_table = "{$wpdb->prefix}wl_relation_instances";

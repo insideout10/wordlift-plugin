@@ -66,7 +66,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 */
 	public function __construct( $converter, $cache ) {
 
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		$this->cache     = $cache;
 		$this->converter = $converter;

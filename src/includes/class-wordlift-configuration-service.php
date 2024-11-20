@@ -152,7 +152,7 @@ class Wordlift_Configuration_Service {
 	 */
 	protected function __construct() {
 
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		// Sync some configuration properties when key is validated.
 		add_action( 'wl_key_validation_response', array( $this, 'sync' ) );

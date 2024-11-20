@@ -35,7 +35,7 @@ class Post_Adapter {
 			return;
 		}
 
-		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
+		$this->log = \Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		add_action( 'init', array( $this, 'init' ) );
 		add_filter( 'wp_insert_post_data', array( $this, 'wp_insert_post_data' ), 10 );

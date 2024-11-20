@@ -136,7 +136,7 @@ class Wordlift_Install_Service {
 		);
 		self::$instance = $this;
 
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		add_action( 'init', array( $this, 'install' ) );
 

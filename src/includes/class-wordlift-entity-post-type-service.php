@@ -62,7 +62,7 @@ class Wordlift_Entity_Post_Type_Service {
 	 */
 	public function __construct( $post_type, $slug ) {
 
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		$this->post_type = $post_type;
 
