@@ -66,8 +66,8 @@ class Wordlift_Schemaorg_Class_Service {
 	/**
 	 * Get the singleton instance.
 	 *
-	 * @since 3.20.0
 	 * @return \Wordlift_Schemaorg_Class_Service The singleton instance.
+	 * @since 3.20.0
 	 */
 	public static function get_instance() {
 
@@ -101,6 +101,10 @@ class Wordlift_Schemaorg_Class_Service {
 
 		$json = array_map(
 			function ( $term ) use ( $name_meta_key, $parent_of_meta_key ) {
+				// Ensure $term is valid.
+				if ( ! $term || ! is_object( $term ) || ! isset( $term->term_id ) ) {
+					return null;
+				}
 				// Do not change the following, the `name` is used to reference the correct
 				// Schema.org class (CamelCase name). Do not use WP_Term->name.
 				$camel_case_name = get_term_meta( $term->term_id, $name_meta_key, true );
@@ -112,14 +116,21 @@ class Wordlift_Schemaorg_Class_Service {
 					'name'        => $camel_case_name,
 					'dashname'    => $term->slug,
 					'description' => $term->description,
-					'children'    => array_map(
-						function ( $child ) {
-							// Map the slug to the term id.
-							$child_term = get_term_by( 'slug', $child, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+					'children'    => array_filter(
+						array_map(
+							function ( $child ) {
+								// Map the slug to the term id.
+								$child_term = get_term_by( 'slug', $child, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
-							return array( 'id' => $child_term->term_id );
-						},
-						get_term_meta( $term->term_id, $parent_of_meta_key )
+								// Ensure $child_term is valid.
+								if ( ! $child_term || ! is_object( $child_term ) || ! isset( $child_term->term_id ) ) {
+									return null;
+								}
+
+								return array( 'id' => $child_term->term_id );
+							},
+							get_term_meta( $term->term_id, $parent_of_meta_key )
+						)
 					),
 				);
 
