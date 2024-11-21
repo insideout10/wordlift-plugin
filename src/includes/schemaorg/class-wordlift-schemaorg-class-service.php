@@ -102,7 +102,7 @@ class Wordlift_Schemaorg_Class_Service {
 		$json = array_map(
 			function ( $term ) use ( $name_meta_key, $parent_of_meta_key ) {
 				// Ensure $term is valid.
-				if ( ! $term || ! is_object( $term ) || ! isset( $term->term_id ) ) {
+				if ( ! is_object( $term ) || empty( $term->term_id ) ) {
 					return null;
 				}
 				// Do not change the following, the `name` is used to reference the correct
@@ -123,7 +123,7 @@ class Wordlift_Schemaorg_Class_Service {
 								$child_term = get_term_by( 'slug', $child, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 								// Ensure $child_term is valid.
-								if ( ! $child_term || ! is_object( $child_term ) || ! isset( $child_term->term_id ) ) {
+								if ( ! is_object( $child_term ) || empty( $child_term->term_id ) ) {
 									return null;
 								}
 
