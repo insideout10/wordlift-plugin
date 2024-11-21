@@ -45,7 +45,7 @@ class Wordlift_Entity_Uri_Service {
 	 */
 	protected function __construct() {
 
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		// Add a filter to the `rest_post_dispatch` filter to add the wl_entity_url meta as `wl:entity_url`.
 		add_filter( 'rest_post_dispatch', array( $this, 'rest_post_dispatch' ) );

@@ -42,7 +42,7 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	public function __construct( $cache_service ) {
 		parent::__construct();
 
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		// Add hooks for meta being added/modified/deleted.
 		$this->cache_service = $cache_service;

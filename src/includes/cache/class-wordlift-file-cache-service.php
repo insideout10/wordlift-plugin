@@ -71,7 +71,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	 */
 	public function __construct( $cache_dir, $file_extension = '.wlcache' ) {
 
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		// Set the cache directory using the base directory provided by the caller
 		// and appending a hash for the unique site id.

@@ -32,7 +32,7 @@ class Wordlift_Http_Api {
 	 */
 	public function __construct() {
 
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		add_action( 'init', array( $this, 'add_rewrite_endpoint' ) );
 		add_action( 'template_redirect', array( $this, 'template_redirect' ) );

@@ -68,7 +68,7 @@ class Ttl_Cache {
 	 */
 	public function __construct( $name, $ttl = 900 ) {
 
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		$this->name = $name;
 		$this->ttl  = $ttl;
