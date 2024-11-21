@@ -10,7 +10,7 @@ class Wordlift_Install_3_54_2 extends Wordlift_Install {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected static $version = '3.54.2';
+	protected static $version = '3.54.2-0';
 
 	public function install() {
 		global $wpdb;
