@@ -143,7 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.54.1-rc (2024-11-20)
+= 3.54.1 (2024-11-20)
 
 * Fix [#1749](https://github.com/insideout10/wordlift-plugin/issues/1737): Avoid deprecation warnings by using $this as argument in get_class() call
 
