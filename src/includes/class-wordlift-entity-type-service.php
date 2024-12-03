@@ -229,9 +229,9 @@ class Wordlift_Entity_Type_Service {
 	/**
 	 * Set the main type for the specified entity post, given the type URI.
 	 *
-	 * @param int $post_id The post id.
+	 * @param int    $post_id The post id.
 	 * @param string $type_uri The type URI.
-	 * @param bool $replace Whether the provided type must replace the existing types, by default `true`.
+	 * @param bool   $replace Whether the provided type must replace the existing types, by default `true`.
 	 *
 	 * @since 3.8.0
 	 */
@@ -340,7 +340,7 @@ class Wordlift_Entity_Type_Service {
 	 * Check whether an entity type is set for the {@link WP_Post} with the
 	 * specified id.
 	 *
-	 * @param int $post_id The {@link WP_Post}'s `id`.
+	 * @param int    $post_id The {@link WP_Post}'s `id`.
 	 * @param string $uri The entity type URI.
 	 *
 	 * @return bool True if an entity type is set otherwise false.
@@ -392,7 +392,7 @@ class Wordlift_Entity_Type_Service {
 	/**
 	 * Get an entity type term given its URI.
 	 *
-	 * @param int $post_id The {@link WP_Post} id.
+	 * @param int    $post_id The {@link WP_Post} id.
 	 * @param string $uri The entity type URI.
 	 *
 	 * @return bool True if the post has that type URI bound to it otherwise false.
