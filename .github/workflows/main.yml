@@ -29,7 +29,7 @@ jobs:
           access_token: ${{ github.TOKEN }}
   wordpress:
     name: ${{ matrix.image }}_${{ matrix.phpunit-xml }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         image:
