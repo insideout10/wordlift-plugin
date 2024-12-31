@@ -4,7 +4,7 @@
  * Represents an entity ID in WordPress.
  */
 
-namespace Wordlift\Content\Wordpress;
+namespace Wordlift\Content\WordPress;
 
 use JsonSerializable;
 use Wordlift\Assertions;
@@ -71,5 +71,4 @@ class Wordpress_Content_Id implements Content_Id, JsonSerializable {
 	public function __toString() {
 		return sprintf( '%d_%d', $this->type, $this->id );
 	}
-
 }

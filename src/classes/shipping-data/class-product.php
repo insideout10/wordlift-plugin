@@ -17,7 +17,6 @@ class Product {
 	public function __construct( $post_id ) {
 
 		$this->wc_product = wc_get_product( $post_id );
-
 	}
 
 	public function add_handling_time( &$shipping_delivery_time ) {
@@ -32,8 +31,8 @@ class Product {
 		$option = get_option( 'wpsso_options' );
 
 		if ( empty( $option[ "wcsdt_handling_c{$shipping_class_id}_unit_code" ] )
-			 || empty( $option[ "wcsdt_handling_c{$shipping_class_id}_minimum" ] )
-			 || empty( $option[ "wcsdt_handling_c{$shipping_class_id}_maximum" ] ) ) {
+			|| empty( $option[ "wcsdt_handling_c{$shipping_class_id}_minimum" ] )
+			|| empty( $option[ "wcsdt_handling_c{$shipping_class_id}_maximum" ] ) ) {
 			return;
 		}
 
@@ -51,11 +50,8 @@ class Product {
 			'minValue' => $minimum,
 			'maxValue' => $maximum,
 		);
-
 	}
 
 	private function get_handling_time() {
-
 	}
-
 }

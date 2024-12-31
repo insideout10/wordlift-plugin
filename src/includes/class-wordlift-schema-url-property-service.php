@@ -171,7 +171,6 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 			10,
 			4
 		);
-
 	}
 
 	private function remove_filter_get_post_metadata() {
@@ -184,7 +183,5 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 			),
 			10
 		);
-
 	}
-
 }

@@ -52,7 +52,6 @@ class Wordlift_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-
 	}
 
 	/**
@@ -170,7 +169,6 @@ class Wordlift_Public {
 			2
 		);
 		wp_register_script( 'wordlift-cloud', self::get_cloud_js_url(), $deps, Wordlift::get_instance()->get_version(), true );
-
 	}
 
 	/**

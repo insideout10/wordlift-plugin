@@ -7,8 +7,8 @@
 
 namespace Wordlift\Modules\Food_Kg\Services;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 
 class Ingredients {
 

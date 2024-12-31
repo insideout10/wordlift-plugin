@@ -72,5 +72,4 @@ class Sync_Hooks_Entity_Relation {
 
 		return $jsonld;
 	}
-
 }

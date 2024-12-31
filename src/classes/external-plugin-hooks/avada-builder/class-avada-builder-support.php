@@ -35,7 +35,6 @@ class Avada_Builder_Support {
 			return wp_strip_all_tags( do_shortcode( $post_content ), true );
 		}
 		return $post_body;
-
 	}
 
 	/**

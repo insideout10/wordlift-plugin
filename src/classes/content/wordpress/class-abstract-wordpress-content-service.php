@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Content\Wordpress;
+namespace Wordlift\Content\WordPress;
 
 use Wordlift\Assertions;
 use Wordlift\Content\Content_Service;
@@ -11,7 +11,6 @@ use Wordlift_Configuration_Service;
 abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 
 	protected function __construct() {
-
 	}
 
 	protected function get_dataset_uri() {
@@ -126,5 +125,4 @@ abstract class Abstract_Wordpress_Content_Service implements Content_Service {
 			)
 		);
 	}
-
 }

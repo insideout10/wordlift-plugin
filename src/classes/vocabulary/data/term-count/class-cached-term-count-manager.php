@@ -2,8 +2,6 @@
 
 namespace Wordlift\Vocabulary\Data\Term_Count;
 
-use Wordlift\Vocabulary\Terms_Compat;
-
 /**
  * This class removes all the cache for the term count if the analysis is done for new tags
  *
@@ -20,7 +18,7 @@ class Cached_Term_Count_Manager {
 			}
 		);
 
-		$taxonomies = Terms_Compat::get_public_taxonomies();
+		$taxonomies = get_taxonomies( array( 'public' => true ) );
 		foreach ( $taxonomies as $taxonomy ) {
 			add_action(
 				"created_${taxonomy}",
@@ -29,7 +27,5 @@ class Cached_Term_Count_Manager {
 				}
 			);
 		}
-
 	}
-
 }

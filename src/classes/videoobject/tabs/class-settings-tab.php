@@ -19,7 +19,5 @@ class Settings_Tab {
 				return $tabs;
 			}
 		);
-
 	}
-
 }

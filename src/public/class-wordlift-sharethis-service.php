@@ -41,7 +41,6 @@ class Wordlift_ShareThis_Service {
 	public function __construct() {
 
 		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_ShareThis_Service' );
-
 	}
 
 	/**
@@ -128,5 +127,4 @@ class Wordlift_ShareThis_Service {
 		// Finally return the content.
 		return $content;
 	}
-
 }

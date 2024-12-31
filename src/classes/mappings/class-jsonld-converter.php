@@ -253,5 +253,4 @@ class Jsonld_Converter {
 
 		return $values;
 	}
-
 }

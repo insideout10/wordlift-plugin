@@ -11,8 +11,8 @@
 
 namespace Wordlift\Relation;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\Object_Type_Enum;
 use Wordlift_Entity_Service;
 
@@ -57,8 +57,8 @@ class Post_Content_Relation_Service extends Abstract_Relation_Service {
 		foreach ( $entity_uris as $entity_uri ) {
 			$content = $content_service->get_by_entity_id( $entity_uri );
 			if ( ! isset( $content )
-				 || ! is_a( $content, 'Wordlift\Content\Content' )
-				 || null === $content->get_id() ) {
+				|| ! is_a( $content, 'Wordlift\Content\Content' )
+				|| null === $content->get_id() ) {
 				continue;
 			}
 
@@ -68,7 +68,5 @@ class Post_Content_Relation_Service extends Abstract_Relation_Service {
 			$relation  = new Relation( $content_id, $object_id, $predicate );
 			$relations->add( $relation );
 		}
-
 	}
-
 }

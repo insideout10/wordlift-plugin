@@ -70,7 +70,6 @@ class Wordlift_Mapping_Service {
 
 		// Set the singleton instance.
 		self::$instance = $this;
-
 	}
 
 	/**
@@ -93,7 +92,6 @@ class Wordlift_Mapping_Service {
 	private function save_options() {
 
 		update_option( 'wl_mappings', $this->options, true );
-
 	}
 
 	/**
@@ -108,7 +106,6 @@ class Wordlift_Mapping_Service {
 
 		$this->options[ $post_type ] = $entity_types;
 		$this->save_options();
-
 	}
 
 	/**
@@ -232,5 +229,4 @@ class Wordlift_Mapping_Service {
 
 		return $tax_query;
 	}
-
 }

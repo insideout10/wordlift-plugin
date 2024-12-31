@@ -49,5 +49,4 @@ class Faq_Tinymce_Adapter {
 
 		return $buttons;
 	}
-
 }

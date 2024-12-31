@@ -43,7 +43,6 @@ class Wordlift_AMP_Service {
 
 		add_action( 'amp_init', array( $this, 'register_entity_cpt_with_amp_plugin' ) );
 		add_filter( 'amp_post_template_metadata', array( $this, 'amp_post_template_metadata' ), 99, 2 );
-
 	}
 
 	/**
@@ -64,7 +63,6 @@ class Wordlift_AMP_Service {
 			}
 			add_post_type_support( $post_type, AMP_QUERY_VAR );
 		}
-
 	}
 
 	/**
@@ -92,5 +90,4 @@ class Wordlift_AMP_Service {
 	public static function is_amp_endpoint() {
 		return function_exists( 'is_amp_endpoint' ) && is_amp_endpoint();
 	}
-
 }

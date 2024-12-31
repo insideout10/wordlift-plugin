@@ -30,7 +30,6 @@ class Wordlift_Mapping_Ajax_Adapter {
 
 		add_action( 'wp_ajax_wl_set_entity_types_for_post_type', array( $this, 'set_entity_types_for_post_type' ) );
 		add_action( 'wp_ajax_wl_update_post_type_entity_types', array( $this, 'update_post_type_entity_types' ) );
-
 	}
 
 	public function set_entity_types_for_post_type() {
@@ -45,7 +44,6 @@ class Wordlift_Mapping_Ajax_Adapter {
 		$this->mapping_service->set_entity_types_for_post_type( $post_type, $entity_types );
 
 		wp_send_json_success();
-
 	}
 
 	public function update_post_type_entity_types() {
@@ -81,7 +79,5 @@ class Wordlift_Mapping_Ajax_Adapter {
 
 		// Finally send the results.
 		wp_send_json_success( $result );
-
 	}
-
 }

@@ -9,7 +9,6 @@ namespace Wordlift\Vocabulary_Terms;
 
 use Wordlift\Common\Term_Checklist\Term_Checklist;
 use Wordlift\Scripts\Scripts_Helper;
-use Wordlift\Vocabulary\Terms_Compat;
 use Wordlift_Entity_Type_Taxonomy_Service;
 
 class Entity_Type {
@@ -42,8 +41,7 @@ class Entity_Type {
 		}
 
 		$entity_type_taxonomy = Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME;
-		$types                = Terms_Compat::get_terms(
-			$entity_type_taxonomy,
+		$types                = get_terms(
 			array(
 				'taxonomy'   => $entity_type_taxonomy,
 				'parent'     => 0,
@@ -53,7 +51,8 @@ class Entity_Type {
 		?>
 		<?php wp_nonce_field( 'wordlift_vocabulary_terms_entity_type', 'wordlift_vocabulary_terms_entity_type_nonce' ); ?>
 		<tr class="form-field term-name-wrap">
-			<th scope="row"><label for="wl-entity-type__checklist"><?php esc_html_e( 'Entity Types', 'wordlift' ); ?></label></th>
+			<th scope="row"><label
+						for="wl-entity-type__checklist"><?php esc_html_e( 'Entity Types', 'wordlift' ); ?></label></th>
 			<td>
 				<div id="wl-entity-type__checklist">
 					<?php
@@ -102,7 +101,7 @@ class Entity_Type {
 	}
 
 	public function init_ui_and_save_handlers() {
-		$taxonomies = Terms_Compat::get_public_taxonomies();
+		$taxonomies = get_taxonomies( array( 'public' => true ) );
 		foreach ( $taxonomies as $taxonomy ) {
 			add_action( "{$taxonomy}_edit_form_fields", array( $this, 'render_ui' ), 1 );
 			add_action( "edited_{$taxonomy}", array( $this, 'save_field' ) );
@@ -123,5 +122,4 @@ class Entity_Type {
 			WORDLIFT_VERSION
 		);
 	}
-
 }

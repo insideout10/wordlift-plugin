@@ -2,7 +2,6 @@
 
 namespace Wordlift\Modules\Pods\FieldDefinition;
 
-use Wordlift\Vocabulary\Terms_Compat;
 
 /**
  * @since 3.38.3
@@ -18,7 +17,7 @@ class AllPodsDefiniton extends AbstractFieldDefiniton {
 
 	public function register_on_all_supported_taxonomies() {
 		$context    = $this->schema->get();
-		$taxonomies = Terms_Compat::get_public_taxonomies();
+		$taxonomies = get_taxonomies( array( 'public' => true ) );
 		foreach ( $taxonomies as $taxonomy ) {
 			$this->register_pod( $taxonomy, 'taxonomy', $context );
 

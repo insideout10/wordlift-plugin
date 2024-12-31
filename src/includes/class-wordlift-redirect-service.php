@@ -1,7 +1,7 @@
 <?php
 
-use Wordlift\Content\Wordpress\Wordpress_Content;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 
 /**
  * Provides functions and AJAX endpoints to support redirects needed by the client-side layer.
@@ -58,7 +58,6 @@ class Wordlift_Redirect_Service {
 		$this->entity_uri_service = $entity_uri_service;
 
 		self::$instance = $this;
-
 	}
 
 	/**
@@ -152,5 +151,4 @@ class Wordlift_Redirect_Service {
 
 		return array_merge( $content, array( self::LOD_HOST ) );
 	}
-
 }

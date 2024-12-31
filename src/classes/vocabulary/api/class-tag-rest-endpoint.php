@@ -4,7 +4,6 @@ namespace Wordlift\Vocabulary\Api;
 
 use Wordlift\Vocabulary\Analysis_Background_Service;
 use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
-use Wordlift\Vocabulary\Terms_Compat;
 use WP_REST_Server;
 
 /**
@@ -26,7 +25,6 @@ class Tag_Rest_Endpoint {
 	public function __construct( $term_data_factory ) {
 
 		$this->term_data_factory = $term_data_factory;
-
 	}
 
 	public function register_routes() {
@@ -64,7 +62,6 @@ class Tag_Rest_Endpoint {
 				);
 			}
 		);
-
 	}
 
 	public function get_tags( $request ) {
@@ -111,9 +108,9 @@ class Tag_Rest_Endpoint {
 	 */
 	public function get_terms_from_db( $limit, $offset ) {
 
-		return Terms_Compat::get_terms(
-			Terms_Compat::get_public_taxonomies(),
+		return get_terms(
 			array(
+				'taxonomy'   => get_taxonomies( array( 'public' => true ) ),
 				'hide_empty' => false,
 				'number'     => $limit,
 				'offset'     => $offset,
@@ -127,7 +124,5 @@ class Tag_Rest_Endpoint {
 				'order'      => 'DESC',
 			)
 		);
-
 	}
-
 }

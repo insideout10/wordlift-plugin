@@ -94,7 +94,6 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		$this->language_select_element = $language_select_element;
 		$this->country_select_element  = $country_select_element;
 		$this->publisher_element       = $publisher_element;
-
 	}
 
 	private static $instance;
@@ -187,7 +186,6 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		// @todo: try to move to the `wordlift-admin.bundle.js`.
 		wp_enqueue_script( 'wordlift-admin-settings-page', plugin_dir_url( __DIR__ ) . 'admin/js/1/settings.js', array( 'wp-util' ), WORDLIFT_VERSION, false );
 		wp_enqueue_style( 'wordlift-admin-settings-page', plugin_dir_url( __DIR__ ) . 'admin/js/1/settings.css', array(), WORDLIFT_VERSION );
-
 	}
 
 	/**
@@ -219,7 +217,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::KEY . ']',
 			'value'       => Wordlift_Configuration_Service::get_instance()->get_key(),
 			'description' => __( 'Insert the <a href="https://wordlift.io">WordLift Key</a> you received via email.', 'wordlift' )
-							 . ' [' . apply_filters( 'wl_production_site_url', untrailingslashit( get_option( 'home' ) ) ) . ']',
+							. ' [' . apply_filters( 'wl_production_site_url', untrailingslashit( get_option( 'home' ) ) ) . ']',
 		);
 
 		// Before we were used to validate the key beforehand, but this means
@@ -364,7 +362,6 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 				'description' => __( 'Whether to send diagnostic data or not.', 'wordlift' ),
 			)
 		);
-
 	}
 
 	/**
@@ -421,5 +418,4 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 		return $input;
 	}
-
 }

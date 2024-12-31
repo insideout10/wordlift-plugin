@@ -233,7 +233,6 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 				'description' => __( 'Entity Type dimension', 'wordlift' ),
 			)
 		);
-
 	}
 
 	/**
@@ -321,5 +320,4 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 		// return items added to the output for saving.
 		return $output;
 	}
-
 }

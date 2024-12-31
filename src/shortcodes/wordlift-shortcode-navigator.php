@@ -201,7 +201,6 @@ function wl_shortcode_navigator_ajax() {
 	// Temporary blocking the Navigator.
 	$results = wl_shortcode_navigator_data();
 	wl_core_send_json( $results );
-
 }
 
 add_action( 'wp_ajax_wl_navigator', 'wl_shortcode_navigator_ajax' );
@@ -222,7 +221,6 @@ function wl_shortcode_navigator_wp_json() {
 			array( 'values' => $results ),
 		),
 	);
-
 }
 
 /**
@@ -276,4 +274,3 @@ add_action(
 	},
 	0
 );
-

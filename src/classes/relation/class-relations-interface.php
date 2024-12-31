@@ -19,5 +19,4 @@ interface Relations_Interface extends ArrayAccess {
 	public function contains( Relation ...$values );
 
 	public function toArray();
-
 }

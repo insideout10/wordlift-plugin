@@ -29,7 +29,6 @@ class Acf_Mappings {
 				$that->add_acf_option_to_mappings_ui();
 			}
 		);
-
 	}
 
 	private function add_acf_option_to_mappings_ui() {
@@ -95,5 +94,4 @@ class Acf_Mappings {
 
 		return $acf_options;
 	}
-
 }

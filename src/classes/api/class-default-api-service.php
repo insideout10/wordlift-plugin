@@ -87,8 +87,8 @@ class Default_Api_Service implements Api_Service, Api_Service_Ext {
 		// Set the time limit if lesser than our request timeout.
 		$max_execution_time = ini_get( 'max_execution_time' );
 		if ( ! ( defined( 'WP_CLI' ) && WP_CLI )
-			 && ( 0 !== intval( $max_execution_time ) )
-			 && ( $max_execution_time < $request_timeout ) ) {
+			&& ( 0 !== intval( $max_execution_time ) )
+			&& ( $max_execution_time < $request_timeout ) ) {
 			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			@set_time_limit( $request_timeout );
 		}
@@ -154,5 +154,4 @@ class Default_Api_Service implements Api_Service, Api_Service_Ext {
 	public function me() {
 		return json_decode( $this->get( '/accounts/me' )->get_body() );
 	}
-
 }

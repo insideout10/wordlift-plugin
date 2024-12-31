@@ -42,5 +42,4 @@ interface Mappings_Transform_Function {
 	 * @return array|string Return Mapped data.
 	 */
 	public function transform_data( $data, $jsonld, &$references, $post_id );
-
 }

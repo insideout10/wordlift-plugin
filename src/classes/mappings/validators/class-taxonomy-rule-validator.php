@@ -32,7 +32,7 @@ class Taxonomy_Rule_Validator implements Rule_Validator {
 		}
 
 		return ( $is_object_in_term && self::IS_EQUAL_TO === $operator )
-			   || ( ! $is_object_in_term && self::IS_NOT_EQUAL_TO === $operator );
+				|| ( ! $is_object_in_term && self::IS_NOT_EQUAL_TO === $operator );
 	}
 
 	/**

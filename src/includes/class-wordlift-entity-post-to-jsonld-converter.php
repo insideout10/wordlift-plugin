@@ -186,7 +186,6 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 			// Make an array a single value when possible.
 			$jsonld[ $name ] = self::make_one( $non_empty_values );
 		}
-
 	}
 
 	/**
@@ -222,5 +221,4 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 
 		return $jsonld;
 	}
-
 }

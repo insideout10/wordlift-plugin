@@ -66,7 +66,6 @@ class Wordlift_Entity_Link_Service {
 
 		$this->entity_type_service = $entity_type_service;
 		$this->slug                = $slug;
-
 	}
 
 	/**
@@ -120,7 +119,6 @@ class Wordlift_Entity_Link_Service {
 			? Wordlift_Entity_Service::valid_entity_post_types()
 			: array_merge( (array) $query->get( 'post_type' ), (array) $this->entity_type_service->get_post_type() );
 		$query->set( 'post_type', $post_types );
-
 	}
 
 	/**
@@ -214,5 +212,4 @@ class Wordlift_Entity_Link_Service {
 			)
 		);
 	}
-
 }

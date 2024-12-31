@@ -59,5 +59,4 @@ class Wordlift_Post_Image_Storage extends Wordlift_Storage {
 
 		return $image_urls;
 	}
-
 }

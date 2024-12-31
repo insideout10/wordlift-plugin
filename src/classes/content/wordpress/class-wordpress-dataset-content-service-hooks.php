@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Content\Wordpress;
+namespace Wordlift\Content\WordPress;
 
 use Exception;
 use Wordlift\Entity\Entity_Uri_Generator;
@@ -113,5 +113,4 @@ class Wordpress_Dataset_Content_Service_Hooks {
 
 		throw new Exception( "Can't get ID for content ID $content_id, content type $content_type." );
 	}
-
 }

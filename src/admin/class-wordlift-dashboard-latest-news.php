@@ -38,7 +38,6 @@ class Wordlift_Dashboard_Latest_News {
 				'add_dashboard_latest_news_widget',
 			)
 		);
-
 	}
 
 	/**
@@ -178,5 +177,4 @@ class Wordlift_Dashboard_Latest_News {
 			);
 		}
 	}
-
 }

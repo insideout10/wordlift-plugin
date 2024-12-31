@@ -167,7 +167,5 @@ class Entity_Rest_Endpoint {
 				),
 			)
 		);
-
 	}
-
 }

@@ -31,5 +31,4 @@ class Sync_Background_Process_Stopped_State extends Abstract_Sync_Background_Pro
 
 		return State::complete();
 	}
-
 }

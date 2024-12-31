@@ -39,7 +39,5 @@ class No_Editor_Analysis_Request {
 			'matches'  => 1,
 			'links'    => 'no',
 		);
-
 	}
-
 }

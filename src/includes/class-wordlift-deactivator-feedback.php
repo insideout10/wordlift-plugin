@@ -38,7 +38,6 @@ class Wordlift_Deactivator_Feedback {
 	public function __construct() {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Deactivator_Feedback' );
-
 	}
 
 	/**

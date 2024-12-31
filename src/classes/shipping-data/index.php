@@ -4,10 +4,10 @@ use Wordlift\Shipping_Data\Offer_Structured_Data;
 use Wordlift\Shipping_Data\Shipping_Zones;
 
 if ( ! class_exists( '\WC_Shipping_Zones' )
-	 || ! class_exists( '\WC_Shipping_Zone' )
-	 || ! class_exists( '\WC_Shipping_Method' )
-	 || ! function_exists( 'get_woocommerce_currency' )
-	 || ! function_exists( 'wc_get_product' ) ) {
+	|| ! class_exists( '\WC_Shipping_Zone' )
+	|| ! class_exists( '\WC_Shipping_Method' )
+	|| ! function_exists( 'get_woocommerce_currency' )
+	|| ! function_exists( 'wc_get_product' ) ) {
 	return;
 }
 

@@ -10,7 +10,7 @@ class Main_Ingredient_Content_Migration {
 
 	public function migrate() {
 		if ( get_option( '_wl_main_ingredient_content_migration__migrated' )
-			 || version_compare( get_option( 'wl_db_version', '0.0.0' ), '3.33.9', '<' ) ) {
+			|| version_compare( get_option( 'wl_db_version', '0.0.0' ), '3.33.9', '<' ) ) {
 			return;
 		}
 
@@ -38,7 +38,6 @@ class Main_Ingredient_Content_Migration {
 					SET e.about_jsonld = tm.meta_value
 					WHERE e.content_type = 1"
 		);
-
 	}
 
 	private function delete_legacy_fields_from_meta() {
@@ -55,7 +54,5 @@ class Main_Ingredient_Content_Migration {
 			FROM $wpdb->termmeta
 			WHERE meta_key = '_wl_main_ingredient_jsonld'"
 		);
-
 	}
-
 }

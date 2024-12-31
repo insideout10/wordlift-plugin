@@ -403,7 +403,6 @@ class Wordlift_Countries {
 			self::$codes         = $result_array['country_code_language_map'];
 			self::$country_codes = $result_array['country_code_name_map'];
 		}
-
 	}
 
 	/**
@@ -505,14 +504,14 @@ class Wordlift_Countries {
 
 		// Bail out if we don't have the flag.
 		if ( ! isset( self::$country_flags[ $country_code ] )
-			 || ( self::$country_flags[ $country_code ] ) === null ) {
+			|| ( self::$country_flags[ $country_code ] ) === null ) {
 			return null;
 		}
 
 		return plugin_dir_url( __DIR__ )
-			   . 'images/flags/16/'
-			   . self::$country_flags[ $country_code ]
-			   . '.png';
+				. 'images/flags/16/'
+				. self::$country_flags[ $country_code ]
+				. '.png';
 	}
 
 	/**
@@ -536,5 +535,4 @@ class Wordlift_Countries {
 
 		return self::$country_codes[ $country_code ];
 	}
-
 }

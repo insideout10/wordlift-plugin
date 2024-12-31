@@ -106,10 +106,8 @@ class Jsonld_Endpoint {
 						'permission_callback' => '__return_true',
 					)
 				);
-
 			}
 		);
-
 	}
 
 	/**
@@ -279,5 +277,4 @@ class Jsonld_Endpoint {
 
 		return Jsonld_Response_Helper::to_response( $data );
 	}
-
 }

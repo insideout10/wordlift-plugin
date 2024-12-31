@@ -54,7 +54,6 @@ class Wordlift_UI_Service {
 				),
 			)
 		);
-
 	}
 
 	/**
@@ -112,5 +111,4 @@ class Wordlift_UI_Service {
 			),
 		);
 	}
-
 }

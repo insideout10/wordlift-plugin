@@ -23,5 +23,4 @@ interface Remote_Entity {
 	 * @return array<string>
 	 */
 	public function get_types();
-
 }

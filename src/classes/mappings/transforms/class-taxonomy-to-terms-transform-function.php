@@ -24,7 +24,6 @@ class Taxonomy_To_Terms_Transform_Function implements Mappings_Transform_Functio
 	public function __construct() {
 
 		add_filter( 'wl_mappings_transformation_functions', array( $this, 'wl_mappings_transformation_functions' ) );
-
 	}
 
 	/**
@@ -70,5 +69,4 @@ class Taxonomy_To_Terms_Transform_Function implements Mappings_Transform_Functio
 
 		return $terms;
 	}
-
 }

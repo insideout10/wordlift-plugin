@@ -15,7 +15,5 @@ class Post_Type {
 
 		// Enable it on post types which doesn't have editor by default.
 		return ! post_type_supports( $post_type, 'editor' );
-
 	}
-
 }

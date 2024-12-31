@@ -45,7 +45,6 @@ class Wordlift_Debug_Service {
 		$this->uri_service    = $uri_service;
 
 		add_action( 'wp_ajax_wl_dump_uri', array( $this, 'dump_uri' ) );
-
 	}
 
 	public function dump_uri() {
@@ -70,7 +69,5 @@ class Wordlift_Debug_Service {
 				'build_uri_convert' => mb_convert_encoding( $build_uri, 'ASCII' ),
 			)
 		);
-
 	}
-
 }

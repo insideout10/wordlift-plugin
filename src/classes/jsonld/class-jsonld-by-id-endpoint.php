@@ -47,7 +47,6 @@ class Jsonld_By_Id_Endpoint {
 		$this->entity_uri_service = $entity_uri_service;
 
 		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
-
 	}
 
 	/**
@@ -139,7 +138,5 @@ class Jsonld_By_Id_Endpoint {
 				),
 			)
 		);
-
 	}
-
 }

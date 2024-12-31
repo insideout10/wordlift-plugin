@@ -25,5 +25,4 @@ class Store_Factory {
 		}
 		return null;
 	}
-
 }

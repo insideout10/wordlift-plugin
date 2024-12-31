@@ -12,5 +12,4 @@ class Jsonld_Context_Enum {
 	const FAQ      = 3;
 	/** REST services. */
 	const REST = 3;
-
 }

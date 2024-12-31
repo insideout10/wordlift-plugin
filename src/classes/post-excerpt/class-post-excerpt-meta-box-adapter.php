@@ -94,7 +94,6 @@ final class Post_Excerpt_Meta_Box_Adapter {
 	private function remove_default_post_excerpt_meta_box() {
 
 		remove_meta_box( self::POST_EXCERPT_META_BOX_KEY, get_current_screen(), 'normal' );
-
 	}
 
 	/**
@@ -177,5 +176,4 @@ final class Post_Excerpt_Meta_Box_Adapter {
 			'postId'         => get_the_ID(),
 		);
 	}
-
 }

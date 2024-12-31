@@ -3,7 +3,7 @@
 namespace Wordlift\Modules\Gardening_Kg;
 
 use Wordlift\Content\Content_Service;
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
 
 class Jsonld {
 
@@ -57,7 +57,7 @@ class Jsonld {
 
 	/**
 	 * @param $list array Adds the jsonld to the list if valid.
-	 * @param $content_id \Wordlift\Content\Wordpress\Wordpress_Content_Id
+	 * @param $content_id \Wordlift\Content\WordPress\Wordpress_Content_Id
 	 *
 	 * @return void
 	 */

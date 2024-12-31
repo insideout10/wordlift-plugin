@@ -27,5 +27,4 @@ class Simple_Http_Client implements Http_Client {
 
 		return wp_remote_request( $url, $options );
 	}
-
 }

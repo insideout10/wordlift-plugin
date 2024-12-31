@@ -29,5 +29,4 @@ class User_Agent {
 		/** @var string $wp_version The variable is defined in `version.php`. */
 		return "WordLift/$wl_version WordPress/$wp_version (multisite:$multisite, url:$home_url, locale:$locale) PHP/$php_version";
 	}
-
 }

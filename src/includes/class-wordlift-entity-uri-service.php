@@ -10,8 +10,8 @@
  * @subpackage Wordlift/includes
  */
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 
 /**
  * Define the {@link Wordlift_Entity_Uri_Service} class.
@@ -50,7 +50,6 @@ class Wordlift_Entity_Uri_Service {
 		// Add a filter to the `rest_post_dispatch` filter to add the wl_entity_url meta as `wl:entity_url`.
 		add_filter( 'rest_post_dispatch', array( $this, 'rest_post_dispatch' ) );
 		add_filter( 'wl_content_service__post__not_found', array( $this, 'content_service__post__not_found' ), 10, 2 );
-
 	}
 
 	/**
@@ -141,8 +140,8 @@ class Wordlift_Entity_Uri_Service {
 				}
 
 				return $carry
-					   // Get the URI related to the post and fill them with the item id.
-					   + array_fill_keys( $uris, $item );
+						// Get the URI related to the post and fill them with the item id.
+						+ array_fill_keys( $uris, $item );
 			},
 			array()
 		);
@@ -151,7 +150,6 @@ class Wordlift_Entity_Uri_Service {
 		$this->uri_to_post += array_fill_keys( $uris, null );
 
 		$this->log->debug( count( $this->uri_to_post ) . ' URI(s) preloaded.' );
-
 	}
 
 	/**
@@ -162,7 +160,6 @@ class Wordlift_Entity_Uri_Service {
 	public function reset_uris() {
 
 		$this->uri_to_post = array();
-
 	}
 
 	/**
@@ -222,7 +219,7 @@ class Wordlift_Entity_Uri_Service {
 
 		// Bail out if we don't have the required parameters, or if the type is not a valid entity.
 		if ( ! is_array( $data ) || ! isset( $data['id'] ) || ! isset( $data['type'] )
-			 || ! Wordlift_Entity_Type_Service::is_valid_entity_post_type( $data['type'] ) ) {
+			|| ! Wordlift_Entity_Type_Service::is_valid_entity_post_type( $data['type'] ) ) {
 			return $result;
 		}
 
@@ -278,5 +275,4 @@ class Wordlift_Entity_Uri_Service {
 
 		return false;
 	}
-
 }

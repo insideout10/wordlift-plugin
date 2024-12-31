@@ -29,5 +29,4 @@ class Wordlift_Double_Property_Service extends Wordlift_Simple_Property_Service 
 			parent::get( $id, $meta_key, $type )
 		);
 	}
-
 }

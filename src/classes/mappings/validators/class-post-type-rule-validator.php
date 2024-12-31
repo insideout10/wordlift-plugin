@@ -31,7 +31,6 @@ class Post_Type_Rule_Validator implements Rule_Validator {
 	public function __construct() {
 
 		add_filter( 'wl_mappings_rule_validators', array( $this, 'wl_mappings_rule_validators' ) );
-
 	}
 
 	/**
@@ -82,5 +81,4 @@ class Post_Type_Rule_Validator implements Rule_Validator {
 
 		return false;
 	}
-
 }

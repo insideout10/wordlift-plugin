@@ -7,8 +7,8 @@
  * @subpackage Wordlift/includes
  */
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\Entity\Entity_Uri_Generator;
 use Wordlift\Object_Type_Enum;
 
@@ -85,7 +85,6 @@ class Wordlift_Entity_Service {
 
 		$this->entity_uri_service = Wordlift_Entity_Uri_Service::get_instance();
 		$this->relation_service   = Wordlift_Relation_Service::get_instance();
-
 	}
 
 	/**
@@ -295,7 +294,6 @@ class Wordlift_Entity_Service {
 			// This is via classic editor, so set the alternative labels.
 			$this->set_alternative_labels( $post_id, $alt_labels );
 		}
-
 	}
 
 	/**
@@ -337,7 +335,6 @@ class Wordlift_Entity_Service {
 				add_post_meta( $post_id, self::ALTERNATIVE_LABEL_META_KEY, (string) $alt_label );
 			}
 		}
-
 	}
 
 	public function append_alternative_labels( $post_id, $labels_to_append ) {
@@ -348,7 +345,6 @@ class Wordlift_Entity_Service {
 		$merged_labels = array_merge( $merged_labels, $labels_to_append );
 
 		$this->set_alternative_labels( $post_id, $merged_labels );
-
 	}
 
 	/**
@@ -420,11 +416,10 @@ class Wordlift_Entity_Service {
 
 			echo wp_kses( $this->get_alternative_label_input( $alt_label ), Wordlift_UI_Service::get_template_allowed_html() );
 
-		};
+		}
 
 		// Print the button.
 		Wordlift_UI_Service::print_button( 'wl-add-alternative-labels-button', __( 'Add more titles', 'wordlift' ) );
-
 	}
 
 	public function get_uri( $object_id, $type = Object_Type_Enum::POST ) {
@@ -433,7 +428,7 @@ class Wordlift_Entity_Service {
 		$dataset_uri     = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
 
 		if ( ! isset( $entity_id ) ||
-			 ( ! empty( $dataset_uri ) && 0 !== strpos( $entity_id, $dataset_uri ) ) ) {
+			( ! empty( $dataset_uri ) && 0 !== strpos( $entity_id, $dataset_uri ) ) ) {
 			$rel_uri = Entity_Uri_Generator::create_uri( $type, $object_id );
 			try {
 				$content_service->set_entity_id( new Wordpress_Content_Id( $object_id, $type ), $rel_uri );
@@ -626,5 +621,4 @@ class Wordlift_Entity_Service {
 
 		return apply_filters( 'wl_valid_entity_post_types', $post_types );
 	}
-
 }

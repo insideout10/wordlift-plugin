@@ -17,7 +17,6 @@ class Wordlift_PrimaShop_Adapter {
 		// Tell WP (and PrimaShop) that we support the *prima-layout-settings*. This will display the Content Settings
 		// in the entity edit page.
 		add_post_type_support( Wordlift_Entity_Service::TYPE_NAME, 'prima-layout-settings' );
-
 	}
 
 	/**
@@ -34,5 +33,4 @@ class Wordlift_PrimaShop_Adapter {
 
 		return apply_filters( 'prima_metabox_post_header_args', $meta, 'post' );
 	}
-
 }

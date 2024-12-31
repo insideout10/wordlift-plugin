@@ -8,8 +8,8 @@
 
 namespace Wordlift\Vocabulary_Terms\Jsonld;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Term_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Term_Content_Service;
 use Wordlift\Relation\Relation;
 use Wordlift\Relation\Relations;
 use WP_Taxonomy;
@@ -94,7 +94,7 @@ class Post_Jsonld {
 					 * @var WP_Term $term
 					 */
 					if ( Wordpress_Term_Content_Service::get_instance()
-													  ->get_entity_id( Wordpress_Content_Id::create_term( $term->term_id ) )
+														->get_entity_id( Wordpress_Content_Id::create_term( $term->term_id ) )
 					) {
 						return new Relation(
 							Wordpress_Content_Id::create_post( $post_id ),
@@ -108,7 +108,6 @@ class Post_Jsonld {
 				$terms
 			)
 		);
-
 	}
 
 	/**
@@ -122,12 +121,10 @@ class Post_Jsonld {
 			function ( $term_relation ) {
 				return array(
 					'@id' => Wordpress_Term_Content_Service::get_instance()
-															  ->get_entity_id( $term_relation->get_object() ),
+																->get_entity_id( $term_relation->get_object() ),
 				);
 			},
 			$term_relations
 		);
-
 	}
-
 }

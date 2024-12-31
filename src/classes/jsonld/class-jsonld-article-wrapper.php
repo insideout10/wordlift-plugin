@@ -75,8 +75,8 @@ class Jsonld_Article_Wrapper {
 		}
 
 		if ( Jsonld_Context_Enum::PAGE !== $context
-			 // Returns true for "1", "true", "on" and "yes". Returns false otherwise.
-			 && ! filter_input( INPUT_GET, 'article_wrapper', FILTER_VALIDATE_BOOLEAN ) ) {
+			// Returns true for "1", "true", "on" and "yes". Returns false otherwise.
+			&& ! filter_input( INPUT_GET, 'article_wrapper', FILTER_VALIDATE_BOOLEAN ) ) {
 			return $jsonld;
 		}
 
@@ -137,7 +137,6 @@ class Jsonld_Article_Wrapper {
 			}
 			$jsonld[] = $author_data;
 		}
-
 	}
 
 	/**
@@ -192,7 +191,6 @@ class Jsonld_Article_Wrapper {
 			$reference_infos,
 			new Relations()
 		);
-
 	}
 
 	private function is_author_entity_present_in_graph( $jsonld, $author_entity_id ) {
@@ -205,5 +203,4 @@ class Jsonld_Article_Wrapper {
 
 		return false;
 	}
-
 }

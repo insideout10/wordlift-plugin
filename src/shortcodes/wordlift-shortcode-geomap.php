@@ -20,7 +20,6 @@ function wl_shortcode_geomap_ajax() {
 		: wl_shortcode_geomap_ajax_all_posts() );
 
 	wl_core_send_json( wl_shortcode_geomap_format_results( $map_data, $post_id ) );
-
 }
 
 function wl_shortcode_geomap_ajax_all_posts() {

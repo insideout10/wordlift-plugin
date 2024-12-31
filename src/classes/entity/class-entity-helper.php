@@ -28,7 +28,6 @@ class Entity_Helper {
 
 		$this->entity_uri_service = $entity_uri_service;
 		$this->entity_service     = $entity_service;
-
 	}
 
 	private static $instance;
@@ -84,5 +83,4 @@ class Entity_Helper {
 
 		return $mappings;
 	}
-
 }

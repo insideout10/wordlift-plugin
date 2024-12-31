@@ -104,5 +104,4 @@ interface Field {
 	 * Returns closing for the wrapper HTML tag.
 	 */
 	public function html_wrapper_close();
-
 }

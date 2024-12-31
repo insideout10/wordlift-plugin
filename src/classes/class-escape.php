@@ -33,5 +33,4 @@ class Escape {
 
 		return implode( ',', $arr );
 	}
-
 }

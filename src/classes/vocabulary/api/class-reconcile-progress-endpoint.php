@@ -7,7 +7,6 @@
 namespace Wordlift\Vocabulary\Api;
 
 use Wordlift\Vocabulary\Analysis_Background_Service;
-use Wordlift\Vocabulary\Terms_Compat;
 
 /**
  * This endpoint is used to obtain the reconcile progress, number of tags accepted / total number of tags.
@@ -27,9 +26,9 @@ class Reconcile_Progress_Endpoint {
 	public function progress() {
 
 		$total_tags = count(
-			Terms_Compat::get_terms(
-				Terms_Compat::get_public_taxonomies(),
+			get_terms(
 				array(
+					'taxonomy'   => get_taxonomies( array( 'public' => true ) ),
 					'hide_empty' => false,
 					'fields'     => 'ids',
 					'meta_query' => array(
@@ -44,9 +43,9 @@ class Reconcile_Progress_Endpoint {
 		);
 
 		$completed = count(
-			Terms_Compat::get_terms(
-				Terms_Compat::get_public_taxonomies(),
+			get_terms(
 				array(
+					'taxonomy'   => get_taxonomies( array( 'public' => true ) ),
 					'hide_empty' => false,
 					'fields'     => 'ids',
 					'meta_query' => array(
@@ -79,5 +78,4 @@ class Reconcile_Progress_Endpoint {
 			)
 		);
 	}
-
 }

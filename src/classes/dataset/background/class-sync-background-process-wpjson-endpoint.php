@@ -21,7 +21,6 @@ class Sync_Background_Process_Wpjson_Endpoint {
 		add_action( 'rest_api_init', array( $this, 'rest_api_init' ) );
 
 		$this->sync_background_process = $sync_background_process;
-
 	}
 
 	public function rest_api_init() {
@@ -81,7 +80,5 @@ class Sync_Background_Process_Wpjson_Endpoint {
 				},
 			)
 		);
-
 	}
-
 }

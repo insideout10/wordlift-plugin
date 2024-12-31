@@ -25,6 +25,5 @@ class Wordlift_Install_3_42_0 extends Wordlift_Install {
 			WHERE length( about_jsonld ) <= 2
 		"
 		);
-
 	}
 }

@@ -75,7 +75,5 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 			'target'      => $search_url,
 			'query-input' => 'required name=search_term_string',
 		);
-
 	}
-
 }

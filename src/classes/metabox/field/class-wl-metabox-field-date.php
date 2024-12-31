@@ -64,7 +64,6 @@ class Wl_Metabox_Field_Date extends Wl_Metabox_Field {
 			$this->date_format = 'Y/m/d';
 			$this->timepicker  = false;
 		}
-
 	}
 
 	/**
@@ -135,5 +134,4 @@ class Wl_Metabox_Field_Date extends Wl_Metabox_Field {
 
 		return $html;
 	}
-
 }

@@ -74,7 +74,5 @@ class Wordlift_Install_3_14_0 extends Wordlift_Install {
 			$editors->add_cap( 'delete_published_wordlift_entities' );
 			$editors->add_cap( 'delete_private_wordlift_entities' );
 		}
-
 	}
-
 }

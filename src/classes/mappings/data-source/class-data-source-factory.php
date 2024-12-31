@@ -50,5 +50,4 @@ class Data_Source_Factory {
 
 		return self::$instance;
 	}
-
 }

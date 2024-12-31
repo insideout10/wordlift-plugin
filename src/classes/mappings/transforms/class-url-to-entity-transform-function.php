@@ -36,7 +36,6 @@ class Url_To_Entity_Transform_Function implements Mappings_Transform_Function {
 		$this->entity_uri_service = $entity_uri_service;
 
 		add_filter( 'wl_mappings_transformation_functions', array( $this, 'wl_mappings_transformation_functions' ) );
-
 	}
 
 	/**
@@ -86,5 +85,4 @@ class Url_To_Entity_Transform_Function implements Mappings_Transform_Function {
 
 		return array( '@id' => $data );
 	}
-
 }

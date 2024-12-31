@@ -43,12 +43,10 @@ class Shipping_Method {
 			default:
 				return new self( $wc_shipping_method );
 		}
-
 	}
 
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function add_available_delivery_method( &$jsonld ) {
-
 	}
 
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
@@ -66,7 +64,6 @@ class Shipping_Method {
 		if ( $currency && $currency === $shipping_rate['currency'] ) {
 			$offer_shipping_details['shippingRate'][] = $shipping_rate;
 		}
-
 	}
 
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
@@ -81,10 +78,10 @@ class Shipping_Method {
 		$option = get_option( 'wpsso_options' );
 
 		if ( empty( $option[ "{$prefix}_unit_code" ] )
-			 || ! isset( $option[ "{$prefix}_minimum" ] )
-			 || ! isset( $option[ "{$prefix}_maximum" ] )
-			 || ! is_numeric( $option[ "{$prefix}_minimum" ] )
-			 || ! is_numeric( $option[ "{$prefix}_maximum" ] ) ) {
+			|| ! isset( $option[ "{$prefix}_minimum" ] )
+			|| ! isset( $option[ "{$prefix}_maximum" ] )
+			|| ! is_numeric( $option[ "{$prefix}_minimum" ] )
+			|| ! is_numeric( $option[ "{$prefix}_maximum" ] ) ) {
 			return;
 		}
 
@@ -102,7 +99,6 @@ class Shipping_Method {
 			'minValue' => intval( $minimum ),
 			'maxValue' => intval( $maximum ),
 		);
-
 	}
 
 	protected function change_to_manual_currency( &$shipping_rate ) {
@@ -130,7 +126,6 @@ class Shipping_Method {
 		$currency_codes = array_keys( $currencies );
 
 		$this->set_value_with_currency_codes( $shipping_rate, $instance, $currency_codes );
-
 	}
 
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
@@ -167,8 +162,7 @@ class Shipping_Method {
 
 	public static function wcml_requirements() {
 		return class_exists( 'WCML_Multi_Currency' )
-			   && function_exists( 'wcml_is_multi_currency_on' )
-			   && wcml_is_multi_currency_on();
+				&& function_exists( 'wcml_is_multi_currency_on' )
+				&& wcml_is_multi_currency_on();
 	}
-
 }

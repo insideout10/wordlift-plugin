@@ -91,7 +91,7 @@ if ( isset( $_POST['wordlift_videoobject_settings_nonce'] ) && wp_verify_nonce( 
 	<?php $wl_is_sitemap_enabled = esc_attr( get_option( '_wl_video_sitemap_generation', false ) ? 'checked' : '' ); ?>
 	<p> <?php esc_html_e( 'Enable Video Sitemap', 'wordlift' ); ?>
 		<input type="checkbox" name="wl_enable_video_sitemap"
-			   value="1" <?php echo esc_html( $wl_is_sitemap_enabled ); ?> ></p>
+				value="1" <?php echo esc_html( $wl_is_sitemap_enabled ); ?> ></p>
 	<p>
 		<?php
 		if ( $wl_is_sitemap_enabled ) {
@@ -103,7 +103,7 @@ if ( isset( $_POST['wordlift_videoobject_settings_nonce'] ) && wp_verify_nonce( 
 	</p>
 	<?php wp_nonce_field( 'wordlift_videoobject_settings', 'wordlift_videoobject_settings_nonce', false ); ?>
 	<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary"
-							 value="Save Changes">
+							value="Save Changes">
 	</p>
 </form>
 

@@ -187,10 +187,10 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		// Check if this is a query for our entity type, that no terms have been found and that we have an article
 		// term to preset in case.
 		if ( ! taxonomy_exists( $entity_type )
-			 || array( $entity_type ) !== (array) $taxonomies
-			 || ! empty( $terms )
-			 || ! term_exists( 'article', $entity_type )
-			 || ! term_exists( 'thing', $entity_type ) ) {
+			|| array( $entity_type ) !== (array) $taxonomies
+			|| ! empty( $terms )
+			|| ! term_exists( 'article', $entity_type )
+			|| ! term_exists( 'thing', $entity_type ) ) {
 
 			// Return the input value.
 			return $terms;
@@ -232,5 +232,4 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 
 		return $exclude;
 	}
-
 }

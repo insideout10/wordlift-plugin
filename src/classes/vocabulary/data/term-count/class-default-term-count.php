@@ -4,7 +4,6 @@ namespace Wordlift\Vocabulary\Data\Term_Count;
 
 use Wordlift\Vocabulary\Analysis_Background_Service;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
-use Wordlift\Vocabulary\Terms_Compat;
 
 /**
  * This class is used for getting default term count without cache.
@@ -22,9 +21,9 @@ class Default_Term_Count implements Term_Count {
 	 */
 	public function get_term_count() {
 		return count(
-			Terms_Compat::get_terms(
-				Terms_Compat::get_public_taxonomies(),
+			get_terms(
 				array(
+					'taxonomy'   => get_taxonomies( array( 'public' => true ) ),
 					'hide_empty' => false,
 					'fields'     => 'ids',
 					'meta_query' => array(
@@ -40,7 +39,5 @@ class Default_Term_Count implements Term_Count {
 				)
 			)
 		);
-
 	}
-
 }

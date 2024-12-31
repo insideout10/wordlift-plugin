@@ -42,5 +42,4 @@ class Sync_Term_Adapter extends Abstract_Sync_Object_Adapter {
 	public function get_value( $key ) {
 		// @@todo
 	}
-
 }

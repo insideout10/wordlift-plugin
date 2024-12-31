@@ -18,5 +18,4 @@ class Edit_Screen_Setting {
 		$settings['analysis']['isNoEditorAnalysisActive'] = No_Editor_Analysis_Feature::can_no_editor_analysis_be_used( get_the_ID() );
 		return $settings;
 	}
-
 }

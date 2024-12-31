@@ -341,5 +341,4 @@ final class Mappings_DBO {
 
 		return $this->wpdb->delete( $property_table_name, array( 'property_id' => $property_id ) );
 	}
-
 }

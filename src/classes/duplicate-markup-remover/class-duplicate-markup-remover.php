@@ -51,8 +51,8 @@ class Duplicate_Markup_Remover {
 	 */
 	protected function should_alter_jsonld( $jsonld ) {
 		return ! is_array( $jsonld )
-			   || ! count( $jsonld ) > 1
-			   || ! array_key_exists( 0, $jsonld );
+				|| ! count( $jsonld ) > 1
+				|| ! array_key_exists( 0, $jsonld );
 	}
 
 	/**
@@ -110,5 +110,4 @@ class Duplicate_Markup_Remover {
 
 		return $jsonld;
 	}
-
 }

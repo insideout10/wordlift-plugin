@@ -13,5 +13,4 @@ class Video_Storage_Factory {
 	public static function get_storage() {
 		return new Meta_Storage();
 	}
-
 }

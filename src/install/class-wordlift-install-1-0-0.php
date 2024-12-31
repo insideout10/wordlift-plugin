@@ -143,7 +143,6 @@ class Wordlift_Install_1_0_0 extends Wordlift_Install {
 		// @see: https://codex.wordpress.org/Creating_Tables_with_Plugins
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
-
 	}
 
 	/**
@@ -165,7 +164,6 @@ class Wordlift_Install_1_0_0 extends Wordlift_Install {
 
 			$configuration_service->get_remote_dataset_uri( $key );
 		}
-
 	}
 
 	/**
@@ -199,5 +197,4 @@ class Wordlift_Install_1_0_0 extends Wordlift_Install {
 		// Finally return the term id.
 		return $maybe_term['term_id'];
 	}
-
 }

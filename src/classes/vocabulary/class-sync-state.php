@@ -55,5 +55,4 @@ class Sync_State {
 
 		return new self( time(), 0, 0, time(), 'unknown' );
 	}
-
 }

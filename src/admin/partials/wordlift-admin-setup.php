@@ -55,7 +55,7 @@
 	wp_print_styles();
 	wp_print_scripts();
 
-	for ( $i = 1; $i <= 6; $i ++ ) {
+	for ( $i = 1; $i <= 6; $i++ ) {
 		include 'admin-setup/step-' . $i . '.php';
 	}
 	?>
@@ -65,14 +65,14 @@
 <div class="wl-container">
 
 	<a href="<?php echo esc_url( admin_url() ); ?>"
-	   class="fa fa-times wl-close"></a>
+		class="fa fa-times wl-close"></a>
 
 	<header>
 		<h1><img class="wizard-logo"
-				 src="<?php echo esc_attr( plugin_dir_url( dirname( __DIR__ ) ) . 'images/logo-wl-transparent-240x90.png' ); ?>"/>
+				src="<?php echo esc_attr( plugin_dir_url( dirname( __DIR__ ) ) . 'images/logo-wl-transparent-240x90.png' ); ?>"/>
 		</h1>
 		<img class="shapes"
-			 src="<?php echo esc_attr( plugin_dir_url( dirname( __DIR__ ) ) . 'images/shapes.png' ); ?>"/>
+			src="<?php echo esc_attr( plugin_dir_url( dirname( __DIR__ ) ) . 'images/shapes.png' ); ?>"/>
 	</header>
 
 

@@ -20,9 +20,7 @@ abstract class Edit_Post_Loader {
 		if ( 'post.php' === $hook || 'post-new.php' === $hook ) {
 			$this->run_on_edit_post_screen();
 		}
-
 	}
 
 	abstract public function run_on_edit_post_screen();
-
 }

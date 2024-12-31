@@ -41,5 +41,4 @@ abstract class Abstract_Autocomplete_Service implements Autocomplete_Service {
 			}
 		);
 	}
-
 }

@@ -8,8 +8,8 @@
  * @package Wordlift
  */
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\Jsonld\Reference;
 use Wordlift\Relation\Relations;
 

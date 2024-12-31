@@ -60,7 +60,6 @@ class Wordlift_Schemaorg_Class_Service {
 		add_action( 'wp_ajax_wl_schemaorg_class', array( $this, 'schemaorg_class' ) );
 
 		self::$instance = $this;
-
 	}
 
 	/**
@@ -93,7 +92,12 @@ class Wordlift_Schemaorg_Class_Service {
 
 		// Since we want to be compatible with WP 4.4, we use the pre-4.5.0 style when
 		// calling `get_terms`.
-		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'get' => 'all' ) );
+		$terms = get_terms(
+			array(
+				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+				'get'      => 'all',
+			)
+		);
 
 		// PHP 5.3 compat.
 		$name_meta_key      = self::NAME_META_KEY;
@@ -133,14 +137,11 @@ class Wordlift_Schemaorg_Class_Service {
 						)
 					),
 				);
-
 			},
 			$terms
 		);
 
 		// Finally send the data.
 		wp_send_json_success( array( 'schemaClasses' => $json ) );
-
 	}
-
 }

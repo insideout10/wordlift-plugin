@@ -25,7 +25,6 @@ class Recipe_Maker_Post_Type_Hook {
 		);
 
 		add_filter( 'wl_valid_entity_post_types', array( $this, 'add_post_type' ) );
-
 	}
 
 	public function add_post_type( $post_types ) {

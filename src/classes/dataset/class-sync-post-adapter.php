@@ -71,5 +71,4 @@ class Sync_Post_Adapter extends Abstract_Sync_Object_Adapter {
 			)
 		);
 	}
-
 }

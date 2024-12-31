@@ -10,7 +10,7 @@
 
 namespace Wordlift\Analysis\Entity_Provider;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 
 class Post_Entity_Provider implements Entity_Provider {
 
@@ -68,5 +68,4 @@ class Post_Entity_Provider implements Entity_Provider {
 			'images'      => $images,
 		);
 	}
-
 }

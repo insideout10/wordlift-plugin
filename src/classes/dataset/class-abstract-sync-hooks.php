@@ -10,7 +10,6 @@ abstract class Abstract_Sync_Hooks {
 
 		// To sync at the end of the usual WordPress lifecycle
 		add_action( 'shutdown', array( $this, 'shutdown' ) );
-
 	}
 
 	protected function enqueue( $item ) {
@@ -18,7 +17,6 @@ abstract class Abstract_Sync_Hooks {
 		if ( empty( $this->queue ) || $item !== $this->queue[ count( $this->queue ) - 1 ] ) {
 			$this->queue[] = $item;
 		}
-
 	}
 
 	public function shutdown() {
@@ -26,5 +24,4 @@ abstract class Abstract_Sync_Hooks {
 			call_user_func( array( $this, $callback[0] ), $callback[1] );
 		}
 	}
-
 }

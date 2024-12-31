@@ -16,5 +16,4 @@ class Wordlift_Install_3_52_1 extends Wordlift_Install {
 		// Since we're fixing JSON-LDs better flush them all.
 		Ttl_Cache::flush_all();
 	}
-
 }

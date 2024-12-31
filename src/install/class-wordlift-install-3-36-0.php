@@ -22,5 +22,4 @@ class Wordlift_Install_3_36_0 extends Wordlift_Install {
 			do_action( 'wl_install_and_activate_advanced-custom-fields-for-schema-org' );
 		}
 	}
-
 }

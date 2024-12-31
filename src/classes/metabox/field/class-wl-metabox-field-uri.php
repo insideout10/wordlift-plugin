@@ -94,6 +94,8 @@ class Wl_Metabox_Field_uri extends Wl_Metabox_Field {
 		}
 
 		// Try looking for an entity by title, get any potential candidate.
+		// We're aiming at WP 5.3+
+        // phpcs:ignore WordPress.WP.DeprecatedFunctions.get_page_by_titleFound
 		$candidate = get_page_by_title( $value, OBJECT, Wordlift_Entity_Service::valid_entity_post_types() );
 
 		// If a candidate has been found and it's an entity.
@@ -180,5 +182,4 @@ class Wl_Metabox_Field_uri extends Wl_Metabox_Field {
 
 		return $html;
 	}
-
 }

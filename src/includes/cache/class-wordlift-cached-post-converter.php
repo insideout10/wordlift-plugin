@@ -71,7 +71,6 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		$this->cache     = $cache;
 		$this->converter = $converter;
 		$this->init_hooks();
-
 	}
 
 	/**
@@ -133,7 +132,6 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		// Invalid cache on relationship change.
 		add_action( 'wl_relation_added', array( $this, 'relation_changed' ) );
 		add_action( 'wl_relation_deleted', array( $this, 'relation_changed' ) );
-
 	}
 
 	/**
@@ -260,7 +258,6 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 				'relations'  => $relations,
 			)
 		);
-
 	}
 
 	/**
@@ -277,7 +274,6 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		$this->cache->delete( $post_id );
 
 		$this->flush_cache_if_publisher( $post_id );
-
 	}
 
 	/**
@@ -305,7 +301,6 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 
 		// Flush the cache if it's the publisher.
 		$this->flush_cache_if_publisher( $post_id );
-
 	}
 
 	/**
@@ -359,7 +354,6 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		}
 
 		header( "X-WordLift-JsonLd-Cache-$post_id: " . ( $cache ? 'HIT' : 'MISS' ) );
-
 	}
 
 	/**
@@ -379,7 +373,5 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 
 		// Flush the cache, since the publisher has changed.
 		$this->cache->flush();
-
 	}
-
 }

@@ -46,5 +46,4 @@ abstract class Wordlift_Storage {
 
 		return $values[0];
 	}
-
 }

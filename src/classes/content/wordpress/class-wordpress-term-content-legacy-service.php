@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Content\Wordpress;
+namespace Wordlift\Content\WordPress;
 
 use Exception;
 use Wordlift\Assertions;
@@ -122,5 +122,4 @@ class Wordpress_Term_Content_Legacy_Service extends Abstract_Wordpress_Content_L
 	public function supports( $content_id ) {
 		return $content_id->get_type() === Object_Type_Enum::TERM;
 	}
-
 }

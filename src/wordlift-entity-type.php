@@ -12,7 +12,6 @@ function wl_set_entity_main_type( $post_id, $type_uri ) {
 
 	Wordlift_Entity_Type_Service::get_instance()
 								->set( $post_id, $type_uri );
-
 }
 
 /**
@@ -20,7 +19,12 @@ function wl_set_entity_main_type( $post_id, $type_uri ) {
  */
 function wl_print_entity_type_inline_js() {
 
-	$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'get' => 'all' ) );
+	$terms = get_terms(
+		array(
+			'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+			'get'      => 'all',
+		)
+	);
 
 	// Load the type data.
 	$schema_service = Wordlift_Schema_Service::get_instance();
@@ -53,7 +57,6 @@ function wl_print_entity_type_inline_js() {
 
 	// Hook to the Classic Editor script, see Wordlift_Admin_Post_Edit_Page.
 	wp_localize_script( 'wl-classic-editor', '_wlEntityTypes', $entity_types );
-
 }
 
 // Allow Classic and Block Editor scripts to register first.

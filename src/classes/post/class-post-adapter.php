@@ -14,7 +14,7 @@
 
 namespace Wordlift\Post;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\Entity\Entity_Store;
 use Wordlift_Entity_Uri_Service;
 
@@ -39,7 +39,6 @@ class Post_Adapter {
 
 		add_action( 'init', array( $this, 'init' ) );
 		add_filter( 'wp_insert_post_data', array( $this, 'wp_insert_post_data' ), 10 );
-
 	}
 
 	/**
@@ -57,7 +56,6 @@ class Post_Adapter {
 				),
 			)
 		);
-
 	}
 
 	/**
@@ -109,7 +107,7 @@ class Post_Adapter {
 				$entity_uris = $this->get_entity_uris( $entity );
 
 				if ( $this->get_first_matching_entity_by_uri( $entity_uris ) === null &&
-					 Post_Entities_Validator::is_local_entity_uri_exist( Wordlift_Entity_Uri_Service::get_instance(), $entity_uris ) ) {
+					Post_Entities_Validator::is_local_entity_uri_exist( Wordlift_Entity_Uri_Service::get_instance(), $entity_uris ) ) {
 					// Skip the entity
 					continue;
 				}
@@ -227,7 +225,7 @@ class Post_Adapter {
 				// Bail out if occurrences->$item->text isn't set or its contents are already
 				// in `$carry`.
 				if ( ! isset( $annotations[ $item ]['text'] )
-				 || in_array( $annotations[ $item ]['text'], $carry, true ) ) {
+				|| in_array( $annotations[ $item ]['text'], $carry, true ) ) {
 					return $carry;
 				}
 
@@ -393,5 +391,4 @@ class Post_Adapter {
 	private function entity_id_valid( $entity_id ) {
 		return preg_match( '#^https?://#i', $entity_id ) === 1;
 	}
-
 }

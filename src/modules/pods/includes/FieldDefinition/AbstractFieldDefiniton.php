@@ -3,7 +3,6 @@
 namespace Wordlift\Modules\Pods\FieldDefinition;
 
 use Wordlift\Modules\Pods\Context;
-use Wordlift\Vocabulary\Terms_Compat;
 
 abstract class AbstractFieldDefiniton implements FieldDefinition {
 	/**
@@ -176,7 +175,7 @@ abstract class AbstractFieldDefiniton implements FieldDefinition {
 	}
 
 	protected function register_on_all_supported_taxonomies() {
-		$taxonomies = Terms_Compat::get_public_taxonomies();
+		$taxonomies = get_taxonomies( array( 'public' => true ) );
 		foreach ( $taxonomies as $taxonomy ) {
 			$this->register_pod( $taxonomy, 'taxonomy' );
 

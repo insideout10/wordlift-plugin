@@ -42,7 +42,6 @@ class Wordlift_Postid_To_Jsonld_Converter implements Wordlift_Post_Converter {
 
 		$this->entity_post_to_jsonld_converter = $entity_post_to_jsonld_converter;
 		$this->post_to_jsonld_converter        = $post_to_jsonld_converter;
-
 	}
 
 	/**
@@ -67,5 +66,4 @@ class Wordlift_Postid_To_Jsonld_Converter implements Wordlift_Post_Converter {
 			// Post/Page.
 			: $this->post_to_jsonld_converter->convert( $post_id, $references, $references_infos, $relations );
 	}
-
 }

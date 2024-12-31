@@ -51,7 +51,6 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 
 		// Child elements.
 		$this->select_element = $select_element;
-
 	}
 
 	/**
@@ -139,5 +138,4 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 		// Finally return the element instance.
 		return $this;
 	}
-
 }

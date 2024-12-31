@@ -30,7 +30,6 @@ class Wordlift_Related_Entities_Cloud_Widget extends Wordlift_Widget {
 				'description' => __( 'Display entities related to the current post/entity in a tag cloud.', 'wordlift' ),
 			)
 		);
-
 	}
 
 	/**
@@ -47,9 +46,9 @@ class Wordlift_Related_Entities_Cloud_Widget extends Wordlift_Widget {
 				?>
 			</label>
 			<input type="text" class="widefat"
-				   id="<?php echo esc_attr( $title_id ); ?>"
-				   name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>"
-				   value="<?php echo esc_attr( $instance['title'] ); ?>"/>
+					id="<?php echo esc_attr( $title_id ); ?>"
+					name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>"
+					value="<?php echo esc_attr( $instance['title'] ); ?>"/>
 		</p>
 
 		<?php
@@ -114,7 +113,5 @@ class Wordlift_Related_Entities_Cloud_Widget extends Wordlift_Widget {
 		);
 
 		echo wp_kses( $args['after_widget'], wp_kses_allowed_html( 'post' ) );
-
 	}
-
 }

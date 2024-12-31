@@ -4,8 +4,8 @@ namespace Wordlift\Relation;
 
 use Wordlift\Assertions;
 use Wordlift\Content\Content;
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 
 class Relation_Service extends Abstract_Relation_Service {
 
@@ -15,7 +15,6 @@ class Relation_Service extends Abstract_Relation_Service {
 	private $delegates = array();
 
 	protected function __construct() {
-
 	}
 
 	private static $instance = null;
@@ -90,7 +89,5 @@ class Relation_Service extends Abstract_Relation_Service {
 				$uris
 			)
 		);
-
 	}
-
 }

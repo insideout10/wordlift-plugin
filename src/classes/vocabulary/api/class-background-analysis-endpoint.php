@@ -141,5 +141,4 @@ class Background_Analysis_Endpoint {
 
 		return true;
 	}
-
 }

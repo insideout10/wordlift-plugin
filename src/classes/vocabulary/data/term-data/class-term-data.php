@@ -14,5 +14,4 @@ interface Term_Data {
 	 * @return array
 	 */
 	public function get_data();
-
 }

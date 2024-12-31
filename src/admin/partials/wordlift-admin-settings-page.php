@@ -33,7 +33,7 @@ $current_tab = ( in_array( $input_tab, $valid_tabs, true ) )
 	<h2><?php esc_html_e( 'WordLift Settings', 'wordlift' ); ?></h2>
 	<h2 class="nav-tab-wrapper">
 		<a class="nav-tab<?php echo 'general' === $current_tab ? ' nav-tab-active' : ''; ?>"
-		   href="<?php echo esc_html( admin_url( 'admin.php?page=wl_configuration_admin_menu' ) ); ?>"><?php echo esc_html( __( 'General', 'wordlift' ) ); ?></a>
+			href="<?php echo esc_html( admin_url( 'admin.php?page=wl_configuration_admin_menu' ) ); ?>"><?php echo esc_html( __( 'General', 'wordlift' ) ); ?></a>
 		<?php
 		foreach ( $admin_tabs as $admin_tab ) {
 			?>

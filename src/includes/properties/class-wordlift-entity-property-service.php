@@ -43,5 +43,4 @@ class Wordlift_Entity_Property_Service extends Wordlift_Simple_Property_Service 
 
 		return $result;
 	}
-
 }

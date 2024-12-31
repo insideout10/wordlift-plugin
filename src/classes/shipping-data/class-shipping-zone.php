@@ -55,7 +55,6 @@ class Shipping_Zone {
 		$this->country_code     = $country_code;
 
 		$this->load_zone_locations();
-
 	}
 
 	private function load_zone_locations() {
@@ -93,7 +92,6 @@ class Shipping_Zone {
 				default:
 			}
 		}
-
 	}
 
 	private function load_methods() {
@@ -102,7 +100,6 @@ class Shipping_Zone {
 			'Wordlift\Shipping_Data\Shipping_Method::from_wc_shipping_method',
 			$this->wc_shipping_zone->get_shipping_methods( true )
 		);
-
 	}
 
 	public function add_available_delivery_method( &$jsonld ) {
@@ -112,7 +109,6 @@ class Shipping_Zone {
 		foreach ( $this->methods as $method ) {
 			$method->add_available_delivery_method( $jsonld );
 		}
-
 	}
 
 	/**
@@ -137,7 +133,6 @@ class Shipping_Zone {
 				$this->add_shipping_details_with_shipping_method( $jsonld, $product, $method );
 			}
 		}
-
 	}
 
 	/**
@@ -205,7 +200,6 @@ class Shipping_Zone {
 		}
 
 		$jsonld['shippingDetails'][] = $offer_shipping_details;
-
 	}
 
 	private function make_sure_shipping_details_exists_and_it_is_an_array( &$jsonld ) {
@@ -215,10 +209,9 @@ class Shipping_Zone {
 		}
 
 		if ( ! is_array( $jsonld['shippingDetails'] ) ||
-			 ( ! empty( $jsonld['shippingDetails'] ) && ! is_numeric( key( $jsonld['shippingDetails'] ) ) ) ) {
+			( ! empty( $jsonld['shippingDetails'] ) && ! is_numeric( key( $jsonld['shippingDetails'] ) ) ) ) {
 			$jsonld['shippingDetails'] = array( $jsonld['shippingDetails'] );
 		}
-
 	}
 
 	private function add_shipping_destination( &$shipping_details ) {
@@ -238,7 +231,6 @@ class Shipping_Zone {
 		$this->add_postal_code_range( $shipping_destination );
 
 		$shipping_details['shippingDestination'] = $shipping_destination;
-
 	}
 
 	private function add_address_region( &$shipping_destination ) {
@@ -248,7 +240,6 @@ class Shipping_Zone {
 		}
 
 		$shipping_destination['addressRegion'] = $this->regions;
-
 	}
 
 	private function add_postal_code( &$shipping_destination ) {
@@ -258,7 +249,6 @@ class Shipping_Zone {
 		}
 
 		$shipping_destination['postalCode'] = $this->postal_codes;
-
 	}
 
 	private function add_postal_code_prefix( &$shipping_destination ) {
@@ -270,7 +260,6 @@ class Shipping_Zone {
 		foreach ( $this->postal_code_prefixes as $postal_code_prefix ) {
 			$shipping_destination['postalCodePrefix'][] = substr( $postal_code_prefix, 0, - 1 );
 		}
-
 	}
 
 	private function add_postal_code_range( &$shipping_destination ) {
@@ -288,7 +277,6 @@ class Shipping_Zone {
 				'postalCodeEnd'   => $range[1],
 			);
 		}
-
 	}
 
 	public static function from_wc_shipping_zone( $wc_shipping_zone, $country_code = null ) {
@@ -301,7 +289,7 @@ class Shipping_Zone {
 		$wpsso_options = get_option( 'wpsso_options' );
 
 		if ( empty( $wpsso_options['wcsdt_shipdept_cutoff'] )
-			 || empty( $wpsso_options['wcsdt_shipdept_timezone'] ) ) {
+			|| empty( $wpsso_options['wcsdt_shipdept_timezone'] ) ) {
 			return;
 		}
 
@@ -315,7 +303,6 @@ class Shipping_Zone {
 
 			$shipping_delivery_time['cutOffTime'] = "{$cutoff_time}{$offset}";
 		}
-
 	}
 
 	private function add_business_days( &$shipping_delivery_time ) {
@@ -343,7 +330,5 @@ class Shipping_Zone {
 				'dayOfWeek' => $day_of_week,
 			);
 		}
-
 	}
-
 }

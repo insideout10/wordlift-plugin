@@ -45,9 +45,8 @@ class Wordlift_I18n {
 		load_plugin_textdomain(
 			$this->domain,
 			false,
-			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
+			dirname( plugin_basename( __FILE__ ), 2 ) . '/languages/'
 		);
-
 	}
 
 	/**
@@ -59,5 +58,4 @@ class Wordlift_I18n {
 	public function set_domain( $domain ) {
 		$this->domain = $domain;
 	}
-
 }

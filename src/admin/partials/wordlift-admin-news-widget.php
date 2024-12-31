@@ -9,13 +9,13 @@ $articles = $this->get_last_wordlift_articles(); ?>
 			?>
 			<div>
 				<a target="_blank"
-				   href="<?php echo esc_url( $item['post_url'] ); ?>"><?php echo esc_html( $item['post_title'] ); ?></a>
+					href="<?php echo esc_url( $item['post_url'] ); ?>"><?php echo esc_html( $item['post_title'] ); ?></a>
 				<p><?php echo wp_kses( $item['post_description'], wp_kses_allowed_html( 'post' ) ); ?></p>
 			</div>
 		<?php } ?>
 	<?php } ?>
 	<div>
 		<a href="#" id="max_posts_count_3"
-		   class="wl_more_posts"><?php echo esc_html__( 'More posts', 'wordlift' ); ?></a>
+			class="wl_more_posts"><?php echo esc_html__( 'More posts', 'wordlift' ); ?></a>
 	</div>
 </div>

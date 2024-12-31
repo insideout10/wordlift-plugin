@@ -256,14 +256,14 @@ if ( ! empty( $top_entities ) ) {
 				<div><a href="<?php echo esc_attr( $permalink ); ?>"><?php echo esc_html( $post_title ); ?></a></div>
 				<div>
 					<div class="wl-dashboard__bar wl-dashboard__bar--posts"
-						 style="width: <?php echo esc_attr( $posts_100 ); ?>%;">
+						style="width: <?php echo esc_attr( $posts_100 ); ?>%;">
 					</div>
 					<div class="wl-dashboard__bar wl-dashboard__bar--entities"
-						 style="width: <?php echo esc_attr( $entities_100 ); ?>%;">
+						style="width: <?php echo esc_attr( $entities_100 ); ?>%;">
 					</div>
 				</div>
 				<?php
-				if ( 4 === $i ++ ) {
+				if ( 4 === $i++ ) {
 					?>
 					<input id="wl-dashboard__show-more" type="checkbox">
 					<label for="wl-dashboard__show-more">

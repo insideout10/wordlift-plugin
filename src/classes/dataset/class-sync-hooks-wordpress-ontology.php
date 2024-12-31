@@ -67,5 +67,4 @@ class Sync_Hooks_Wordpress_Ontology {
 
 		return $jsonld;
 	}
-
 }

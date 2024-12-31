@@ -64,5 +64,4 @@ class Wordlift_Batch_Action {
 			$query
 		);
 	}
-
 }

@@ -46,5 +46,4 @@ interface Storage {
 	 * @return true if removed else false.
 	 */
 	public function remove_all_videos( $post_id );
-
 }

@@ -4,7 +4,7 @@ namespace Wordlift\Jsonld;
 
 use Wordlift\Assertions;
 use Wordlift\Content\Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Relations;
 
@@ -82,9 +82,9 @@ class Graph {
 			$references_infos,
 			function ( $item ) {
 				return isset( $item['reference'] ) &&
-					   $item['reference'] instanceof \Wordlift_Property_Entity_Reference &&
-					   // Check that the reference is required
-					   $item['reference']->get_required();
+						$item['reference'] instanceof \Wordlift_Property_Entity_Reference &&
+						// Check that the reference is required
+						$item['reference']->get_required();
 			}
 		);
 
@@ -96,7 +96,6 @@ class Graph {
 			);
 		}
 		return $this;
-
 	}
 
 	/**
@@ -133,7 +132,6 @@ class Graph {
 		}
 
 		return false;
-
 	}
 
 	/**
@@ -157,7 +155,6 @@ class Graph {
 
 		// Filter out the false and empty results.
 		return array_filter( $result );
-
 	}
 
 	/**
@@ -194,5 +191,4 @@ class Graph {
 
 		return current( $this->term_converter->get( $object_id, $context ) );
 	}
-
 }

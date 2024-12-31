@@ -106,5 +106,4 @@ class Sync_Background_Process extends Action_Scheduler_Background_Process {
 	public function get_info() {
 		return $this->state->get_info();
 	}
-
 }

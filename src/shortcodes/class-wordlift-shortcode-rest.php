@@ -77,7 +77,6 @@ abstract class Wordlift_Shortcode_REST {
 			},
 			0
 		);
-
 	}
 
 	abstract public function get_data( $request );
@@ -129,7 +128,6 @@ abstract class Wordlift_Shortcode_REST {
 		$cache->put( $cache_key, $data );
 
 		return $response;
-
 	}
 
 	private function is_endpoint() {
@@ -146,5 +144,4 @@ abstract class Wordlift_Shortcode_REST {
 
 		return false;
 	}
-
 }

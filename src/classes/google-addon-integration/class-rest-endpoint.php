@@ -2,7 +2,7 @@
 
 namespace Wordlift\Google_Addon_Integration;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\Entity\Remote_Entity\Url_To_Remote_Entity_Converter;
 use Wordlift\Entity\Remote_Entity_Importer\Remote_Entity_Importer_Factory;
 
@@ -64,5 +64,4 @@ class Rest_Endpoint {
 			'import_status' => $result ? true : false,
 		);
 	}
-
 }

@@ -54,7 +54,6 @@ class Wordlift_Timeline_Service {
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Timeline_Service' );
 
 		self::$instance = $this;
-
 	}
 
 	/**
@@ -82,7 +81,6 @@ class Wordlift_Timeline_Service {
 
 		// Get the events and transform them for the JSON response, then send them to the client.
 		wp_send_json( $this->to_json( $this->get_events( $post_id ) ) );
-
 	}
 
 	/**
@@ -115,7 +113,7 @@ class Wordlift_Timeline_Service {
 			return array();
 		}
 
-		$this->log->trace( 'Getting events [ entity ids :: ' . join( ', ', $ids ) . ' ]' );
+		$this->log->trace( 'Getting events [ entity ids :: ' . implode( ', ', $ids ) . ' ]' );
 
 		$args = array(
 			'post__in'       => $ids,
@@ -200,7 +198,7 @@ class Wordlift_Timeline_Service {
 
 				// Set the starting slide.
 				// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
-				$event_index ++;
+				$event_index++;
 				// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 				if ( 0 === $start_at_slide && $now >= $start_date && $now <= $end_date ) {
 					// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
@@ -211,7 +209,7 @@ class Wordlift_Timeline_Service {
 				$thumbnail_id = get_post_thumbnail_id( $item->ID );
 				$attachment   = wp_get_attachment_image_src( $thumbnail_id );
 				if ( '' !== (string) $thumbnail_id && 0 !== $thumbnail_id
-					 && false !== $attachment
+					&& false !== $attachment
 				) {
 
 					// Set the thumbnail URL.
@@ -255,7 +253,6 @@ class Wordlift_Timeline_Service {
 				}
 
 				return $date;
-
 			},
 			$posts
 		);
@@ -364,5 +361,4 @@ class Wordlift_Timeline_Service {
 
 		return $entity_ids;
 	}
-
 }

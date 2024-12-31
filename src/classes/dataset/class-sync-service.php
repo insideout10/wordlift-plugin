@@ -262,7 +262,6 @@ class Sync_Service {
 			'/middleware/dataset?uri=' . rawurlencode( $uri ),
 			array( 'Content-Type' => 'application/ld+json' )
 		);
-
 	}
 
 	public function get_batch_size() {
@@ -273,5 +272,4 @@ class Sync_Service {
 	public function delete_all() {
 		$this->api_service->request( 'DELETE', '/middleware/dataset/all' );
 	}
-
 }

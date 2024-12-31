@@ -16,7 +16,7 @@ class Wordlift_Required_Property_Service extends Wordlift_Entity_Property_Servic
 
 				// If this is an entity reference, set that this entity is always required in SD output.
 				if ( $item instanceof Wordlift_Property_Entity_Reference ) {
-					  $item->set_required( true );
+						$item->set_required( true );
 				}
 
 				return $item;
@@ -24,5 +24,4 @@ class Wordlift_Required_Property_Service extends Wordlift_Entity_Property_Servic
 			parent::get( $id, $meta_key, $type )
 		);
 	}
-
 }

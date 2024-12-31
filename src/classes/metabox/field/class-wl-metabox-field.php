@@ -327,7 +327,7 @@ class Wl_Metabox_Field implements Field {
 		if ( 0 === $count ) { // } || $count < $this->cardinality ) { DO NOT print empty inputs unless requested by the editor since fields might support empty strings.
 			$this->log->debug( 'Going to print an empty HTML input...' );
 			$html .= $this->html_input( '' );    // Will print an empty <input>.
-			$count ++;
+			++$count;
 		}
 
 		// If cardinality allows it, print button to add new values.
@@ -380,7 +380,7 @@ class Wl_Metabox_Field implements Field {
 					}
 
 					$html .= $fragment;
-					$count ++;
+					++$count;
 				}
 			}
 		}

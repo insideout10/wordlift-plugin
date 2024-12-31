@@ -37,7 +37,6 @@ abstract class Abstract_Sync_Object_Adapter implements Sync_Object_Adapter {
 		if ( null === $this->object_id ) {
 			throw new \Exception( 'Invalid $object.' );
 		}
-
 	}
 
 	public function get_type() {
@@ -47,5 +46,4 @@ abstract class Abstract_Sync_Object_Adapter implements Sync_Object_Adapter {
 	public function get_object_id() {
 		return $this->object_id;
 	}
-
 }

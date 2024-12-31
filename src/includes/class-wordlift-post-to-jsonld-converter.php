@@ -53,7 +53,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Post_To_Jsonld_Converter' );
 
 		self::$instance = $this;
-
 	}
 
 	public static function get_instance() {
@@ -383,7 +382,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// See https://github.com/insideout10/wordlift-plugin/issues/451.
 		$params['publisher']['logo']['width']  = $publisher_logo['width'];
 		$params['publisher']['logo']['height'] = $publisher_logo['height'];
-
 	}
 
 	/**
@@ -483,5 +481,4 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			'height' => $size['height'],
 		);
 	}
-
 }

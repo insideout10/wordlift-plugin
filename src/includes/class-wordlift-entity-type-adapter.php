@@ -60,7 +60,6 @@ class Wordlift_Entity_Type_Adapter {
 			10,
 			2
 		);
-
 	}
 
 	/**
@@ -122,7 +121,6 @@ class Wordlift_Entity_Type_Adapter {
 				$this->entity_type_service->set( $post_id, $entity_type, false );
 			}
 		}
-
 	}
 
 	/**
@@ -161,5 +159,4 @@ class Wordlift_Entity_Type_Adapter {
 
 		return $entity_types;
 	}
-
 }

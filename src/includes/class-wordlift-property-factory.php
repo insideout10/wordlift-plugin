@@ -32,7 +32,6 @@ class Wordlift_Property_Factory {
 	public function __construct( $default_property_service ) {
 
 		$this->default_property_service = $default_property_service;
-
 	}
 
 	/**
@@ -46,7 +45,6 @@ class Wordlift_Property_Factory {
 	public function register( $meta_key, $property_service ) {
 
 		$this->property_services[ $meta_key ] = $property_service;
-
 	}
 
 	/**
@@ -64,5 +62,4 @@ class Wordlift_Property_Factory {
 
 		return $service ? $service : $this->default_property_service;
 	}
-
 }

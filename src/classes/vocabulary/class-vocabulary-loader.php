@@ -68,9 +68,5 @@ class Vocabulary_Loader {
 
 		$settings_tab = new Settings_Tab();
 		$settings_tab->connect_hook();
-
 	}
-
 }
-
-

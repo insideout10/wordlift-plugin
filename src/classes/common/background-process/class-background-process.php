@@ -108,7 +108,6 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 
 		// Finally delete the transient.
 		delete_transient( "{$this->action}__cancel" );
-
 	}
 
 	/**
@@ -123,7 +122,6 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 		} catch ( \Exception $e ) {
 			return Sync_State::unknown();
 		}
-
 	}
 
 	/**
@@ -193,11 +191,9 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 		 * @var Sync_State $sync The {@link Sync_State}.
 		 */
 		$state = self::get_state()
-					 ->increment_index( $this->data_source->get_batch_size() )
-					 ->set_state( $next_state );
+					->increment_index( $this->data_source->get_batch_size() )
+					->set_state( $next_state );
 
 		update_option( $this->get_state_storage_key(), $state, false );
-
 	}
-
 }

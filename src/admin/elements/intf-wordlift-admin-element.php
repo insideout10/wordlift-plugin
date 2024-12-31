@@ -28,5 +28,4 @@ interface Wordlift_Admin_Element {
 	 * @return \Wordlift_Admin_Element The element instance.
 	 */
 	public function render( $args );
-
 }

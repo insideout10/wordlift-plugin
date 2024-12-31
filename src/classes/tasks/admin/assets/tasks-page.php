@@ -21,7 +21,7 @@
 			<h2><?php esc_html( $task->get_label() ); ?></h2>
 			<div class="wl-task__progress" style="border: 1px solid #23282D; height: 20px; margin: 8px 0;">
 				<div class="wl-task__progress__bar"
-					 style="width:0;background: #0073AA; text-align: center; height: 100%; color: #fff;"></div>
+					style="width:0;background: #0073AA; text-align: center; height: 100%; color: #fff;"></div>
 			</div>
 
 			<button

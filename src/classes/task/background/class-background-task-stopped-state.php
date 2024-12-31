@@ -30,5 +30,4 @@ class Background_Task_Stopped_State extends Abstract_Background_Task_State {
 
 		return false;
 	}
-
 }

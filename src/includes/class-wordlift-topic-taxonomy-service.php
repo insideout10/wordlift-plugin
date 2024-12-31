@@ -57,7 +57,6 @@ class Wordlift_Topic_Taxonomy_Service {
 
 		// Set the singleton instance.
 		self::$instance = $this;
-
 	}
 
 	/**
@@ -117,7 +116,6 @@ class Wordlift_Topic_Taxonomy_Service {
 			self::TAXONOMY_OBJECT_TYPE,
 			$args
 		);
-
 	}
 
 	/**
@@ -174,5 +172,4 @@ class Wordlift_Topic_Taxonomy_Service {
 	public function unlink_topic_for( $post_id ) {
 		wp_delete_object_term_relationships( $post_id, self::TAXONOMY_NAME );
 	}
-
 }

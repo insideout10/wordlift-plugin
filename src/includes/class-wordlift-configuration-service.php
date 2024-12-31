@@ -156,7 +156,6 @@ class Wordlift_Configuration_Service {
 
 		// Sync some configuration properties when key is validated.
 		add_action( 'wl_key_validation_response', array( $this, 'sync' ) );
-
 	}
 
 	/**
@@ -233,7 +232,6 @@ class Wordlift_Configuration_Service {
 		$values         = isset( $values ) ? $values : array();
 		$values[ $key ] = $value;
 		update_option( $option, $values );
-
 	}
 
 	/**
@@ -257,7 +255,6 @@ class Wordlift_Configuration_Service {
 	public function set_entity_base_path( $value ) {
 
 		$this->set( 'wl_general_settings', self::ENTITY_BASE_PATH_KEY, $value );
-
 	}
 
 	/**
@@ -281,7 +278,6 @@ class Wordlift_Configuration_Service {
 	public function set_skip_wizard( $value ) {
 
 		$this->set( 'wl_general_settings', self::SKIP_WIZARD, true === $value );
-
 	}
 
 	/**
@@ -340,7 +336,6 @@ class Wordlift_Configuration_Service {
 	public function set_language_code( $value ) {
 
 		$this->set( 'wl_general_settings', self::LANGUAGE, $value );
-
 	}
 
 	/**
@@ -353,7 +348,6 @@ class Wordlift_Configuration_Service {
 	public function set_diagnostic_preferences( $value ) {
 
 		$this->set( 'wl_general_settings', self::SEND_DIAGNOSTIC, $value );
-
 	}
 
 	/**
@@ -387,7 +381,6 @@ class Wordlift_Configuration_Service {
 	public function set_country_code( $value ) {
 
 		$this->set( 'wl_general_settings', self::COUNTRY_CODE, $value );
-
 	}
 
 	/**
@@ -412,7 +405,6 @@ class Wordlift_Configuration_Service {
 	public function set_alternate_name( $value ) {
 
 		$this->set( 'wl_general_settings', self::ALTERNATE_NAME, wp_strip_all_tags( $value ) );
-
 	}
 
 	/**
@@ -439,7 +431,6 @@ class Wordlift_Configuration_Service {
 	public function set_publisher_id( $value ) {
 
 		$this->set( 'wl_general_settings', self::PUBLISHER_ID, $value );
-
 	}
 
 	/**
@@ -525,7 +516,6 @@ class Wordlift_Configuration_Service {
 		$this->get_remote_dataset_uri( $new_key );
 
 		do_action( 'wl_key_updated' );
-
 	}
 
 	/**
@@ -567,10 +557,10 @@ class Wordlift_Configuration_Service {
 
 		// Build the URL.
 		$url = '/accounts'
-			   . '?key=' . rawurlencode( $key )
-			   . '&url=' . rawurlencode( $site_url )
-			   . '&country=' . $this->get_country_code()
-			   . '&language=' . $this->get_language_code();
+				. '?key=' . rawurlencode( $key )
+				. '&url=' . rawurlencode( $site_url )
+				. '&country=' . $this->get_country_code()
+				. '&language=' . $this->get_language_code();
 
 		$api_service = Default_Api_Service::get_instance();
 		/**
@@ -762,7 +752,6 @@ class Wordlift_Configuration_Service {
 	public function get_autocomplete_url() {
 
 		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . 'autocomplete';
-
 	}
 
 	/**
@@ -774,7 +763,6 @@ class Wordlift_Configuration_Service {
 	public function get_deactivation_feedback_url() {
 
 		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . 'feedbacks';
-
 	}
 
 	/**
@@ -804,7 +792,6 @@ class Wordlift_Configuration_Service {
 	public function set_skip_installation_notice( $value ) {
 
 		$this->set( 'wl_general_settings', self::SKIP_INSTALLATION_NOTICE, $value );
-
 	}
 
 	/**
@@ -821,5 +808,4 @@ class Wordlift_Configuration_Service {
 	public function set_override_website_url( $value ) {
 		$this->set( 'wl_general_settings', self::OVERRIDE_WEBSITE_URL, $value );
 	}
-
 }

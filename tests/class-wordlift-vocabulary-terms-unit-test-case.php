@@ -4,8 +4,8 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 
 abstract class Wordlift_Vocabulary_Terms_Unit_Test_Case extends Wordlift_Unit_Test_Case {
 

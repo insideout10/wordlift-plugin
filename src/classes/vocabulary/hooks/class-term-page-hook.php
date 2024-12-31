@@ -6,7 +6,6 @@ use Wordlift\Scripts\Scripts_Helper;
 use Wordlift\Vocabulary\Api\Api_Config;
 use Wordlift\Vocabulary\Data\Entity_List\Entity_List_Utils;
 use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
-use Wordlift\Vocabulary\Terms_Compat;
 
 /**
  * This class is used to show the entity match component on the
@@ -30,7 +29,7 @@ class Term_Page_Hook {
 	}
 
 	public function connect_hook() {
-		$taxonomies = Terms_Compat::get_public_taxonomies();
+		$taxonomies = get_taxonomies( array( 'public' => true ) );
 		foreach ( $taxonomies as $taxonomy ) {
 			add_action( "${taxonomy}_edit_form_fields", array( $this, 'load_scripts' ), 2, PHP_INT_MAX );
 		}
@@ -45,12 +44,12 @@ class Term_Page_Hook {
 
 		Scripts_Helper::enqueue_based_on_wordpress_version(
 			self::HANDLE,
-			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/vocabulary-term-page',
+			plugin_dir_url( dirname( __DIR__, 2 ) ) . 'js/dist/vocabulary-term-page',
 			array( 'react', 'react-dom', 'wp-polyfill', 'wp-i18n' ),
 			true
 		);
 
-		wp_enqueue_style( self::HANDLE, plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/vocabulary-term-page.full.css', array(), WORDLIFT_VERSION );
+		wp_enqueue_style( self::HANDLE, plugin_dir_url( dirname( __DIR__, 2 ) ) . 'js/dist/vocabulary-term-page.full.css', array(), WORDLIFT_VERSION );
 
 		$term_data_arr = $term_data->get_data();
 
@@ -75,7 +74,5 @@ class Term_Page_Hook {
 		echo "<tr class=\"form-field\">
 		     <th></th>
 		     <td id='wl_vocabulary_terms_autocomplete_select'></td></tr>";
-
 	}
-
 }

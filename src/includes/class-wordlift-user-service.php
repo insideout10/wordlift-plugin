@@ -59,7 +59,6 @@ class Wordlift_User_Service {
 		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_User_Service' );
 
 		add_filter( 'user_has_cap', array( $this, 'has_cap' ), 10, 3 );
-
 	}
 
 	/**
@@ -181,7 +180,7 @@ class Wordlift_User_Service {
 		$user = get_userdata( $user_id );
 		if ( false === $user ) {
 			return false;
-		};
+		}
 
 		// If the nicename is not set, return a failure.
 		if ( empty( $user->user_nicename ) ) {
@@ -227,7 +226,6 @@ class Wordlift_User_Service {
 
 		// The user explicitly do not have the capability.
 		update_user_option( $user_id, self::DENY_ENTITY_CREATE_META_KEY, 'yes' );
-
 	}
 
 	/**
@@ -247,7 +245,6 @@ class Wordlift_User_Service {
 
 		// The user explicitly do not have the capability.
 		delete_user_option( $user_id, self::DENY_ENTITY_CREATE_META_KEY );
-
 	}
 
 	/**
@@ -350,5 +347,4 @@ class Wordlift_User_Service {
 
 		return $allcaps;
 	}
-
 }

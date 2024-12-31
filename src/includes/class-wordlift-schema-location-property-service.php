@@ -95,5 +95,4 @@ class Wordlift_Schema_Location_Property_Service extends Wordlift_Property_Servic
 
 		return $value;
 	}
-
 }

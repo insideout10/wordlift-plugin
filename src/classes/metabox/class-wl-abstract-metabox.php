@@ -42,7 +42,6 @@ class Wl_Abstract_Metabox {
 	public function __construct() {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
-
 	}
 
 	/**
@@ -85,7 +84,6 @@ class Wl_Abstract_Metabox {
 		$current_screen = get_current_screen();
 		$screen         = $current_screen ? $current_screen->post_type : 'entity';
 		add_filter( "postbox_classes_{$screen}_$id", 'wl_admin_metaboxes_add_css_class' );
-
 	}
 
 	/**
@@ -204,7 +202,6 @@ class Wl_Abstract_Metabox {
 
 			}
 		}
-
 	}
 
 	/**
@@ -312,7 +309,6 @@ class Wl_Abstract_Metabox {
 			// Call apropriate constructor (e.g. Wl_Metabox_Field... ).
 			$this->fields[] = $instance;
 		}
-
 	}
 
 	/**
@@ -383,7 +379,6 @@ class Wl_Abstract_Metabox {
 		 */
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		do_action( 'wl_save_form_pre_push_entity', $id, $_POST );
-
 	}
 
 	/**
@@ -397,13 +392,13 @@ class Wl_Abstract_Metabox {
 		$min = ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ? '.min' : '';
 
 		// Load the jquery-ui-timepicker-addon library.
-		wp_enqueue_style( 'wl-flatpickr', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . "/admin/js/flatpickr/flatpickr$min.css", array(), '3.0.6' );
-		wp_enqueue_script( 'wl-flatpickr', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . "/admin/js/flatpickr/flatpickr$min.js", array( 'jquery' ), '3.0.6', true );
+		wp_enqueue_style( 'wl-flatpickr', dirname( plugin_dir_url( __FILE__ ), 2 ) . "/admin/js/flatpickr/flatpickr$min.css", array(), '3.0.6' );
+		wp_enqueue_script( 'wl-flatpickr', dirname( plugin_dir_url( __FILE__ ), 2 ) . "/admin/js/flatpickr/flatpickr$min.js", array( 'jquery' ), '3.0.6', true );
 
 		wl_enqueue_leaflet();
 
 		// Add AJAX autocomplete to facilitate metabox editing.
-		wp_enqueue_script( 'wl-entity-metabox-utility', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/admin/js/wl_entity_metabox_utilities.js', array(), WORDLIFT_VERSION, false );
+		wp_enqueue_script( 'wl-entity-metabox-utility', dirname( plugin_dir_url( __FILE__ ), 2 ) . '/admin/js/wl_entity_metabox_utilities.js', array(), WORDLIFT_VERSION, false );
 		wp_localize_script(
 			'wl-entity-metabox-utility',
 			'wlEntityMetaboxParams',
@@ -412,6 +407,5 @@ class Wl_Abstract_Metabox {
 				'action'   => 'entity_by_title',
 			)
 		);
-
 	}
 }

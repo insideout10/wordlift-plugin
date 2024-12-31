@@ -39,7 +39,6 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 			)
 		);
 		$this->register_block_type();
-
 	}
 
 	/**
@@ -203,5 +202,4 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 		.wl-chord { display: none; }
 		<?php
 	}
-
 }

@@ -29,7 +29,5 @@ class Wordlift_Install_3_38_5 extends Wordlift_Install {
 
 		// Flush the JSON-LD caches.
 		do_action( 'wl_ttl_cache_cleaner__flush' );
-
 	}
-
 }

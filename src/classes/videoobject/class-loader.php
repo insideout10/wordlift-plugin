@@ -70,7 +70,6 @@ class Loader extends Default_Loader {
 		 * Validate API Key for Youtube, Vimeo.
 		 */
 		new Video_Key_Validation_Service();
-
 	}
 
 	public function get_feature_slug() {

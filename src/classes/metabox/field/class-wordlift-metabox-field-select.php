@@ -46,5 +46,4 @@ class Wordlift_Metabox_Field_Select extends Wl_Metabox_Field {
 		$html = ob_get_clean();
 		return $html;
 	}
-
 }

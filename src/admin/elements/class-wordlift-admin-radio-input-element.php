@@ -61,21 +61,21 @@ class Wordlift_Admin_Radio_Input_Element implements Wordlift_Admin_Element {
 		?>
 
 		<input type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
-			   name="<?php echo esc_attr( $params['name'] ); ?>"
-			   value="yes" 
-			   <?php
+				name="<?php echo esc_attr( $params['name'] ); ?>"
+				value="yes" 
+				<?php
 				if ( ! empty( $params['css_class'] ) ) {
 					?>
-					 class="<?php echo esc_attr( $params['css_class'] ); ?>" <?php } ?>
+					class="<?php echo esc_attr( $params['css_class'] ); ?>" <?php } ?>
 			<?php checked( $value, 'yes' ); ?>
 		/> Yes
 		<input type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
-			   name="<?php echo esc_attr( $params['name'] ); ?>"
-			   value="no" 
-			   <?php
+				name="<?php echo esc_attr( $params['name'] ); ?>"
+				value="no" 
+				<?php
 				if ( ! empty( $params['css_class'] ) ) {
 					?>
-					 class="<?php echo esc_attr( $params['css_class'] ); ?>" <?php } ?>
+					class="<?php echo esc_attr( $params['css_class'] ); ?>" <?php } ?>
 			<?php checked( $value, 'no' ); ?>
 		/> No
 		<?php if ( ! empty( $params['description'] ) ) { ?>
@@ -84,5 +84,4 @@ class Wordlift_Admin_Radio_Input_Element implements Wordlift_Admin_Element {
 
 		return $this;
 	}
-
 }

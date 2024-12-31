@@ -43,5 +43,4 @@ class Badge_Generator {
 
 		return $round < 100 ? "$round" : "$round+";
 	}
-
 }

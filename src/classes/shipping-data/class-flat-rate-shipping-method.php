@@ -17,7 +17,6 @@ class Flat_Rate_Shipping_Method extends Shipping_Method {
 		if ( ! in_array( 'ParcelDelivery', $jsonld['availableDeliveryMethod'], true ) ) {
 			array_push( $jsonld['availableDeliveryMethod'], 'ParcelDelivery' );
 		}
-
 	}
 
 	protected function get_shipping_rate() {
@@ -32,7 +31,6 @@ class Flat_Rate_Shipping_Method extends Shipping_Method {
 			'value'       => $this->wc_shipping_method->get_option( 'cost' ),
 			'currency'    => get_woocommerce_currency(),
 		);
-
 	}
 
 	protected function set_value_with_currency_codes( &$shipping_rate, $instance, $currency_codes ) {
@@ -46,7 +44,5 @@ class Flat_Rate_Shipping_Method extends Shipping_Method {
 				return;
 			}
 		}
-
 	}
-
 }

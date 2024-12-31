@@ -26,13 +26,12 @@ class Recipe_Maker_Validation_Service {
 			return false;
 		}
 		if ( ! method_exists( '\WPRM_Recipe_Manager', 'get_recipe_ids_from_post' ) ||
-			 ! method_exists( '\WPRM_Recipe_Manager', 'get_recipe' ) ||
-			 ! method_exists( '\WPRM_Metadata', 'get_metadata_details' )
+			! method_exists( '\WPRM_Recipe_Manager', 'get_recipe' ) ||
+			! method_exists( '\WPRM_Metadata', 'get_metadata_details' )
 		) {
 			return false;
 		}
 
 		return true;
 	}
-
 }

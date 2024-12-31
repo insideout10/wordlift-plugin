@@ -64,5 +64,4 @@ interface Wordlift_Cache_Service {
 	 * @since 3.16.0
 	 */
 	public function flush();
-
 }

@@ -77,5 +77,4 @@ class Jsonld_User_Service {
 
 		return array( $data );
 	}
-
 }

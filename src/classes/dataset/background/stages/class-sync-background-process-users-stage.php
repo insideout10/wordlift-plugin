@@ -60,5 +60,4 @@ class Sync_Background_Process_Users_Stage {
 
 		return implode( "','", array_map( 'esc_sql', $post_types ) );
 	}
-
 }

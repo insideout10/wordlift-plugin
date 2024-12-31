@@ -72,5 +72,4 @@ class Wordlift_Context_Cards_Service {
 
 		return $attributes;
 	}
-
 }

@@ -25,7 +25,6 @@ class Xml_Generator {
 		$seconds            = $interval->s;
 
 		return $days_to_seconds + $hours_to_seconds + $minutes_to_seconds + $seconds;
-
 	}
 
 	public static function get_xml_for_all_posts_with_videos() {
@@ -61,7 +60,6 @@ class Xml_Generator {
 		}
 
 		return $all_posts_xml;
-
 	}
 
 	/**
@@ -80,7 +78,6 @@ class Xml_Generator {
 		}
 
 		return $single_post_xml;
-
 	}
 
 	/**
@@ -127,7 +124,5 @@ class Xml_Generator {
      </video:video>
    </url>
 ";
-
 	}
-
 }

@@ -46,7 +46,5 @@ abstract class Default_Loader implements Loader {
 			$this->get_feature_default_value(),
 			array( $this, 'init_all_dependencies' )
 		);
-
 	}
-
 }

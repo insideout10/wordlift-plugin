@@ -35,7 +35,6 @@ class Wordlift_Publisher_Ajax_Adapter {
 	public function __construct( $publisher_service ) {
 
 		$this->publisher_service = $publisher_service;
-
 	}
 
 	/**
@@ -64,7 +63,5 @@ class Wordlift_Publisher_Ajax_Adapter {
 
 		// Finally output the response.
 		wp_send_json_success( $response );
-
 	}
-
 }

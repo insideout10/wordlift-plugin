@@ -71,5 +71,4 @@ class Recipe_Maker_After_Get_Jsonld_Hook {
 
 		return $jsonld;
 	}
-
 }

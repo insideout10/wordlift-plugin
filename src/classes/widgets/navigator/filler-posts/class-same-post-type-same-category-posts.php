@@ -17,7 +17,7 @@ class Same_Post_Type_Same_Category_Posts extends Filler_Posts {
 				'category__in' => $current_post_categories,
 				'post_type'    => $post_type,
 			)
-						  + $this->get_posts_config( $filler_count, $post_ids_to_be_excluded )
+							+ $this->get_posts_config( $filler_count, $post_ids_to_be_excluded )
 		);
 	}
 }

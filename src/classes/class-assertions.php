@@ -34,7 +34,6 @@ class Assertions {
 		if ( get_class( $value ) !== $type ) {
 			throw new Exception( "Value must be a $type." );
 		}
-
 	}
 
 	/**
@@ -71,7 +70,6 @@ class Assertions {
 		if ( 1 !== preg_match( $pattern, $value ) ) {
 			throw new Exception( $message );
 		}
-
 	}
 
 	/**
@@ -115,5 +113,4 @@ class Assertions {
 			throw new Exception( $message );
 		}
 	}
-
 }

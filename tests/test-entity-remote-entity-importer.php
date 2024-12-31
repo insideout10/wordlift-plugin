@@ -4,7 +4,7 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\Entity\Remote_Entity\Invalid_Remote_Entity;
 use Wordlift\Entity\Remote_Entity\Valid_Remote_Entity;
 use Wordlift\Entity\Remote_Entity_Importer\Invalid_Remote_Entity_Importer;

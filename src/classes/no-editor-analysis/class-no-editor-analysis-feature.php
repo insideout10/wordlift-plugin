@@ -62,5 +62,4 @@ class No_Editor_Analysis_Feature {
 			return false;
 		}
 	}
-
 }

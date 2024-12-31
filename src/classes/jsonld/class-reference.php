@@ -20,6 +20,4 @@ interface Reference {
 	 * @return int Identifier
 	 */
 	public function get_id();
-
 }
-

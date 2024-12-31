@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Content\Wordpress;
+namespace Wordlift\Content\WordPress;
 
 use Exception;
 use Wordlift\Content\Content_Service;
@@ -107,7 +107,6 @@ class Wordpress_Permalink_Content_Service implements Content_Service {
 			default:
 				return null;
 		}
-
 	}
 
 	/**

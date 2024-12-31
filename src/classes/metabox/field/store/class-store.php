@@ -15,5 +15,4 @@ interface Store {
 	public static function delete_meta( $id, $meta_key );
 
 	public static function add_meta( $id, $meta_key, $meta_value, $is_unique );
-
 }

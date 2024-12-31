@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Content\Wordpress;
+namespace Wordlift\Content\WordPress;
 
 use Wordlift\Content\Content_Service;
 
@@ -29,5 +29,4 @@ class Wordpress_Content_Service {
 
 		return self::$instance;
 	}
-
 }

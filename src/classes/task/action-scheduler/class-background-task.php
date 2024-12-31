@@ -49,7 +49,6 @@ class Background_Task extends Action_Scheduler_Background_Process implements Bac
 			$this->set_process_state( self::STATE_STOPPED );
 			return State::complete();
 		}
-
 	}
 
 	public function start() {

@@ -3,7 +3,7 @@
 namespace Wordlift\Modules\Food_Kg;
 
 use Wordlift\Content\Content_Service;
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
 use WPRM_Recipe;
 
 class Main_Ingredient_Jsonld {

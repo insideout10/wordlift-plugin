@@ -44,4 +44,3 @@ function wl_register_shortcode_field() {
 }
 
 add_action( 'init', 'wl_register_shortcode_field' );
-

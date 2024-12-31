@@ -32,7 +32,7 @@ class Embed_Shortcode_Capture {
 			array_map(
 				function ( $item ) {
 					if ( isset( $item[5] ) && is_string( $item[5] ) && $item[5] ) {
-						  return $item[5];
+							return $item[5];
 					}
 					return false;
 				},
@@ -48,8 +48,5 @@ class Embed_Shortcode_Capture {
 		);
 
 		return array_merge( $embedded_videos, $embed_shortcode_videos );
-
 	}
-
 }
-

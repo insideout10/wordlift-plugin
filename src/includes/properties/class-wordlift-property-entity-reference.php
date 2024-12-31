@@ -61,7 +61,6 @@ class Wordlift_Property_Entity_Reference {
 		$this->id       = $id;
 		$this->required = $required;
 		$this->type     = $type;
-
 	}
 
 	/**
@@ -107,7 +106,6 @@ class Wordlift_Property_Entity_Reference {
 	public function get_required() {
 
 		return $this->required;
-
 	}
 
 	/**
@@ -123,7 +121,6 @@ class Wordlift_Property_Entity_Reference {
 	public function set_required( $value ) {
 
 		$this->required = $value;
-
 	}
 
 	public function to_reference() {
@@ -135,5 +132,4 @@ class Wordlift_Property_Entity_Reference {
 			return new Term_Reference( $this->id );
 		}
 	}
-
 }

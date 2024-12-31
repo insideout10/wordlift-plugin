@@ -68,12 +68,10 @@ class Videos_Data_Source extends Data_Source {
 				)
 			)
 		);
-
 	}
 
 	public function get_batch_size() {
 		// For now use only 5 in order to prevent exceeding api limit.
 		return 5;
 	}
-
 }

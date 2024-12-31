@@ -9,7 +9,7 @@
  * @subpackage Wordlift/includes
  */
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Relation;
 use Wordlift\Relation\Relation_Service;
@@ -172,7 +172,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 					'lastReviewed' => get_post_time( 'Y-m-d\TH:i:sP', true, $post, false ),
 				);
 			}
-		};
+		}
 
 		$this->set_images( $this->attachment_service, $post, $jsonld );
 
@@ -206,8 +206,8 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			$references,
 			function ( $post_id ) use ( $entity_type_service ) {
 				return ( $entity_type_service->has_entity_type( $post_id, 'http://schema.org/Action' )
-						 || $entity_type_service->has_entity_type( $post_id, 'http://schema.org/Event' )
-						 || $entity_type_service->has_entity_type( $post_id, 'http://schema.org/Organization' ) );
+						|| $entity_type_service->has_entity_type( $post_id, 'http://schema.org/Event' )
+						|| $entity_type_service->has_entity_type( $post_id, 'http://schema.org/Organization' ) );
 			}
 		);
 
@@ -248,7 +248,6 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			$post_location_ids = array_map( 'intval', $post_location_ids );
 			$references        = array_merge( $post_location_ids, $references );
 		}
-
 	}
 
 	/**
@@ -413,7 +412,6 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		if ( 0 < count( $images ) ) {
 			$jsonld['image'] = $images;
 		}
-
 	}
 
 	/**
@@ -519,7 +517,5 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			);
 
 		}
-
 	}
-
 }

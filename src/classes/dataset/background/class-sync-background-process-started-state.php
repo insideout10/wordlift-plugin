@@ -145,5 +145,4 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 
 		return $args;
 	}
-
 }

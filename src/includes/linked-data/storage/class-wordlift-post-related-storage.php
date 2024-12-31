@@ -40,7 +40,6 @@ class Wordlift_Post_Related_Storage extends Wordlift_Storage {
 	public function __construct( $entity_service ) {
 
 		$this->entity_service = $entity_service;
-
 	}
 
 	/**
@@ -72,5 +71,4 @@ class Wordlift_Post_Related_Storage extends Wordlift_Storage {
 			$related
 		);
 	}
-
 }

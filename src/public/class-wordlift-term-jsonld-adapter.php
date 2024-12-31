@@ -110,7 +110,7 @@ class Wordlift_Term_JsonLd_Adapter {
 				'url'      => apply_filters( 'wl_carousel_post_list_item_url', get_permalink( $post_id ), $post_id ),
 			);
 			array_push( $post_jsonld['itemListElement'], $result );
-			++ $position;
+			++$position;
 		}
 
 		return $post_jsonld;
@@ -177,7 +177,6 @@ class Wordlift_Term_JsonLd_Adapter {
 		$jsonld_term_html_output = apply_filters( 'wl_jsonld_term_html_output', $jsonld_term_html_output, $term_id );
 
 		echo $jsonld_term_html_output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- It's an application/ld+json output.
-
 	}
 
 	/**
@@ -325,5 +324,4 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		return $references_jsonld;
 	}
-
 }

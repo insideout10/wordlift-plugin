@@ -55,7 +55,7 @@ class Wordlift_Url_Property_Service extends Wordlift_Simple_Property_Service {
 					*/
 
 				if ( '<permalink>' !== $item && 'http://<permalink>/' !== $item ) {
-					  return $item;
+						return $item;
 				}
 
 				// Permalinks.
@@ -71,5 +71,4 @@ class Wordlift_Url_Property_Service extends Wordlift_Simple_Property_Service {
 			array_unique( $urls )
 		);
 	}
-
 }

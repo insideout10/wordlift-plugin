@@ -9,7 +9,7 @@
  * @package Wordlift
  */
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\Link\Link_Builder;
 use Wordlift\Link\Object_Link_Provider;
 use Wordlift\Object_Type_Enum;
@@ -87,7 +87,6 @@ class Wordlift_Content_Filter_Service {
 		$this->entity_service       = $entity_service;
 		$this->entity_uri_service   = $entity_uri_service;
 		$this->object_link_provider = Object_Link_Provider::get_instance();
-
 	}
 
 	private static $instance = null;
@@ -221,9 +220,9 @@ class Wordlift_Content_Filter_Service {
 		}
 
 		return Link_Builder::create( $uri, $object_id )
-						   ->label( $label )
-						   ->href( $href )
-						   ->generate_link();
+							->label( $label )
+							->href( $href )
+							->generate_link();
 	}
 
 	/**
@@ -275,5 +274,4 @@ class Wordlift_Content_Filter_Service {
 	private function is_already_linked( $entity_uri ) {
 		return in_array( $entity_uri, $this->linked_entity_uris, true );
 	}
-
 }

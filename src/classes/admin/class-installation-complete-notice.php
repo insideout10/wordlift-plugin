@@ -29,7 +29,6 @@ class Installation_Complete_Notice {
 				<?php
 			}
 		);
-
 	}
 
 	public function handle_notice_close() {
@@ -43,7 +42,5 @@ class Installation_Complete_Notice {
 		}
 
 		\Wordlift_Configuration_Service::get_instance()->set_skip_installation_notice( true );
-
 	}
-
 }

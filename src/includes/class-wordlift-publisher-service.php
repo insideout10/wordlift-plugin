@@ -19,7 +19,6 @@
 class Wordlift_Publisher_Service {
 
 	protected function __construct() {
-
 	}
 
 	private static $instance = null;
@@ -239,8 +238,8 @@ class Wordlift_Publisher_Service {
 			$content .= sprintf(
 				'<p>'
 								/* translators: %s: AMP logo guidelines. */
-								 . esc_html_x( 'According to the %s, the logo should fit in a 60x600px rectangle, and either be exactly 60px high (preferred), or exactly 600px wide. For example, 450x45px would not be acceptable, even though it fits in the 600x60px rectangle. To comply with the guidelines, WordLift will automatically resize the Featured Image for structured data formats.', 'After "According to the" goes the link to the "AMP logo guidelines".', 'wordlift' )
-								 . '</p>',
+								. esc_html_x( 'According to the %s, the logo should fit in a 60x600px rectangle, and either be exactly 60px high (preferred), or exactly 600px wide. For example, 450x45px would not be acceptable, even though it fits in the 600x60px rectangle. To comply with the guidelines, WordLift will automatically resize the Featured Image for structured data formats.', 'After "According to the" goes the link to the "AMP logo guidelines".', 'wordlift' )
+								. '</p>',
 				$link
 			);
 		}
@@ -248,5 +247,4 @@ class Wordlift_Publisher_Service {
 		// Finally return the content.
 		return $content;
 	}
-
 }

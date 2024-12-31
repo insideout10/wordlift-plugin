@@ -19,7 +19,6 @@ class Loader extends Default_Loader {
 		$meta_box->init();
 		$edit_post_scripts = new Edit_Post_Scripts();
 		$edit_post_scripts->init();
-
 	}
 
 	/**
@@ -40,5 +39,3 @@ class Loader extends Default_Loader {
 		return false;
 	}
 }
-
-

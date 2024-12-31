@@ -52,7 +52,6 @@ class Wordlift_Post_Property_Storage extends Wordlift_Storage {
 	public function __construct( $property ) {
 
 		$this->property = $property;
-
 	}
 
 	/**
@@ -88,5 +87,4 @@ class Wordlift_Post_Property_Storage extends Wordlift_Storage {
 
 		return null;
 	}
-
 }

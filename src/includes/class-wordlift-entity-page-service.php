@@ -45,8 +45,8 @@ class Wordlift_Entity_Page_Service {
 		// Ignore admin side request, requests for which filters should be
 		// suppressed, and when we are not on a entity type archive page.
 		if ( is_admin() ||
-			 ! is_tax( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) ||
-			 ! empty( $query->query_vars['suppress_filters'] )
+			! is_tax( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) ||
+			! empty( $query->query_vars['suppress_filters'] )
 		) {
 			return;
 		}
@@ -93,7 +93,7 @@ class Wordlift_Entity_Page_Service {
 		global $wpdb;
 
 		$join_statement .= " LEFT JOIN {$wpdb->prefix}wl_relation_instances ri "
-						   . " ON (ri.object_id = {$wpdb->posts}.ID)";
+							. " ON (ri.object_id = {$wpdb->posts}.ID)";
 
 		// Remove to make sure it will not run agan in other context.
 		remove_filter( 'posts_join', array( $this, 'posts_join' ) );
@@ -140,5 +140,4 @@ class Wordlift_Entity_Page_Service {
 
 		return $orderby_statement;
 	}
-
 }

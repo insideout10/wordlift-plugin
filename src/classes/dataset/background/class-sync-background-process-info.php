@@ -26,5 +26,4 @@ class Sync_Background_Process_Info {
 		$this->last_update = $last_update;
 		$this->state       = $state;
 	}
-
 }

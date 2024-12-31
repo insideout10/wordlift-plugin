@@ -9,7 +9,6 @@ class Task_Ajax_Adapters_Registry {
 	public function __construct( $adapters = array() ) {
 
 		$this->task_ajax_adapters = is_array( $adapters ) ? $adapters : array( $adapters );
-
 	}
 
 	/**
@@ -18,7 +17,6 @@ class Task_Ajax_Adapters_Registry {
 	public function register( $task_ajax_adapter ) {
 
 		$this->task_ajax_adapters[] = $task_ajax_adapter;
-
 	}
 
 	/**
@@ -28,5 +26,4 @@ class Task_Ajax_Adapters_Registry {
 
 		return $this->task_ajax_adapters;
 	}
-
 }

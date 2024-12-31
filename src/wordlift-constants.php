@@ -61,7 +61,8 @@ function wl_temp_dir() {
 
 	// If directory do not exist, create it.
 	if ( ! file_exists( $unique_temp_dir ) ) {
-		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		// Local dir.
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_mkdir,WordPress.PHP.NoSilencedErrors.Discouraged
 		@mkdir( $unique_temp_dir );
 	}
 

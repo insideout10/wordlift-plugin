@@ -649,7 +649,6 @@ class Wordlift {
 		if ( class_exists( 'WP_CLI' ) ) {
 			$this->load_cli_dependencies();
 		}
-
 	}
 
 	/**
@@ -1442,7 +1441,6 @@ class Wordlift {
 					Wordlift_Entity_Service::get_instance(),
 					Wordlift_Entity_Type_Service::get_instance()
 				);
-
 			},
 			3
 		);
@@ -1467,7 +1465,6 @@ class Wordlift {
 		$plugin_i18n->set_domain( $this->get_plugin_name() );
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
 	}
 
 	/**
@@ -1539,9 +1536,9 @@ class Wordlift {
 		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		if ( ! apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES )
 		     // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-			 && ! apply_filters( 'wl_feature__enable__entity-types-professional', false )
+			&& ! apply_filters( 'wl_feature__enable__entity-types-professional', false )
 		     // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-			 && ! apply_filters( 'wl_feature__enable__entity-types-business', false )
+			&& ! apply_filters( 'wl_feature__enable__entity-types-business', false )
 		) {
 			$that->loader->add_filter( 'wp_terms_checklist_args', $that->entity_types_taxonomy_walker, 'terms_checklist_args' );
 		}
@@ -1742,7 +1739,6 @@ class Wordlift {
 				}
 			}
 		);
-
 	}
 
 	/**
@@ -1804,7 +1800,6 @@ class Wordlift {
 		if ( apply_filters( 'wl_feature__enable__analytics', true ) && Wordlift_Configuration_Service::get_instance()->is_analytics_enable() ) {
 			$that->loader->add_action( 'wp_enqueue_scripts', $that->analytics_connect, 'enqueue_scripts', 10 );
 		}
-
 	}
 
 	/**
@@ -1854,7 +1849,6 @@ class Wordlift {
 	 * @since 3.18.0
 	 */
 	private function load_cli_dependencies() {
-
 	}
 
 	public function add_wl_enabled_blocks() {
@@ -1930,7 +1924,5 @@ class Wordlift {
 			100,
 			0
 		);
-
 	}
-
 }

@@ -22,7 +22,6 @@ abstract class Wordlift_Shortcode {
 	public function __construct() {
 
 		add_shortcode( static::SHORTCODE, array( $this, 'render' ) );
-
 	}
 
 	/**
@@ -56,7 +55,5 @@ abstract class Wordlift_Shortcode {
 			WORDLIFT_VERSION,
 			false
 		);
-
 	}
-
 }

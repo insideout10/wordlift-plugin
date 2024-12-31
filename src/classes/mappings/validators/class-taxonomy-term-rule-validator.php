@@ -49,7 +49,12 @@ class Taxonomy_Term_Rule_Validator implements Rule_Validator {
 		if ( ! $current_term instanceof \WP_Term ) {
 			return false;
 		}
-		$terms = get_terms( $taxonomy, array( 'get' => 'all' ) );
+		$terms = get_terms(
+			array(
+				'taxonomy' => $taxonomy,
+				'get'      => 'all',
+			)
+		);
 		$terms = array_map(
 			function ( $term ) {
 				/**
@@ -69,6 +74,5 @@ class Taxonomy_Term_Rule_Validator implements Rule_Validator {
 		if ( Rule_Validator::IS_NOT_EQUAL_TO === $operator ) {
 			return ! in_array( $current_term->term_id, $terms, true );
 		}
-
 	}
 }

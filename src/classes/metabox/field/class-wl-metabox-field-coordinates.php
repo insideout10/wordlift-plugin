@@ -109,7 +109,6 @@ class Wl_Metabox_Field_Coordinates extends Wl_Metabox_Field {
 			$instance::add_meta( $this->id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, $latitude, true );
 			$instance::add_meta( $this->id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, $longitude, true );
 		}
-
 	}
 
 	/**
@@ -126,4 +125,3 @@ class Wl_Metabox_Field_Coordinates extends Wl_Metabox_Field {
 		return $value;
 	}
 }
-

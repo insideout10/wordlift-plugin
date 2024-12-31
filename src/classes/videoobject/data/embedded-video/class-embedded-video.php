@@ -15,5 +15,4 @@ interface Embedded_Video {
 	public function get_api_provider();
 
 	public function get_url();
-
 }

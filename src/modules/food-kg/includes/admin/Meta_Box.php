@@ -10,8 +10,8 @@ namespace Wordlift\Modules\Food_Kg\Admin;
 
 use Wordlift\Api\Api_Service_Ext;
 use Wordlift\Cache\Ttl_Cache;
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\Modules\Food_Kg\Recipe_Lift_Strategy;
 
 class Meta_Box {

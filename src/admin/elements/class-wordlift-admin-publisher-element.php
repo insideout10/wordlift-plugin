@@ -49,7 +49,6 @@ class Wordlift_Admin_Publisher_Element extends Wordlift_Admin_Author_Element {
 
 		// Child elements.
 		$this->tabs_element = $tabs_element;
-
 	}
 
 	/**
@@ -120,7 +119,6 @@ class Wordlift_Admin_Publisher_Element extends Wordlift_Admin_Author_Element {
 
 		// Call the select internal render.
 		$this->do_render( $params, $publisher_id, $data );
-
 	}
 
 	/**
@@ -198,5 +196,4 @@ class Wordlift_Admin_Publisher_Element extends Wordlift_Admin_Author_Element {
 		</div>
 		<?php
 	}
-
 }

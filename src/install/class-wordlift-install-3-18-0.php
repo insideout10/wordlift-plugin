@@ -67,7 +67,6 @@ class Wordlift_Install_3_18_0 extends Wordlift_Install {
 				continue;
 			}
 		}
-
 	}
 
 	/**
@@ -119,7 +118,5 @@ class Wordlift_Install_3_18_0 extends Wordlift_Install {
 		if ( isset( $editors ) ) {
 			$editors->add_cap( 'read_wordlift_entity' );
 		}
-
 	}
-
 }

@@ -2,8 +2,8 @@
 
 namespace Wordlift\Dataset;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\Object_Type_Enum;
 
 class Sync_Post_Hooks extends Abstract_Sync_Hooks {
@@ -58,7 +58,6 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 		add_action( 'untrashed_post', array( $this, 'save_post' ) );
 		// Get sticky posts changes.
 		add_action( 'update_option_sticky_posts', array( $this, 'sticky_posts' ), 10, 2 );
-
 	}
 
 	public function save_post( $post_id ) {
@@ -68,7 +67,6 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 		}
 
 		$this->sync( $post_id );
-
 	}
 
 	public function sticky_posts( $old_value, $value ) {
@@ -99,13 +97,12 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 			),
 			true
 		)
-			 || ! in_array( get_post_type( $post_id ), \Wordlift_Entity_Service::valid_entity_post_types(), true )
+			|| ! in_array( get_post_type( $post_id ), \Wordlift_Entity_Service::valid_entity_post_types(), true )
 		) {
 			return;
 		}
 
 		$this->sync( $post_id );
-
 	}
 
 	private function sync( $post_id ) {
@@ -127,7 +124,6 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 		} catch ( \Exception $e ) {
 			$this->log->error( "An error occurred while trying to sync post $post_id: " . $e->getMessage(), $e );
 		}
-
 	}
 
 	public function delete_post( $post_id ) {
@@ -145,5 +141,4 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 			$this->log->error( "An error occurred while trying to delete post $post_id: " . $e->getMessage(), $e );
 		}
 	}
-
 }

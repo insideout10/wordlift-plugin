@@ -41,5 +41,4 @@ interface Task_Progress {
 	 * @since 1.0.0
 	 */
 	public function finish();
-
 }

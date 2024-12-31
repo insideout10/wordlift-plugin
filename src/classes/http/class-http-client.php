@@ -36,5 +36,4 @@ interface Http_Client {
 	 * @since 1.0.0
 	 */
 	public function request( $url, $options = array() );
-
 }

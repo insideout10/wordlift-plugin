@@ -11,5 +11,4 @@ class Invalid_Remote_Entity_Importer implements Remote_Entity_Importer {
 		// Cant import invalid entities.
 		return false;
 	}
-
 }

@@ -61,13 +61,3 @@ class Wordlift_Chord_Widget extends WP_Widget {
 		// processes widget options to be saved.
 	}
 }
-
-/**
- * Register Chord Widget
- *
- * @return void
- */
-function wl_register_chord_widget() {
-
-	register_widget( 'WordLift_Chord_Widget' );
-}

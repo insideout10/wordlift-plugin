@@ -130,5 +130,4 @@ class Wordlift_Admin_Entity_Taxonomy_List_Page {
 		// Give permission to the user.
 		return array( 'manage_options' );
 	}
-
 }

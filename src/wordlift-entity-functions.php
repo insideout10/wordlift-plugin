@@ -106,7 +106,12 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 
 		// Return all custom fields.
 		// Get taxonomy terms
-		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'get' => 'all' ) );
+		$terms = get_terms(
+			array(
+				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+				'get'      => 'all',
+			)
+		);
 
 		if ( is_wp_error( $terms ) ) {
 			return null;
@@ -116,7 +121,7 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 		foreach ( $terms as $term ) {
 			// Get custom_fields
 			$term_options = Wordlift_Schema_Service::get_instance()
-												   ->get_schema( $term->slug );
+													->get_schema( $term->slug );
 
 			if ( ! isset( $term_options['uri'] ) || ! isset( $term_options['custom_fields'] ) ) {
 				continue;

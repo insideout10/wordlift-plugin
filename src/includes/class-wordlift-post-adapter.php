@@ -41,7 +41,6 @@ class Wordlift_Post_Adapter {
 	public function __construct( $post_id ) {
 
 		$this->post_id = $post_id;
-
 	}
 
 	/**
@@ -243,5 +242,4 @@ class Wordlift_Post_Adapter {
 
 		return str_replace( '_', '-', $language );
 	}
-
 }

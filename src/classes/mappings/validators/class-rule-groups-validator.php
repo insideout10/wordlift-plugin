@@ -34,7 +34,6 @@ class Rule_Groups_Validator {
 	public function __construct( $rule_validators_registry ) {
 
 		$this->rule_validators_registry = $rule_validators_registry;
-
 	}
 
 	/**
@@ -68,5 +67,4 @@ class Rule_Groups_Validator {
 
 		return false;
 	}
-
 }

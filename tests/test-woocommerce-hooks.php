@@ -1,7 +1,7 @@
 <?php
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 
 /**
  * Tests: Tests the hooks added for plugin wordlift for woocommerce.

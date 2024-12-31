@@ -25,7 +25,6 @@ class Entity_Rest_Service {
 		$this->entity_type_service = $entity_type_service;
 
 		add_action( 'rest_insert_entity', array( $this, 'action_rest_insert_entity' ), 10, 3 );
-
 	}
 
 	/**
@@ -51,7 +50,5 @@ class Entity_Rest_Service {
 			// we don't replace since its entity creation and only one entity will be present.
 			$this->entity_type_service->set( $post->ID, $type_uri );
 		}
-
 	}
-
 }

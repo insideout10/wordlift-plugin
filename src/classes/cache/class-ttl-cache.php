@@ -79,7 +79,6 @@ class Ttl_Cache {
 		wp_mkdir_p( $this->cache_dir );
 
 		self::$caches[ $name ] = $this;
-
 	}
 
 	/**
@@ -138,13 +137,12 @@ class Ttl_Cache {
 
 		// Cache.
 		if ( file_exists( $filename ) ) {
-			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-			@unlink( $filename );
+			wp_delete_file( $filename );
 		}
 
-		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged,WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+		// Local cache file.
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents,WordPress.PHP.NoSilencedErrors.Discouraged
 		@file_put_contents( $filename, wp_json_encode( $data ) );
-
 	}
 
 	public function delete( $key ) {
@@ -153,10 +151,8 @@ class Ttl_Cache {
 
 		// Delete.
 		if ( file_exists( $filename ) ) {
-			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-			@unlink( $filename );
+			wp_delete_file( $filename );
 		}
-
 	}
 
 	public function flush() {
@@ -164,11 +160,9 @@ class Ttl_Cache {
 		$files = glob( $this->cache_dir . DIRECTORY_SEPARATOR . '*' );
 		foreach ( $files as $file ) { // iterate files
 			if ( is_file( $file ) ) {
-				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-				@unlink( $file );
+				wp_delete_file( $file );
 			}
 		}
-
 	}
 
 	public static function flush_all() {
@@ -177,7 +171,6 @@ class Ttl_Cache {
 		foreach ( self::$caches as $cache ) {
 			$cache->flush();
 		}
-
 	}
 
 	/**
@@ -201,5 +194,4 @@ class Ttl_Cache {
 
 		return $filename;
 	}
-
 }

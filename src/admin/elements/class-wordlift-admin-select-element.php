@@ -160,7 +160,6 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 	 * @since 3.18.0
 	 */
 	protected function enqueue_resources() {
-
 	}
 
 	/**
@@ -172,5 +171,4 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 	 * @since 3.18.0
 	 */
 	abstract public function render_options( $params );
-
 }

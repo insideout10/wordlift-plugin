@@ -28,5 +28,4 @@ class Wordlift_Sanitizer {
 
 		return null;
 	}
-
 }

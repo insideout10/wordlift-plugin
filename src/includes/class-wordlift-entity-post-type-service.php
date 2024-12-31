@@ -71,7 +71,6 @@ class Wordlift_Entity_Post_Type_Service {
 		$this->slug = $slug ? $slug : $post_type;
 
 		self::$instance = $this;
-
 	}
 
 	/**
@@ -184,7 +183,5 @@ class Wordlift_Entity_Post_Type_Service {
 		//
 		// See https://github.com/insideout10/wordlift-plugin/issues/442
 		register_taxonomy_for_object_type( 'category', $this->post_type );
-
 	}
-
 }

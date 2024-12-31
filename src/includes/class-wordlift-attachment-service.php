@@ -22,7 +22,6 @@ class Wordlift_Attachment_Service {
 	 * @since 3.20.0
 	 */
 	protected function __construct() {
-
 	}
 
 	private static $instance = null;
@@ -166,8 +165,8 @@ class Wordlift_Attachment_Service {
 		$pattern = get_shortcode_regex();
 
 		if ( preg_match_all( '/' . $pattern . '/s', $post->post_content, $matches )
-			 && array_key_exists( 2, $matches )
-			 && in_array( 'gallery', $matches[2], true )
+			&& array_key_exists( 2, $matches )
+			&& in_array( 'gallery', $matches[2], true )
 		) {
 
 			$keys = array_keys( $matches[2], 'gallery', true );
@@ -198,5 +197,4 @@ class Wordlift_Attachment_Service {
 
 		return array_keys( $ids );
 	}
-
 }

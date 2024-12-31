@@ -15,7 +15,6 @@ use Wordlift\No_Editor_Analysis\No_Editor_Analysis_Feature;
 function wl_register_metaboxes() {
 
 	new Wl_Metabox();     // Everything is done inside here with the correct timing.
-
 }
 
 if ( is_admin() ) {
@@ -66,7 +65,6 @@ function wl_admin_add_entities_meta_box( $post_type, $post ) {
 			'high'
 		);
 	}
-
 }
 
 add_action( 'add_meta_boxes', 'wl_admin_add_entities_meta_box', 10, 2 );
@@ -145,7 +143,7 @@ function wl_entities_box_content_scripts() {
 
 				// Check that the post object is not null.
 				if ( ! empty( $post ) ) {
-					  return $post->ID;
+						return $post->ID;
 				}
 			},
 			$entity_uris
@@ -238,7 +236,6 @@ function wl_entities_box_content_scripts() {
 
 	// Hook to the Classic Editor script, see Wordlift_Admin_Post_Edit_Page.
 	wp_localize_script( 'wl-classic-editor', '_wlMetaBoxSettings', array( 'settings' => $metabox_settings ) );
-
 }
 
 add_action( 'admin_print_scripts-post.php', 'wl_entities_box_content_scripts', 11 );

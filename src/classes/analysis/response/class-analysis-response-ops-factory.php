@@ -35,7 +35,6 @@ class Analysis_Response_Ops_Factory {
 
 		$this->entity_uri_service = $entity_uri_service;
 		$this->entity_helper      = $entity_helper;
-
 	}
 
 	private static $instance;
@@ -76,5 +75,4 @@ class Analysis_Response_Ops_Factory {
 
 		return $this->create( json_decode( $response['body'] ), $post_id );
 	}
-
 }

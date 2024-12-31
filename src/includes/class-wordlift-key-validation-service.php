@@ -56,7 +56,6 @@ class Wordlift_Key_Validation_Service {
 		}
 
 		$this->ttl_cache_service = new Ttl_Cache( 'key-validation-notification' );
-
 	}
 
 	/**
@@ -192,7 +191,6 @@ class Wordlift_Key_Validation_Service {
 			Wordlift_Configuration_Service::get_instance()->set_key( '' );
 			set_transient( 'wl-key-error-msg', __( "Your web site URL has changed. To avoid data corruption, WordLift's key has been removed. Please provide a new key in WordLift Settings. If you believe this to be an error, please contact us at hello@wordlift.io", 'wordlift' ), 10 );
 		}
-
 	}
 
 	/**
@@ -201,9 +199,9 @@ class Wordlift_Key_Validation_Service {
 	public function wl_key_update_notice() {
 		if ( get_transient( 'wl-key-error-msg' ) ) {
 			?>
-		  <div class="updated notice is-dismissible error">
+			<div class="updated notice is-dismissible error">
 			<p><?php esc_html( get_transient( 'wl-key-error-msg' ) ); ?></p>
-		  </div>
+			</div>
 			<?php
 		}
 	}

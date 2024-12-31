@@ -1,8 +1,8 @@
 <?php
 
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\Jsonld\Jsonld_Context_Enum;
 use Wordlift\Jsonld\Jsonld_Service;
 use Wordlift\Object_Type_Enum;

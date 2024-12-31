@@ -80,7 +80,6 @@ class Post_Excerpt_Rest_Controller {
 				'message'      => __( 'Excerpt successfully generated.', 'wordlift' ),
 			);
 		}
-
 	}
 
 	/**
@@ -231,5 +230,4 @@ class Post_Excerpt_Rest_Controller {
 			)
 		);
 	}
-
 }

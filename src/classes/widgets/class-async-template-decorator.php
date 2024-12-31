@@ -81,5 +81,4 @@ class Async_Template_Decorator {
 
 		return str_replace( '_', '-', $name );
 	}
-
 }

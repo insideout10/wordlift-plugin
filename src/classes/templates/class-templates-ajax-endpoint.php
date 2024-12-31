@@ -25,7 +25,6 @@ class Templates_Ajax_Endpoint {
 	public function __construct() {
 
 		add_action( 'wp_ajax_wl_templates', array( $this, 'template' ) );
-
 	}
 
 	/**
@@ -41,9 +40,8 @@ class Templates_Ajax_Endpoint {
 			return wp_send_json_error( 'Invalid name.' );
 		}
 
-		require dirname( dirname( __DIR__ ) ) . "/templates/wordlift-widget-be/$name.html";
+		require dirname( __DIR__, 2 ) . "/templates/wordlift-widget-be/$name.html";
 
 		die();
 	}
-
 }

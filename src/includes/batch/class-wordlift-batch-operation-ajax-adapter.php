@@ -113,7 +113,6 @@ class Wordlift_Batch_Operation_Ajax_Adapter {
 				)
 			)
 		);
-
 	}
 
 	/**
@@ -139,7 +138,6 @@ class Wordlift_Batch_Operation_Ajax_Adapter {
 				'_nonce' => $this->create_nonce(),
 			)
 		);
-
 	}
 
 	/**
@@ -152,5 +150,4 @@ class Wordlift_Batch_Operation_Ajax_Adapter {
 
 		return wp_create_nonce( $this->action );
 	}
-
 }

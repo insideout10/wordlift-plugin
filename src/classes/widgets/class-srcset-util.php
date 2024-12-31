@@ -28,7 +28,7 @@ class Srcset_Util {
 			$srcset[] = $large . ' ' . $width . 'w';
 		}
 
-		$srcset_string = join( ',', $srcset );
+		$srcset_string = implode( ',', $srcset );
 
 		/**
 		 * Filter name: wordlift_${widget_name}_thumbnail_srcset
@@ -41,7 +41,6 @@ class Srcset_Util {
 		$srcset_string = apply_filters( "wordlift_${widget_name}_thumbnail_srcset", $srcset_string );
 
 		return $srcset_string;
-
 	}
 
 	private static function get_image_width( $post_id, $size ) {
@@ -56,5 +55,4 @@ class Srcset_Util {
 
 		return array_key_exists( 2, $data ) ? $data[2] : false;
 	}
-
 }

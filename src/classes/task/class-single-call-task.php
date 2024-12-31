@@ -39,7 +39,5 @@ class Single_Call_Task implements Task {
 	public function tick( $value, $args ) {
 
 		call_user_func( $this->callable, 1 );
-
 	}
-
 }

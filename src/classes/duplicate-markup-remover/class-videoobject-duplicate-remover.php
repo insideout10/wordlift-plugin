@@ -21,8 +21,8 @@ class Videoobject_Duplicate_Remover {
 	public function wl_after_get_jsonld( $jsonld ) {
 
 		if ( ! is_array( $jsonld )
-			 || ! count( $jsonld ) > 1
-			 || ! array_key_exists( 0, $jsonld ) ) {
+			|| ! count( $jsonld ) > 1
+			|| ! array_key_exists( 0, $jsonld ) ) {
 			// Return early if there are no referenced entities.
 			return $jsonld;
 		}
@@ -37,7 +37,7 @@ class Videoobject_Duplicate_Remover {
 			$type = $value['@type'];
 
 			if ( ( is_string( $type ) && 'Article' !== $type )
-				 || ( is_array( $type ) && ! in_array( 'Article', $type, true ) ) ) {
+				|| ( is_array( $type ) && ! in_array( 'Article', $type, true ) ) ) {
 				continue;
 			}
 			// Video doesnt exist, dont try to remove it.
@@ -52,5 +52,4 @@ class Videoobject_Duplicate_Remover {
 
 		return $jsonld;
 	}
-
 }

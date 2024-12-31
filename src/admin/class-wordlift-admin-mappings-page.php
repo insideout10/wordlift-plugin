@@ -47,5 +47,4 @@ class Wordlift_Admin_Mappings_Page extends Wordlift_Admin_Page {
 
 		return 'wordlift-admin-mappings-page.php';
 	}
-
 }

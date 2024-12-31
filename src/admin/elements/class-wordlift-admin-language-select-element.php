@@ -47,5 +47,4 @@ class Wordlift_Admin_Language_Select_Element extends Wordlift_Admin_Select_Eleme
 			<?php
 		endforeach;
 	}
-
 }

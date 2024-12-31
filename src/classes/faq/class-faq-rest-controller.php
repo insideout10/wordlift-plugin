@@ -161,7 +161,6 @@ class Faq_Rest_Controller {
 			'status'  => 'success',
 			'message' => __( 'Faq Items updated successfully', 'wordlift' ),
 		);
-
 	}
 
 	/**
@@ -244,6 +243,5 @@ class Faq_Rest_Controller {
 			'message' => __( 'Question successfully added.', 'wordlift' ),
 			'id'      => (int) $faq_items[0]['id'],
 		);
-
 	}
 }

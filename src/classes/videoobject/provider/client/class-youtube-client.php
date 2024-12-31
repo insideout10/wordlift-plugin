@@ -55,7 +55,7 @@ class Youtube_Client extends Singleton implements Client {
 		);
 
 		// extract the video ids.
-		return join( ',', $this->get_video_ids( $video_urls ) );
+		return implode( ',', $this->get_video_ids( $video_urls ) );
 	}
 
 	public function get_video_ids( $video_urls ) {
@@ -69,17 +69,14 @@ class Youtube_Client extends Singleton implements Client {
 
 				// Return video id or return false.
 				if ( isset( $matches[1] ) && is_string( $matches[1] ) ) {
-					  return $matches[1];
+						return $matches[1];
 				}
 
 				return false;
-
 			},
 			$video_urls
 		);
 
 		return array_values( array_filter( $video_ids ) );
-
 	}
-
 }

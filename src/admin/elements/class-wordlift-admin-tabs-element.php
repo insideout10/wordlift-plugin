@@ -84,5 +84,4 @@ class Wordlift_Admin_Tabs_Element implements Wordlift_Admin_Element {
 
 		return $this;
 	}
-
 }

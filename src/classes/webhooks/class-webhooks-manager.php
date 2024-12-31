@@ -92,7 +92,5 @@ class Webhooks_Manager {
 				)
 			);
 		}
-
 	}
-
 }

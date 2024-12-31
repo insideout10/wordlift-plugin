@@ -17,5 +17,4 @@ abstract class Singleton {
 
 		return self::$instances[ $child_class_name ];
 	}
-
 }

@@ -159,7 +159,6 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 				),
 			)
 		);
-
 	}
 
 	/**
@@ -339,5 +338,4 @@ HTML;
 
 		return $rest_url;
 	}
-
 }

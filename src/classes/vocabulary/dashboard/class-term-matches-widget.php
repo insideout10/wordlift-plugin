@@ -49,5 +49,4 @@ class Term_Matches_Widget {
 		</div>
 		<?php
 	}
-
 }

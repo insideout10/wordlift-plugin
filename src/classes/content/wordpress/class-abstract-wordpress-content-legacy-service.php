@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Content\Wordpress;
+namespace Wordlift\Content\WordPress;
 
 use Wordlift\Assertions;
 use Wordlift\Object_Type_Enum;
