@@ -33,7 +33,7 @@
     "format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source",
     "lint": "phpcs --standard=phpcs.xml.dist",
     "post-install-cmd": [
-      "patch -p0 < .patches/phpcsutils-1-0-12.patch"
+      "patch -p0 --forward < .patches/phpcsutils-1-0-12.patch || exit 0"
     ]
   }
 }
