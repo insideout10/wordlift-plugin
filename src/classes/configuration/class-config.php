@@ -40,7 +40,7 @@ class Config {
 		 * before setting it, we should check if the url is null.
 		 */
 		if ( is_wp_error( $account_info )
-			|| wp_remote_retrieve_response_code( $account_info ) !== 200 ) {
+		     || wp_remote_retrieve_response_code( $account_info ) !== 200 ) {
 			return false;
 		}
 
@@ -176,6 +176,8 @@ class Config {
 
 		$file_path = $upload_dir['path'] . DIRECTORY_SEPARATOR . md5( $image_string ) . '.' . $image_ext;
 
+		// Only 'png', 'jpeg', 'jpg' are allowed to be saved, we need a local file system operation
+		// to insert as attachments.
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
 		file_put_contents( $file_path, $image_decoded_string );
 
