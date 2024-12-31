@@ -201,8 +201,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 		$file_extension_length = strlen( $this->file_extension );
 
 		// Loop into the directory to delete files.
-		$entry = readdir( $handle );
-		while ( false !== $entry ) { //phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
+		while ( false !== ( $entry = readdir( $handle ) ) ) { // phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 			if ( substr( $entry, - $file_extension_length ) === $this->file_extension
 				&& file_exists( $this->cache_dir . $entry ) ) {
 				$this->log->trace( "Deleting file {$this->cache_dir}{$entry}..." );
@@ -216,7 +215,9 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 	public static function flush_all() {
 
+		$log = Wordlift_Log_Service::get_logger( 'Wordlift_File_Cache_Service::flush_all' );
 		foreach ( self::$instances as $instance ) {
+			$log->info( 'Flushing cache contents for ' . get_class( $instance ) . '...' );
 			$instance->flush();
 		}
 

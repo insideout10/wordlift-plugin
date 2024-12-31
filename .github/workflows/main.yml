@@ -30,6 +30,7 @@ jobs:
   wordpress:
     name: ${{ matrix.image }}_${{ matrix.phpunit-xml }}
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     strategy:
       matrix:
         image:
