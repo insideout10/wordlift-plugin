@@ -22,9 +22,7 @@ class Config {
 
 		$this->admin_setup            = $admin_setup;
 		$this->key_validation_service = $key_validation_service;
-		add_action( 'wp_ajax_nopriv_wl_config_plugin', array( $this, 'config' ) );
 		add_action( 'wp_ajax_wl_config_plugin', array( $this, 'config' ) );
-
 	}
 
 	/**
@@ -42,7 +40,7 @@ class Config {
 		 * before setting it, we should check if the url is null.
 		 */
 		if ( is_wp_error( $account_info )
-			 || wp_remote_retrieve_response_code( $account_info ) !== 200 ) {
+			|| wp_remote_retrieve_response_code( $account_info ) !== 200 ) {
 			return false;
 		}
 
@@ -178,7 +176,7 @@ class Config {
 
 		$file_path = $upload_dir['path'] . DIRECTORY_SEPARATOR . md5( $image_string ) . '.' . $image_ext;
 
-		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
 		file_put_contents( $file_path, $image_decoded_string );
 
 		$attachment_id = wp_insert_attachment(
@@ -196,5 +194,4 @@ class Config {
 
 		return $attachment_id;
 	}
-
 }

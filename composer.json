@@ -14,13 +14,13 @@
     "issues": "https://github.com/insideout10/wordlift-plugin/issues"
   },
   "require-dev": {
-    "wp-phpunit/wp-phpunit": "^5.9",
-    "automattic/jetpack-codesniffer": "^2.6",
-    "yoast/phpunit-polyfills": "^1.0"
+    "wp-phpunit/wp-phpunit": "^6.7.1",
+    "automattic/jetpack-codesniffer": "^4.0",
+    "yoast/phpunit-polyfills": "^3.0.0"
   },
   "require": {
-    "composer/installers": "~1.12",
-    "php": ">=5.6|^7|^8",
+    "composer/installers": "^2.3.0",
+    "php": ">=7.4",
     "ext-json": "*"
   },
   "config": {
@@ -31,6 +31,9 @@
   },
   "scripts": {
     "format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source",
-    "lint": "phpcs --standard=phpcs.xml.dist"
+    "lint": "phpcs --standard=phpcs.xml.dist",
+    "post-install-cmd": [
+      "patch -p0 < .patches/phpcsutils-1-0-12.patch"
+    ]
   }
 }

@@ -1,0 +1,7 @@
+# see https://aider.chat/docs/config/aider_conf.html for an explanation.
+read:
+  - CONVENTIONS.md
+auto-commits: false
+deepseek: true
+watch-files: true
+dark-mode: true

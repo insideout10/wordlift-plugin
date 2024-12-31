@@ -99,7 +99,7 @@
   <!-- Check for cross-version support for PHP 7.4 and higher. -->
   <rule ref="PHPCompatibility"/>
 
-  <config name="minimum_supported_wp_version" value="7.4-"/>
+  <config name="minimum_supported_wp_version" value="5.3-"/>
   <config name="testVersion" value="7.4-"/>
 
   <arg name="extensions" value="php"/>
