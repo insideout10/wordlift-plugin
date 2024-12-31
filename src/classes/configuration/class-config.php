@@ -40,7 +40,7 @@ class Config {
 		 * before setting it, we should check if the url is null.
 		 */
 		if ( is_wp_error( $account_info )
-		     || wp_remote_retrieve_response_code( $account_info ) !== 200 ) {
+			|| wp_remote_retrieve_response_code( $account_info ) !== 200 ) {
 			return false;
 		}
 
