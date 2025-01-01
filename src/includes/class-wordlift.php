@@ -21,7 +21,6 @@ use Wordlift\Autocomplete\All_Autocomplete_Service;
 use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
 use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Cache\Ttl_Cache;
-use Wordlift\Configuration\Config;
 use Wordlift\Duplicate_Markup_Remover\Duplicate_Markup_Remover;
 use Wordlift\Duplicate_Markup_Remover\Videoobject_Duplicate_Remover;
 use Wordlift\Entity\Entity_Helper;
@@ -1418,11 +1417,6 @@ class Wordlift {
 				$google_addon_integration_loader = new \Wordlift\Google_Addon_Integration\Loader();
 				$google_addon_integration_loader->init_feature();
 
-				/**
-				 * @since 3.31.5
-				 * Create configuration endpoint for webapp to configure.
-				 */
-				new Config( $that->admin_setup, $that->key_validation_service );
 				/**
 				 * @since 3.31.7
 				 * Remove duplicate videoobject.
