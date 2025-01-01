@@ -1,0 +1,37 @@
+
+# 2024-12-31 09:10:30.622772
++N
+
+# 2024-12-31 09:23:50.631676
++n
+
+# 2024-12-31 09:24:07.281643
++/ask what is this error: FILE: ...dlift/wordlift-plugin/src/classes/configuration/class-config.php
++----------------------------------------------------------------------
++FOUND 1 ERROR AFFECTING 1 LINE
++----------------------------------------------------------------------
++ 1 | ERROR | An error occurred during processing; checking has been
++   |       | aborted. The error message was:
++   |       | WordPressCS\WordPress\PHPCSHelper::ignore_annotations():
++   |       | Implicitly marking parameter $phpcsFile as nullable is
++   |       | deprecated, the explicit nullable type must be used
++   |       | instead in
++   |       | /Users/ziodave/Developer/wordlift/wordlift-plugin/vendor/wp-coding-standards/wpcs/WordPress/PHPCSHelper.php
++   |       | on line 98 (Internal.Exception)
++----------------------------------------------------------------------
++
+
+# 2024-12-31 09:25:53.029111
++/add composer.json
+
+# 2024-12-31 09:26:04.595006
++can we update the wpcs package?
+
+# 2024-12-31 09:26:43.310265
++n
+
+# 2024-12-31 09:26:58.655883
++/ask is there a composer command to update all the dependencies?
+
+# 2024-12-31 14:23:02.385225
++/ask can you give an example on how to use widgets_init
