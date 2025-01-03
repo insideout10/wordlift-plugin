@@ -39,6 +39,7 @@ else
 	echo "Setting the stable tag in $README..."
 	sed -i '' "s/Stable tag: .*/Stable tag: $VERSION/g" $README
 	svn status | grep '^?       trunk/' | awk '{print $2}' | xargs svn add
+	svn status | grep '^!       trunk/' | awk '{print $2}' | xargs svn delete
 	# svn add trunk > /dev/null
 	svn cp trunk tags/$VERSION > /dev/null
 
