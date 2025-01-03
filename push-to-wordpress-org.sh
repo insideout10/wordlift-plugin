@@ -35,7 +35,7 @@ else
 	svn ci -m "$VERSION: updating trunk (1 of 2)"
 	# Test using rsync
 	# mv src trunk
-	rsync -aP src/ trunk/
+	rsync -aP --delete src/ trunk/
 	echo "Setting the stable tag in $README..."
 	sed -i '' "s/Stable tag: .*/Stable tag: $VERSION/g" $README
 	svn status | grep '^?       trunk/' | awk '{print $2}' | xargs svn add
