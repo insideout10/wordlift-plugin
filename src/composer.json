@@ -43,5 +43,10 @@
   },
   "require": {
     "deliciousbrains/wp-background-processing": "^1.0"
+  },
+  "config": {
+    "allow-plugins": {
+      "cweagans/composer-patches": false
+    }
   }
 }
