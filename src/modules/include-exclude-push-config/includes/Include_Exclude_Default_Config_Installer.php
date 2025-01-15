@@ -3,6 +3,7 @@
 namespace Wordlift\Modules\Include_Exclude_Push_Config;
 
 use Wordlift\Api\Api_Service;
+use Wordlift\Api\Response;
 use Wordlift\Modules\Include_Exclude\Configuration;
 use Wordlift_Configuration_Service;
 
@@ -37,7 +38,7 @@ class Include_Exclude_Default_Config_Installer {
 		// Send the default configuration only if it hasn't been sent already.
 		if ( ! get_option( '_wl_include_exclude_default_sent', false ) ) {
 			$response = $this->send();
-			if ( $response->is_success() ) {
+			if ( is_a( $response, Response::class ) && $response->is_success() ) {
 				update_option( '_wl_include_exclude_default_sent', true, true );
 			}
 		}
@@ -49,10 +50,22 @@ class Include_Exclude_Default_Config_Installer {
 		$this->handle_init();
 	}
 
-	public function send() {
+	/**
+	 * Send the include/exclude default configuration.
+	 *
+	 * @return null|Response
+	 */
+	public function send(): ?Response {
 		// I prefer to instantiate the `Wordlift_Configuration_Service` and `Configuration` here
 		// in order to avoid preemptive unused instantiation.
-		$key                        = rawurlencode( Wordlift_Configuration_Service::get_instance()->get_key() );
+		$key = Wordlift_Configuration_Service::get_instance()->get_key();
+
+		// That makes no sense for us to send such a request if the key isn't set.
+		if ( empty( $key ) ) {
+			return null;
+		}
+
+		$encoded_key                = rawurlencode( $key );
 		$wp_admin                   = rawurlencode( untrailingslashit( get_admin_url() ) );
 		$wp_json                    = rawurlencode( untrailingslashit( get_rest_url() ) );
 		$wp_include_exclude_default = rawurlencode( Configuration::get_instance()->get_default() );
@@ -60,7 +73,7 @@ class Include_Exclude_Default_Config_Installer {
 		return $this->api_service->request(
 			'PUT',
 			'/accounts/wordpress-configuration?'
-			. "key=$key"
+			. "key=$encoded_key"
 			. "&wpAdmin=$wp_admin"
 			. "&wpJson=$wp_json"
 			. "&wp_include_exclude_default=$wp_include_exclude_default"

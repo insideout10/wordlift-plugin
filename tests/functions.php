@@ -310,14 +310,6 @@ function _wl_mock_http_request( $response, $request, $url ) {
 		);
 	}
 
-	// This request is coming from this test file tests/test-jsonld-rest-service.php
-	if ( preg_match( '@.*/accounts/wordpress-configuration\?key=&wpAdmin=http%3A%2F%2Fexample\.org%2Fwp-admin&wpJson=http%3A%2F%2Fexample\.org%2Findex\.php%3Frest_route%3D&wp_include_exclude_default=include$@', $url ) ) {
-		return array(
-			'body'     => '',
-			'response' => array( 'code' => 200 ),
-		);
-	}
-
 	remove_filter( 'pre_http_request', '_wl_mock_http_request', PHP_INT_MAX );
 
 	echo "An unknown request to $url has been caught:\n";
