@@ -34,6 +34,13 @@ class Templates_Ajax_Endpoint {
 	 */
 	public function template() {
 
+		// Check user capabilities.
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			@ob_clean();
+			return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
+		}
+
 		$name = filter_input( INPUT_GET, 'name' );
 
 		if ( 1 !== preg_match( '|^[a-z0-9\-]+$|', $name ) ) {
