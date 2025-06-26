@@ -30,6 +30,26 @@ class Wordlift_Ajax_Related_Posts extends Wordlift_Ajax_Unit_Test_Case {
 //		parent::tearDown();
 //	}
 
+	private $previousUserId = null;
+
+	public function setUp(): void {
+		// store the previous user ID
+		$this->previousUserId = get_current_user_id();
+
+		parent::setUp();
+		$contributor_user   = self::factory()->user->create( array( 'role' => 'contributor' ) );
+		wp_set_current_user( $contributor_user );
+	}
+
+	public function tearDown(): void {
+		if(null !== $this->previousUserId) {
+			// Restore the previous user.
+			wp_set_current_user( $this->previousUserId );
+		}
+		
+		parent::tearDown();
+	}
+
 	function _mock_api( $response, $request, $url ) {
 
 		if ( 'POST' === $request['method'] && preg_match( '@/datasets/key=key123/queries$@', $url )
@@ -68,7 +88,6 @@ class Wordlift_Ajax_Related_Posts extends Wordlift_Ajax_Unit_Test_Case {
 		$_GET['post_id'] = 'foo';
 		$this->setExpectedException( 'WPAjaxDieStopException', 'Post id missing or invalid!' );
 		$this->_handleAjax( 'wordlift_related_posts' );
-
 	}
 
 	public function test_postsselectionwithfilters() {
