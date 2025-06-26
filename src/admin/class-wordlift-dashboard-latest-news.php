@@ -144,6 +144,13 @@ class Wordlift_Dashboard_Latest_News {
 	 * @uses  https://codex.wordpress.org/Function_Reference/wp_send_json_success
 	 */
 	public function ajax_get_latest_news() {
+		// Check user capabilities.
+		if ( ! current_user_can( 'read' ) ) {
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			@ob_clean();
+			return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
+		}
+
 		// Get wordlift articles
 		$more_posts_link_id = isset( $_POST['more_posts_link_id'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['more_posts_link_id'] ) ) : '';//phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$start_position     = explode( '_', $more_posts_link_id );
