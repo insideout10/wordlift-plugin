@@ -33,6 +33,13 @@ class Wordlift_Mapping_Ajax_Adapter {
 
 	public function update_post_type_entity_types() {
 
+		// Check user capabilities.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			@ob_clean();
+			return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
+		}
+
 		// If the nonce is invalid, return an error.
 		$nonce = isset( $_REQUEST['_nonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_nonce'] ) ) : '';
 		if ( ! wp_verify_nonce( $nonce, 'update_post_type_entity_types' ) ) {
