@@ -129,6 +129,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 > Find more FAQ in our [Wiki](http://docs.wordlift.io/en/latest/faq.html#why-is-it-important-to-organize-my-content-and-publish-it-as-linked-data). <br />
 
+= How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage and handle any security vulnerabilities. [Report a security vulnerability.]( https://patchstack.com/database/vdp/0c97043c-a135-43be-873e-277fde8929f2 )
+
 == Screenshots ==
 
 1. The Setup Wizard.
