@@ -34,6 +34,13 @@ class Video_Key_Validation_Service {
 		// check nonce.
 		check_ajax_referer( 'wl_video_api_nonce' );
 
+		// Check user capabilities.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			@ob_clean();
+			return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
+		}
+
 		// Check if we have an API key and Type.
 		if ( ! isset( $_POST['api_key'] ) || empty( $_POST['api_key'] ) || ! isset( $_POST['type'] ) ) {
 			wp_send_json_error(
