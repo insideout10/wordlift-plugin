@@ -29,6 +29,10 @@ class Wordlift_Admin_Country_Select_Element_Ajax_Test extends Wordlift_Ajax_Unit
 		$_POST['lang']  = 'bg';
 		$_POST['value'] = 'bg';
 
+		// Only roles with manage_options permission.
+		$user_id   = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		$user      = wp_set_current_user( $user_id );	
+
 		try {
 			$this->_handleAjax( 'wl_update_country_options' );
 		} catch ( WPAjaxDieContinueException $e ) {
@@ -73,6 +77,10 @@ class Wordlift_Admin_Country_Select_Element_Ajax_Test extends Wordlift_Ajax_Unit
 	public function test_get_options_html_unknown_value() {
 		$_POST['lang']  = 'en';
 		$_POST['value'] = 'zzz';
+
+		// Only roles with manage_options permission.
+		$user_id   = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		$user      = wp_set_current_user( $user_id );	
 
 		try {
 			$this->_handleAjax( 'wl_update_country_options' );

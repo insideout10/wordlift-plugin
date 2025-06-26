@@ -72,6 +72,15 @@ class Ttl_Cache_Cleaner {
 
 	public function flush() {
 
+		// Check user capabilities for AJAX requests.
+		if ( wp_doing_ajax() ) {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+				@ob_clean();
+				return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
+			}
+		}
+
 		// Get all the files, recursive.
 		$files = $this->reduce( array(), Ttl_Cache::get_cache_folder() );
 
@@ -80,12 +89,21 @@ class Ttl_Cache_Cleaner {
 		}
 
 		$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( (string) $_REQUEST['action'] ) ) : '';// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX && 'wl_ttl_cache_cleaner__flush' === $action ) {
+		if ( wp_doing_ajax() && 'wl_ttl_cache_cleaner__flush' === $action ) {
 			wp_send_json_success( count( $files ) );
 		}
 	}
 
 	public function cleanup() {
+
+		// Check user capabilities for AJAX requests.
+		if ( wp_doing_ajax() ) {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+				@ob_clean();
+				return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
+			}
+		}
 
 		// Get all the files, recursive.
 		$files = $this->reduce( array(), Ttl_Cache::get_cache_folder() );

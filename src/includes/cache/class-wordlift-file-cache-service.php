@@ -215,14 +215,23 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 	public static function flush_all() {
 
+		// Check user capabilities for AJAX requests.
+		if ( wp_doing_ajax() && isset( $_REQUEST['action'] ) && 'wl_file_cache__flush_all' === $_REQUEST['action'] ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+			if ( ! current_user_can( 'manage_options' ) ) {
+				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+				@ob_clean();
+				return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
+			}
+		}
+
 		$log = Wordlift_Log_Service::get_logger( 'Wordlift_File_Cache_Service::flush_all' );
 		foreach ( self::$instances as $instance ) {
 			$log->info( 'Flushing cache contents for ' . get_class( $instance ) . '...' );
 			$instance->flush();
 		}
 
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX
-			&& isset( $_REQUEST['action'] ) && 'wl_file_cache__flush_all' === $_REQUEST['action'] ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( wp_doing_ajax() && isset( $_REQUEST['action'] ) && 'wl_file_cache__flush_all' === $_REQUEST['action'] ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			wp_send_json_success();
 		}
 	}
