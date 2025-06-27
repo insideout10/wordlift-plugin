@@ -2,7 +2,7 @@
 set -eu
 
 rm -fr wordlift wordlift-*.zip
-cp -R src/ wordlift/
+rsync -av --exclude='*.map' --exclude='.git*' src/ wordlift/
 version=$(grep "WORDLIFT_VERSION" src/wordlift.php | sed "s/.*'\([0-9.]*\)'.*/\1/")
 zip_name="wordlift-${version}.zip"
 zip -r -9 "$zip_name" wordlift
