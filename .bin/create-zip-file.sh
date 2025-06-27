@@ -1,4 +1,8 @@
+#!/bin/bash
+set -eu
 
-
-rm -fr wordlift wordlift-*.zip ; cp -R src wordlift
-zip -r -9 wordlift-3.54.4.zip wordlift
+rm -fr wordlift wordlift-*.zip
+cp -R src/ wordlift/
+version=$(grep "WORDLIFT_VERSION" src/wordlift.php | sed "s/.*'\([0-9.]*\)'.*/\1/")
+zip_name="wordlift-${version}.zip"
+zip -r -9 "$zip_name" wordlift
