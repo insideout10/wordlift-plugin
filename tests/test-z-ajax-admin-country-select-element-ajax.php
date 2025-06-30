@@ -33,6 +33,11 @@ class Wordlift_Admin_Country_Select_Element_Ajax_Test extends Wordlift_Ajax_Unit
 		$user_id   = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		$user      = wp_set_current_user( $user_id );	
 
+		echo "USER ID: " . $user_id . "\n";
+		$this->assertTrue( current_user_can('manage_options' ), 'User should have manage_options capability.' );
+
+
+
 		try {
 			$this->_handleAjax( 'wl_update_country_options' );
 		} catch ( WPAjaxDieContinueException $e ) {
