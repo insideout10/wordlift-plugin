@@ -17,6 +17,13 @@ use Wordlift\Content\WordPress\Wordpress_Content_Service;
  */
 function wordlift_ajax_related_posts( $http_raw_data = null ) {
 
+	// Check user capabilities.
+	if ( ! current_user_can( 'edit_posts' ) ) {
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		@ob_clean();
+		return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
+	}
+
 	// Extract filtering conditions
 	if ( ! isset( $_GET['post_id'] ) || ! is_numeric( $_GET['post_id'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		wp_die( 'Post id missing or invalid!' );
