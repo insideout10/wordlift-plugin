@@ -21,5 +21,4 @@ class Wordlift_Install_3_27_1 extends Wordlift_Install {
 		$procedure = new Recipe_Maker_Entity_Type_Procedure();
 		$procedure->run_procedure();
 	}
-
 }

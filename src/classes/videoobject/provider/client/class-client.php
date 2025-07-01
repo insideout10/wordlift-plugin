@@ -40,6 +40,5 @@ interface Client {
 	 * @param $video_urls array<string>
 	 * @return array<string>
 	 */
-	public function get_video_ids( $video_urls  );
-
+	public function get_video_ids( $video_urls );
 }

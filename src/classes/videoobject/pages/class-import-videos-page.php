@@ -10,7 +10,6 @@ class Import_Videos_Page {
 	public function __construct() {
 
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-
 	}
 
 	public function admin_menu() {
@@ -26,7 +25,6 @@ class Import_Videos_Page {
 				'render',
 			)
 		);
-
 	}
 
 	public function render() {
@@ -53,7 +51,7 @@ class Import_Videos_Page {
 
 			<div class="wl-task__progress" style="border: 1px solid #23282D; height: 20px; margin: 8px 0;">
 				<div class="wl-task__progress__bar"
-					 style="width:0;background: #0073AA; text-align: center; height: 100%; color: #fff;"></div>
+					style="width:0;background: #0073AA; text-align: center; height: 100%; color: #fff;"></div>
 			</div>
 
 			<button id="wl-start-btn" type="button" class="button button-large button-primary">
@@ -70,5 +68,4 @@ class Import_Videos_Page {
 		</div>
 		<?php
 	}
-
 }

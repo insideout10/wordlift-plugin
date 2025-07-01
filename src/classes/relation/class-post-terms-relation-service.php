@@ -11,7 +11,7 @@
 
 namespace Wordlift\Relation;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
 use Wordlift\Object_Type_Enum;
 
 class Post_Terms_Relation_Service extends Abstract_Relation_Service {
@@ -80,5 +80,4 @@ class Post_Terms_Relation_Service extends Abstract_Relation_Service {
 
 		$relations->add( ...$new_relations );
 	}
-
 }

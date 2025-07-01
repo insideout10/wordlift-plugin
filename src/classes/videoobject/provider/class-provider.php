@@ -16,5 +16,4 @@ interface Provider {
 	 * @return array<Video>
 	 */
 	public function get_videos_data( $videos );
-
 }

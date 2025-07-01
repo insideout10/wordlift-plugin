@@ -58,5 +58,4 @@ class Admin_User_Option {
 
 		return "<tr><th>$admin_text</th><td><input type='checkbox' name='wl_is_wordlift_admin' $checked></td></tr>";
 	}
-
 }

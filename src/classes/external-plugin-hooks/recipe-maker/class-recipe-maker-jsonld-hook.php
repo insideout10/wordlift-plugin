@@ -68,7 +68,6 @@ class Recipe_Maker_Jsonld_Hook {
 			'jsonld'     => $jsonld,
 			'references' => array_merge( $recipe_ids, $references ),
 		);
-
 	}
 
 	public function wl_entity_jsonld( $jsonld, $post_id ) {
@@ -102,5 +101,4 @@ class Recipe_Maker_Jsonld_Hook {
 
 		return array();
 	}
-
 }

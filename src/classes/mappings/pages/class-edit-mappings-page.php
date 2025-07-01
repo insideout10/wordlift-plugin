@@ -118,7 +118,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		// Enqueue the script.
 		Scripts_Helper::enqueue_based_on_wordpress_version(
 			'wl-mappings-edit',
-			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/mappings-edit',
+			plugin_dir_url( dirname( __DIR__, 2 ) ) . 'js/dist/mappings-edit',
 			array( 'react', 'react-dom', 'wp-polyfill' ),
 			true
 		);
@@ -126,7 +126,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		// Enqueue the style.
 		wp_enqueue_style(
 			'wl-mappings-edit',
-			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/mappings-edit.css',
+			plugin_dir_url( dirname( __DIR__, 2 ) ) . 'js/dist/mappings-edit.css',
 			array(),
 			WORDLIFT_VERSION
 		);
@@ -312,7 +312,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 	private function validate_nonce_and_assign_mapping_id( array $edit_mapping_settings ) {
 		// We verify the nonce before making to load the edit mapping page for the wl_edit_mapping_id
 		if ( isset( $_REQUEST['_wl_edit_mapping_nonce'] )
-			 && wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_wl_edit_mapping_nonce'] ) ), 'wl-edit-mapping-nonce' ) ) {
+			&& wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_wl_edit_mapping_nonce'] ) ), 'wl-edit-mapping-nonce' ) ) {
 			// We're using `INPUT_GET` here because this is a link from the UI, i.e. no POST.
 			$mapping_id                                  = isset( $_REQUEST['wl_edit_mapping_id'] ) ?
 				(int) filter_var( sanitize_text_field( wp_unslash( $_REQUEST['wl_edit_mapping_id'] ) ), FILTER_VALIDATE_INT ) : 0;
@@ -416,5 +416,4 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 
 		return $edit_mapping_settings;
 	}
-
 }

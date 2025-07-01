@@ -26,7 +26,6 @@ class Wordlift_Admin_Dashboard_V2 {
 		defined( 'WL_TODAYS_TIP_JSON_URL_IT' ) || define( 'WL_TODAYS_TIP_JSON_URL_IT', '/it/wp-json/wp/v2/posts?context=embed&per_page=1&categories=27' );
 		defined( 'WL_TODAYS_TIP_JSON_URL_EN' ) || define( 'WL_TODAYS_TIP_JSON_URL_EN', '/en/wp-json/wp/v2/posts?context=embed&per_page=1&categories=38' );
 		$this->entity_service = $entity_service;
-
 	}
 
 	/**
@@ -49,7 +48,6 @@ class Wordlift_Admin_Dashboard_V2 {
 				array( $this, 'dashboard_setup_callback' )
 			);
 		}
-
 	}
 
 	/**
@@ -60,7 +58,6 @@ class Wordlift_Admin_Dashboard_V2 {
 	public function dashboard_setup_callback() {
 
 		require_once plugin_dir_path( __DIR__ ) . 'admin/partials/wordlift-admin-dashboard-v2.php';
-
 	}
 
 	/**
@@ -102,11 +99,10 @@ class Wordlift_Admin_Dashboard_V2 {
 				<p><strong><?php echo esc_html( wp_strip_all_tags( $data['title'] ) ); ?></strong>
 					<?php echo esc_html( wp_strip_all_tags( $data['excerpt'] ) ); ?>
 					<a target="_blank"
-					   href="<?php echo esc_attr( $data['link'] ); ?>"><?php echo esc_html( __( 'Read more', 'wordlift' ) ); ?></a>
+						href="<?php echo esc_attr( $data['link'] ); ?>"><?php echo esc_html( __( 'Read more', 'wordlift' ) ); ?></a>
 				</p>
 		</div>
 		<?php
-
 	}
 
 	/**
@@ -124,22 +120,22 @@ class Wordlift_Admin_Dashboard_V2 {
 
 		// If the transient isn't available, query the remote web site.
 		$url = WL_TODAYS_TIP_JSON_URL
-			   . ( 'it' === get_bloginfo( 'language' ) ? WL_TODAYS_TIP_JSON_URL_IT : WL_TODAYS_TIP_JSON_URL_EN );
+				. ( 'it' === get_bloginfo( 'language' ) ? WL_TODAYS_TIP_JSON_URL_IT : WL_TODAYS_TIP_JSON_URL_EN );
 
 		$response = wp_remote_get( $url );
 
 		if ( is_wp_error( $response )
-			 || ! isset( $response['response']['code'] )
-			 || 2 !== (int) $response['response']['code'] / 100 ) {
+			|| ! isset( $response['response']['code'] )
+			|| 2 !== (int) $response['response']['code'] / 100 ) {
 			return false;
 		}
 
 		$json = json_decode( $response['body'], true );
 
 		if ( empty( $json )
-			 || ! isset( $json[0]['title']['rendered'] )
-			 || ! isset( $json[0]['excerpt']['rendered'] )
-			 || ! isset( $json[0]['link'] ) ) {
+			|| ! isset( $json[0]['title']['rendered'] )
+			|| ! isset( $json[0]['excerpt']['rendered'] )
+			|| ! isset( $json[0]['link'] ) ) {
 			return false;
 		}
 
@@ -154,5 +150,4 @@ class Wordlift_Admin_Dashboard_V2 {
 
 		return $value;
 	}
-
 }

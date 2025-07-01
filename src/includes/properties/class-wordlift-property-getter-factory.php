@@ -81,5 +81,4 @@ class Wordlift_Property_Getter_Factory {
 
 		return $property_getter;
 	}
-
 }

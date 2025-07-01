@@ -58,7 +58,6 @@ class Wordlift_Install_3_33_9 extends Wordlift_Install {
 				$charset_collate
 			)
 		);
-
 	}
 
 	private function delete_legacy_fields_from_postmeta() {
@@ -69,7 +68,6 @@ class Wordlift_Install_3_33_9 extends Wordlift_Install {
 			FROM $wpdb->postmeta
 			WHERE meta_key IN ( '_wl_jsonld_hash', '_synced_gmt' );"
 		);
-
 	}
 
 	private function migrate_entity_url() {
@@ -84,7 +82,5 @@ class Wordlift_Install_3_33_9 extends Wordlift_Install {
 			WHERE meta_key = 'entity_url' AND post_id IN (SELECT ID FROM $wpdb->posts)
 			ON DUPLICATE KEY UPDATE rel_uri = VALUES( rel_uri ), rel_uri_hash = VALUES( rel_uri_hash );"
 		);
-
 	}
-
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Wordpress;
+namespace Wordlift\WordPress;
 
 abstract class Submenu_Page_Base implements Page {
 	/**
@@ -80,5 +80,4 @@ abstract class Submenu_Page_Base implements Page {
 	abstract public function enqueue_scripts();
 
 	abstract public function render();
-
 }

@@ -30,5 +30,4 @@ class Post_Entities_Validator {
 
 		return false;
 	}
-
 }

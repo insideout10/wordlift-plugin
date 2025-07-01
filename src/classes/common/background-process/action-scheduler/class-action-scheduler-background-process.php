@@ -22,7 +22,6 @@ abstract class Action_Scheduler_Background_Process {
 	public function schedule( $args = array() ) {
 
 		as_enqueue_async_action( $this->hook, $args, $this->group );
-
 	}
 
 	public function unschedule() {
@@ -43,5 +42,4 @@ abstract class Action_Scheduler_Background_Process {
 	 * whether to schedule next event or stop processing.
 	 */
 	abstract public function do_task( $args );
-
 }

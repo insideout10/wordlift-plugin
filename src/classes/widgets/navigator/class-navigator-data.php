@@ -23,10 +23,15 @@ class Navigator_Data {
 	}
 
 	public static function post_navigator_get_results(
-		$post_id, $fields = array(
+		$post_id,
+		$fields = array(
 			'ID',
 			'post_title',
-		), $order_by = 'ID DESC', $limit = 10, $offset = 0, $post_types = array()
+		),
+		$order_by = 'ID DESC',
+		$limit = 10,
+		$offset = 0,
+		$post_types = array()
 	) {
 
 		$post_types = self::get_post_types_as_string( $post_types );
@@ -100,10 +105,15 @@ SELECT %4\$s, p2.ID as entity_id
 	}
 
 	public static function entity_navigator_get_results(
-		$post_id, $fields = array(
+		$post_id,
+		$fields = array(
 			'ID',
 			'post_title',
-		), $order_by = 'ID DESC', $limit = 10, $offset = 0, $post_types = array()
+		),
+		$order_by = 'ID DESC',
+		$limit = 10,
+		$offset = 0,
+		$post_types = array()
 	) {
 		global $wpdb;
 
@@ -173,4 +183,3 @@ SELECT %4\$s, p2.ID as entity_id
 	}
 // phpcs:enable
 }
-

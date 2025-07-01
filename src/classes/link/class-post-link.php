@@ -7,7 +7,7 @@
 
 namespace Wordlift\Link;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift_Entity_Service;
 use Wordlift_Schema_Service;
 
@@ -37,7 +37,6 @@ class Post_Link extends Default_Link {
 			array( $this->entity_service->get_uri( $id ) ),
 			$same_as
 		);
-
 	}
 
 	public function get_id( $uri ) {

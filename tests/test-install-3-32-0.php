@@ -1,6 +1,6 @@
 <?php
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
 use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Jsonld\Term_Reference;
 use Wordlift\Object_Type_Enum;

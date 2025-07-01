@@ -30,7 +30,6 @@ class Rest_Field {
 			);
 
 		}
-
 	}
 
 	/**
@@ -63,5 +62,4 @@ class Rest_Field {
 
 		return $data;
 	}
-
 }

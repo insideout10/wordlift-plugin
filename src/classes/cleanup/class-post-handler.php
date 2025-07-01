@@ -9,8 +9,8 @@
 
 namespace Wordlift\Cleanup;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 
 class Post_Handler {
 
@@ -46,7 +46,6 @@ class Post_Handler {
 				'post_content' => $new_post_content,
 			)
 		);
-
 	}
 
 	public static function fix_annotations( $args ) {
@@ -79,5 +78,4 @@ class Post_Handler {
 			return str_replace( $args[3], $new_item_id, $args[0] );
 		}
 	}
-
 }

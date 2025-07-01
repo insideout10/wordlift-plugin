@@ -47,7 +47,6 @@ class Wordlift_Install_All_Entity_Types extends Wordlift_Install {
 
 			update_option( self::OPTION_NAME, '1.0.0', true );
 		}
-
 	}
 
 	/**
@@ -62,5 +61,4 @@ class Wordlift_Install_All_Entity_Types extends Wordlift_Install {
 		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		return apply_filters( 'wl_feature__enable__all-entity-types', WL_ALL_ENTITY_TYPES ) && version_compare( '1.0.0', get_option( self::OPTION_NAME, '0.0.0' ), '>' );
 	}
-
 }

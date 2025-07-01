@@ -349,5 +349,4 @@ HTML;
 		</div>
 HTML;
 	}
-
 }

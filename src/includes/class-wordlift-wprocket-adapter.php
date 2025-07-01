@@ -29,7 +29,6 @@ class Wordlift_WpRocket_Adapter {
 
 		add_filter( 'rocket_exclude_js', array( $this, 'exclude_js' ) );
 		add_filter( 'rocket_excluded_inline_js_content', array( $this, 'excluded_inline_js_content' ) );
-
 	}
 
 	/**
@@ -95,5 +94,4 @@ class Wordlift_WpRocket_Adapter {
 
 		return $pattern;
 	}
-
 }

@@ -26,7 +26,6 @@ class Match_Terms {
 
 		$this->term_count = $term_count;
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-
 	}
 
 	public function admin_menu() {
@@ -46,14 +45,14 @@ class Match_Terms {
 
 		Scripts_Helper::enqueue_based_on_wordpress_version(
 			'wl-vocabulary-reconcile-script',
-			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/vocabulary',
+			plugin_dir_url( dirname( __DIR__, 2 ) ) . 'js/dist/vocabulary',
 			array( 'react', 'react-dom', 'wp-i18n', 'wp-polyfill' ),
 			true
 		);
 
 		wp_enqueue_style(
 			'wl-vocabulary-reconcile-script',
-			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/vocabulary.full.css',
+			plugin_dir_url( dirname( __DIR__, 2 ) ) . 'js/dist/vocabulary.full.css',
 			array(),
 			WORDLIFT_VERSION
 		);
@@ -61,5 +60,4 @@ class Match_Terms {
 		echo "<div id='wl_cmkg_reconcile_progress' class='wrap'></div>";
 		echo "<div id='wl_cmkg_table' class='wrap'></div>";
 	}
-
 }

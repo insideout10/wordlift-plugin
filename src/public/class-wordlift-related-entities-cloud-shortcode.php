@@ -50,7 +50,6 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 		$this->entity_service = $entity_service;
 
 		$this->register_block_type();
-
 	}
 
 	/**
@@ -71,8 +70,8 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 		 */
 
 		return '<div class="tagcloud wl-related-entities-cloud">' .
-			   wp_generate_tag_cloud( $tags, $atts ) .
-			   '</div>';
+				wp_generate_tag_cloud( $tags, $atts ) .
+				'</div>';
 	}
 
 	private function register_block_type() {
@@ -179,5 +178,4 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 	private function get_synonyms( $entity_id ) {
 		return $this->entity_service->get_alternative_labels( $entity_id );
 	}
-
 }

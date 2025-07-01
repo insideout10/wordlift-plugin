@@ -9,8 +9,8 @@
 
 namespace Wordlift\Mappings\Transforms;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\Mappings\Mappings_Transform_Function;
 
 /**
@@ -23,7 +23,6 @@ class Post_Id_To_Entity_Transform_Function implements Mappings_Transform_Functio
 	public function __construct() {
 
 		add_filter( 'wl_mappings_transformation_functions', array( $this, 'wl_mappings_transformation_functions' ) );
-
 	}
 
 	/**
@@ -83,7 +82,7 @@ class Post_Id_To_Entity_Transform_Function implements Mappings_Transform_Functio
 
 			// Get the entity by URI.
 			$entity_url = Wordpress_Content_Service::get_instance()
-												   ->get_entity_id( Wordpress_Content_Id::create_post( $target_post_id ) );
+													->get_entity_id( Wordpress_Content_Id::create_post( $target_post_id ) );
 
 			// No entity URL.
 			if ( empty( $entity_url ) ) {
@@ -101,5 +100,4 @@ class Post_Id_To_Entity_Transform_Function implements Mappings_Transform_Functio
 
 		return $ret_val;
 	}
-
 }

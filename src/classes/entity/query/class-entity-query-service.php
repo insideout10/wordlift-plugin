@@ -9,7 +9,7 @@
 
 namespace Wordlift\Entity\Query;
 
-use Wordlift\Content\Wordpress\Wordpress_Content;
+use Wordlift\Content\WordPress\Wordpress_Content;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Term\Type_Service;
 
@@ -36,7 +36,7 @@ class Entity_Query_Service {
 
 	private function query_terms( $query, $schema_types, $limit ) {
 		global $wpdb;
-		$schema_types = join(
+		$schema_types = implode(
 			',',
 			array_map(
 				function ( $schema_type ) {
@@ -55,7 +55,6 @@ class Entity_Query_Service {
 				$limit
 			)
 		);
-
 	}
 
 	/**
@@ -100,7 +99,6 @@ class Entity_Query_Service {
 		$results = array_merge( $results, $this->transform_terms( $this->query_terms( $query, $schema_types, $limit ) ) );
 
 		return $results;
-
 	}
 
 	public function get( $linked_entities ) {
@@ -119,10 +117,10 @@ class Entity_Query_Service {
 					$identifier = $parts[1];
 
 					if ( Object_Type_Enum::POST === $type ) {
-						return new Entity( join( ',', $post_entity_type_service->get_names( $identifier ) ), new Wordpress_Content( get_post( $identifier ) ) );
+						return new Entity( implode( ',', $post_entity_type_service->get_names( $identifier ) ), new Wordpress_Content( get_post( $identifier ) ) );
 					} elseif ( Object_Type_Enum::TERM === $type ) {
 
-						return new Entity( join( ',', $term_type_service->get_entity_types_labels( $identifier ) ), new Wordpress_Content( get_term( $identifier ) ) );
+						return new Entity( implode( ',', $term_type_service->get_entity_types_labels( $identifier ) ), new Wordpress_Content( get_term( $identifier ) ) );
 					}
 
 					// return new Entity( $item->schema_type_name, new Wordpress_Content( get_term( $item->id ) ) );
@@ -130,7 +128,5 @@ class Entity_Query_Service {
 				$linked_entities
 			)
 		);
-
 	}
-
 }

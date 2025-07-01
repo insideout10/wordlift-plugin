@@ -2,12 +2,11 @@
 
 namespace Wordlift\Relation;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
 
 abstract class Abstract_Relation_Service implements Relation_Service_Interface {
 
 	protected function __construct() {
-
 	}
 
 	/**
@@ -25,5 +24,4 @@ abstract class Abstract_Relation_Service implements Relation_Service_Interface {
 
 		return $relations;
 	}
-
 }

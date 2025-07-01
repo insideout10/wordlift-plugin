@@ -42,7 +42,5 @@ abstract class Data_Source {
 		} catch ( \Exception $e ) {
 			return Sync_State::unknown();
 		}
-
 	}
-
 }

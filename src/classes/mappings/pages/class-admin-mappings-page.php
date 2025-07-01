@@ -73,18 +73,17 @@ class Admin_Mappings_Page extends Wordlift_Admin_Page {
 
 		Scripts_Helper::enqueue_based_on_wordpress_version(
 			'wl-mappings-admin',
-			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/mappings',
+			plugin_dir_url( dirname( __DIR__, 2 ) ) . 'js/dist/mappings',
 			array( 'react', 'react-dom', 'wp-polyfill' ),
 			true
 		);
 
 		wp_enqueue_style(
 			'wl-mappings-admin',
-			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/mappings.css',
+			plugin_dir_url( dirname( __DIR__, 2 ) ) . 'js/dist/mappings.css',
 			array(),
 			WORDLIFT_VERSION
 		);
 		self::provide_ui_dependencies();
 	}
-
 }

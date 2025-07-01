@@ -9,8 +9,8 @@
  * @subpackage Wordlift/tests
  */
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 
 /**
  * Test the {@link Wordlift_Content_Filter_Service} class.

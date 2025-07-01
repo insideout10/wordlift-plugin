@@ -51,19 +51,19 @@ class Analysis_Background_Service {
 	 */
 	public function next() {
 
-		return Terms_Compat::get_terms(
-			Terms_Compat::get_public_taxonomies(),
+		return get_terms(
 			array(
-				'fields'                             => 'ids',
-				'hide_empty'                         => false,
-				'number'                             => $this->get_batch_size(),
+				'taxonomy'   => get_taxonomies( array( 'public' => true ) ),
+				'fields'     => 'ids',
+				'hide_empty' => false,
+				'number'     => $this->get_batch_size(),
 				// 'offset'     => $state->index,
-										'meta_query' => array(
-											array(
-												'key'     => self::ANALYSIS_DONE_FLAG,
-												'compare' => 'NOT EXISTS',
-											),
-										),
+				'meta_query' => array(
+					array(
+						'key'     => self::ANALYSIS_DONE_FLAG,
+						'compare' => 'NOT EXISTS',
+					),
+				),
 			)
 		);
 	}
@@ -71,9 +71,9 @@ class Analysis_Background_Service {
 	public function count() {
 
 		$count = count(
-			Terms_Compat::get_terms(
-				Terms_Compat::get_public_taxonomies(),
+			get_terms(
 				array(
+					'taxonomy'   => get_taxonomies( array( 'public' => true ) ),
 					'fields'     => 'ids',
 					'hide_empty' => false,
 					// return all terms, we cant pass -1 here.
@@ -133,7 +133,5 @@ class Analysis_Background_Service {
 		do_action( 'wordlift_vocabulary_analysis_complete_for_terms_batch' );
 
 		return true;
-
 	}
-
 }

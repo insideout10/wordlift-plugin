@@ -133,7 +133,5 @@ class Api_Data_Hooks {
 
 		// Execute the request
 		wp_remote_request( $url, $args );
-
 	}
-
 }

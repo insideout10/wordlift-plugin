@@ -28,5 +28,4 @@ interface Background_Task_State {
 	 * Try to resume an interrupted task.
 	 */
 	public function resume();
-
 }

@@ -38,5 +38,4 @@ class Faq_Content_Filter {
 		/** Return all the replaced content */
 		return $content;
 	}
-
 }

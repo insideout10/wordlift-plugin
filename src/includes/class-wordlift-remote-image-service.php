@@ -59,7 +59,7 @@ class Wordlift_Remote_Image_Service {
 								->warn( "save_image_from_url : failed creating upload dir $upload_dir \n" );
 
 			return new WP_Error( 'image_error', "save_image_from_url : failed creating upload dir $upload_dir \n" );
-		};
+		}
 
 		$response = wp_remote_get(
 			$url,
@@ -148,9 +148,8 @@ class Wordlift_Remote_Image_Service {
 	private static function is_response_error( $response ) {
 
 		return ( is_wp_error( $response )
-				 || 200 !== (int) $response['response']['code']
-				 || ! isset( $response['body'] )
+				|| 200 !== (int) $response['response']['code']
+				|| ! isset( $response['body'] )
 		);
 	}
-
 }

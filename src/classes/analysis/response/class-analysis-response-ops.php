@@ -90,7 +90,7 @@ class Analysis_Response_Ops {
 
 			// Ensure sameAs is an array.
 			if ( ! isset( $this->json->entities->{$internal_uri}->sameAs )
-				 || ! is_array( $this->json->entities->{$internal_uri}->sameAs ) ) {
+				|| ! is_array( $this->json->entities->{$internal_uri}->sameAs ) ) {
 				$this->json->entities->{$internal_uri}->sameAs = array();
 			}
 
@@ -286,7 +286,6 @@ class Analysis_Response_Ops {
 		$this->json->entities = $entities;
 
 		return $this;
-
 	}
 
 	/**
@@ -395,7 +394,5 @@ class Analysis_Response_Ops {
 				}
 			}
 		}
-
 	}
-
 }

@@ -37,7 +37,6 @@ class Task_Ajax_Adapter {
 
 		$this->action_name = $task->get_id();
 		add_action( 'wp_ajax_' . $this->action_name, array( $this, 'start' ) );
-
 	}
 
 	public function start() {
@@ -65,7 +64,6 @@ class Task_Ajax_Adapter {
 		} catch ( Task_Another_Instance_Is_Running_Exception $e ) {
 			wp_send_json_error( 'A task is already running.' );
 		}
-
 	}
 
 	/**
@@ -75,5 +73,4 @@ class Task_Ajax_Adapter {
 
 		return $this->task;
 	}
-
 }

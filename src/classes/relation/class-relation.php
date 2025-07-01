@@ -13,7 +13,7 @@ namespace Wordlift\Relation;
 
 use JsonSerializable;
 use Wordlift\Assertions;
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
 
 class Relation implements Hashable_Interface, JsonSerializable {
 	/**

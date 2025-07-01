@@ -214,5 +214,4 @@ class Wordlift_Api_Service {
 		// Decode and return the structured result.
 		return json_decode( $body );
 	}
-
 }

@@ -10,7 +10,7 @@
 
 namespace Wordlift\Analysis\Entity_Provider;
 
-use Wordlift\Content\Wordpress\Wordpress_Term_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Term_Content_Service;
 use Wordlift\Term\Type_Service;
 
 class Term_Entity_Provider implements Entity_Provider {
@@ -52,5 +52,4 @@ class Term_Entity_Provider implements Entity_Provider {
 			'images'      => array(),
 		);
 	}
-
 }

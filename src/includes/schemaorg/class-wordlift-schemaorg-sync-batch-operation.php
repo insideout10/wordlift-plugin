@@ -130,5 +130,4 @@ class Wordlift_Schemaorg_Sync_Batch_Operation implements Wordlift_Batch_Operatio
 		// Return the schema classes or an empty array.
 		return isset( $json['schemaClasses'] ) ? $json['schemaClasses'] : array();
 	}
-
 }

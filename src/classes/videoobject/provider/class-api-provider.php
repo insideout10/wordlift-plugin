@@ -24,5 +24,4 @@ abstract class Api_Provider implements Provider {
 	public function __construct( $api_client ) {
 		$this->api_client = $api_client;
 	}
-
 }

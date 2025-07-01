@@ -51,7 +51,7 @@ class Webhooks_Settings {
 			function () {
 				?>
 			<textarea id="wl_settings__webhooks__general__urls"
-					  name="wl_webhooks_urls"><?php echo esc_html( get_option( Webhooks_Loader::URLS_OPTION_NAME, '' ) ); ?></textarea>
+						name="wl_webhooks_urls"><?php echo esc_html( get_option( Webhooks_Loader::URLS_OPTION_NAME, '' ) ); ?></textarea>
 				<?php
 			},
 			'wl_settings__webhooks',

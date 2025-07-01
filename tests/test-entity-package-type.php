@@ -1,8 +1,5 @@
 <?php
 
-use Wordlift\Features\Response_Adapter;
-use Wordlift\Vocabulary\Terms_Compat;
-
 /**
  * @group entity
  */
@@ -55,9 +52,11 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 			'ContactPage'
 		);
 
-		$entity_types = Terms_Compat::get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
-			'hide_empty' => false,
-		) );
+		$entity_types = get_terms(
+			array(
+				'taxonomy'   => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+				'hide_empty' => false,
+			) );
 
 		$entity_type_labels = array_map( function ( $term ) {
 			return $term->name;
@@ -79,9 +78,11 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 		$this->set_feature_and_trigger_config_save( 'entity-types-professional' );
 
 
-		$entity_types = Terms_Compat::get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
-			'hide_empty' => false,
-		) );
+		$entity_types = get_terms(
+			array(
+				'taxonomy'   => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+				'hide_empty' => false,
+			) );
 
 		$entity_type_labels = array_map( function ( $term ) {
 			return $term->name;
@@ -104,9 +105,12 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 		$this->set_feature_and_trigger_config_save( 'entity-types-business' );
 
 
-		$entity_types = Terms_Compat::get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
-			'hide_empty' => false,
-		) );
+		$entity_types = get_terms(
+			array(
+				'taxonomy'   => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+				'hide_empty' => false,
+			)
+		);
 
 		$entity_type_labels = array_map( function ( $term ) {
 			return $term->name;
@@ -129,9 +133,12 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 	public function test_when_package_type_is_not_recognized_dont_alter_entity_types() {
 
 
-		$before_entity_types = Terms_Compat::get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
-			'hide_empty' => false,
-		) );
+		$before_entity_types = get_terms(
+			array(
+				'taxonomy'   => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+				'hide_empty' => false,
+			)
+		);
 
 		$before_entity_type_labels = array_map( function ( $term ) {
 			return $term->name;
@@ -143,9 +150,12 @@ class Wordlift_Entity_Package_Type_Test extends Wordlift_Unit_Test_Case {
 		// if we dont have any of these value then we shouldnt alter the entity types.
 		$this->set_feature_and_trigger_config_save( 'entity-types-blogger' );
 
-		$after_entity_types = Terms_Compat::get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
-			'hide_empty' => false,
-		) );
+		$after_entity_types = get_terms(
+			array(
+				'taxonomy'   => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+				'hide_empty' => false,
+			)
+		);
 
 		$after_entity_type_labels = array_map( function ( $term ) {
 			return $term->name;

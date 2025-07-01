@@ -47,7 +47,6 @@ class Wordlift_Schemaorg_Sync_Service {
 		add_action( 'wp_ajax_wl_sync_schemaorg', array( $this, 'load' ) );
 
 		self::$instance = $this;
-
 	}
 
 	/**
@@ -139,5 +138,4 @@ class Wordlift_Schemaorg_Sync_Service {
 
 		return true;
 	}
-
 }

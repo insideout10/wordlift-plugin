@@ -80,7 +80,6 @@ class Wordlift_Notice_Service {
 			add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		}
 		self::$instance = $this;
-
 	}
 
 	/**
@@ -105,7 +104,6 @@ class Wordlift_Notice_Service {
 	public function add( $class, $message ) {
 
 		$this->notices[] = sprintf( self::TEMPLATE, $class, $this->transform( $message ) );
-
 	}
 
 	/**
@@ -118,7 +116,6 @@ class Wordlift_Notice_Service {
 	public function add_update( $message ) {
 
 		$this->add( self::UPDATE, $message );
-
 	}
 
 	/**
@@ -131,7 +128,6 @@ class Wordlift_Notice_Service {
 	public function add_update_nag( $message ) {
 
 		$this->add( self::UPDATE_NAG, $message );
-
 	}
 
 	/**
@@ -144,7 +140,6 @@ class Wordlift_Notice_Service {
 	public function add_error( $message ) {
 
 		$this->add( self::ERROR, $message );
-
 	}
 
 	/**
@@ -157,7 +152,6 @@ class Wordlift_Notice_Service {
 	public function add_suggestion( $message ) {
 
 		$this->add( self::SUGGESTION, $message );
-
 	}
 
 	/**
@@ -176,7 +170,6 @@ class Wordlift_Notice_Service {
 				)
 			);
 		}
-
 	}
 
 	/**
@@ -194,7 +187,5 @@ class Wordlift_Notice_Service {
 			default:
 				return $message;
 		}
-
 	}
-
 }

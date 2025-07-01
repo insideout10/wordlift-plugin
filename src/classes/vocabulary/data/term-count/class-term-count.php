@@ -16,6 +16,4 @@ interface Term_Count {
 	 * @return int
 	 */
 	public function get_term_count();
-
 }
-

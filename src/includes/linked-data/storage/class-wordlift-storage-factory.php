@@ -223,5 +223,4 @@ class Wordlift_Storage_Factory {
 
 		return new Wordlift_Url_Property_Storage( $this->property_getter );
 	}
-
 }

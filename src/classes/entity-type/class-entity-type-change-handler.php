@@ -66,7 +66,5 @@ class Entity_Type_Change_Handler {
 
 		// clear the labels.
 		$this->entity_service->set_alternative_labels( $object_id, array() );
-
 	}
-
 }

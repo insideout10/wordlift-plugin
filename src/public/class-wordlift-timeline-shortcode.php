@@ -96,7 +96,6 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_Timeline_Shortcode' );
 
 		$this->register_block_type();
-
 	}
 
 	public function get_timelinejs_default_options() {
@@ -279,5 +278,4 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 		// Check that the specified locale is supported otherwise use English.
 		return in_array( $locale, self::$supported_locales, true ) ? $locale : 'en';
 	}
-
 }

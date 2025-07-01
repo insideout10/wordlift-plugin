@@ -40,14 +40,14 @@ class Acf_Data_Source implements Abstract_Data_Source {
 		}
 		// only process if it is a repeater field, else return the data.
 		if ( is_array( $field_data ) && array_key_exists( 'type', $field_data )
-			 && 'repeater' === $field_data['type'] ) {
+			&& 'repeater' === $field_data['type'] ) {
 			/**
 			 * check if we have only one sub field, currently we only support one subfield,
 			 * so each repeater item should be checked if there is a single sub field.
 			 */
 			if ( is_array( $data ) &&
-				 count( $data ) > 0 &&
-				 count( array_keys( $data[0] ) ) === 1 ) {
+				count( $data ) > 0 &&
+				count( array_keys( $data[0] ) ) === 1 ) {
 				$repeater_formatted_data = array();
 				foreach ( $data as $item ) {
 					$repeater_formatted_data = array_merge( $repeater_formatted_data, array_values( $item ) );

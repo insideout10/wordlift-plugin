@@ -32,16 +32,14 @@ class Meta_Box {
 			'side',
 			'high'
 		);
-
 	}
 
 	public function render_meta_box() {
-		echo sprintf(
+		printf(
 			"<div id='%s'></div><div id='%s'></div>",
 			esc_attr( 'wl-no-editor-analysis-meta-box-content' ),
 			// Div to store the entities.
 			esc_attr( 'wl-no-editor-analysis-meta-box-storage' )
 		);
 	}
-
 }

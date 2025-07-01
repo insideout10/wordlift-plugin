@@ -10,7 +10,7 @@ class Content_Migration {
 
 	public function migrate() {
 		if ( get_option( '_wl_content_migration__migrated' )
-			 || version_compare( get_option( 'wl_db_version', '0.0.0' ), '3.33.9', '<' ) ) {
+			|| version_compare( get_option( 'wl_db_version', '0.0.0' ), '3.33.9', '<' ) ) {
 			return;
 		}
 
@@ -32,7 +32,6 @@ class Content_Migration {
 			WHERE meta_key = 'entity_url' AND post_id IN (SELECT ID FROM $wpdb->posts)
 			ON DUPLICATE KEY UPDATE rel_uri = VALUES( rel_uri ), rel_uri_hash = VALUES( rel_uri_hash );"
 		);
-
 	}
 
 	private function delete_legacy_fields_from_postmeta() {
@@ -43,7 +42,5 @@ class Content_Migration {
 			FROM $wpdb->postmeta
 			WHERE meta_key = 'entity_url';"
 		);
-
 	}
-
 }

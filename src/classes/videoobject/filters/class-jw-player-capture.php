@@ -41,5 +41,4 @@ class Jw_Player_Capture {
 
 		return array_merge( $embedded_videos, $jw_player_videos );
 	}
-
 }

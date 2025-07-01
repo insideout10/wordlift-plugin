@@ -10,8 +10,8 @@ namespace Wordlift\Modules\Food_Kg\Admin;
 
 use Wordlift\Api\Api_Service_Ext;
 use Wordlift\Cache\Ttl_Cache;
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\Modules\Food_Kg\Recipe_Lift_Strategy;
 
 class Meta_Box {
@@ -162,6 +162,13 @@ class Meta_Box {
 	public function wl_ingredient_autocomplete() {
 
 		check_ajax_referer( 'wl-ac-ingredient-nonce' );
+
+		// Check user capabilities.
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			@ob_clean();
+			return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
+		}
 
 		// Return error if the query param is empty.
 		if ( ! empty( $_REQUEST['query'] ) ) { // Input var okay.

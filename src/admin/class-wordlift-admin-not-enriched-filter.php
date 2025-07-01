@@ -13,14 +13,13 @@ class Wordlift_Admin_Not_Enriched_Filter {
 		if ( $this->is_filter_active() ) {
 			add_filter( 'posts_where', array( $this, 'posts_where' ) );
 		}
-
 	}
 
 	public function posts_where( $where ) {
 		global $wpdb;
 
 		return $where .
-			   " AND {$wpdb->posts}.ID NOT IN ( SELECT DISTINCT subject_id FROM {$wpdb->prefix}wl_relation_instances )";
+				" AND {$wpdb->posts}.ID NOT IN ( SELECT DISTINCT subject_id FROM {$wpdb->prefix}wl_relation_instances )";
 	}
 
 	public function view_edit( $views ) {
@@ -57,5 +56,4 @@ SELECT COUNT( 1 ) FROM $wpdb->posts p
 	public function is_filter_active() {
 		return 'no' === filter_input( INPUT_GET, self::PARAMETER_NAME );
 	}
-
 }

@@ -7,7 +7,7 @@ services:
 
   Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy:
     class: Wordlift\Modules\Food_Kg\Ingredients_Taxonomy_Recipe_Lift_Strategy
-    arguments: [ '@Wordlift\Modules\Food_Kg\Ingredients_Client', '@Wordlift\Modules\Food_Kg\Notices', '@Wordlift\Content\Wordpress\Wordpress_Content_Service' ]
+    arguments: [ '@Wordlift\Modules\Food_Kg\Ingredients_Client', '@Wordlift\Modules\Food_Kg\Notices', '@Wordlift\Content\WordPress\Wordpress_Content_Service' ]
 
   Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy:
     class: Wordlift\Modules\Food_Kg\Main_Ingredient_Recipe_Lift_Strategy
@@ -19,11 +19,11 @@ services:
 
   Wordlift\Modules\Food_Kg\Jsonld:
     class: Wordlift\Modules\Food_Kg\Jsonld
-    arguments: [ '@Wordlift\Content\Wordpress\Wordpress_Content_Service' ]
+    arguments: [ '@Wordlift\Content\WordPress\Wordpress_Content_Service' ]
 
   Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld:
     class: Wordlift\Modules\Food_Kg\Main_Ingredient_Jsonld
-    arguments: [ '@Wordlift\Content\Wordpress\Wordpress_Content_Service' ]
+    arguments: [ '@Wordlift\Content\WordPress\Wordpress_Content_Service' ]
 
   Wordlift\Modules\Food_Kg\Notices:
     class: Wordlift\Modules\Food_Kg\Notices
@@ -40,9 +40,9 @@ services:
     factory: [ 'Wordlift\Api\Default_Api_Service', 'get_instance' ]
     class: Wordlift\Api\Default_Api_Service
 
-  Wordlift\Content\Wordpress\Wordpress_Content_Service:
-    factory: [ 'Wordlift\Content\Wordpress\Wordpress_Content_Service', 'get_instance' ]
-    class: Wordlift\Content\Wordpress\Wordpress_Content_Service
+  Wordlift\Content\WordPress\Wordpress_Content_Service:
+    factory: [ 'Wordlift\Content\WordPress\Wordpress_Content_Service', 'get_instance' ]
+    class: Wordlift\Content\WordPress\Wordpress_Content_Service
 
   Wordlift\Modules\Food_Kg\Admin\Meta_Box:
     class: Wordlift\Modules\Food_Kg\Admin\Meta_Box
@@ -63,14 +63,14 @@ services:
 
   Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Main_Entity_Runner:
     class: Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Main_Entity_Runner
-    arguments: [ '@Wordlift\Content\Wordpress\Wordpress_Content_Service', '@Wordlift\Modules\Food_Kg\Ingredients_Client', '@Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Post_Store' ]
+    arguments: [ '@Wordlift\Content\WordPress\Wordpress_Content_Service', '@Wordlift\Modules\Food_Kg\Ingredients_Client', '@Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Post_Store' ]
 
   Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Ingredients_Term_Store:
     class: Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Ingredients_Term_Store
 
   Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Term_Entity_Runner:
     class: Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Term_Entity_Runner
-    arguments: [ '@Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Ingredients_Term_Store', '@Wordlift\Content\Wordpress\Wordpress_Content_Service', '@Wordlift\Modules\Food_Kg\Ingredients_Client' ]
+    arguments: [ '@Wordlift\Modules\Food_Kg\Term_Entity\Food_Kg_Ingredients_Term_Store', '@Wordlift\Content\WordPress\Wordpress_Content_Service', '@Wordlift\Modules\Food_Kg\Ingredients_Client' ]
 
   Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Stats:
     class: Wordlift\Modules\Food_Kg\Main_Entity\Food_Kg_Recipe_Stats

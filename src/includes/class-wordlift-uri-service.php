@@ -10,7 +10,7 @@
  */
 
 use Wordlift\Content\Post_Content_Service\Wordpress_Term_Content_Service;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 
 /**
  * The {@link Wordlift_Uri_Service} class.
@@ -74,7 +74,6 @@ class Wordlift_Uri_Service {
 		$this->wpdb = $wpdb;
 
 		self::$instance = $this;
-
 	}
 
 	/**
@@ -138,7 +137,7 @@ class Wordlift_Uri_Service {
 		 * @since 3.20.0
 		 */
 		$entity_slug = urldecode( wl_sanitize_uri_path( $title ) )
-					   . ( 0 === $increment_digit ? '' : '_' . $suffix_digit );
+						. ( 0 === $increment_digit ? '' : '_' . $suffix_digit );
 
 		// Compose a candidate uri.
 		$new_entity_uri = sprintf(
@@ -171,7 +170,7 @@ class Wordlift_Uri_Service {
 		}
 
 		// Otherwise the same function is called recursively
-		return $this->build_uri( $title, $post_type, $schema_type, ++ $increment_digit );
+		return $this->build_uri( $title, $post_type, $schema_type, ++$increment_digit );
 	}
 
 	/**
@@ -189,7 +188,7 @@ class Wordlift_Uri_Service {
 		$suffix_digit = $increment_digit + 1;
 
 		$entity_slug = urldecode( $title )
-					   . ( 0 === $increment_digit ? '' : '_' . $suffix_digit );
+						. ( 0 === $increment_digit ? '' : '_' . $suffix_digit );
 
 		// Compose a candidate uri.
 		$new_entity_uri = sprintf(
@@ -212,7 +211,6 @@ class Wordlift_Uri_Service {
 		}
 
 		// Otherwise the same function is called recursively
-		return $this->build_term_uri( $title, $taxonomy, ++ $increment_digit );
+		return $this->build_term_uri( $title, $taxonomy, ++$increment_digit );
 	}
-
 }

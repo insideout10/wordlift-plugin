@@ -46,11 +46,9 @@ class Wl_Metabox extends Wl_Abstract_Metabox {
 			$this->enqueue_scripts_and_styles();
 
 		}
-
 	}
 
 	public function save_form( $post_id ) {
 		$this->save_form_data( $post_id, Object_Type_Enum::POST );
 	}
-
 }

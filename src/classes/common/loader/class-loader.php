@@ -15,5 +15,4 @@ interface Loader {
 	 * @return void
 	 */
 	public function init_feature();
-
 }

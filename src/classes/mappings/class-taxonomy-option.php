@@ -41,7 +41,6 @@ class Taxonomy_Option {
 				);
 
 				return $rule_field_one_options;
-
 			}
 		);
 	}
@@ -69,10 +68,7 @@ class Taxonomy_Option {
 				}
 
 				return array_merge( $rule_field_two_options, $taxonomy_options );
-
 			}
 		);
-
 	}
-
 }

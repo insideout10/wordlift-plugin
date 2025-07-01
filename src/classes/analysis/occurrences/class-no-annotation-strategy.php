@@ -10,8 +10,8 @@ namespace Wordlift\Analysis\Occurrences;
 
 use Wordlift\Common\Singleton;
 use Wordlift\Content\Content_Service;
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\Relation\Relation;
 use Wordlift\Relation\Relation_Service;
 use Wordlift\Relation\Relation_Service_Interface;
@@ -55,5 +55,4 @@ class No_Annotation_Strategy extends Singleton implements Occurrences {
 
 		return $json;
 	}
-
 }

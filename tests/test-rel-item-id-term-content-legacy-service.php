@@ -1,7 +1,7 @@
 <?php
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Term_Content_Legacy_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Term_Content_Legacy_Service;
 
 /**
  * Test the {@link Wordpress_Term_Content_Legacy_Service}.

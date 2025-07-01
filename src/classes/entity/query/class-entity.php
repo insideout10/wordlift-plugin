@@ -2,7 +2,7 @@
 
 namespace Wordlift\Entity\Query;
 
-use Wordlift\Content\Wordpress\Wordpress_Content;
+use Wordlift\Content\WordPress\Wordpress_Content;
 use Wordlift\Object_Type_Enum;
 
 class Entity {
@@ -42,5 +42,4 @@ class Entity {
 		}
 		return '';
 	}
-
 }

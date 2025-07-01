@@ -80,5 +80,4 @@ class Import_Page extends Wordlift_Admin_Page {
 
 		return explode( ',', $entities );
 	}
-
 }

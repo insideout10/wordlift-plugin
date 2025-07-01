@@ -85,7 +85,6 @@ class Entity_Type_Setter {
 			update_term_meta( $term_id, '_wl_uri', 'http://schema.org/' . $schema_label );
 			update_term_meta( $term_id, '_wl_name', $schema_label );
 		}
-
 	}
 
 	public static function get_starter_entity_types() {
@@ -211,7 +210,5 @@ class Entity_Type_Setter {
 				return array();
 
 		}
-
 	}
-
 }

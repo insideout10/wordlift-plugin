@@ -18,7 +18,7 @@ class No_Vocbulary_Terms_Db_Test extends Wordlift_Vocabulary_Terms_Unit_Test_Cas
 		/**
 		 * @var $relations array<\Wordlift\Relation\Relation>
 		 */
-		$relations       = $relation_service->get_relations( \Wordlift\Content\Wordpress\Wordpress_Content_Id::create_post($post_id) )->toArray();
+		$relations       = $relation_service->get_relations( \Wordlift\Content\WordPress\Wordpress_Content_Id::create_post($post_id) )->toArray();
 		// We should have term relations.
 		$this->assertCount( 1, $relations, 'Term_Reference should be saved' );
 		$this->assertEquals( Object_Type_Enum::TERM,  $relations[0]->get_object()->get_type(), 'We should have term relation' );

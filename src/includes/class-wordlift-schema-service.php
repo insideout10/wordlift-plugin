@@ -429,7 +429,6 @@ class Wordlift_Schema_Service {
 
 		// Create a singleton instance of the Schema service, useful to provide static functions to global functions.
 		self::$instance = $this;
-
 	}
 
 	public function get_all_schema_slugs() {
@@ -556,7 +555,7 @@ class Wordlift_Schema_Service {
 				),
 				// Add the schema:url property.
 				Wordlift_Schema_Url_Property_Service::META_KEY => Wordlift_Schema_Url_Property_Service::get_instance()
-																									  ->get_compat_definition(),
+																										->get_compat_definition(),
 			),
 			// {{sameAs}} not present in the microdata template,
 			// because it is treated separately in *wl_content_embed_item_microdata*
@@ -564,7 +563,6 @@ class Wordlift_Schema_Service {
 				'subtitle' => '{{id}}',
 			),
 		);
-
 	}
 
 	/**
@@ -580,7 +578,6 @@ class Wordlift_Schema_Service {
 			'css_class' => 'wl-webpage',
 			'uri'       => 'http://schema.org/WebPage',
 		);
-
 	}
 
 	/**
@@ -879,7 +876,6 @@ class Wordlift_Schema_Service {
 		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
 
 		return $schema;
-
 	}
 
 	/**
@@ -1257,5 +1253,4 @@ class Wordlift_Schema_Service {
 
 		return $schema;
 	}
-
 }

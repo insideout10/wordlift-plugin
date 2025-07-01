@@ -28,5 +28,4 @@ interface Sync_Background_Process_State {
 	 * Try to resume an interrupted task.
 	 */
 	public function resume();
-
 }

@@ -44,11 +44,10 @@ class Wordlift_Relation_Service {
 	protected function __construct() {
 		global $wpdb;
 
-		self::$log = Wordlift_Log_Service::get_logger( get_class() );
+		self::$log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		// The relations table.
 		$this->relation_table = "{$wpdb->prefix}wl_relation_instances";
-
 	}
 
 	/**
@@ -159,7 +158,7 @@ class Wordlift_Relation_Service {
 				"','",
 				array_map( 'esc_sql', $post_types )
 			)
-			   . "' )";
+				. "' )";
 	}
 
 	/**
@@ -241,7 +240,6 @@ class Wordlift_Relation_Service {
 			},
 			array()
 		);
-
 	}
 
 	/**
@@ -474,7 +472,5 @@ class Wordlift_Relation_Service {
 			GROUP BY subject_id
 			"
 		);
-
 	}
-
 }

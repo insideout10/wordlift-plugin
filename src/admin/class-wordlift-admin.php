@@ -187,7 +187,6 @@ class Wordlift_Admin {
 
 		// Set the singleton instance.
 		self::$instance = $this;
-
 	}
 
 	/**
@@ -200,7 +199,6 @@ class Wordlift_Admin {
 		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-dashboard-latest-news.php';
 		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-dashboard-v2.php';
 		require_once plugin_dir_path( __DIR__ ) . 'admin/class-wordlift-admin-not-enriched-filter.php';
-
 	}
 
 	/**
@@ -216,14 +214,14 @@ class Wordlift_Admin {
 
 	public static function is_gutenberg() {
 		if ( function_exists( 'is_gutenberg_page' ) &&
-			 is_gutenberg_page()
+			is_gutenberg_page()
 		) {
 			// The Gutenberg plugin is on.
 			return true;
 		}
 		$current_screen = get_current_screen();
 		if ( method_exists( $current_screen, 'is_block_editor' ) &&
-			 $current_screen->is_block_editor()
+			$current_screen->is_block_editor()
 		) {
 			// Gutenberg page on 5+.
 			return true;
@@ -252,7 +250,6 @@ class Wordlift_Admin {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wordlift-admin.css', array(), $this->version, 'all' );
-
 	}
 
 	/**
@@ -290,7 +287,6 @@ class Wordlift_Admin {
 
 		// Finally output the params as `wlSettings` for JavaScript code.
 		wp_localize_script( $this->plugin_name, 'wlSettings', apply_filters( 'wl_admin_settings', $params ) );
-
 	}
 
 	/**
@@ -421,5 +417,4 @@ class Wordlift_Admin {
 		$taxonomy_option->add_taxonomy_option();
 		new Edit_Mappings_Page( new Mappings_Transform_Functions_Registry() );
 	}
-
 }

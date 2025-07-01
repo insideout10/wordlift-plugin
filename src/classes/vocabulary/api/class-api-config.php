@@ -22,5 +22,4 @@ class Api_Config {
 
 		return $settings;
 	}
-
 }

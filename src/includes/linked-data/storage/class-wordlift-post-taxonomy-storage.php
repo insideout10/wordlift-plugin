@@ -65,5 +65,4 @@ class Wordlift_Post_Taxonomy_Storage extends Wordlift_Storage {
 			)
 		);
 	}
-
 }

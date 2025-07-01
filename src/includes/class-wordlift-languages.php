@@ -311,5 +311,4 @@ class Wordlift_Languages {
 
 		return strtr( $code, $lang_codes );
 	}
-
 }

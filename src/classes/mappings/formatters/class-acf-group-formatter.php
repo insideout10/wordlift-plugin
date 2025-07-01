@@ -27,6 +27,5 @@ class Acf_Group_Formatter {
 		}
 
 		return $filtered_group_data;
-
 	}
 }

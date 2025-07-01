@@ -20,7 +20,6 @@ class Response_Adapter {
 
 		// Hook to the updates to the features setting to refresh the features' filters.
 		add_action( 'update_option_' . self::WL_FEATURES, array( $this, 'register_filters' ), 10, 0 );
-
 	}
 
 	public function response( $response ) {
@@ -83,7 +82,6 @@ class Response_Adapter {
 			$callback = ( $enabled ? '__return_true' : '__return_false' );
 			add_filter( "wl_feature__enable__{$name}", $callback );
 		}
-
 	}
 
 	private function init_from_env() {
@@ -106,5 +104,4 @@ class Response_Adapter {
 
 		update_option( self::WL_FEATURES, (array) $features, true );
 	}
-
 }

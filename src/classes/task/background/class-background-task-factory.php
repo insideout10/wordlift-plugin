@@ -69,5 +69,4 @@ class Background_Task_Factory {
 		Assertions::is_a( $task, 'Wordlift\Task\Task' );
 		Assertions::starts_with( $route, '/', __( 'The route must start with a slash.', 'wordlift' ) );
 	}
-
 }

@@ -37,6 +37,5 @@ class Meta_Data_Source implements Abstract_Data_Source {
 			? $meta[0] : $meta;
 
 		return array_map( 'wp_strip_all_tags', $values );
-
 	}
 }

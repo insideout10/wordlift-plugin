@@ -41,5 +41,4 @@ class Recipe_Maker_Entity_Type_Procedure {
 			)
 		);
 	}
-
 }

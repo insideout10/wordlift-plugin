@@ -59,7 +59,6 @@ class Wordlift_Dashboard_Service {
 
 		$this->rating_service = Wordlift_Rating_Service::get_instance();
 		$this->entity_service = Wordlift_Entity_Service::get_instance();
-
 	}
 
 	private static $instance;
@@ -156,7 +155,6 @@ class Wordlift_Dashboard_Service {
 			</div>
 		</div>
 		<?php
-
 	}
 
 	/**
@@ -240,7 +238,6 @@ class Wordlift_Dashboard_Service {
 		return (int) $wpdb->get_var(
 			"SELECT COUNT(distinct(p.id)) FROM $wpdb->posts as p JOIN {$wpdb->prefix}wl_relation_instances as r ON p.id = r.subject_id AND p.post_type = 'post' AND p.post_status = 'publish'"
 		);
-
 	}
 
 	/**
@@ -266,5 +263,4 @@ class Wordlift_Dashboard_Service {
 			)
 		);
 	}
-
 }

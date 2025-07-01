@@ -25,7 +25,6 @@ class Sync_Object_Adapter_Factory {
 			default:
 				throw new \Exception( "Unsupported type $type." );
 		}
-
 	}
 
 	public function create_many( $type, $object_ids ) {
@@ -38,5 +37,4 @@ class Sync_Object_Adapter_Factory {
 			(array) $object_ids
 		);
 	}
-
 }

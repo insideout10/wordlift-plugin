@@ -49,7 +49,6 @@ class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
 		$this->entity_helper      = $entity_helper;
 		$this->entity_uri_service = $entity_uri_service;
 		$this->entity_service     = $entity_service;
-
 	}
 
 	/**
@@ -85,7 +84,7 @@ class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
 			function ( $result ) use ( $that, $mappings ) {
 
 				if ( $that->entity_uri_service->is_internal( $result['id'] ) ) {
-					  return $result;
+						return $result;
 				}
 
 				$uris = array_merge( (array) $result['id'], $result['sameAss'] );
@@ -181,5 +180,4 @@ class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
 			'images'       => array(),
 		);
 	}
-
 }

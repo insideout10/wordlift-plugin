@@ -103,6 +103,14 @@ function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias =
  */
 function wl_entity_ajax_get_by_title() {
 
+	// Check user capabilities.
+	if ( ! current_user_can( 'edit_posts' ) ) {
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		@ob_clean();
+		return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
+	}
+
+
 	// `wl_entity_metaboxes_utilities.js` still uses `GET`.
 	//
 	// See https://github.com/insideout10/wordlift-plugin/issues/438.

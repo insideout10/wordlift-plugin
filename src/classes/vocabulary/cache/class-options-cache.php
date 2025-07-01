@@ -18,13 +18,11 @@ class Options_Cache implements Cache {
 	public function get( $cache_key ) {
 
 		return get_option( $this->namespace . '__' . $cache_key, false );
-
 	}
 
 	public function put( $cache_key, $value ) {
 
 		return update_option( $this->namespace . '__' . $cache_key, $value, false );
-
 	}
 
 	public function flush_all() {
@@ -34,5 +32,4 @@ class Options_Cache implements Cache {
 			$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->options WHERE option_name LIKE %s", $namespace_esc ) );
 		}
 	}
-
 }

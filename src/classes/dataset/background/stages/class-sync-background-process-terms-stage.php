@@ -54,5 +54,4 @@ class Sync_Background_Process_Terms_Stage {
 
 		return $this->sync_object_adapter_factory->create_many( Object_Type_Enum::TERM, $ids );
 	}
-
 }

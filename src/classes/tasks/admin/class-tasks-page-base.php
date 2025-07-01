@@ -13,7 +13,7 @@
 namespace Wordlift\Tasks\Admin;
 
 use Wordlift\Tasks\Task_Ajax_Adapters_Registry;
-use Wordlift\Wordpress\Submenu_Page_Base;
+use Wordlift\WordPress\Submenu_Page_Base;
 
 abstract class Tasks_Page_Base extends Submenu_Page_Base {
 
@@ -56,7 +56,6 @@ abstract class Tasks_Page_Base extends Submenu_Page_Base {
 		$this->task_ajax_adapters_registry = $task_ajax_adapters_registry;
 		$this->version                     = $version;
 		$this->menu_slug                   = $menu_slug;
-
 	}
 
 	/**
@@ -87,7 +86,5 @@ abstract class Tasks_Page_Base extends Submenu_Page_Base {
 
 		// Include the partial.
 		include plugin_dir_path( __FILE__ ) . 'assets/tasks-page.php';
-
 	}
-
 }

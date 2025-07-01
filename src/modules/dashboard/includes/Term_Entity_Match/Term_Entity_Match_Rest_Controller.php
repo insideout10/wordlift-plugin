@@ -3,9 +3,9 @@
 namespace Wordlift\Modules\Dashboard\Term_Entity_Match;
 
 use Exception;
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
-use Wordlift\Content\Wordpress\Wordpress_Dataset_Content_Service_Hooks;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Dataset_Content_Service_Hooks;
 use Wordlift\Entity\Entity_Uri_Generator;
 use Wordlift\Modules\Dashboard\Common\Cursor;
 use Wordlift\Modules\Dashboard\Common\Cursor_Sort;

@@ -1,0 +1,1 @@
+- Abide by WordPress Coding Standards

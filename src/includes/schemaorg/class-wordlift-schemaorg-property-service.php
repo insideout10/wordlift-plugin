@@ -30,7 +30,6 @@ class Wordlift_Schemaorg_Property_Service {
 	 * @since 3.20.0
 	 */
 	protected function __construct() {
-
 	}
 
 	private static $instance = null;
@@ -121,5 +120,4 @@ class Wordlift_Schemaorg_Property_Service {
 
 		return $prop_keys;
 	}
-
 }

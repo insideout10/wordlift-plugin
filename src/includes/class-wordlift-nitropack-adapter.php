@@ -39,5 +39,4 @@ class Wordlift_NitroPack_Adapter {
 
 		return preg_replace( '@id="wl-jsonld(-term)?"@', 'id="wl-jsonld$1" nitro-exclude', $html );
 	}
-
 }

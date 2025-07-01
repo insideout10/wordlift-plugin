@@ -49,7 +49,6 @@ class Wordlift_Entity_Type_Service {
 		$this->schema_service = Wordlift_Schema_Service::get_instance();
 
 		$this->prepare_post_types();
-
 	}
 
 	/**
@@ -185,7 +184,6 @@ class Wordlift_Entity_Type_Service {
 
 		// Return the entity type with the specified id.
 		return $this->schema_service->get_schema( 'thing' );
-
 	}
 
 	/**
@@ -237,6 +235,10 @@ class Wordlift_Entity_Type_Service {
 	 */
 	public function set( $post_id, $type_uri, $replace = true ) {
 
+		if ( ! is_numeric( $post_id ) || $post_id < 1 ) {
+			return;
+		}
+
 		// If the type URI is empty we remove the type.
 		if ( empty( $type_uri ) ) {
 			$this->log->debug( "Removing entity type for post $post_id..." );
@@ -282,7 +284,6 @@ class Wordlift_Entity_Type_Service {
 
 		// `$replace` is passed to decide whether to replace or append the term.
 		wp_set_object_terms( $post_id, $term->term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, ! $replace );
-
 	}
 
 	/**
@@ -311,8 +312,8 @@ class Wordlift_Entity_Type_Service {
 	public function get_term_by_uri( $uri ) {
 
 		$terms = get_terms(
-			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 			array(
+				'taxonomy'   => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				'fields'     => 'all',
 				'get'        => 'all',
 				'number'     => 1,
@@ -510,5 +511,4 @@ class Wordlift_Entity_Type_Service {
 			array()
 		);
 	}
-
 }

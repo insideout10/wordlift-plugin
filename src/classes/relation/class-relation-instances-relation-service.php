@@ -11,7 +11,7 @@
 
 namespace Wordlift\Relation;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
 
 class Relation_Instances_Relation_Service extends Abstract_Relation_Service {
 
@@ -56,5 +56,4 @@ class Relation_Instances_Relation_Service extends Abstract_Relation_Service {
 
 		$relations->add( ...$new_relations );
 	}
-
 }

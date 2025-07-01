@@ -105,7 +105,6 @@ function activate_wordlift() {
 	if ( ! wp_next_scheduled( 'wl_daily_cron' ) ) {
 		wp_schedule_event( time(), 'daily', 'wl_daily_cron' );
 	}
-
 }
 
 /**
@@ -131,7 +130,6 @@ function deactivate_wordlift() {
 	flush_rewrite_rules();
 
 	wp_clear_scheduled_hook( 'wl_daily_cron' );
-
 }
 
 register_activation_hook( __FILE__, 'activate_wordlift' );
@@ -228,10 +226,8 @@ function run_wordlift() {
 			* @since 3.35.0
 			*/
 			require_once plugin_dir_path( __FILE__ ) . 'classes/lod-import/index.php';
-
 		}
 	);
-
 }
 
 run_wordlift();
@@ -275,7 +271,6 @@ function wordlift_plugin_autoload_register() {
 			return true;
 		}
 	);
-
 }
 
 function wl_block_categories( $categories ) {

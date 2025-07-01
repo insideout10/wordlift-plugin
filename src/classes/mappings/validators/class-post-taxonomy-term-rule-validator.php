@@ -29,7 +29,6 @@ class Post_Taxonomy_Term_Rule_Validator implements Rule_Validator {
 	public function __construct() {
 
 		add_filter( 'wl_mappings_rule_validators', array( $this, 'wl_mappings_rule_validators' ) );
-
 	}
 
 	/**
@@ -69,6 +68,6 @@ class Post_Taxonomy_Term_Rule_Validator implements Rule_Validator {
 		}
 
 		return ( $is_object_in_term && self::IS_EQUAL_TO === $operator )
-			   || ( ! $is_object_in_term && self::IS_NOT_EQUAL_TO === $operator );
+				|| ( ! $is_object_in_term && self::IS_NOT_EQUAL_TO === $operator );
 	}
 }

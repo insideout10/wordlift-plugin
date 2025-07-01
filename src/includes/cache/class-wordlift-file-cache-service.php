@@ -71,7 +71,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	 */
 	public function __construct( $cache_dir, $file_extension = '.wlcache' ) {
 
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		// Set the cache directory using the base directory provided by the caller
 		// and appending a hash for the unique site id.
@@ -80,7 +80,8 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		// Create the cache dir.
 		if ( ! file_exists( $this->cache_dir ) ) {
-			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			// Local dir.
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_mkdir,WordPress.PHP.NoSilencedErrors.Discouraged
 			@mkdir( $this->cache_dir, 0755, true );
 		}
 
@@ -95,7 +96,6 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 		}
 
 		$this->log->debug( "File Cache service initialized on $this->cache_dir." );
-
 	}
 
 	/**
@@ -152,9 +152,9 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		$this->log->trace( "Writing cache contents for $id to $filename..." );
 
-		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged,WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+		// Local file.
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged,WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
 		@file_put_contents( $filename, wp_json_encode( $contents ) );
-
 	}
 
 	/**
@@ -171,10 +171,8 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 		$this->log->trace( "Deleting cache contents for $id, file $filename..." );
 
 		if ( file_exists( $filename ) ) {
-			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-			@unlink( $filename );
+			wp_delete_file( $filename );
 		}
-
 	}
 
 	/**
@@ -203,32 +201,39 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 		$file_extension_length = strlen( $this->file_extension );
 
 		// Loop into the directory to delete files.
-		while ( false !== ( $entry = readdir( $handle ) ) ) { //phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
+		while ( false !== ( $entry = readdir( $handle ) ) ) { // phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 			if ( substr( $entry, - $file_extension_length ) === $this->file_extension
-				 && file_exists( $this->cache_dir . $entry ) ) {
+				&& file_exists( $this->cache_dir . $entry ) ) {
 				$this->log->trace( "Deleting file {$this->cache_dir}{$entry}..." );
-
-				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-				@unlink( $this->cache_dir . $entry );
+				wp_delete_file( $this->cache_dir . $entry );
 			}
 		}
 
 		// Finally closed the directory.
 		closedir( $handle );
-
 	}
 
 	public static function flush_all() {
 
+		// Check user capabilities for AJAX requests.
+		if ( wp_doing_ajax() && isset( $_REQUEST['action'] ) && 'wl_file_cache__flush_all' === $_REQUEST['action'] ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+			if ( ! current_user_can( 'manage_options' ) ) {
+				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+				@ob_clean();
+				return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
+			}
+		}
+
+		$log = Wordlift_Log_Service::get_logger( 'Wordlift_File_Cache_Service::flush_all' );
 		foreach ( self::$instances as $instance ) {
+			$log->info( 'Flushing cache contents for ' . get_class( $instance ) . '...' );
 			$instance->flush();
 		}
 
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX
-			 && isset( $_REQUEST['action'] ) && 'wl_file_cache__flush_all' === $_REQUEST['action'] ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( wp_doing_ajax() && isset( $_REQUEST['action'] ) && 'wl_file_cache__flush_all' === $_REQUEST['action'] ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			wp_send_json_success();
 		}
-
 	}
 
 	/**
@@ -243,5 +248,4 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		return $this->cache_dir . md5( $id ) . $this->file_extension;
 	}
-
 }

@@ -3,8 +3,8 @@
  * Define tests for the {@link Wordlift_Property_Getter}.
  */
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\Object_Type_Enum;
 
 /**

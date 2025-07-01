@@ -19,7 +19,6 @@ class Offer_Structured_Data {
 		$this->shipping_zones = $shipping_zones;
 
 		add_filter( 'wl_entity_jsonld', array( $this, 'entity_jsonld' ), 10, 2 );
-
 	}
 
 	public function entity_jsonld( $jsonld, $post_id ) {
@@ -42,5 +41,4 @@ class Offer_Structured_Data {
 
 		return $jsonld;
 	}
-
 }

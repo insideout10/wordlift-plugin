@@ -96,8 +96,8 @@ class Jsonld_Generator {
 			$value = $this->property_getter->get( $term_id, $key, Object_Type_Enum::TERM );
 			$value = $this->process_value( $value, $references );
 			if ( ! isset( $value ) ||
-				 is_array( $value ) && empty( $value ) ||
-				 is_string( $value ) && empty( $value ) ) {
+				is_array( $value ) && empty( $value ) ||
+				is_string( $value ) && empty( $value ) ) {
 				continue;
 			}
 			$jsonld[ $name ] = $value;
@@ -118,7 +118,6 @@ class Jsonld_Generator {
 			),
 			$term_id
 		);
-
 	}
 
 	private function relative_to_schema_context( $predicate ) {
@@ -128,8 +127,8 @@ class Jsonld_Generator {
 	private function process_value( $value, &$references ) {
 
 		if ( is_array( $value )
-			 && count( $value ) > 0
-			 && $value[0] instanceof \Wordlift_Property_Entity_Reference ) {
+			&& count( $value ) > 0
+			&& $value[0] instanceof \Wordlift_Property_Entity_Reference ) {
 
 			// All of the references from the custom fields are post references.
 			$references = array_merge(

@@ -42,5 +42,4 @@ interface Wordlift_Batch_Operation_Interface {
 	 * @return int The number of elements that would be affected.
 	 */
 	public function count();
-
 }

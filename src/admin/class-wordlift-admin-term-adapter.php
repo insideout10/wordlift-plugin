@@ -33,7 +33,6 @@ class Wordlift_Admin_Term_Adapter {
 		add_action( 'registered_taxonomy', array( $this, 'add_action' ) );
 		add_action( 'edit_term', array( $this, 'edit_term' ), 10 );
 		$this->add_settings();
-
 	}
 
 	/**
@@ -120,7 +119,6 @@ class Wordlift_Admin_Term_Adapter {
 		 */
 
 		add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_form_fields' ), 10 );
-
 	}
 
 	/**
@@ -179,7 +177,5 @@ class Wordlift_Admin_Term_Adapter {
 		foreach ( array_unique( array_filter( $merged ) ) as $single ) {
 			add_term_meta( $term_id, self::META_KEY, $single );
 		}
-
 	}
-
 }

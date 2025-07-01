@@ -38,7 +38,6 @@ class Wordlift_Admin_Settings_Analytics_Page_Action_Link {
 	public function __construct( $settings_page ) {
 
 		$this->settings_page = $settings_page;
-
 	}
 
 	/**
@@ -69,5 +68,4 @@ class Wordlift_Admin_Settings_Analytics_Page_Action_Link {
 			)
 		);
 	}
-
 }

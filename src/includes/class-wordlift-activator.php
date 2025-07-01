@@ -58,7 +58,5 @@ class Wordlift_Activator {
 
 		// Clear caches.
 		Wordlift_File_Cache_Service::flush_all();
-
 	}
-
 }

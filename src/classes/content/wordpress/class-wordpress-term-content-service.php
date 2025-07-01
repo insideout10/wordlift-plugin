@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Content\Wordpress;
+namespace Wordlift\Content\WordPress;
 
 use Wordlift\Content\Content_Service;
 use Wordlift\Content\Main_Ingredient_Content_Migration;
@@ -40,5 +40,4 @@ class Wordpress_Term_Content_Service {
 
 		return self::$instance;
 	}
-
 }

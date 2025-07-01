@@ -40,7 +40,6 @@ class Video_Processor {
 		$jwplayer_videos   = $jwplayer_provider->get_videos_data( $jwplayer_videos );
 
 		return array_merge( $youtube_videos, $vimeo_videos, $jwplayer_videos );
-
 	}
 
 	private function get_video_ids( $video_urls ) {
@@ -65,7 +64,6 @@ class Video_Processor {
 
 		$videos_to_be_deleted = $this->get_videos_to_be_deleted( $storage, $post_id, $embedded_videos );
 		$storage->remove_videos( $videos_to_be_deleted, $post_id );
-
 	}
 
 	/**
@@ -109,7 +107,6 @@ class Video_Processor {
 						$embedded_video_ids
 					)
 				) === 0;
-
 			}
 		);
 	}
@@ -215,7 +212,7 @@ class Video_Processor {
 				$video_url = $embedded_video->get_url();
 
 				return strpos( $video_url, 'youtube.com' ) !== false ||
-				   strpos( $video_url, 'youtu.be' ) !== false;
+					strpos( $video_url, 'youtu.be' ) !== false;
 			}
 		);
 	}
@@ -256,5 +253,4 @@ class Video_Processor {
 			}
 		);
 	}
-
 }

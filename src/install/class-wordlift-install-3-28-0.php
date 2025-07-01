@@ -37,7 +37,5 @@ OR meta_value LIKE %s )",
 				$dataset_uri
 			)
 		);
-
 	}
-
 }

@@ -40,7 +40,5 @@ class Edit_Post_Scripts extends Edit_Post_Loader {
 			array(),
 			WORDLIFT_VERSION
 		);
-
 	}
-
 }

@@ -25,5 +25,4 @@ interface Task_Runner {
 	 * @since 1.0.0
 	 */
 	public function start( $limit = 0, $offset = 0 );
-
 }

@@ -39,7 +39,6 @@ class Wordlift_Property_Getter {
 	public function __construct( $default ) {
 
 		$this->default = $default;
-
 	}
 
 	/**
@@ -56,7 +55,6 @@ class Wordlift_Property_Getter {
 		foreach ( $meta_keys as $meta_key ) {
 			$this->services[ $meta_key ] = $property_service;
 		}
-
 	}
 
 	/**
@@ -78,5 +76,4 @@ class Wordlift_Property_Getter {
 			// Use the default property service.
 			: $this->default->get( $post_id, $meta_key, $type );
 	}
-
 }

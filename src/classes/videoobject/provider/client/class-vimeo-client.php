@@ -26,7 +26,7 @@ class Vimeo_Client extends Singleton implements Client {
 			$vimeo_ids
 		);
 
-		$ids = join( ',', $vimeo_api_ids );
+		$ids = implode( ',', $vimeo_api_ids );
 
 		if ( ! $ids ) {
 			return array();
@@ -75,7 +75,7 @@ class Vimeo_Client extends Singleton implements Client {
 			array_map(
 				function ( $video_url ) use ( $that ) {
 					if ( ! $video_url ) {
-						  return false;
+							return false;
 					}
 					preg_match( $that::VIMEO_URL_REGEX, $video_url, $matches );
 
@@ -84,7 +84,6 @@ class Vimeo_Client extends Singleton implements Client {
 					}
 
 					return $matches[3];
-
 				},
 				$video_urls
 			)

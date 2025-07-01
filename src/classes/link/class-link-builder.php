@@ -97,5 +97,4 @@ class Link_Builder {
 		// Return the link.
 		return "<a class=\"wl-entity-page-link\" $title_attribute href=\"{$this->href}\"$attributes_html>{$this->label}</a>";
 	}
-
 }

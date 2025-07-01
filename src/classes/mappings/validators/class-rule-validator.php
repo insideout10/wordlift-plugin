@@ -41,5 +41,4 @@ interface Rule_Validator {
 	 * @return bool Whether the post passes or not the validation.
 	 */
 	public function is_valid( $identifier, $operator, $operand_1, $operand_2, $type );
-
 }

@@ -101,5 +101,4 @@ class Wordlift_Admin_Country_Select_Element extends Wordlift_Admin_Select_Elemen
 		// Return the attributes.
 		return $attributes;
 	}
-
 }

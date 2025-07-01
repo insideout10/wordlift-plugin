@@ -32,7 +32,5 @@ class Wordlift_Install_3_19_5 extends Wordlift_Install {
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/858
 		 */
 		Wordlift_File_Cache_Service::flush_all();
-
 	}
-
 }

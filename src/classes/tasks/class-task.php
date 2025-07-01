@@ -52,5 +52,4 @@ interface Task {
 	 * @since 1.0.0
 	 */
 	public function process_item( $item );
-
 }

@@ -12,8 +12,8 @@ namespace Wordlift\Analysis\Response;
 
 use Exception;
 use stdClass;
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift_Configuration_Service;
 use Wordlift_Entity_Service;
 use Wordlift_Entity_Type_Taxonomy_Service;

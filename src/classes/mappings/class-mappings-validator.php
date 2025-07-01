@@ -43,7 +43,6 @@ final class Mappings_Validator {
 
 		$this->dbo                   = $dbo;
 		$this->rule_groups_validator = $rule_groups_validator;
-
 	}
 
 	/**
@@ -64,9 +63,9 @@ final class Mappings_Validator {
 				 * they have correct data format.
 				 */
 				if ( ! array_key_exists( 'property_name', $item ) ||
-					 ! array_key_exists( 'field_type', $item ) ||
-					 ! array_key_exists( 'field_name', $item ) ||
-					 ! array_key_exists( 'transform_function', $item )
+					! array_key_exists( 'field_type', $item ) ||
+					! array_key_exists( 'field_name', $item ) ||
+					! array_key_exists( 'transform_function', $item )
 				) {
 					// If these keys doesnt exist, then dont process.
 					return false;
@@ -133,15 +132,13 @@ final class Mappings_Validator {
 					$mapping_item_properties = $this->dbo->get_properties( $mapping['mapping_id'] );
 					$properties              = array_merge( $properties, $mapping_item_properties );
 				}
-			} else {
 				/**
 				 * This is a programmatically defined mapping,
 				 * so we will have the rule groups and the properties in the array keys
 				 */
-				if ( array_key_exists( 'properties', $mapping ) &&
-					 is_array( $mapping['properties'] ) ) {
-					$filter_registered_properties = array_merge( $filter_registered_properties, $mapping['properties'] );
-				}
+			} elseif ( array_key_exists( 'properties', $mapping ) &&
+						is_array( $mapping['properties'] ) ) {
+				$filter_registered_properties = array_merge( $filter_registered_properties, $mapping['properties'] );
 			}
 		}
 		// Filter all registered properties based on required key values.
@@ -155,5 +152,4 @@ final class Mappings_Validator {
 		// Merge ui defined properties with filter registered properties.
 		return array_merge( $active_properties, $filter_registered_properties );
 	}
-
 }

@@ -3,7 +3,7 @@
 namespace Wordlift\Modules\Food_Kg\Main_Entity;
 
 use Wordlift\Content\Content_Service;
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
 use Wordlift\Modules\Common\Synchronization\Runner;
 use Wordlift\Modules\Common\Synchronization\Store;
 use Wordlift\Modules\Food_Kg\Ingredients_Client;

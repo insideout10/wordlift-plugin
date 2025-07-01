@@ -136,10 +136,9 @@ class Wordlift_Install_Service {
 		);
 		self::$instance = $this;
 
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		add_action( 'init', array( $this, 'install' ) );
-
 	}
 
 	/**
@@ -172,7 +171,7 @@ class Wordlift_Install_Service {
 				$version = $install->get_version();
 
 				if ( version_compare( $version, $this->get_current_version(), '>' )
-					 || $install->must_install() ) {
+					|| $install->must_install() ) {
 					$class_name = get_class( $install );
 
 					$this->log->info( "Current version is {$this->get_current_version()}, installing $class_name..." );
@@ -190,7 +189,6 @@ class Wordlift_Install_Service {
 			@delete_transient( '_wl_installing' );
 
 		}
-
 	}
 
 	private function install_required() {
@@ -201,7 +199,7 @@ class Wordlift_Install_Service {
 			$version = $install->get_version();
 
 			if ( version_compare( $version, $this->get_current_version(), '>' )
-				 || $install->must_install() ) {
+				|| $install->must_install() ) {
 				return true;
 			}
 		}
@@ -217,5 +215,4 @@ class Wordlift_Install_Service {
 	private function get_current_version() {
 		return get_option( 'wl_db_version', '0.0.0' );
 	}
-
 }

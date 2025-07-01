@@ -33,5 +33,4 @@ interface Wordlift_Post_Converter {
 	 * @since 3.10.0
 	 */
 	public function convert( $post_id, &$references = array(), &$references_infos = array(), $relations = null );
-
 }

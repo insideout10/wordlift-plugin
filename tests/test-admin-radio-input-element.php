@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Tests: Admin Input Element Test.
  *
@@ -33,11 +34,11 @@ class Wordlift_Admin_Radio_Input_Element_Test extends Wordlift_Unit_Test_Case {
 	 * Helper function to capture the result of "rendering"
 	 * done by the tested object.
 	 *
-	 * @since 3.19.0
-	 *
-	 * @param    array    The parameters to pass to the renderer.
+	 * @param array    The parameters to pass to the renderer.
 	 *
 	 * @return    string    The rendered HTML output
+	 * @since 3.19.0
+	 *
 	 */
 	function get_rendered_output( $args ) {
 		// Capture the output.
@@ -71,9 +72,9 @@ class Wordlift_Admin_Radio_Input_Element_Test extends Wordlift_Unit_Test_Case {
 		) );
 
 		// Check that the css class has been set.
-		$this->assertTrue( - 1 < strpos( $output, ' class="' . $css_class . '"' ) );
-		$this->assertTrue( - 1 < strpos( $output, ' id="' . $id . '"' ) );
-		$this->assertTrue( - 1 < strpos( $output, ' name="test"' ), 'Expecting name="test", got ' . $output );
+		$this->assertTrue( - 1 < strpos( $output, 'class="' . $css_class . '"' ), "Can't find $css_class in \n$output" );
+		$this->assertTrue( - 1 < strpos( $output, 'id="' . $id . '"' ) );
+		$this->assertTrue( - 1 < strpos( $output, 'name="test"' ), 'Expecting name="test", got ' . $output );
 
 	}
 

@@ -31,7 +31,6 @@ class Jw_Player_Client extends Singleton implements Client {
 		}
 
 		return $videos_data;
-
 	}
 
 	public function get_video_ids( $video_urls ) {
@@ -42,7 +41,6 @@ class Jw_Player_Client extends Singleton implements Client {
 				return strpos( $item, 'https://cdn.jwplayer.com/v2/media/', 0 ) !== false;
 			}
 		);
-
 	}
 
 	public static function get_api_key() {
@@ -56,5 +54,4 @@ class Jw_Player_Client extends Singleton implements Client {
 	public function get_api_url() {
 		// Method not implemented, since we dont need api key
 	}
-
 }

@@ -25,7 +25,6 @@ class Term_Store implements Store {
 			delete_term_meta( $term_id, $meta_key, $value );
 			add_term_meta( $term_id, $meta_key, $value, $single );
 		}
-
 	}
 
 	public static function delete_meta( $id, $meta_key ) {

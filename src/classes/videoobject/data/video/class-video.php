@@ -90,7 +90,5 @@ class Video {
 			'thumbnailUrl' => $this->thumbnail_urls,
 			'duration'     => $this->duration,
 		);
-
 	}
-
 }

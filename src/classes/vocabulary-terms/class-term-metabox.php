@@ -8,7 +8,6 @@ namespace Wordlift\Vocabulary_Terms;
 
 use Wordlift\Metabox\Wl_Abstract_Metabox;
 use Wordlift\Object_Type_Enum;
-use Wordlift\Vocabulary\Terms_Compat;
 
 class Term_Metabox extends Wl_Abstract_Metabox {
 
@@ -17,7 +16,6 @@ class Term_Metabox extends Wl_Abstract_Metabox {
 		if ( ! apply_filters( 'wl_feature__enable__pods-integration', false ) ) { //phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 			add_action( 'init', array( $this, 'init_all_custom_fields' ) );
 		}
-
 	}
 
 	/**
@@ -52,11 +50,10 @@ class Term_Metabox extends Wl_Abstract_Metabox {
 	}
 
 	public function init_all_custom_fields() {
-		$taxonomies = Terms_Compat::get_public_taxonomies();
+		$taxonomies = get_taxonomies( array( 'public' => true ) );
 		foreach ( $taxonomies as $taxonomy ) {
 			add_action( "{$taxonomy}_edit_form", array( $this, 'render_ui' ), 1 );
 			add_action( "edited_{$taxonomy}", array( $this, 'save_field' ) );
 		}
 	}
-
 }

@@ -29,7 +29,5 @@ class Wordlift_NewRelic_Adapter {
 		if ( extension_loaded( 'newrelic' ) && function_exists( 'newrelic_ignore_apdex' ) ) {
 			newrelic_ignore_apdex();
 		}
-
 	}
-
 }

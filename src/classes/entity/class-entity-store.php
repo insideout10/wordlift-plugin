@@ -16,8 +16,8 @@
 
 namespace Wordlift\Entity;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift_Entity_Service;
 
 /**
@@ -97,7 +97,7 @@ class Entity_Store {
 		}
 
 		Wordlift_Entity_Service::get_instance()
-							   ->set_alternative_labels( $post_id, array_diff( $labels, array( $label ) ) );
+								->set_alternative_labels( $post_id, array_diff( $labels, array( $label ) ) );
 		$this->merge_post_meta(
 			$post_id,
 			\Wordlift_Schema_Service::FIELD_SAME_AS,
@@ -135,7 +135,7 @@ class Entity_Store {
 
 		// Save synonyms except title.
 		Wordlift_Entity_Service::get_instance()
-							   ->append_alternative_labels( $post_id, array_diff( (array) $args['labels'], array( get_the_title( $post_id ) ) ) );
+								->append_alternative_labels( $post_id, array_diff( (array) $args['labels'], array( get_the_title( $post_id ) ) ) );
 
 		$this->merge_post_meta(
 			$post_id,
@@ -169,5 +169,4 @@ class Entity_Store {
 			}
 		}
 	}
-
 }

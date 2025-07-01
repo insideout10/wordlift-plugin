@@ -16,5 +16,4 @@ class Webhooks_Loader {
 
 		new Webhooks_Manager();
 	}
-
 }

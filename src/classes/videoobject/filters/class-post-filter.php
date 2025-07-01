@@ -35,7 +35,5 @@ class Post_Filter {
 		}
 
 		$this->video_processor->process_video_urls( $post, $post_id );
-
 	}
-
 }

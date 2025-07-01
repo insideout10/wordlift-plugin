@@ -96,7 +96,7 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 
 		// Add the select html fragment after the heading.
 		return parent::get_heading_html()
-			   . $this->get_select_html();
+				. $this->get_select_html();
 	}
 
 	/**
@@ -108,8 +108,8 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 	private function get_select_html() {
 		// Return an element where the new Autocomplete Select will attach to.
 		return '<p>'
-			   . esc_html__( 'Use the search below to link this entity with equivalent entities in the linked data cloud.', 'wordlift' )
-			   . '<div id="wl-metabox-field-sameas"></div></p>';
+				. esc_html__( 'Use the search below to link this entity with equivalent entities in the linked data cloud.', 'wordlift' )
+				. '<div id="wl-metabox-field-sameas"></div></p>';
 	}
 
 	/**
@@ -133,8 +133,7 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 			esc_attr_x( 'Type here the URL of an equivalent entity from another dataset.', 'sameAs metabox input', 'wordlift' ),
 			$this->get_stored_values_html( $count )
 		) .
-			   parent::get_add_custom_button_html( $count, 'Add Another URL', 'hide' );
-
+				parent::get_add_custom_button_html( $count, 'Add Another URL', 'hide' );
 	}
 
 	/**
@@ -222,5 +221,4 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 			}
 		);
 	}
-
 }

@@ -32,7 +32,6 @@ abstract class Filler_Posts {
 
 		$this->post_id             = $post_id;
 		$this->alternate_post_type = $alternate_post_type;
-
 	}
 
 	protected function get_posts_config( $filler_count, $post_ids_to_be_excluded ) {
@@ -47,7 +46,6 @@ abstract class Filler_Posts {
 			'post__not_in'        => $post_ids_to_be_excluded,
 			'ignore_sticky_posts' => 1,
 		);
-
 	}
 
 	/**
@@ -57,5 +55,4 @@ abstract class Filler_Posts {
 	 * @return array<\WP_Post>
 	 */
 	abstract public function get_posts( $filler_count, $post_ids_to_be_excluded );
-
 }

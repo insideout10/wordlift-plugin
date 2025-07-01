@@ -37,7 +37,6 @@ class Jsonld_Adapter {
 
 		add_action( 'wp_head', array( $this, 'wp_head' ) );
 		add_action( 'amp_post_template_head', array( $this, 'wp_head' ) );
-
 	}
 
 	public function wp_head() {
@@ -59,7 +58,5 @@ class Jsonld_Adapter {
 
 		// We don't need to escape this one since it's a JSON-LD output.
 		echo $jsonld_post_html_output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-
 	}
-
 }

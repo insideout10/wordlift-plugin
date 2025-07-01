@@ -73,7 +73,6 @@ class Wordlift_Admin_User_Profile_Page {
 				'edit_user_profile_update',
 			)
 		);
-
 	}
 
 	/**
@@ -126,8 +125,8 @@ class Wordlift_Admin_User_Profile_Page {
 				</th>
 				<td>
 					<input id="wl_can_create_entities"
-						   name="wl_can_create_entities"
-						   type="checkbox" <?php checked( $this->user_service->editor_can_create_entities( $user->ID ) ); ?>
+							name="wl_can_create_entities"
+							type="checkbox" <?php checked( $this->user_service->editor_can_create_entities( $user->ID ) ); ?>
 				</td>
 				<?php } ?>
 				<?php
@@ -170,7 +169,6 @@ class Wordlift_Admin_User_Profile_Page {
 		} else {
 			$this->user_service->deny_editor_entity_create( $user_id );
 		}
-
 	}
 
 	/**
@@ -190,7 +188,5 @@ class Wordlift_Admin_User_Profile_Page {
 		}
 
 		$this->user_service->set_entity( $user_id, intval( $post['wl_person'] ) );
-
 	}
-
 }

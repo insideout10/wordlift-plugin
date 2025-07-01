@@ -144,7 +144,5 @@ abstract class Wordlift_Admin_Page {
 
 		// Include the partial.
 		include plugin_dir_path( __FILE__ ) . 'partials/' . $this->get_partial_name();
-
 	}
-
 }

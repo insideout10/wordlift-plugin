@@ -81,7 +81,5 @@ class Jsonld_Service {
 			default:
 				throw new Exception( "Unknown type $type. Allowed types: 'HOMEPAGE', 'POST', 'TERM', 'USER'." );
 		}
-
 	}
-
 }

@@ -28,15 +28,15 @@ $term_settings = $settings !== null ? $settings : array(
 	<h1><?php esc_html_e( 'Edit Entity Type', 'wordlift' ); ?></h1>
 
 	<form name="edittag" id="edittag" method="post"
-		  action="<?php echo esc_html( admin_url( 'admin.php?page=wl_entity_type_settings' ) ); ?>"
-		  class="validate">
+			action="<?php echo esc_html( admin_url( 'admin.php?page=wl_entity_type_settings' ) ); ?>"
+			class="validate">
 		<input type="hidden" name="tag_ID"
-			   value="
-			   <?php
+				value="
+				<?php
 			   // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 				echo esc_attr( $term_id );
 				?>
-			   " />
+				" />
 		<input type="hidden" name="action" value="wl_edit_entity_type_term" />
 		<?php
 		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
@@ -66,8 +66,8 @@ $term_settings = $settings !== null ? $settings : array(
 						</label>
 				</th>
 				<td><input name="title" id="title" type="text"
-						   value="<?php echo esc_attr( $term_settings['title'] ); ?>"
-						   size="40" />
+							value="<?php echo esc_attr( $term_settings['title'] ); ?>"
+							size="40" />
 					<p class="description">
 					<?php
 						esc_html_e( 'The HTML title to be used in the entity type archive page.', 'wordlift' );
@@ -83,7 +83,7 @@ $term_settings = $settings !== null ? $settings : array(
 						</label>
 				</th>
 				<td><textarea name="description" id="description" rows="5"
-							  cols="50" class="large-text"><?php echo esc_html( $term_settings['description'] ); ?></textarea>
+								cols="50" class="large-text"><?php echo esc_html( $term_settings['description'] ); ?></textarea>
 					<p class="description">
 					<?php
 						esc_html_e( 'The description to be used in the entity type archive page.', 'wordlift' );

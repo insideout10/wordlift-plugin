@@ -2,8 +2,8 @@
 
 namespace Wordlift\Dataset;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_User_Content_Legacy_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_User_Content_Legacy_Service;
 use Wordlift\Object_Type_Enum;
 
 class Sync_User_Hooks extends Abstract_Sync_Hooks {
@@ -30,7 +30,6 @@ class Sync_User_Hooks extends Abstract_Sync_Hooks {
 		$this->sync_service = $sync_service;
 
 		$this->register_hooks();
-
 	}
 
 	private function register_hooks() {
@@ -43,13 +42,11 @@ class Sync_User_Hooks extends Abstract_Sync_Hooks {
 		add_action( 'updated_user_meta', array( $this, 'changed_user_meta' ), 10, 3 );
 		add_action( 'deleted_user_meta', array( $this, 'changed_user_meta' ), 10, 3 );
 		add_action( 'delete_user', array( $this, 'delete_user' ) );
-
 	}
 
 	public function changed_user( $user_id ) {
 
 		$this->sync( $user_id );
-
 	}
 
 	public function changed_user_meta( $meta_id, $user_id, $meta_key ) {
@@ -79,7 +76,6 @@ class Sync_User_Hooks extends Abstract_Sync_Hooks {
 		}
 
 		$this->sync( $user_id );
-
 	}
 
 	private function sync( $user_id ) {
@@ -93,7 +89,6 @@ class Sync_User_Hooks extends Abstract_Sync_Hooks {
 		} catch ( \Exception $e ) {
 			$this->log->error( "An error occurred while trying to sync user $user_id: " . $e->getMessage(), $e );
 		}
-
 	}
 
 	public function delete_user( $user_id ) {
@@ -110,7 +105,5 @@ class Sync_User_Hooks extends Abstract_Sync_Hooks {
 		} catch ( \Exception $e ) {
 			$this->log->error( "An error occurred while trying to delete user $user_id: " . $e->getMessage(), $e );
 		}
-
 	}
-
 }

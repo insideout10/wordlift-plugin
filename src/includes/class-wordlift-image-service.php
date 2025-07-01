@@ -42,7 +42,6 @@ class Wordlift_Image_Service {
 		// Add hook to define the image sizes. Since we're a plugin, we cannot use the
 		// `after_theme_setup` hook.
 		add_action( 'init', array( $this, 'after_theme_setup' ) );
-
 	}
 
 	/**
@@ -55,7 +54,6 @@ class Wordlift_Image_Service {
 		foreach ( self::$sizes as $ratio => $sizes ) {
 			add_image_size( "wl-$ratio", $sizes[0], $sizes[1], true );
 		}
-
 	}
 
 	/**
@@ -87,7 +85,7 @@ class Wordlift_Image_Service {
 
 				// Check that the source has an image, and the required size.
 				if ( empty( $source[0] ) || $size[0] !== $source[1] || $size[1] !== $source[2] ) {
-					  return null;
+						return null;
 				}
 
 				// Return the source.
@@ -102,5 +100,4 @@ class Wordlift_Image_Service {
 		// Make the results unique.
 		return $sources_1200;
 	}
-
 }

@@ -7,8 +7,8 @@
  * @subpackage Wordlift/modules/linked_data
  */
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\No_Editor_Analysis\No_Editor_Analysis_Feature;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Relation;

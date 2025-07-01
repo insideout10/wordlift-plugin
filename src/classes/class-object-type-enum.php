@@ -61,5 +61,4 @@ class Object_Type_Enum {
 
 		return null;
 	}
-
 }

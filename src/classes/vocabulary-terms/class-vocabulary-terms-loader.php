@@ -51,5 +51,4 @@ class Vocabulary_Terms_Loader extends Default_Loader {
 	protected function get_feature_default_value() {
 		return false;
 	}
-
 }

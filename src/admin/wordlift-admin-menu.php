@@ -31,7 +31,6 @@ function wl_admin_menu() {
 
 	// Call hooked functions.
 	do_action( 'wl_admin_menu', $menu_slug, $capability );
-
 }
 
 /**
@@ -85,5 +84,4 @@ function wl_admin_menu_callback() {
 	echo '<div class="wrap">';
 	echo '<p>Here is where the form would go if I actually had options.</p>';
 	echo '</div>';
-
 }

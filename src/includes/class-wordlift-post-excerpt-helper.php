@@ -73,5 +73,4 @@ class Wordlift_Post_Excerpt_Helper {
 
 		return preg_replace( '/\[[^]]+\]/', '', $content );
 	}
-
 }

@@ -45,5 +45,4 @@ class Jsonld_Response_Helper {
 
 		return $response;
 	}
-
 }

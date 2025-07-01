@@ -3,7 +3,7 @@
 namespace Wordlift\Lod_Import;
 
 use Wordlift\Content\Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\Entity\Remote_Entity\Url_To_Remote_Entity_Converter;
 use Wordlift\Entity\Remote_Entity_Importer\Remote_Entity_Importer_Factory;
 use Wordlift\Object_Type_Enum;
@@ -11,7 +11,6 @@ use Wordlift\Object_Type_Enum;
 class Lod_Import {
 
 	public function __construct() {
-
 	}
 
 	public function register_hooks() {
@@ -47,7 +46,6 @@ class Lod_Import {
 			</form>
 		</div>
 		<?php
-
 	}
 
 	public function handle() {
@@ -79,7 +77,5 @@ class Lod_Import {
 		if ( $content_id instanceof Content_Id && $content_id->get_type() === Object_Type_Enum::POST ) {
 			edit_post_link( null, null, null, $content_id->get_id() );
 		}
-
 	}
-
 }

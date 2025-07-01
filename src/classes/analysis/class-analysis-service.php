@@ -24,5 +24,4 @@ interface Analysis_Service {
 	 * @return string|object|\WP_Error A {@link WP_Error} instance or the actual response content.
 	 */
 	public function get_analysis_response( $data, $content_type, $post_id );
-
 }

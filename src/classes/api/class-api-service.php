@@ -28,5 +28,4 @@ interface Api_Service {
 	 * @return Response
 	 */
 	public function get( $path, $headers = array(), $body = null, $timeout = null, $user_agent = null, $args = array() );
-
 }

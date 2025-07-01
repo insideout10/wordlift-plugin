@@ -62,11 +62,10 @@ class WordLift_Geo_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'wordlift' ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
-				   name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text"
-				   value="<?php echo esc_attr( $title ); ?>">
+					name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text"
+					value="<?php echo esc_attr( $title ); ?>">
 		</p>
 		<?php
-
 	}
 
 	/**
@@ -83,8 +82,4 @@ class WordLift_Geo_Widget extends WP_Widget {
 
 		return $instance;
 	}
-}
-
-function wl_register_geo_widget() {
-	register_widget( 'WordLift_Geo_Widget' );
 }

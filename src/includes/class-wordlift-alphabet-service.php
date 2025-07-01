@@ -154,5 +154,4 @@ class Wordlift_Alphabet_Service {
 			'#' => array(),
 		);
 	}
-
 }

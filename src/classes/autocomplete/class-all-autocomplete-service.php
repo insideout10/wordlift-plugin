@@ -67,7 +67,5 @@ class All_Autocomplete_Service implements Autocomplete_Service {
 			},
 			array()
 		);
-
 	}
-
 }

@@ -159,7 +159,6 @@ class Wordlift_Sample_Data_Service {
 
 		$this->entity_type_service = $entity_type_service;
 		$this->user_service        = $user_service;
-
 	}
 
 	private static $instance = null;
@@ -227,7 +226,6 @@ class Wordlift_Sample_Data_Service {
 				$this->entity_type_service->set( $post_id, $sample['entity_type_uri'] );
 			}
 		}
-
 	}
 
 	/**
@@ -269,7 +267,6 @@ class Wordlift_Sample_Data_Service {
 		// Get and delete the user.
 		$user = get_user_by( 'login', 'wl-sample-data' );
 		wp_delete_user( $user->ID );
-
 	}
 
 	/**
@@ -294,7 +291,6 @@ class Wordlift_Sample_Data_Service {
 		foreach ( $posts as $post ) {
 			wp_delete_post( $post->ID, true );
 		}
-
 	}
 
 	/**
@@ -360,5 +356,4 @@ class Wordlift_Sample_Data_Service {
 
 		return $attachment_id;
 	}
-
 }

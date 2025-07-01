@@ -63,7 +63,6 @@ class Rest_Controller {
 			$video_obj->from( (array) $video );
 			$storage->add_video( $post_id, $video_obj );
 		}
-
 	}
 
 	private function register_get_all_videos_route() {
@@ -134,7 +133,6 @@ class Rest_Controller {
 				},
 			)
 		);
-
 	}
 
 	public function register_background_process_start_endpoint() {
@@ -152,7 +150,6 @@ class Rest_Controller {
 				},
 			)
 		);
-
 	}
 
 	public function register_background_process_stop_endpoint() {
@@ -170,7 +167,5 @@ class Rest_Controller {
 				},
 			)
 		);
-
 	}
-
 }

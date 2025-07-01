@@ -77,7 +77,7 @@ class Wordlift_Autocomplete_Adapter {
 		$show_local_entities = false;
 
 		if ( isset( $_REQUEST['show_local_entities'] )
-			 && ! empty( $_REQUEST['show_local_entities'] ) ) { // Make request.
+			&& ! empty( $_REQUEST['show_local_entities'] ) ) { // Make request.
 			$show_local_entities = filter_var( wp_unslash( $_REQUEST['show_local_entities'] ), FILTER_VALIDATE_BOOLEAN );
 		}
 
@@ -96,6 +96,5 @@ class Wordlift_Autocomplete_Adapter {
 		ob_clean();
 
 		wp_send_json_success( $results );
-
 	}
 }

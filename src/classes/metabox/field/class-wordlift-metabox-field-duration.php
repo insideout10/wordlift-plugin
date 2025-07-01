@@ -29,7 +29,6 @@ class Wordlift_Metabox_Field_Duration extends Wl_Metabox_Field_date {
 		$this->date_format = 'H:i';
 		$this->timepicker  = true;
 		$this->no_calendar = true;
-
 	}
 
 	/**
@@ -57,5 +56,4 @@ class Wordlift_Metabox_Field_Duration extends Wl_Metabox_Field_date {
 
 		return null;
 	}
-
 }

@@ -169,5 +169,4 @@ class Wordlift_Google_Analytics_Export_Service {
 			);
 		}
 	}
-
 }

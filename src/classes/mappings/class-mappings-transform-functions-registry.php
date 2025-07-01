@@ -28,7 +28,6 @@ class Mappings_Transform_Functions_Registry {
 	public function __construct() {
 
 		$this->transform_function_array = apply_filters( 'wl_mappings_transformation_functions', array() );
-
 	}
 
 	/**
@@ -117,5 +116,4 @@ class Mappings_Transform_Functions_Registry {
 
 		return $this->transform_function_array;
 	}
-
 }

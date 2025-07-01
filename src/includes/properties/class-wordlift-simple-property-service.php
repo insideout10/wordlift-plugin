@@ -40,5 +40,4 @@ class Wordlift_Simple_Property_Service {
 		}
 		return null;
 	}
-
 }

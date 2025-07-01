@@ -12,5 +12,4 @@ interface Hashable_Interface {
 	public function equals( Hashable_Interface $obj );
 
 	public function hash();
-
 }

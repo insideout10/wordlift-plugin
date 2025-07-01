@@ -47,7 +47,6 @@ class Wordlift_Admin_Entity_Type_Settings {
 	public function __construct() {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Admin_Entity_Type_Settings' );
-
 	}
 
 	/**
@@ -144,7 +143,6 @@ class Wordlift_Admin_Entity_Type_Settings {
 		if ( ! term_exists( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) ) {
 			wp_die( esc_html__( 'You attempted to edit an entity type term that doesn&#8217;t exist.', 'wordlift' ) );
 		}
-
 	}
 
 	/**
@@ -175,7 +173,6 @@ class Wordlift_Admin_Entity_Type_Settings {
 
 		wp_safe_redirect( $url );
 		exit();
-
 	}
 
 	/**
@@ -193,7 +190,6 @@ class Wordlift_Admin_Entity_Type_Settings {
 		$settings = $this->get_setting( $term_id );
 
 		include plugin_dir_path( __DIR__ ) . 'admin/partials/wordlift-admin-entity-type-settings.php';
-
 	}
 
 	/**
@@ -213,7 +209,6 @@ class Wordlift_Admin_Entity_Type_Settings {
 			'description' => $description,
 		);
 		update_option( 'wl_entity_type_settings', $settings );
-
 	}
 
 	/**
@@ -242,5 +237,4 @@ class Wordlift_Admin_Entity_Type_Settings {
 
 		return null;
 	}
-
 }

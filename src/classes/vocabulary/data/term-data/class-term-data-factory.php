@@ -25,5 +25,4 @@ class Term_Data_Factory {
 		$entities = $this->analysis_service->get_entities( $term );
 		return new Default_Term_Data( $term, $entities );
 	}
-
 }

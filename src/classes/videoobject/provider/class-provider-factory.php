@@ -24,7 +24,5 @@ class Provider_Factory {
 		} elseif ( self::JWPLAYER === $provider_name ) {
 			return new Jw_Player( Client_Factory::get_client( Client_Factory::JWPLAYER ) );
 		}
-
 	}
-
 }

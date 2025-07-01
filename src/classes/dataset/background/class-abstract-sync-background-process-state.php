@@ -19,7 +19,7 @@ abstract class Abstract_Sync_Background_Process_State implements Sync_Background
 
 		// Calculate the overall index by adding the count of completed stages.
 		$index = $offset + 1;
-		for ( $i = 0; $i < $stage; $i ++ ) {
+		for ( $i = 0; $i < $stage; $i++ ) {
 			$index += $counts[ $i ];
 		}
 
@@ -32,5 +32,4 @@ abstract class Abstract_Sync_Background_Process_State implements Sync_Background
 	public function resume() {
 		// do nothing.
 	}
-
 }

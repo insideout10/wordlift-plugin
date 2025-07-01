@@ -21,5 +21,4 @@ interface Autocomplete_Service {
 	 * @return array An array of results.
 	 */
 	public function query( $query, $scope, $excludes );
-
 }

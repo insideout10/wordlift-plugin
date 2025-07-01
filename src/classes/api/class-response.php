@@ -27,13 +27,11 @@ class Response {
 		$this->code       = wp_remote_retrieve_response_code( $this->response );
 		$this->is_success = ! empty( $this->code ) && 2 === intval( $this->code / 100 );
 		$this->body       = wp_remote_retrieve_body( $this->response );
-
 	}
 
 	public function is_success() {
 
 		return $this->is_success;
-
 	}
 
 	public function get_body() {
@@ -45,5 +43,4 @@ class Response {
 
 		return $this->response;
 	}
-
 }

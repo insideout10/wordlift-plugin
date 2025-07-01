@@ -20,7 +20,6 @@ class Wordlift_Install_3_32_0 extends Wordlift_Install {
 				$column_name
 			)
 		);
-
 	}
 
 	public function install() {
@@ -50,5 +49,4 @@ class Wordlift_Install_3_32_0 extends Wordlift_Install {
 			);
 		}
 	}
-
 }

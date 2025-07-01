@@ -25,5 +25,4 @@ abstract class Default_Link extends Singleton implements Link {
 		// If the label matches the synonym then dont add title attr.
 		return '';
 	}
-
 }

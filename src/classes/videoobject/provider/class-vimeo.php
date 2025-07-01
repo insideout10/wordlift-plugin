@@ -52,7 +52,6 @@ class Vimeo extends Api_Provider {
 		}
 
 		return array_filter( array_map( array( $this, 'get_video_from_video_data' ), $video_list ) );
-
 	}
 
 	public function get_video_from_video_data( $vimeo_video_data ) {
@@ -75,7 +74,7 @@ class Vimeo extends Api_Provider {
 		$video->id             = $video->content_url;
 
 		if ( array_key_exists( 'stats', $vimeo_video_data )
-			 && array_key_exists( 'plays', $vimeo_video_data['stats'] ) ) {
+			&& array_key_exists( 'plays', $vimeo_video_data['stats'] ) ) {
 			$video->views = (int) $vimeo_video_data['stats']['plays'];
 		}
 
@@ -105,7 +104,5 @@ class Vimeo extends Api_Provider {
 			},
 			$pictures
 		);
-
 	}
-
 }

@@ -64,7 +64,6 @@ class Cacheable_Http_Client extends Simple_Http_Client {
 
 		$this->log->trace( "Creating the cache folder {$this->cache_dir}..." );
 		wp_mkdir_p( $this->cache_dir );
-
 	}
 
 	/**
@@ -102,10 +101,10 @@ class Cacheable_Http_Client extends Simple_Http_Client {
 		}
 
 		// Cache.
-		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-		@unlink( $filename );
-		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged,WordPress.WP.AlternativeFunctions.json_encode_json_encode,WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
-		@file_put_contents( $filename, json_encode( $response ) );
+		wp_delete_file( $filename );
+		// Local file.
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents,WordPress.PHP.NoSilencedErrors.Discouraged
+		@file_put_contents( $filename, wp_json_encode( $response ) );
 
 		return $response;
 	}
@@ -122,5 +121,4 @@ class Cacheable_Http_Client extends Simple_Http_Client {
 
 		return $this->cache_dir . DIRECTORY_SEPARATOR . $hash;
 	}
-
 }

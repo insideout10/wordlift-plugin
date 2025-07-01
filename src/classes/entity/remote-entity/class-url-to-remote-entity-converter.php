@@ -17,5 +17,4 @@ class Url_To_Remote_Entity_Converter {
 
 		return Remote_Entity_Factory::from_response( $url, $response );
 	}
-
 }

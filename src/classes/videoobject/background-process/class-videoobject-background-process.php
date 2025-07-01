@@ -41,5 +41,4 @@ class Videoobject_Background_Process extends Background_Process {
 		}
 		return true;
 	}
-
 }

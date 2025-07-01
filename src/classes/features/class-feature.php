@@ -31,5 +31,4 @@ class Feature {
 		$this->default_value = $default_value;
 		$this->callback      = $callback;
 	}
-
 }

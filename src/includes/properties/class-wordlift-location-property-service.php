@@ -25,9 +25,9 @@ class Wordlift_Location_Property_Service extends Wordlift_Entity_Property_Servic
 
 				// If this is an entity reference, set that this entity is always required in SD output.
 				if ( $item instanceof Wordlift_Property_Entity_Reference ) {
-					  $item->set_required( true );
+						$item->set_required( true );
 
-					  return $item;
+						return $item;
 				}
 
 				return array(
@@ -38,5 +38,4 @@ class Wordlift_Location_Property_Service extends Wordlift_Entity_Property_Servic
 			parent::get( $id, $meta_key, $type )
 		);
 	}
-
 }

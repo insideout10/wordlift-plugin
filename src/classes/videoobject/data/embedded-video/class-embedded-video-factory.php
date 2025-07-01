@@ -11,5 +11,4 @@ class Embedded_Video_Factory {
 	public static function get_embedded_video( $video_url ) {
 		return new Default_Embedded_Video( $video_url );
 	}
-
 }

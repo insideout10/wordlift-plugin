@@ -136,7 +136,6 @@ class Wordlift_Admin_Setup {
 
 			exit;
 		}
-
 	}
 
 	/**
@@ -152,14 +151,13 @@ class Wordlift_Admin_Setup {
 				<p><?php esc_html_e( 'Welcome to WordLift &#8211; You&lsquo;re almost ready to start', 'wordlift' ); ?></p>
 				<p class="submit">
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup' ) ); ?>"
-					   class="button-primary"><?php esc_html_e( 'Run the Setup Wizard', 'wordlift' ); ?></a>
+						class="button-primary"><?php esc_html_e( 'Run the Setup Wizard', 'wordlift' ); ?></a>
 					<a class="button-secondary skip"
-					   href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'wl-hide-notice', 'install' ), 'wordlift_hide_notices_nonce', '_wl_notice_nonce' ) ); ?>"><?php esc_html_e( 'Skip Setup', 'wordlift' ); ?></a>
+						href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'wl-hide-notice', 'install' ), 'wordlift_hide_notices_nonce', '_wl_notice_nonce' ) ); ?>"><?php esc_html_e( 'Skip Setup', 'wordlift' ); ?></a>
 				</p>
 			</div>
 			<?php
 		}
-
 	}
 
 	/**
@@ -170,7 +168,7 @@ class Wordlift_Admin_Setup {
 	public function hide_notices() {
 
 		// If it's not a `wl-hide-notice` or the nonce is not set, return.
-		if ( ! isset( $_GET['wl-hide-notice'], $_GET['_wl_notice_nonce'] ) ) {
+		if ( ! isset( $_GET['wl-hide-notice'] ) || ! isset( $_GET['_wl_notice_nonce'] ) ) {
 			return;
 		}
 
@@ -186,7 +184,6 @@ class Wordlift_Admin_Setup {
 
 		// Store a flag telling to skip the wizard.
 		Wordlift_Configuration_Service::get_instance()->set_skip_wizard( true );
-
 	}
 
 	/**
@@ -292,7 +289,5 @@ class Wordlift_Admin_Setup {
 		Wordlift_Configuration_Service::get_instance()->set_publisher_id( $publisher_post_id );
 
 		flush_rewrite_rules(); // Needed because of possible change to the entity base path.
-
 	}
-
 }

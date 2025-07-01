@@ -37,7 +37,6 @@ class Shipping_Zones {
 		}
 
 		$this->zones = $zones;
-
 	}
 
 	public function add_available_delivery_method( &$jsonld ) {
@@ -47,7 +46,6 @@ class Shipping_Zones {
 		foreach ( $this->zones as $zone ) {
 			$zone->add_available_delivery_method( $jsonld );
 		}
-
 	}
 
 	/**
@@ -61,7 +59,6 @@ class Shipping_Zones {
 		foreach ( $this->zones as $zone ) {
 			$zone->add_offer_shipping_details( $jsonld, $product );
 		}
-
 	}
 
 	private function get_country_codes( $wc_shipping_zones ) {
@@ -69,7 +66,7 @@ class Shipping_Zones {
 
 		foreach ( $wc_shipping_zones as $wc_shipping_zone ) {
 			if ( ! isset( $wc_shipping_zone->type )
-				 || ( 'country' !== $wc_shipping_zone->type && 'state' !== $wc_shipping_zone->type ) ) {
+				|| ( 'country' !== $wc_shipping_zone->type && 'state' !== $wc_shipping_zone->type ) ) {
 				continue;
 			}
 
@@ -82,5 +79,4 @@ class Shipping_Zones {
 
 		return $countries;
 	}
-
 }

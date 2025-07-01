@@ -3,7 +3,7 @@
 namespace Wordlift\Modules\Food_Kg;
 
 use Wordlift\Content\Content_Service;
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
 use WP_Term;
 
 class Ingredients_Taxonomy_Recipe_Lift_Strategy implements Recipe_Lift_Strategy {

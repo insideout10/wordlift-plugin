@@ -20,12 +20,12 @@ class Post_Edit_Screen {
 	public function enqueue_scripts() {
 		Scripts_Helper::enqueue_based_on_wordpress_version(
 			'wl-videoobject',
-			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . '/js/dist/videoobject',
+			plugin_dir_url( dirname( __DIR__, 2 ) ) . '/js/dist/videoobject',
 			array( 'react', 'react-dom', 'wp-hooks', 'wp-i18n', 'wp-polyfill' )
 		);
 		wp_enqueue_style(
 			'wl-videoobject',
-			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . '/js/dist/videoobject.css',
+			plugin_dir_url( dirname( __DIR__, 2 ) ) . '/js/dist/videoobject.css',
 			array(),
 			WORDLIFT_VERSION
 		);
@@ -39,5 +39,4 @@ class Post_Edit_Screen {
 			)
 		);
 	}
-
 }

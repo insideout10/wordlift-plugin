@@ -31,7 +31,6 @@ class Wordlift_Tinymce_Adapter {
 	public function __construct( $plugin ) {
 
 		$this->plugin = $plugin;
-
 	}
 
 	/**
@@ -86,5 +85,4 @@ class Wordlift_Tinymce_Adapter {
 
 		return $plugins;
 	}
-
 }

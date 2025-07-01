@@ -34,7 +34,13 @@ abstract class Wordlift_Ajax_Unit_Test_Case extends WP_Ajax_UnitTestCase {
 
 		$this->assertFalse( get_option( 'wl_db_version' ), '`wl_db_version` should be false.' );
 
+		$current_user = get_current_user_id();
+		$admin_user   = self::factory()->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $admin_user );
+
 		Wordlift_Install_Service::get_instance()->install();
+
+		wp_set_current_user( $current_user );
 
 		// Configure WordPress with the test settings.
 		wl_configure_wordpress_test();

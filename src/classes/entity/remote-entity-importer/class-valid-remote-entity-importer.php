@@ -2,7 +2,7 @@
 
 namespace Wordlift\Entity\Remote_Entity_Importer;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
 use Wordlift\Entity\Remote_Entity\Valid_Remote_Entity;
 use Wordlift_Entity_Type_Service;
 

@@ -38,7 +38,6 @@ class Analysis_Service {
 		$this->cache_service = $cache_service;
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
-
 	}
 
 	/**
@@ -67,7 +66,6 @@ class Analysis_Service {
 		$this->cache_service->put( $cache_key, $entities );
 
 		return $entities;
-
 	}
 
 	/**
@@ -83,8 +81,8 @@ class Analysis_Service {
 			return false;
 		}
 		if ( ! array_key_exists( 'scheme', $result )
-			 || ! array_key_exists( 'host', $result )
-			 || ! array_key_exists( 'path', $result ) ) {
+			|| ! array_key_exists( 'host', $result )
+			|| ! array_key_exists( 'path', $result ) ) {
 			return false;
 		}
 
@@ -110,8 +108,8 @@ class Analysis_Service {
 		$response = wp_remote_get( $meta_url );
 
 		if ( is_wp_error( $response )
-			 || ! isset( $response['response']['code'] )
-			 || 2 !== (int) $response['response']['code'] / 100 ) {
+			|| ! isset( $response['response']['code'] )
+			|| 2 !== (int) $response['response']['code'] / 100 ) {
 			return false;
 		}
 
@@ -123,7 +121,6 @@ class Analysis_Service {
 		}
 
 		return array();
-
 	}
 
 	private function get_meta_for_entities( $entities ) {
@@ -140,7 +137,6 @@ class Analysis_Service {
 		}
 
 		return $filtered_entities;
-
 	}
 
 	/**
@@ -184,5 +180,4 @@ class Analysis_Service {
 
 		return count( $service->get_network_dataset_ids() ) > 0 ? 'network-only' : 'cloud-only';
 	}
-
 }

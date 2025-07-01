@@ -22,5 +22,4 @@ class Occurrences_Factory {
 		}
 		return Default_Strategy::get_instance();
 	}
-
 }

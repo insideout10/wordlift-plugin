@@ -71,3 +71,7 @@ src/vendor/deliciousbrains/wp-background-processing/Makefile
 src/vendor/deliciousbrains/wp-background-processing/bin/
 src/vendor/deliciousbrains/wp-background-processing/phpunit.xml
 src/vendor/deliciousbrains/wp-background-processing/tests/
+
+# Ignore aider files
+.aider*
+.aider.conf.yml

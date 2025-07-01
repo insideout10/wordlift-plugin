@@ -19,5 +19,4 @@ interface Task {
 	 * }
 	 */
 	public function tick( $value, $args );
-
 }

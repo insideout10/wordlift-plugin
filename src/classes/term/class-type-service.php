@@ -53,7 +53,7 @@ class Type_Service extends Singleton {
 				function ( $type_slug ) {
 					$term = get_term_by( 'slug', $type_slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 					if ( ! $term ) {
-						  return false;
+							return false;
 					}
 
 					return $term;
@@ -100,5 +100,4 @@ class Type_Service extends Singleton {
 			add_term_meta( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $entity_type );
 		}
 	}
-
 }

@@ -166,7 +166,6 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 				array( 'values' => $results ),
 			),
 		) : $results;
-
 	}
 
 	private function get_directly_referencing_posts( $post_id, $referencing_post_ids ) {

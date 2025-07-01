@@ -17,7 +17,6 @@ class Local_Pickup_Shipping_Method extends Shipping_Method {
 		if ( ! in_array( 'OnSitePickup', $jsonld['availableDeliveryMethod'], true ) ) {
 			array_push( $jsonld['availableDeliveryMethod'], 'OnSitePickup' );
 		}
-
 	}
 
 	protected function get_shipping_rate() {
@@ -34,7 +33,5 @@ class Local_Pickup_Shipping_Method extends Shipping_Method {
 			'value'       => $cost ? $cost : '0',
 			'currency'    => get_woocommerce_currency(),
 		);
-
 	}
-
 }

@@ -1,6 +1,6 @@
 <?php
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\Entity\Entity_Store;
 use Wordlift\Object_Type_Enum;
 

@@ -5,7 +5,7 @@
  * # create table ufecmp_9_wl_entities( type int not null, id int not null, rel_uri varchar(500) unique not null, unique key uq_9_wl_entities__type__id ( type, id ) );
  */
 
-namespace Wordlift\Content\Wordpress;
+namespace Wordlift\Content\WordPress;
 
 use Wordlift\Content\Content_Migration;
 use Wordlift\Content\Content_Service;
@@ -45,5 +45,4 @@ class Wordpress_Post_Content_Service {
 
 		return self::$instance;
 	}
-
 }

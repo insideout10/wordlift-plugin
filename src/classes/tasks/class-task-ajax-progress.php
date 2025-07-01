@@ -63,7 +63,6 @@ class Task_Ajax_Progress implements Task_Progress {
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
 		$this->action = $action;
-
 	}
 
 	/**
@@ -74,7 +73,6 @@ class Task_Ajax_Progress implements Task_Progress {
 		$this->log->debug( "New count $value for action $this->action..." );
 
 		$this->count = $value;
-
 	}
 
 	/**
@@ -99,5 +97,4 @@ class Task_Ajax_Progress implements Task_Progress {
 			)
 		);
 	}
-
 }

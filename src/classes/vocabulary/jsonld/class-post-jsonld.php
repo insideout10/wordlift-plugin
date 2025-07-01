@@ -7,7 +7,6 @@
 namespace Wordlift\Vocabulary\Jsonld;
 
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
-use Wordlift\Vocabulary\Terms_Compat;
 
 /**
  * Class Post_Jsonld
@@ -51,7 +50,7 @@ class Post_Jsonld {
 	 */
 	public function add_mentions( $post_id, &$jsonld ) {
 
-		$taxonomies = Terms_Compat::get_public_taxonomies();
+		$taxonomies = get_taxonomies( array( 'public' => true ) );
 		$terms      = array();
 
 		foreach ( $taxonomies as $taxonomy ) {
@@ -88,7 +87,6 @@ class Post_Jsonld {
 
 			$jsonld['mentions'] = array_merge( $jsonld['mentions'], $add_additional_attrs );
 		}
-
 	}
 
 	/**
@@ -107,11 +105,9 @@ class Post_Jsonld {
 				}
 
 				return $entity;
-
 			},
 			$entities
 		);
-
 	}
 
 	/**

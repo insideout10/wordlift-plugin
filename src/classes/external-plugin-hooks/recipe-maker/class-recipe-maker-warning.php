@@ -24,7 +24,6 @@ class Recipe_Maker_Warning {
 				add_action( 'wordlift_admin_notices', array( $this, 'display_image_size_warning' ) );
 			}
 		);
-
 	}
 
 	/**
@@ -67,7 +66,6 @@ class Recipe_Maker_Warning {
 			</div>
 			<?php
 		}
-
 	}
 
 	/**
@@ -111,5 +109,4 @@ class Recipe_Maker_Warning {
 
 		return $recipe_with_image_warnings;
 	}
-
 }

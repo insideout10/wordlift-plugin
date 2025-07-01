@@ -36,7 +36,6 @@ class Wordlift_Sample_Data_Ajax_Adapter {
 	public function __construct( $sample_data_service ) {
 
 		$this->sample_data_service = $sample_data_service;
-
 	}
 
 	/**
@@ -54,7 +53,6 @@ class Wordlift_Sample_Data_Ajax_Adapter {
 
 		// Send success.
 		wp_send_json_success();
-
 	}
 
 	public function delete() {
@@ -69,7 +67,5 @@ class Wordlift_Sample_Data_Ajax_Adapter {
 		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@header( 'Content-Disposition: inline' );
 		wp_send_json_success();
-
 	}
-
 }

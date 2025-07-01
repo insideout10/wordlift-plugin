@@ -27,5 +27,4 @@ class State {
 	public static function items_in_queue( $args = array() ) {
 		return new self( true, $args );
 	}
-
 }

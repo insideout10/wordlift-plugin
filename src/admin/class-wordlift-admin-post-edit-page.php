@@ -58,7 +58,7 @@ class Wordlift_Admin_Post_Edit_Page {
 	 */
 	public function __construct( $plugin ) {
 
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_scripts_gutenberg' ) );
 
@@ -111,7 +111,7 @@ class Wordlift_Admin_Post_Edit_Page {
 	private function is_ux_builder_editor() {
 
 		return function_exists( 'ux_builder_is_editor' )
-			   && ux_builder_is_editor();
+				&& ux_builder_is_editor();
 	}
 
 	/**
@@ -324,7 +324,5 @@ class Wordlift_Admin_Post_Edit_Page {
 			array(),
 			$this->plugin->get_version()
 		);
-
 	}
-
 }

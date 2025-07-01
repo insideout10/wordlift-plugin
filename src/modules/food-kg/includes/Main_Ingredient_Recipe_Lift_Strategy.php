@@ -2,8 +2,8 @@
 
 namespace Wordlift\Modules\Food_Kg;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 
 class Main_Ingredient_Recipe_Lift_Strategy implements Recipe_Lift_Strategy {
 

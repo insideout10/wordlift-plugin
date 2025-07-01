@@ -36,5 +36,4 @@ class Wordlift_Install_3_12_0 extends Wordlift_Install {
 			}
 		);
 	}
-
 }

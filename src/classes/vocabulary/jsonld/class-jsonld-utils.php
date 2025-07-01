@@ -21,5 +21,4 @@ class Jsonld_Utils {
 
 		return $entity->get_jsonld_data();
 	}
-
 }

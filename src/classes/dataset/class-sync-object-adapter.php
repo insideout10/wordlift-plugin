@@ -18,5 +18,4 @@ interface Sync_Object_Adapter {
 	public function set_values( $arr );
 
 	public function get_value( $key );
-
 }

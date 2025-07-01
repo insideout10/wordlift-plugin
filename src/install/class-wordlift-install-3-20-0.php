@@ -21,7 +21,6 @@ class Wordlift_Install_3_20_0 extends Wordlift_Install {
 
 		$this->add_names_to_existing_terms();
 		$this->rename_localbusiness_to_local_business();
-
 	}
 
 	private function add_names_to_existing_terms() {
@@ -61,7 +60,6 @@ class Wordlift_Install_3_20_0 extends Wordlift_Install {
 			// $this->log->debug( 'name :: ' . var_export( $result_1, true ) . ' URI :: ' . var_export( $result_2, true ) );
 
 		}
-
 	}
 
 	private function rename_localbusiness_to_local_business() {
@@ -73,7 +71,5 @@ class Wordlift_Install_3_20_0 extends Wordlift_Install {
 		}
 
 		wp_update_term( $term->term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'slug' => 'local-business' ) );
-
 	}
-
 }

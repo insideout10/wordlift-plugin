@@ -42,7 +42,7 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	public function __construct( $cache_service ) {
 		parent::__construct();
 
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		// Add hooks for meta being added/modified/deleted.
 		$this->cache_service = $cache_service;
@@ -50,7 +50,6 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 		add_action( 'add_post_meta', array( $this, 'on_before_post_meta_add' ), 10, 3 );
 		add_action( 'update_post_meta', array( $this, 'on_before_post_meta_change' ), 10, 4 );
 		add_action( 'delete_post_meta', array( $this, 'on_before_post_meta_change' ), 10, 4 );
-
 	}
 
 	/**
@@ -80,7 +79,6 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 				$this->set_cache( $uri, $post_id );
 			}
 		}
-
 	}
 
 	/**
@@ -130,7 +128,6 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 
 		// Cache the result.
 		$this->cache_service->set_cache( $uri, $post_id );
-
 	}
 
 	/**
@@ -147,7 +144,6 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 			// Delete the single cache file.
 			$this->cache_service->delete_cache( $uri );
 		}
-
 	}
 
 	/**
@@ -186,7 +182,6 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 
 		// Delete the cache for those URIs.
 		$this->delete_cache( $uris );
-
 	}
 
 	/**
@@ -210,7 +205,5 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 
 		// Delete the cache for the URIs being added.
 		$this->delete_cache( (array) $meta_value );
-
 	}
-
 }

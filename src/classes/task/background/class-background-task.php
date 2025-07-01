@@ -121,5 +121,4 @@ class Background_Task extends Wordlift_Plugin_WP_Background_Process implements B
 	public function get_info() {
 		return $this->state->get_info();
 	}
-
 }

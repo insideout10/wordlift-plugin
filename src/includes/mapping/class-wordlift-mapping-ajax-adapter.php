@@ -28,27 +28,17 @@ class Wordlift_Mapping_Ajax_Adapter {
 
 		$this->mapping_service = $mapping_service;
 
-		add_action( 'wp_ajax_wl_set_entity_types_for_post_type', array( $this, 'set_entity_types_for_post_type' ) );
 		add_action( 'wp_ajax_wl_update_post_type_entity_types', array( $this, 'update_post_type_entity_types' ) );
-
-	}
-
-	public function set_entity_types_for_post_type() {
-
-		if ( ! isset( $_REQUEST['post_type'] ) || ! isset( $_REQUEST['entity_types'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			return;
-		}
-
-		$post_type    = sanitize_text_field( wp_unslash( $_REQUEST['post_type'] ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$entity_types = array_map( 'sanitize_text_field', wp_unslash( (array) $_REQUEST['entity_types'] ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
-
-		$this->mapping_service->set_entity_types_for_post_type( $post_type, $entity_types );
-
-		wp_send_json_success();
-
 	}
 
 	public function update_post_type_entity_types() {
+
+		// Check user capabilities.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			@ob_clean();
+			return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
+		}
 
 		// If the nonce is invalid, return an error.
 		$nonce = isset( $_REQUEST['_nonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_nonce'] ) ) : '';
@@ -81,7 +71,5 @@ class Wordlift_Mapping_Ajax_Adapter {
 
 		// Finally send the results.
 		wp_send_json_success( $result );
-
 	}
-
 }

@@ -47,5 +47,4 @@ class Classic_Editor_Parser implements Parser {
 	public static function get_url_from_match( $match ) {
 		return array_key_exists( 0, $match ) ? $match[0] : false;
 	}
-
 }

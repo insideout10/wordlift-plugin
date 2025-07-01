@@ -29,7 +29,6 @@ class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
 		$this->analysis_background_service = $analysis_background_service;
-
 	}
 
 	/**
@@ -98,7 +97,6 @@ class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process
 	public function request_cancel() {
 
 		set_transient( "{$this->action}__cancel", true );
-
 	}
 
 	/**
@@ -113,7 +111,6 @@ class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process
 		} catch ( \Exception $e ) {
 			return Sync_State::unknown();
 		}
-
 	}
 
 	/**
@@ -154,7 +151,6 @@ class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process
 
 		// Finally delete the transient.
 		delete_transient( "{$this->action}__cancel" );
-
 	}
 
 	/**
@@ -178,8 +174,8 @@ class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process
 			 * @var Sync_State $sync The {@link Sync_State}.
 			 */
 			$state = self::get_state()
-						 ->increment_index( $this->analysis_background_service->get_batch_size() )
-						 ->set_state( $next_state );
+						->increment_index( $this->analysis_background_service->get_batch_size() )
+						->set_state( $next_state );
 			update_option( self::WL_CMKG_ANALYSIS_BACKGROUND_PROCESS . '', $state, false );
 
 			// Return the next IDs or false if there aren't.
@@ -192,7 +188,5 @@ class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process
 
 			return $term_ids;
 		}
-
 	}
-
 }

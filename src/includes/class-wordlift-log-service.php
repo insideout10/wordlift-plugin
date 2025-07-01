@@ -56,7 +56,6 @@ class Wordlift_Log_Service {
 	public function __construct( $class_name ) {
 
 		$this->class_name = $class_name;
-
 	}
 
 	/**
@@ -77,7 +76,6 @@ class Wordlift_Log_Service {
 	public static function get_logger( $class_name ) {
 
 		return new Wordlift_Log_Service( $class_name );
-
 	}
 
 	/**
@@ -99,7 +97,7 @@ class Wordlift_Log_Service {
 
 		// Bail out if WordLift log level isn't defined, and WP debug is disabled.
 		if ( ! defined( 'WL_LOG_LEVEL' ) && $level < self::ERROR
-			 && ( ! defined( 'WP_DEBUG' ) || false === WP_DEBUG ) ) {
+			&& ( ! defined( 'WP_DEBUG' ) || false === WP_DEBUG ) ) {
 			return;
 		}
 
@@ -117,38 +115,31 @@ class Wordlift_Log_Service {
 		// Finally log the message.
 		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 		error_log( sprintf( self::MESSAGE_TEMPLATE, self::$levels[ $level ], $this->class_name, is_array( $message ) ? implode( ', ', $message ) : $message ) );
-
 	}
 
 	// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 	public function error( $message, $exception = null ) {
 
 		$this->log( self::ERROR, $message );
-
 	}
 
 	public function warn( $message ) {
 
 		$this->log( self::WARN, $message );
-
 	}
 
 	public function info( $message ) {
 
 		$this->log( self::INFO, $message );
-
 	}
 
 	public function debug( $message ) {
 
 		$this->log( self::DEBUG, $message );
-
 	}
 
 	public function trace( $message ) {
 
 		$this->log( self::TRACE, $message );
-
 	}
-
 }

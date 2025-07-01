@@ -6,7 +6,7 @@
  * @package Wordlift
  */
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\Jsonld\Graph;
 use Wordlift\Jsonld\Jsonld_Context_Enum;
 use Wordlift\Object_Type_Enum;
@@ -294,7 +294,6 @@ class Wordlift_Jsonld_Service {
 
 		// Send the generated JSON-LD.
 		$this->send_jsonld( $this->get_jsonld( $is_homepage, $post_id ) );
-
 	}
 
 	/**
@@ -474,7 +473,6 @@ class Wordlift_Jsonld_Service {
 			$jsonld[ $property_name ]   = isset( $jsonld[ $property_name ] ) ? (array) $jsonld[ $property_name ] : array();
 			$jsonld[ $property_name ][] = array( '@id' => $entity_uri );
 		}
-
 	}
 
 	/**
@@ -494,7 +492,5 @@ class Wordlift_Jsonld_Service {
 
 		// Check if the labels match any part of the title.
 		return 1 === preg_match( '/\b(' . implode( '|', $labels ) . ')\b/iu', $title );
-
 	}
-
 }

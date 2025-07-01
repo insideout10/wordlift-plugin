@@ -49,7 +49,6 @@ class Wordlift_Post_Author_Storage extends Wordlift_Post_Property_Storage {
 
 		$this->entity_service = $entity_service;
 		$this->user_service   = $user_service;
-
 	}
 
 	/**
@@ -76,5 +75,4 @@ class Wordlift_Post_Author_Storage extends Wordlift_Post_Property_Storage {
 		// Return the entity URI.
 		return $this->entity_service->get_uri( $entity_id );
 	}
-
 }

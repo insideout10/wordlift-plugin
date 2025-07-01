@@ -44,7 +44,6 @@ class Scripts_Helper {
 
 		$wordlift = \Wordlift::get_instance();
 		wp_enqueue_script( $handle, $actual_script_name, $actual_dependencies, $wordlift->get_version(), $in_footer );
-
 	}
 	/**
 	 * This function registers the javascript file according to the WordPress version.
@@ -59,12 +58,12 @@ class Scripts_Helper {
 	 * @param array  $dependencies An array of dependencies to be added only in WordPress > 5.0.
 	 */
 	public static function register_based_on_wordpress_version(
-			$handle,
-			$script_name,
-			$dependencies,
-			$action = 'wp_enqueue_scripts',
-			$in_footer = false
-		) {
+		$handle,
+		$script_name,
+		$dependencies,
+		$action = 'wp_enqueue_scripts',
+		$in_footer = false
+	) {
 		global $wp_version;
 
 		if ( version_compare( $wp_version, '5.0', '<' ) ) {
@@ -82,7 +81,5 @@ class Scripts_Helper {
 				wp_register_script( $handle, $actual_script_name, $actual_dependencies, $wordlift->get_version(), $in_footer );
 			}
 		);
-
 	}
-
 }

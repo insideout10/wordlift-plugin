@@ -37,7 +37,6 @@ class Wordlift_Category_Taxonomy_Service {
 	public function __construct( $entity_post_type_service ) {
 
 		$this->entity_post_type_service = $entity_post_type_service;
-
 	}
 
 	/**
@@ -86,7 +85,5 @@ class Wordlift_Category_Taxonomy_Service {
 
 		// Update the query post types.
 		$query->set( 'post_type', $post_types );
-
 	}
-
 }

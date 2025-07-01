@@ -17,7 +17,5 @@ class Wordlift_Install_3_39_1 extends Wordlift_Install {
 		Wordlift_Configuration_Service::get_instance()->set_alternate_name(
 			wp_strip_all_tags( get_bloginfo( 'description' ) )
 		);
-
 	}
-
 }

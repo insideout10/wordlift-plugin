@@ -2,8 +2,8 @@
 
 namespace Wordlift\Dataset;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Term_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Term_Content_Service;
 use Wordlift\Object_Type_Enum;
 
 class Sync_Term_Hooks extends Abstract_Sync_Hooks {
@@ -49,7 +49,6 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 		add_action( 'updated_term_meta', array( $this, 'changed_term_meta' ), 10, 4 );
 		add_action( 'deleted_term_meta', array( $this, 'changed_term_meta' ), 10, 4 );
 		add_action( 'pre_delete_term', array( $this, 'delete_term' ) );
-
 	}
 
 	public function saved_term( $term_id ) {
@@ -81,7 +80,6 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 		}
 
 		$this->sync( $term_id );
-
 	}
 
 	private function sync( $term_id ) {

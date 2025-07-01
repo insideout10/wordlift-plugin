@@ -14,5 +14,4 @@ interface Occurrences {
 	 * @return array Return json data structure.
 	 */
 	public function add_occurrences_to_entities( $occurrences, $json, $post_id );
-
 }

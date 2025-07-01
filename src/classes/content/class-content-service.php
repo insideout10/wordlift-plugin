@@ -79,5 +79,4 @@ interface Content_Service {
 	 * @param string     $value
 	 */
 	public function set_about_jsonld( $content_id, $value );
-
 }

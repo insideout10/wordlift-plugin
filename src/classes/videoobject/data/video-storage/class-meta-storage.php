@@ -22,7 +22,6 @@ class Meta_Storage implements Storage {
 	public function get_all_videos( $post_id ) {
 
 		return get_post_meta( $post_id, self::META_KEY );
-
 	}
 
 	public function remove_videos( $videos_to_be_removed, $post_id ) {
@@ -55,7 +54,6 @@ class Meta_Storage implements Storage {
 		foreach ( $filtered_videos as $video ) {
 			$this->add_video( $post_id, $video );
 		}
-
 	}
 
 	public function remove_all_videos( $post_id ) {

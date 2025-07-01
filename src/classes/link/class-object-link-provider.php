@@ -114,7 +114,5 @@ class Object_Link_Provider extends Singleton {
 		}
 
 		return $provider->get_edit_page_link( $object_id );
-
 	}
-
 }

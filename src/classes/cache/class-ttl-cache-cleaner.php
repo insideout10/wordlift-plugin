@@ -62,33 +62,48 @@ class Ttl_Cache_Cleaner {
 		if ( is_admin() && ! wp_next_scheduled( 'wl_ttl_cache_cleaner__cleanup' ) ) {
 			wp_schedule_event( time(), 'hourly', 'wl_ttl_cache_cleaner__cleanup' );
 		}
-
 	}
 
 	public static function deactivate() {
 
 		$timestamp = wp_next_scheduled( 'wl_ttl_cache_cleaner__cleanup' );
 		wp_unschedule_event( $timestamp, 'wl_ttl_cache_cleaner__cleanup' );
-
 	}
 
 	public function flush() {
+
+		// Check user capabilities for AJAX requests.
+		if ( wp_doing_ajax() ) {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+				@ob_clean();
+				return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
+			}
+		}
 
 		// Get all the files, recursive.
 		$files = $this->reduce( array(), Ttl_Cache::get_cache_folder() );
 
 		foreach ( $files as $file ) {
-			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-			@unlink( $file[ self::PATH ] );
+			wp_delete_file( $file[ self::PATH ] );
 		}
 
 		$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( (string) $_REQUEST['action'] ) ) : '';// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX && 'wl_ttl_cache_cleaner__flush' === $action ) {
+		if ( wp_doing_ajax() && 'wl_ttl_cache_cleaner__flush' === $action ) {
 			wp_send_json_success( count( $files ) );
 		}
 	}
 
 	public function cleanup() {
+
+		// Check user capabilities for AJAX requests.
+		if ( wp_doing_ajax() ) {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+				@ob_clean();
+				return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
+			}
+		}
 
 		// Get all the files, recursive.
 		$files = $this->reduce( array(), Ttl_Cache::get_cache_folder() );
@@ -113,7 +128,7 @@ class Ttl_Cache_Cleaner {
 
 		// Start removing stale files.
 		$count = count( $files );
-		for ( $i = 0; $i < $count; $i ++ ) {
+		for ( $i = 0; $i < $count; $i++ ) {
 			$file = $files[ $i ];
 			// Break if the mtime is within the range.
 			if ( $file[ self::MTIME ] > $max_mtime ) {
@@ -122,7 +137,7 @@ class Ttl_Cache_Cleaner {
 
 			unset( $files[ $i ] );
 			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-			@unlink( $file[ self::PATH ] );
+			wp_delete_file( $file[ self::PATH ] );
 		}
 
 		// Calculate the size.
@@ -139,8 +154,7 @@ class Ttl_Cache_Cleaner {
 		while ( $total_size > $this->max_size ) {
 			$file        = array_shift( $files );
 			$total_size -= $file[ self::SIZE ];
-			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-			@unlink( $file[ self::PATH ] );
+			wp_delete_file( $file[ self::PATH ] );
 		}
 
 		// Send back some stats.
@@ -174,7 +188,7 @@ class Ttl_Cache_Cleaner {
 		try {
 			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			$accumulator = @$this->_reduce( $accumulator, $path, $handle );
-		// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 		} catch ( Exception $e ) {
 			// Do nothing.
 		}
@@ -195,7 +209,7 @@ class Ttl_Cache_Cleaner {
 	// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 	private function _reduce( $accumulator, $path, $handle ) {
 
-		while ( false !== ( $entry = readdir( $handle ) ) ) { // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
+		while ( false !== ( $entry = readdir( $handle ) ) ) { // phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 
 			// Skip to the next one.
 			if ( 0 === strpos( $entry, '.' ) ) {
@@ -222,5 +236,4 @@ class Ttl_Cache_Cleaner {
 
 		return $accumulator;
 	}
-
 }

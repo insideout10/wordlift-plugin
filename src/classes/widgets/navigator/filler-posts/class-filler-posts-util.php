@@ -79,7 +79,6 @@ class Filler_Posts_Util {
 		$filler_posts = $this->add_additional_properties_to_filler_posts( $filler_posts );
 
 		return $filler_posts;
-
 	}
 
 	/**
@@ -166,5 +165,4 @@ class Filler_Posts_Util {
 
 		return $filler_response;
 	}
-
 }

@@ -29,7 +29,6 @@ class Entity_No_Index_Flag {
 				if ( ! $update ) {
 					update_post_meta( $post_id, $no_index_flag, 1 );
 				}
-
 			},
 			PHP_INT_MAX,
 			3
@@ -46,8 +45,5 @@ class Entity_No_Index_Flag {
 			},
 			PHP_INT_MAX
 		);
-
 	}
-
 }
-

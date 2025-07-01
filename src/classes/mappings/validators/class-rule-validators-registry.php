@@ -41,7 +41,6 @@ class Rule_Validators_Registry {
 
 		// Allow 3rd parties to register other validators.
 		$this->rule_validators = apply_filters( 'wl_mappings_rule_validators', array( '__default__' => $default ) );
-
 	}
 
 	/**
@@ -56,5 +55,4 @@ class Rule_Validators_Registry {
 		return isset( $this->rule_validators[ $key ] )
 			? $this->rule_validators[ $key ] : $this->rule_validators['__default__'];
 	}
-
 }

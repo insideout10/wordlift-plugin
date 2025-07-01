@@ -18,7 +18,6 @@
 function wl_write_log( $log ) {
 
 	Wordlift_Log_Service::get_instance()->debug( $log );
-
 }
 
 /**
@@ -63,7 +62,6 @@ function wordlift_admin_enqueue_scripts() {
 	if ( Wordlift_Entity_Service::TYPE_NAME === get_post_type() ) {
 		wp_dequeue_script( 'autosave' );
 	}
-
 }
 
 add_action( 'admin_enqueue_scripts', 'wordlift_admin_enqueue_scripts' );
@@ -108,9 +106,8 @@ add_filter( 'wp_kses_allowed_html', 'wordlift_allowed_html', 10, 2 );
 function wl_get_image_urls( $post_id ) {
 
 	return Wordlift_Storage_Factory::get_instance()
-								   ->post_images()
-								   ->get( $post_id );
-
+									->post_images()
+									->get( $post_id );
 }
 
 /**
@@ -199,7 +196,7 @@ function wl_replace_item_id_with_uri( $content ) {
 
 			// Get the post bound to that item ID (looking both in the 'official' URI and in the 'same-as' .
 			$post = Wordlift_Entity_Service::get_instance()
-										   ->get_entity_post_by_uri( $item_id );
+											->get_entity_post_by_uri( $item_id );
 
 			// If no entity is found, continue to the next one.
 			if ( null === $post ) {
@@ -253,6 +250,7 @@ require_once 'shortcodes/class-wordlift-products-navigator-shortcode-rest.php';
 require_once 'widgets/class-wordlift-geo-widget.php';
 require_once 'widgets/class-wordlift-chord-widget.php';
 require_once 'widgets/class-wordlift-timeline-widget.php';
+require_once 'widgets/register-widgets.php';
 
 // Add admin functions.
 // TODO: find a way to make 'admin' UI tests work.

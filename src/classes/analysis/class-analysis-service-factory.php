@@ -28,5 +28,4 @@ class Analysis_Service_Factory {
 
 		return V1_Analysis_Service::get_instance();
 	}
-
 }

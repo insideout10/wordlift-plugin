@@ -34,5 +34,4 @@ class Sync_User_Adapter extends Abstract_Sync_Object_Adapter {
 	public function get_value( $key ) {
 		// @@todo
 	}
-
 }

@@ -38,7 +38,6 @@ class Wordlift_Post_Meta_Storage extends Wordlift_Storage {
 	public function __construct( $meta_key ) {
 
 		$this->meta_key = $meta_key;
-
 	}
 
 	/**
@@ -54,5 +53,4 @@ class Wordlift_Post_Meta_Storage extends Wordlift_Storage {
 
 		return get_post_meta( $post_id, $this->meta_key );
 	}
-
 }

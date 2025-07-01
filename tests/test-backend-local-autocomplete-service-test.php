@@ -11,8 +11,8 @@
 namespace Wordlift\Autocomplete;
 
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift_Entity_Type_Taxonomy_Service;
 use WP_UnitTest_Generator_Sequence;
 

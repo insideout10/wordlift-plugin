@@ -12,9 +12,9 @@
 
 namespace Wordlift\Relation;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
 
-interface  Relation_Service_Interface {
+interface Relation_Service_Interface {
 
 	/**
 	 * Get the relations for the provided {@link Wordpress_Content_Id}
@@ -31,5 +31,4 @@ interface  Relation_Service_Interface {
 	 * @param Wordpress_Content_Id $content_id
 	 */
 	public function add_relations( $content_id, $relations );
-
 }

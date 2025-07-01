@@ -16,5 +16,4 @@ interface Background_Route_Task {
 	public function resume();
 
 	public function get_info();
-
 }

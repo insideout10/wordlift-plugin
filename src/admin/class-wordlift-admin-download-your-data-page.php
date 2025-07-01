@@ -61,7 +61,6 @@ class Wordlift_Admin_Download_Your_Data_Page {
 			'wl_download_your_data',
 			array( $this, 'page' )
 		);
-
 	}
 
 	/**
@@ -73,7 +72,6 @@ class Wordlift_Admin_Download_Your_Data_Page {
 
 		// Include the partial.
 		include plugin_dir_path( __FILE__ ) . 'partials/wordlift-admin-download-your-data.php';
-
 	}
 
 	/**

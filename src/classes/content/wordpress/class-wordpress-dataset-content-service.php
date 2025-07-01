@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Content\Wordpress;
+namespace Wordlift\Content\WordPress;
 
 use Exception;
 use Wordlift\Assertions;
@@ -15,7 +15,6 @@ class Wordpress_Dataset_Content_Service implements Content_Service {
 	private $delegates = array();
 
 	protected function __construct() {
-
 	}
 
 	private static $instance = null;

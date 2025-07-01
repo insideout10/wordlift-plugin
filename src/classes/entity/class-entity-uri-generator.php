@@ -3,7 +3,7 @@
 namespace Wordlift\Entity;
 
 use Exception;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 use Wordlift\Object_Type_Enum;
 
 class Entity_Uri_Generator {
@@ -48,7 +48,7 @@ class Entity_Uri_Generator {
 	 * @throws Exception when an error occurs.
 	 */
 	private static function ensure_unique( $rel_uri ) {
-		for ( $try_rel_uri = $rel_uri, $i = 2; $i < 100; $i ++ ) {
+		for ( $try_rel_uri = $rel_uri, $i = 2; $i < 100; $i++ ) {
 			$content = Wordpress_Content_Service::get_instance()->get_by_entity_id( $try_rel_uri );
 			if ( ! isset( $content ) ) {
 				return $try_rel_uri;
@@ -60,5 +60,4 @@ class Entity_Uri_Generator {
 		// Giving up.
 		return $rel_uri . '-' . uniqid();
 	}
-
 }

@@ -23,6 +23,5 @@ class Client_Factory {
 		} elseif ( self::JWPLAYER === $config ) {
 			return Jw_Player_Client::get_instance();
 		}
-
 	}
 }

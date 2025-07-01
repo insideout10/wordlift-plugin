@@ -9,5 +9,4 @@ interface Cache {
 	public function put( $cache_key, $value );
 
 	public function flush_all();
-
 }

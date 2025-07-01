@@ -51,10 +51,9 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	public function __construct() {
 		parent::__construct();
 
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		$this->register_block_type();
-
 	}
 
 	/**
@@ -66,10 +65,10 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	private static function are_requirements_satisfied() {
 
 		return function_exists( 'mb_strlen' ) &&
-			   function_exists( 'mb_substr' ) &&
-			   function_exists( 'mb_strtolower' ) &&
-			   function_exists( 'mb_strtoupper' ) &&
-			   function_exists( 'mb_convert_case' );
+				function_exists( 'mb_substr' ) &&
+				function_exists( 'mb_strtolower' ) &&
+				function_exists( 'mb_strtoupper' ) &&
+				function_exists( 'mb_convert_case' );
 	}
 
 	/**
@@ -148,7 +147,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 				$translations,
 				function ( $a, $b ) {
 					if ( mb_strtolower( $a ) === mb_strtolower( $b )
-						 || mb_strtoupper( $a ) === mb_strtoupper( $b ) ) {
+						|| mb_strtoupper( $a ) === mb_strtoupper( $b ) ) {
 						return 0;
 					}
 
@@ -195,7 +194,6 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 		$html = ob_get_clean();
 
 		return $html;
-
 	}
 
 	private function register_block_type() {
@@ -353,7 +351,6 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 		// Get the posts. Note that if a `type` is specified before, then the
 		// `tax_query` from the `add_criterias` call isn't added.
 		return get_posts( Wordlift_Entity_Service::add_criterias( $args ) );
-
 	}
 
 	/**
@@ -374,7 +371,6 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 
 		// Add the post.
 		$alphabet[ $letter ][ $post_id ] = $title;
-
 	}
 
 	/**
@@ -402,7 +398,6 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 		}
 
 		return remove_accents( $title );
-
 	}
 
 	/**
@@ -421,7 +416,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	private function get_first_letter_in_alphabet_or_hash( $alphabet, $title ) {
 
 		// Need to handle letters which consist of 3 and 2 characters.
-		for ( $i = 3; $i > 0; $i -- ) {
+		for ( $i = 3; $i > 0; $i-- ) {
 			$letter = mb_convert_case( mb_substr( $title, 0, $i ), MB_CASE_UPPER );
 			if ( isset( $alphabet[ $letter ] ) ) {
 				return $letter;
@@ -438,7 +433,6 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	 * @since  3.18.3
 	 */
 	private static function get_and_increment_vocabulary_id() {
-		return self::$vocabulary_id ++;
+		return self::$vocabulary_id++;
 	}
-
 }

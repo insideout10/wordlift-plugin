@@ -47,8 +47,3 @@ class Wordlift_Timeline_Widget extends WP_Widget {
 		// processes widget options to be saved
 	}
 }
-
-function wl_register_timeline_widget() {
-
-	register_widget( 'WordLift_Timeline_Widget' );
-}

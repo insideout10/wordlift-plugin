@@ -64,5 +64,4 @@ class Sync_Background_Process_Posts_Stage {
 		return $this->sync_object_adapter_factory
 			->create_many( Object_Type_Enum::POST, array_map( 'intval', $ids ) );
 	}
-
 }

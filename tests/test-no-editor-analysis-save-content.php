@@ -1,6 +1,6 @@
 <?php
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
 use Wordlift\No_Editor_Analysis\No_Editor_Analysis_Feature;
 use Wordlift\No_Editor_Analysis\Post_Type;
 use Wordlift\Relation\Object_Relation_Service;

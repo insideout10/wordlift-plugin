@@ -38,6 +38,5 @@ class Wordlift_Install_3_41_0 extends Wordlift_Install {
 				$charset_collate
 			)
 		);
-
 	}
 }

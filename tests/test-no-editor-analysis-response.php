@@ -1,8 +1,8 @@
 <?php
 
 use Wordlift\Analysis\Occurrences\No_Annotation_Strategy;
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 
 /**
  * @since 3.32.6
@@ -55,7 +55,7 @@ class Test_No_Editor_Analysis_Response extends Wordlift_No_Editor_Analysis_Unit_
 
 		$content_service = Wordpress_Content_Service::get_instance();
 
-		$this->assertInstanceOf( '\Wordlift\Content\Wordpress\Wordpress_Dataset_Content_Service', $content_service );
+		$this->assertInstanceOf( '\Wordlift\Content\WordPress\Wordpress_Dataset_Content_Service', $content_service );
 		$this->assertNotEmpty( $content_service->get_entity_id( Wordpress_Content_Id::create_post( $post_id ) ) );
 		$this->assertNotEmpty( $content_service->get_entity_id( Wordpress_Content_Id::create_post( $entity_1 ) ) );
 		$this->assertNotEmpty( $content_service->get_entity_id( Wordpress_Content_Id::create_post( $entity_2 ) ) );

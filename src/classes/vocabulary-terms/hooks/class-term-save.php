@@ -6,8 +6,8 @@
 
 namespace Wordlift\Vocabulary_Terms\Hooks;
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Id;
-use Wordlift\Content\Wordpress\Wordpress_Term_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Id;
+use Wordlift\Content\WordPress\Wordpress_Term_Content_Service;
 
 /**
  * This class assigns the entity_url meta to the term when it is
@@ -31,8 +31,6 @@ class Term_Save {
 		// check if entity url already exists.
 
 		Wordpress_Term_Content_Service::get_instance()
-									  ->get_entity_id( Wordpress_Content_Id::create_term( $term_id ) );
-
+										->get_entity_id( Wordpress_Content_Id::create_term( $term_id ) );
 	}
-
 }

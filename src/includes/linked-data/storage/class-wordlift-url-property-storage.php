@@ -39,7 +39,6 @@ class Wordlift_Url_Property_Storage extends Wordlift_Storage {
 	public function __construct( $property_getter ) {
 
 		$this->property_getter = $property_getter;
-
 	}
 
 	/**
@@ -55,5 +54,4 @@ class Wordlift_Url_Property_Storage extends Wordlift_Storage {
 
 		return $this->property_getter->get( $post_id, Wordlift_Schema_Url_Property_Service::META_KEY, Object_Type_Enum::POST );
 	}
-
 }

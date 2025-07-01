@@ -26,5 +26,4 @@ class Background_Task_Info {
 		$this->last_update = $last_update;
 		$this->state       = $state;
 	}
-
 }

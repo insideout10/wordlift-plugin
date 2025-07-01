@@ -35,7 +35,6 @@ class Wordlift_Seo_Service {
 			),
 			10
 		);
-
 	}
 
 	/**
@@ -84,5 +83,4 @@ class Wordlift_Seo_Service {
 		// Return the updated term.
 		return $term;
 	}
-
 }

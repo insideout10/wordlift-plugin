@@ -32,7 +32,6 @@ class Wordlift_Geomap_Shortcode extends Wordlift_Shortcode {
 		// rendering.
 		add_action( 'amp_post_template_css', array( $this, 'amp_post_template_css' ) );
 		$this->register_block_type();
-
 	}
 
 	/**
@@ -170,5 +169,4 @@ class Wordlift_Geomap_Shortcode extends Wordlift_Shortcode {
 		.wl-geomap { display: none; }
 		<?php
 	}
-
 }

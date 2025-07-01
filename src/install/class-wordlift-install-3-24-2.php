@@ -42,9 +42,7 @@ class Wordlift_Install_3_24_2 extends Wordlift_Install {
 
 		$wpdb->query(
 			"UPDATE {$wpdb->options} SET autoload = 'yes'"
-					  . " WHERE option_name IN ( 'wl_mappings', 'wl_analytics_settings', 'wl_entity_type_settings', 'WPLANG' )"
+						. " WHERE option_name IN ( 'wl_mappings', 'wl_analytics_settings', 'wl_entity_type_settings', 'WPLANG' )"
 		);
-
 	}
-
 }

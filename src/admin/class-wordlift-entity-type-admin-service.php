@@ -56,7 +56,6 @@ class Wordlift_Entity_Type_Admin_Service {
 		foreach ( $this->get_types_no_entity() as $type ) {
 			remove_meta_box( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME . 'div', $type, 'side' );
 		}
-
 	}
 
 	/**
@@ -83,7 +82,6 @@ class Wordlift_Entity_Type_Admin_Service {
 				}
 			);
 		}
-
 	}
 
 	/**
@@ -97,5 +95,4 @@ class Wordlift_Entity_Type_Admin_Service {
 
 		return array_diff( Wordlift_Entity_Service::valid_entity_post_types(), (array) Wordlift_Entity_Service::TYPE_NAME );
 	}
-
 }

@@ -74,5 +74,4 @@ class Entity_Provider_Registry {
 
 		return false;
 	}
-
 }

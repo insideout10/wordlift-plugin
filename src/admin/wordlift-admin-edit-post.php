@@ -34,17 +34,17 @@ function wl_admin_permalink_html( $html, $post_id ) {
 		 */
 		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		$html .= apply_filters( 'wl_feature__enable__view-linked-data', true ) ? "<span id='view-post-btn'><a href='$lod_view_href.html' class='button button-small wl-button' target='_blank'>" .
-						  esc_html__( 'View Linked Data', 'wordlift' ) .
-						  "</a></span>\n" : '';
+							esc_html__( 'View Linked Data', 'wordlift' ) .
+							"</a></span>\n" : '';
 
 	}
 
 	// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	$html .= apply_filters( 'wl_feature__enable__test-sd', true ) ? "<span id='view-post-btn'><a href='" . WL_CONFIG_TEST_GOOGLE_RICH_SNIPPETS_URL .
 			rawurlencode( get_permalink( $post_id ) ) .
-			 "' class='button button-small wl-button' target='_blank'>" .
-			 esc_html__( 'Test Google Rich Snippets', 'wordlift' ) .
-			 "</a></span>\n" : '';
+			"' class='button button-small wl-button' target='_blank'>" .
+			esc_html__( 'Test Google Rich Snippets', 'wordlift' ) .
+			"</a></span>\n" : '';
 
 	return $html;
 }

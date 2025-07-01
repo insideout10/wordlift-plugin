@@ -86,7 +86,6 @@ class Background_Task_Route {
 				'permission_callback' => array( $this, 'permission_callback' ),
 			)
 		);
-
 	}
 
 	public function permission_callback() {
@@ -98,5 +97,4 @@ class Background_Task_Route {
 	public function get_rest_path() {
 		return self::VERSION_STRING . $this->route_name;
 	}
-
 }

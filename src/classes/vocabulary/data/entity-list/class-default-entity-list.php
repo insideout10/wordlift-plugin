@@ -37,7 +37,7 @@ class Default_Entity_List extends Entity_List {
 		return array_map(
 			function ( $value ) {
 				if ( ! is_array( $value ) || ! array_key_exists( '@value', $value ) ) {
-					  return $value;
+						return $value;
 				}
 
 				return $value['@value'];
@@ -80,7 +80,6 @@ class Default_Entity_List extends Entity_List {
 		$entity_list[] = $this->compact_jsonld( $this->filter_entity_data( $entity_data ) );
 
 		$this->clear_and_save_list( $entity_list );
-
 	}
 
 	public function clear_data() {
@@ -98,7 +97,6 @@ class Default_Entity_List extends Entity_List {
 			}
 		}
 		$this->clear_and_save_list( $entity_list );
-
 	}
 
 	/**
@@ -161,7 +159,7 @@ class Default_Entity_List extends Entity_List {
 			$entity_data['sameAs'] = array_map(
 				function ( $sameas ) {
 					if ( ! is_array( $sameas ) || ! array_key_exists( '@id', $sameas ) ) {
-						  return $sameas;
+							return $sameas;
 					}
 					return $sameas['@id'];
 				},

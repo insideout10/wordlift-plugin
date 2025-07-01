@@ -24,7 +24,6 @@ abstract class Wordlift_Widget extends WP_Widget {
 
 		// Initialize the Related Entities Cloud Widget.
 		add_action( 'widgets_init', array( $this, 'widget_init' ) );
-
 	}
 
 	/**
@@ -35,7 +34,5 @@ abstract class Wordlift_Widget extends WP_Widget {
 	public function widget_init() {
 
 		register_widget( get_class( $this ) );
-
 	}
-
 }

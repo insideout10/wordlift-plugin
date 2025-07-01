@@ -77,5 +77,4 @@ class Local_Autocomplete_Service extends Abstract_Autocomplete_Service {
 
 		return $this->filter( $results, $excludes );
 	}
-
 }

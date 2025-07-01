@@ -38,5 +38,4 @@ interface Content {
 	 * @return string
 	 */
 	public function get_edit_link();
-
 }

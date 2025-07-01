@@ -83,7 +83,6 @@ class Task_Single_Instance_Task_Runner {
 		$this->task      = $task;
 		$this->force     = $force;
 		$this->callbacks = $callbacks;
-
 	}
 
 	/**
@@ -141,7 +140,7 @@ class Task_Single_Instance_Task_Runner {
 		$items = $this->task->list_items( $limit, $offset );
 
 		$count = count( $items );
-		for ( $i = 0; $i < $count; $i ++ ) {
+		for ( $i = 0; $i < $count; $i++ ) {
 			// Process the item.
 			$this->task->process_item( $items[ $i ] );
 
@@ -157,7 +156,6 @@ class Task_Single_Instance_Task_Runner {
 
 		// Set the task to complete.
 		$this->finish();
-
 	}
 
 	/**
@@ -176,7 +174,6 @@ class Task_Single_Instance_Task_Runner {
 		foreach ( $this->callbacks as $callback ) {
 			call_user_func( array( $callback, 'set_count' ), $value );
 		}
-
 	}
 
 	/**
@@ -196,7 +193,6 @@ class Task_Single_Instance_Task_Runner {
 		foreach ( $this->callbacks as $callback ) {
 			call_user_func( array( $callback, 'set_progress' ), $index, $item );
 		}
-
 	}
 
 	/**
@@ -213,7 +209,5 @@ class Task_Single_Instance_Task_Runner {
 		foreach ( $this->callbacks as $callback ) {
 			call_user_func( array( $callback, 'finish' ) );
 		}
-
 	}
-
 }

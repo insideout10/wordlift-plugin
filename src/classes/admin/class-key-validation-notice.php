@@ -122,19 +122,18 @@ class Key_Validation_Notice {
 				}
 
 				$that->show_notification();
-
 			}
 		);
 	}
 
 	public function notification_close_handler() {
 		if ( ! isset( $_GET['wl_key_validation_notice'] )
-			 || ! isset( $_GET['_wl_key_validation_notice_nonce'] ) ) {
+			|| ! isset( $_GET['_wl_key_validation_notice_nonce'] ) ) {
 			return false;
 		}
 		$nonce = sanitize_text_field( wp_unslash( (string) $_GET['_wl_key_validation_notice_nonce'] ) );
 		if ( wp_verify_nonce( $nonce, self::KEY_VALIDATION_NONCE_ACTION )
-			 && current_user_can( 'manage_options' ) ) {
+			&& current_user_can( 'manage_options' ) ) {
 			// close the notification.
 			update_option( self::NOTIFICATION_OPTION_KEY, true );
 		}
@@ -143,6 +142,5 @@ class Key_Validation_Notice {
 	public static function remove_notification_flag() {
 		delete_option( self::NOTIFICATION_OPTION_KEY );
 	}
-
 }
 

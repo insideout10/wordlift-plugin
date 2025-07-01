@@ -42,7 +42,6 @@ class Wordlift_Install_Package_Type extends Wordlift_Install {
 
 		// Calling this function will get and set the remote dataset and package type.
 		$configuration_service->get_remote_dataset_uri( $key );
-
 	}
 
 	/**
@@ -62,5 +61,4 @@ class Wordlift_Install_Package_Type extends Wordlift_Install {
 		// We need to determine the package type if the `key` is set, but the `package_type` isn't.
 		return is_admin() && ! empty( $key ) && empty( $package_type );
 	}
-
 }

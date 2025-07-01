@@ -19,5 +19,4 @@ class Term_Count_Factory {
 
 		return null;
 	}
-
 }

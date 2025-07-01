@@ -4,9 +4,9 @@ Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave
 Tags: SEO, structured data, ai, linked data, semantic web
 Requires at least: 5.3
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 3.52.9
+Stable tag: 3.54.5
 License: GPLv2 or later
 
 Search engines are looking for meaning, not keywords. WordLift tells Google how your content relates to your brand, products, and stakeholders.
@@ -129,6 +129,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 > Find more FAQ in our [Wiki](http://docs.wordlift.io/en/latest/faq.html#why-is-it-important-to-organize-my-content-and-publish-it-as-linked-data). <br />
 
+= How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage and handle any security vulnerabilities. [Report a security vulnerability.]( https://patchstack.com/database/vdp/0c97043c-a135-43be-873e-277fde8929f2 )
+
 == Screenshots ==
 
 1. The Setup Wizard.
@@ -142,6 +146,22 @@ You can open your datasets to the public, attaching to it a free or a commercial
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.54.5 (2025-06-30) =
+
+* Fix: Comprehensive AJAX endpoint security review and hardening. Address CVE-2025-30624
+
+= 3.54.4 (2025-01-15)
+
+* Fix: the json-ld endpoint was missing encoded urls, because it was attempting to decode the url parameter while the urls are url encoded in database.
+
+= 3.54.3 (2024-12-31)
+
+* Fix [#1754](https://github.com/insideout10/wordlift-plugin/issues/1754): Address CVE-2024-12176
+
+= 3.54.1 (2024-11-20)
+
+* Fix [#1749](https://github.com/insideout10/wordlift-plugin/issues/1737): Avoid deprecation warnings by using $this as argument in get_class() call
 
 = 3.54.0 (2024-10-29) =
 

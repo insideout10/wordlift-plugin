@@ -106,10 +106,8 @@ class Jsonld_Endpoint {
 						'permission_callback' => '__return_true',
 					)
 				);
-
 			}
 		);
-
 	}
 
 	/**
@@ -231,12 +229,22 @@ class Jsonld_Endpoint {
 
 		$meta_key    = $request['meta_key'];
 		$params      = $request->get_query_params();
-		$meta_value  = urldecode( $params['meta_value'] );
+		$meta_value  = $params['meta_value'];
 		$meta_values = array( $meta_value );
 		// Merchant Sync stores spaces as plus, so we need to restore them.
 		if ( strpos( $meta_value, ' ' ) > 0 ) {
 			$meta_values[] = str_replace( ' ', '+', $meta_value );
 		} elseif ( strpos( $meta_value, '+' ) > 0 ) {
+			$meta_values[] = str_replace( '+', ' ', $meta_value );
+		}
+
+		$contains_whitespace = strpos( $meta_value, ' ' ) !== false;
+		$contains_plus       = strpos( $meta_value, '+' ) !== false;
+
+		if ( $contains_whitespace ) {
+			$meta_values[] = str_replace( ' ', '+', $meta_value );
+		}
+		if ( $contains_plus ) {
 			$meta_values[] = str_replace( '+', ' ', $meta_value );
 		}
 
@@ -279,5 +287,4 @@ class Jsonld_Endpoint {
 
 		return Jsonld_Response_Helper::to_response( $data );
 	}
-
 }

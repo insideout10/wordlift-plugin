@@ -39,7 +39,6 @@ class Wordlift_Post_Meta_Uri_Storage extends Wordlift_Post_Meta_Storage {
 		parent::__construct( $meta_key );
 
 		$this->entity_service = $entity_service;
-
 	}
 
 	/**
@@ -66,5 +65,4 @@ class Wordlift_Post_Meta_Uri_Storage extends Wordlift_Post_Meta_Storage {
 			$values
 		);
 	}
-
 }

@@ -45,5 +45,4 @@ class Wordlift_Duration_Property_Service extends Wordlift_Simple_Property_Servic
 			$values
 		);
 	}
-
 }

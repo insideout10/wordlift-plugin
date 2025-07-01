@@ -242,5 +242,4 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 		$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}wl_mapping_rule_group" );
 		$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}wl_mapping" );
 	}
-
 }

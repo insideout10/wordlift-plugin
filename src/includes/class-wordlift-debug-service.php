@@ -45,10 +45,16 @@ class Wordlift_Debug_Service {
 		$this->uri_service    = $uri_service;
 
 		add_action( 'wp_ajax_wl_dump_uri', array( $this, 'dump_uri' ) );
-
 	}
 
 	public function dump_uri() {
+
+		// Check user capabilities.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			@ob_clean();
+			return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
+		}
 
 		if ( ! isset( $_GET['id'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			wp_send_json_error( 'id not set' );
@@ -70,7 +76,5 @@ class Wordlift_Debug_Service {
 				'build_uri_convert' => mb_convert_encoding( $build_uri, 'ASCII' ),
 			)
 		);
-
 	}
-
 }

@@ -22,7 +22,6 @@ class Mappings_REST_Controller {
 	public static function register_routes() {
 
 		add_action( 'rest_api_init', 'Wordlift\Mappings\Mappings_REST_Controller::register_route_callback' );
-
 	}
 
 	/**
@@ -234,7 +233,12 @@ class Mappings_REST_Controller {
 			);
 		} else {
 			$taxonomy = $post_data['taxonomy'];
-			$terms    = get_terms( $taxonomy, array( 'hide_empty' => false ) );
+			$terms    = get_terms(
+				array(
+					'taxonomy'   => $taxonomy,
+					'hide_empty' => false,
+				)
+			);
 			if ( is_wp_error( $terms ) ) {
 				// Return error response, if the taxonomy is not valid.
 				return array(
@@ -452,7 +456,6 @@ class Mappings_REST_Controller {
 		foreach ( $property_ids as $property_id ) {
 			$dbo->delete_property( $property_id );
 		}
-
 	}
 
 	/**
@@ -522,8 +525,8 @@ class Mappings_REST_Controller {
 		$dbo       = new Mappings_DBO();
 		// check if valid object is posted.
 		if ( array_key_exists( 'mapping_title', $post_data ) &&
-			 array_key_exists( 'rule_group_list', $post_data ) &&
-			 array_key_exists( 'property_list', $post_data ) ) {
+			array_key_exists( 'rule_group_list', $post_data ) &&
+			array_key_exists( 'property_list', $post_data ) ) {
 			// Do validation, remove all incomplete data.
 			$mapping_item = array();
 			if ( array_key_exists( 'mapping_id', $post_data ) ) {

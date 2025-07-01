@@ -32,7 +32,7 @@ class Wordlift_Http_Api {
 	 */
 	public function __construct() {
 
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
 		add_action( 'init', array( $this, 'add_rewrite_endpoint' ) );
 		add_action( 'template_redirect', array( $this, 'template_redirect' ) );
@@ -64,7 +64,6 @@ class Wordlift_Http_Api {
 
 		add_rewrite_endpoint( 'wl-api', EP_ROOT );
 		$this->ensure_rewrite_rules_are_flushed();
-
 	}
 
 	/**
@@ -86,7 +85,6 @@ class Wordlift_Http_Api {
 		$this->do_action( $action );
 
 		exit;
-
 	}
 
 	/**
@@ -123,7 +121,6 @@ class Wordlift_Http_Api {
 			 */
 			do_action( "admin_post_{$action}" );
 		}
-
 	}
 
 	/**
@@ -134,7 +131,6 @@ class Wordlift_Http_Api {
 	public function nopriv_hello_world() {
 
 		wp_die( 'Hello World! (from anonymous)' );
-
 	}
 
 	/**
@@ -145,7 +141,6 @@ class Wordlift_Http_Api {
 	public function hello_world() {
 
 		wp_die( 'Hello World! (from authenticated)' );
-
 	}
 
 	/**
@@ -166,7 +161,6 @@ class Wordlift_Http_Api {
 				}
 			);
 		}
-
 	}
 
 	/**
@@ -181,7 +175,6 @@ class Wordlift_Http_Api {
 
 		// Force the plugin to reinitialize the rewrite rules.
 		update_option( 'wl_http_api', 'no' );
-
 	}
 
 	/**
@@ -194,7 +187,5 @@ class Wordlift_Http_Api {
 	public static function deactivate() {
 
 		delete_option( 'wl_http_api' );
-
 	}
-
 }

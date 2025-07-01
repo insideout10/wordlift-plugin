@@ -44,7 +44,6 @@ abstract class Wordlift_Install {
 	public function __construct() {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
-
 	}
 
 	/**
@@ -76,5 +75,4 @@ abstract class Wordlift_Install {
 
 		return false;
 	}
-
 }

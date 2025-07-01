@@ -37,7 +37,7 @@ class Jw_Player extends Api_Provider {
 
 					|| count( $video_data['playlist'] ) === 0 ) {
 
-						  return false;
+							return false;
 
 					}
 
@@ -80,12 +80,9 @@ class Jw_Player extends Api_Provider {
 					$video->embed_url = '';
 
 					return $video;
-
 				},
 				$videos_data
 			)
 		);
-
 	}
-
 }

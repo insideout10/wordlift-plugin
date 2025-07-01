@@ -59,7 +59,6 @@ function wl_shortcode_faceted_search( $request ) {
 	$cache->put( $cache_key, $results );
 
 	wl_core_send_json( $results );
-
 }
 
 /**
@@ -265,7 +264,6 @@ function wl_shortcode_faceted_search_origin( $request ) {
 		'posts'    => $amp ? array( array( 'values' => $post_results ) ) : $post_results,
 		'entities' => $entity_results,
 	);
-
 }
 
 function wl_shortcode_faceted_search_get_the_title( $post_id ) {
@@ -281,7 +279,6 @@ function wl_shortcode_faceted_search_get_the_title( $post_id ) {
 	}
 
 	return remove_accents( $title );
-
 }
 
 /**

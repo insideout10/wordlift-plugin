@@ -127,5 +127,4 @@ abstract class Wordlift_Property_Service {
 			'sanitize'    => array( $this, 'sanitize' ),
 		);
 	}
-
 }

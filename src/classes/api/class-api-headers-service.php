@@ -9,7 +9,6 @@ class Api_Headers_Service {
 	private static $instance = null;
 
 	protected function __construct() {
-
 	}
 
 	/**
@@ -21,9 +20,9 @@ class Api_Headers_Service {
 		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		$is_plugin_subscription = apply_filters( 'wl_feature__enable__entity-types-professional', false ) ||
 		                          // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-								  apply_filters( 'wl_feature__enable__entity-types-business', false ) ||
+									apply_filters( 'wl_feature__enable__entity-types-business', false ) ||
 		                          // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-								  apply_filters( 'wl_feature__enable__entity-types-starter', false );
+									apply_filters( 'wl_feature__enable__entity-types-starter', false );
 
 		try {
 			return $is_plugin_subscription ? array(
@@ -45,5 +44,4 @@ class Api_Headers_Service {
 
 		return self::$instance;
 	}
-
 }

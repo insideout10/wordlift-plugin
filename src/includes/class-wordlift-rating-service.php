@@ -122,7 +122,6 @@ class Wordlift_Rating_Service {
 		$this->notice_service      = Wordlift_Notice_Service::get_instance();
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Rating_Service' );
-
 	}
 
 	private static $instance;
@@ -205,7 +204,6 @@ class Wordlift_Rating_Service {
 			'percentage_score'    => $this->convert_raw_score_to_percentage( $current_raw_score ),
 			'warnings'            => $current_warnings,
 		);
-
 	}
 
 	/**
@@ -245,28 +243,28 @@ class Wordlift_Rating_Service {
 
 		// Is the current entity related to at least 1 post?
 		( 0 < count( wl_core_get_related_post_ids( $post->ID ) ) ) ?
-			$score ++ :
+			$score++ :
 			array_push( $warnings, __( 'There are no related posts for the current entity.', 'wordlift' ) );
 
 		// Is the post content not empty?
 		( ! empty( $post->post_content ) ) ?
-			$score ++ :
+			$score++ :
 			array_push( $warnings, __( 'This entity has not description.', 'wordlift' ) );
 
 		// Is the current entity related to at least 1 entity?
 		// Was the current entity already disambiguated?
 		( 0 < count( wl_core_get_related_entity_ids( $post->ID ) ) ) ?
-			$score ++ :
+			$score++ :
 			array_push( $warnings, __( 'There are no related entities for the current entity.', 'wordlift' ) );
 
 		// Is the entity published?
 		( 'publish' === get_post_status( $post->ID ) ) ?
-			$score ++ :
+			$score++ :
 			array_push( $warnings, __( 'This entity is not published. It will not appear within analysis results.', 'wordlift' ) );
 
 		// Has a thumbnail?
 		( has_post_thumbnail( $post->ID ) ) ?
-			$score ++ :
+			$score++ :
 			array_push( $warnings, __( 'This entity has no featured image yet.', 'wordlift' ) );
 
 		// Get all post meta keys for the current post
@@ -283,19 +281,19 @@ class Wordlift_Rating_Service {
 
 		// If each expected key is contained in available keys array ...
 		( in_array( Wordlift_Schema_Service::FIELD_SAME_AS, $available_meta_keys, true ) ) ?
-			$score ++ :
+			$score++ :
 			array_push( $warnings, __( 'There are no sameAs configured for this entity.', 'wordlift' ) );
 
 		$schema = $this->entity_type_service->get( $post_id );
 
-		$expected_meta_keys = ( null === $schema['custom_fields'] ) ?
+		$expected_meta_keys = ( ! in_array( 'custom_fields', $schema, true ) || null === $schema['custom_fields'] ) ?
 			array() :
 			array_keys( $schema['custom_fields'] );
 
 		$intersection = array_intersect( $expected_meta_keys, $available_meta_keys );
 		// If each expected key is contained in available keys array ...
 		( count( $intersection ) === count( $expected_meta_keys ) ) ?
-			$score ++ :
+			$score++ :
 			array_push( $warnings, __( 'Schema.org metadata for this entity are not completed.', 'wordlift' ) );
 
 		// Finally return score and warnings
@@ -305,7 +303,6 @@ class Wordlift_Rating_Service {
 			'percentage_score'    => $this->convert_raw_score_to_percentage( $score ),
 			'warnings'            => $warnings,
 		);
-
 	}
 
 	/**
@@ -323,7 +320,6 @@ class Wordlift_Rating_Service {
 
 		// If rating is 0, return 1, otherwise return rating
 		return ( 0 === $rating ) ? 1 : $rating;
-
 	}
 
 	/**
@@ -376,7 +372,5 @@ class Wordlift_Rating_Service {
 			// TODO - Pass Wordlift_Notice_Service trough the service constructor
 			$this->notice_service->add_suggestion( $rating['warnings'] );
 		}
-
 	}
-
 }

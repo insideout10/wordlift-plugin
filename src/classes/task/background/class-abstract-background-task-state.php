@@ -31,5 +31,4 @@ abstract class Abstract_Background_Task_State implements Background_Task_State {
 	public function resume() {
 		// do nothing.
 	}
-
 }

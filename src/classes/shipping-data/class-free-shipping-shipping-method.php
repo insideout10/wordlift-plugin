@@ -21,7 +21,6 @@ class Free_Shipping_Shipping_Method extends Shipping_Method {
 		if ( ! in_array( 'ParcelDelivery', $jsonld['availableDeliveryMethod'], true ) ) {
 			array_push( $jsonld['availableDeliveryMethod'], 'ParcelDelivery' );
 		}
-
 	}
 
 	protected function get_shipping_rate() {
@@ -36,7 +35,6 @@ class Free_Shipping_Shipping_Method extends Shipping_Method {
 			'value'       => '0',
 			'currency'    => get_woocommerce_currency(),
 		);
-
 	}
 
 	protected function set_value_with_currency_codes( &$shipping_rate, $instance, $currency_codes ) {
@@ -44,7 +42,5 @@ class Free_Shipping_Shipping_Method extends Shipping_Method {
 		if ( ! empty( $currency_codes ) ) {
 			$shipping_rate['currency'] = $currency_codes[0];
 		}
-
 	}
-
 }

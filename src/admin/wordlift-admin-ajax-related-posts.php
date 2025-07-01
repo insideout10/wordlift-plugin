@@ -6,7 +6,7 @@
  * @package Wordlift/admin
  */
 
-use Wordlift\Content\Wordpress\Wordpress_Content_Service;
+use Wordlift\Content\WordPress\Wordpress_Content_Service;
 
 /**
  * Get the related posts.
@@ -16,6 +16,13 @@ use Wordlift\Content\Wordpress\Wordpress_Content_Service;
  * @since 3.0.0
  */
 function wordlift_ajax_related_posts( $http_raw_data = null ) {
+
+	// Check user capabilities.
+	if ( ! current_user_can( 'edit_posts' ) ) {
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		@ob_clean();
+		return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
+	}
 
 	// Extract filtering conditions
 	if ( ! isset( $_GET['post_id'] ) || ! is_numeric( $_GET['post_id'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -62,7 +69,7 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 	if ( ! empty( $filtering_entity_ids ) ) {
 
 		$related_posts = Wordlift_Relation_Service::get_instance()
-												  ->get_article_subjects( $filtering_entity_ids, '*', null, 'publish', array( $post_id ), 5 );
+													->get_article_subjects( $filtering_entity_ids, '*', null, 'publish', array( $post_id ), 5 );
 
 		foreach ( $related_posts as $post_obj ) {
 
@@ -82,7 +89,6 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 	}
 
 	wl_core_send_json( $related_posts );
-
 }
 
 add_action( 'wp_ajax_wordlift_related_posts', 'wordlift_ajax_related_posts' );

@@ -46,7 +46,6 @@ class Wordlift_Entity_List_Service {
 	public function __construct( $rating_service ) {
 
 		$this->rating_service = $rating_service;
-
 	}
 
 	/**
@@ -168,7 +167,6 @@ class Wordlift_Entity_List_Service {
 				echo '<i class="wl-traffic-light wl-tl-' . esc_attr( $rating['traffic_light_score'] ) . '">' . esc_html( $rating['percentage_score'] ) . '%</i>';
 				break;
 		}
-
 	}
 
 	/**
@@ -197,7 +195,7 @@ class Wordlift_Entity_List_Service {
 		echo '<select name="wl-classification-scope" id="wl-dropdown-classification-scope">';
 		foreach ( $all_w as $v => $w ) {
 			$default = ( $selected === $v ) ? 'selected' : '';
-			echo sprintf( '<option value="%s" %s >%s</option>', esc_attr( $v ), esc_html( $default ), esc_html( $w ) );
+			printf( '<option value="%s" %s >%s</option>', esc_attr( $v ), esc_html( $default ), esc_html( $w ) );
 		}
 		echo '</select>';
 	}
@@ -275,7 +273,6 @@ class Wordlift_Entity_List_Service {
 				),
 			)
 		);
-
 	}
 
 	/**
@@ -321,7 +318,5 @@ class Wordlift_Entity_List_Service {
 			10,
 			0
 		);
-
 	}
-
 }

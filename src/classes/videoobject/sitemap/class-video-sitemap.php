@@ -81,5 +81,4 @@ class Video_Sitemap {
 
 		return $xml;
 	}
-
 }

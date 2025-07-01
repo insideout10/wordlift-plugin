@@ -40,5 +40,4 @@ abstract class Abstract_Reference implements Reference {
 	public function __toString() {
 		return $this->get_type() . '_' . $this->get_id();
 	}
-
 }

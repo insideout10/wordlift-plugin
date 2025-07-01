@@ -82,7 +82,6 @@ class All_Posts_Task implements Task {
 		foreach ( $ids as $id ) {
 			call_user_func( $this->callable, $id );
 		}
-
 	}
 
 	private function add_post_type_filter() {
@@ -105,5 +104,4 @@ class All_Posts_Task implements Task {
 	private function get_transient_key() {
 		return '_wl_task__all_posts_task__count' . ( isset( $this->post_type ) ? '__' . $this->post_type : '' );
 	}
-
 }

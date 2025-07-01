@@ -15,5 +15,4 @@ interface Parser {
 	 * @return array<Embedded_Video>
 	 */
 	public function get_videos( $post_id );
-
 }
