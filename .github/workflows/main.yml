@@ -49,6 +49,7 @@ jobs:
           - tests/scenarios/phpunit.multisite.no-vocabulary-terms.xml
           - tests/scenarios/phpunit.multisite.rel-item-id.xml
           - tests/scenarios/phpunit.multisite.woocommerce-extension.xml
+          - tests/scenarios/phpunit.default-include-exclude.xml
     env:
       ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
       ACF_PRO_ENABLED: ${{ matrix.acf-pro-enabled }}
