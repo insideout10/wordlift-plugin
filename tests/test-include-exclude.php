@@ -85,4 +85,28 @@ class Wordlift_Include_Exclude_Test extends Wordlift_Unit_Test_Case {
 		$_SERVER['REQUEST_URI'] = '/hello-world-wrong';
 		$this->assertTrue( $this->include_exclude_enabled->wl_is_enabled( true ) );
 	}
+
+	public function test_given_exclude_without_urls_should_return_true() {
+		update_option(
+			'wl_exclude_include_urls_settings',
+			array(
+				'include_exclude' => 'exclude',
+				'urls'            => "",
+			)
+		);
+		$_SERVER['REQUEST_URI'] = '/hello-world';
+		$this->assertTrue( $this->include_exclude_enabled->wl_is_enabled( true ) );
+	}
+
+	public function test_given_include_without_urls_should_return_false() {
+		update_option(
+			'wl_exclude_include_urls_settings',
+			array(
+				'include_exclude' => 'include',
+				'urls'            => "",
+			)
+		);
+		$_SERVER['REQUEST_URI'] = '/hello-world';
+		$this->assertFalse( $this->include_exclude_enabled->wl_is_enabled( true ) );
+	}
 }
