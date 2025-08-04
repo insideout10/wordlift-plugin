@@ -188,7 +188,7 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 		$post_id = ( $settings['global'] ? null : get_the_ID() );
 
 		// Escaping atts.
-		$style        = sprintf( 'style="%s%s"', isset( $settings['width'] ) ? "width:{$settings['width']};" : '', isset( $settings['height'] ) ? "height:{$settings['height']};" : '' );
+		$style        = sprintf( '%s%s', isset( $settings['width'] ) ? "width:{$settings['width']};" : '', isset( $settings['height'] ) ? "height:{$settings['height']};" : '' );
 		$data_post_id = ( isset( $post_id ) ? "data-post-id='$post_id'" : '' );
 
 		// Generate a unique ID for this timeline.
@@ -199,7 +199,12 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 		}
 
 		// Building template.
-		return sprintf( '<div class="wl-timeline-container" %s><div class="wl-timeline" id="%s" %s></div></div>', $style, $element_id, $data_post_id );
+		return sprintf(
+			'<div class="wl-timeline-container" %s><div class="wl-timeline" id="%s" %s></div></div>',
+			! empty( $style ) ? sprintf( 'style="%s"', esc_attr( $style ) ) : '',
+			$element_id,
+			$data_post_id
+		);
 	}
 
 	private function register_block_type() {
