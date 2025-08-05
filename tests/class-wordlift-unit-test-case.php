@@ -50,6 +50,8 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
+		Wordlift_Configuration_Service::get_instance()->set_key( null );
+
 		delete_transient( '_wl_installing' );
 		delete_option( 'wl_db_version' );
 		delete_option( '_wl_blog_url' );
