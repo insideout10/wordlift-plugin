@@ -375,13 +375,13 @@ class Wordlift_Schema_Service {
 	const SCHEMA_OFFER_TYPE = 'http://schema.org/Offer';
 
 	/**
-	 * WordLift's schema.
+	 * Cached WordLift's schema.
 	 *
 	 * @since  3.1.0
 	 * @access private
 	 * @var array $schema WordLift's schema.
 	 */
-	private $schema;
+	private static $schema;
 
 	/**
 	 * The Log service.
@@ -401,38 +401,12 @@ class Wordlift_Schema_Service {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Schema_Service' );
 
-		/**
-		 * Alter the configured schemas.
-		 *
-		 * Enable 3rd parties to alter WordLift's schemas array.
-		 *
-		 * @param array $schemas The array of schemas.
-		 *
-		 * @since  3.19.1
-		 */
-		$this->schema = apply_filters(
-			'wl_schemas',
-			array(
-				'article'        => $this->get_article_schema(),
-				'thing'          => $this->get_thing_schema(),
-				'creative-work'  => $this->get_creative_work_schema(),
-				'event'          => $this->get_event_schema(),
-				'organization'   => $this->get_organization_schema(),
-				'person'         => $this->get_person_schema(),
-				'place'          => $this->get_place_schema(),
-				'local-business' => $this->get_local_business_schema(),
-				'recipe'         => $this->get_recipe_schema(),
-				'web-page'       => $this->get_web_page_schema(),
-				'offer'          => $this->get_offer_schema(),
-			)
-		);
-
 		// Create a singleton instance of the Schema service, useful to provide static functions to global functions.
 		self::$instance = $this;
 	}
 
 	public function get_all_schema_slugs() {
-		return array_keys( $this->schema );
+		return array_keys( self::schema() );
 	}
 
 	/**
@@ -472,7 +446,7 @@ class Wordlift_Schema_Service {
 		// Parse each schema's fields until we find the one we're looking for, then
 		// return its properties.
 		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		foreach ( $this->schema as $_ => $schema ) {
+		foreach ( self::schema() as $_ => $schema ) {
 
 			if ( ! isset( $schema['custom_fields'] ) ) {
 				break;
@@ -499,12 +473,12 @@ class Wordlift_Schema_Service {
 	 */
 	public function get_schema( $name ) {
 		// Check if the schema exists and, if not, return NULL.
-		if ( ! isset( $this->schema[ $name ] ) ) {
+		if ( ! isset( self::schema()[ $name ] ) ) {
 			return null;
 		}
 
 		// Return the requested schema.
-		return $this->schema[ $name ];
+		return self::schema()[ $name ];
 	}
 
 	/**
@@ -519,7 +493,7 @@ class Wordlift_Schema_Service {
 	public function get_schema_by_uri( $uri ) {
 
 		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		foreach ( $this->schema as $name => $schema ) {
+		foreach ( self::schema() as $name => $schema ) {
 			if ( $schema['uri'] === $uri ) {
 				return $schema;
 			}
@@ -529,13 +503,39 @@ class Wordlift_Schema_Service {
 	}
 
 	/**
+	 * Alter the configured schemas.
+	 *
+	 * Enable 3rd parties to alter WordLift's schemas array.
+	 *
+	 * @since  3.54.6
+	 */
+	private static function schema() {
+		return self::$schema ??= apply_filters(
+			'wl_schemas',
+			array(
+				'article'        => self::get_article_schema(),
+				'thing'          => self::get_thing_schema(),
+				'creative-work'  => self::get_creative_work_schema(),
+				'event'          => self::get_event_schema(),
+				'organization'   => self::get_organization_schema(),
+				'person'         => self::get_person_schema(),
+				'place'          => self::get_place_schema(),
+				'local-business' => self::get_local_business_schema(),
+				'recipe'         => self::get_recipe_schema(),
+				'web-page'       => self::get_web_page_schema(),
+				'offer'          => self::get_offer_schema(),
+			)
+		);
+	}
+
+	/**
 	 * Get the 'thing' schema.
 	 *
 	 * @return array An array with the schema configuration.
 	 *
 	 * @since 3.1.0
 	 */
-	private function get_thing_schema() {
+	private static function get_thing_schema() {
 
 		return array(
 			'css_class'     => 'wl-thing',
@@ -572,7 +572,7 @@ class Wordlift_Schema_Service {
 	 *
 	 * @since 3.18.0
 	 */
-	private function get_web_page_schema() {
+	private static function get_web_page_schema() {
 
 		return array(
 			'css_class' => 'wl-webpage',
@@ -587,7 +587,7 @@ class Wordlift_Schema_Service {
 	 *
 	 * @since 3.1.0
 	 */
-	private function get_creative_work_schema() {
+	private static function get_creative_work_schema() {
 
 		$schema = array(
 			'label'         => 'CreativeWork',
@@ -617,7 +617,7 @@ class Wordlift_Schema_Service {
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
-		$parent_schema           = $this->get_thing_schema();
+		$parent_schema           = self::get_thing_schema();
 		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
 
 		return $schema;
@@ -630,7 +630,7 @@ class Wordlift_Schema_Service {
 	 *
 	 * @since 3.1.0
 	 */
-	private function get_event_schema() {
+	private static function get_event_schema() {
 
 		$schema = array(
 			'label'         => 'Event',
@@ -686,7 +686,7 @@ class Wordlift_Schema_Service {
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
-		$parent_schema           = $this->get_thing_schema();
+		$parent_schema           = self::get_thing_schema();
 		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
 
 		return $schema;
@@ -699,7 +699,7 @@ class Wordlift_Schema_Service {
 	 *
 	 * @since 3.1.0
 	 */
-	private function get_organization_schema() {
+	private static function get_organization_schema() {
 
 		$schema = array(
 			'label'         => 'Organization',
@@ -795,7 +795,7 @@ class Wordlift_Schema_Service {
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
-		$parent_schema           = $this->get_thing_schema();
+		$parent_schema           = self::get_thing_schema();
 		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
 
 		return $schema;
@@ -808,7 +808,7 @@ class Wordlift_Schema_Service {
 	 *
 	 * @since 3.1.0
 	 */
-	private function get_person_schema() {
+	private static function get_person_schema() {
 
 		$schema = array(
 			'label'         => 'Person',
@@ -872,7 +872,7 @@ class Wordlift_Schema_Service {
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
-		$parent_schema           = $this->get_thing_schema();
+		$parent_schema           = self::get_thing_schema();
 		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
 
 		return $schema;
@@ -885,7 +885,7 @@ class Wordlift_Schema_Service {
 	 *
 	 * @since 3.1.0
 	 */
-	private function get_place_schema() {
+	private static function get_place_schema() {
 
 		$schema = array(
 			'label'         => 'Place',
@@ -969,7 +969,7 @@ class Wordlift_Schema_Service {
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
-		$parent_schema           = $this->get_thing_schema();
+		$parent_schema           = self::get_thing_schema();
 		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
 
 		return $schema;
@@ -982,7 +982,7 @@ class Wordlift_Schema_Service {
 	 *
 	 * @since 3.1.0
 	 */
-	private function get_local_business_schema() {
+	private static function get_local_business_schema() {
 
 		$schema = array(
 			'label'         => 'LocalBusiness',
@@ -1001,8 +1001,8 @@ class Wordlift_Schema_Service {
 		);
 
 		// Merge the custom fields with those provided by the place and organization schema.
-		$place_schema            = $this->get_place_schema();
-		$organization_schema     = $this->get_organization_schema();
+		$place_schema            = self::get_place_schema();
+		$organization_schema     = self::get_organization_schema();
 		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $place_schema['custom_fields'], $organization_schema['custom_fields'] );
 
 		return $schema;
@@ -1015,7 +1015,7 @@ class Wordlift_Schema_Service {
 	 *
 	 * @since 3.14.0
 	 */
-	private function get_recipe_schema() {
+	private static function get_recipe_schema() {
 
 		$schema = array(
 			'label'         => 'Recipe',
@@ -1121,7 +1121,7 @@ class Wordlift_Schema_Service {
 		);
 
 		// Merge the custom fields with those provided by the parent schema.
-		$parent_schema           = $this->get_creative_work_schema();
+		$parent_schema           = self::get_creative_work_schema();
 		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
 
 		return $schema;
@@ -1134,7 +1134,7 @@ class Wordlift_Schema_Service {
 	 *
 	 * @since 3.18.0
 	 */
-	private function get_offer_schema() {
+	private static function get_offer_schema() {
 
 		$schema = array(
 			'label'         => 'Offer',
@@ -1223,7 +1223,7 @@ class Wordlift_Schema_Service {
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
-		$parent_schema           = $this->get_thing_schema();
+		$parent_schema           = self::get_thing_schema();
 		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
 
 		return $schema;
@@ -1236,7 +1236,7 @@ class Wordlift_Schema_Service {
 	 *
 	 * @since 3.15.0
 	 */
-	private function get_article_schema() {
+	private static function get_article_schema() {
 
 		$schema = array(
 			'label'         => 'Article',

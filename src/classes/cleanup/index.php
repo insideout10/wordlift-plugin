@@ -25,4 +25,4 @@ $task = new All_Posts_Task( array( 'Wordlift\Cleanup\Post_Handler', 'fix' ) );
 
 $background_task       = Background_Task::create( $task );
 $background_task_route = Background_Task_Route::create( $background_task, '/cleanup' );
-Background_Task_Page::create( __( 'Cleanup', 'wordlift' ), 'cleanup', $background_task_route );
+Background_Task_Page::create( 'Cleanup', 'cleanup', $background_task_route );
