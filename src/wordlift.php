@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.54.5
+ * Version:           3.54.6
  * Requires PHP:      7.4
  * Requires at least: 5.3
  * Author:            WordLift
@@ -34,7 +34,7 @@ use Wordlift\Features\Features_Registry;
 use Wordlift\Post\Post_Adapter;
 
 define( 'WORDLIFT_PLUGIN_FILE', __FILE__ );
-define( 'WORDLIFT_VERSION', '3.54.5' );
+define( 'WORDLIFT_VERSION', '3.54.6' );
 
 // ## DO NOT REMOVE THIS LINE: WHITELABEL PLACEHOLDER ##
 
