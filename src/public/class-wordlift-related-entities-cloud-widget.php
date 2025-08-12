@@ -24,10 +24,10 @@ class Wordlift_Related_Entities_Cloud_Widget extends Wordlift_Widget {
 	public function __construct() {
 		parent::__construct(
 			'wl_related_entities_cloud',
-			__( 'WordLift Entities Cloud', 'wordlift' ),
+			'WordLift Entities Cloud',
 			array(
 				'classname'   => 'wl_related_entities_cloud',
-				'description' => __( 'Display entities related to the current post/entity in a tag cloud.', 'wordlift' ),
+				'description' => 'Display entities related to the current post/entity in a tag cloud.',
 			)
 		);
 	}

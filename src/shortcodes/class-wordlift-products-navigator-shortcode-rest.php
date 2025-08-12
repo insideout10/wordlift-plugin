@@ -11,12 +11,12 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 			'/products-navigator',
 			array(
 				'post_id' => array(
-					'description' => __( 'Post ID for which Navigator has to be queried', 'wordlift' ),
+					'description' => 'Post ID for which Navigator has to be queried',
 					'type'        => 'integer',
 					'required'    => true,
 				),
 				'uniqid'  => array(
-					'description' => __( 'Navigator uniqueid', 'wordlift' ),
+					'description' => 'Navigator uniqueid',
 					'type'        => 'string',
 					'required'    => true,
 				),
