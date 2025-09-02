@@ -30,7 +30,7 @@ chmod 777 /dev/stderr
 chmod 777 /dev/stdout
 
 check_mysql_connection() {
-    echo "SELECT 1" | mysql -s -h $WORDPRESS_DATABASE_HOST -u $WORDPRESS_DATABASE_USER -p$WORDPRESS_DATABASE_PASSWORD $WORDPRESS_DATABASE_NAME > /dev/null
+    echo "SELECT 1" | mysql -s -h $WORDPRESS_DATABASE_HOST -u $WORDPRESS_DATABASE_USER -p$WORDPRESS_DATABASE_PASSWORD $WORDPRESS_DATABASE_NAME --skip-ssl > /dev/null
 }
 
 while ! check_mysql_connection; do
