@@ -125,7 +125,7 @@
     "grunt-contrib-concat": "^1",
     "grunt-contrib-copy": "^1",
     "grunt-contrib-cssmin": "^2",
-    "grunt-contrib-imagemin": "^2",
+    "grunt-contrib-imagemin": "^4",
     "grunt-contrib-jshint": "^1",
     "grunt-contrib-less": "^1",
     "grunt-contrib-nodeunit": "^1",
