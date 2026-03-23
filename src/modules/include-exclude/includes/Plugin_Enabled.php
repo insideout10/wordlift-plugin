@@ -77,7 +77,7 @@ class Plugin_Enabled {
 				// Add a trailing slash and return the url
 				return trailingslashit( $url );
 			},
-			explode( PHP_EOL, $this->configuration->get_urls() )
+			array_filter( array_map( 'trim', explode( PHP_EOL, $this->configuration->get_urls() ) ) )
 		);
 
 		// Check if any of the provided URLs is in the configured URLs.
