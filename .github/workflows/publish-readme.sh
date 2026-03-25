@@ -5,7 +5,7 @@ get_version() {
   grep -P '^ \* Version:\s+(\d+\.\d+\.\d+)$' src/wordlift.php | grep -oP '(\d+\.\d+\.\d+)$'
 }
 
-if [[ 'src/readme.txt' == "$(git diff HEAD^ HEAD --name-only)" || "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
+if git diff HEAD^ HEAD --name-only | grep -q '^src/readme.txt$' || [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
   echo 'readme.txt has been updated, pushing...'
 
   version="$(get_version)"
