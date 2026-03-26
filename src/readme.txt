@@ -6,7 +6,7 @@ Tags: SEO, structured data, ai, linked data, semantic web
 Requires at least: 5.3
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 3.54.7
+Stable tag: 3.54.8
 License: GPLv2 or later
 
 Search engines are looking for meaning, not keywords. WordLift tells Google how your content relates to your brand, products, and stakeholders.
@@ -147,7 +147,11 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 3.54.7 (2025-08-06) =
+= 3.54.8 (2026-03-26) =
+
+* Feat: use REST endpoint for homepage markup post
+
+= 3.54.7 (2026-03-26) =
 
 * Fix: Empty URL list incorrectly excludes homepage in include-exclude modul
 
