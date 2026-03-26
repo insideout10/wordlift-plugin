@@ -31,8 +31,8 @@ else
 	rsync -aP --delete src/ trunk/
 	echo "Setting the stable tag in $README..."
 	sed -i "s/Stable tag: .*/Stable tag: $VERSION/g" $README
-	svn status | grep -E '^[?]' | awk '{print $2}' | xargs -r svn add
-	svn status | grep -E '^[!]' | awk '{print $2}' | xargs -r svn delete
+	svn status trunk | grep -E '^[?]' | awk '{print $2}' | xargs -r svn add
+	svn status trunk | grep -E '^[!]' | awk '{print $2}' | xargs -r svn delete
 	svn cp trunk tags/$VERSION > /dev/null
 
 	echo "If you see 'forbidden by the server', you need to authenticate to the server first."
