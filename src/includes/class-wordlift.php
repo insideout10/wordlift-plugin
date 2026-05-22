@@ -1843,6 +1843,7 @@ class Wordlift {
 	 * @since 3.18.0
 	 */
 	private function load_cli_dependencies() {
+		\WP_CLI::add_command( 'wordlift annotations cleanup', new \Wordlift\Cli\Annotation_Cleanup_Command() );
 	}
 
 	public function add_wl_enabled_blocks() {
