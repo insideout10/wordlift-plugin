@@ -6,7 +6,7 @@ Tags: SEO, structured data, ai, linked data, semantic web
 Requires at least: 5.3
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 3.54.6
+Stable tag: 3.54.10
 License: GPLv2 or later
 
 Search engines are looking for meaning, not keywords. WordLift tells Google how your content relates to your brand, products, and stakeholders.
@@ -146,6 +146,22 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.54.10 (2026-04-01) =
+
+* Fix: add only dataset entities in link references
+
+= 3.54.9 (2026-03-27) =
+
+* Fix: route static front page through post converter in wp_head
+
+= 3.54.8 (2026-03-26) =
+
+* Feat: use REST endpoint for homepage markup post
+
+= 3.54.7 (2026-03-26) =
+
+* Fix: Empty URL list incorrectly excludes homepage in include-exclude modul
 
 = 3.54.6 (2025-08-06) =
 

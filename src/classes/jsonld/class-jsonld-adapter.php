@@ -47,7 +47,7 @@ class Jsonld_Adapter {
 		}
 
 		// Determine whether this is the home page or whether we're displaying a single post.
-		$is_homepage = is_home() || is_front_page();
+		$is_homepage = ( is_home() || is_front_page() ) && ! is_singular();
 		$post_id     = is_singular() ? get_the_ID() : null;
 
 		// Get the JSON-LD.

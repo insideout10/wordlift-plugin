@@ -42,14 +42,31 @@ class Link_Builder {
 		return $this;
 	}
 
+	private function local_uri_only( $uri ) {
+		$dataset_uri = \Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
+
+		// If no dataset URI is defined, accept all URIs.
+		if ( empty( $dataset_uri ) ) {
+			return true;
+		}
+
+		return strpos( $uri, $dataset_uri ) === 0;
+	}
+
 	private function get_attributes_for_link() {
 		/**
 		 * Allow 3rd parties to add additional attributes to the anchor link.
 		 *
 		 * @since 3.26.0
 		 */
+		$all_uris   = $this->object_link_provider->get_same_as_uris(
+			$this->id,
+			$this->type
+		);
+		$local_uris = array_filter( $all_uris, array( $this, 'local_uri_only' ) );
+
 		$default_attributes = array(
-			'id' => implode( ';', $this->object_link_provider->get_same_as_uris( $this->id, $this->type ) ),
+			'id' => implode( ';', $local_uris ),
 		);
 
 		/**
