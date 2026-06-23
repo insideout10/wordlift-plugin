@@ -74,3 +74,4 @@ src/vendor/deliciousbrains/wp-background-processing/tests/
 
 # Ignore aider files
 .aider*
+.aider.conf.yml

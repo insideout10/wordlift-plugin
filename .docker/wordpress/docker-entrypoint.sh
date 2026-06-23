@@ -22,7 +22,7 @@ set -o pipefail
 
 if [ "$(stat -c "%U" /bitnami/wordpress/wp-content)" != "daemon" ]; then
   echo "** Resetting permissions **"
-  chown -R daemon:root /bitnami
+  chown -R daemon:root /bitnami 2>/dev/null || true
   find /bitnami -type d -print0 | xargs -0 chmod 755
 fi
 
