@@ -71,6 +71,10 @@ class Jsonld_Service {
 
 		switch ( $type ) {
 			case Object_Type_Enum::HOMEPAGE:
+				$page_on_front = (int) get_option( 'page_on_front' );
+				if ( $page_on_front > 0 ) {
+					return $this->legacy_jsonld_service->get_jsonld( false, $page_on_front, $context );
+				}
 				return $this->legacy_jsonld_service->get_jsonld( true, $id, $context );
 			case Object_Type_Enum::POST:
 				return $this->legacy_jsonld_service->get_jsonld( false, $id, $context );
