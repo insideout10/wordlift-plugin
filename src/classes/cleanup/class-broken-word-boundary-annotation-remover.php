@@ -248,9 +248,7 @@ class Broken_Word_Boundary_Annotation_Remover {
 	 * @return string
 	 */
 	private function visible_text( $html ) {
-		if ( function_exists( 'wp_strip_all_tags' ) ) {
-			return html_entity_decode( wp_strip_all_tags( $html ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
-		}
+		$html = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $html );
 
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
 		return html_entity_decode( strip_tags( $html ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );

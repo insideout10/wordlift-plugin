@@ -1,0 +1,51 @@
+services:
+  db:
+    image: mariadb:10.7
+    volumes:
+      - db-data-6-wp-cli-e2e:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: wordpress
+
+  wordpress:
+    image: wordlift/wordpress-nginx:${WORDPRESS_VERSION:-6}
+    user: "root"
+    entrypoint: [ "/tmp/docker-entrypoint.sh", "/opt/bitnami/scripts/wordpress/entrypoint.sh", "/opt/bitnami/scripts/nginx-php-fpm/run.sh" ]
+    volumes:
+      - ../../.docker/wordpress/docker-entrypoint.sh:/tmp/docker-entrypoint.sh:ro
+      - ../../.docker/wordpress/docker-entrypoint-init.d:/docker-entrypoint-init.d:ro
+      - ../../.docker/wordpress/wp-config-extra.php:/tmp/wp-config-extra.php:ro
+      - ../../.docker/wordpress/opt/bitnami/scripts/libwordpress.sh:/opt/bitnami/scripts/libwordpress.sh:ro
+      - ../../.docker/wordpress/opt/bitnami/php/etc/conf.d:/opt/bitnami/php/etc/conf.d:ro
+      - ../../.docker/wordpress/opt/bitnami/nginx/conf/bitnami/php-fpm.conf:/opt/bitnami/nginx/conf/bitnami/php-fpm.conf:ro
+      - ../../src:/bitnami/wordpress/wp-content/plugins/wordlift
+    environment:
+      BITNAMI_DEBUG: false
+      WORDPRESS_DATABASE_HOST: db
+      WORDPRESS_DATABASE_USER: wordpress
+      WORDPRESS_DATABASE_PASSWORD: password
+      WORDPRESS_DATABASE_NAME: wordpress
+      WORDPRESS_ENABLE_HTTPS: "yes"
+      WORDPRESS_ENABLE_REVERSE_PROXY: "yes"
+      WORDPRESS_EXTRA_WP_CONFIG_CONTENT_FILE: /tmp/wp-config-extra.php
+      WORDPRESS_USERNAME: admin
+      WORDPRESS_PASSWORD: password
+      WORDPRESS_TABLE_PREFIX: wp_
+      WORDPRESS_AUTH_KEY: '2+7G8-eAI}15YQro}b.q+nT#3|]=NW@JC t<H#VVoDGX1S/-@1r;aqltLmv^R9ej'
+      WORDPRESS_SECURE_AUTH_KEY: 'R8^w[N_fF+-*1Az:fRWkEY{p ;,1%f PnHNSWxM^+V3j00=># Ac4cp/x.DF-mcz'
+      WORDPRESS_LOGGED_IN_KEY: 'W* ;IF#Z<I%dOWq^K,P0Lg,QYA`?+>gB+=H4<HEN`C>]*|nnKR#NEL>yt&hx(Hef'
+      WORDPRESS_NONCE_KEY: 'xEjRy*/_DUL+X`R%i)4S)rCw<yI-Ly@9*y&EK|w_Cb9KY[M?KLdskZt82N+--A|*'
+      WORDPRESS_AUTH_SALT: 'q|cc,[E1T,|aS+&aWIq0`n#h)1fM+ Tos @SxQ{`J_9C4&&AV_Pg0-n-~c`K!>VX'
+      WORDPRESS_SECURE_AUTH_SALT: '_j|*y&gJ9^@=Re527SsH<<>.D[jb6.XmHo.( k!Vj rXWBI6uIDI@e3`dVk_O|JO'
+      WORDPRESS_LOGGED_IN_SALT: 'gI]GHx0<J+gcToz(|ojSs6)HB)),N]SeJj6(|JQ/_:1;PO7_%+js1k8!|[FN*6yo'
+      WORDPRESS_NONCE_SALT: 'MSxQ1Q<Pg{Cq+[:p4p2>iOm76?{.f6;* p -(1?A2_6:Nort3R1cLxEJu_<j[-Yf'
+      PHP_IDE_CONFIG: serverName=wordpress
+
+  nginx:
+    image: busybox:1.36
+    command: [ "sh", "-c", "sleep infinity" ]
+
+volumes:
+  db-data-6-wp-cli-e2e:

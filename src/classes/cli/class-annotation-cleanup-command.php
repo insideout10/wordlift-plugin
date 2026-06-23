@@ -53,6 +53,7 @@ class Annotation_Cleanup_Command {
 	 */
 	public function __invoke( $args, $assoc_args ) {
 		$scope = $this->parse_scope( $assoc_args );
+		$debug = ! empty( $assoc_args['debug'] ) || ( method_exists( '\WP_CLI', 'get_config' ) && \WP_CLI::get_config( 'debug' ) );
 
 		\WP_CLI::log(
 			sprintf(
@@ -76,7 +77,7 @@ class Annotation_Cleanup_Command {
 			);
 		}
 
-		if ( ! empty( $assoc_args['debug'] ) ) {
+		if ( $debug ) {
 			foreach ( $affected_ids as $post_id ) {
 				\WP_CLI::line( (string) $post_id );
 			}
