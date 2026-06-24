@@ -40,7 +40,9 @@ function wl_ajax_analyze_action() {
 
 	if ( isset( $_POST['data'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		// We need to send the data from editor without sanitizing to analysis service.
-		$filtered_data = filter_var_array( $_POST, array( 'data' => array( 'flags' => FILTER_UNSAFE_RAW ) ) );
+		// Passing FILTER_UNSAFE_RAW (516) inside 'flags' activates bit 512 (FILTER_FLAG_STRIP_BACKTICK), eating backticks!
+		// The fixed code uses 'filter' implicitly by passing the filter constant directly:
+		$filtered_data = filter_var_array( $_POST, array( 'data' => FILTER_UNSAFE_RAW ) );
 		$data          = $filtered_data['data'];
 	}
 
