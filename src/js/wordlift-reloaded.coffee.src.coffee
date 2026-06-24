@@ -943,9 +943,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
       configuration['ajax_url'] + '?action=wl_templates&name=wordlift-directive-entity-input-box'
 ])
 
-angular.module('wordlift.editpost.widget.services.EditorAdapter', [
-  'wordlift.editpost.widget.services.EditorAdapter'
-])
+angular.module('wordlift.editpost.widget.services.EditorAdapter', [])
 # An adapter to the page editor.
 #
 # @since 1.4.2
@@ -975,6 +973,7 @@ angular.module('wordlift.editpost.widget.services.EditorAdapter', [
   # Finally return the service.
   service
 ])
+
 angular.module('wordlift.editpost.widget.services.AnnotationParser', [])
 # Parse annotations.
 #
@@ -1275,12 +1274,15 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
       # remove bookmarks from the content.
       content = content.replaceAll /<span.+?class="mce_SELRES_start.+?><\/span>/gm, ''
       content = content.replaceAll /<span.+?class="mce_SELRES_end.+?><\/span>/gm, ''
+      content = content.replaceAll /\uFEFF/gm, ''
+      analysisHtml = content
       $log.debug 'Requesting analysis...'
 
-      promise = @._innerPerform content, {}
+      promise = @._innerPerform analysisHtml, {}
       # If successful, broadcast an *analysisPerformed* event.
       promise.then (response) ->
         data = response
+        data._analysisHtml = analysisHtml
 
 #        # Catch wp_json_send_error responses.
 #        if response.data.success? and !response.data.success
@@ -1293,6 +1295,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
         service._currentAnalysis = data
 
         result = service.parse(data)
+        result._analysisHtml = analysisHtml
         $rootScope.$broadcast "analysisPerformed", result
         wp.wordlift.trigger 'analysis.result', result
 
@@ -1588,8 +1591,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 # A reference to the editor.
         ed = EditorAdapter.getEditor()
 
-        # Get the TinyMCE editor html content.
-        html = EditorAdapter.getHTML() # ed.getContent format: 'raw'
+        # Use the exact HTML snapshot sent to analysis, because returned offsets
+        # are relative to that string.
+        html = analysis._analysisHtml ? EditorAdapter.getHTML() # ed.getContent format: 'raw'
 
         ##
         # @since 3.23.0 no more necessary.
@@ -1893,10 +1897,10 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
     'wordlift.editpost.widget.services.RelatedPostDataRetrieverService'
   ])
 
-  .config((configurationProvider)->
+  .config(['configurationProvider', (configurationProvider)->
     params = Object.assign({}, window['_wlMetaBoxSettings'].settings, { types: window['_wlEntityTypes'] })
     configurationProvider.setConfiguration params
-  )
+  ])
 
   container = $("""
     <div

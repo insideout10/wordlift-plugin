@@ -1,6 +1,4 @@
-angular.module('wordlift.editpost.widget.services.EditorAdapter', [
-  'wordlift.editpost.widget.services.EditorAdapter'
-])
+angular.module('wordlift.editpost.widget.services.EditorAdapter', [])
 # An adapter to the page editor.
 #
 # @since 1.4.2

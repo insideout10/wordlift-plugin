@@ -21,10 +21,10 @@
     'wordlift.editpost.widget.services.RelatedPostDataRetrieverService'
   ])
 
-  .config((configurationProvider)->
+  .config(['configurationProvider', (configurationProvider)->
     params = Object.assign({}, window['_wlMetaBoxSettings'].settings, { types: window['_wlEntityTypes'] })
     configurationProvider.setConfiguration params
-  )
+  ])
 
   container = $("""
     <div
