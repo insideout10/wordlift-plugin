@@ -46,7 +46,18 @@ t.push({
 window.wordlift = {} if not window.wordlift?
 
 window._wlEntityTypes = t;
+window._wlMetaBoxSettings =
+  settings:
+    ajax_url: ajaxurl
+    classificationBoxes: []
+    types: window._wlEntityTypes
 window.wordlift.entities = {}
+window.wp =
+  wordlift:
+    on: ->
+    trigger: ->
+  hooks:
+    applyFilters: (name, value) -> value
 
 # Declared to be compliant with wordpress color picker
 wpColorPickerL10n = {}

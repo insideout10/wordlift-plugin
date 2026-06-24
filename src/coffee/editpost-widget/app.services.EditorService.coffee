@@ -223,8 +223,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 # A reference to the editor.
         ed = EditorAdapter.getEditor()
 
-        # Get the TinyMCE editor html content.
-        html = EditorAdapter.getHTML() # ed.getContent format: 'raw'
+        # Use the exact HTML snapshot sent to analysis, because returned offsets
+        # are relative to that string.
+        html = analysis._analysisHtml ? EditorAdapter.getHTML() # ed.getContent format: 'raw'
 
         ##
         # @since 3.23.0 no more necessary.
