@@ -368,6 +368,11 @@ class Wordlift_Jsonld_Service {
 			return array();
 		}
 
+		// Security Check: Ensure post is published or user has permission to read it
+		if ( get_post_status( $post_id ) !== 'publish' && ! current_user_can( 'read_post', $post_id ) ) {
+			return array();
+		}
+
 		// An array of references which is captured when converting an URI to a
 		// json which we gather to further expand our json-ld.
 		$references       = array();
