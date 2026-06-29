@@ -22,6 +22,13 @@ use WP_REST_Server;
 class Jsonld_Endpoint {
 
 	/**
+	 * The content type for HTML responses.
+	 *
+	 * @var string
+	 */
+	const CONTENT_TYPE_HTML = 'text/html';
+
+	/**
 	 * The {@link Wordlift_Jsonld_Service} instance.
 	 *
 	 * @var Wordlift_Jsonld_Service The {@link Wordlift_Jsonld_Service} instance.
@@ -125,6 +132,12 @@ class Jsonld_Endpoint {
 	public function jsonld_using_post_id( $request ) {
 
 		$post_id = $request['id'];
+
+		// Security Check: Ensure post is published or user has permission to read it
+		if ( $post_id !== 0 && get_post_status( $post_id ) !== 'publish' && ! current_user_can( 'read_post', $post_id ) ) {
+			return new WP_REST_Response( esc_html( "Not found." ), 404, array( 'Content-Type' => self::CONTENT_TYPE_HTML ) );
+		}
+
 		$type    = ( 0 === $post_id ? Object_Type_Enum::HOMEPAGE : Object_Type_Enum::POST );
 
 		// Send the generated JSON-LD.
@@ -151,7 +164,7 @@ class Jsonld_Endpoint {
 		$post    = $this->entity_uri_service->get_entity( $item_id );
 
 		if ( ! is_a( $post, 'WP_Post' ) ) {
-			return new WP_REST_Response( esc_html( "$item_id not found." ), 404, array( 'Content-Type' => 'text/html' ) );
+			return new WP_REST_Response( esc_html( "$item_id not found." ), 404, array( 'Content-Type' => self::CONTENT_TYPE_HTML ) );
 		}
 
 		return $this->jsonld_using_post_id( array( 'id' => $post->ID ) );
@@ -178,7 +191,7 @@ class Jsonld_Endpoint {
 		);
 
 		if ( $post_id === null ) {
-			return new WP_REST_Response( esc_html( "$post_name of type $post_type not found." ), 404, array( 'Content-Type' => 'text/html' ) );
+			return new WP_REST_Response( esc_html( "$post_name of type $post_type not found." ), 404, array( 'Content-Type' => self::CONTENT_TYPE_HTML ) );
 		}
 
 		return $this->jsonld_using_post_id( array( 'id' => $post_id ) );
@@ -212,7 +225,7 @@ class Jsonld_Endpoint {
 		);
 
 		if ( $post_id === null ) {
-			return new WP_REST_Response( esc_html( "Post with meta key $meta_key and value $meta_value not found." ), 404, array( 'Content-Type' => 'text/html' ) );
+			return new WP_REST_Response( esc_html( "Post with meta key $meta_key and value $meta_value not found." ), 404, array( 'Content-Type' => self::CONTENT_TYPE_HTML ) );
 		}
 
 		return $this->jsonld_using_post_id( array( 'id' => $post_id ) );
