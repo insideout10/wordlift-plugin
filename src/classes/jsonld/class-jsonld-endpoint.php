@@ -143,7 +143,14 @@ class Jsonld_Endpoint {
 		// Send the generated JSON-LD.
 		$data = $this->jsonld_service->get( $type, $post_id, Jsonld_Context_Enum::REST );
 
-		return Jsonld_Response_Helper::to_response( $data );
+		$response = Jsonld_Response_Helper::to_response( $data );
+
+		if ( $post_id !== 0 && get_post_status( $post_id ) !== 'publish' ) {
+			$response->header( 'Cache-Control', 'no-store, private' );
+			$response->remove_header( 'Expires' );
+		}
+
+		return $response;
 	}
 
 	/**

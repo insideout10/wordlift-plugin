@@ -98,7 +98,17 @@ class Jsonld_By_Id_Endpoint {
 			$data[] = $this->jsonld_service->get_jsonld( true );
 		}
 
-		return Jsonld_Response_Helper::to_response( $data );
+		$response = Jsonld_Response_Helper::to_response( $data );
+
+		foreach ( $post_ids as $post_id ) {
+			if ( $post_id !== 0 && get_post_status( $post_id ) !== 'publish' ) {
+				$response->header( 'Cache-Control', 'no-store, private' );
+				$response->remove_header( 'Expires' );
+				break;
+			}
+		}
+
+		return $response;
 	}
 
 	public function register_routes() {
