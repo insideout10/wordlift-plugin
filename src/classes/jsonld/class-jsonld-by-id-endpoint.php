@@ -103,7 +103,11 @@ class Jsonld_By_Id_Endpoint {
 		foreach ( $post_ids as $post_id ) {
 			if ( $post_id !== 0 && get_post_status( $post_id ) !== 'publish' ) {
 				$response->header( 'Cache-Control', 'no-store, private' );
-				$response->remove_header( 'Expires' );
+				$headers = $response->get_headers();
+				if ( isset( $headers['Expires'] ) ) {
+					unset( $headers['Expires'] );
+					$response->set_headers( $headers );
+				}
 				break;
 			}
 		}
