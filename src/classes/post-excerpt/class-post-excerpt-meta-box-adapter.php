@@ -137,7 +137,7 @@ final class Post_Excerpt_Meta_Box_Adapter {
 		add_meta_box(
 			self::POST_EXCERPT_META_BOX_KEY,
 			// phpcs:ignore WordPress.WP.I18n.MissingArgDomainDefault
-			__( 'Excerpt' ),
+			__( 'Excerpt', 'default' ),
 			array( $this, 'print_wordlift_custom_post_excerpt_box' ),
 			// Mimic the settings of the default metabox.
 			null,
