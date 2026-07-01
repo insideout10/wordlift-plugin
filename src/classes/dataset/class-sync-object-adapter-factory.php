@@ -23,7 +23,7 @@ class Sync_Object_Adapter_Factory {
 			case Object_Type_Enum::TERM:
 				return new Sync_Term_Adapter( $object_id );
 			default:
-				throw new \Exception( "Unsupported type $type." );
+				throw new \Exception( esc_html( "Unsupported type $type." ) );
 		}
 	}
 

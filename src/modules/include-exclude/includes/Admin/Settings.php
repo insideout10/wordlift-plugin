@@ -47,7 +47,18 @@ class Settings {
 	 * Register settings.
 	 */
 	public function register_setting() {
-		register_setting( 'wl_exclude_include_urls_settings_group', 'wl_exclude_include_urls_settings' );
+		register_setting(
+			'wl_exclude_include_urls_settings_group',
+			'wl_exclude_include_urls_settings',
+			array(
+				'type'              => 'array',
+				'sanitize_callback' => array( $this, 'sanitize_settings' ),
+				'default'           => array(
+					'include_exclude' => 'exclude',
+					'urls'            => '',
+				),
+			)
+		);
 		add_settings_section(
 			'wl_exclude_include_urls_settings_section_0',
 			__( 'URL filter type, list of URLs', 'wordlift' ),
@@ -69,6 +80,41 @@ class Settings {
 			array( $this, 'settings_field_1_render' ),
 			'wl_exclude_include_urls_settings_page',
 			'wl_exclude_include_urls_settings_section_0'
+		);
+	}
+
+	/**
+	 * Sanitize the Exclude/Include URLs settings before they are stored.
+	 *
+	 * @param mixed $input The raw settings value submitted by the settings form.
+	 *
+	 * @return array The sanitized settings.
+	 */
+	public function sanitize_settings( $input ) {
+		if ( ! is_array( $input ) ) {
+			$input = array();
+		}
+
+		$include_exclude = isset( $input['include_exclude'] ) ? $input['include_exclude'] : 'exclude';
+		if ( ! in_array( $include_exclude, array( 'include', 'exclude' ), true ) ) {
+			$include_exclude = 'exclude';
+		}
+
+		$raw_urls = isset( $input['urls'] ) ? (string) $input['urls'] : '';
+		// Sanitize each URL while preserving the one-per-line textarea format.
+		$urls = implode(
+			"\n",
+			array_map(
+				static function ( $line ) {
+					return esc_url_raw( trim( $line ) );
+				},
+				preg_split( '/\r\n|\r|\n/', $raw_urls )
+			)
+		);
+
+		return array(
+			'include_exclude' => $include_exclude,
+			'urls'            => $urls,
 		);
 	}
 

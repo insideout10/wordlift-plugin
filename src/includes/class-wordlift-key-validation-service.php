@@ -92,7 +92,7 @@ class Wordlift_Key_Validation_Service {
 		$response = $this->get_account_info( $key );
 
 		if ( is_wp_error( $response ) || 2 !== (int) $response['response']['code'] / 100 ) {
-			throw new \Exception( __( 'An error occurred, please contact us at hello@wordlift.io', 'wordlift' ) );
+			throw new \Exception( esc_html__( 'An error occurred, please contact us at hello@wordlift.io', 'wordlift' ) );
 		}
 
 		$res_body = json_decode( wp_remote_retrieve_body( $response ), true );
@@ -107,7 +107,7 @@ class Wordlift_Key_Validation_Service {
 		);
 
 		if ( count( array_intersect( $enabled_features, $plugin_features ) ) === 0 ) {
-			throw new \Exception( __( 'This key is not valid. Start building your Knowledge Graph by purchasing a WordLift subscription <a href=\'https://wordlift.io/pricing/\'>here</a>.', 'wordlift' ) );
+			throw new \Exception( wp_kses_post( __( 'This key is not valid. Start building your Knowledge Graph by purchasing a WordLift subscription <a href=\'https://wordlift.io/pricing/\'>here</a>.', 'wordlift' ) ) );
 		}
 
 		// Considering that production URL may be filtered.
@@ -115,7 +115,7 @@ class Wordlift_Key_Validation_Service {
 		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( $home_url ) );
 
 		if ( ! empty( $url ) && $url !== $site_url ) {
-			throw new \Exception( __( 'The key is already used on another site, please contact us at hello@wordlift.io to move the key to another site.', 'wordlift' ) );
+			throw new \Exception( esc_html__( 'The key is already used on another site, please contact us at hello@wordlift.io to move the key to another site.', 'wordlift' ) );
 		}
 
 		return true;

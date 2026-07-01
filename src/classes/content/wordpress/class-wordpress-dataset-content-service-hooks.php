@@ -111,6 +111,6 @@ class Wordpress_Dataset_Content_Service_Hooks {
 			return $try_2;
 		}
 
-		throw new Exception( "Can't get ID for content ID $content_id, content type $content_type." );
+		throw new Exception( esc_html( "Can't get ID for content ID $content_id, content type $content_type." ) );
 	}
 }
