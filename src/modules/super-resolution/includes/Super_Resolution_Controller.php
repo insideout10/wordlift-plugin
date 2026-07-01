@@ -195,12 +195,18 @@ class Super_Resolution_Controller {
 		foreach ( $attachment_metadata['sizes'] as $size ) {
 			$resized_image_path = path_join( dirname( $original_image_path ), $size['file'] );
 			if ( file_exists( $resized_image_path ) ) {
-				unlink( $resized_image_path );
+				wp_delete_file( $resized_image_path );
 			}
 		}
 
 		// Copy the new image to the old image path.
-		rename( $request_file['tmp_name'], $original_image_path );
+		global $wp_filesystem;
+		if ( ! function_exists( 'WP_Filesystem' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+		if ( WP_Filesystem() ) {
+			$wp_filesystem->move( $request_file['tmp_name'], $original_image_path, true );
+		}
 
 		// Regenerate the resized images
 		$metadata_updated = wp_generate_attachment_metadata( $attachment_id, get_attached_file( $attachment_id ) );
