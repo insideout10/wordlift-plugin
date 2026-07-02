@@ -14,6 +14,10 @@ use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Relation;
 use Wordlift\Relation\Relation_Service;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Receive events from post saves, and split them according to the post type.
  *

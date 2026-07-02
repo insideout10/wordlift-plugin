@@ -1,4 +1,9 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 // phpcs:ignore WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * This file provides methods and functions to generate entities meta-boxes in the admin UI.

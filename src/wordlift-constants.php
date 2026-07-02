@@ -5,6 +5,10 @@
  * @package Wordlift
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 // Set the temporary files folder.
 defined( 'WL_TEMP_DIR' ) || define( 'WL_TEMP_DIR', wl_temp_dir() );
 

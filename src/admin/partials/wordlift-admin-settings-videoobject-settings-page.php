@@ -3,6 +3,10 @@
 use Wordlift\Videoobject\Provider\Client\Vimeo_Client;
 use Wordlift\Videoobject\Provider\Client\Youtube_Client;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 if ( isset( $_POST['wordlift_videoobject_settings_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wordlift_videoobject_settings_nonce'] ) ), 'wordlift_videoobject_settings' ) ) {
 
 	if ( isset( $_POST['wordlift_videoobject_youtube_api_key'] ) || isset( $_POST['wordlift_videoobject_vimeo_api_key'] ) ) {

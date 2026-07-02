@@ -12,6 +12,10 @@ use Wordlift\Widgets\Navigator\Filler_Posts\Filler_Posts_Util;
 use Wordlift\Widgets\Navigator\Navigator_Data;
 use Wordlift\Widgets\Srcset_Util;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * The Navigator data function.
  *

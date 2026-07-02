@@ -5,6 +5,11 @@
  *
  * @return void
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 function wl_register_chord_widget() {
 
 	register_widget( 'WordLift_Chord_Widget' );

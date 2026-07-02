@@ -3,6 +3,10 @@
 use Wordlift\Analysis\Analysis_Service_Factory;
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * This function returns empty array response from analysis,
  * this is usually called when the analysis is disabled using

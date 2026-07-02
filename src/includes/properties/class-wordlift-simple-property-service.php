@@ -2,6 +2,10 @@
 
 use Wordlift\Object_Type_Enum;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 require_once 'class-wordlift-property-not-found.php';
 require_once 'class-wordlift-property-entity-reference.php';
 

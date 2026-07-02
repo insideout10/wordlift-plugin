@@ -6,6 +6,11 @@
  * @package Wordlift
  * @subpackage Wordlift/admin/partials
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 wp_enqueue_script( 'wp-util' );
 
 $mapping_service = Wordlift_Mapping_Service::get_instance();

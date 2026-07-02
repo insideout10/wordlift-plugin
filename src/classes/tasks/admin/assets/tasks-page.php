@@ -8,6 +8,10 @@
  * @package    Wordlift_Framework\Tasks\Admin\Assets
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 ?>
 <div class="wrap">
 	<h1><?php esc_html_e( 'Tasks', 'wordlift' ); ?></h1>

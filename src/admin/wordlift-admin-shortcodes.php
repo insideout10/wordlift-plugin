@@ -4,6 +4,10 @@
  * This file contains admin methods for the *wl_chord* and *wl_timeline* shortcode.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Loads the buttons in TinyMCE.
  */

@@ -3,6 +3,11 @@
  * HTML for Webhook Settings Tab.
  * Added for feature request 1496
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 settings_errors( 'wl_webhook_error' );
 ?>
 <form method="post" action="options.php">

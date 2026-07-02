@@ -14,6 +14,10 @@ use Wordlift\Modules\Dashboard\Synchronization\Rest_Controller;
 use Wordlift\Modules\Dashboard\Synchronization\Synchronization_Service;
 use Wordlift\Modules\Dashboard\Term_Entity_Match\Term_Entity_Match_Rest_Controller;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Load Include Exclude Module.
  *

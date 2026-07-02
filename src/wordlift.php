@@ -33,6 +33,10 @@ use Wordlift\Cache\Ttl_Cache_Cleaner;
 use Wordlift\Features\Features_Registry;
 use Wordlift\Post\Post_Adapter;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 define( 'WORDLIFT_PLUGIN_FILE', __FILE__ );
 define( 'WORDLIFT_VERSION', '3.54.13' );
 

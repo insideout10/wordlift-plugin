@@ -16,6 +16,10 @@ namespace Wordlift\Cache;
 
 use Exception;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 defined( 'WORDLIFT_CACHE_DEFAULT_TTL' ) || define( 'WORDLIFT_CACHE_DEFAULT_TTL', 86400 );  // 24 hours
 defined( 'WORDLIFT_CACHE_DEFAULT_MAX_SIZE' ) || define( 'WORDLIFT_CACHE_DEFAULT_MAX_SIZE', 104857600 ); // 100 M
 

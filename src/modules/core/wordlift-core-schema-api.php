@@ -7,6 +7,10 @@
  * @subpackage Wordlift/modules/core
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Retrieves the value of the specified property for the entity.
  *

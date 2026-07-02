@@ -3,6 +3,10 @@
  * This file provides methods for the shortcode *wl_field*.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Print wl_field shortcode
  *

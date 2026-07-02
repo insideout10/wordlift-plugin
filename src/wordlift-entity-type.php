@@ -8,6 +8,11 @@
  *
  * @deprecated use Wordlift_Entity_Type_Service::get_instance()->set( $post_id, $type_uri )
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 function wl_set_entity_main_type( $post_id, $type_uri ) {
 
 	Wordlift_Entity_Type_Service::get_instance()

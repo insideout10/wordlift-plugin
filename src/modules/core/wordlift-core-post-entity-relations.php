@@ -9,6 +9,10 @@
 
 use Wordlift\Object_Type_Enum;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Checks if a relation is supported
  *

@@ -6,6 +6,10 @@
  * @since 3.33.9
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Log to the debug.log file.
  *

@@ -3,6 +3,10 @@
  * This file contains methods related to entities.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Get the entity URI of the provided post.
  *

@@ -2,6 +2,10 @@
 
 use Wordlift\Scripts\Scripts_Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 Scripts_Helper::enqueue_based_on_wordpress_version(
 	'wl-vocabulary-match-terms-settings',
 	plugin_dir_url( dirname( __DIR__ ) ) . 'js/dist/vocabulary-settings-page',

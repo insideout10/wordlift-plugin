@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 define( 'WL_DEFAULT_THUMBNAIL_PATH', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/public/images/missing-image-150x150.png' );
 define( 'WL_DEFAULT_PATH', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/' );
 

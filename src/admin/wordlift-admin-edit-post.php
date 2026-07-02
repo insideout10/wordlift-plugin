@@ -4,6 +4,10 @@
  * This file provides function that enhance the post edit screen.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Add custom buttons to the buttons below the post title.
  *

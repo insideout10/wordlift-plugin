@@ -7,6 +7,10 @@
  * @subpackage Wordlift/shortcodes
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Print both global or post related places in json. It's executed via Ajax
  */
