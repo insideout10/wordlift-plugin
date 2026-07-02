@@ -8,6 +8,10 @@
  * file that was distributed with this source code.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 // This is a copy of symfony/polyfill-mbstring/bootstrap.php.
 // The file is not used directly because after running through PHP-Scoper
 // it won't be in the global scope anymore.

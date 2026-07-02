@@ -5,6 +5,10 @@
  * @since 3.0.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Get a list of entities with the specified title.
  *

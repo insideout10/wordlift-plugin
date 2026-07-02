@@ -5,6 +5,10 @@
  * @package Wordlift
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 // Add the Admin menu.
 require_once 'wordlift-admin-menu.php';
 

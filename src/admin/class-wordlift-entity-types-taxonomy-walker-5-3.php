@@ -9,6 +9,11 @@
  * @package    Wordlift
  * @subpackage Wordlift/includes
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 if ( ! class_exists( 'Walker_Category_Checklist' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/template.php';
 }

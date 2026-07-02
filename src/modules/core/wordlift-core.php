@@ -3,6 +3,10 @@
  * Include core files.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 // Include constants
 require_once 'wordlift-core-constants.php';
 

@@ -3,6 +3,10 @@
 use Wordlift\Shipping_Data\Offer_Structured_Data;
 use Wordlift\Shipping_Data\Shipping_Zones;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 if ( ! class_exists( '\WC_Shipping_Zones' )
 	|| ! class_exists( '\WC_Shipping_Zone' )
 	|| ! class_exists( '\WC_Shipping_Method' )

@@ -7,6 +7,10 @@
  * @subpackage Wordlift/admin
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * This function is called by the *admin_menu* hook to create and configure the WordLift administration menu. It raises
  * the *wl_admin_menu* action to have modules add their own submenu.

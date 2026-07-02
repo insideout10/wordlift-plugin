@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 function _wl_override_url__production_site_url( $value ) {
 	$override_website_url = Wordlift_Configuration_Service::get_instance()->get_override_website_url();
 

@@ -12,6 +12,10 @@ use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuild
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Wordlift\Modules\Redeem_Code\Rest_Controller;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Load Include Exclude Module.
  *

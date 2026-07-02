@@ -1,4 +1,9 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 // phpcs:ignore WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * This file gathers functions to execute when the post (any type) is saved or updated.

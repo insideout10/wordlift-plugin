@@ -9,6 +9,11 @@
  *
  * @deprecated use Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 function wl_configuration_get_redlink_dataset_uri() {
 
 	return Wordlift_Configuration_Service::get_instance()->get_dataset_uri();

@@ -7,6 +7,11 @@
  *
  * @param mixed $response The response to send to the client as JSON.
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 function wl_core_send_json( $response ) {
 	if ( ob_get_contents() ) {
 		ob_clean();

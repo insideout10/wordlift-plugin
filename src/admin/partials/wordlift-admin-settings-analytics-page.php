@@ -6,6 +6,10 @@
  * @package Wordlift/admin
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 ?>
 <div class="wrap" id="wl-settings-page">
 	<?php settings_errors(); ?>

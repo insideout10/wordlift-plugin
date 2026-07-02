@@ -8,6 +8,10 @@
 
 use Wordlift\Content\WordPress\Wordpress_Content_Service;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Get the related posts.
  *

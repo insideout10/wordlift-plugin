@@ -5,6 +5,11 @@
  * @since   3.9.0
  * @package WordLift.
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 ?>
 <!doctype html>
 <html>

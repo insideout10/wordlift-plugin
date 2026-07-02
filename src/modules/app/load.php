@@ -13,6 +13,10 @@ use Wordlift\Modules\Common\Symfony\Component\Config\FileLocator;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\ContainerBuilder;
 use Wordlift\Modules\Common\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 if ( ! defined( 'WL_ANGULAR_APP_URL' ) ) {
 	define( 'WL_ANGULAR_APP_URL', esc_url( plugin_dir_url( __DIR__ ) . 'app/app/iframe.html' ) . '?v=' . WORDLIFT_VERSION );
 }

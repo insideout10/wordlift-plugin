@@ -14,6 +14,10 @@ use Wordlift\Modules\Super_Resolution\Attachment_Field;
 use Wordlift\Modules\Super_Resolution\Super_Resolution_Controller;
 use Wordlift\Modules\Super_Resolution\Yoast_Markup;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Load Include Exclude Module.
  *

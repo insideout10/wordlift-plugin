@@ -14,6 +14,10 @@ use Wordlift\Modules\Gardening_Kg\Main_Entity\Gardening_Kg_Post_Stats;
 use Wordlift\Modules\Gardening_Kg\Preconditions;
 use Wordlift\Modules\Gardening_Kg\Term_Entity\Gardening_Kg_Term_Stats;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 // if ( ! defined( 'ABSPATH' ) ) {
 // exit;
 // }

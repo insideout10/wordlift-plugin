@@ -7,6 +7,10 @@
  * @subpackage Wordlift/shortcodes
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Get entity with more relations (only used for the global chord).
  *

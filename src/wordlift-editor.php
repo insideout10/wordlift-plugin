@@ -7,6 +7,11 @@
  *
  * @return string The updated list of styles, including the custom style provided by WordLift.
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 function wordlift_mce_css( $mce_css ) {
 
 	/*

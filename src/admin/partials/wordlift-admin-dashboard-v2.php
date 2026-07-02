@@ -4,6 +4,11 @@
  *
  * @since 3.20.0
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 ?>
 	<style>
 		#wl-dashboard-v2 > .inside {

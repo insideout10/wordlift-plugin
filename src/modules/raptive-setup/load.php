@@ -7,6 +7,10 @@
  * @package wordlift
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 // Exit if this is not a Raptive install.
 if ( ! defined( 'WL_RAPTIVE' ) || ! WL_RAPTIVE ) {
 	return;

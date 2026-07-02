@@ -20,6 +20,11 @@
  *
  * @see https://www.geeklab.info/2010/04/wordpress-pass-variables-by-reference-with-apply_filter/
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 function _wl_jsonld_author__author_filter( $args_arr, $post_id ) {
 
 	$references = $args_arr['references'];

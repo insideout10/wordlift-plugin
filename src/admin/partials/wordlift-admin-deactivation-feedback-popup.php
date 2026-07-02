@@ -1,4 +1,9 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 $too_complicate_reason_label = sprintf(
 	'<a target="_blank" href="%s">%s</a>',
 	/* translators: the link https://wordlift.io/contact-us/ should be changed to language version of the page */

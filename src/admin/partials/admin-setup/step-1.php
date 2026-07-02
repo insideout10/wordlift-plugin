@@ -2,6 +2,11 @@
 <script type="text/html" id="page-0">
 	<h2 class="page-title">
 		<?php esc_html_e( 'Welcome', 'wordlift' ); ?>
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 	</h2>
 
 	<p class="page-txt">

@@ -12,6 +12,10 @@ use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Widgets\Navigator\Filler_Posts\Filler_Posts_Util;
 use Wordlift\Widgets\Srcset_Util;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Ajax call for the faceted search widget.
  *

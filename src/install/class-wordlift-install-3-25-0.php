@@ -48,6 +48,10 @@
  * @subpackage Wordlift/install
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 // @see: https://codex.wordpress.org/Creating_Tables_with_Plugins
 require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 

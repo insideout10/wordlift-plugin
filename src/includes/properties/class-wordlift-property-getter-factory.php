@@ -7,6 +7,10 @@
  * @subpackage Wordlift/includes/properties
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 require_once 'class-wordlift-property-getter.php';
 require_once 'class-wordlift-simple-property-service.php';
 require_once 'class-wordlift-entity-property-service.php';
