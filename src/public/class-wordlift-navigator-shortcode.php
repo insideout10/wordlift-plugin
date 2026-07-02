@@ -144,17 +144,15 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		wp_enqueue_script( 'wordlift-cloud' );
 		$template_url = get_rest_url( null, '/wordlift/v1/navigator/template' );
 
-		return <<<HTML
-			<!-- Navigator {$navigator_id} -->
-			<div id="{$navigator_id}" 
-				 class="wl-navigator" 
-				 data-rest-url="{$rest_url}" 
-				 data-title="{$title}" 
-				 data-template-id="{$template_id}"
-				 data-template-url="{$template_url}"
-				 data-limit="{$limit}"></div>
-			<!-- /Navigator {$navigator_id} -->
-HTML;
+		return "			<!-- Navigator {$navigator_id} -->
+			<div id=\"{$navigator_id}\" 
+				 class=\"wl-navigator\" 
+				 data-rest-url=\"{$rest_url}\" 
+				 data-title=\"{$title}\" 
+				 data-template-id=\"{$template_id}\"
+				 data-template-url=\"{$template_url}\"
+				 data-limit=\"{$limit}\"></div>
+			<!-- /Navigator {$navigator_id} -->";
 	}
 
 	/**
@@ -211,39 +209,37 @@ HTML;
 			wp_enqueue_style( 'wordlift-amp-custom', plugin_dir_url( __DIR__ ) . '/css/wordlift-amp-custom.min.css', array(), WORDLIFT_VERSION );
 		}
 
-		return <<<HTML
-		<div id="{$navigator_id}" class="wl-amp-navigator" style="width: 100%">
-			<h3 class="wl-headline">{$title}</h3>
+		return "		<div id=\"{$navigator_id}\" class=\"wl-amp-navigator\" style=\"width: 100%\">
+			<h3 class=\"wl-headline\">{$title}</h3>
 			<amp-list 
-				width="auto"
-				height="220"
-				layout="fixed-height"
-				src="{$rest_url}"
-				template="{$template_id}">
+				width=\"auto\"
+				height=\"220\"
+				layout=\"fixed-height\"
+				src=\"{$rest_url}\"
+				template=\"{$template_id}\">
 			</amp-list>
 		</div>
-		<template type="amp-mustache" id="template-{$navigator_id}"> 
-			<div class="wordlift-navigator">
-				<section class="cards">
+		<template type=\"amp-mustache\" id=\"template-{$navigator_id}\"> 
+			<div class=\"wordlift-navigator\">
+				<section class=\"cards\">
 				{{#values}}
-					<article class="card">
-						<a href="{{post.permalink}}">
+					<article class=\"card\">
+						<a href=\"{{post.permalink}}\">
 							<amp-img
-		                        width="16"
-		                        height="9"
-								layout="responsive"
-		                        src="{{post.thumbnail}}"
-		                        srcset="{{post.srcset}}"></amp-img>
-							<div class="card-content">
-								<header class="title">{{post.title}}</header>
+		                        width=\"16\"
+		                        height=\"9\"
+								layout=\"responsive\"
+		                        src=\"{{post.thumbnail}}\"
+		                        srcset=\"{{post.srcset}}\"></amp-img>
+							<div class=\"card-content\">
+								<header class=\"title\">{{post.title}}</header>
 							</div>
 						</a>
 					</article>
 				{{/values}}
 				</section>
 			</div>
-		</template>
-HTML;
+		</template>";
 	}
 
 	/**

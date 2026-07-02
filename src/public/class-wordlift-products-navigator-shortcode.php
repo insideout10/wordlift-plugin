@@ -179,16 +179,14 @@ class Wordlift_Products_Navigator_Shortcode extends Wordlift_Shortcode {
 
 		wp_enqueue_script( 'wordlift-cloud' );
 
-		return <<<HTML
-			<!-- Products Navigator {$navigator_id} -->
-			<div id="{$navigator_id}" 
-				 class="wl-products-navigator" 
-				 data-rest-url="{$rest_url}" 
-				 data-title="{$title}" 
-				 data-template-id="{$template_id}" 
-				 data-limit="{$limit}"></div>
-			<!-- /Products Navigator {$navigator_id} -->
-HTML;
+		return "			<!-- Products Navigator {$navigator_id} -->
+			<div id=\"{$navigator_id}\" 
+				 class=\"wl-products-navigator\" 
+				 data-rest-url=\"{$rest_url}\" 
+				 data-title=\"{$title}\" 
+				 data-template-id=\"{$template_id}\" 
+				 data-limit=\"{$limit}\"></div>
+			<!-- /Products Navigator {$navigator_id} -->";
 	}
 
 	/**
@@ -246,51 +244,50 @@ HTML;
 			wp_enqueue_style( 'wordlift-amp-custom', plugin_dir_url( __DIR__ ) . '/css/wordlift-amp-custom.min.css', array(), WORDLIFT_VERSION );
 		}
 
-		return <<<HTML
-		<div id="{$navigator_id}" class="wl-amp-products-navigator">
-			<h3 class="wl-headline">{$title}</h3>
-			<section class="cards">
+		return "		<div id=\"{$navigator_id}\" class=\"wl-amp-products-navigator\">
+			<h3 class=\"wl-headline\">{$title}</h3>
+			<section class=\"cards\">
 				<amp-list 
-					width="auto"
-					height="290"
-					layout="fixed-height"
-					src="{$rest_url}"
-					template="{$template_id}">
-					<template type="amp-mustache" id="template-{$navigator_id}"> 
+					width=\"auto\"
+					height=\"290\"
+					layout=\"fixed-height\"
+					src=\"{$rest_url}\"
+					template=\"{$template_id}\">
+					<template type=\"amp-mustache\" id=\"template-{$navigator_id}\"> 
 						<amp-carousel 
-						  media="(min-width: 380px)"
-						  height="260"
-					      layout="fixed-height"
-					      type="carousel">
+						  media=\"(min-width: 380px)\"
+						  height=\"260\"
+					      layout=\"fixed-height\"
+					      type=\"carousel\">
 					      {{#values}}
-							<article class="card" style="width: 33.33%">
-								<a href="{{product.permalink}}">
+							<article class=\"card\" style=\"width: 33.33%\">
+								<a href=\"{{product.permalink}}\">
 									<amp-img
-				                        width="16"
-				                        height="9"
-										layout="responsive"
-				                        src="{{product.thumbnail}}"></amp-img>
-									<div class="card-content">
-										<header class="title">{{product.title}}</header>
-										<div class="star-rating" style="display: none"></div>
+				                        width=\"16\"
+				                        height=\"9\"
+										layout=\"responsive\"
+				                        src=\"{{product.thumbnail}}\"></amp-img>
+									<div class=\"card-content\">
+										<header class=\"title\">{{product.title}}</header>
+										<div class=\"star-rating\" style=\"display: none\"></div>
 									</div>
-									<footer class="card-footer">
-										<div class="col-left">
-											<div class="price">{{{product.currency_symbol}}}{{product.price}}</div>
+									<footer class=\"card-footer\">
+										<div class=\"col-left\">
+											<div class=\"price\">{{{product.currency_symbol}}}{{product.price}}</div>
 											{{#product.discount_pc}}
-				                            <div class="discount">
-				                                <span class="regular">{{{product.currency_symbol}}}{{product.regular_price}}</span> |
-				                                <span class="percent">{{product.discount_pc}}% OFF</span>
+				                            <div class=\"discount\">
+				                                <span class=\"regular\">{{{product.currency_symbol}}}{{product.regular_price}}</span> |
+				                                <span class=\"percent\">{{product.discount_pc}}% OFF</span>
 				                            </div>
 				                            {{/product.discount_pc}}
 				                            {{^product.discount_pc}}
-				                            <div class="discount">&nbsp;</div>
+				                            <div class=\"discount\">&nbsp;</div>
 				                            {{/product.discount_pc}}										
 										</div>
-										<div class="col-right">
+										<div class=\"col-right\">
 											{{#product.rating_count}}
 											{{{product.rating_html}}}
-											<div class="reviews">
+											<div class=\"reviews\">
 					                            {{product.rating_count}} reviews
 					                        </div>
 					                        {{/product.rating_count}}
@@ -301,39 +298,39 @@ HTML;
 						  {{/values}}
 						</amp-carousel>
 						<amp-carousel 
-						  media="(max-width: 380px)"
-						  height="290"
-					      layout="fixed-height"
-					      type="slides">
+						  media=\"(max-width: 380px)\"
+						  height=\"290\"
+					      layout=\"fixed-height\"
+					      type=\"slides\">
 					      {{#values}}
-							<article class="card" style="width: 100%">
-								<a href="{{product.permalink}}">
+							<article class=\"card\" style=\"width: 100%\">
+								<a href=\"{{product.permalink}}\">
 									<amp-img
-				                        width="16"
-				                        height="9"
-										layout="responsive"
-				                        src="{{product.thumbnail}}"></amp-img>
-									<div class="card-content">
-										<header class="title">{{product.title}}</header>
-										<div class="star-rating"></div>
+				                        width=\"16\"
+				                        height=\"9\"
+										layout=\"responsive\"
+				                        src=\"{{product.thumbnail}}\"></amp-img>
+									<div class=\"card-content\">
+										<header class=\"title\">{{product.title}}</header>
+										<div class=\"star-rating\"></div>
 									</div>
-									<footer class="card-footer">
-										<div class="col-left">
-											<div class="price">{{{product.currency_symbol}}}{{product.price}}</div>
+									<footer class=\"card-footer\">
+										<div class=\"col-left\">
+											<div class=\"price\">{{{product.currency_symbol}}}{{product.price}}</div>
 											{{#product.discount_pc}}
-				                            <div class="discount">
-				                                <span class="regular">{{{product.currency_symbol}}}{{product.regular_price}}</span> |
-				                                <span class="percent">{{product.discount_pc}}% OFF</span>
+				                            <div class=\"discount\">
+				                                <span class=\"regular\">{{{product.currency_symbol}}}{{product.regular_price}}</span> |
+				                                <span class=\"percent\">{{product.discount_pc}}% OFF</span>
 				                            </div>
 				                            {{/product.discount_pc}}
 				                            {{^product.discount_pc}}
-				                            <div class="discount">&nbsp;</div>
+				                            <div class=\"discount\">&nbsp;</div>
 				                            {{/product.discount_pc}}										
 										</div>
-										<div class="col-right">
+										<div class=\"col-right\">
 											{{#product.rating_count}}
 											{{{product.rating_html}}}
-											<div class="reviews">
+											<div class=\"reviews\">
 					                            {{product.rating_count}} reviews
 					                        </div>
 					                        {{/product.rating_count}}
@@ -346,7 +343,6 @@ HTML;
 					</template>
 				</amp-list>
 			</section>
-		</div>
-HTML;
+		</div>";
 	}
 }

@@ -211,62 +211,61 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 			wp_enqueue_style( 'wordlift-amp-custom', plugin_dir_url( __DIR__ ) . '/css/wordlift-amp-custom.min.css', array(), WORDLIFT_VERSION );
 		}
 
-		return <<<HTML
-		<div id="{$faceted_id}" class="wl-amp-faceted">
-			<h2 class="wl-headline">{$title}</h2>
-			<amp-state id="referencedPosts">
-				<script type="application/json">
+		return "		<div id=\"{$faceted_id}\" class=\"wl-amp-faceted\">
+			<h2 class=\"wl-headline\">{$title}</h2>
+			<amp-state id=\"referencedPosts\">
+				<script type=\"application/json\">
 					[]
 				</script>
 			</amp-state>
-			<amp-state id="activeEntities">
-				<script type="application/json">
+			<amp-state id=\"activeEntities\">
+				<script type=\"application/json\">
 					[]
 				</script>
 			</amp-state>
-			<amp-state id="allPostsEntities" src="{$rest_url}"></amp-state>
-			<section class="chips">
+			<amp-state id=\"allPostsEntities\" src=\"{$rest_url}\"></amp-state>
+			<section class=\"chips\">
 				<amp-list 
-					height="32"
-					layout="fixed-height"
-					src="{$rest_url}"
-					[src]="allPostsEntities.entities.sort((a, b) => activeEntities.includes(a.id) ? -1 : 1)"
-					items="entities">
-					<template type="amp-mustache">
-						<span [class]="activeEntities.includes('{{id}}') ? 'chip active' : 'chip'" on="tap:AMP.setState({
+					height=\"32\"
+					layout=\"fixed-height\"
+					src=\"{$rest_url}\"
+					[src]=\"allPostsEntities.entities.sort((a, b) => activeEntities.includes(a.id) ? -1 : 1)\"
+					items=\"entities\">
+					<template type=\"amp-mustache\">
+						<span [class]=\"activeEntities.includes('{{id}}') ? 'chip active' : 'chip'\" on=\"tap:AMP.setState({
 							referencedPosts: referencedPosts.includes({{referencedPosts}}) ? referencedPosts.filter(item => item != {{referencedPosts}}) : referencedPosts.concat({{referencedPosts}}),
 							activeEntities: activeEntities.includes('{{id}}') ? activeEntities.filter(item => item != '{{id}}') : activeEntities.concat('{{id}}')
-						})">{{label}}</span>
+						})\">{{label}}</span>
 					</template>	
 				</amp-list>
 			</section>
-			<section class="cards">
+			<section class=\"cards\">
 				<amp-list 
-					height="300"
-					layout="fixed-height"
-					src="{$rest_url}"
-					[src]="{values: allPostsEntities.posts[0].values.sort((a, b) => referencedPosts.includes(a.ID) ? -1 : 1)}"
-					template="{$template_id}"
-					items="posts">
-					<template type="amp-mustache" id="template-{$faceted_id}">
+					height=\"300\"
+					layout=\"fixed-height\"
+					src=\"{$rest_url}\"
+					[src]=\"{values: allPostsEntities.posts[0].values.sort((a, b) => referencedPosts.includes(a.ID) ? -1 : 1)}\"
+					template=\"{$template_id}\"
+					items=\"posts\">
+					<template type=\"amp-mustache\" id=\"template-{$faceted_id}\">
 						<amp-base-carousel
-  							 layout="responsive"
-  							 controls="always"
-  							 width="3"
- 							 height="2"
- 							 visible-count="(min-width: 1000px) 4, (min-width: 600px) 2, 1"
-  							 advance-count="(min-width: 1000px) 4, (min-width: 600px) 2, 1">
+  							 layout=\"responsive\"
+  							 controls=\"always\"
+  							 width=\"3\"
+ 							 height=\"2\"
+ 							 visible-count=\"(min-width: 1000px) 4, (min-width: 600px) 2, 1\"
+  							 advance-count=\"(min-width: 1000px) 4, (min-width: 600px) 2, 1\">
 					      {{#values}}
-							<article class="card">
-								<a href="{{permalink}}">
+							<article class=\"card\">
+								<a href=\"{{permalink}}\">
 									<amp-img
-				                        width="16"
-				                        height="9"
-										layout="responsive"
-				                        src="{{thumbnail}}"
-				                        srcset="{{srcset}}"></amp-img>
-									<div class="card-content">
-										<header class="title">{{post_title}}</header>
+				                        width=\"16\"
+				                        height=\"9\"
+										layout=\"responsive\"
+				                        src=\"{{thumbnail}}\"
+				                        srcset=\"{{srcset}}\"></amp-img>
+									<div class=\"card-content\">
+										<header class=\"title\">{{post_title}}</header>
 									</div>
 								</a>
 							</article>
@@ -275,8 +274,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 					</template>
 				</amp-list>
 			</section>
-		</div>
-HTML;
+		</div>";
 	}
 
 	public function get_block_attributes() {
