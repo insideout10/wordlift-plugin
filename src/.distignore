@@ -1,0 +1,7 @@
+# Files excluded from the wordpress.org package.
+# Consumed by push-to-wordpress-org.sh (rsync --exclude-from) and the deploy GitHub Action.
+.git*
+.nvmrc
+.bower.json
+.distignore
+scoper.inc.php
