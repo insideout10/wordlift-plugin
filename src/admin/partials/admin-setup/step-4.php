@@ -1,12 +1,12 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+?>
 <!-- Pane 4 content -->
 <script type="text/html" id="page-3">
 	<h2 class="page-title">
 		<?php esc_html_e( 'Vocabulary', 'wordlift' ); ?>
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
-
 	</h2>
 
 	<p class="page-txt">

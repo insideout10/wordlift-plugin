@@ -1,12 +1,12 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+?>
 <p>
 	<input type="radio" id="wl_exclude_include_urls_settings_include_exclude_include"
 		   name="wl_exclude_include_urls_settings[include_exclude]"
            value="exclude" <?php checked( is_array( $options ) ? $options['include_exclude'] : '', 'exclude' ); // phpcs:ignore ?>>
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
-
 	<label for="wl_exclude_include_urls_settings_include_exclude_include"><?php echo esc_html__( 'Exclude', 'wordlift' ); ?></label>
 </p>
 <p>

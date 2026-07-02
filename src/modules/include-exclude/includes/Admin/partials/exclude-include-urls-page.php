@@ -1,10 +1,10 @@
-<div class="wrap" id="wl-settings-page">
-	<h2><?php echo esc_html__( 'Exclude / Include URLs', 'wordlift' ); ?></h2>
-
+<?php
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-
+?>
+<div class="wrap" id="wl-settings-page">
+	<h2><?php echo esc_html__( 'Exclude / Include URLs', 'wordlift' ); ?></h2>
 	<form action='options.php' method='post'>
 		<?php
 		settings_fields( 'wl_exclude_include_urls_settings_group' );

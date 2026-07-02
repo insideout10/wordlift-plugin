@@ -1,12 +1,12 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+?>
 <!-- Pane 3 content -->
 <script type="text/html" id="page-2">
 	<h2 class="page-title">
 		<?php esc_html_e( 'License Key', 'wordlift' ); ?>
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
-
 	</h2>
 
 	<p class="page-txt">

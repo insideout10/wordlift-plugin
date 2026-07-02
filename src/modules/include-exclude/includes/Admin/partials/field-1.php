@@ -1,11 +1,11 @@
-<p>
-	<label for="wl_exclude_include_urls_settings_urls">
-		<?php
-
+<?php
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-
+?>
+<p>
+	<label for="wl_exclude_include_urls_settings_urls">
+		<?php
 		echo sprintf(
 			'%s <code>%s</code>',
 			esc_html__( 'One relative or absolute URL per line. Relative URLs will be converted to absolute in context of', 'wordlift' ),
