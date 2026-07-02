@@ -1,5 +1,10 @@
 $ErrorActionPreference = 'Stop'
 
+# NOTE: this local deploy runs SVN inside the git repo and is fragile for large releases
+# (see temp/plugindeploy.md: the .git/.svn collision and the ~60MB single-commit timeout).
+# The recommended go-forward is the GitHub Actions deploy (10up/action-wordpress-plugin-deploy).
+# Dev/build files are excluded from trunk below (keep in sync with src/.distignore).
+
 # Ensure SlikSVN is in the PATH (VSCode sometimes caches old PATH variables after a fresh install)
 if (!(Get-Command "svn" -ErrorAction SilentlyContinue)) {
     if (Test-Path "C:\Program Files\SlikSvn\bin\svn.exe") {
@@ -58,7 +63,8 @@ svn ci -m "${Version}: updating trunk (1 of 2)"
 
 # Sync src to trunk (Robocopy returns 1 if files were copied, 0 if nothing changed, >8 for errors)
 Write-Host "Syncing src/ to trunk/..." -ForegroundColor Cyan
-$robo = robocopy "src" "trunk" /MIR /NFL /NDL /NJH /NJS /nc /ns /np
+# /XF excludes dev/build files that must not ship (keep in sync with src/.distignore).
+$robo = robocopy "src" "trunk" /MIR /XF .gitignore .gitkeep .nvmrc .bower.json .distignore scoper.inc.php /NFL /NDL /NJH /NJS /nc /ns /np
 if ($LASTEXITCODE -ge 8) {
     Write-Host "Robocopy failed with exit code $LASTEXITCODE" -ForegroundColor Red
     exit 1

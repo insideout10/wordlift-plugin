@@ -28,7 +28,8 @@ else
 
 	echo "If you see 'forbidden by the server', you need to authenticate to the server first."
 	svn ci -m "$VERSION: updating trunk (1 of 2)"
-	rsync -aP --delete src/ trunk/
+	# Exclude dev/build files that must not ship (source of truth: src/.distignore).
+	rsync -aP --delete --exclude-from=src/.distignore src/ trunk/
 	echo "Setting the stable tag in $README..."
 	sed -i "s/Stable tag: .*/Stable tag: $VERSION/g" $README
 	svn status trunk | grep -E '^[?]' | awk '{print $2}' | xargs -r svn add
