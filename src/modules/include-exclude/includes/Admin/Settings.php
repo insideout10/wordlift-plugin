@@ -52,7 +52,7 @@ class Settings {
 			'wl_exclude_include_urls_settings',
 			array(
 				'type'              => 'array',
-				'sanitize_callback' => array( $this, 'sanitize_settings' ),
+				'sanitize_callback' => array( $this, 'sanitizeSettings' ),
 				'default'           => array(
 					'include_exclude' => 'exclude',
 					'urls'            => '',
@@ -90,7 +90,7 @@ class Settings {
 	 *
 	 * @return array The sanitized settings.
 	 */
-	public function sanitize_settings( $input ) {
+	public function sanitizeSettings( $input ) {
 		if ( ! is_array( $input ) ) {
 			$input = array();
 		}
