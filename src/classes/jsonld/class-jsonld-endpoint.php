@@ -135,10 +135,10 @@ class Jsonld_Endpoint {
 
 		// Security Check: Ensure post is published or user has permission to read it
 		if ( $post_id !== 0 && get_post_status( $post_id ) !== 'publish' && ! current_user_can( 'read_post', $post_id ) ) {
-			return new WP_REST_Response( esc_html( "Not found." ), 404, array( 'Content-Type' => self::CONTENT_TYPE_HTML ) );
+			return new WP_REST_Response( esc_html( 'Not found.' ), 404, array( 'Content-Type' => self::CONTENT_TYPE_HTML ) );
 		}
 
-		$type    = ( 0 === $post_id ? Object_Type_Enum::HOMEPAGE : Object_Type_Enum::POST );
+		$type = ( 0 === $post_id ? Object_Type_Enum::HOMEPAGE : Object_Type_Enum::POST );
 
 		// Send the generated JSON-LD.
 		$data = $this->jsonld_service->get( $type, $post_id, Jsonld_Context_Enum::REST );
