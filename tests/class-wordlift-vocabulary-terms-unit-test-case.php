@@ -39,7 +39,8 @@ abstract class Wordlift_Vocabulary_Terms_Unit_Test_Case extends Wordlift_Unit_Te
 EOF;
 
 		$post_id = wp_insert_post( array(
-			'post_content' => $post_content
+			'post_content' => $post_content,
+			'post_status'  => 'publish',
 		) );
 
 		wl_linked_data_save_post_and_related_entities( $post_id );
