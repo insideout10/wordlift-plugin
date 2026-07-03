@@ -120,9 +120,12 @@ function* toggleEntity({entity}) {
     yield put(updateOccurrencesForEntity(entity.id, occurrences));
 
     // Send the selected entities to the WordLift Classification box.
-    data.dispatch(EDITOR_STORE).updateBlockAttributes(getClassificationBlock().clientId, {
-        entities: yield select(getSelectedEntities)
-    });
+    const classificationBlock = getClassificationBlock();
+    if (classificationBlock) {
+        data.dispatch(EDITOR_STORE).updateBlockAttributes(classificationBlock.clientId, {
+            entities: yield select(getSelectedEntities)
+        });
+    }
 
     // Apply the changes.
     blocks.apply();
@@ -278,9 +281,12 @@ function* handleAddEntityRequest({payload}) {
     yield put({type: ADD_ENTITY, payload: entityToAdd});
 
     // Send the selected entities to the WordLift Classification box.
-    data.dispatch(EDITOR_STORE).updateBlockAttributes(getClassificationBlock().clientId, {
-        entities: yield select(getSelectedEntities)
-    });
+    const classificationBlock = getClassificationBlock();
+    if (classificationBlock) {
+        data.dispatch(EDITOR_STORE).updateBlockAttributes(classificationBlock.clientId, {
+            entities: yield select(getSelectedEntities)
+        });
+    }
 
     yield put(addEntitySuccess());
 }
