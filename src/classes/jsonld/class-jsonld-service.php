@@ -83,7 +83,8 @@ class Jsonld_Service {
 			case Object_Type_Enum::USER:
 				return $this->jsonld_user_service->get( $id );
 			default:
-				throw new Exception( esc_html( "Unknown type $type. Allowed types: 'HOMEPAGE', 'POST', 'TERM', 'USER'." ) );
+				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+				throw new Exception( "Unknown type $type. Allowed types: 'HOMEPAGE', 'POST', 'TERM', 'USER'." );
 		}
 	}
 }
