@@ -145,10 +145,10 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		$template_url = get_rest_url( null, '/wordlift/v1/navigator/template' );
 
 		return "			<!-- Navigator {$navigator_id} -->
-			<div id=\"{$navigator_id}\" 
-				 class=\"wl-navigator\" 
-				 data-rest-url=\"{$rest_url}\" 
-				 data-title=\"{$title}\" 
+			<div id=\"{$navigator_id}\"
+				 class=\"wl-navigator\"
+				 data-rest-url=\"{$rest_url}\"
+				 data-title=\"{$title}\"
 				 data-template-id=\"{$template_id}\"
 				 data-template-url=\"{$template_url}\"
 				 data-limit=\"{$limit}\"></div>
@@ -211,7 +211,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 
 		return "		<div id=\"{$navigator_id}\" class=\"wl-amp-navigator\" style=\"width: 100%\">
 			<h3 class=\"wl-headline\">{$title}</h3>
-			<amp-list 
+			<amp-list
 				width=\"auto\"
 				height=\"220\"
 				layout=\"fixed-height\"
@@ -219,7 +219,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 				template=\"{$template_id}\">
 			</amp-list>
 		</div>
-		<template type=\"amp-mustache\" id=\"template-{$navigator_id}\"> 
+		<template type=\"amp-mustache\" id=\"template-{$navigator_id}\">
 			<div class=\"wordlift-navigator\">
 				<section class=\"cards\">
 				{{#values}}

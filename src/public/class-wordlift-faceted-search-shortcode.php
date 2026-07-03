@@ -135,10 +135,10 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		return wp_kses(
 			sprintf(
 				'
-			<div id="%s" 
-				 class="wl-faceted" 
-				 data-rest-url="%s" 
-				 data-title="%s" 
+			<div id="%s"
+				 class="wl-faceted"
+				 data-rest-url="%s"
+				 data-title="%s"
 				 data-template-id="%s"
 				 data-template-url="%s"></div>
 			',
@@ -225,7 +225,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 			</amp-state>
 			<amp-state id=\"allPostsEntities\" src=\"{$rest_url}\"></amp-state>
 			<section class=\"chips\">
-				<amp-list 
+				<amp-list
 					height=\"32\"
 					layout=\"fixed-height\"
 					src=\"{$rest_url}\"
@@ -236,11 +236,11 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 							referencedPosts: referencedPosts.includes({{referencedPosts}}) ? referencedPosts.filter(item => item != {{referencedPosts}}) : referencedPosts.concat({{referencedPosts}}),
 							activeEntities: activeEntities.includes('{{id}}') ? activeEntities.filter(item => item != '{{id}}') : activeEntities.concat('{{id}}')
 						})\">{{label}}</span>
-					</template>	
+					</template>
 				</amp-list>
 			</section>
 			<section class=\"cards\">
-				<amp-list 
+				<amp-list
 					height=\"300\"
 					layout=\"fixed-height\"
 					src=\"{$rest_url}\"

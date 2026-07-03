@@ -1,6 +1,7 @@
 name: Deploy to WordPress.org
 
-# MANUAL ONLY — this never runs by itself. Trigger it from the repo's "Actions" tab.
+# Trigger it from the repo's "Actions" tab (manual) — available once this file is on the DEFAULT
+# branch (main); GitHub hides the "Run workflow" button on feature branches.
 #   1st run: leave "Dry run" CHECKED (default) -> verifies the file list, deploys NOTHING.
 #   2nd run: UNCHECK "Dry run"                 -> real deploy to wordpress.org/plugins/wordlift/
 # Reuses the existing SVN_USERNAME / SVN_PASSWORD repo secrets (same as publish-readme.yml).
@@ -11,6 +12,11 @@ on:
         description: "Dry run (verify only — do NOT deploy)"
         type: boolean
         default: true
+  # TEMP (remove before/at merge to main): lets us test on the plugin_check branch, where the
+  # manual button isn't available yet. A push here always runs a FORCED dry-run — never a real
+  # deploy (see the dry-run expression below).
+  push:
+    branches: [plugin_check]
 
 jobs:
   deploy:
@@ -28,9 +34,12 @@ jobs:
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: WordPress.org deploy (10up)
-        uses: 10up/action-wordpress-plugin-deploy@stable
+        # Pinned to a full commit SHA (SonarCloud requirement) instead of the movable @stable tag.
+        # 54bd289 = v2.3.0 — bump this SHA + comment together when upgrading.
+        uses: 10up/action-wordpress-plugin-deploy@54bd289b8525fd23a5c365ec369185f2966529c2 # v2.3.0
         with:
-          dry-run: ${{ inputs.dry_run }}
+          # Manual runs honor the "Dry run" checkbox; any non-manual trigger (push) is FORCED to dry-run.
+          dry-run: ${{ github.event_name != 'workflow_dispatch' || inputs.dry_run }}
           generate-zip: true            # uploads the exact package as a downloadable artifact
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
