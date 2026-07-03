@@ -32,7 +32,8 @@ class Assertions {
 
 		// Check for type.
 		if ( get_class( $value ) !== $type ) {
-			throw new Exception( esc_html( "Value must be a $type." ) );
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			throw new Exception( "Value must be a $type." );
 		}
 	}
 
@@ -41,7 +42,8 @@ class Assertions {
 	 */
 	public static function is_string( $arg, $message = 'Value must be a string' ) {
 		if ( ! is_string( $arg ) ) {
-			throw new Exception( esc_html( $message ) );
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			throw new Exception( $message );
 		}
 	}
 
@@ -50,7 +52,8 @@ class Assertions {
 	 */
 	public static function equals( $actual, $expected, $message = 'Values do not match' ) {
 		if ( $actual !== $expected ) {
-			throw new Exception( esc_html( $message ) );
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			throw new Exception( $message );
 		}
 	}
 
@@ -59,7 +62,8 @@ class Assertions {
 	 */
 	public static function array_key_exists( $arr, $key ) {
 		if ( ! array_key_exists( $key, $arr ) ) {
-			throw new Exception( esc_html( "The key {$key} doesn't exist in array" ) );
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			throw new Exception( "The key {$key} doesn't exist in array" );
 		}
 	}
 
@@ -68,7 +72,8 @@ class Assertions {
 	 */
 	public static function matches( $value, $pattern, $message = "Value doesn't match" ) {
 		if ( 1 !== preg_match( $pattern, $value ) ) {
-			throw new Exception( esc_html( $message ) );
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			throw new Exception( $message );
 		}
 	}
 
@@ -77,7 +82,8 @@ class Assertions {
 	 */
 	public static function starts_with( $value, $scope, $message = "Value doesn't start with provided scope" ) {
 		if ( 0 !== strpos( $value, $scope ) ) {
-			throw new Exception( esc_html( $message ) );
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			throw new Exception( $message );
 		}
 	}
 
@@ -86,31 +92,36 @@ class Assertions {
 	 */
 	public static function is_a( $value, $type, $message = 'Value is not of the required type' ) {
 		if ( ! is_a( $value, $type ) ) {
-			throw new Exception( esc_html( $message ) );
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			throw new Exception( $message );
 		}
 	}
 
 	public static function is_set( $value, $message = 'Value is not set' ) {
 		if ( ! isset( $value ) ) {
-			throw new Exception( esc_html( $message ) );
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			throw new Exception( $message );
 		}
 	}
 
 	public static function not_empty( $value, $message = "Value can't be empty" ) {
 		if ( empty( $value ) ) {
-			throw new Exception( esc_html( $message ) );
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			throw new Exception( $message );
 		}
 	}
 
 	public static function is_array( $value, $message = 'Value should be array' ) {
 		if ( ! is_array( $value ) ) {
-			throw new Exception( esc_html( $message ) );
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			throw new Exception( $message );
 		}
 	}
 
 	public static function is_numeric( $value, $message = 'Value should be numeric' ) {
 		if ( ! is_numeric( $value ) ) {
-			throw new Exception( esc_html( $message ) );
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			throw new Exception( $message );
 		}
 	}
 }
