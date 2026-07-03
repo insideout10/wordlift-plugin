@@ -40,7 +40,6 @@ jobs:
         with:
           # Manual runs honor the "Dry run" checkbox; any non-manual trigger (push) is FORCED to dry-run.
           dry-run: ${{ github.event_name != 'workflow_dispatch' || inputs.dry_run }}
-          generate-zip: true            # uploads the exact package as a downloadable artifact
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
