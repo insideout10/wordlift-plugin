@@ -115,7 +115,8 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		// Create a post.
 		$post_id = wp_insert_post(
 			array(
-				'post_title' => 'foo'
+				'post_title'  => 'foo',
+				'post_status' => 'publish',
 			)
 		);
 
@@ -142,7 +143,8 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		// Create a post.
 		$post_id = wp_insert_post(
 			array(
-				'post_title' => 'foo'
+				'post_title'  => 'foo',
+				'post_status' => 'publish',
 			)
 		);
 
@@ -170,7 +172,8 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		// Create a post.
 		$post_id = wp_insert_post(
 			array(
-				'post_title' => 'foo'
+				'post_title'  => 'foo',
+				'post_status' => 'publish',
 			)
 		);
 
@@ -208,7 +211,8 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		// Create a post.
 		$post_id = wp_insert_post(
 			array(
-				'post_title' => 'foo'
+				'post_title'  => 'foo',
+				'post_status' => 'publish',
 			)
 		);
 
