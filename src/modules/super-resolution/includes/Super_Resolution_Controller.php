@@ -171,14 +171,6 @@ class Super_Resolution_Controller {
 
 		$request_file = $files['image'];
 
-		if ( ! isset( $request_file['type'] ) ) {
-			return new WP_Error( '400', 'File mime type is not supported', array( 'status' => 400 ) );
-		}
-
-		if ( strpos( $request_file['type'], 'image' ) === false ) {
-			return new WP_Error( '400', 'Only image files are supported', array( 'status' => 400 ) );
-		}
-
 		// Get the attachment metadata
 		$attachment_metadata = wp_get_attachment_metadata( $attachment_id );
 		if ( ! $attachment_metadata ) {
@@ -191,7 +183,30 @@ class Super_Resolution_Controller {
 			return new WP_Error( '404', 'Image path not found.', array( 'status' => 404 ) );
 		}
 
-		// Delete the existing resized images
+		// Validate and safely handle the uploaded file BEFORE anything is deleted on disk.
+		// wp_handle_upload() confirms this is a genuine HTTP upload ( is_uploaded_file() ),
+		// checks the *real* file type (not the spoofable client-supplied one), sanitizes the
+		// filename and moves it into the uploads directory. 'test_form' => false is required
+		// because the file arrives via the REST API, not a classic admin form submission.
+		if ( ! function_exists( 'wp_handle_upload' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+
+		$uploaded_file = wp_handle_upload( $request_file, array( 'test_form' => false ) );
+
+		if ( ! is_array( $uploaded_file ) || isset( $uploaded_file['error'] ) ) {
+			$error_message = is_array( $uploaded_file ) && isset( $uploaded_file['error'] ) ? $uploaded_file['error'] : 'File upload failed.';
+			return new WP_Error( '400', esc_html( $error_message ), array( 'status' => 400 ) );
+		}
+
+		// wp_handle_upload() permits any WordPress-allowed type (PDFs, docs, ...); this endpoint
+		// only replaces images, so reject anything whose *real* type is not an image.
+		if ( strpos( $uploaded_file['type'], 'image/' ) !== 0 ) {
+			wp_delete_file( $uploaded_file['file'] );
+			return new WP_Error( '400', 'Only image files are supported', array( 'status' => 400 ) );
+		}
+
+		// Now that the upload is validated, delete the existing resized images.
 		foreach ( $attachment_metadata['sizes'] as $size ) {
 			$resized_image_path = path_join( dirname( $original_image_path ), $size['file'] );
 			if ( file_exists( $resized_image_path ) ) {
@@ -199,14 +214,13 @@ class Super_Resolution_Controller {
 			}
 		}
 
-		// Copy the new image to the old image path.
+		// Overwrite the original attachment file with the validated upload so the attachment
+		// record and its regenerated image sizes keep pointing at the same path.
 		global $wp_filesystem;
-		if ( ! function_exists( 'WP_Filesystem' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/file.php';
+		if ( ! WP_Filesystem() ) {
+			return new WP_Error( '500', 'Unable to initialize the filesystem.', array( 'status' => 500 ) );
 		}
-		if ( WP_Filesystem() ) {
-			$wp_filesystem->move( $request_file['tmp_name'], $original_image_path, true );
-		}
+		$wp_filesystem->move( $uploaded_file['file'], $original_image_path, true );
 
 		// Regenerate the resized images
 		$metadata_updated = wp_generate_attachment_metadata( $attachment_id, get_attached_file( $attachment_id ) );
