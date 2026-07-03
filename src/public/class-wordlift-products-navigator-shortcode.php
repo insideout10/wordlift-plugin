@@ -180,11 +180,11 @@ class Wordlift_Products_Navigator_Shortcode extends Wordlift_Shortcode {
 		wp_enqueue_script( 'wordlift-cloud' );
 
 		return "			<!-- Products Navigator {$navigator_id} -->
-			<div id=\"{$navigator_id}\" 
-				 class=\"wl-products-navigator\" 
-				 data-rest-url=\"{$rest_url}\" 
-				 data-title=\"{$title}\" 
-				 data-template-id=\"{$template_id}\" 
+			<div id=\"{$navigator_id}\"
+				 class=\"wl-products-navigator\"
+				 data-rest-url=\"{$rest_url}\"
+				 data-title=\"{$title}\"
+				 data-template-id=\"{$template_id}\"
 				 data-limit=\"{$limit}\"></div>
 			<!-- /Products Navigator {$navigator_id} -->";
 	}
@@ -247,14 +247,14 @@ class Wordlift_Products_Navigator_Shortcode extends Wordlift_Shortcode {
 		return "		<div id=\"{$navigator_id}\" class=\"wl-amp-products-navigator\">
 			<h3 class=\"wl-headline\">{$title}</h3>
 			<section class=\"cards\">
-				<amp-list 
+				<amp-list
 					width=\"auto\"
 					height=\"290\"
 					layout=\"fixed-height\"
 					src=\"{$rest_url}\"
 					template=\"{$template_id}\">
-					<template type=\"amp-mustache\" id=\"template-{$navigator_id}\"> 
-						<amp-carousel 
+					<template type=\"amp-mustache\" id=\"template-{$navigator_id}\">
+						<amp-carousel
 						  media=\"(min-width: 380px)\"
 						  height=\"260\"
 					      layout=\"fixed-height\"
@@ -282,7 +282,7 @@ class Wordlift_Products_Navigator_Shortcode extends Wordlift_Shortcode {
 				                            {{/product.discount_pc}}
 				                            {{^product.discount_pc}}
 				                            <div class=\"discount\">&nbsp;</div>
-				                            {{/product.discount_pc}}										
+				                            {{/product.discount_pc}}
 										</div>
 										<div class=\"col-right\">
 											{{#product.rating_count}}
@@ -292,12 +292,12 @@ class Wordlift_Products_Navigator_Shortcode extends Wordlift_Shortcode {
 					                        </div>
 					                        {{/product.rating_count}}
 										</div>
-									</footer>									
+									</footer>
 								</a>
 							</article>
 						  {{/values}}
 						</amp-carousel>
-						<amp-carousel 
+						<amp-carousel
 						  media=\"(max-width: 380px)\"
 						  height=\"290\"
 					      layout=\"fixed-height\"
@@ -325,7 +325,7 @@ class Wordlift_Products_Navigator_Shortcode extends Wordlift_Shortcode {
 				                            {{/product.discount_pc}}
 				                            {{^product.discount_pc}}
 				                            <div class=\"discount\">&nbsp;</div>
-				                            {{/product.discount_pc}}										
+				                            {{/product.discount_pc}}
 										</div>
 										<div class=\"col-right\">
 											{{#product.rating_count}}
