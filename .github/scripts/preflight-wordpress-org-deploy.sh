@@ -55,8 +55,9 @@ write_manifest() {
 
 	while IFS= read -r line; do
 		if [[ $line == '*deleting '* ]]; then
-			path=${line#'*deleting '}
+			path=${line#'*deleting'}
 			path=${path#"${path%%[![:space:]]*}"}
+			path=${path#|}
 			if [[ $path != */ ]]; then
 				printf 'D\t%s\t%s\n' "$scope" "$path"
 			fi
