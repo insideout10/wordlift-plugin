@@ -35,10 +35,11 @@ done < <(git -C "$repository" ls-files -z src assets)
 export_directory=$(mktemp -d "${TMPDIR:-/tmp}/wordlift-export.XXXXXX")
 trap 'rm -rf "$export_directory"' EXIT
 
-mkdir -p "$output_directory/plugin"
+mkdir -p "$output_directory/plugin" "$output_directory/assets-overlay"
 git -C "$repository" -c core.autocrlf=true checkout-index --all --prefix="$export_directory/"
 
 rsync -rc --exclude-from="$repository/src/.distignore" \
 	"$export_directory/src/" "$output_directory/plugin/"
+rsync -rc "$export_directory/assets/" "$output_directory/assets-overlay/"
 
 echo "Prepared WordPress.org distribution in $output_directory."

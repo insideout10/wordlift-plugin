@@ -28,13 +28,25 @@ if [[ ! -d $distribution/plugin ]]; then
 	exit 1
 fi
 
+if [[ ! -d $distribution/assets-overlay ]]; then
+	echo "The prepared asset overlay directory is missing." >&2
+	exit 1
+fi
+
 svn_directory=$(mktemp -d "${TMPDIR:-/tmp}/wordlift-svn.XXXXXX")
 manifest=$(mktemp "${TMPDIR:-/tmp}/wordlift-manifest.XXXXXX")
 trap 'rm -rf "$svn_directory" "$manifest"' EXIT
 
 svn checkout --quiet --depth immediates "$svn_url" "$svn_directory"
+svn update --quiet --set-depth infinity "$svn_directory/assets"
 svn update --quiet --set-depth infinity "$svn_directory/trunk"
 svn update --quiet --set-depth immediates "$svn_directory/tags"
+
+if [[ ! -d $distribution/assets ]]; then
+	mkdir -p "$distribution/assets"
+	rsync -rc --exclude='.svn/' "$svn_directory/assets/" "$distribution/assets/"
+	rsync -rc "$distribution/assets-overlay/" "$distribution/assets/"
+fi
 
 write_manifest() {
 	local source_directory=$1
@@ -89,6 +101,8 @@ if [[ -d $svn_directory/tags/$version ]]; then
 fi
 
 write_manifest "$distribution/plugin" "$svn_directory/trunk" plugin | LC_ALL=C sort > "$manifest"
+write_manifest "$distribution/assets" "$svn_directory/assets" assets >> "$manifest"
+LC_ALL=C sort -o "$manifest" "$manifest"
 
 changed_files=$(wc -l < "$manifest" | tr -d ' ')
 emit_output already_exists false

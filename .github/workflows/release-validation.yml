@@ -12,6 +12,8 @@ on:
         required: true
         type: string
     secrets:
+      DEPENDENCY_READ_TOKEN:
+        required: true
       ACF_PRO_KEY:
         required: false
       WORDLIFT_API_URL:
@@ -21,14 +23,18 @@ on:
       VIMEO_API_KEY:
         required: false
 
+permissions:
+  contents: read
+
 jobs:
   linter:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ inputs.ref }}
+          persist-credentials: false
       - name: Lint PHP
         run: composer install --no-interaction --no-progress && composer lint src/
 
@@ -74,9 +80,10 @@ jobs:
           - 3306:3306
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ inputs.ref }}
+          persist-credentials: false
       - name: PHPUnit
         run: >
           docker run --mount type=bind,source="$PWD/tests/php.ini",target=/usr/local/etc/php/php.ini --workdir /github/workspace --rm -v "/var/run/docker.sock:/var/run/docker.sock"
@@ -89,20 +96,32 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ inputs.ref }}
+          persist-credentials: false
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 12
           cache: npm
           cache-dependency-path: src-js/webpack/package-lock.json
       - name: Install dependencies
         working-directory: src-js/webpack
+        env:
+          DEPENDENCY_READ_TOKEN: ${{ secrets.DEPENDENCY_READ_TOKEN }}
         run: |
-          git config --global url."https://github.com/".insteadOf git@github.com:
-          npm ci
+          if [[ -z "$DEPENDENCY_READ_TOKEN" ]]; then
+            echo "DEPENDENCY_READ_TOKEN is required to install private WordLift dependencies."
+            exit 1
+          fi
+          authorization=$(printf 'x-access-token:%s' "$DEPENDENCY_READ_TOKEN" | base64 --wrap=0)
+          git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $authorization"
+          trap 'git config --global --unset-all http.https://github.com/.extraheader || true' EXIT
+          npm ci --ignore-scripts
+      - name: Rebuild trusted native dependency
+        working-directory: src-js/webpack
+        run: npm rebuild node-sass
       - name: Run Jest
         working-directory: src-js/webpack
         run: npm test -- --runInBand
@@ -126,9 +145,15 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ inputs.tooling-ref }}
+          persist-credentials: false
+      - name: Install Subversion test dependency
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes subversion
+          command -v svnadmin
       - name: Validate shell and workflows
         run: |
           shellcheck .github/scripts/*.sh .github/scripts/tests/*.sh

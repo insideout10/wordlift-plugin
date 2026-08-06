@@ -60,7 +60,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.2.1",
-    "@wordlift/wordlift-for-schemaorg": "git@github.com:wordlift/wordlift-for-schemaorg.git",
+    "@wordlift/wordlift-for-schemaorg": "git+https://github.com/wordlift/wordlift-for-schemaorg.git",
     "he": "^1.2.0",
     "immutable": "^3",
     "jest-fetch-mock": "^3.0.1",
@@ -72,7 +72,7 @@
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.4.1",
     "whatwg-fetch": "^2",
-    "wordlift-cloud": "git+ssh://git@github.com:wordlift/js-wordlift.git#1.5.1"
+    "wordlift-cloud": "git+https://github.com/wordlift/js-wordlift.git#1.5.1"
   },
   "prettier": {
     "tabWidth": 2,

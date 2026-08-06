@@ -42,16 +42,18 @@ jobs:
           echo "Manual deployments must run from the main branch workflow."
           exit 1
       - name: Checkout deployment tooling
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ github.workflow_sha }}
           path: tooling
+          persist-credentials: false
       - name: Checkout release
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
           fetch-depth: 0
           path: release
+          persist-credentials: false
       - name: Validate tag, versions, and main ancestry
         id: release
         env:
@@ -68,6 +70,7 @@ jobs:
       ref: ${{ needs.identity.outputs.sha }}
       tooling-ref: ${{ github.workflow_sha }}
     secrets:
+      DEPENDENCY_READ_TOKEN: ${{ secrets.DEPENDENCY_READ_TOKEN }}
       ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
       WORDLIFT_API_URL: ${{ secrets.WORDLIFT_API_URL }}
       YOUTUBE_DATA_API_KEY: ${{ secrets.YOUTUBE_DATA_API_KEY }}
@@ -82,17 +85,19 @@ jobs:
     environment: wordpress.org
     steps:
       - name: Checkout deployment tooling
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ github.workflow_sha }}
           path: tooling
+          persist-credentials: false
 
       - name: Checkout release
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: ${{ needs.identity.outputs.sha }}
           fetch-depth: 0
           path: release
+          persist-credentials: false
 
       - name: Prepare filtered CRLF distribution
         run: tooling/.github/scripts/prepare-wordpress-org-dist.sh release "$GITHUB_WORKSPACE/staging"
@@ -132,8 +137,8 @@ jobs:
           SLUG: wordlift
           VERSION: ${{ needs.identity.outputs.version }}
           BUILD_DIR: ./staging/plugin
-          # WordPress.org contains screenshots not tracked in Git; plugin releases must not delete them.
-          ASSETS_DIR: staging/no-assets
+          # Preflight overlays tracked assets onto the live SVN asset set, preserving unmanaged screenshots.
+          ASSETS_DIR: staging/assets
 
       - name: Verify published tag
         if: >-

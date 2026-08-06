@@ -11,6 +11,9 @@ on:
       - main
       - develop
 
+permissions:
+  contents: read
+
 jobs:
   validation:
     uses: ./.github/workflows/release-validation.yml
@@ -18,6 +21,7 @@ jobs:
       ref: ${{ github.sha }}
       tooling-ref: ${{ github.sha }}
     secrets:
+      DEPENDENCY_READ_TOKEN: ${{ secrets.DEPENDENCY_READ_TOKEN }}
       ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
       WORDLIFT_API_URL: ${{ secrets.WORDLIFT_API_URL }}
       YOUTUBE_DATA_API_KEY: ${{ secrets.YOUTUBE_DATA_API_KEY }}
@@ -25,9 +29,12 @@ jobs:
 
   cancel_running_workflows:
     runs-on: ubuntu-24.04
+    permissions:
+      actions: write
+      contents: read
     steps:
       - name: Cancel running workflows
-        uses: styfle/cancel-workflow-action@0.12.1
+        uses: styfle/cancel-workflow-action@85880fa0301c86cca9da44039ee3bb12d3bedbfa # 0.12.1
         with:
           access_token: ${{ github.TOKEN }}
 
@@ -37,9 +44,10 @@ jobs:
     needs: validation
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 2
+          persist-credentials: false
       - name: Package and upload to blob storage
         run: ./.github/workflows/raptive.sh
         env:

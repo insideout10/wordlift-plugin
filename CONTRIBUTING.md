@@ -69,9 +69,19 @@ We use [Semantic Versioning][semantic-versioning] and abide by the [GitFlow work
 in feature branches created from the develop branch. Once we're ready for a release, we merge the feature branches
 to develop and create a release branch which transitions into QA.
 
-Once the released is ready, we merge it to master and push it to [wordpress.org][wp-plugins-wordlift].
+Once a release is ready, merge it to `main` and update the same semantic version in the plugin header,
+`WORDLIFT_VERSION`, the readme stable tag, and the first changelog entry. Push the matching `X.Y.Z` Git tag to
+start the WordPress.org deployment workflow. The workflow validates that the tag is on `main`, runs the complete
+PHP, WordPress, JavaScript, build, and deployment test suites, and requires approval in the protected
+`wordpress.org` environment before publishing.
 
-Fix to [bugs][wl-open-bugs] are fixed in hotfixes branches created from the master branch to which they're merged back
+The workflow prepares a tracked-file-only plugin distribution and publishes only actual SVN changes. Tracked
+banners and icons are overlaid on the live WordPress.org assets so screenshots not managed by this repository are
+preserved. Existing release tags are immutable: an identical WordPress.org tag is a no-op and a divergent tag fails.
+Use the manual workflow with its default dry-run option to inspect the change manifest. More than 100 changed files
+requires the explicit large-diff override.
+
+Fix to [bugs][wl-open-bugs] are fixed in hotfixes branches created from the `main` branch to which they're merged back
 (and then to the develop branch).
 
 We have very precise rules over how our git commit messages can be formatted.  This leads to **more
