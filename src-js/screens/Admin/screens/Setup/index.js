@@ -85,7 +85,7 @@ import delay from "modules/delay";
           // Delay the check for a valid path.
           delay($this, function() {
             // An empty value or a value starting/ending with an alphanumeric
-            // character. An empty value is avaible only when WP permalink
+            // character. An empty value is available only when WP permalink
             // structure is set as '/%postname%/'
             if (
               (0 === $this.val().length &&

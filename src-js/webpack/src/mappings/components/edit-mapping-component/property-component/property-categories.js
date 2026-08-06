@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 /**
  * Internal dependencies.
  */
-import { PROPERTY_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION } from "../../../actions/actions";
+import { PROPERTY_LIST_CHOSEN_CATEGORY_CHANGED_ACTION } from "../../../actions/actions";
 import CategoryComponent from "../../category-component";
 
 class _PropertyCategories extends React.Component {
@@ -24,7 +24,7 @@ class _PropertyCategories extends React.Component {
   }
 
   categorySelectHandler(category) {
-    const action = PROPERTY_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION;
+    const action = PROPERTY_LIST_CHOSEN_CATEGORY_CHANGED_ACTION;
     action.payload = {
       chosenCategory: category
     };

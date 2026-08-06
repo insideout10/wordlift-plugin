@@ -92,7 +92,7 @@ class Relation implements Hashable_Interface, JsonSerializable {
 
 	/**
 	 * @return string
-	 * @deprecated used for legacy compatibilty
+	 * @deprecated used for legacy compatibility
 	 */
 	public function get_relation_type() {
 		return $this->predicate;

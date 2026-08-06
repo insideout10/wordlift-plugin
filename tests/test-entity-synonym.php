@@ -96,12 +96,12 @@ class Entity_Synonym_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'test2', $alt_labels[0] );
 	}
 
-	public function test_synonym_with_parenthisis_should_be_saved() {
+	public function test_synonym_with_parenthesis_should_be_saved() {
 		$post_id = $this->factory()->post->create();
 
 		$this->entity_service->set_alternative_labels(
 			$post_id,
-			array( "synonym with (parenthisis)" )
+			array( "synonym with (parenthesis)" )
 		);
 		$this->assertCount( 1, $this->entity_service->get_alternative_labels( $post_id ) );
 

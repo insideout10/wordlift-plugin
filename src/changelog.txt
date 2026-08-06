@@ -1087,7 +1087,7 @@ Fix: Exclude sitemap creation for wl_entity_type taxonomy in Yoast
 * Feature: [#490](https://github.com/insideout10/wordlift-plugin/issues/490): Adding the "WordLift Entities Cloud" as shortcode.
 * Feature: [#487](https://github.com/insideout10/wordlift-plugin/issues/487): Adding support for editing categories when using Quick Edit from the Vocabulary.
 * Feature: [#484](https://github.com/insideout10/wordlift-plugin/issues/484): Check compatibility with WordPress Multisite configurations.
-* Feature: [#457](https://github.com/insideout10/wordlift-plugin/issues/457): When the plugin is installed in a directory not named "wordlift" initializaton hook ignored.
+* Feature: [#457](https://github.com/insideout10/wordlift-plugin/issues/457): When the plugin is installed in a directory not named "wordlift" initialization hook ignored.
 * Feature: [#453](https://github.com/insideout10/wordlift-plugin/issues/453): Need to show alert and have recovery plan when setting/activation fail to get dataset uri.
 * Feature: [#451](https://github.com/insideout10/wordlift-plugin/issues/451): Improve schema:Article markup.
 * Feature: [#418](https://github.com/insideout10/wordlift-plugin/issues/418): Do not allow activating WordLift on incompatible WP's versions.
@@ -1163,7 +1163,7 @@ Fix: Exclude sitemap creation for wl_entity_type taxonomy in Yoast
 * Feature: [#429](https://github.com/insideout10/wordlift-plugin/issues/429): German missing in supported languages' list.
 
 = 3.9.0 (2016-12-29) =
-* Feature: [#425](https://github.com/insideout10/wordlift-plugin/issues/425): Move the traslator server-side.
+* Feature: [#425](https://github.com/insideout10/wordlift-plugin/issues/425): Move the translator server-side.
 * Feature: [#417](https://github.com/insideout10/wordlift-plugin/issues/417): Integrate e2e tests in WordLift.
 * Feature: [#408](https://github.com/insideout10/wordlift-plugin/issues/408): Remove the Caching submodule.
 * Feature: [#397](https://github.com/insideout10/wordlift-plugin/issues/397): Review WordLift's setup process.
@@ -1172,7 +1172,7 @@ Fix: Exclude sitemap creation for wl_entity_type taxonomy in Yoast
 * Feature: [#349](https://github.com/insideout10/wordlift-plugin/issues/349): Remove all non supported languages from the Settings.
 * Fix: [#391](https://github.com/insideout10/wordlift-plugin/issues/391): Html code messed u when using WordLift on previous posts and with Twitter embeds.
 * Fix: [#353](https://github.com/insideout10/wordlift-plugin/issues/353): Responsive not working on the Vocabulary page on WordPress.
-* Fix: [#341](https://github.com/insideout10/wordlift-plugin/issues/341): Special characters do not display correctly in LodLive.
+* Fix: [#341](https://github.com/insideout10/wordlift-plugin/issues/341): Special characters do not display correctly in LoadLive.
 * Fix: [#306](https://github.com/insideout10/wordlift-plugin/issues/306): Entities from the internal vocabulary are not properly detected from the analysis.
 
 = 3.8.1 (2016-12-09) =
@@ -1248,7 +1248,7 @@ Fix: Exclude sitemap creation for wl_entity_type taxonomy in Yoast
 * Feature: [#273](https://github.com/insideout10/wordlift-plugin/issues/273): Remove entity type icon and counter from facets within faceted search widget to simplify the layout.
 * Feature: [#270](https://github.com/insideout10/wordlift-plugin/issues/270): Show wl-carousel controls on mouseover only.
 * Feature: [#269](https://github.com/insideout10/wordlift-plugin/issues/269): Fix NaN in WL dashboard.
-* Feature: [#268](https://github.com/insideout10/wordlift-plugin/issues/268): Flaoting configurable layout is now available both for navigator and faceted search.
+* Feature: [#268](https://github.com/insideout10/wordlift-plugin/issues/268): Floating configurable layout is now available both for navigator and faceted search.
 * Feature: [#267](https://github.com/insideout10/wordlift-plugin/issues/267): Force override for entities with same schema type and label within disambiguation workflow.
 * Feature: [#264](https://github.com/insideout10/wordlift-plugin/issues/264): Improve data selection strategy for navigation widget.
 * Feature: [#253](https://github.com/insideout10/wordlift-plugin/issues/253): Introduce navigator and faceted search configuration.
@@ -1347,7 +1347,7 @@ Change wording for invalid or missing text selection on entity creation workflow
  * Fix: [#192](https://github.com/insideout10/wordlift-plugin/issues/192): fix coordinates metabox field's HTML.
 
 = 3.1.7 (2015-11-22) =
- * Fix: [#150](https://github.com/insideout10/wordlift-plugin/issues/150): the property schema-org:author on blog post lod view goes on error.
+ * Fix: [#150](https://github.com/insideout10/wordlift-plugin/issues/150): the property schema-org:author on blog post load view goes on error.
 
 = 3.1.6 (2015-11-21) =
  * Fix: [#124](https://github.com/insideout10/wordlift-plugin/issues/124): entity featured image updating is not properly triggered on the triple store (fix tests and apply only to published posts).
@@ -1404,7 +1404,7 @@ Change wording for invalid or missing text selection on entity creation workflow
  * Fix: [#96](https://github.com/insideout10/wordlift-plugin/issues/96): garbage response from api is no more returned
 
 = 3.0.11 (2015-10-14) =
- * Feature: 'View Linked Data' button to visualize RDF triples with [LodView](https://github.com/dvcama/LodView)
+ * Feature: 'View Linked Data' button to visualize RDF triples with [LoadView](https://github.com/dvcama/LodView)
 
 = 3.0.10 (2015-10-14) =
   * Fix [#119](https://github.com/insideout10/wordlift-plugin/issues/119). Now public entities status is properly preserved when linked to draft posts.
@@ -1478,7 +1478,7 @@ Change wording for invalid or missing text selection on entity creation workflow
 
 = 2.5.32 =
  * Added initial compatibility with WordPress 3.6 beta 1,
- * Fix an issue that displayed entities alway for the most recent post.
+ * Fix an issue that displayed entities always for the most recent post.
 
 = 2.5.31 =
  * Fixed a 'notice' in the WordLift Bar,

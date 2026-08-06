@@ -694,7 +694,7 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 		$post_id   = wl_create_post( '', 'post1', 'A post' );
 		$entity_id = wl_create_post( '', 'entity1', 'An Entity', 'draft', 'entity' );
 
-		// Stress method with strange parmeters
+		// Stress method with strange parameters
 		$result = wl_core_add_relation_instance( '', WL_WHAT_RELATION, $entity_id );
 		$this->assertFalse( $result );
 		$result = wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, null );
@@ -721,7 +721,7 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 		$entity_1_id = wl_create_post( '', 'entity1', 'An Entity', 'draft', 'entity' );
 		$entity_2_id = wl_create_post( '', 'entity2', 'An Entity', 'draft', 'entity' );
 
-		// Stress method with strange parmeters
+		// Stress method with strange parameters
 		$result = wl_core_add_relation_instances( '', WL_WHAT_RELATION, array(
 			$entity_1_id,
 			$entity_2_id,
@@ -754,7 +754,7 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, $result );
 		$result = wl_core_get_related_entity_ids( $post_1_id );
 		$expected = array( $entity_1_id, $entity_2_id );
-		// comapare diff of expected and results to make order irrelevant.
+		// compare diff of expected and results to make order irrelevant.
 		$this->assertSame( array_diff( $expected, $result ), array_diff( $result, $expected ) );
 	}
 

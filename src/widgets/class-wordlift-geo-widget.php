@@ -45,7 +45,7 @@ class WordLift_Geo_Widget extends WP_Widget {
 	}
 
 	/**
-	 * Ouputs the options form on admin
+	 * Outputs the options form on admin
 	 *
 	 * @param array $instance The widget options
 	 */

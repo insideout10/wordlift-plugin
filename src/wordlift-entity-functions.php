@@ -86,7 +86,7 @@ function wl_set_entity_rdf_types( $post_id, $type_uris = array() ) {
 // Loop over custom fields of this type
 // foreach ( $type as $property => $field ) {
 // if ( isset( $field['constraints'] ) && ! empty( $field['constraints'] ) ) {
-// Is this the property we are searhing for?
+// Is this the property we are searching for?
 // if ( ( $property == $property_name ) || ( $field['predicate'] == $property_schema_name ) ) {
 // return $field['constraints'];
 // }

@@ -51,7 +51,7 @@ class Wordlift_Entity_List_Service {
 	/**
 	 * Detects if the entities list admin screen is being displayed
 	 *
-	 * @return bool True if the screen is being displayed, false otherwis.
+	 * @return bool True if the screen is being displayed, false otherwise.
 	 *
 	 * @since 3.15.0
 	 */

@@ -322,7 +322,7 @@ class Wordlift_Entity_Service {
 		// Delete all the existing alternate labels.
 		delete_post_meta( $post_id, self::ALTERNATIVE_LABEL_META_KEY );
 
-		// Save only unique synonymns.
+		// Save only unique synonyms.
 		$alt_labels = array_unique( $alt_labels );
 
 		// Set the alternative labels.
@@ -490,7 +490,7 @@ class Wordlift_Entity_Service {
 	}
 
 	/**
-	 * Add the entity filtering criterias to the arguments for a `get_posts`
+	 * Add the entity filtering criteria to the arguments for a `get_posts`
 	 * call.
 	 *
 	 * @param array $args The arguments for a `get_posts` call.
@@ -498,7 +498,7 @@ class Wordlift_Entity_Service {
 	 * @return array The arguments for a `get_posts` call.
 	 * @since 3.15.0
 	 */
-	public static function add_criterias( $args ) {
+	public static function add_criteria( $args ) {
 
 		// Build an optimal tax-query.
 		$tax_query = array(

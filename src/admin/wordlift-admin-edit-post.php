@@ -29,7 +29,7 @@ function wl_admin_permalink_html( $html, $post_id ) {
 	$uri = $entity_service->get_uri( $post_id );
 	if ( 'publish' === get_post_status( $post_id ) && $uri ) {
 
-		$lod_view_href = esc_attr( $uri );
+		$load_view_href = esc_attr( $uri );
 		/*
 		 * Add the `.html` extension to the link to have Chrome open the html version instead of RDF one.
 		 *
@@ -37,7 +37,7 @@ function wl_admin_permalink_html( $html, $post_id ) {
 		 * @since 3.21.1
 		 */
 		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
-		$html .= apply_filters( 'wl_feature__enable__view-linked-data', true ) ? "<span id='view-post-btn'><a href='$lod_view_href.html' class='button button-small wl-button' target='_blank'>" .
+		$html .= apply_filters( 'wl_feature__enable__view-linked-data', true ) ? "<span id='view-post-btn'><a href='$load_view_href.html' class='button button-small wl-button' target='_blank'>" .
 							esc_html__( 'View Linked Data', 'wordlift' ) .
 							"</a></span>\n" : '';
 

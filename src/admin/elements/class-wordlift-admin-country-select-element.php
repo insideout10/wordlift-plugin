@@ -19,7 +19,7 @@
 class Wordlift_Admin_Country_Select_Element extends Wordlift_Admin_Select_Element {
 
 	/**
-	 * Adds a filter that will add data `country-codes` attrbiute to the country select
+	 * Adds a filter that will add data `country-codes` attribute to the country select
 	 * to allow front-end validation.
 	 *
 	 * @since 3.18.0

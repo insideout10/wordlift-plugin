@@ -345,9 +345,9 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$num_queries = $wpdb->num_queries;
 
 		// Get the cached response.
-		$cahced_references_infos = array();
+		$cached_references_infos = array();
 		$cached_references       = array();
-		$cached                  = $this->cached_postid_to_jsonld_converter->convert( $post_id, $cached_references, $cahced_references_infos, new Relations(), $cache );
+		$cached                  = $this->cached_postid_to_jsonld_converter->convert( $post_id, $cached_references, $cached_references_infos, new Relations(), $cache );
 
 		// Expect the first response not to be cached.
 		$this->assertEquals( $expect, $cache, "The first response for post $post_id " . ( $expect ? 'should' : 'shouldn`t' ) . ' be cached.' );

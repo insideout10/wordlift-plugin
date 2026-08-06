@@ -40,9 +40,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<li><i>wl_event_label</i></li>
 					<li><i>wl_event_value</i></li>
 					<li><i>wl_event_uri</i> <?php esc_html_e( '(which is the first custom dimension number the plugin offers)', 'wordlift' ); ?></li>
-					<li><i>wl_index_uri</i> <?php esc_html_e( '(this is the index number sent to use as the custom dimention for uri)', 'wordlift' ); ?></li>
+					<li><i>wl_index_uri</i> <?php esc_html_e( '(this is the index number sent to use as the custom dimension for uri)', 'wordlift' ); ?></li>
 					<li><i>wl_event_type</i> <?php esc_html_e( '(which is the second custom dimension number the plugin offers)', 'wordlift' ); ?></li>
-					<li><i>wl_index_type</i> <?php esc_html_e( '(this is the index number sent to use as the custom dimention for type)', 'wordlift' ); ?></li>
+					<li><i>wl_index_type</i> <?php esc_html_e( '(this is the index number sent to use as the custom dimension for type)', 'wordlift' ); ?></li>
 
 				</ol>
 			</li>

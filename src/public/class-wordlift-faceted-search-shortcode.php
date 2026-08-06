@@ -96,7 +96,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 	}
 
 	/**
-	 * Function in charge of diplaying the [wl-faceted-search] in web mode.
+	 * Function in charge of displaying the [wl-faceted-search] in web mode.
 	 *
 	 * @param array $atts Shortcode attributes.
 	 *
@@ -162,7 +162,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 	}
 
 	/**
-	 * Function in charge of diplaying the [wl-faceted-search] in amp mode.
+	 * Function in charge of displaying the [wl-faceted-search] in amp mode.
 	 *
 	 * @param array $atts Shortcode attributes.
 	 *

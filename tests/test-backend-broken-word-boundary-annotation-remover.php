@@ -118,12 +118,12 @@ class Broken_Word_Boundary_Annotation_Remover_Test extends Wordlift_Unit_Test_Ca
 	}
 
 	public function test_html_entities_are_decoded_for_boundary_checks() {
-		$content = 'caf&eacute;<span class="textannotation">s</span> are open.';
+		$content = 'calf&eacute;<span class="textannotation">s</span> are open.';
 
 		$result = $this->remover->remove( $content );
 
 		$this->assertTrue( $result['changed'] );
-		$this->assertSame( 'caf&eacute;s are open.', $result['content'] );
+		$this->assertSame( 'calf&eacute;s are open.', $result['content'] );
 	}
 
 	public function test_removes_multiple_broken_annotations() {

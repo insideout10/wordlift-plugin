@@ -6,7 +6,7 @@
  */
 
 /**
- * Internal dependancies
+ * Internal dependencies
  */
 import {
   ADD_NEW_RULE,
@@ -230,7 +230,7 @@ export const PropertyReducer = createReducer(null, {
   },
 
   /** When the user clicks on the category of the property list
-   * this action is dispatched to change the choosen category
+   * this action is dispatched to change the chosen category
    */
   [PROPERTY_LIST_SELECTED_CATEGORY_CHANGED]: (state, action) => {
     const { chosenCategory } = action.payload;
@@ -279,7 +279,7 @@ export const PropertyReducer = createReducer(null, {
   [PROPERTY_ITEMS_BULK_SELECT]: (state, action) => {
     // Iterate through all the selected items, and based on option
     // perform the action.
-    const selectedBulkAction = state.choosenPropertyBulkAction;
+    const selectedBulkAction = state.chosenPropertyBulkAction;
     state.propertyList.filter(item => item.isSelectedByUser).map(item => {
       // Get the index of the current item
       const propertyIndex = state.propertyList.map(el => el.property_id).indexOf(item.property_id);
@@ -296,7 +296,7 @@ export const PropertyReducer = createReducer(null, {
 
   [BULK_ACTION_SELECTION_CHANGED]: (state, action) => {
     const { selectedBulkAction } = action.payload;
-    state.choosenPropertyBulkAction = selectedBulkAction;
+    state.chosenPropertyBulkAction = selectedBulkAction;
   }
 });
 

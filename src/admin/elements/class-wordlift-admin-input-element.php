@@ -36,7 +36,7 @@ class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 	 * @type string css_class    The class attribute for the input element.
 	 *                            If empty string no class attribute will be added.
 	 *                            Optional, defaults to empty string.
-	 * @type string description    The descriptio text to be displayed below the element.
+	 * @type string description    The description text to be displayed below the element.
 	 *                            Can include some HTML element.
 	 *                            If empty string no description will be displayed.
 	 *                            Optional, defaults to empty string.

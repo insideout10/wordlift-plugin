@@ -192,7 +192,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 * Check that the custom post types with set `wl_entity_tyoe `are assigned `webpage` too.
+	 * Check that the custom post types with set `wl_entity_type` are assigned `webpage` too.
 	 *
 	 * This is true, because the CPT is not valid entity type
 	 * and the `wl_entity_type` is not taken into consideration.

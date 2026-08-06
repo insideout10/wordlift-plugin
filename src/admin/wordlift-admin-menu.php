@@ -61,7 +61,7 @@ function wl_remove_entity_type_menu() {
 	 * under non entity hierarchy.
 	 */
 	foreach ( Wordlift_Entity_Service::valid_entity_post_types() as $post_type ) {
-		// In the context of admin menues post has no explicit indication of post type in the urls.
+		// In the context of admin menus post has no explicit indication of post type in the urls.
 		if ( 'post' !== $post_type ) {
 			remove_submenu_page( 'edit.php', 'edit-tags.php?taxonomy=' . Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		}

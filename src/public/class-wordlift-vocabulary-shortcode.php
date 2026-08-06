@@ -109,7 +109,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 		);
 
 		// Get the posts. Note that if a `type` is specified before, then the
-		// `tax_query` from the `add_criterias` call isn't added.
+		// `tax_query` from the `add_criteria` call isn't added.
 		$posts = $this->get_posts( $atts );
 
 		// Get the alphabet.
@@ -349,8 +349,8 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 		}
 
 		// Get the posts. Note that if a `type` is specified before, then the
-		// `tax_query` from the `add_criterias` call isn't added.
-		return get_posts( Wordlift_Entity_Service::add_criterias( $args ) );
+		// `tax_query` from the `add_criteria` call isn't added.
+		return get_posts( Wordlift_Entity_Service::add_criteria( $args ) );
 	}
 
 	/**

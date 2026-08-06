@@ -103,7 +103,7 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 		$this->assertEquals( 1, get_term_meta( $term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, true ) );
 	}
 
-	public function testMarkedAsNoMatchShoulReturn200() {
+	public function testMarkedAsNoMatchShouldReturn200() {
 		$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );
 

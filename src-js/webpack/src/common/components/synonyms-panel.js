@@ -16,7 +16,7 @@ const settings = global["_wlMetaBoxSettings"].settings;
 let SynonymsPanel = props =>
   settings.isEntity ? (
     <Panel>
-      <PanelBody title={__("Synonyms", "wordlift")} intialOpen={false}>
+      <PanelBody title={__("Synonyms", "wordlift")} initialOpen={false}>
         {props.altLabels.map((altLabel, altLabelN, altLabels) => (
           <PanelRow key={altLabelN}>
             <TextControl

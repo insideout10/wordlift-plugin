@@ -46,7 +46,7 @@ it("when the event is emitted from store to highlight the multiple block selecti
   });
   /**
    * Our hook should made 3 calls to updateBlockAttributes method
-   * with the highlighted html becuase three blocks are selected
+   * with the highlighted html because three blocks are selected
    */
   expect(updateBlockAttributesMethod.mock.calls).toHaveLength(3);
   /**
@@ -77,7 +77,7 @@ it("when remove highlight event is emitted from store upon deleting a faq item, 
   });
   /**
    * Our hook should made 3 calls to updateBlockAttributes method
-   * with the highlighted html becuase three blocks are selected
+   * with the highlighted html because three blocks are selected
    */
   expect(updateBlockAttributesMethod.mock.calls).toHaveLength(3);
   /**

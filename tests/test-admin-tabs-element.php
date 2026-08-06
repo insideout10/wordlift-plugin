@@ -92,7 +92,7 @@ class Wordlift_Admin_Tabs_Element_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 * Helper function to test the callbak functionality, jsut dumps
+	 * Helper function to test the callback functionality, just dumps
 	 * the number of elements in the $args parameters.
 	 *
 	 * @param array $args	The arguments registered to be passed to the callback

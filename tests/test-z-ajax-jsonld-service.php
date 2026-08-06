@@ -387,7 +387,7 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$this->assertArrayHasKey( 'url', $response );
 		$this->assertEquals( $url, $response['url'] );
 
-		// Get potentital action
+		// Get potential action
 		$potential_action = $response['potentialAction'];
 
 		$this->assertArrayHasKey( '@type', $potential_action );
@@ -447,7 +447,7 @@ class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$_GET['id']       = $homepage_id;
 		$_GET['homepage'] = 'true';
 
-		// Diable WebSite schema
+		// Disable WebSite schema
 		add_filter( 'wordlift_disable_website_json_ld', '__return_true' );
 
 		// Make the request

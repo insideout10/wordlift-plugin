@@ -52,7 +52,7 @@ class Wordlift_Entity_Functions_Test extends Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey( 'type', $custom_fields[ Wordlift_Schema_Service::FIELD_GEO_LATITUDE ] );
 		$this->assertArrayHasKey( 'export_type', $custom_fields[ Wordlift_Schema_Service::FIELD_GEO_LATITUDE ] );
 
-		// Get all custom_fileds
+		// Get all custom_fields
 		$custom_fields = wl_entity_taxonomy_get_custom_fields();
 		$custom_fields = print_r( $custom_fields, true ); // Stringify for brevity
 

@@ -14,8 +14,8 @@ use Wordlift\Content\WordPress\Wordpress_Content_Service;
  */
 class Wordlift_Redirect_Service {
 
-	const LOD_ENDPOINT = 'http://www.lodview.it';
-	const LOD_HOST     = 'www.lodview.it';
+	const LOAD_ENDPOINT = 'http://www.lodview.it';
+	const LOAD_HOST     = 'www.lodview.it';
 
 	/**
 	 * The Log service.
@@ -123,8 +123,8 @@ class Wordlift_Redirect_Service {
 			case 'edit':
 				$redirect_url = $content->get_edit_link();
 				break;
-			case 'lod':
-				$redirect_url = self::LOD_ENDPOINT . '/lodview/?IRI=' . rawurlencode( $entity_uri );
+			case 'load':
+				$redirect_url = self::LOAD_ENDPOINT . '/lodview/?IRI=' . rawurlencode( $entity_uri );
 				break;
 			case 'permalink':
 				$redirect_url = $content->get_permalink();
@@ -149,6 +149,6 @@ class Wordlift_Redirect_Service {
 	 */
 	public function allowed_redirect_hosts( $content ) {
 
-		return array_merge( $content, array( self::LOD_HOST ) );
+		return array_merge( $content, array( self::LOAD_HOST ) );
 	}
 }

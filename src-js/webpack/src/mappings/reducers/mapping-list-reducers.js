@@ -12,7 +12,7 @@ import {
   MAPPING_LIST_CHANGED,
   MAPPING_ITEM_CATEGORY_CHANGED,
   MAPPING_LIST_BULK_SELECT,
-  MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED,
+  MAPPING_LIST_CHOSEN_CATEGORY_CHANGED,
   MAPPING_ITEM_SELECTED,
   BULK_ACTION_SELECTION_CHANGED,
   MAPPING_LIST_SORT_TITLE_CHANGED,
@@ -46,7 +46,7 @@ export const MappingListReducer = createReducer(null, {
     state.headerCheckBoxSelected = !state.headerCheckBoxSelected;
   },
 
-  [MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED]: (state, action) => {
+  [MAPPING_LIST_CHOSEN_CATEGORY_CHANGED]: (state, action) => {
     state.chosenCategory = action.payload.categoryName;
   },
 

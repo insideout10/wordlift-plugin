@@ -109,7 +109,7 @@ class Wordlift_Deactivator_Feedback {
 	public function wl_deactivation_feedback() {
 		// Bail if the nonce is not valid.
 		if (
-			empty( $_POST['wl_deactivation_feedback_nonce'] ) || // The nonce doens't exists.
+			empty( $_POST['wl_deactivation_feedback_nonce'] ) || // The nonce doesn't exist.
 			! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wl_deactivation_feedback_nonce'] ) ), 'wl_deactivation_feedback_nonce' ) // The nonce is invalid.
 		) {
 			wp_send_json_error( __( 'Nonce Security Check Failed!', 'wordlift' ) );

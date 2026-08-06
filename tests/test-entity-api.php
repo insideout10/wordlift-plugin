@@ -84,7 +84,7 @@ class Wordlift_Entity_Api_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, $results );
 	}
 
-	public function test_get_entity_by_title_restrict_by_schema_types_for_synonymns() {
+	public function test_get_entity_by_title_restrict_by_schema_types_for_synonyms() {
 		$post_id_1 = wl_create_post( 'Lorem Ipsum', 'test-entity-2', 'Test Entity', 'draft', Wordlift_Entity_Service::TYPE_NAME );
 		$post_id_2 = wl_create_post( 'Lorem Ipsum', 'test-entity-2', 'Test Entity', 'draft', Wordlift_Entity_Service::TYPE_NAME );
 		$post_id_3 = wl_create_post( 'Lorem Ipsum', 'test-entity-2', 'Test Entity', 'draft', Wordlift_Entity_Service::TYPE_NAME );

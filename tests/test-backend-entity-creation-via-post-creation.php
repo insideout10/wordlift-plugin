@@ -47,7 +47,7 @@ class EntityCreationViaPostCreationTest extends Wordlift_Unit_Test_Case {
 		);
 		$_POST = $fake;
 
-		// Retrieve the entity uri (the first key in wl_entities associative aray)
+		// Retrieve the entity uri (the first key in wl_entities associative array)
 		$original_entity_uri = current( array_keys( $fake['wl_entities'] ) );
 
 		// Reference the entity to the post content
@@ -87,7 +87,7 @@ EOF;
 
 	function testEntityWithEscapedCharsInUriIsCreatedAndLinkedToThePost2() {
 
-		// Create a post referincing to the created entity
+		// Create a post referencing to the created entity
 		$existing_entity_id = wl_create_post( '', 'gran-sasso', 'Gran Sasso', 'draft', 'entity' );
 
 		wl_set_entity_main_type( $existing_entity_id, 'wl-place' );
@@ -96,7 +96,7 @@ EOF;
 			'/assets/fake_global_post_array_with_gran_sasso_linked_as_where.json'
 		);
 		$_POST = $fake;
-		// Retrieve the entity uri (the first key in wl_entities associative aray)
+		// Retrieve the entity uri (the first key in wl_entities associative array)
 		$original_entity_uri = current( array_keys( $fake['wl_entities'] ) );
 		// Reference the entity to the post content
 
@@ -130,13 +130,13 @@ EOF;
 			'/assets/fake_global_post_array_with_gran_sasso_linked_as_where.json'
 		);
 		$_POST = $fake;
-		// Retrieve the entity uri (the first key in wl_entities associative aray)
+		// Retrieve the entity uri (the first key in wl_entities associative array)
 		$original_entity_uri = current( array_keys( $fake['wl_entities'] ) );
 		// Reference the entity to the post content
 		$content = <<<EOF
     <span class="textannotation disambiguated" itemid="$original_entity_uri">Gran Sasso</span>
 EOF;
-		// Create a post referincing to the created entity
+		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 		// Here the entity should be created instead
 
@@ -221,7 +221,7 @@ EOF;
     <span class="textannotation disambiguated" itemid="http://dbpedia.org/resource/Ryan_Carson">Ryan Carson</span>
 EOF;
 
-		// Create a post referincing to the created entity
+		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 
 		$new_entity_uri = sprintf( '%s/%s/%s',
@@ -275,7 +275,7 @@ EOF;
 			'/assets/fake_global_post_array_with_a_new_entity_linked_with_escaped_chars.json'
 		);
 		$_POST = $fake;
-		// Retrieve the entity uri (the first key in wl_entities associative aray)
+		// Retrieve the entity uri (the first key in wl_entities associative array)
 		$entity_uri = current( array_keys( $fake['wl_entities'] ) );
 		// Retrieve the label
 		$raw_entity          = current( array_values( $fake['wl_entities'] ) );
@@ -288,7 +288,7 @@ EOF;
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $expected_entity_uri );
 
 		$this->assertNull( $entity );
-		// Create a post referincing to the created entity
+		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 		// Here the entity should be created instead
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $expected_entity_uri );
@@ -319,7 +319,7 @@ EOF;
 			'/assets/fake_global_post_array_with_a_new_entity_linked_with_utf8_chars.json'
 		);
 		$_POST = $fake;
-		// Retrieve the entity uri (the first key in wl_entities associative aray)
+		// Retrieve the entity uri (the first key in wl_entities associative array)
 		$entity_uri = current( array_keys( $fake['wl_entities'] ) );
 		// Retrieve the label
 		$expected_entity_uri = 'http://data.example.org/data/entity/loreal';
@@ -332,7 +332,7 @@ EOF;
 
 		$this->assertNull( $entity );
 
-		// Create a post referincing to the created entity
+		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 		// Here the entity should be created instead
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $expected_entity_uri );
@@ -367,7 +367,7 @@ EOF;
 			'/assets/fake_global_post_array_with_a_new_entity_linked_as_who.json'
 		);
 		$_POST = $fake;
-		// Retrieve the entity uri (the first key in wl_entities associative aray)
+		// Retrieve the entity uri (the first key in wl_entities associative array)
 		$entity_uri = current( array_keys( $fake['wl_entities'] ) );
 		// Retrieve the label
 		$raw_entity          = current( array_values( $fake['wl_entities'] ) );
@@ -379,7 +379,7 @@ EOF;
 		// Be sure that the entity does not exist yet
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $expected_entity_uri );
 		$this->assertNull( $entity );
-		// Create a post referincing to the created entity
+		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 		// Here the entity should be created instead
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $expected_entity_uri );
@@ -409,7 +409,7 @@ EOF;
 		);
 
 		$_POST = $fake;
-		// Retrieve the entity uri (the first key in wl_entities associative aray)
+		// Retrieve the entity uri (the first key in wl_entities associative array)
 		$entity_uri = current( array_keys( $fake['wl_entities'] ) );
 		// Reference the entity to the post content
 		$content = <<<EOF
@@ -418,7 +418,7 @@ EOF;
 		// Be sure that the entity does not exist yet
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
 		$this->assertNull( $entity );
-		// Create a post referincing to the created entity
+		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 		// Here the entity should be created instead
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
@@ -445,7 +445,7 @@ EOF;
 			'/assets/fake_global_post_array_with_one_entity_linked_as_what.json'
 		);
 		$_POST = $fake;
-		// Retrieve the entity uri (the first key in wl_entities associative aray)
+		// Retrieve the entity uri (the first key in wl_entities associative array)
 		$entity_uri = current( array_keys( $fake['wl_entities'] ) );
 		// Here I DON'T reference the entity to the post content
 		$content = <<<EOF
@@ -476,7 +476,7 @@ EOF;
 			'/assets/fake_global_post_array_with_one_entity_linked_as_what.json'
 		);
 		$_POST = $fake;
-		// Retrieve the entity uri (the first key in wl_entities associative aray)
+		// Retrieve the entity uri (the first key in wl_entities associative array)
 		$original_entity_uri = current( array_keys( $fake['wl_entities'] ) );
 		// Reference the entity to the post content
 		$content = <<<EOF
@@ -485,13 +485,13 @@ EOF;
 		// Be sure that the entity does not exist yet
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
 		$this->assertNull( $entity );
-		// Create a post referincing to the created entity
+		// Create a post referencing to the created entity
 		$post_1_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 		// Here the entity should be created instead
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
 		$this->assertNotNull( $entity );
 		$this->assertEquals( 'draft', $entity->post_status );
-		// Update post status and check if also entity status changed accrdingly
+		// Update post status and check if also entity status changed accordingly
 		wl_update_post_status( $post_1_id, 'publish' );
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
 		$this->assertEquals( 'publish', $entity->post_status );
@@ -512,7 +512,7 @@ EOF;
     <span class="textannotation disambiguated" itemid="$entity_uri">My entity</span>
 EOF;
 
-		// Create a post referincing to the created entity
+		// Create a post referencing to the created entity
 		$post_2_id       = wl_create_post( $content_2, 'my-post-2', 'Another post', 'draft' );
 		$entity_reloaded = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
 		// Check is the same entity for WP
@@ -530,7 +530,7 @@ EOF;
 		);
 		$_POST = $fake;
 
-		// Retrieve the entity uri (the first key in wl_entities associative aray)
+		// Retrieve the entity uri (the first key in wl_entities associative array)
 		$entity_uri = current( array_keys( $fake['wl_entities'] ) );
 		// Retrieve the label and compose expected uri
 		$raw_entity          = current( array_values( $fake['wl_entities'] ) );
@@ -540,7 +540,7 @@ EOF;
 		$content = <<<EOF
     <span class="textannotation disambiguated" itemid="$entity_uri">My entity</span>
 EOF;
-		// Create a post referincing to the created entity
+		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 
 		// Here the entity should have been created
@@ -599,7 +599,7 @@ EOF;
 		);
 
 		$_POST = $fake;
-		// Retrieve the entity uri (the first key in wl_entities associative aray)
+		// Retrieve the entity uri (the first key in wl_entities associative array)
 		$original_entity_uri = current( array_keys( $fake['wl_entities'] ) );
 		// Reference the entity to the post content trough its alternative label
 		$content = <<<EOF
@@ -646,13 +646,13 @@ EOF;
 
 	function getThumbs( $post_id ) {
 
-		$attatchments      = get_attached_media( 'image', $post_id );
-		$attatchments_uris = array();
-		foreach ( $attatchments as $attch ) {
-			$attatchments_uris[] = wp_get_attachment_url( $attch->ID );
+		$attachments      = get_attached_media( 'image', $post_id );
+		$attachments_uris = array();
+		foreach ( $attachments as $attach ) {
+			$attachments_uris[] = wp_get_attachment_url( $attach->ID );
 		}
 
-		return $attatchments_uris;
+		return $attachments_uris;
 	}
 
 }

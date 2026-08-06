@@ -255,11 +255,11 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 		$vocabulary = new Wordlift_Vocabulary_Shortcode();
 		$markup     = $vocabulary->render( array() );
 
-		// Prepate the regular expression.
+		// Prepare the regular expression.
 		$pattern = '/<li><a href="http:\/\/example\.org\/\?p=\d+">France<\/a><\/li><li><a href="http:\/\/example\.org\/\?p=\d+">French<\/a><\/li><li><a href="http:\/\/example\.org\/\?p=\d+">Friday<\/a><\/li>/';
 
 		// Check that the entities are alphabetically sorted,
-		// as they shoul be by default.
+		// as they should be by default.
 		$this->assertRegExp( $pattern, $markup );
 
 	}

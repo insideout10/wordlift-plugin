@@ -84,13 +84,13 @@ class Wordlift_Dashboard_Latest_News {
 	 */
 	public function get_wordlift_articles_data( $articles_number = 10 ) {
 		// Init cache class
-		$cache_sistem_lib = new Wordlift_File_Cache_Service( WL_TEMP_DIR . 'articles/' );
+		$cache_system_lib = new Wordlift_File_Cache_Service( WL_TEMP_DIR . 'articles/' );
 		$locale           = get_locale();
 		$cache_id         = 'news_' . gmdate( 'Y_m_d' ) . '_' . $locale;
 		$posts_data       = array();
 
 		// Get latest articles from cache
-		$feed_articles = $cache_sistem_lib->get_cache( $cache_id );
+		$feed_articles = $cache_system_lib->get_cache( $cache_id );
 		if ( false === $feed_articles ) {
 			// Check WordPress installation language to define articles rss url
 			$feed_uri = ( 'it_IT' === $locale ) ? 'https://wordlift.io/blog/it/feed/' : 'https://wordlift.io/blog/en/feed/';
@@ -113,7 +113,7 @@ class Wordlift_Dashboard_Latest_News {
 					array_push( $posts_data, $data );
 				}
 				// Set articles in cache.
-				$cache_sistem_lib->set_cache( $cache_id, $posts_data );
+				$cache_system_lib->set_cache( $cache_id, $posts_data );
 				$feed_articles = $posts_data;
 			}
 		}

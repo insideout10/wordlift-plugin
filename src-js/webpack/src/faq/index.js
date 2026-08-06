@@ -42,7 +42,7 @@ const observer = new MutationObserver(() => {
   if (document.getElementById(listBoxId) !== null) {
     /**
      * We might have our react component rendered before, so check the innerHTML  if we
-     * didnt render out component and initalize.
+     * didnt render out component and initialize.
      */
     if (document.getElementById(listBoxId).innerHTML !== "") {
     } else {

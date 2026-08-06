@@ -159,7 +159,7 @@ EOF;
 
 
 	/**
-	 * When the duplicate request with same body, then it should verify the hash in meta and deliever the response.
+	 * When the duplicate request with same body, then it should verify the hash in meta and deliver the response.
 	 */
 	public function test_excerpt_caching_working_correctly() {
 		$valid_content = <<<EOF

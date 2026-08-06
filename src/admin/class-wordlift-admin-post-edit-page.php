@@ -158,7 +158,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		/**
 		 * Scripts_Helper introduced.
 		 *
-		 * @since 3.25.0 Scripts are loaded using script helper to ensure WP 4.4 compatibiility.
+		 * @since 3.25.0 Scripts are loaded using script helper to ensure WP 4.4 compatibility.
 		 * @since 3.25.1 The handle is used to hook the wp_localize_script for the _wlEntityTypes global object.
 		 */
 		Scripts_Helper::enqueue_based_on_wordpress_version(

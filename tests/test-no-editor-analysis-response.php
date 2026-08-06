@@ -36,7 +36,7 @@ class Test_No_Editor_Analysis_Response extends Wordlift_No_Editor_Analysis_Unit_
 		// convert json to associative array for easy comparisons.
 		$json = json_decode( json_encode( $json ), true );
 		$this->assertCount( 1, $json['entities'], '1 entity should not be present' );
-		$this->assertCount( 1, $json['entities'][ $local_entity_uri ]['occurrences'], '1 occurence should be present' );
+		$this->assertCount( 1, $json['entities'][ $local_entity_uri ]['occurrences'], '1 occurrence should be present' );
 
 	}
 

@@ -65,7 +65,7 @@ it("when only one question present then the modal should not open on " + "the te
     </Provider>
   );
   new FaqEventHandler(testStore);
-  // Upon triggering this is going to make a update to API, so deliever success response
+  // Upon triggering this is going to make a update to API, so deliver success response
   fetch.mockResponseOnce(JSON.stringify(updateSuccessResponse));
   // clear all the mocks before
   fetch.mockClear();
@@ -110,7 +110,7 @@ it(
       </Provider>
     );
     new FaqEventHandler(testStore);
-    // Upon triggering this is going to make a update to API, so deliever success response
+    // Upon triggering this is going to make a update to API, so deliver success response
     fetch.mockResponseOnce(JSON.stringify(updateSuccessResponse));
     // clear all the mocks before
     fetch.mockClear();
@@ -119,7 +119,7 @@ it(
       selectedText: "sample answer",
       selectedHTML: "sample answer html"
     });
-    // Should show the modal because mutiple questions present
+    // Should show the modal because multiple questions present
     expect(testStore.getState().faqModalOptions.isModalOpened).toEqual(true);
     // Click on apply button, now we should receive the API request.
     wrapper
