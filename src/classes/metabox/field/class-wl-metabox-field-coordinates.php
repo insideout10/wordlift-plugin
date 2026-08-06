@@ -117,7 +117,7 @@ class Wl_Metabox_Field_Coordinates extends Wl_Metabox_Field {
 	public function sanitize_data_filter( $value ) {
 
 		// DO NOT set latitude/longitude to 0/0 as default values. It's a specific place on the globe:
-		// "The zero/zero point of this system is located in the Gulf of Guinea about 625 km (390 mi) south of Team, Ghana."
+		// "The zero/zero point of this system is located in the Gulf of Guinea about 625 km (390 mi) south of Tema, Ghana."
 		if ( ! is_numeric( $value ) ) {
 			return '';
 		}
