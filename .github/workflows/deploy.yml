@@ -21,9 +21,6 @@ on:
         type: boolean
         default: false
 
-permissions:
-  contents: read
-
 concurrency:
   group: wordpress-org-wordlift
   cancel-in-progress: false
@@ -32,6 +29,8 @@ jobs:
   identity:
     name: Validate release identity
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     outputs:
       version: ${{ steps.release.outputs.version }}
       sha: ${{ steps.release.outputs.sha }}
@@ -66,6 +65,8 @@ jobs:
   validation:
     needs: identity
     uses: ./.github/workflows/release-validation.yml
+    permissions:
+      contents: read
     with:
       ref: ${{ needs.identity.outputs.sha }}
       tooling-ref: ${{ github.workflow_sha }}
@@ -82,6 +83,8 @@ jobs:
       - identity
       - validation
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     environment: wordpress.org
     steps:
       - name: Checkout deployment tooling
@@ -128,28 +131,35 @@ jobs:
 
       - name: Publish changed files
         if: ${{ steps.preflight.outputs.already_exists != 'true' }}
-        uses: 10up/action-wordpress-plugin-deploy@54bd289b8525fd23a5c365ec369185f2966529c2 # v2.3.0
-        with:
-          dry-run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-          SLUG: wordlift
-          VERSION: ${{ needs.identity.outputs.version }}
-          BUILD_DIR: ./staging/plugin
-          # Preflight overlays tracked assets onto the live SVN asset set, preserving unmanaged screenshots.
-          ASSETS_DIR: staging/assets
+          RELEASE_VERSION: ${{ needs.identity.outputs.version }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
+        run: >
+          tooling/.github/scripts/publish-wordpress-org-release.sh
+          "$GITHUB_WORKSPACE/staging"
+          "https://plugins.svn.wordpress.org/wordlift"
+          "$RELEASE_VERSION"
+          "$DRY_RUN"
 
-      - name: Verify published tag
+      - name: Verify published release
         if: >-
           ${{ steps.preflight.outputs.already_exists != 'true' &&
               !(github.event_name == 'workflow_dispatch' && inputs.dry_run) }}
         env:
+          EXPECTED_SHA: ${{ needs.identity.outputs.sha }}
           RELEASE_VERSION: ${{ needs.identity.outputs.version }}
-        run: >
-          tooling/.github/scripts/preflight-wordpress-org-deploy.sh
-          "$GITHUB_WORKSPACE/staging"
-          "https://plugins.svn.wordpress.org/wordlift"
-          "$RELEASE_VERSION"
-          100
-          true
+        run: |
+          git -C release fetch --force origin "refs/tags/$RELEASE_VERSION:refs/tags/$RELEASE_VERSION"
+          actual_sha=$(git -C release rev-parse "refs/tags/$RELEASE_VERSION^{commit}")
+          if [[ "$actual_sha" != "$EXPECTED_SHA" ]]; then
+            echo "Release tag $RELEASE_VERSION moved during publication."
+            exit 1
+          fi
+          tooling/.github/scripts/preflight-wordpress-org-deploy.sh \
+            "$GITHUB_WORKSPACE/staging" \
+            "https://plugins.svn.wordpress.org/wordlift" \
+            "$RELEASE_VERSION" \
+            100 \
+            true

@@ -23,12 +23,11 @@ on:
       VIMEO_API_KEY:
         required: false
 
-permissions:
-  contents: read
-
 jobs:
   linter:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -41,6 +40,8 @@ jobs:
   wordpress:
     name: ${{ matrix.image }}_${{ matrix.phpunit-xml }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -94,6 +95,8 @@ jobs:
 
   javascript:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -116,9 +119,11 @@ jobs:
             exit 1
           fi
           authorization=$(printf 'x-access-token:%s' "$DEPENDENCY_READ_TOKEN" | base64 --wrap=0)
-          git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic $authorization"
-          trap 'git config --global --unset-all http.https://github.com/.extraheader || true' EXIT
-          npm ci --ignore-scripts
+          echo "::add-mask::$authorization"
+          GIT_CONFIG_COUNT=1 \
+            GIT_CONFIG_KEY_0=http.https://github.com/.extraheader \
+            GIT_CONFIG_VALUE_0="AUTHORIZATION: basic $authorization" \
+            npm ci --ignore-scripts
       - name: Rebuild trusted native dependency
         working-directory: src-js/webpack
         run: npm rebuild node-sass
@@ -143,6 +148,8 @@ jobs:
 
   deployment-tests:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -171,6 +178,8 @@ jobs:
       - javascript
       - deployment-tests
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     steps:
       - name: Require every release check
         env:

@@ -11,12 +11,11 @@ on:
       - main
       - develop
 
-permissions:
-  contents: read
-
 jobs:
   validation:
     uses: ./.github/workflows/release-validation.yml
+    permissions:
+      contents: read
     with:
       ref: ${{ github.sha }}
       tooling-ref: ${{ github.sha }}
@@ -40,6 +39,8 @@ jobs:
 
   raptive:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     if: ${{ success() && github.ref == 'refs/heads/main' }}
     needs: validation
     steps:

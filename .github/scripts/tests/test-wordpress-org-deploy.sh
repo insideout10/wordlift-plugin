@@ -40,6 +40,8 @@ printf '\000\001old' > "$svn_working_copy/trunk/modified.bin"
 printf 'old asset' > "$svn_working_copy/assets/icon.png"
 printf 'unmanaged screenshot' > "$svn_working_copy/assets/screenshot-1.png"
 svn add --quiet "$svn_working_copy/trunk"/* "$svn_working_copy/assets"/*
+svn propset --quiet svn:mime-type application/octet-stream "$svn_working_copy/assets/icon.png"
+svn propset --quiet svn:mime-type application/octet-stream "$svn_working_copy/assets/screenshot-1.png"
 svn commit --quiet "$svn_working_copy" -m 'Seed previous release'
 
 release_repository=$test_directory/release
@@ -169,22 +171,28 @@ if "$script_directory/preflight-wordpress-org-deploy.sh" "$distribution" "$svn_u
 fi
 "$script_directory/preflight-wordpress-org-deploy.sh" "$distribution" "$svn_url" 1.2.3 1 true > /dev/null
 
-rsync -rc --delete --exclude='.svn/' "$distribution/plugin/" "$svn_working_copy/trunk/"
-rsync -rc --delete --exclude='.svn/' "$distribution/assets/" "$svn_working_copy/assets/"
-svn add --quiet --force "$svn_working_copy/trunk"
-svn add --quiet --force "$svn_working_copy/assets"
-svn status "$svn_working_copy" | awk '$1 == "!" { sub(/^! +/, ""); print }' | while IFS= read -r path; do
-	svn rm --quiet "$path"
-done
-svn copy --quiet "$svn_working_copy/trunk" "$svn_working_copy/tags/1.2.3"
-svn commit --quiet "$svn_working_copy" -m 'Deploy 1.2.3'
+revision_before_dry_run=$(svnlook youngest "$svn_repository")
+"$script_directory/publish-wordpress-org-release.sh" "$distribution" "$svn_url" 1.2.3 true > /dev/null
+revision_after_dry_run=$(svnlook youngest "$svn_repository")
+[[ $revision_before_dry_run == "$revision_after_dry_run" ]] || fail 'A dry run changed the SVN repository.'
+
+SVN_USERNAME=test SVN_PASSWORD=test \
+	"$script_directory/publish-wordpress-org-release.sh" "$distribution" "$svn_url" 1.2.3 false > /dev/null
 [[ $(svn cat "$svn_url/assets/screenshot-1.png") == 'unmanaged screenshot' ]] || fail 'Deployment deleted an unmanaged screenshot.'
+[[ $(svn propget svn:mime-type "$svn_url/assets/screenshot-1.png") == 'application/octet-stream' ]] || fail 'Deployment changed an unmanaged screenshot property.'
+[[ $(svn propget svn:mime-type "$svn_url/assets/icon.png") == 'image/png' ]] || fail 'Deployment did not set the changed PNG MIME type.'
 
 existing_outputs=$test_directory/existing-outputs
 GITHUB_OUTPUT=$existing_outputs \
 	"$script_directory/preflight-wordpress-org-deploy.sh" "$distribution" "$svn_url" 1.2.3 100 false
 assert_contains 'already_exists=true' "$existing_outputs"
 assert_contains 'changed_files=0' "$existing_outputs"
+
+revision_before_no_op=$(svnlook youngest "$svn_repository")
+SVN_USERNAME=test SVN_PASSWORD=test \
+	"$script_directory/publish-wordpress-org-release.sh" "$distribution" "$svn_url" 1.2.3 false > /dev/null
+revision_after_no_op=$(svnlook youngest "$svn_repository")
+[[ $revision_before_no_op == "$revision_after_no_op" ]] || fail 'An existing release tag was committed twice.'
 
 tag_working_copy=$test_directory/tag-working-copy
 svn checkout --quiet "$svn_url/tags/1.2.3" "$tag_working_copy"
