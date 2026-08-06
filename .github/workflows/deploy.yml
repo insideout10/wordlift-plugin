@@ -130,18 +130,19 @@ jobs:
           fi
 
       - name: Publish changed files
-        if: ${{ steps.preflight.outputs.already_exists != 'true' }}
+        if: >-
+          ${{ steps.preflight.outputs.already_exists != 'true' &&
+              !(github.event_name == 'workflow_dispatch' && inputs.dry_run) }}
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           RELEASE_VERSION: ${{ needs.identity.outputs.version }}
-          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
         run: >
           tooling/.github/scripts/publish-wordpress-org-release.sh
           "$GITHUB_WORKSPACE/staging"
           "https://plugins.svn.wordpress.org/wordlift"
           "$RELEASE_VERSION"
-          "$DRY_RUN"
+          false
 
       - name: Verify published release
         if: >-
