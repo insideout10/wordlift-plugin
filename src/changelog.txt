@@ -1,4 +1,7 @@
 
+= 3.54.16 (2026-08-06) =
+* Fix: Restored entity type selection in the Classic Editor when WordPress generates unique taxonomy input IDs.
+
 = 3.42.0 (2023-04-17) =
 * Feature [#1672](https://github.com/insideout10/wordlift-plugin/issues/1672): Article Wrapper can be now used in API calls too by adding the `article_wrapper=true` query parameter.
 * Feature [#1668](https://github.com/insideout10/wordlift-plugin/issues/1668): Brand new Dashboard for Food and Gardening Knowledge Graphs users
