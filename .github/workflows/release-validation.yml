@@ -1,0 +1,163 @@
+name: Release validation
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: Git ref to validate
+        required: true
+        type: string
+      tooling-ref:
+        description: Git ref containing the validation tooling
+        required: true
+        type: string
+    secrets:
+      ACF_PRO_KEY:
+        required: false
+      WORDLIFT_API_URL:
+        required: false
+      YOUTUBE_DATA_API_KEY:
+        required: false
+      VIMEO_API_KEY:
+        required: false
+
+jobs:
+  linter:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - name: Lint PHP
+        run: composer install --no-interaction --no-progress && composer lint src/
+
+  wordpress:
+    name: ${{ matrix.image }}_${{ matrix.phpunit-xml }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - "php7.4-phpunit7.5-wordpress5.9"
+          - "php8.0-phpunit7.5woo-wordpress5.6"
+        phpunit-xml:
+          - tests/scenarios/phpunit.ajax.xml
+          - tests/scenarios/phpunit.default.xml
+          - tests/scenarios/phpunit.no-editor.xml
+          - tests/scenarios/phpunit.no-vocabulary-terms.xml
+          - tests/scenarios/phpunit.rel-item-id.xml
+          - tests/scenarios/phpunit.woocommerce-extension.xml
+          - tests/scenarios/phpunit.multisite.ajax.xml
+          - tests/scenarios/phpunit.multisite.default.xml
+          - tests/scenarios/phpunit.multisite.no-editor.xml
+          - tests/scenarios/phpunit.multisite.no-vocabulary-terms.xml
+          - tests/scenarios/phpunit.multisite.rel-item-id.xml
+          - tests/scenarios/phpunit.multisite.woocommerce-extension.xml
+    env:
+      ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
+      ACF_PRO_ENABLED: false
+      WORDLIFT_API_URL: ${{ secrets.WORDLIFT_API_URL }}
+      YOUTUBE_DATA_API_KEY: ${{ secrets.YOUTUBE_DATA_API_KEY }}
+      VIMEO_API_KEY: ${{ secrets.VIMEO_API_KEY }}
+      WORDPRESS_VERSION: ${{ matrix.image }}
+    services:
+      db:
+        image: mysql:5.6
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_USER: wordpress
+          MYSQL_PASSWORD: password
+          MYSQL_DATABASE: wordpress
+        ports:
+          - 3306:3306
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - name: PHPUnit
+        run: >
+          docker run --mount type=bind,source="$PWD/tests/php.ini",target=/usr/local/etc/php/php.ini --workdir /github/workspace --rm -v "/var/run/docker.sock:/var/run/docker.sock"
+          -e ACF_PRO_ENABLED -e YOUTUBE_DATA_API_KEY -e VIMEO_API_KEY -e ACF_PRO_KEY -e WORDLIFT_API_URL -e WORDLIFT_KEY
+          -e WORDPRESS_VERSION -v "$GITHUB_WORKSPACE:/github/workspace"
+          --network "$(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_")"
+          ziodave/wordpress-tests:${{ matrix.image }} -c ${{ matrix.phpunit-xml }} --stop-on-error --stop-on-fail
+
+  javascript:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 12
+          cache: npm
+          cache-dependency-path: src-js/webpack/package-lock.json
+      - name: Install dependencies
+        working-directory: src-js/webpack
+        run: |
+          git config --global url."https://github.com/".insteadOf git@github.com:
+          npm ci
+      - name: Run Jest
+        working-directory: src-js/webpack
+        run: npm test -- --runInBand
+      - name: Build production assets
+        working-directory: src-js/webpack
+        run: npm run build
+      - name: Normalize generated PHP assets
+        run: |
+          composer install --no-interaction --no-progress
+          set +e
+          vendor/bin/phpcbf --standard=phpcs.xml.dist src/js/dist/*.asset.php
+          status=$?
+          set -e
+          if (( status > 1 )); then
+            exit "$status"
+          fi
+      - name: Verify generated assets are committed
+        run: git diff --exit-code -- src/js/dist
+
+  deployment-tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tooling-ref }}
+      - name: Validate shell and workflows
+        run: |
+          shellcheck .github/scripts/*.sh .github/scripts/tests/*.sh
+          bash -n .github/scripts/*.sh .github/scripts/tests/*.sh
+          go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.7
+      - name: Run incremental deployment integration tests
+        run: .github/scripts/tests/test-wordpress-org-deploy.sh
+
+  release-ready:
+    name: release-ready
+    if: ${{ always() }}
+    needs:
+      - linter
+      - wordpress
+      - javascript
+      - deployment-tests
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require every release check
+        env:
+          LINTER_RESULT: ${{ needs.linter.result }}
+          WORDPRESS_RESULT: ${{ needs.wordpress.result }}
+          JAVASCRIPT_RESULT: ${{ needs.javascript.result }}
+          DEPLOYMENT_TESTS_RESULT: ${{ needs.deployment-tests.result }}
+        run: |
+          for result in "$LINTER_RESULT" "$WORDPRESS_RESULT" "$JAVASCRIPT_RESULT" "$DEPLOYMENT_TESTS_RESULT"; do
+            if [[ "$result" != success ]]; then
+              echo "A required release check did not succeed."
+              exit 1
+            fi
+          done
+          echo "All required release checks succeeded."

@@ -12,77 +12,29 @@ on:
       - develop
 
 jobs:
-  linter:
-    runs-on: ubuntu-24.04
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
-      - name: lint
-        run: >
-          composer install && composer lint src/
+  validation:
+    uses: ./.github/workflows/release-validation.yml
+    with:
+      ref: ${{ github.sha }}
+      tooling-ref: ${{ github.sha }}
+    secrets:
+      ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
+      WORDLIFT_API_URL: ${{ secrets.WORDLIFT_API_URL }}
+      YOUTUBE_DATA_API_KEY: ${{ secrets.YOUTUBE_DATA_API_KEY }}
+      VIMEO_API_KEY: ${{ secrets.VIMEO_API_KEY }}
+
   cancel_running_workflows:
     runs-on: ubuntu-24.04
     steps:
-      - name: cancel running workflows
+      - name: Cancel running workflows
         uses: styfle/cancel-workflow-action@0.12.1
         with:
           access_token: ${{ github.TOKEN }}
-  wordpress:
-    name: ${{ matrix.image }}_${{ matrix.phpunit-xml }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    strategy:
-      matrix:
-        image:
-          - "php7.4-phpunit7.5-wordpress5.9"
-          - "php8.0-phpunit7.5woo-wordpress5.6"
-        phpunit-xml:
-          - tests/scenarios/phpunit.ajax.xml
-          - tests/scenarios/phpunit.default.xml
-          - tests/scenarios/phpunit.no-editor.xml
-          - tests/scenarios/phpunit.no-vocabulary-terms.xml
-          - tests/scenarios/phpunit.rel-item-id.xml
-          - tests/scenarios/phpunit.woocommerce-extension.xml
-          - tests/scenarios/phpunit.multisite.ajax.xml
-          - tests/scenarios/phpunit.multisite.default.xml
-          - tests/scenarios/phpunit.multisite.no-editor.xml
-          - tests/scenarios/phpunit.multisite.no-vocabulary-terms.xml
-          - tests/scenarios/phpunit.multisite.rel-item-id.xml
-          - tests/scenarios/phpunit.multisite.woocommerce-extension.xml
-    env:
-      ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
-      ACF_PRO_ENABLED: ${{ matrix.acf-pro-enabled }}
-      WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
-      YOUTUBE_DATA_API_KEY: ${{  secrets.YOUTUBE_DATA_API_KEY }}
-      VIMEO_API_KEY: ${{  secrets.VIMEO_API_KEY }}
-      WORDPRESS_VERSION: ${{ matrix.image }}
 
-    services:
-      db:
-        # WP set up uses SET storage_engine=InnoDB; which is removed after MySQL 5.6
-        image: mysql:5.6
-        env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_USER: wordpress
-          MYSQL_PASSWORD: password
-          MYSQL_DATABASE: wordpress
-        ports:
-          - 3306:3306
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
-      - name: phpunit
-        run: >
-          docker run  --mount type=bind,source="$PWD/tests/php.ini",target=/usr/local/etc/php/php.ini --workdir /github/workspace --rm -v "/var/run/docker.sock":"/var/run/docker.sock" \
-            -e ACF_PRO_ENABLED -e YOUTUBE_DATA_API_KEY -e VIMEO_API_KEY -e ACF_PRO_KEY -e WORDLIFT_API_URL -e WORDLIFT_KEY \
-            -e WORDPRESS_VERSION -v $GITHUB_WORKSPACE:"/github/workspace" \
-            --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
-              ziodave/wordpress-tests:${{ matrix.image }} -c ${{ matrix.phpunit-xml }} --stop-on-error --stop-on-fail
   raptive:
     runs-on: ubuntu-24.04
-    # Run only for main branch push
     if: ${{ success() && github.ref == 'refs/heads/main' }}
-    needs: [ linter, wordpress ]
+    needs: validation
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -92,42 +44,3 @@ jobs:
         run: ./.github/workflows/raptive.sh
         env:
           AZURE_STORAGE_SHARED_KEY_QUERY_PARAM: ${{ secrets.AZURE_STORAGE_SHARED_KEY_QUERY_PARAM }}
-
-#  publish-to-dev:
-#    runs-on: ubuntu-24.04
-#    # Run only for develop branch push
-#    if: github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/release/')
-##    needs: [ linter, wordpress ]
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#      - name: Update branch in deployment.yaml
-#        run: sed -i'' "s~__BRANCH__~${{ env.BRANCH_NAME }}~" .kubernetes/deployment.yaml
-#        env:
-#          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-#      - name: Update URL in deployment.yaml
-#        run: sed -i'' "s~__HOST__~$HOST~" .kubernetes/deployment.yaml
-#        env:
-#          HOST: ${{ secrets.HOST }}
-#
-#      - name: Setup kubectl
-#        uses: azure/setup-kubectl@v3
-#
-#      - name: Set K8s context
-#        uses: azure/k8s-set-context@v3
-#        with:
-#          method: service-account
-#          k8s-url: https://276B133D9A690B29F820B94F09D6EBAA.gr7.us-east-1.eks.amazonaws.com
-#          k8s-secret: ${{ secrets.K8S_DEV_SECRET }}
-#
-#      - name: Deploy to the Kubernetes cluster
-#        uses: azure/k8s-deploy@v4
-#        with:
-#          # see https://github.com/Azure/k8s-deploy/issues/164
-#          pull-images: false
-#          namespace: wordlift-plugin-dev
-#          manifests: |
-#            .kubernetes/deployment.yaml
-#          images: |
-#            wordlift/wordpress-nginx:6.1.1
-#

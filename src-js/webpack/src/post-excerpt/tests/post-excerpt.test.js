@@ -59,6 +59,10 @@ beforeEach(() => {
   sagaMiddleware.run(rootSaga);
 });
 
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
 it("when the post excerpt component is rendered, should send a http request", () => {
   fetch.mockResponseOnce(JSON.stringify(postExcerptSuccessResponse));
   const wrapper = mount(
@@ -130,7 +134,8 @@ it("when the user clicks on the use button, the text should be copied to the wor
   expect(el.value).toEqual("this is a sample excerpt");
 });
 
-it("when the request to external api fails, should show an failure notification on the ui", async () => {
+it("when the request to external api fails, should log the error and stop loading", async () => {
+  const consoleError = jest.spyOn(console, "error").mockImplementation(() => {});
   fetch.mockResponseOnce(
     JSON.stringify({
       status: "error"
@@ -143,8 +148,9 @@ it("when the request to external api fails, should show an failure notification 
   );
   await flushPromises();
   wrapper.update();
-  // check if the failure notification is shown.
-  expect(wrapper.find(".notice-error").exists()).toBeTruthy();
+  expect(wrapper.find(WlPostExcerptLoadingScreen).exists()).toBeFalsy();
+  expect(wrapper.find(".notice-error").exists()).toBeFalsy();
+  expect(consoleError).toHaveBeenCalledWith({ status: "error" });
 });
 
 
@@ -157,4 +163,3 @@ it("when the post content is sent, should convert the html entities to symbols",
       "two\n" +
       "three\n")
 })
-

@@ -1,49 +1,150 @@
 name: Deploy to WordPress.org
 
-# Trigger it from the repo's "Actions" tab (manual) — available once this file is on the DEFAULT
-# branch (main); GitHub hides the "Run workflow" button on feature branches.
-#   1st run: leave "Dry run" CHECKED (default) -> verifies the file list, deploys NOTHING.
-#   2nd run: UNCHECK "Dry run"                 -> real deploy to wordpress.org/plugins/wordlift/
-# Reuses the existing SVN_USERNAME / SVN_PASSWORD repo secrets (same as publish-readme.yml).
 on:
+  push:
+    tags:
+      - '*.*.*'
   workflow_dispatch:
     inputs:
+      tag:
+        description: Release tag to deploy (X.Y.Z)
+        required: true
+        type: string
       dry_run:
-        description: "Dry run (verify only — do NOT deploy)"
+        description: Verify without publishing
+        required: true
         type: boolean
         default: true
-  # TEMP (remove before/at merge to main): lets us test on the plugin_check branch, where the
-  # manual button isn't available yet. A push here always runs a FORCED dry-run — never a real
-  # deploy (see the dry-run expression below).
-  push:
-    branches: [plugin_check]
+      allow_large_diff:
+        description: Allow more than 100 changed plugin files
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wordpress-org-wordlift
+  cancel-in-progress: false
 
 jobs:
-  deploy:
-    name: Deploy to wordpress.org
-    runs-on: ubuntu-latest
+  identity:
+    name: Validate release identity
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.release.outputs.version }}
+      sha: ${{ steps.release.outputs.sha }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Detect version from src/wordlift.php
-        id: version
+      - name: Require trusted manual workflow tooling
+        if: ${{ github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/main' }}
         run: |
-          version="$(grep -oP '^ \* Version:\s+\K[0-9]+\.[0-9]+\.[0-9]+' src/wordlift.php)"
-          echo "Detected version: $version"
-          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Manual deployments must run from the main branch workflow."
+          exit 1
+      - name: Checkout deployment tooling
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: tooling
+      - name: Checkout release
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+          fetch-depth: 0
+          path: release
+      - name: Validate tag, versions, and main ancestry
+        id: release
+        env:
+          RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+        run: |
+          tooling/.github/scripts/validate-wordpress-org-release.sh release "$RELEASE_TAG"
+          echo "version=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git -C release rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
-      - name: WordPress.org deploy (10up)
-        # Pinned to a full commit SHA (SonarCloud requirement) instead of the movable @stable tag.
-        # 54bd289 = v2.3.0 — bump this SHA + comment together when upgrading.
+  validation:
+    needs: identity
+    uses: ./.github/workflows/release-validation.yml
+    with:
+      ref: ${{ needs.identity.outputs.sha }}
+      tooling-ref: ${{ github.workflow_sha }}
+    secrets:
+      ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
+      WORDLIFT_API_URL: ${{ secrets.WORDLIFT_API_URL }}
+      YOUTUBE_DATA_API_KEY: ${{ secrets.YOUTUBE_DATA_API_KEY }}
+      VIMEO_API_KEY: ${{ secrets.VIMEO_API_KEY }}
+
+  deploy:
+    name: Deploy to WordPress.org
+    needs:
+      - identity
+      - validation
+    runs-on: ubuntu-latest
+    environment: wordpress.org
+    steps:
+      - name: Checkout deployment tooling
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: tooling
+
+      - name: Checkout release
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.identity.outputs.sha }}
+          fetch-depth: 0
+          path: release
+
+      - name: Prepare filtered CRLF distribution
+        run: tooling/.github/scripts/prepare-wordpress-org-dist.sh release "$GITHUB_WORKSPACE/staging"
+
+      - name: Preflight changed files
+        id: preflight
+        env:
+          ALLOW_LARGE_DIFF: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_large_diff || false }}
+        run: >
+          tooling/.github/scripts/preflight-wordpress-org-deploy.sh
+          "$GITHUB_WORKSPACE/staging"
+          "https://plugins.svn.wordpress.org/wordlift"
+          "${{ needs.identity.outputs.version }}"
+          100
+          "$ALLOW_LARGE_DIFF"
+
+      - name: Recheck immutable release tag
+        env:
+          EXPECTED_SHA: ${{ needs.identity.outputs.sha }}
+          RELEASE_VERSION: ${{ needs.identity.outputs.version }}
+        run: |
+          git -C release fetch --force origin "refs/tags/$RELEASE_VERSION:refs/tags/$RELEASE_VERSION"
+          actual_sha=$(git -C release rev-parse "refs/tags/$RELEASE_VERSION^{commit}")
+          if [[ "$actual_sha" != "$EXPECTED_SHA" ]]; then
+            echo "Release tag $RELEASE_VERSION moved after validation."
+            exit 1
+          fi
+
+      - name: Publish changed files
+        if: ${{ steps.preflight.outputs.already_exists != 'true' }}
         uses: 10up/action-wordpress-plugin-deploy@54bd289b8525fd23a5c365ec369185f2966529c2 # v2.3.0
         with:
-          # Manual runs honor the "Dry run" checkbox; any non-manual trigger (push) is FORCED to dry-run.
-          dry-run: ${{ github.event_name != 'workflow_dispatch' || inputs.dry_run }}
+          dry-run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SLUG: wordlift
-          VERSION: ${{ steps.version.outputs.version }}
-          BUILD_DIR: ./src              # the plugin itself (reads src/.distignore for exclusions)
-          ASSETS_DIR: ./assets          # wp.org banners/icons (the 5 files at the repo root)
+          VERSION: ${{ needs.identity.outputs.version }}
+          BUILD_DIR: ./staging/plugin
+          # WordPress.org contains screenshots not tracked in Git; plugin releases must not delete them.
+          ASSETS_DIR: staging/no-assets
+
+      - name: Verify published tag
+        if: >-
+          ${{ steps.preflight.outputs.already_exists != 'true' &&
+              !(github.event_name == 'workflow_dispatch' && inputs.dry_run) }}
+        env:
+          RELEASE_VERSION: ${{ needs.identity.outputs.version }}
+        run: >
+          tooling/.github/scripts/preflight-wordpress-org-deploy.sh
+          "$GITHUB_WORKSPACE/staging"
+          "https://plugins.svn.wordpress.org/wordlift"
+          "$RELEASE_VERSION"
+          100
+          true
