@@ -225,7 +225,7 @@ function run_wordlift() {
 			require_once plugin_dir_path( __FILE__ ) . 'classes/cleanup/index.php';
 
 			/*
-			* Import LOAD entities.
+			* Import LOD entities.
 			*
 			* @since 3.35.0
 			*/

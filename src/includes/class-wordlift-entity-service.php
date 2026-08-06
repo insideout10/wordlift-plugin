@@ -498,7 +498,7 @@ class Wordlift_Entity_Service {
 	 * @return array The arguments for a `get_posts` call.
 	 * @since 3.15.0
 	 */
-	public static function add_criteria( $args ) {
+	public static function add_criterias( $args ) {
 
 		// Build an optimal tax-query.
 		$tax_query = array(
