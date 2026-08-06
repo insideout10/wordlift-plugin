@@ -16,6 +16,14 @@ import { SchemaClassTree } from "@wordlift/wordlift-for-schemaorg";
 import withLoader from "./SchemaClassTree/withLoader";
 import withProps from "./SchemaClassTree/withProps";
 
+export const setWordPressTaxonomySelection = (itemId, selected) => {
+  document
+    .querySelectorAll(
+      `#wl_entity_typechecklist input[value="${itemId}"], #wl_entity_typechecklist-pop input[value="${itemId}"]`
+    )
+    .forEach(element => (element.checked = selected));
+};
+
 const syncWithWordPressTaxonomyMetabox = Component =>
   class extends React.Component {
     constructor(props) {
@@ -59,13 +67,7 @@ const syncWithWordPressTaxonomyMetabox = Component =>
       this.setState({ selected });
     }
     handleSelected(item, selected) {
-      document
-        // Query WordPress' own checkboxes.
-        .querySelectorAll(
-          `#in-wl_entity_type-${item.id}, #in-popular-wl_entity_type-${item.id}`
-        )
-        // Set them un/checked accordingly.
-        .forEach(element => (element.checked = selected));
+      setWordPressTaxonomySelection(item.id, selected);
 
       this.setState(prevState => ({
         selected: selected
