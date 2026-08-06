@@ -1,6 +1,6 @@
 <?php
 /**
- * This file provides a default strategy to add the occurences in analysis service.
+ * This file provides a default strategy to add the occurrences in analysis service.
  *
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.32.6

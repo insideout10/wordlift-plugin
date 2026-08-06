@@ -182,7 +182,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = 3.54.7 (2026-03-26) =
 
-* Fix: Empty URL list incorrectly excludes homepage in include-exclude modul
+* Fix: Empty URL list incorrectly excludes homepage in include-exclude module
 
 = 3.54.6 (2025-08-06) =
 

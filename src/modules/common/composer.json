@@ -1,6 +1,6 @@
 {
   "name": "wordlift/common",
-  "description": "Common depdencies needed by modules.",
+  "description": "Common dependencies needed by modules.",
   "license": "GPL-2.0-or-later",
   "type": "wordpress-plugin",
   "homepage": "https://wordlift.io",

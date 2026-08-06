@@ -469,7 +469,7 @@ function wl_core_delete_relation_instance( $subject_id, $predicate, $object_id )
 	// Prepare interaction with db
 	global $wpdb;
 
-	wl_write_log( "Going to delete relation instace [ subject_id :: $subject_id ] [ object_id :: $object_id ] [ predicate :: $predicate ]" );
+	wl_write_log( "Going to delete relation instance [ subject_id :: $subject_id ] [ object_id :: $object_id ] [ predicate :: $predicate ]" );
 
 	// @see ttps://codex.wordpress.org/it:Riferimento_classi/wpdb#DELETE_di_righe
 	$wpdb->delete(

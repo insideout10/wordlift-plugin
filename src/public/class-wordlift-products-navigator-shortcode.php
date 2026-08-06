@@ -133,7 +133,7 @@ class Wordlift_Products_Navigator_Shortcode extends Wordlift_Shortcode {
 	}
 
 	/**
-	 * Function in charge of diplaying the [wl_products_navigator] in web mode.
+	 * Function in charge of displaying the [wl_products_navigator] in web mode.
 	 *
 	 * @param array $atts Shortcode attributes.
 	 *
@@ -190,7 +190,7 @@ class Wordlift_Products_Navigator_Shortcode extends Wordlift_Shortcode {
 	}
 
 	/**
-	 * Function in charge of diplaying the [wl_products_navigator] in amp mode.
+	 * Function in charge of displaying the [wl_products_navigator] in amp mode.
 	 *
 	 * @param array $atts Shortcode attributes.
 	 *

@@ -208,7 +208,7 @@ function wl_entities_box_content_scripts() {
 
 	// Retrieve the current post author.
 	$post_author = get_userdata( $post->post_author )->display_name;
-	// Retrive the published date.
+	// Retrieve the published date.
 	$published_date = get_the_time( 'Y-m-d', $post->ID );
 	// Current language.
 	$current_language            = $configuration_service->get_language_code();

@@ -41,7 +41,7 @@
           return reject();
         }
 
-        // setup the custom dimention names.
+        // setup the custom dimension names.
         var dimX = "dimension" + wordliftAnalyticsConfigData.entity_uri_dimension;
         var dimY = "dimension" + wordliftAnalyticsConfigData.entity_type_dimension;
 
@@ -60,7 +60,7 @@
 
         /**
          * Depending on the tracking object type send the data
-         * to the correspending service.
+         * to the corresponding service.
          */
         if ("ga" === analyticsObj.__wl_type) {
           // This is `ga` style object.
@@ -120,7 +120,7 @@
    * Wrapper function for pushing entity analytics data to ga style tracker.
    *
    * @method sendGaEvent
-   * @param  {ga} analyticsObject The anlytics object we push into.
+   * @param  {ga} analyticsObject The analytics object we push into.
    * @param  {string} dimX the name of the first custom dimension.
    * @param  {string} dimY the name of the second custom dimension.
    * @param  {string} label a string to use as the label.
@@ -143,7 +143,7 @@
    * Wrapper function for pushing entity analytics data to gtag.
    *
    * @method sendGtagEvent
-   * @param  {gtag} analyticsObject The anlytics object we push into.
+   * @param  {gtag} analyticsObject The analytics object we push into.
    * @param  {string} dimX the name of the first custom dimension.
    * @param  {string} dimY the name of the second custom dimension.
    * @param  {string} label a string to use as the label.
@@ -172,7 +172,7 @@
    * Wrapper function for pushing entity analytics data to gtag.
    *
    * @method sendGtagEvent
-   * @param  {gtag} analyticsObject The anlytics object we push into.
+   * @param  {gtag} analyticsObject The analytics object we push into.
    * @param  {string} dimX the name of the first custom dimension.
    * @param  {string} dimY the name of the second custom dimension.
    * @param  {string} label a string to use as the label.

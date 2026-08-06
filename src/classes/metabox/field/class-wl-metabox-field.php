@@ -137,7 +137,7 @@ class Wl_Metabox_Field implements Field {
 		$this->label = isset( $this->raw_custom_field['metabox']['label'] ) ? $this->raw_custom_field['metabox']['label'] : end( $exploded_predicate );
 
 		// Extract field constraints (numerosity, expected type).
-		// Default constaints: accept one string..
+		// Default constraints: accept one string..
 		if ( isset( $this->raw_custom_field['type'] ) ) {
 			$this->expected_wl_type = $this->raw_custom_field['type'];
 		} else {

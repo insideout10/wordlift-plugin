@@ -112,7 +112,7 @@ class Wordlift_Download_Google_Content_Data_Test extends Wordlift_Ajax_Unit_Test
 
 	/**
 	 * Test that "get_content_data" is working properly
-	 * and return the proper number of enities,
+	 * and return the proper number of entities,
 	 *
 	 * @return void
 	 * @since 3.16.0

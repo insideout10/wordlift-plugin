@@ -210,7 +210,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 				'name'        => 'wl_analytics_settings[' . Wordlift_Configuration_Service::ANALYTICS_ENTITY_URI_DIMENSION . ']',
 				'type'        => 'number',
 				'value'       => Wordlift_Configuration_Service::get_instance()->get_analytics_entity_uri_dimension(),
-				'description' => __( 'Entity URI dimesion', 'wordlift' ),
+				'description' => __( 'Entity URI dimension', 'wordlift' ),
 			)
 		);
 

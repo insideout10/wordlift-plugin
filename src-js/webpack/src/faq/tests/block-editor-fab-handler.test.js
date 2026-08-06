@@ -8,7 +8,7 @@
  */
 import { off, on, trigger } from "backbone";
 /**
- * Internal depdendencies.
+ * Internal dependencies.
  */
 import BlockEditorFabHandler from "../hooks/block-editor/block-editor-fab-handler";
 import BlockEditorFabButtonRegister, {

@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 /**
  * Internal dependencies.
  */
-import { MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION } from "../../actions/actions";
+import { MAPPING_LIST_CHOSEN_CATEGORY_CHANGED_ACTION } from "../../actions/actions";
 import CategoryComponent from "../category-component";
 
 class _MappingCategories extends React.Component {
@@ -25,11 +25,11 @@ class _MappingCategories extends React.Component {
   /**
    * When the category is selected in the categoryComponent this method
    * is fired.
-   * @param {String} category The category choosen by the user
+   * @param {String} category The category chosen by the user
    * @return void
    */
   selectCategory(category) {
-    const action = MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION;
+    const action = MAPPING_LIST_CHOSEN_CATEGORY_CHANGED_ACTION;
     action.payload = {
       categoryName: category
     };

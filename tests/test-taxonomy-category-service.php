@@ -91,7 +91,7 @@ class Wordlift_Category_Taxonomy_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 2, count( $posts ) );
 
 		// ... and that it is the actual posts.
-		// since creation is about the same time we can't count on consistant
+		// since creation is about the same time we can't count on consistent
 		// result order.
 		$posts_ids = array( $posts[1]->ID, $posts[0]->ID );
 		$this->assertTrue( in_array( $entity_id, $posts_ids ) );
@@ -127,7 +127,7 @@ class Wordlift_Category_Taxonomy_Service_Test extends Wordlift_Unit_Test_Case {
 		// reset global query variables to virgin state to make is_main_query true.
 
 		global $wp_the_query, $wp_query;
-		$wp_the_query = new WP_QUery();
+		$wp_the_query = new WP_Query();
 		$wp_query     = $wp_the_query;
 
 		// test explicit post post type as a string.
@@ -141,7 +141,7 @@ class Wordlift_Category_Taxonomy_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 2, count( $posts ) );
 
 		// ... and that it is the actual posts.
-		// since creation is about the same time we can't count on consistant
+		// since creation is about the same time we can't count on consistent
 		// result order.
 		$posts_ids = array( $posts[1]->ID, $posts[0]->ID );
 		$this->assertTrue( in_array( $entity_id, $posts_ids ) );
@@ -158,7 +158,7 @@ class Wordlift_Category_Taxonomy_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 2, count( $posts ) );
 
 		// ... and that it is the actual posts.
-		// since creation is about the same time we can't count on consistant
+		// since creation is about the same time we can't count on consistent
 		// result order.
 		$posts_ids = array( $posts[1]->ID, $posts[0]->ID );
 		$this->assertTrue( in_array( $entity_id, $posts_ids ) );
@@ -176,7 +176,7 @@ class Wordlift_Category_Taxonomy_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 2, count( $posts ) );
 
 		// ... and that it is the actual posts.
-		// since creation is about the same time we can't count on consistant
+		// since creation is about the same time we can't count on consistent
 		// result order.
 		$posts_ids = array( $posts[1]->ID, $posts[0]->ID );
 		$this->assertTrue( in_array( $entity_id, $posts_ids ) );

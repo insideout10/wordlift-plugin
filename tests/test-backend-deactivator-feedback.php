@@ -62,7 +62,7 @@ class Wordlift_Deactivator_Feedback_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 */
 	public function test_default_popup_markup_on_plugins_page() {
-		// Change the currnet page to plugins.
+		// Change the current page to plugins.
 		global $pagenow;
 		$pagenow = 'plugins.php';
 
@@ -137,7 +137,7 @@ class Wordlift_Deactivator_Feedback_Test extends Wordlift_Unit_Test_Case {
 	 * @version 3.19.0
 	 */
 	public function add_preferences() {
-		// Change the currnet page to plugins to allow testing.
+		// Change the current page to plugins to allow testing.
 		global $pagenow;
 		$pagenow = 'plugins.php';
 

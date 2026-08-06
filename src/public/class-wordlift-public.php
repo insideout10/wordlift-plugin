@@ -196,7 +196,7 @@ class Wordlift_Public {
 			$settings['isHome'] = true;
 		}
 
-		// As of 2020-02-15, we publish the JSON-LD in the head, see Jsonld_Adaper.
+		// As of 2020-02-15, we publish the JSON-LD in the head, see Jsonld_Adapter.
 		$settings['jsonld_enabled'] = false;
 
 		// By default only enable JSON-LD on supported entity pages (includes

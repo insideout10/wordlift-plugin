@@ -15,7 +15,7 @@ const $ = jQuery
  *
  * @since 3.18.0
  * @param {string} selector     The element selector.
- * @param {string} langSelector The selector that we wil listen to update the countries.
+ * @param {string} langSelector The selector that we will listen to update the countries.
  */
 const CountryValidator = (countrySelector, langSelector) => {
   $(countrySelector + ', ' + langSelector).on('change', function () {
@@ -28,7 +28,7 @@ const CountryValidator = (countrySelector, langSelector) => {
     const options         = $countrySelect.data('country-codes')
     const selectedLang    = $(langSelector).val();
 
-    // Notify the user that the selected country doens't support the chosen language.
+    // Notify the user that the selected country doesn't support the chosen language.
     if (
         // Check that the country code exists in predefined country codes.
         typeof( options[ selectedCountry ] ) !== 'undefined' &&

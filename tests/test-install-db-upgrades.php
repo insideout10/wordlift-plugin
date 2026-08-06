@@ -166,7 +166,7 @@ class Wordlift_DB_Upgrade_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Test that the article term is set to all posts
-	 * from `wl_relation_instances` that doens't have `article` term.
+	 * from `wl_relation_instances` that don't have `article` term.
 	 *
 	 * @since  3.18.3
 	 */

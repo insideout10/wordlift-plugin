@@ -85,7 +85,7 @@ class Wordlift_Google_Analytics_Export_Service {
 		// The regular expression. It will check if the site structure contains postname.
 		$regex = '~^/\%postname\%/$~';
 
-		// Check if the site structure match the rquired one.
+		// Check if the site structure match the required one.
 		preg_match( $regex, $structure, $matches );
 
 		// Bail if the site have different structure.

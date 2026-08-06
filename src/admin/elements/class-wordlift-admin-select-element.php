@@ -77,7 +77,7 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 		}
 
 		// Remove all characters except links.
-		$filtered_descrption = wp_kses(
+		$filtered_description = wp_kses(
 			$description,
 			array(
 				'a' => array(
@@ -86,7 +86,7 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 			)
 		);
 
-		return wpautop( $filtered_descrption );
+		return wpautop( $filtered_description );
 	}
 
 	/**
@@ -127,7 +127,7 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 
 		/**
 		 * Filter: 'wl_admin_select_element_data_attributes' - Allow third
-		 * parties to modify the field data attrbutes.
+		 * parties to modify the field data attributes.
 		 *
 		 * @param array $pre_attributes Array of the field data attributes.
 		 *
@@ -140,7 +140,7 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 			return $output;
 		}
 
-		// Loop throught all data attributes and build the output string.
+		// Loop through all data attributes and build the output string.
 		foreach ( $attributes as $name => $value ) {
 			$output .= sprintf(
 				'data-%s="%s" ',

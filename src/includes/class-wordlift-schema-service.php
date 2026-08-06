@@ -256,7 +256,7 @@ class Wordlift_Schema_Service {
 	const FIELD_OFFERS = 'wl_schema_offers';
 
 	/**
-	 * The 'availablity' field name.
+	 * The 'availability' field name.
 	 *
 	 * @since 3.18.0
 	 */

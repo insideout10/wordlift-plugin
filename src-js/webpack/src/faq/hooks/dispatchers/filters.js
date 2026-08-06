@@ -18,7 +18,7 @@ import {ANSWER_ALLOWED_HTML_TAGS} from "../../components/faq-edit-item/helpers";
  */
 function replaceElementByTagName(el, tagName) {
   const occurrences = el.getElementsByTagName(tagName);
-  // Remove all occurences by removing it from the parent node.
+  // Remove all occurrences by removing it from the parent node.
   for (let i = occurrences.length - 1; i >= 0; i--) {
     const newChild = document.createTextNode(occurrences[i].textContent);
     occurrences[i].parentNode.replaceChild(newChild, occurrences[i]);

@@ -72,13 +72,13 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 		$publishers_service = Wordlift_Publisher_Service::get_instance();
 
 		// create a non publisher entity to make the test more real
-		$busines = $this->factory()->post->create( array(
+		$business = $this->factory()->post->create( array(
 			'post_title'  => 'Test_Publisher_Service test_publishers 1',
 			'post_type'   => 'entity',
 			'post_status' => 'publish',
 		) );
 
-		Wordlift_Entity_Type_Service::get_instance()->set( $busines, 'http://schema.org/LocalBusiness' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $business, 'http://schema.org/LocalBusiness' );
 
 		// create a person
 		$person = $this->factory()->post->create( array(

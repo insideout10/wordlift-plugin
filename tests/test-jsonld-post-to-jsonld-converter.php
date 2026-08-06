@@ -311,7 +311,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Helper function to create attachment DB without uploading FilesystemIterator.
 	 *
-	 * @param string $filename The filename the attachement should have
+	 * @param string $filename The filename the attachment should have
 	 * @param integer $width The width of the image
 	 * @param integer $height The height of the image
 	 * @param integer $post_id The ID of the post to associated with the attachment
@@ -890,7 +890,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$attachment_id   = $this->make_dummy_attachment( 'otherimage.jpg', 300, 200, $other_post->ID );
 		$attachment2_url = wp_get_attachment_url( $attachment_id );
 
-		// Create a post that incluse an img of an attachment and an external URL
+		// Create a post that includes an img of an attachment and an external URL
 		$post      = $this->factory()->post->create_and_get( array(
 			'post_author'  => $this->author->ID,
 			'post_content' => 'text <img src="' . $attachment2_url . '">' . "\n" .
@@ -998,7 +998,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$attachment3_id  = $this->make_dummy_attachment( 'yetaotherimage.jpg', 200, 300, $other_post->ID );
 		$attachment3_url = wp_get_attachment_url( $attachment3_id );
 
-		// Create a post that incluse an img of an attachment and an external URL
+		// Create a post that includes an img of an attachment and an external URL
 		$post      = $this->factory()->post->create_and_get( array(
 			'post_author'  => $this->author->ID,
 			'post_content' => 'text <img src="' . $attachment2_url . '">' . "\n" .

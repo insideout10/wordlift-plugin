@@ -69,7 +69,7 @@ wl_write_log( 'Done.' );
  * Delete taxonomy
  */
 wl_write_log( 'Cleaning entities taxonomy... ' );
-// Delte custom taxonomy terms.
+// Delete custom taxonomy terms.
 // We loop over terms in this rude way because in the uninstall script
 // is not possible to call WP custom taxonomy functions.
 foreach ( range( 0, 100 ) as $index ) {

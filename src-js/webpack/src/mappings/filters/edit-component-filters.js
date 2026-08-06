@@ -30,7 +30,7 @@ class EditComponentFilters {
 
   /**
    * Convert property list to api format to save the property
-   * list propertly
+   * list properly
    * @param {Array} property_list List of property items from ui
    */
   static mapPropertyListKeysToAPI(property_list) {

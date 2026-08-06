@@ -233,7 +233,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 * Test the Wl_Metabox_Field loads and saves data correcly
+	 * Test the Wl_Metabox_Field loads and saves data correctly
 	 *
 	 * @group metabox
 	 */

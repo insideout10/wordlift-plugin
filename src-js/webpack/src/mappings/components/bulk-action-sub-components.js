@@ -51,7 +51,7 @@ const TrashOptions = () => {
 
 /**
  * BulkActionOptions conditionally render the options
- * from the choosen category.
+ * from the chosen category.
  * @param {Object} props
  */
 export const BulkActionOptions = props => {

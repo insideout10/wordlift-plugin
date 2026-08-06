@@ -169,7 +169,7 @@ class Wl_Abstract_Metabox {
 			$this->fields = array();
 
 			/**
-			 * In some special case, properties must be grouped in one field (e.g. coordinates) or dealed with custom methods.
+			 * In some special case, properties must be grouped in one field (e.g. coordinates) or dealt with custom methods.
 			 * We must divide fields in two groups:
 			 * - simple: accept values for one property
 			 * - grouped: accept values for more properties, or for one property that needs a specific metabox.
@@ -306,7 +306,7 @@ class Wl_Abstract_Metabox {
 		if ( class_exists( $field_class ) ) {
 			// Get decorator and use it as wrapper for save_data and get_data methods.
 			$instance = new $field_class( $args, $id, $type );
-			// Call apropriate constructor (e.g. Wl_Metabox_Field... ).
+			// Call appropriate constructor (e.g. Wl_Metabox_Field... ).
 			$this->fields[] = $instance;
 		}
 	}

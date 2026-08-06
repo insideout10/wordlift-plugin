@@ -12,7 +12,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 /**
- * Internal depdencies.
+ * Internal dependencies.
  */
 import WlPostExcerpt from "./components/wl-post-excerpt/index";
 import store from "./store/index";

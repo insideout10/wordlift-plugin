@@ -37,7 +37,7 @@ function wl_core_check_relation_predicate_is_supported( $predicate ) {
 /**
  * Return an array of validation rules used by wl_core_get_posts
  *
- * @return array in the format field => (array) accepeted_values
+ * @return array in the format field => (array) accepted_values
  */
 function wl_core_get_validation_rules() {
 

@@ -49,7 +49,7 @@ const INITIAL_STATE = {
   PropertyListData: {
     propertyHeaderCheckboxClicked: false,
     chosenPropertyCategory: ACTIVE_CATEGORY,
-    choosenPropertyBulkAction: null,
+    chosenPropertyBulkAction: null,
     fieldTypeHelpTextOptions: editMappingSettings.wl_field_type_options,
     transformHelpTextOptions: editMappingSettings.wl_transform_function_options,
     fieldNameOptions: editMappingSettings.wl_field_name_options,

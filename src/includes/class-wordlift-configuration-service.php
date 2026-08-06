@@ -724,7 +724,7 @@ class Wordlift_Configuration_Service {
 	}
 
 	/**
-	 * Get the 'analytics-entity-uri-dimention' option.
+	 * Get the 'analytics-entity-uri-dimension' option.
 	 *
 	 * @return int
 	 * @since 3.21.0

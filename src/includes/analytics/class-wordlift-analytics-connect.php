@@ -61,7 +61,7 @@ class Wordlift_Analytics_Connect {
 	}
 
 	/**
-	 * Gets the configuration data assosiated with the analytics settings. For
+	 * Gets the configuration data associated with the analytics settings. For
 	 * frontend script use primarily.
 	 *
 	 * @method get_analytics_config_data

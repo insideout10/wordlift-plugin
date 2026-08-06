@@ -1301,7 +1301,7 @@ class Wordlift {
 
 				/**
 				 * @since 3.27.1
-				 * Intiailize the acf group data formatter.
+				 * Initialize the acf group data formatter.
 				 */
 				new Acf_Group_Formatter();
 				new Jsonld_Converter( $mappings_validator, $mappings_transform_functions_registry );

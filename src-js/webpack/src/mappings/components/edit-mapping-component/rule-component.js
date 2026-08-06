@@ -29,7 +29,7 @@ class RuleComponent extends React.Component {
   /**
    * Saves when a change occur to selection field.
    *
-   * @param {Object} event When selection field inside rule changes this event is emiited.
+   * @param {Object} event When selection field inside rule changes this event is emitted.
    * @param {String} fieldKey FieldKey indicates the selection field name
    */
   handleSelectFieldChange(event, fieldKey) {

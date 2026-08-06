@@ -18,7 +18,7 @@
 class Test_Wordlift_Admin_Entity_Type_Settings_Service extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * Test the storage nd retrieval of settings.
+	 * Test the storage and retrieval of settings.
 	 *
 	 * @since 3.11.0
 	 */
