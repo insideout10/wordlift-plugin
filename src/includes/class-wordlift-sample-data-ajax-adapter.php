@@ -48,6 +48,8 @@ class Wordlift_Sample_Data_Ajax_Adapter {
 		// Clean any potential garbage before us.
 		ob_clean();
 
+		$this->check_permissions();
+
 		// Create the sample data.
 		$this->sample_data_service->create();
 
@@ -60,6 +62,8 @@ class Wordlift_Sample_Data_Ajax_Adapter {
 		// Clean any potential garbage before us.
 		ob_clean();
 
+		$this->check_permissions();
+
 		// Create the sample data.
 		$this->sample_data_service->delete();
 
@@ -67,5 +71,19 @@ class Wordlift_Sample_Data_Ajax_Adapter {
 		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		@header( 'Content-Disposition: inline' );
 		wp_send_json_success();
+	}
+
+	/**
+	 * Bail out unless the request carries a valid `wl_sample_data` nonce and the user can manage options.
+	 *
+	 * @since 3.54.16
+	 */
+	private function check_permissions() {
+
+		check_ajax_referer( 'wl_sample_data' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( null, 403 );
+		}
 	}
 }

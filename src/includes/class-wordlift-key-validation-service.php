@@ -89,18 +89,31 @@ class Wordlift_Key_Validation_Service {
 	}
 
 	private function key_validation_request( $key ) {
-		$response = $this->get_account_info( $key );
+		$response      = $this->get_account_info( $key );
+		$error_message = __( 'An error occurred, please contact us at hello@wordlift.io', 'wordlift' );
 
-		if ( is_wp_error( $response ) || 2 !== (int) $response['response']['code'] / 100 ) {
+		if ( is_wp_error( $response ) ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
-			throw new \Exception( __( 'An error occurred, please contact us at hello@wordlift.io', 'wordlift' ) );
+			throw new Wordlift_Key_Validation_Exception( $error_message );
+		}
+
+		$code = (int) wp_remote_retrieve_response_code( $response );
+
+		if ( $code < 200 || $code > 299 ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			throw new Wordlift_Key_Validation_Exception( $error_message );
 		}
 
 		$res_body = json_decode( wp_remote_retrieve_body( $response ), true );
 
-		$url = $res_body['url'];
+		if ( ! is_array( $res_body ) ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			throw new Wordlift_Key_Validation_Exception( $error_message );
+		}
 
-		$enabled_features = array_keys( array_filter( (array) $res_body['features'] ) );
+		$url = isset( $res_body['url'] ) ? $res_body['url'] : null;
+
+		$enabled_features = array_keys( array_filter( (array) ( isset( $res_body['features'] ) ? $res_body['features'] : array() ) ) );
 		$plugin_features  = array(
 			Entity_Type_Setter::STARTER_PLAN,
 			Entity_Type_Setter::PROFESSIONAL_PLAN,
@@ -109,7 +122,7 @@ class Wordlift_Key_Validation_Service {
 
 		if ( count( array_intersect( $enabled_features, $plugin_features ) ) === 0 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
-			throw new \Exception( __( 'This key is not valid. Start building your Knowledge Graph by purchasing a WordLift subscription <a href=\'https://wordlift.io/pricing/\'>here</a>.', 'wordlift' ) );
+			throw new Wordlift_Key_Validation_Exception( __( 'This key is not valid. Start building your Knowledge Graph by purchasing a WordLift subscription <a href=\'https://wordlift.io/pricing/\'>here</a>.', 'wordlift' ) );
 		}
 
 		// Considering that production URL may be filtered.
@@ -118,7 +131,7 @@ class Wordlift_Key_Validation_Service {
 
 		if ( ! empty( $url ) && $url !== $site_url ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
-			throw new \Exception( __( 'The key is already used on another site, please contact us at hello@wordlift.io to move the key to another site.', 'wordlift' ) );
+			throw new Wordlift_Key_Validation_Exception( __( 'The key is already used on another site, please contact us at hello@wordlift.io to move the key to another site.', 'wordlift' ) );
 		}
 
 		return true;
@@ -151,6 +164,10 @@ class Wordlift_Key_Validation_Service {
 		// Ensure we don't have garbage before us.
 		ob_clean();
 
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( 'You are not allowed to validate the key.', 403 );
+		}
+
 		// Check if we have a key.
 		if ( ! isset( $_POST['key'] ) ) {  //phpcs:ignore WordPress.Security.NonceVerification.Missing
 			wp_send_json_error( 'The key parameter is required.' );
@@ -158,8 +175,10 @@ class Wordlift_Key_Validation_Service {
 
 		$this->ttl_cache_service->delete( 'is_key_valid' );
 
+		$key = sanitize_text_field( wp_unslash( (string) $_POST['key'] ) ); //phpcs:ignore WordPress.Security.NonceVerification.Missing
+
 		try {
-			$this->key_validation_request( sanitize_text_field( wp_unslash( (string) $_POST['key'] ) ) ); //phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$this->key_validation_request( $key );
 			wp_send_json_success(
 				array(
 					'valid'   => true,
@@ -168,7 +187,8 @@ class Wordlift_Key_Validation_Service {
 			);
 
 		} catch ( \Exception $e ) {
-			Wordlift_Configuration_Service::get_instance()->set_key( '' );
+			// Never clear the stored key here: a failed check can't reliably tell a rejected key from a proxy error or
+			// an unexpected response, and clearing it doesn't revoke anything since the API enforces rejected keys.
 			wp_send_json_success(
 				array(
 					'valid'   => false,

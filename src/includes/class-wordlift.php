@@ -817,6 +817,7 @@ class Wordlift {
 		/**
 		 * Load the WordLift key validation service.
 		 */
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-key-validation-exception.php';
 		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wordlift-key-validation-service.php';
 
 		// Load the `Wordlift_Category_Taxonomy_Service` class definition.

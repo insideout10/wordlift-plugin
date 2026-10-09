@@ -21,22 +21,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<h2><?php echo esc_html_x( 'Download Your Data', 'Page title', 'wordlift' ); ?></h2>
 	<p><?php esc_html_e( 'Choose the format to download your data:', 'wordlift' ); ?></p>
 
-	<a href="<?php echo esc_url( admin_url( 'admin-ajax.php?action=wl_download_your_data&out=json' ) ); ?>"
+	<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-ajax.php?action=wl_download_your_data&out=json' ), 'wl_download_your_data' ) ); ?>"
 		class="button wl-add-input wl-button">
 			<?php esc_html_e( 'JSON-LD', 'wordlift' ); ?>
 	</a>
 
-	<a href="<?php echo esc_url( admin_url( 'admin-ajax.php?action=wl_download_your_data&out=rdf' ) ); ?>"
+	<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-ajax.php?action=wl_download_your_data&out=rdf' ), 'wl_download_your_data' ) ); ?>"
 		class="button wl-add-input wl-button">
 			<?php esc_html_e( 'RDF/XML', 'wordlift' ); ?>
 	</a>
 
-	<a href="<?php echo esc_url( admin_url( 'admin-ajax.php?action=wl_download_your_data&out=ttl' ) ); ?>"
+	<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-ajax.php?action=wl_download_your_data&out=ttl' ), 'wl_download_your_data' ) ); ?>"
 		class="button wl-add-input wl-button">
 			<?php echo esc_html_x( 'Turtle', 'File format, not the animal', 'wordlift' ); ?>
 	</a>
 
-	<a href="<?php echo esc_url( admin_url( 'admin-ajax.php?action=wl_download_your_data&out=n3' ) ); ?>"
+	<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-ajax.php?action=wl_download_your_data&out=n3' ), 'wl_download_your_data' ) ); ?>"
 		class="button wl-add-input wl-button">
 			<?php esc_html_e( 'N3', 'wordlift' ); ?>
 	</a>
@@ -53,7 +53,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			$class_name .= ' wl-button-disabled';
 		}
 		?>
-		<a href="<?php echo esc_url( admin_url( 'admin-ajax.php?action=wl_google_analytics_export' ) ); ?>"
+		<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-ajax.php?action=wl_google_analytics_export' ), 'wl_google_analytics_export' ) ); ?>"
 			class="<?php echo esc_attr( $class_name ); ?>">
 				<?php esc_html_e( 'Google Analytics', 'wordlift' ); ?>
 

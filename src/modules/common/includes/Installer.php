@@ -62,6 +62,15 @@ class Installer {
 
 	public function admin_ajax_install_and_activate() {
 
+		check_ajax_referer( $this->get_nonce_action() );
+
+		// Installing needs `install_plugins`, which nobody has with DISALLOW_FILE_MODS or on a multisite subsite, so only
+		// require it when the plugin isn't installed yet.
+		$can_install = $this->plugin->is_plugin_installed() || current_user_can( 'install_plugins' );
+		if ( ! $can_install || ! current_user_can( 'activate_plugins' ) ) {
+			wp_send_json_error( null, 403 );
+		}
+
 		$this->install_and_activate();
 
 		if ( $this->plugin->is_plugin_installed() && $this->plugin->is_plugin_activated() ) {
@@ -69,6 +78,15 @@ class Installer {
 		}
 
 		wp_send_json_error( null, 400 );
+	}
+
+	/**
+	 * The nonce action expected by the `wl_install_and_activate_{name}` AJAX call.
+	 *
+	 * @return string
+	 */
+	public function get_nonce_action() {
+		return "wl_install_and_activate_{$this->plugin->get_name()}";
 	}
 
 	public function register_hooks() {
