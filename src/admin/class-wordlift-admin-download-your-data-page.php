@@ -81,6 +81,14 @@ class Wordlift_Admin_Download_Your_Data_Page {
 	 */
 	public function download_your_data() {
 
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['_wpnonce'] ) ), 'wl_download_your_data' ) ) {
+			wp_die( esc_html__( 'This download link has expired. Please go back to the Download Your Data page and try again.', 'wordlift' ), 403 );
+		}
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You are not allowed to download this data.', 'wordlift' ), 403 );
+		}
+
 		$default_api_service = Default_Api_Service::get_instance();
 
 		// Avoid PHP notices when buffer is empty.

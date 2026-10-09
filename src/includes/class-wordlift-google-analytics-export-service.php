@@ -27,6 +27,14 @@ class Wordlift_Google_Analytics_Export_Service {
 	 * @return void
 	 */
 	public function export() {
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['_wpnonce'] ) ), 'wl_google_analytics_export' ) ) {
+			wp_die( esc_html__( 'This download link has expired. Please go back to the Download Your Data page and try again.', 'wordlift' ), 403 );
+		}
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You are not allowed to export this data.', 'wordlift' ), 403 );
+		}
+
 		// Bail if the permalink structure is different from "Post name".
 		if ( ! $this->is_postname_permalink_structure() ) {
 			wp_die( 'The current permalink structure do not allow to export your data. Please change the permalink structure to "Post name".' );
