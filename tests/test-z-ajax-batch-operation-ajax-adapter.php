@@ -24,9 +24,16 @@ class Wordlift_Ajax_Batch_Operation_Ajax_Adapter_Test extends Wordlift_Ajax_Unit
 	private $operation;
 
 	/**
+	 * The adapter under test, it hooks the AJAX actions when created.
+	 *
+	 * @var Wordlift_Batch_Operation_Ajax_Adapter
+	 */
+	private $adapter;
+
+	/**
 	 * {@inheritdoc}
 	 */
-	function setUp() {
+	public function setUp() {
 		parent::setUp();
 
 		// `Wordlift_Admin_Setup::admin_init` redirects admins and exits while this flag is set.
@@ -36,7 +43,11 @@ class Wordlift_Ajax_Batch_Operation_Ajax_Adapter_Test extends Wordlift_Ajax_Unit
 		$this->operation->method( 'process' )->willReturn( array( 'next' => 10 ) );
 		$this->operation->method( 'count' )->willReturn( 42 );
 
-		new Wordlift_Batch_Operation_Ajax_Adapter( $this->operation, self::ACTION );
+		$this->adapter = new Wordlift_Batch_Operation_Ajax_Adapter( $this->operation, self::ACTION );
+	}
+
+	public function test_create_nonce_uses_the_action() {
+		$this->assertTrue( (bool) wp_verify_nonce( $this->adapter->create_nonce(), self::ACTION ) );
 	}
 
 	public function actions() {

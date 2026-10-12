@@ -20,7 +20,7 @@ class Wordlift_Autocomplete_Test extends Wordlift_Ajax_Unit_Test_Case {
 	/**
 	 * {@inheritdoc}
 	 */
-	function setUp() {
+	public function setUp() {
 		parent::setUp();
 
 		// The lowest role allowed to autocomplete.

@@ -28,7 +28,7 @@ class Wordlift_Ajax_Key_Validation_Test extends Wordlift_Ajax_Unit_Test_Case {
 	/**
 	 * {@inheritdoc}
 	 */
-	function setUp() {
+	public function setUp() {
 		parent::setUp();
 
 		$this->validation_responses = 0;
@@ -40,14 +40,14 @@ class Wordlift_Ajax_Key_Validation_Test extends Wordlift_Ajax_Unit_Test_Case {
 		add_action( 'wl_key_validation_response', array( $this, '_count_validation_response' ) );
 	}
 
-	function tearDown() {
+	public function tearDown() {
 		remove_filter( 'pre_http_request', array( $this, '_mock_api' ) );
 		remove_action( 'wl_key_validation_response', array( $this, '_count_validation_response' ) );
 
 		parent::tearDown();
 	}
 
-	function _mock_api( $response, $request, $url ) {
+	public function _mock_api( $response, $request, $url ) {
 
 		if ( preg_match( '@/accounts/info$@', $url ) ) {
 			return array(
@@ -69,7 +69,7 @@ class Wordlift_Ajax_Key_Validation_Test extends Wordlift_Ajax_Unit_Test_Case {
 		return $response;
 	}
 
-	function _count_validation_response() {
+	public function _count_validation_response() {
 		$this->validation_responses ++;
 	}
 

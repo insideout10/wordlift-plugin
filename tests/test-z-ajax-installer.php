@@ -36,7 +36,7 @@ class Wordlift_Ajax_Installer_Test extends Wordlift_Ajax_Unit_Test_Case {
 	/**
 	 * {@inheritdoc}
 	 */
-	function setUp() {
+	public function setUp() {
 		parent::setUp();
 
 		// `Wordlift_Admin_Setup::admin_init` redirects admins and exits while this flag is set.
@@ -97,7 +97,12 @@ class Wordlift_Ajax_Installer_Test extends Wordlift_Ajax_Unit_Test_Case {
 	}
 
 	public function test_admin_with_nonce_is_allowed() {
-		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
+		$user_id = self::factory()->user->create( array( 'role' => 'administrator' ) );
+		// On multisite only super admins can activate plugins.
+		if ( is_multisite() ) {
+			grant_super_admin( $user_id );
+		}
+		wp_set_current_user( $user_id );
 
 		// Already installed and activated: the handler runs through without touching the file system.
 		$this->plugin->method( 'is_plugin_installed' )->willReturn( true );
