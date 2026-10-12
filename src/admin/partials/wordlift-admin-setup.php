@@ -47,6 +47,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		array(
 			'ajaxUrl'   => wp_parse_url( self_admin_url( 'admin-ajax.php' ), PHP_URL_PATH ),
 			'action'    => 'wl_validate_key',
+			'nonce'     => wp_create_nonce( 'wl_validate_key' ),
 			'permalink' => $permalink_structure,
 			'media'     => array(
 				'title'  => __( 'WordLift Choose Logo', 'wordlift' ),

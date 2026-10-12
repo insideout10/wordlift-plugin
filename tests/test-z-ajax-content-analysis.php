@@ -54,7 +54,32 @@ class Ajax_Content_Analysis_Test extends Wordlift_Ajax_Unit_Test_Case {
 		return $response;
 	}
 
+	public function test_subscriber_is_refused() {
+		wp_set_current_user( $this->factory()->user->create( array( 'role' => 'subscriber' ) ) );
+
+		$_POST = array(
+			'action'   => 'wl_analyze',
+			'_wpnonce' => wp_create_nonce( 'wl_analyze' ),
+			'data'     => file_get_contents( dirname( __FILE__ ) . '/assets/content-analysis-request-1.json' ),
+		);
+
+		try {
+			$this->_handleAjax( 'wl_analyze' );
+		} catch ( WPAjaxDieContinueException $e ) {
+			unset( $e );
+		}
+
+		$response = json_decode( $this->_last_response, true );
+
+		$this->assertTrue( is_array( $response ), 'We expect `response` to be an `array`, instead got: ' . var_export( $this->_last_response, true ) );
+		$this->assertFalse( $response['success'], 'Success must be `false`.' );
+		$this->assertEquals( 'You are not allowed to analyze content.', $response['data'] );
+	}
+
 	public function test() {
+		// The lowest role allowed to analyze.
+		wp_set_current_user( $this->factory()->user->create( array( 'role' => 'contributor' ) ) );
+
 		// Create an entity, by also setting its entity URL and type.
 		$post_id = $this->factory()->post->create( array(
 			'post_type'    => 'entity',

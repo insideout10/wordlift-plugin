@@ -92,7 +92,7 @@ class Installer {
 	public function register_hooks() {
 		add_action( 'wl_feature__change__entity-types-professional', array( $this, 'install_and_activate_on_entity_type_change' ), 10 );
 		add_action( 'wl_feature__change__entity-types-business', array( $this, 'install_and_activate_on_entity_type_change' ), 10 );
-		add_action( "wp_ajax_wl_install_and_activate_{$this->plugin->get_name()}", array( $this, 'admin_ajax_install_and_activate' ) );
+		add_action( "wp_ajax_{$this->get_nonce_action()}", array( $this, 'admin_ajax_install_and_activate' ) );
 		add_action( "wl_install_and_activate_{$this->plugin->get_name()}", array( $this, 'install_and_activate' ) );
 	}
 

@@ -168,24 +168,22 @@ class Wordlift_Key_Validation_Service {
 			wp_send_json_error( 'You are not allowed to validate the key.', 403 );
 		}
 
+		// Validating a key has side effects (`wl_key_validation_response` syncs the network dataset ids).
+		if ( ! check_ajax_referer( 'wl_validate_key', '_wpnonce', false ) ) {
+			wp_send_json_error( 'Invalid nonce.', 403 );
+		}
+
 		// Check if we have a key.
-		if ( ! isset( $_POST['key'] ) ) {  //phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( ! isset( $_POST['key'] ) ) {
 			wp_send_json_error( 'The key parameter is required.' );
 		}
 
 		$this->ttl_cache_service->delete( 'is_key_valid' );
 
-		$key = sanitize_text_field( wp_unslash( (string) $_POST['key'] ) ); //phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$key = sanitize_text_field( wp_unslash( (string) $_POST['key'] ) );
 
 		try {
 			$this->key_validation_request( $key );
-			wp_send_json_success(
-				array(
-					'valid'   => true,
-					'message' => '',
-				)
-			);
-
 		} catch ( \Exception $e ) {
 			// Never clear the stored key here: a failed check can't reliably tell a rejected key from a proxy error or
 			// an unexpected response, and clearing it doesn't revoke anything since the API enforces rejected keys.
@@ -197,6 +195,14 @@ class Wordlift_Key_Validation_Service {
 				)
 			);
 		}
+
+		// Send outside the `try` so the `catch` can't intercept `wp_send_json_success`'s `wp_die`.
+		wp_send_json_success(
+			array(
+				'valid'   => true,
+				'message' => '',
+			)
+		);
 	}
 
 	/**

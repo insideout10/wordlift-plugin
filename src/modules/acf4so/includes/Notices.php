@@ -2,6 +2,7 @@
 
 namespace Wordlift\Modules\Acf4so;
 
+use Wordlift\Modules\Common\Installer;
 use Wordlift\Modules\Common\Plugin;
 
 class Notices {
@@ -11,8 +12,14 @@ class Notices {
 	 */
 	private $acf4so_plugin;
 
-	public function __construct( Plugin $plugin ) {
+	/**
+	 * @var Installer
+	 */
+	private $installer;
+
+	public function __construct( Plugin $plugin, Installer $installer ) {
 		$this->acf4so_plugin = $plugin;
+		$this->installer     = $installer;
 	}
 
 	public function register_hooks() {
@@ -20,6 +27,11 @@ class Notices {
 	}
 
 	public function admin_notices() {
+
+		// Only show the notice to users who can use its button.
+		if ( ! current_user_can( 'activate_plugins' ) ) {
+			return;
+		}
 
 		$is_package_type_supported = $this->is_package_type_supported();
 
@@ -35,6 +47,11 @@ class Notices {
 		 * 2. When woocommerce plugin installed and acf4so not installed or activated then the notice should appear.
 		 */
 		if ( ! $this->acf4so_plugin->is_plugin_installed() ) {
+			// Like the AJAX handler, installing also needs `install_plugins`.
+			if ( ! current_user_can( 'install_plugins' ) ) {
+				return;
+			}
+
 			$this->display_notice(
 				__( "WordLift detected that <b>Advanced Custom Fields for Schema.org</b> is not installed and, you're losing out on full Schema.org support.", 'wordlift' ),
 				__( 'Reinstall & Activate', 'wordlift' )
@@ -76,7 +93,7 @@ class Notices {
 									   . '</p><button class="button action" onclick="wordliftInstallAcf4so(this)">'
 									   . __( 'Retry', 'wordlift' )
 									   . '</button>';
-		$ajax_action = 'wl_install_and_activate_' . $this->acf4so_plugin->get_name();
+		$ajax_action = $this->installer->get_nonce_action();
 		?>
 
 		<script>

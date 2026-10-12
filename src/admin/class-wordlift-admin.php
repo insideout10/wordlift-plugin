@@ -331,6 +331,7 @@ class Wordlift_Admin {
 			'wl_autocomplete_nonce'        => wp_create_nonce( 'wl_autocomplete' ),
 			'autocomplete_scope'           => $autocomplete_scope,
 			'wl_video_api_nonce'           => wp_create_nonce( 'wl_video_api_nonce' ),
+			'wl_validate_key_nonce'        => wp_create_nonce( 'wl_validate_key' ),
 
 			/**
 			 * Allow 3rd parties to define the default editor id. This turns useful if 3rd parties load

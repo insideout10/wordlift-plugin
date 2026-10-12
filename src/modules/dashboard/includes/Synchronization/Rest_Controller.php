@@ -30,7 +30,9 @@ class Rest_Controller {
 			array(
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'create_sync' ),
-				'permission_callback' => '__return_true',
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
 			)
 		);
 
@@ -40,7 +42,9 @@ class Rest_Controller {
 			array(
 				'methods'             => 'GET',
 				'callback'            => array( $this, 'list_syncs' ),
-				'permission_callback' => '__return_true',
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
 				'args'                => array(
 					'is_running' => array(
 						'description' => esc_html__( 'Filter the is_running', 'wordlift' ),
@@ -56,7 +60,9 @@ class Rest_Controller {
 			array(
 				'methods'             => 'DELETE',
 				'callback'            => array( $this, 'delete_syncs' ),
-				'permission_callback' => '__return_true',
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
 			)
 		);
 	}

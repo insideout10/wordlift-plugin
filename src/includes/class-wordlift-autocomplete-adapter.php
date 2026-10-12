@@ -52,6 +52,16 @@ class Wordlift_Autocomplete_Adapter {
 
 		check_ajax_referer( 'wl_autocomplete' );
 
+		// The results include titles and excerpts of drafts and private posts.
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'You are not allowed to search entities.', 'wordlift' ),
+				),
+				403
+			);
+		}
+
 		// Return error if the query param is empty.
 		if ( ! empty( $_REQUEST['query'] ) ) { // Input var okay.
 			$query = sanitize_text_field( wp_unslash( $_REQUEST['query'] ) ); // Input var okay.

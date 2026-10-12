@@ -92,6 +92,10 @@ class Wordlift_Batch_Operation_Ajax_Adapter {
 	 * @since 3.20.0
 	 */
 	public function process() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( 'You are not allowed to run this operation.', 403 );
+		}
+
 		$nonce = isset( $_POST['_nonce'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['_nonce'] ) ) : '';
 		// Validate the nonce.
 		if ( ! wp_verify_nonce( $nonce, $this->action ) ) {
@@ -121,6 +125,9 @@ class Wordlift_Batch_Operation_Ajax_Adapter {
 	 * @since 3.20.0
 	 */
 	public function count() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( 'You are not allowed to run this operation.', 403 );
+		}
 
 		// Validate the nonce.
 		$nonce = isset( $_POST['_nonce'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['_nonce'] ) ) : '';

@@ -40,6 +40,12 @@ function wl_ajax_analyze_disabled_action() {
 function wl_ajax_analyze_action() {
 
 	check_admin_referer( 'wl_analyze' );
+
+	// Each analysis spends the site's API quota.
+	if ( ! current_user_can( 'edit_posts' ) ) {
+		wp_send_json_error( 'You are not allowed to analyze content.', 403 );
+	}
+
 	$data = '';
 
 	if ( isset( $_POST['data'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
