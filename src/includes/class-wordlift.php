@@ -1634,9 +1634,6 @@ class Wordlift {
 		// $that->loader->add_filter( 'mce_buttons', $that->faq_tinymce_adapter, 'register_faq_toolbar_button', 10, 1 );
 		// $that->loader->add_filter( 'mce_external_plugins', $that->faq_tinymce_adapter, 'register_faq_tinymce_plugin', 10, 1 );
 
-		$that->loader->add_action( 'wp_ajax_wl_sample_data_create', $that->sample_data_ajax_adapter, 'create' );
-		$that->loader->add_action( 'wp_ajax_wl_sample_data_delete', $that->sample_data_ajax_adapter, 'delete' );
-
 		/**
 		 * @since 3.26.0
 		 */
@@ -1648,13 +1645,6 @@ class Wordlift {
 		// Handle the autocomplete request.
 		add_action(
 			'wp_ajax_wl_autocomplete',
-			array(
-				$that->autocomplete_adapter,
-				'wl_autocomplete',
-			)
-		);
-		add_action(
-			'wp_ajax_nopriv_wl_autocomplete',
 			array(
 				$that->autocomplete_adapter,
 				'wl_autocomplete',

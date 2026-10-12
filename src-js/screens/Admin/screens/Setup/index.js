@@ -45,7 +45,8 @@ import delay from "modules/delay";
           // Post the validation request.
           global.wp.ajax
             .post(settings.action, {
-              key: $this.val()
+              key: $this.val(),
+              _wpnonce: settings.nonce
             })
             .done(function(data) {
               // If the key is valid then set the process class.

@@ -15,5 +15,5 @@ services:
     class: \Wordlift\Modules\Common\Installer
 
   Wordlift\Modules\Acf4so\Notices:
-    arguments: ['@Wordlift\Modules\Common\Remote_Plugin']
+    arguments: ['@Wordlift\Modules\Common\Remote_Plugin', '@Wordlift\Modules\Common\Installer']
     class: \Wordlift\Modules\Acf4so\Notices

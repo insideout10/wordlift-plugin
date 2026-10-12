@@ -2,6 +2,7 @@
 
 namespace Wordlift\Modules\Pods;
 
+use Wordlift\Modules\Common\Installer;
 use Wordlift\Modules\Common\Plugin;
 
 class Notices {
@@ -11,8 +12,14 @@ class Notices {
 	 */
 	private $pods_plugin;
 
-	public function __construct( Plugin $plugin ) {
+	/**
+	 * @var Installer
+	 */
+	private $installer;
+
+	public function __construct( Plugin $plugin, Installer $installer ) {
 		$this->pods_plugin = $plugin;
+		$this->installer   = $installer;
 	}
 
 	public function register_hooks() {
@@ -21,10 +28,20 @@ class Notices {
 
 	public function admin_notices() {
 
+		// Only show the notice to users who can use its button.
+		if ( ! current_user_can( 'activate_plugins' ) ) {
+			return;
+		}
+
 		/**
 		 * When pods not installed or activated then the notice should appear.
 		 */
 		if ( ! $this->pods_plugin->is_plugin_installed() ) {
+			// Like the AJAX handler, installing also needs `install_plugins`.
+			if ( ! current_user_can( 'install_plugins' ) ) {
+				return;
+			}
+
 			$this->display_notice(
 				__( 'WordLift detected that <b>Pods – Custom Content Types and Fields</b> is not installed.', 'wordlift' ),
 				__( 'Reinstall & Activate', 'wordlift' )
@@ -65,7 +82,7 @@ class Notices {
 			. '</p><button class="button action" onclick="wordliftInstallPods(this)">'
 			. __( 'Retry', 'wordlift' )
 			. '</button>';
-		$ajax_action = 'wl_install_and_activate_' . $this->pods_plugin->get_name();
+		$ajax_action = $this->installer->get_nonce_action();
 		?>
 
 		<script>

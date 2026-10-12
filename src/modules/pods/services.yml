@@ -27,5 +27,5 @@ services:
     arguments: ['@Plugin_Upgrader', '@Wordlift\Modules\Common\Remote_Plugin']
     class: \Wordlift\Modules\Common\Installer
   Wordlift\Modules\Pods\Notices:
-    arguments: ['@Wordlift\Modules\Common\Remote_Plugin']
+    arguments: ['@Wordlift\Modules\Common\Remote_Plugin', '@Wordlift\Modules\Common\Installer']
     class: \Wordlift\Modules\Pods\Notices

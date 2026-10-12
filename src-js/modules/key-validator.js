@@ -34,7 +34,10 @@ const KeyValidator = (selector) => {
     // Delay execution of the validation.
     delay($this, function () {
       // Post the validation request.
-      wp.ajax.post('wl_validate_key', {key: $this.val()})
+      wp.ajax.post('wl_validate_key', {
+        key: $this.val(),
+        _wpnonce: (window.wlSettings || {})['wl_validate_key_nonce']
+      })
         .done(function (data) {
           $this.next().html( data.message )
           // If the key is valid then set the process class.

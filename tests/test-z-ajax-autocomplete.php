@@ -18,6 +18,34 @@
 class Wordlift_Autocomplete_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 	/**
+	 * {@inheritdoc}
+	 */
+	function setUp() {
+		parent::setUp();
+
+		// The lowest role allowed to autocomplete.
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'contributor' ) ) );
+	}
+
+	public function test_autocomplete_subscriber_with_nonce() {
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'subscriber' ) ) );
+
+		$_POST['_wpnonce'] = wp_create_nonce( 'wl_autocomplete' );
+		$_POST['query']    = 'test';
+
+		try {
+			$this->_handleAjax( 'wl_autocomplete' );
+		} catch ( WPAjaxDieContinueException $e ) {
+		}
+
+		$response = json_decode( $this->_last_response );
+
+		$this->assertInternalType( 'object', $response );
+		$this->assertFalse( $response->success );
+		$this->assertEquals( 'You are not allowed to search entities.', $response->data->message );
+	}
+
+	/**
 	 * @expectedException WPAjaxDieStopException
 	 */
 	public function test_autocomplete_without_nonce() {
