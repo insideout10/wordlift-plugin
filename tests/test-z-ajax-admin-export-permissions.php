@@ -22,7 +22,7 @@ class Wordlift_Ajax_Admin_Export_Permissions_Test extends Wordlift_Ajax_Unit_Tes
 	/**
 	 * {@inheritdoc}
 	 */
-	function setUp() {
+	public function setUp() {
 		parent::setUp();
 
 		// `Wordlift_Admin_Setup::admin_init` redirects admins and exits while this flag is set.
