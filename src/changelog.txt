@@ -1,4 +1,7 @@
 
+= 3.54.17 (2026-10-13) =
+* Fix: Add capability checks and nonce verification to several admin AJAX and REST handlers.
+
 = 3.54.16 (2026-08-06) =
 * Fix: Restored entity type selection in the Classic Editor when WordPress generates unique taxonomy input IDs.
 

@@ -6,7 +6,7 @@ Tags: SEO, structured data, ai, linked data, semantic web
 Requires at least: 5.3
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.54.16
+Stable tag: 3.54.17
 License: GPLv2 or later
 
 Search engines are looking for meaning, not keywords. WordLift tells Google how your content relates to your brand, products, and stakeholders.
@@ -146,6 +146,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.54.17 (2026-10-13) =
+* Fix: Add capability checks and nonce verification to several admin AJAX and REST handlers.
 
 = 3.54.16 (2026-08-06) =
 * Fix: Restored entity type selection in the Classic Editor when WordPress generates unique taxonomy input IDs.
