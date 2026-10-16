@@ -65,9 +65,7 @@ class Faq_Rest_Controller {
 			array(
 				'methods'             => \WP_REST_Server::CREATABLE,
 				'callback'            => 'Wordlift\Faq\Faq_Rest_Controller::add_faq_items',
-				'permission_callback' => function () {
-					return current_user_can( 'publish_posts' );
-				},
+				'permission_callback' => 'Wordlift\Faq\Faq_Rest_Controller::permission_callback',
 				'args'                => $create_or_update_or_delete_args,
 			)
 		);
@@ -80,9 +78,7 @@ class Faq_Rest_Controller {
 			array(
 				'methods'             => \WP_REST_Server::EDITABLE,
 				'callback'            => 'Wordlift\Faq\Faq_Rest_Controller::update_faq_items',
-				'permission_callback' => function () {
-					return current_user_can( 'publish_posts' );
-				},
+				'permission_callback' => 'Wordlift\Faq\Faq_Rest_Controller::permission_callback',
 				'args'                => $create_or_update_or_delete_args,
 			)
 		);
@@ -95,9 +91,7 @@ class Faq_Rest_Controller {
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => 'Wordlift\Faq\Faq_Rest_Controller::get_faq_items',
-				'permission_callback' => function () {
-					return current_user_can( 'publish_posts' );
-				},
+				'permission_callback' => 'Wordlift\Faq\Faq_Rest_Controller::permission_callback',
 				'args'                => array( 'post_id' => $post_id_validation_settings ),
 			)
 		);
@@ -110,12 +104,23 @@ class Faq_Rest_Controller {
 			array(
 				'methods'             => \WP_REST_Server::DELETABLE,
 				'callback'            => 'Wordlift\Faq\Faq_Rest_Controller::delete_faq_items',
-				'permission_callback' => function () {
-					return current_user_can( 'publish_posts' );
-				},
+				'permission_callback' => 'Wordlift\Faq\Faq_Rest_Controller::permission_callback',
 				'args'                => $create_or_update_or_delete_args,
 			)
 		);
+	}
+
+	/**
+	 * Check that the current user can publish posts and edit the requested post.
+	 *
+	 * @param WP_REST_Request $request The request.
+	 *
+	 * @return bool True if the user is allowed, otherwise false.
+	 */
+	public static function permission_callback( $request ) {
+		$post_id = (int) $request->get_param( 'post_id' );
+
+		return current_user_can( 'publish_posts' ) && current_user_can( 'edit_post', $post_id );
 	}
 
 	/**

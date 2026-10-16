@@ -92,7 +92,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 		if ( ! isset( self::$instance ) ) {
 			self::$instance = $this;
 
-			add_action( 'wp_ajax_wl_file_cache__flush_all', array( 'Wordlift_File_Cache_Service', 'flush_all' ) );
+			add_action( 'wp_ajax_wl_file_cache__flush_all', array( 'Wordlift_File_Cache_Service', 'ajax_flush_all' ) );
 		}
 
 		$this->log->debug( "File Cache service initialized on $this->cache_dir." );
@@ -213,26 +213,27 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 		closedir( $handle );
 	}
 
-	public static function flush_all() {
+	/**
+	 * Handle the `wl_file_cache__flush_all` AJAX action.
+	 */
+	public static function ajax_flush_all() {
+		check_ajax_referer( 'wl_file_cache__flush_all' );
 
-		// Check user capabilities for AJAX requests.
-		if ( wp_doing_ajax() && isset( $_REQUEST['action'] ) && 'wl_file_cache__flush_all' === $_REQUEST['action'] ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
-
-			if ( ! current_user_can( 'manage_options' ) ) {
-				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-				@ob_clean();
-				return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
-			}
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
 		}
+
+		self::flush_all();
+
+		wp_send_json_success();
+	}
+
+	public static function flush_all() {
 
 		$log = Wordlift_Log_Service::get_logger( 'Wordlift_File_Cache_Service::flush_all' );
 		foreach ( self::$instances as $instance ) {
 			$log->info( 'Flushing cache contents for ' . get_class( $instance ) . '...' );
 			$instance->flush();
-		}
-
-		if ( wp_doing_ajax() && isset( $_REQUEST['action'] ) && 'wl_file_cache__flush_all' === $_REQUEST['action'] ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			wp_send_json_success();
 		}
 	}
 

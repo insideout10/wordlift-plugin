@@ -220,6 +220,21 @@ function wl_shortcode_chord_ajax() {
 	$post_id = isset( $_REQUEST['post_id'] ) ? (int) $_REQUEST['post_id'] : 0;
 	$depth   = isset( $_REQUEST['depth'] ) ? (int) $_REQUEST['depth'] : 2;
 
+	// Only build the graph for posts the current user can see.
+	$post = get_post( $post_id );
+	if ( null === $post
+		|| ! ( ( 'publish' === $post->post_status && is_post_type_viewable( $post->post_type ) )
+			|| current_user_can( 'read_post', $post->ID ) ) ) {
+		wl_core_send_json(
+			array(
+				'entities'  => array(),
+				'relations' => array(),
+			)
+		);
+
+		return;
+	}
+
 	$relations = wl_shortcode_chord_get_relations( $post_id, $depth );
 	$graph     = wl_shortcode_chord_get_graph( $relations );
 

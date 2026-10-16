@@ -238,7 +238,13 @@ class Meta_Box {
 		$updated         = false;
 		$content_service = Wordpress_Content_Service::get_instance();
 		foreach ( $recipes as $recipe ) {
-			$recipe_id       = $recipe->recipe_id;
+			$recipe_id = (int) $recipe->recipe_id;
+
+			// Skip recipes the current user can't edit.
+			if ( ! current_user_can( 'edit_post', $recipe_id ) ) {
+				continue;
+			}
+
 			$content_id      = Wordpress_Content_Id::create_post( $recipe_id );
 			$main_ingredient = $recipe->ingredient;
 			if ( 'UNSET' === $main_ingredient ) {

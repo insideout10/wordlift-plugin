@@ -23,6 +23,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function wl_shortcode_navigator_data() {
 
+	// Check the nonce before reading the cache.
+	check_ajax_referer( 'wl_navigator' );
+
 	// Create the cache key.
 	$cache_params = array_intersect_key(
 		$_REQUEST, // phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -60,9 +63,8 @@ function wl_shortcode_navigator_data() {
 	return $results;
 }
 
+// phpcs:disable WordPress.Security.NonceVerification.Recommended -- The nonce is checked in wl_shortcode_navigator_data().
 function _wl_navigator_get_data() {
-
-	check_ajax_referer( 'wl_navigator' );
 
 	// Post ID must be defined
 	if ( ! isset( $_GET['post_id'] ) ) {
@@ -194,6 +196,7 @@ function _wl_navigator_get_data() {
 
 	return $results;
 }
+// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 /**
  * The Navigator Ajax function.

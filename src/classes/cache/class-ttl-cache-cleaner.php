@@ -56,10 +56,10 @@ class Ttl_Cache_Cleaner {
 		$this->ttl      = $ttl;
 		$this->max_size = $max_size;
 
-		add_action( 'wp_ajax_wl_ttl_cache_cleaner__flush', array( $this, 'flush' ) );
+		add_action( 'wp_ajax_wl_ttl_cache_cleaner__flush', array( $this, 'ajax_flush' ) );
 		add_action( 'wl_ttl_cache_cleaner__flush', array( $this, 'flush' ) );
 
-		add_action( 'wp_ajax_wl_ttl_cache_cleaner__cleanup', array( $this, 'cleanup' ) );
+		add_action( 'wp_ajax_wl_ttl_cache_cleaner__cleanup', array( $this, 'ajax_cleanup' ) );
 		add_action( 'wl_ttl_cache_cleaner__cleanup', array( $this, 'cleanup' ) );
 
 		// Do not bother to configure scheduled tasks while running on the front-end.
@@ -74,16 +74,38 @@ class Ttl_Cache_Cleaner {
 		wp_unschedule_event( $timestamp, 'wl_ttl_cache_cleaner__cleanup' );
 	}
 
-	public function flush() {
+	/**
+	 * Handle the `wl_ttl_cache_cleaner__flush` AJAX action.
+	 */
+	public function ajax_flush() {
+		check_ajax_referer( 'wl_ttl_cache_cleaner__flush' );
 
-		// Check user capabilities for AJAX requests.
-		if ( wp_doing_ajax() ) {
-			if ( ! current_user_can( 'manage_options' ) ) {
-				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-				@ob_clean();
-				return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
-			}
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
 		}
+
+		wp_send_json_success( $this->flush() );
+	}
+
+	/**
+	 * Handle the `wl_ttl_cache_cleaner__cleanup` AJAX action.
+	 */
+	public function ajax_cleanup() {
+		check_ajax_referer( 'wl_ttl_cache_cleaner__cleanup' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
+		}
+
+		wp_send_json_success( $this->cleanup() );
+	}
+
+	/**
+	 * Delete all the cache files.
+	 *
+	 * @return int The number of deleted files.
+	 */
+	public function flush() {
 
 		// Get all the files, recursive.
 		$files = $this->reduce( array(), Ttl_Cache::get_cache_folder() );
@@ -92,22 +114,15 @@ class Ttl_Cache_Cleaner {
 			wp_delete_file( $file[ self::PATH ] );
 		}
 
-		$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( (string) $_REQUEST['action'] ) ) : '';// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( wp_doing_ajax() && 'wl_ttl_cache_cleaner__flush' === $action ) {
-			wp_send_json_success( count( $files ) );
-		}
+		return count( $files );
 	}
 
+	/**
+	 * Delete the stale cache files and keep the cache within the max size.
+	 *
+	 * @return array The initial count, current count and current size.
+	 */
 	public function cleanup() {
-
-		// Check user capabilities for AJAX requests.
-		if ( wp_doing_ajax() ) {
-			if ( ! current_user_can( 'manage_options' ) ) {
-				// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-				@ob_clean();
-				return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
-			}
-		}
 
 		// Get all the files, recursive.
 		$files = $this->reduce( array(), Ttl_Cache::get_cache_folder() );
@@ -161,13 +176,10 @@ class Ttl_Cache_Cleaner {
 			wp_delete_file( $file[ self::PATH ] );
 		}
 
-		// Send back some stats.
-		wp_send_json_success(
-			array(
-				'initial_count' => $original_count,
-				'current_count' => count( $files ),
-				'current_size'  => $total_size,
-			)
+		return array(
+			'initial_count' => $original_count,
+			'current_count' => count( $files ),
+			'current_size'  => $total_size,
 		);
 	}
 
