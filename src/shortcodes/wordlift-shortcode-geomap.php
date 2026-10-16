@@ -19,6 +19,13 @@ function wl_shortcode_geomap_ajax() {
 	// Get the post Id.
 	$post_id = isset( $_REQUEST['post_id'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post_id'] ) ) : null;
 
+	// Only return places for posts the current user can see.
+	if ( is_numeric( $post_id ) && ! wl_core_can_see_post( (int) $post_id ) ) {
+		wl_core_send_json( wl_shortcode_geomap_format_results( array(), $post_id ) );
+
+		return;
+	}
+
 	$map_data = ( is_numeric( $post_id )
 		? wl_shortcode_geomap_ajax_single_post( (int) $post_id )
 		: wl_shortcode_geomap_ajax_all_posts() );

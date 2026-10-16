@@ -56,10 +56,7 @@ class Ttl_Cache_Cleaner {
 		$this->ttl      = $ttl;
 		$this->max_size = $max_size;
 
-		add_action( 'wp_ajax_wl_ttl_cache_cleaner__flush', array( $this, 'ajax_flush' ) );
 		add_action( 'wl_ttl_cache_cleaner__flush', array( $this, 'flush' ) );
-
-		add_action( 'wp_ajax_wl_ttl_cache_cleaner__cleanup', array( $this, 'ajax_cleanup' ) );
 		add_action( 'wl_ttl_cache_cleaner__cleanup', array( $this, 'cleanup' ) );
 
 		// Do not bother to configure scheduled tasks while running on the front-end.
@@ -72,32 +69,6 @@ class Ttl_Cache_Cleaner {
 
 		$timestamp = wp_next_scheduled( 'wl_ttl_cache_cleaner__cleanup' );
 		wp_unschedule_event( $timestamp, 'wl_ttl_cache_cleaner__cleanup' );
-	}
-
-	/**
-	 * Handle the `wl_ttl_cache_cleaner__flush` AJAX action.
-	 */
-	public function ajax_flush() {
-		check_ajax_referer( 'wl_ttl_cache_cleaner__flush' );
-
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
-		}
-
-		wp_send_json_success( $this->flush() );
-	}
-
-	/**
-	 * Handle the `wl_ttl_cache_cleaner__cleanup` AJAX action.
-	 */
-	public function ajax_cleanup() {
-		check_ajax_referer( 'wl_ttl_cache_cleaner__cleanup' );
-
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
-		}
-
-		wp_send_json_success( $this->cleanup() );
 	}
 
 	/**

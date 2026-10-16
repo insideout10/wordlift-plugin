@@ -170,6 +170,9 @@ class Wordlift_Ajax_Related_Posts extends Wordlift_Ajax_Unit_Test_Case {
 		$entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'draft', 'entity' );
 		$post_1_id   = wl_create_post( '', 'post1', 'A post', 'publish' );
 
+		// Only users who can read entities (editors and admins) can query related posts for an entity.
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'editor' ) ) );
+
 		// Insert relations
 		wl_core_add_relation_instance( $post_1_id, WL_WHAT_RELATION, $entity_1_id );
 

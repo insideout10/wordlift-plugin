@@ -177,40 +177,10 @@ class Wordlift_Ajax_Public_Handlers_Permissions_Test extends Wordlift_Ajax_Unit_
 		$this->assertEquals( 1, $fired, 'Actions added via the filter must be dispatched.' );
 	}
 
-	public function test_ttl_cache_cleaner_ajax_flush_requires_a_nonce() {
-		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
-
-		$this->setExpectedException( 'WPAjaxDieStopException', '-1' );
-		$this->_handleAjax( 'wl_ttl_cache_cleaner__flush' );
-	}
-
-	public function test_ttl_cache_cleaner_ajax_cleanup_requires_a_nonce() {
-		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
-
-		$this->setExpectedException( 'WPAjaxDieStopException', '-1' );
-		$this->_handleAjax( 'wl_ttl_cache_cleaner__cleanup' );
-	}
-
-	public function test_ttl_cache_cleaner_ajax_flush_requires_manage_options() {
-		wp_set_current_user( self::factory()->user->create( array( 'role' => 'editor' ) ) );
-
-		$_POST['_wpnonce'] = wp_create_nonce( 'wl_ttl_cache_cleaner__flush' );
-
-		$response = $this->call_ajax( 'wl_ttl_cache_cleaner__flush' );
-
-		$this->assertFalse( $response->success );
-		$this->assertEquals( 'Insufficient permissions.', $response->data );
-	}
-
-	public function test_ttl_cache_cleaner_ajax_flush_as_admin() {
-		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
-
-		$_POST['_wpnonce'] = wp_create_nonce( 'wl_ttl_cache_cleaner__flush' );
-
-		$response = $this->call_ajax( 'wl_ttl_cache_cleaner__flush' );
-
-		$this->assertTrue( $response->success );
-		$this->assertInternalType( 'int', $response->data );
+	public function test_cache_flush_ajax_actions_are_not_registered() {
+		$this->assertFalse( has_action( 'wp_ajax_wl_ttl_cache_cleaner__flush' ) );
+		$this->assertFalse( has_action( 'wp_ajax_wl_ttl_cache_cleaner__cleanup' ) );
+		$this->assertFalse( has_action( 'wp_ajax_wl_file_cache__flush_all' ) );
 	}
 
 	public function test_ttl_cache_cleaner_flush_action_does_not_end_other_ajax_requests() {
@@ -226,23 +196,73 @@ class Wordlift_Ajax_Public_Handlers_Permissions_Test extends Wordlift_Ajax_Unit_
 		$this->assertNull( $cache->get( 'key' ) );
 	}
 
-	public function test_file_cache_ajax_flush_all_requires_a_nonce() {
-		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
+	public function test_geomap_only_returns_places_for_posts_the_user_can_see() {
+		wp_set_current_user( 0 );
 
-		$this->setExpectedException( 'WPAjaxDieStopException', '-1' );
-		$this->_handleAjax( 'wl_file_cache__flush_all' );
+		$place_id = self::factory()->post->create( array( 'post_status' => 'publish' ) );
+		add_post_meta( $place_id, 'wl_geo_latitude', '45.1' );
+		add_post_meta( $place_id, 'wl_geo_longitude', '9.1' );
+
+		$draft_id  = self::factory()->post->create( array( 'post_status' => 'draft' ) );
+		$public_id = self::factory()->post->create( array( 'post_status' => 'publish' ) );
+		wl_core_add_relation_instance( $draft_id, WL_WHERE_RELATION, $place_id );
+		wl_core_add_relation_instance( $public_id, WL_WHERE_RELATION, $place_id );
+
+		$_POST['_wpnonce'] = wp_create_nonce( 'wl_geomap' );
+
+		$_POST['post_id'] = $draft_id;
+		$response         = $this->call_ajax( 'wl_geomap' );
+		$this->assertEmpty( $response->features );
+
+		$this->_last_response = '';
+		$_POST['post_id']     = $public_id;
+		$response             = $this->call_ajax( 'wl_geomap' );
+		$this->assertCount( 1, $response->features );
 	}
 
-	public function test_navigator_requires_a_nonce_on_cache_hits() {
-		$post_id = self::factory()->post->create();
+	public function test_related_posts_refuses_posts_the_user_cannot_read() {
+		$other_author_id = self::factory()->user->create( array( 'role' => 'author' ) );
+		$draft_id        = self::factory()->post->create(
+			array(
+				'post_author' => $other_author_id,
+				'post_status' => 'draft',
+			)
+		);
 
-		$cache = new Ttl_Cache( 'navigator', 8 * 60 * 60 );
-		$cache->put( array( 'request_params' => array( 'post_id' => (string) $post_id ) ), array( 'cached' ) );
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'contributor' ) ) );
 
-		$_GET['post_id'] = (string) $post_id;
+		$_GET['post_id'] = $draft_id;
+		$response        = $this->call_ajax( 'wordlift_related_posts', wp_json_encode( array() ) );
+		$this->assertFalse( $response->success );
 
-		$this->setExpectedException( 'WPAjaxDieStopException', '-1' );
-		$this->_handleAjax( 'wl_navigator' );
+		$this->_last_response = '';
+		$_GET['post_id']      = PHP_INT_MAX;
+		$response             = $this->call_ajax( 'wordlift_related_posts', wp_json_encode( array() ) );
+		$this->assertFalse( $response->success );
+	}
+
+	public function test_redirect_checks_the_target_permissions() {
+		$can_redirect = new ReflectionMethod( 'Wordlift_Redirect_Service', 'can_redirect' );
+		$can_redirect->setAccessible( true );
+		$service = Wordlift_Redirect_Service::get_instance();
+
+		$draft  = get_post( self::factory()->post->create( array( 'post_status' => 'draft' ) ) );
+		$public = get_post( self::factory()->post->create( array( 'post_status' => 'publish' ) ) );
+		$term   = get_term( self::factory()->category->create() );
+		$user   = get_user_by( 'id', self::factory()->user->create( array( 'role' => 'author' ) ) );
+
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'subscriber' ) ) );
+		$this->assertFalse( $can_redirect->invoke( $service, $draft, 'permalink' ) );
+		$this->assertTrue( $can_redirect->invoke( $service, $public, 'permalink' ) );
+		$this->assertFalse( $can_redirect->invoke( $service, $public, 'edit' ) );
+		$this->assertTrue( $can_redirect->invoke( $service, $term, 'permalink' ) );
+		$this->assertFalse( $can_redirect->invoke( $service, $term, 'edit' ) );
+		$this->assertFalse( $can_redirect->invoke( $service, $user, 'edit' ) );
+
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
+		$this->assertTrue( $can_redirect->invoke( $service, $draft, 'edit' ) );
+		$this->assertTrue( $can_redirect->invoke( $service, $term, 'edit' ) );
+		$this->assertTrue( $can_redirect->invoke( $service, $user, 'edit' ) );
 	}
 
 }

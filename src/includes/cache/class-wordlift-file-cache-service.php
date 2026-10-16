@@ -88,11 +88,9 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 		// Add ourselves to the list of instances.
 		self::$instances[] = $this;
 
-		// Initialize the singleton and the ajax method.
+		// Initialize the singleton.
 		if ( ! isset( self::$instance ) ) {
 			self::$instance = $this;
-
-			add_action( 'wp_ajax_wl_file_cache__flush_all', array( 'Wordlift_File_Cache_Service', 'ajax_flush_all' ) );
 		}
 
 		$this->log->debug( "File Cache service initialized on $this->cache_dir." );
@@ -211,21 +209,6 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		// Finally closed the directory.
 		closedir( $handle );
-	}
-
-	/**
-	 * Handle the `wl_file_cache__flush_all` AJAX action.
-	 */
-	public static function ajax_flush_all() {
-		check_ajax_referer( 'wl_file_cache__flush_all' );
-
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
-		}
-
-		self::flush_all();
-
-		wp_send_json_success();
 	}
 
 	public static function flush_all() {
