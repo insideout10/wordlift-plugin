@@ -72,10 +72,11 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 
 	if ( ! empty( $filtering_entity_ids ) ) {
 
-		$related_posts = Wordlift_Relation_Service::get_instance()
-													->get_article_subjects( $filtering_entity_ids, '*', null, 'publish', array( $post_id ), 5 );
+		$related_post_ids = Wordlift_Relation_Service::get_instance()
+													->get_article_subjects( $filtering_entity_ids, 'ids', null, 'publish', array( $post_id ), 5 );
 
-		foreach ( $related_posts as $post_obj ) {
+		// Only send the fields the UI needs.
+		foreach ( $related_post_ids as $related_post_id ) {
 
 			/**
 			 * Use the thumbnail.
@@ -85,10 +86,15 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 			 *
 			 * @since 3.19.3 We're using the medium size image.
 			 */
-			$thumbnail           = get_the_post_thumbnail_url( $post_obj, 'medium' );
-			$post_obj->thumbnail = ( $thumbnail ) ? $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
-			$post_obj->link      = get_edit_post_link( $post_obj->ID, 'none' );
-			$post_obj->permalink = get_post_permalink( $post_obj->ID );
+			$thumbnail       = get_the_post_thumbnail_url( $related_post_id, 'medium' );
+			$related_posts[] = (object) array(
+				'ID'         => (int) $related_post_id,
+				'post_title' => get_post_field( 'post_title', $related_post_id ),
+				'post_type'  => get_post_type( $related_post_id ),
+				'thumbnail'  => ( $thumbnail ) ? $thumbnail : WL_DEFAULT_THUMBNAIL_PATH,
+				'link'       => get_edit_post_link( $related_post_id, 'none' ),
+				'permalink'  => get_post_permalink( $related_post_id ),
+			);
 		}
 	}
 

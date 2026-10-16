@@ -119,6 +119,25 @@ class Wordlift_Redirect_Service {
 			);
 		}
 
+		// Don't reveal links to posts the current user can't see.
+		$post = $content->get_bag();
+		if ( is_a( $post, 'WP_Post' ) ) {
+			$can_view = ( 'publish' === $post->post_status && is_post_type_viewable( $post->post_type ) )
+						|| current_user_can( 'read_post', $post->ID );
+			$allowed  = 'edit' === $target ? current_user_can( 'edit_post', $post->ID ) : $can_view;
+
+			if ( ! $allowed ) {
+				wp_die(
+					esc_html__( 'Entity not found.', 'wordlift' ),
+					esc_html__( 'Entity not found.', 'wordlift' ),
+					array(
+						'response'  => 404,
+						'back_link' => true,
+					)
+				);
+			}
+		}
+
 		switch ( $target ) {
 			case 'edit':
 				$redirect_url = $content->get_edit_link();
