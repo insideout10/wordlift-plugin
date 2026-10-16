@@ -55,6 +55,7 @@ class Faq_Rest_Controller {
 			'post_id'   => $post_id_validation_settings,
 			'faq_items' => $faq_items_validation_settings,
 		);
+		$permission_callback             = 'Wordlift\Faq\Faq_Rest_Controller::permission_callback';
 
 		/**
 		 * Rest route for creating new faq item.
@@ -65,7 +66,7 @@ class Faq_Rest_Controller {
 			array(
 				'methods'             => \WP_REST_Server::CREATABLE,
 				'callback'            => 'Wordlift\Faq\Faq_Rest_Controller::add_faq_items',
-				'permission_callback' => 'Wordlift\Faq\Faq_Rest_Controller::permission_callback',
+				'permission_callback' => $permission_callback,
 				'args'                => $create_or_update_or_delete_args,
 			)
 		);
@@ -78,7 +79,7 @@ class Faq_Rest_Controller {
 			array(
 				'methods'             => \WP_REST_Server::EDITABLE,
 				'callback'            => 'Wordlift\Faq\Faq_Rest_Controller::update_faq_items',
-				'permission_callback' => 'Wordlift\Faq\Faq_Rest_Controller::permission_callback',
+				'permission_callback' => $permission_callback,
 				'args'                => $create_or_update_or_delete_args,
 			)
 		);
@@ -91,7 +92,7 @@ class Faq_Rest_Controller {
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => 'Wordlift\Faq\Faq_Rest_Controller::get_faq_items',
-				'permission_callback' => 'Wordlift\Faq\Faq_Rest_Controller::permission_callback',
+				'permission_callback' => $permission_callback,
 				'args'                => array( 'post_id' => $post_id_validation_settings ),
 			)
 		);
@@ -104,7 +105,7 @@ class Faq_Rest_Controller {
 			array(
 				'methods'             => \WP_REST_Server::DELETABLE,
 				'callback'            => 'Wordlift\Faq\Faq_Rest_Controller::delete_faq_items',
-				'permission_callback' => 'Wordlift\Faq\Faq_Rest_Controller::permission_callback',
+				'permission_callback' => $permission_callback,
 				'args'                => $create_or_update_or_delete_args,
 			)
 		);

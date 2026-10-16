@@ -19,6 +19,8 @@ use Wordlift\Cache\Ttl_Cache_Cleaner;
  */
 class Wordlift_Ajax_Public_Handlers_Permissions_Test extends Wordlift_Ajax_Unit_Test_Case {
 
+	const DRAFT_TITLE = 'Draft Title';
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -53,7 +55,7 @@ class Wordlift_Ajax_Public_Handlers_Permissions_Test extends Wordlift_Ajax_Unit_
 		$post_id = self::factory()->post->create(
 			array(
 				'post_status' => 'draft',
-				'post_title'  => 'Draft Title',
+				'post_title'  => self::DRAFT_TITLE,
 			)
 		);
 
@@ -64,7 +66,7 @@ class Wordlift_Ajax_Public_Handlers_Permissions_Test extends Wordlift_Ajax_Unit_
 
 		$this->assertEmpty( $response->entities );
 		$this->assertEmpty( $response->relations );
-		$this->assertStringNotContainsString( 'Draft Title', $this->_last_response );
+		$this->assertStringNotContainsString( self::DRAFT_TITLE, $this->_last_response );
 	}
 
 	public function test_chord_with_public_root_post_returns_the_graph() {
@@ -92,7 +94,7 @@ class Wordlift_Ajax_Public_Handlers_Permissions_Test extends Wordlift_Ajax_Unit_
 		$post_id = self::factory()->post->create(
 			array(
 				'post_status' => 'draft',
-				'post_title'  => 'Draft Title',
+				'post_title'  => self::DRAFT_TITLE,
 			)
 		);
 
@@ -102,7 +104,7 @@ class Wordlift_Ajax_Public_Handlers_Permissions_Test extends Wordlift_Ajax_Unit_
 		$response = $this->call_ajax( 'wl_chord' );
 
 		$this->assertCount( 1, $response->entities );
-		$this->assertEquals( 'Draft Title', $response->entities[0]->label );
+		$this->assertEquals( self::DRAFT_TITLE, $response->entities[0]->label );
 	}
 
 	public function test_geomap_single_post_skips_non_public_posts() {
