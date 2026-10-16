@@ -244,17 +244,55 @@ class Meta_Box {
 		}
 
 		// Refuse the whole batch if the user can't edit one of the recipes.
+		if ( ! $this->can_edit_recipes( $recipes ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'You are not allowed to edit posts.', 'wordlift' ),
+					'btnText' => __( 'Denied', 'wordlift' ),
+				)
+			);
+		}
+
+		if ( $this->set_main_ingredients( $recipes ) ) {
+			wp_send_json_success(
+				array(
+					'message' => __( 'The main ingredient has been updated.', 'wordlift' ),
+				)
+			);
+		} else {
+			wp_send_json_error(
+				array(
+					'message' => __( 'The main ingredient could not be updated.', 'wordlift' ),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Check that the current user can edit all the recipes.
+	 *
+	 * @param array $recipes The recipes.
+	 *
+	 * @return bool True if the user can edit all the recipes, otherwise false.
+	 */
+	private function can_edit_recipes( $recipes ) {
 		foreach ( $recipes as $recipe ) {
 			if ( ! isset( $recipe->recipe_id ) || ! current_user_can( 'edit_post', (int) $recipe->recipe_id ) ) {
-				wp_send_json_error(
-					array(
-						'message' => __( 'You are not allowed to edit posts.', 'wordlift' ),
-						'btnText' => __( 'Denied', 'wordlift' ),
-					)
-				);
+				return false;
 			}
 		}
 
+		return true;
+	}
+
+	/**
+	 * Set the main ingredient of the recipes and flush the caches if anything changed.
+	 *
+	 * @param array $recipes The recipes.
+	 *
+	 * @return bool True if all the updates succeeded, otherwise false.
+	 */
+	private function set_main_ingredients( $recipes ) {
 		$failed          = false;
 		$changed         = false;
 		$content_service = Wordpress_Content_Service::get_instance();
@@ -275,19 +313,7 @@ class Meta_Box {
 			Ttl_Cache::flush_all();
 		}
 
-		if ( ! $failed ) {
-			wp_send_json_success(
-				array(
-					'message' => __( 'The main ingredient has been updated.', 'wordlift' ),
-				)
-			);
-		} else {
-			wp_send_json_error(
-				array(
-					'message' => __( 'The main ingredient could not be updated.', 'wordlift' ),
-				)
-			);
-		}
+		return ! $failed;
 	}
 
 	/**

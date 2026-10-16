@@ -160,24 +160,20 @@ class Wordlift_Redirect_Service {
 	 * @since 3.54.18
 	 */
 	private function can_redirect( $bag, $target ) {
+		$allowed = false;
+
 		if ( $bag instanceof WP_Post ) {
-			return 'edit' === $target ? current_user_can( 'edit_post', $bag->ID ) : wl_core_can_see_post( $bag );
+			$allowed = 'edit' === $target ? current_user_can( 'edit_post', $bag->ID ) : wl_core_can_see_post( $bag );
+		} elseif ( 'edit' !== $target ) {
+			// Term and author pages are public, edit links require the edit capability.
+			$allowed = true;
+		} elseif ( $bag instanceof WP_Term ) {
+			$allowed = current_user_can( 'edit_term', $bag->term_id );
+		} elseif ( $bag instanceof WP_User ) {
+			$allowed = current_user_can( 'edit_user', $bag->ID );
 		}
 
-		// Term and author pages are public, edit links require the edit capability.
-		if ( 'edit' !== $target ) {
-			return true;
-		}
-
-		if ( $bag instanceof WP_Term ) {
-			return current_user_can( 'edit_term', $bag->term_id );
-		}
-
-		if ( $bag instanceof WP_User ) {
-			return current_user_can( 'edit_user', $bag->ID );
-		}
-
-		return false;
+		return $allowed;
 	}
 
 	/**
