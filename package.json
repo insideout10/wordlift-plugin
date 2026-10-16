@@ -34,8 +34,7 @@
     "style-loader": "0.18.2",
     "styled-components": "^3",
     "url-loader": "0.5.9",
-    "whatwg-fetch": "^2",
-    "wordlift-ui": "git+ssh://git@gitlab.com:wordlift/wordlift-ui.git"
+    "whatwg-fetch": "^2"
   },
   "scripts": {
     "start": "node scripts/start.js",

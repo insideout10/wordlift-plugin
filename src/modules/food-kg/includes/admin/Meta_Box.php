@@ -234,27 +234,26 @@ class Meta_Box {
 		}
 
 		$recipes = json_decode( $recipe_data );
-
-		$updated         = false;
-		$content_service = Wordpress_Content_Service::get_instance();
-		foreach ( $recipes as $recipe ) {
-			$recipe_id       = $recipe->recipe_id;
-			$content_id      = Wordpress_Content_Id::create_post( $recipe_id );
-			$main_ingredient = $recipe->ingredient;
-			if ( 'UNSET' === $main_ingredient ) {
-				$updated = $content_service->set_about_jsonld( $content_id, null );
-			} elseif ( 'DONT_CHANGE' === $main_ingredient ) {
-				$updated = true;
-			} else {
-				$main_ingredient = wp_json_encode( json_decode( $recipe->ingredient, true ) );
-				$updated         = $content_service->set_about_jsonld( $content_id, $main_ingredient );
-			}
+		if ( ! is_array( $recipes ) || empty( $recipes ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Recipe data is empty.', 'wordlift' ),
+					'btnText' => __( 'Failed', 'wordlift' ),
+				)
+			);
 		}
 
-		// Since we changed the main ingredients we want to flush all caches.
-		Ttl_Cache::flush_all();
+		// Refuse the whole batch if the user can't edit one of the recipes.
+		if ( ! $this->can_edit_recipes( $recipes ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'You are not allowed to edit posts.', 'wordlift' ),
+					'btnText' => __( 'Denied', 'wordlift' ),
+				)
+			);
+		}
 
-		if ( $updated ) {
+		if ( $this->set_main_ingredients( $recipes ) ) {
 			wp_send_json_success(
 				array(
 					'message' => __( 'The main ingredient has been updated.', 'wordlift' ),
@@ -267,6 +266,54 @@ class Meta_Box {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Check that the current user can edit all the recipes.
+	 *
+	 * @param array $recipes The recipes.
+	 *
+	 * @return bool True if the user can edit all the recipes, otherwise false.
+	 */
+	private function can_edit_recipes( $recipes ) {
+		foreach ( $recipes as $recipe ) {
+			if ( ! isset( $recipe->recipe_id ) || ! current_user_can( 'edit_post', (int) $recipe->recipe_id ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Set the main ingredient of the recipes and flush the caches if anything changed.
+	 *
+	 * @param array $recipes The recipes.
+	 *
+	 * @return bool True if all the updates succeeded, otherwise false.
+	 */
+	private function set_main_ingredients( $recipes ) {
+		$failed          = false;
+		$changed         = false;
+		$content_service = Wordpress_Content_Service::get_instance();
+		foreach ( $recipes as $recipe ) {
+			$main_ingredient = $recipe->ingredient;
+			if ( 'DONT_CHANGE' === $main_ingredient ) {
+				continue;
+			}
+
+			$value   = 'UNSET' === $main_ingredient ? null : wp_json_encode( json_decode( $main_ingredient, true ) );
+			$result  = $content_service->set_about_jsonld( Wordpress_Content_Id::create_post( (int) $recipe->recipe_id ), $value );
+			$changed = true;
+			$failed  = $failed || false === $result;
+		}
+
+		// Since we changed the main ingredients we want to flush all caches.
+		if ( $changed ) {
+			Ttl_Cache::flush_all();
+		}
+
+		return ! $failed;
 	}
 
 	/**

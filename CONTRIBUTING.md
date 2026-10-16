@@ -62,6 +62,13 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 * If you're using [PhpStorm][phpstorm] for development, consider setting the [WordPress code style][phpstorm-wp-code-style]
 * We use [Code Climate][code-climate] and [Scrutinizer][scrutinizer] to monitor the quality of code and code style consistency: check there for issues and fixes (**we're aiming to greatly improve our score**)
 * We believe in [DRY][dry] and [KISS][kiss] and somewhat in ["Don't Reinvent the Wheel"][dont-reinvent-the-wheel]
+* The admin bundles in `src/admin/js/1` (settings, setup, admin, author, tinymce) are built from `src-js/`. Don't
+  edit them by hand: change `src-js/`, then rebuild with Node 18 (see `.nvmrc`) and commit the output:
+  ```sh
+  nvm use
+  npm ci
+  npm run build
+  ```
 
 ## <a name="releases"></a> Commit and Release Workflow
 

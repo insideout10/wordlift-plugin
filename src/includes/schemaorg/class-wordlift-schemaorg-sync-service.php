@@ -43,9 +43,6 @@ class Wordlift_Schemaorg_Sync_Service {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
-		// Hook the `wl_sync_schemaorg` ajax action.
-		add_action( 'wp_ajax_wl_sync_schemaorg', array( $this, 'load' ) );
-
 		self::$instance = $this;
 	}
 

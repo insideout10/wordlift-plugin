@@ -100,6 +100,22 @@ class Wordlift_Http_Api {
 			return;
 		}
 
+		/**
+		 * Filter: wl_http_api_allowed_actions.
+		 *
+		 * The actions that can be called via the `wl-api` end-point.
+		 *
+		 * @param string[] $actions The allowed actions.
+		 *
+		 * @since 3.54.18
+		 */
+		$allowed_actions = apply_filters( 'wl_http_api_allowed_actions', array( 'wl_jsonld', 'wl_hello_world' ) );
+		if ( ! in_array( $action, (array) $allowed_actions, true ) ) {
+			status_header( 400 );
+
+			return;
+		}
+
 		if ( ! wp_validate_auth_cookie( '', 'logged_in' ) ) {
 			/**
 			 * Fires on a non-authenticated admin post request for the given action.
