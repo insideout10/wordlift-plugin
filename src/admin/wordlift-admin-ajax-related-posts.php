@@ -39,6 +39,12 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 	$post_id = (int) $_GET['post_id']; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$post    = get_post( $post_id );
 
+	if ( null === $post || ! current_user_can( 'read_post', $post_id ) ) {
+		// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		@ob_clean();
+		return wp_send_json_error( __( 'Insufficient permissions.', 'wordlift' ), 403 );
+	}
+
 	Wordlift_Log_Service::get_logger( 'wordlift_ajax_related_posts' )->trace( "Going to find posts related to current with post id: $post_id ..." );
 
 	// Extract filtering conditions

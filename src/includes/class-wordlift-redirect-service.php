@@ -119,23 +119,16 @@ class Wordlift_Redirect_Service {
 			);
 		}
 
-		// Don't reveal links to posts the current user can't see.
-		$post = $content->get_bag();
-		if ( is_a( $post, 'WP_Post' ) ) {
-			$can_view = ( 'publish' === $post->post_status && is_post_type_viewable( $post->post_type ) )
-						|| current_user_can( 'read_post', $post->ID );
-			$allowed  = 'edit' === $target ? current_user_can( 'edit_post', $post->ID ) : $can_view;
-
-			if ( ! $allowed ) {
-				wp_die(
-					esc_html__( 'Entity not found.', 'wordlift' ),
-					esc_html__( 'Entity not found.', 'wordlift' ),
-					array(
-						'response'  => 404,
-						'back_link' => true,
-					)
-				);
-			}
+		// Don't reveal links the current user isn't allowed to see.
+		if ( ! $this->can_redirect( $content->get_bag(), $target ) ) {
+			wp_die(
+				esc_html__( 'Entity not found.', 'wordlift' ),
+				esc_html__( 'Entity not found.', 'wordlift' ),
+				array(
+					'response'  => 404,
+					'back_link' => true,
+				)
+			);
 		}
 
 		switch ( $target ) {
@@ -155,6 +148,36 @@ class Wordlift_Redirect_Service {
 		// Perform the redirect
 		wp_safe_redirect( $redirect_url );
 		exit;
+	}
+
+	/**
+	 * Check whether the current user can be redirected to the target of the given object.
+	 *
+	 * @param WP_Post|WP_Term|WP_User $bag The post, term or user.
+	 * @param string                  $target The redirect target.
+	 *
+	 * @return bool True if allowed, otherwise false.
+	 * @since 3.54.18
+	 */
+	private function can_redirect( $bag, $target ) {
+		if ( $bag instanceof WP_Post ) {
+			return 'edit' === $target ? current_user_can( 'edit_post', $bag->ID ) : wl_core_can_see_post( $bag );
+		}
+
+		// Term and author pages are public, edit links require the edit capability.
+		if ( 'edit' !== $target ) {
+			return true;
+		}
+
+		if ( $bag instanceof WP_Term ) {
+			return current_user_can( 'edit_term', $bag->term_id );
+		}
+
+		if ( $bag instanceof WP_User ) {
+			return current_user_can( 'edit_user', $bag->ID );
+		}
+
+		return false;
 	}
 
 	/**
