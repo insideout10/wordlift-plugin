@@ -259,7 +259,12 @@ class Wordlift_Ajax_Public_Handlers_Permissions_Test extends Wordlift_Ajax_Unit_
 		$this->assertFalse( $can_redirect->invoke( $service, $term, 'edit' ) );
 		$this->assertFalse( $can_redirect->invoke( $service, $user, 'edit' ) );
 
-		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
+		$admin_id = self::factory()->user->create( array( 'role' => 'administrator' ) );
+		// On multisite only super admins can edit other users.
+		if ( is_multisite() ) {
+			grant_super_admin( $admin_id );
+		}
+		wp_set_current_user( $admin_id );
 		$this->assertTrue( $can_redirect->invoke( $service, $draft, 'edit' ) );
 		$this->assertTrue( $can_redirect->invoke( $service, $term, 'edit' ) );
 		$this->assertTrue( $can_redirect->invoke( $service, $user, 'edit' ) );
