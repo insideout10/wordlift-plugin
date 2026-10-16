@@ -29,7 +29,6 @@ class Module {
 
 	public function register_hooks() {
 		add_action( 'wl_key_updated', array( $this, '__key_updated' ) );
-		add_action( 'wp_ajax_wl_food_kg__run', array( $this, '__run' ) );
 	}
 
 	public function __key_updated() {
