@@ -1,4 +1,9 @@
 
+= 3.54.18 (2026-10-19) =
+* Fix: Tighten permission checks in several AJAX and REST handlers.
+* Fix: Remove unused AJAX handlers.
+* Enhancement: Restrict the `wl-api` end-point to WordLift actions. Add-ons can add their own actions with the new `wl_http_api_allowed_actions` filter.
+
 = 3.54.17 (2026-10-13) =
 * Fix: Add capability checks and nonce verification to several admin AJAX and REST handlers.
 
