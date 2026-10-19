@@ -107,17 +107,22 @@ class Wordlift_Ajax_Public_Handlers_Permissions_Test extends Wordlift_Ajax_Unit_
 		$this->assertEquals( self::DRAFT_TITLE, $response->entities[0]->label );
 	}
 
-	public function test_geomap_single_post_skips_non_public_posts() {
+	public function test_geomap_returns_a_non_public_place_only_to_users_who_can_read_it() {
 		$draft_id = self::factory()->post->create( array( 'post_status' => 'draft' ) );
 		add_post_meta( $draft_id, 'wl_geo_latitude', '45.1' );
 		add_post_meta( $draft_id, 'wl_geo_longitude', '9.1' );
 
-		$public_id = self::factory()->post->create( array( 'post_status' => 'publish' ) );
-		add_post_meta( $public_id, 'wl_geo_latitude', '45.2' );
-		add_post_meta( $public_id, 'wl_geo_longitude', '9.2' );
+		wp_set_current_user( 0 );
+		$_POST['_wpnonce'] = wp_create_nonce( 'wl_geomap' );
+		$_POST['post_id']  = $draft_id;
+		$response          = $this->call_ajax( 'wl_geomap' );
+		$this->assertEmpty( $response->features );
 
-		$this->assertEmpty( wl_shortcode_geomap_ajax_single_post( $draft_id ) );
-		$this->assertCount( 1, wl_shortcode_geomap_ajax_single_post( $public_id ) );
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'editor' ) ) );
+		$this->_last_response = '';
+		$_POST['_wpnonce']    = wp_create_nonce( 'wl_geomap' );
+		$response             = $this->call_ajax( 'wl_geomap' );
+		$this->assertCount( 1, $response->features );
 	}
 
 	public function test_related_posts_only_returns_the_fields_used_by_the_ui() {
