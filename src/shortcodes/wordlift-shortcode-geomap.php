@@ -77,7 +77,7 @@ function wl_shortcode_geomap_ajax_single_post( $post_id ) {
 		  ON pm1.post_id = p.ID AND pm1.meta_key = %s AND '0' != pm1.meta_value
 		 INNER JOIN {$wpdb->postmeta} pm2
 		  ON pm2.post_id = p.ID AND pm2.meta_key = %s AND '0' != pm2.meta_value
-		 WHERE p.ID = %d AND p.post_status = %s
+		 WHERE p.ID = %d
 		",
 			'publish',
 			'wl_geo_latitude',
@@ -87,8 +87,7 @@ function wl_shortcode_geomap_ajax_single_post( $post_id ) {
 			// UNION
 			'wl_geo_latitude',
 			'wl_geo_longitude',
-			$post_id,
-			'publish'
+			$post_id
 		)
 	);
 }
