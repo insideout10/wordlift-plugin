@@ -93,7 +93,15 @@ class Default_Api_Service implements Api_Service, Api_Service_Ext {
 			@set_time_limit( $request_timeout );
 		}
 
-		$request_url = $this->base_url . $path;
+		/**
+		 * Filter: wl_api_service__request_url
+		 *
+		 * @param string $request_url The request URL.
+		 * @param string $path The request path.
+		 *
+		 * @since 3.54.19
+		 */
+		$request_url = apply_filters( 'wl_api_service__request_url', $this->base_url . $path, $path );
 		// Create the request args in the following order:
 		// 1. use `$args` as base if provided.
 		// 2. set the custom timeout if provided.

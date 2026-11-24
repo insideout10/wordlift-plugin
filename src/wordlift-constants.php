@@ -23,6 +23,12 @@ if ( ! defined( 'WORDLIFT_API_URL' ) && false !== getenv( 'WORDLIFT_API_URL' ) )
 	define( 'WORDLIFT_API_URL', getenv( 'WORDLIFT_API_URL' ) );
 }
 
+// Use the Content Analysis API URL set on the command line (e.g. to test the v3 engine).
+// When not set, the analysis requests go to WORDLIFT_API_URL as usual.
+if ( ! defined( 'WORDLIFT_ANALYSIS_API_URL' ) && false !== getenv( 'WORDLIFT_ANALYSIS_API_URL' ) ) {
+	define( 'WORDLIFT_ANALYSIS_API_URL', getenv( 'WORDLIFT_ANALYSIS_API_URL' ) );
+}
+
 // 3.13.0, we use by default WLS 1.11 which provides us with the new, faster
 // chunked analysis.
 define( 'WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE', defined( 'WORDLIFT_API_URL' ) ? WORDLIFT_API_URL . '/' : 'https://api.wordlift.io/' );
