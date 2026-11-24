@@ -70,7 +70,8 @@ class Wordlift_Analysis_Api_Url_Test extends Wordlift_Unit_Test_Case {
 					'cookies'  => array(),
 				);
 			},
-			PHP_INT_MAX,
+			// Before the catch-all `_wl_mock_http_request` (PHP_INT_MAX), which lets a response through.
+			10,
 			3
 		);
 
