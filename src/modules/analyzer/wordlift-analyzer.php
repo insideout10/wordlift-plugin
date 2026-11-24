@@ -150,3 +150,44 @@ function wl_use_analysis_on_api_wordlift_io( $value ) {
 
 	return preg_replace( '|https://api\.wordlift\.it/|', apply_filters( 'wl_api_base_url', 'https://api.wordlift.io' ) . '/', $value );
 }
+
+/**
+ * Get the base URL of the Content Analysis API, without the trailing slash.
+ *
+ * Defaults to the WordLift API URL. Set the `WORDLIFT_ANALYSIS_API_URL` constant (or environment variable), or use
+ * the `wl_analysis_api_url` filter, to send the analysis requests (`/analysis/*`) to another host, e.g. the v3 engine.
+ *
+ * @return string The analysis API base URL.
+ * @since 3.54.19
+ */
+function wl_get_analysis_api_url() {
+
+	$default = defined( 'WORDLIFT_ANALYSIS_API_URL' ) ? WORDLIFT_ANALYSIS_API_URL : WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE;
+
+	return untrailingslashit( apply_filters( 'wl_analysis_api_url', $default ) );
+}
+
+/**
+ * Point the analysis requests (`<api url>/analysis/*`) to the analysis API base URL. Other URLs are left unchanged,
+ * and so are the analysis URLs when the analysis API base URL is the WordLift API URL.
+ *
+ * @param string $url The request URL.
+ *
+ * @return string The request URL.
+ * @since 3.54.19
+ */
+function wl_rewrite_analysis_api_url( $url ) {
+
+	$api_url      = untrailingslashit( WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE );
+	$analysis_url = wl_get_analysis_api_url();
+
+	if ( $api_url === $analysis_url || 0 !== strpos( $url, "$api_url/analysis/" ) ) {
+		return $url;
+	}
+
+	return $analysis_url . substr( $url, strlen( $api_url ) );
+}
+
+// Run after `wl_use_analysis_on_api_wordlift_io` (priority 10), which is added only around the analysis call.
+add_filter( 'wl_api_service_api_url_path', 'wl_rewrite_analysis_api_url', 20 );
+add_filter( 'wl_api_service__request_url', 'wl_rewrite_analysis_api_url' );
